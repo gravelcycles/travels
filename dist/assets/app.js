@@ -224,11 +224,16 @@
       return;
     }
     mainMap = createMap("map", true);
-    mainMap.on("load", () => {
-      applyBasemapTreatment(mainMap);
+    const initialBounds = boundsFromCoordinates(journeyCoordinates());
+    if (initialBounds) mainMap.fitBounds(initialBounds, { padding: 62, maxZoom: 8, duration: 0 });
+    const finishMainMapSetup = () => {
+      if (mainMapReady || !mapIsReady(mainMap)) return;
       mainMapReady = true;
+      applyBasemapTreatment(mainMap);
       drawMainMap(true);
-    });
+    };
+    mainMap.on("styledata", finishMainMapSetup);
+    mainMap.on("load", finishMainMapSetup);
     mainMap.on("click", (event) => {
       const feature = mainMap.queryRenderedFeatures(event.point).find((item) => item.properties && item.properties.segmentId);
       if (!feature) return;
@@ -557,11 +562,14 @@
       return;
     }
     viewerMap = createMap("photo-map", true);
-    viewerMap.on("load", () => {
-      applyBasemapTreatment(viewerMap);
+    const finishViewerMapSetup = () => {
+      if (viewerMapReady || !mapIsReady(viewerMap)) return;
       viewerMapReady = true;
+      applyBasemapTreatment(viewerMap);
       syncViewerMap();
-    });
+    };
+    viewerMap.on("styledata", finishViewerMapSetup);
+    viewerMap.on("load", finishViewerMapSetup);
   }
 
   function renderViewerFilmstrip(photos) {
