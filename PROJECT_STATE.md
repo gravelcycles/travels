@@ -13,26 +13,25 @@ Updated 6 September 2026.
 ## Current behavior
 
 - `/travels/` shows the one real trip with no journey dropdown.
-- Demo journeys remain in `dist/assets/journeys.js` but have no separate page.
+- `/travels/demo.html` shows only demo journeys with a sample selector.
 - Days support multiple modes and close-up map bounds.
 - Destination labels use `destinationId`, so Luzern-based day trips are labeled
   by the place visited.
 - Train stops are named and shown as points in day close-ups.
 - Selected routes are orange and drawn above other routes.
+- Day focus keeps other routes visible in quiet grey.
+- Fresh load draws the routes immediately, then fits the journey over 2.5s.
+- Left and right panels have independent, visible scrollbars.
+- Transport modes use a static legend with distinct line patterns.
 - Emoji markers are removed.
 - Route research and accuracy limits are in `ROUTE_SOURCES.md`.
 
 ## Known issues
 
-- Fresh load shows too much of Europe instead of animating into the trip.
-- Day selection currently removes other routes; they should remain, greyed out.
-- The bottom of some day close-ups is cut off.
-- Left and right panels need visible scrollbars when content does not fit.
-- Remove the `All modes` filter but keep a clearer static legend.
-- Transport line patterns are too similar.
 - Route lines can cross map place names.
 - Sparse points make some train lines cross water and ferry lines cross land.
-- Desired pages: `/travels/` for real trips and `/travels/demo.html` for demos.
+- Most segments still need reviewed, detailed `geometry`; the viewer now
+  supports it and falls back to `via` or `stops` for older data.
 
 ## Main lesson
 

@@ -7,9 +7,9 @@
   - loop back to a base
   - combine several ordered segments and transport modes
 
-  A segment can include `via` latitude/longitude pairs for route shaping, or
-  named `stops` for scheduled calling points. The day close-up uses every point
-  in order, so detailed legs follow the route rather than only start and end.
+  A segment can include detailed `geometry` in GeoJSON [longitude, latitude]
+  order. `via` latitude/longitude pairs remain a fallback for route shaping,
+  while named `stops` describe scheduled calling points and map markers.
 
   Photos belong to a day through dayId. They may also have exact GPS coordinates,
   EXIF time, tags, and OCR text. Photo src values can be local paths or HTTPS URLs.

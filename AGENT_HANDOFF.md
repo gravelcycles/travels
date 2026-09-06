@@ -10,28 +10,23 @@ Read `PROJECT_STATE.md` and `PRINCIPLES.md` first.
 
 ## Next pass
 
-1. **Split the pages.** Keep real journeys at `/travels/` and put sample
-   journeys at `/travels/demo.html`. Share viewer code; never mix real and demo
-   journeys in one selector. There is only one real journey for now.
-2. **Fix initial framing.** Start broad, then animate to the full trip bounds
-   over 2.5 seconds. Routes and markers must appear without pressing a button.
-3. **Improve day focus.** Fit the selected day, keep other routes visible in a
-   quiet grey, and draw the selected orange route last. Fix the close-up being
-   cut off at the bottom.
-4. **Fix panel overflow.** Add clearly visible, independent scrollbars to the
-   left day list and right journal when content is taller than the viewport.
-5. **Simplify controls.** Remove the `All modes` filter. Keep a static legend
-   with clearly different patterns: solid train, circular/dotted boat,
-   long-dash bus, short-dash bicycle, fine-dot walk, and chevron gondola.
-6. **Improve route fidelity.** Add separate detailed `geometry` to segments;
+Completed in the 6 September viewer pass: real/demo page split, demo selector,
+2.5-second initial fit, persistent grey journey context during day focus,
+bottom-safe Day 4 and Day 10 framing, constrained panel heights with visible
+scrollbars, a static patterned legend, mobile deferred map fitting, and support
+for GeoJSON-order `geometry`. The empty real-trip photo button is disabled.
+
+1. **Improve route fidelity.** Add separate detailed `geometry` to segments;
    keep `stops` only for stop markers and counts. Prefer reviewed static
    GeoJSON from operator/open-transport data or OpenStreetMap-derived routing.
    Trains should follow rails, boats should stay on water, and buses/bikes
    should follow plausible roads. Record sources in `ROUTE_SOURCES.md`.
-7. **Reduce label collisions.** Investigate route casings, lower route opacity,
+2. **Reduce label collisions.** Investigate route casings, lower route opacity,
    label halos, or hiding selected basemap labels under active routes. Do not
    remove useful place context globally.
-8. **Update the demo** for every shared behavior or data-model change.
+3. **Add real photos.** Follow `PHOTO_WORKFLOW.md`, review dates/GPS and privacy,
+   and replace the intentionally empty real-trip photo states.
+4. **Update the demo** for every shared behavior or data-model change.
 
 ## Topographic basemap direction
 

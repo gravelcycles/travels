@@ -7,23 +7,26 @@
     route: "#1f6671",
     selected: "#b35f3f",
     casing: "#f7f4ed",
-    muted: "#7f999c"
+    muted: "#809194"
   };
   const labels = { train: "Train", boat: "Boat", bus: "Bus", gondola: "Gondola", walk: "Walk", car: "Car", bike: "Bike" };
   const dashes = {
     train: null,
-    boat: [2.2, 1.4],
-    bus: [4.2, 2.5],
-    gondola: [0.3, 1.4],
-    walk: [0.2, 1.15],
-    car: [0.15, 1.8],
-    bike: [1.25, 1.25]
+    boat: [0.1, 2.1],
+    bus: [5.5, 3.2],
+    gondola: [1.2, 2.4],
+    walk: [0.1, 1.45],
+    car: [3.4, 2.3],
+    bike: [2.1, 1.5]
   };
   const attribution = '<a href="https://openfreemap.org/">OpenFreeMap</a> · <a href="https://openmaptiles.org/">© OpenMapTiles</a> · Data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
-  let journey = data.journeys.find((item) => item.id === data.defaultJourneyId) || data.journeys[0];
+  const isDemoPage = /(?:^|\/)demo\.html$/.test(window.location.pathname);
+  const availableJourneys = isDemoPage
+    ? data.journeys.filter((item) => item.id !== data.defaultJourneyId)
+    : data.journeys.filter((item) => item.id === data.defaultJourneyId);
+  let journey = availableJourneys[0] || data.journeys[0];
   let activeDayId = journey.days[0].id;
-  let activeMode = "all";
   let mapScope = "journey";
   let mainMap;
   let viewerMap;
@@ -33,6 +36,8 @@
   let viewerDecorations = { layerIds: [], sourceIds: [], markers: [] };
   let viewerPhotoIndex = 0;
   let swipeStartX = null;
+  let hasPlayedOpeningMove = false;
+  let pendingMapAction = null;
 
   const $ = (selector) => document.querySelector(selector);
   const dayList = $("#day-list");
@@ -139,7 +144,10 @@
   function segmentCoordinates(segment) {
     const from = placeById(segment.from);
     const to = placeById(segment.to);
-    const points = segment.stops || segment.via || [];
+    if (Array.isArray(segment.geometry) && segment.geometry.length >= 2) {
+      return segment.geometry;
+    }
+    const points = segment.via || segment.stops || [];
     return [
       [from.lng, from.lat],
       ...points.map((point) => Array.isArray(point) ? [point[1], point[0]] : [point.lng, point.lat]),
@@ -203,19 +211,15 @@
     });
   }
 
-  function createMap(container, compact, initialBounds) {
+  function createMap(container, compact) {
     const options = {
       container,
       style: OPENFREEMAP_STYLE,
-      center: [9.2, 47.1],
-      zoom: 5,
+      center: [9.2, 47.4],
+      zoom: 4.35,
       minZoom: 2,
       attributionControl: false
     };
-    if (initialBounds) {
-      options.bounds = initialBounds;
-      options.fitBoundsOptions = { padding: 62, maxZoom: 8 };
-    }
     const map = new maplibregl.Map(options);
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     map.addControl(new maplibregl.AttributionControl({ compact: compact, customAttribution: attribution }), "bottom-right");
@@ -228,8 +232,7 @@
       mapStatus.textContent = "The live map could not load. The day journal and photos still work.";
       return;
     }
-    const initialBounds = boundsFromCoordinates(journeyCoordinates());
-    mainMap = createMap("map", true, initialBounds);
+    mainMap = createMap("map", true);
     let setupAttempts = 0;
     const finishMainMapSetup = () => {
       if (mainMapReady) return;
@@ -240,7 +243,11 @@
       }
       mainMapReady = true;
       applyBasemapTreatment(mainMap);
-      drawMainMap(true);
+      drawMainMap(false);
+      if (!hasPlayedOpeningMove) {
+        hasPlayedOpeningMove = true;
+        window.requestAnimationFrame(() => fitJourneyBounds(prefersReducedMotion() ? 0 : 2500));
+      }
     };
     mainMap.on("styledata", finishMainMapSetup);
     mainMap.on("load", finishMainMapSetup);
@@ -301,7 +308,7 @@
       }
     });
     const paint = {
-      "line-color": options.selected ? palette.selected : palette.route,
+      "line-color": options.selected ? palette.selected : (options.color || palette.route),
       "line-width": options.selected ? 5.5 : 3.6,
       "line-opacity": options.opacity
     };
@@ -315,6 +322,30 @@
     });
     decorations.sourceIds.push(sourceId);
     decorations.layerIds.push(casingId, lineId);
+    if (segment.mode === "gondola") {
+      const chevronId = `${prefix}-chevrons-${segment.id}`;
+      map.addLayer({
+        id: chevronId,
+        type: "symbol",
+        source: sourceId,
+        layout: {
+          "symbol-placement": "line",
+          "symbol-spacing": 24,
+          "text-field": ">",
+          "text-size": options.selected ? 18 : 15,
+          "text-rotation-alignment": "map",
+          "text-keep-upright": false,
+          "text-allow-overlap": true
+        },
+        paint: {
+          "text-color": options.selected ? palette.selected : (options.color || palette.route),
+          "text-opacity": options.opacity,
+          "text-halo-color": palette.casing,
+          "text-halo-width": 1
+        }
+      });
+      decorations.layerIds.push(chevronId);
+    }
   }
 
   function groupedDayMarkers() {
@@ -397,15 +428,14 @@
     clearDecorations(mainMap, mainDecorations);
     const selectedSegments = new Set(activeDay().segmentIds);
     [...journey.segments]
-      .filter((segment) => mapScope === "journey" || selectedSegments.has(segment.id))
       .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id)))
       .forEach((segment) => {
-        const visible = activeMode === "all" || activeMode === segment.mode;
         const selected = selectedSegments.has(segment.id);
         addSegmentLayer(mainMap, mainDecorations, segment, {
           prefix: "main",
           selected,
-          opacity: visible ? (selected ? 1 : 0.72) : 0.025
+          color: mapScope === "day" && !selected ? palette.muted : palette.route,
+          opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.7)
         });
       });
     addDayMarkers();
@@ -413,10 +443,26 @@
     if (fit) fitJourneyBounds();
   }
 
-  function fitJourneyBounds() {
+  function prefersReducedMotion() {
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function mapPadding(extraBottom) {
+    const mapElement = $("#map");
+    const legend = $("#map-legend");
+    const width = Math.max(mapElement.clientWidth, 320);
+    const height = Math.max(mapElement.clientHeight, 260);
+    const side = Math.max(28, Math.min(62, Math.floor(width * 0.08)));
+    const top = Math.max(28, Math.min(56, Math.floor(height * 0.11)));
+    const legendRoom = legend ? legend.offsetHeight + 30 : 70;
+    const bottom = Math.min(Math.max(legendRoom, extraBottom || 0), Math.floor(height * 0.36));
+    return { top, right: side, bottom, left: side };
+  }
+
+  function fitJourneyBounds(duration = 650) {
     if (!mainMapReady) return;
     const bounds = boundsFromCoordinates(journeyCoordinates());
-    if (bounds) mainMap.fitBounds(bounds, { padding: 62, maxZoom: 8, duration: 650 });
+    if (bounds) mainMap.fitBounds(bounds, { padding: mapPadding(76), maxZoom: 8, duration });
   }
 
   function fitRoute() {
@@ -431,7 +477,7 @@
     drawMainMap(false);
     const coordinates = dayCoordinates(day);
     if (coordinates.length > 1) {
-      mainMap.fitBounds(boundsFromCoordinates(coordinates), { padding: 54, maxZoom: 12.5, duration: 650 });
+      mainMap.fitBounds(boundsFromCoordinates(coordinates), { padding: mapPadding(112), maxZoom: 12.5, duration: 650 });
     } else if (coordinates.length === 1) {
       mainMap.easeTo({ center: coordinates[0], zoom: 12, duration: 650 });
     }
@@ -439,6 +485,7 @@
 
   function renderJourneyIdentity() {
     $("#journey-name").textContent = journey.label;
+    document.title = `${journey.title} · ${isDemoPage ? "Journey samples" : "Switzerland & Italy"}`;
   }
 
   function renderOverview() {
@@ -448,6 +495,7 @@
     $("#journey-subtitle").textContent = journey.subtitle;
     $("#day-count").textContent = `${journey.days.length} days`;
     $("#photo-count").textContent = journey.photos.length;
+    $("#show-all-photos").disabled = journey.photos.length === 0;
     $("#journey-summary").innerHTML = `
       <div><strong>${escapeHtml(journey.dates)}</strong><span>TRAVEL DATES</span></div>
       <div><strong>${formatDistance(totalDistance())}</strong><span>ROUTE LENGTH</span></div>
@@ -459,24 +507,26 @@
     return `<i class="line-swatch ${escapeHtml(mode)}" aria-hidden="true"></i>`;
   }
 
-  function renderModeFilter() {
+  function renderLegend() {
     const modes = [...new Set(journey.segments.map((segment) => segment.mode))];
-    const options = ["all", ...modes];
-    $("#mode-filter").innerHTML = options.map((mode) => {
-      const label = mode === "all" ? "All modes" : labels[mode];
-      return `<button type="button" data-mode="${mode}" class="${activeMode === mode ? "active" : ""}">${mode === "all" ? "" : lineSwatch(mode)}${label}</button>`;
-    }).join("");
     $("#map-legend").innerHTML = modes.map((mode) => `<span>${lineSwatch(mode)}${labels[mode]}</span>`).join("") + '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>';
+  }
+
+  function renderJourneyPicker() {
+    const picker = $("#journey-picker");
+    const select = $("#journey-select");
+    picker.hidden = !isDemoPage || availableJourneys.length < 2;
+    if (picker.hidden) return;
+    select.innerHTML = availableJourneys.map((item) => `<option value="${escapeHtml(item.id)}" ${item.id === journey.id ? "selected" : ""}>${escapeHtml(item.label)}</option>`).join("");
   }
 
   function renderDays() {
     dayList.innerHTML = journey.days.map((day) => {
       const modes = modesForDay(day);
       const photos = photosForDay(day.id);
-      const muted = activeMode !== "all" && modes.length && !modes.includes(activeMode);
       const pattern = modes[0] || "stay";
       return `
-        <button class="day-row ${day.id === activeDayId ? "active" : ""} ${muted ? "muted" : ""}" data-day-id="${escapeHtml(day.id)}" type="button">
+        <button class="day-row ${day.id === activeDayId ? "active" : ""}" data-day-id="${escapeHtml(day.id)}" type="button" ${day.id === activeDayId ? 'aria-current="true"' : ""}>
           <span class="day-index">${String(day.number).padStart(2, "0")}</span>
           <span class="day-copy">
             <small>${escapeHtml(day.date)} · ${escapeHtml(modeLabel(day))}</small>
@@ -544,7 +594,8 @@
   function renderAll(options) {
     renderJourneyIdentity();
     renderOverview();
-    renderModeFilter();
+    renderJourneyPicker();
+    renderLegend();
     renderDays();
     renderStory();
     drawMainMap(Boolean(options && options.fit));
@@ -556,7 +607,13 @@
     renderDays();
     renderStory();
     if (focus) {
-      focusDay(activeDay());
+      if ($(".map-panel").offsetParent === null) {
+        mapScope = "day";
+        pendingMapAction = "focus";
+        drawMainMap(false);
+      } else {
+        focusDay(activeDay());
+      }
     } else {
       drawMainMap(false);
     }
@@ -565,7 +622,14 @@
   function setMobileTab(tab) {
     $(".atlas-shell").dataset.mobileTab = tab;
     document.querySelectorAll(".mobile-nav button").forEach((button) => button.classList.toggle("active", button.dataset.tab === tab));
-    if (tab === "map" && mainMap) window.setTimeout(() => mainMap.resize(), 80);
+    if (tab === "map" && mainMap) {
+      window.setTimeout(() => {
+        mainMap.resize();
+        if (pendingMapAction === "focus") focusDay(activeDay());
+        if (pendingMapAction === "fit") fitJourneyBounds();
+        pendingMapAction = null;
+      }, 80);
+    }
   }
 
   function initViewerMap() {
@@ -676,13 +740,18 @@
     updateViewer();
   }
 
-  $("#mode-filter").addEventListener("click", (event) => {
-    const button = event.target.closest("button[data-mode]");
-    if (!button) return;
-    activeMode = button.dataset.mode;
-    renderModeFilter();
-    renderDays();
-    drawMainMap(false);
+  $("#journey-select").addEventListener("change", (event) => {
+    const nextJourney = availableJourneys.find((item) => item.id === event.target.value);
+    if (!nextJourney) return;
+    journey = nextJourney;
+    activeDayId = journey.days[0].id;
+    mapScope = "journey";
+    renderAll({ fit: false });
+    if ($(".map-panel").offsetParent === null) {
+      pendingMapAction = "fit";
+    } else {
+      fitJourneyBounds();
+    }
   });
 
   dayList.addEventListener("click", (event) => {

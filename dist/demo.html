@@ -4,29 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-    <meta
-      name="description"
-      content="David and Michelle's family journey through Switzerland and Italy, mapped day by day."
-    />
-    <title>Lakes, Rails &amp; Rain · Switzerland &amp; Italy</title>
+    <meta name="description" content="Sample journeys demonstrating the day-by-day Journey Atlas." />
+    <title>Journey samples · Journey Atlas</title>
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
-    />
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
     <link rel="stylesheet" href="./assets/styles.css?v=20260906-5" />
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="./" aria-label="Lakes, Rails and Rain home">
+      <a class="brand" href="./demo.html" aria-label="Journey Atlas samples home">
         <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span><small>SWITZERLAND + ITALY</small><strong>Lakes, Rails &amp; Rain</strong></span>
+        <span><small>JOURNEY ATLAS</small><strong>Sample journeys</strong></span>
       </a>
       <div class="header-context">
         <span class="sample-badge" id="site-badge">ATLAS DEMO</span>
-        <a class="header-link" href="./demo.html">Sample journeys</a>
-        <button class="plain-button" id="open-notes" type="button">About this atlas</button>
+        <a class="header-link" href="./">Family journey</a>
+        <button class="plain-button" id="open-notes" type="button">About these samples</button>
       </div>
     </header>
 
@@ -41,11 +35,7 @@
             <select id="journey-select"></select>
           </div>
         </div>
-
-        <div class="route-heading">
-          <span>THE DAYS</span>
-          <small id="day-count"></small>
-        </div>
+        <div class="route-heading"><span>THE DAYS</span><small id="day-count"></small></div>
         <div class="day-list" id="day-list"></div>
       </aside>
 
@@ -71,10 +61,7 @@
         <div class="story-media" id="story-media"></div>
         <div class="story-detail" id="story-detail"></div>
         <div class="photo-section">
-          <div class="photo-heading">
-            <span>THIS DAY</span>
-            <small>Open any photo full screen</small>
-          </div>
+          <div class="photo-heading"><span>THIS DAY</span><small>Open any photo full screen</small></div>
           <div class="photo-strip" id="photo-strip"></div>
         </div>
       </aside>
@@ -89,31 +76,29 @@
     <dialog class="notes-dialog" id="notes-dialog">
       <form method="dialog" class="dialog-card">
         <div class="dialog-top">
-          <div><span>ABOUT THE ATLAS</span><h2>One family trip, mapped day by day.</h2></div>
-          <button value="cancel" aria-label="Close atlas notes">×</button>
+          <div><span>ABOUT THE SAMPLES</span><h2>Different kinds of trip, one day-by-day atlas.</h2></div>
+          <button value="cancel" aria-label="Close sample notes">×</button>
         </div>
         <div class="notes-grid">
           <section>
-            <strong>1 · A Luzern base</strong>
-            <p>David and Michelle traveled with her parents, returning to Luzern on most days and staying in Como for the Italian portion.</p>
+            <strong>1 · Switch journeys</strong>
+            <p>Use the selector above the day list to try mixed transport, rail and bus, driving, and bicycle stories.</p>
           </section>
           <section>
             <strong>2 · Every leg matters</strong>
-            <p>Train, boat, bus, gondola, walking, and bicycle legs are mapped in their actual order. Open any day to isolate its route.</p>
+            <p>Each calendar day can stay still, move once, make a loop, or combine several ordered transport modes.</p>
           </section>
           <section>
-            <strong>3 · Rail stops included</strong>
-            <p>Day close-ups mark the scheduled rail stops along each representative route, with selected travel lines brought to the front.</p>
+            <strong>3 · Keep the context</strong>
+            <p>A day close-up leaves the rest of its journey quietly visible while bringing the selected route to the front.</p>
           </section>
           <section>
-            <strong>4 · Photos are next</strong>
-            <p>The journal is ready for original iPhone photographs. Dates and location metadata will help attach them to the right day and place.</p>
+            <strong>4 · Photos follow the map</strong>
+            <p>Open any photograph to move through the trip and see its day and location alongside it.</p>
           </section>
         </div>
-        <div class="storage-note">
-          <strong>Privacy:</strong> the public site asks search engines not to index or archive it, but anyone with the URL can still open it.
-        </div>
-        <button class="dialog-done" value="default">Back to the atlas</button>
+        <div class="storage-note"><strong>Sample data:</strong> these journeys demonstrate the viewer and are not records of the family trip.</div>
+        <button class="dialog-done" value="default">Back to the samples</button>
       </form>
     </dialog>
 
@@ -122,10 +107,7 @@
         <button class="photo-close" aria-label="Close photo viewer">×</button>
         <section class="photo-stage" aria-live="polite">
           <button class="photo-nav photo-prev" type="button" aria-label="Previous photo">‹</button>
-          <figure>
-            <img id="modal-photo" alt="" />
-            <figcaption id="modal-caption"></figcaption>
-          </figure>
+          <figure><img id="modal-photo" alt="" /><figcaption id="modal-caption"></figcaption></figure>
           <button class="photo-nav photo-next" type="button" aria-label="Next photo">›</button>
         </section>
         <aside class="photo-context">

@@ -1,8 +1,8 @@
 # Travels — Journey Atlas
 
 A static, GitHub Pages-friendly atlas for David and Michelle's family journey
-through Switzerland and Italy. The published page is intentionally a single,
-standalone trip rather than a multi-trip selector.
+through Switzerland and Italy. The main page is intentionally a single,
+standalone trip; fictional viewer examples live separately at `demo.html`.
 
 ## Preview locally
 
@@ -13,6 +13,9 @@ python3 -m http.server 8000 --directory dist
 ```
 
 Then open `http://localhost:8000/`.
+
+- `/` shows only the real family journey.
+- `/demo.html` shows only the sample journeys and includes a sample selector.
 
 ## Add trip photos
 
@@ -29,15 +32,17 @@ Each journey contains:
 - places with stable IDs and latitude/longitude
 - route segments connecting place IDs
 - several ordered transport legs within the same day
-- optional `via` coordinates that trace each leg's specific route
+- optional detailed `geometry` in GeoJSON `[longitude, latitude]` order
+- optional legacy `via` coordinates that approximate a leg when geometry has
+  not been reviewed yet
 - named `stops` that draw and mark each scheduled rail stop in a close-up
 - a `destinationId` so base-based day trips are labeled by destination
 - calendar days, including non-travel days
 - optional photographs linked to days
 
 The first real trip combines train, boat, bus, gondola, bicycle, and walking
-segments. Sample data remains in the content file for future development, but
-the public interface only displays this family trip.
+segments. Sample data remains in the shared content file but is only exposed by
+the separate demo page.
 
 ## Publish with GitHub Pages
 
