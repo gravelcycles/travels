@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+    <meta
+      name="description"
+      content="A reusable, photo-rich map for past rail, road, bike, and mixed-mode journeys."
+    />
+    <title>Journey Atlas</title>
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="preconnect" href="https://tiles.openfreemap.org" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="Journey Atlas home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span><small>PAST JOURNEYS</small><strong>Journey Atlas</strong></span>
+      </a>
+      <div class="header-context">
+        <span class="sample-badge">ATLAS DEMO</span>
+        <button class="plain-button" id="open-notes" type="button">How to use this</button>
+      </div>
+    </header>
+
+    <main class="atlas-shell" data-mobile-tab="map">
+      <aside class="route-panel" aria-label="Journey days">
+        <div class="panel-intro">
+          <label for="journey-select">JOURNEY</label>
+          <select id="journey-select" aria-label="Choose a journey"></select>
+          <div class="journey-summary" id="journey-summary"></div>
+        </div>
+
+        <div class="mode-filter" id="mode-filter" aria-label="Filter route by transport mode"></div>
+
+        <div class="route-heading">
+          <span>THE DAYS</span>
+          <small id="day-count"></small>
+        </div>
+        <div class="day-list" id="day-list"></div>
+      </aside>
+
+      <section class="map-panel" aria-label="Interactive journey map">
+        <div class="map-header">
+          <div class="map-title-card">
+            <span id="journey-kicker"></span>
+            <h1 id="journey-title"></h1>
+            <p id="journey-subtitle"></p>
+          </div>
+          <div class="map-actions">
+            <button id="fit-route" type="button" aria-label="Fit the whole route on the map">Fit route</button>
+            <button id="show-all-photos" type="button">All photos <span id="photo-count"></span></button>
+          </div>
+        </div>
+        <div id="map" aria-label="Map showing the selected journey"></div>
+        <div class="map-legend" id="map-legend"></div>
+        <div class="map-status" id="map-status" hidden></div>
+      </section>
+
+      <aside class="story-panel" aria-label="Journey details">
+        <div class="story-media" id="story-media"></div>
+        <div class="story-detail" id="story-detail"></div>
+        <div class="photo-section">
+          <div class="photo-heading">
+            <span>THIS DAY</span>
+            <small>Open any photo full screen</small>
+          </div>
+          <div class="photo-strip" id="photo-strip"></div>
+        </div>
+      </aside>
+    </main>
+
+    <nav class="mobile-nav" aria-label="Journey views">
+      <button data-tab="route" type="button">Days</button>
+      <button data-tab="map" class="active" type="button">Map</button>
+      <button data-tab="story" type="button">Journal</button>
+    </nav>
+
+    <dialog class="notes-dialog" id="notes-dialog">
+      <form method="dialog" class="dialog-card">
+        <div class="dialog-top">
+          <div><span>THE TEMPLATE</span><h2>One data file, every shape of journey.</h2></div>
+          <button value="cancel" aria-label="Close template notes">×</button>
+        </div>
+        <div class="notes-grid">
+          <section>
+            <strong>1 · Add the days</strong>
+            <p>Duplicate a journey inside <code>assets/journeys.js</code>. Every day gets its own title and journal text, whether you travel or stay put.</p>
+          </section>
+          <section>
+            <strong>2 · Add photographs</strong>
+            <p>Put web-sized images in <code>assets/photos</code>, or paste any public image URL. Link every photo to a day and add GPS when you have it.</p>
+          </section>
+          <section>
+            <strong>3 · Let metadata help</strong>
+            <p>Phone photos may already contain time and GPS data. Captions, OCR text, and tags can be imported, inferred and then reviewed.</p>
+          </section>
+          <section>
+            <strong>4 · Publish anywhere</strong>
+            <p>The finished site is static. It can live here, on GitHub Pages, or behind a custom domain without changing the journey format.</p>
+          </section>
+        </div>
+        <div class="storage-note">
+          <strong>Photo storage:</strong> start with optimized WebP/AVIF files in the project. If the archive becomes large, keep the same day data and switch <code>src</code> values to Cloudinary or object-storage URLs.
+        </div>
+        <button class="dialog-done" value="default">Back to the atlas</button>
+      </form>
+    </dialog>
+
+    <dialog class="photo-dialog" id="photo-dialog" aria-label="All journey photos">
+      <div class="photo-viewer">
+        <button class="photo-close" aria-label="Close photo viewer">×</button>
+        <section class="photo-stage" aria-live="polite">
+          <button class="photo-nav photo-prev" type="button" aria-label="Previous photo">‹</button>
+          <figure>
+            <img id="modal-photo" alt="" />
+            <figcaption id="modal-caption"></figcaption>
+          </figure>
+          <button class="photo-nav photo-next" type="button" aria-label="Next photo">›</button>
+        </section>
+        <aside class="photo-context">
+          <div id="photo-map" aria-label="Map following the current photo"></div>
+          <div class="photo-context-copy">
+            <span id="modal-progress"></span>
+            <h2 id="modal-day-title"></h2>
+            <p id="modal-day-route"></p>
+          </div>
+          <div class="viewer-filmstrip" id="viewer-filmstrip" aria-label="All journey photos"></div>
+        </aside>
+      </div>
+    </dialog>
+
+    <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
+    <script src="./assets/journeys.js"></script>
+    <script src="./assets/app.js"></script>
+  </body>
+</html>
