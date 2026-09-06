@@ -9,9 +9,10 @@
     casing: "#f7f4ed",
     muted: "#7f999c"
   };
-  const labels = { train: "Train", bus: "Bus", car: "Car", bike: "Bike" };
+  const labels = { train: "Train", boat: "Boat", bus: "Bus", car: "Car", bike: "Bike" };
   const dashes = {
     train: null,
+    boat: [2.2, 1.4],
     bus: [4.2, 2.5],
     car: [0.15, 1.8],
     bike: [1.25, 1.25]
@@ -93,6 +94,30 @@
 
   function dayDuration(day) {
     return segmentsForDay(day).map((segment) => segment.duration).filter(Boolean).join(" + ");
+  }
+
+  function renderRouteLegs(day) {
+    const segments = segmentsForDay(day);
+    if (!segments.length) return "";
+    return `
+      <div class="route-legs">
+        <h3>Route legs</h3>
+        <ol>
+          ${segments.map((segment) => {
+            const from = placeById(segment.from);
+            const to = placeById(segment.to);
+            const mappedPoints = (segment.via || []).length + 2;
+            return `
+              <li>
+                <span class="leg-mode">${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)}</span>
+                <strong>${escapeHtml(from.name)} → ${escapeHtml(to.name)}</strong>
+                <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""} · ${mappedPoints} mapped points</small>
+              </li>
+            `;
+          }).join("")}
+        </ol>
+      </div>
+    `;
   }
 
   function escapeHtml(value) {
@@ -429,6 +454,7 @@
         <div><strong>${distance ? formatDistance(distance) : escapeHtml(placeById(day.placeId).name)}</strong><span>${distance ? "DISTANCE" : "WHERE"}</span></div>
         <div><strong>${duration ? escapeHtml(duration) : "No travel"}</strong><span>${modes.length ? escapeHtml(modeLabel(day).toUpperCase()) : "DAY TYPE"}</span></div>
       </div>
+      ${renderRouteLegs(day)}
       <h3>The day</h3>
       <p>${escapeHtml(day.text)}</p>
       <div class="detail-foot">${escapeHtml(journey.note)}</div>
@@ -594,6 +620,7 @@
   }));
 
   $("#fit-route").addEventListener("click", fitRoute);
+  $("#focus-day").addEventListener("click", () => focusDay(activeDay()));
   $("#show-all-photos").addEventListener("click", () => {
     const first = orderedPhotos()[0];
     if (first) openPhoto(first.id);

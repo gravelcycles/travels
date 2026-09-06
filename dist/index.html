@@ -54,6 +54,7 @@
             <p id="journey-subtitle"></p>
           </div>
           <div class="map-actions">
+            <button id="focus-day" type="button" aria-label="Zoom to the selected day's complete route">Day close-up</button>
             <button id="fit-route" type="button" aria-label="Fit the whole route on the map">Fit route</button>
             <button id="show-all-photos" type="button">All photos <span id="photo-count"></span></button>
           </div>
@@ -91,7 +92,7 @@
         <div class="notes-grid">
           <section>
             <strong>1 · Add the days</strong>
-            <p>Duplicate a journey inside <code>assets/journeys.js</code>. Every day gets its own title and journal text, whether you travel or stay put.</p>
+            <p>Duplicate a journey inside <code>assets/journeys.js</code>. A day can contain several ordered train, boat, bus, car, or bike legs—or stay in one place.</p>
           </section>
           <section>
             <strong>2 · Add photographs</strong>
@@ -99,7 +100,7 @@
           </section>
           <section>
             <strong>3 · Let metadata help</strong>
-            <p>Phone photos may already contain time and GPS data. Captions, OCR text, and tags can be imported, inferred and then reviewed.</p>
+            <p>Add <code>via</code> coordinates to each leg so the close-up follows the actual route instead of drawing only between its endpoints.</p>
           </section>
           <section>
             <strong>4 · Publish anywhere</strong>

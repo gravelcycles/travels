@@ -24,11 +24,15 @@ blank. The site can be updated incrementally.
 Add one row per calendar day. A rest day can repeat the same arrival and
 departure place. Exact trains, times, and distances are optional.
 
-| Day | Date | From | To / base | Train or route | Journal title | Notes |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 |  |  |  |  |  |  |
-| 2 |  |  |  |  |  |  |
-| 3 |  |  |  |  |  |  |
+List multiple rows with the same day number when one day has several legs. Put
+intermediate stops or route-shaping places in “Via” so the day close-up can
+follow the actual railway, waterway, or road.
+
+| Day | Date | Mode | From | To / base | Via | Service / route | Journal title | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 |  | train |  |  |  |  |  |  |
+| 2 |  | train |  |  |  |  |  |  |
+| 3 |  | train |  |  |  |  |  |  |
 
 ## Photos
 

@@ -5,7 +5,11 @@
   - stay in one place (segmentIds: [])
   - travel from one place to another
   - loop back to a base
-  - combine several segments and transport modes
+  - combine several ordered segments and transport modes
+
+  A segment can include `via` latitude/longitude pairs. The day close-up uses
+  every point in order, so detailed legs follow the route rather than drawing
+  only from their start to end.
 
   Photos belong to a day through dayId. They may also have exact GPS coordinates,
   EXIF time, tags, and OCR text. Photo src values can be local paths or HTTPS URLs.
@@ -27,6 +31,9 @@ window.JOURNEY_ATLAS_DATA = {
         { id: "andermatt", name: "Andermatt", country: "Switzerland", lat: 46.6356, lng: 8.5939 },
         { id: "disentis", name: "Disentis", country: "Switzerland", lat: 46.7051, lng: 8.8553 },
         { id: "st-moritz", name: "St. Moritz", country: "Switzerland", lat: 46.4908, lng: 9.8355 },
+        { id: "tirano", name: "Tirano", country: "Italy", lat: 46.215, lng: 10.1673 },
+        { id: "varenna", name: "Varenna", country: "Italy", lat: 46.0109, lng: 9.2837 },
+        { id: "bellagio", name: "Bellagio", country: "Italy", lat: 45.9877, lng: 9.2619 },
         { id: "como", name: "Como", country: "Italy", lat: 45.8081, lng: 9.0852 },
         { id: "freiburg", name: "Freiburg", country: "Germany", lat: 47.999, lng: 7.8421 }
       ],
@@ -34,7 +41,10 @@ window.JOURNEY_ATLAS_DATA = {
         { id: "lucerne-andermatt", from: "lucerne", to: "andermatt", mode: "train", distanceKm: 75, duration: "1 hr 50", via: [[46.835, 8.638]] },
         { id: "andermatt-disentis", from: "andermatt", to: "disentis", mode: "bike", distanceKm: 62, duration: "4–6 hrs", via: [[46.658, 8.671], [46.563, 8.8]] },
         { id: "disentis-st-moritz", from: "disentis", to: "st-moritz", mode: "train", distanceKm: 98, duration: "2 hr 25", via: [[46.775, 9.207], [46.697, 9.441]] },
-        { id: "st-moritz-como", from: "st-moritz", to: "como", mode: "bus", distanceKm: 125, duration: "3–4 hrs", via: [[46.17, 9.89], [45.98, 9.56]] },
+        { id: "st-moritz-tirano", from: "st-moritz", to: "tirano", mode: "train", distanceKm: 61, duration: "2 hr 20", via: [[46.478, 9.917], [46.408, 10.019], [46.374, 10.03], [46.284, 10.098]] },
+        { id: "tirano-varenna", from: "tirano", to: "varenna", mode: "train", distanceKm: 72, duration: "1 hr 30", via: [[46.169, 9.87], [46.135, 9.57], [46.136, 9.374]] },
+        { id: "varenna-bellagio", from: "varenna", to: "bellagio", mode: "boat", distanceKm: 4, duration: "15 min", via: [[46.001, 9.274], [45.994, 9.267]] },
+        { id: "bellagio-como", from: "bellagio", to: "como", mode: "bus", distanceKm: 32, duration: "1 hr 10", via: [[45.963, 9.22], [45.913, 9.157], [45.856, 9.115]] },
         { id: "como-freiburg", from: "como", to: "freiburg", mode: "car", distanceKm: 344, duration: "4 hr 35", via: [[46.51, 8.94], [47.37, 8.54]] }
       ],
       days: [
@@ -44,7 +54,7 @@ window.JOURNEY_ATLAS_DATA = {
         { id: "alps-d4", number: 4, date: "21 Aug", title: "Over the pass", placeId: "disentis", segmentIds: ["andermatt-disentis"], text: "The slowest day of the trip earned the widest views. We climbed in cool air, stopped for coffee near the top, and rolled down toward Disentis with the valley opening below us." },
         { id: "alps-d5", number: 5, date: "22 Aug", title: "A full window-seat day", placeId: "st-moritz", segmentIds: ["disentis-st-moritz"], text: "A day measured in tunnels, sudden lakes and the few seconds when a village appeared perfectly framed in the window. This is the sample day with more than one photograph." },
         { id: "alps-d6", number: 6, date: "23 Aug", title: "High-valley pause", placeId: "st-moritz", segmentIds: [], text: "We stayed in the high valley and let the route rest. The day was for short walks, weather moving over the ridges, and nowhere we had to be." },
-        { id: "alps-d7", number: 7, date: "24 Aug", title: "Across the border", placeId: "como", segmentIds: ["st-moritz-como"], text: "The bus threaded south through the mountains. The air softened after the border, and by evening the lake felt like an entirely different trip." },
+        { id: "alps-d7", number: 7, date: "24 Aug", title: "Rails, water and the lake road", placeId: "como", segmentIds: ["st-moritz-tirano", "tirano-varenna", "varenna-bellagio", "bellagio-como"], text: "Four ordered legs made one travel day: the Bernina railway crossed into Italy, a second train reached Varenna, the boat cut across the lake to Bellagio, and the final bus followed the shore into Como. The day close-up follows the shaping points of every leg rather than connecting only St. Moritz and Como." },
         { id: "alps-d8", number: 8, date: "25 Aug", title: "Ferries and rain clouds", placeId: "como", segmentIds: [], text: "A same-place day can still hold a full story. We followed the shoreline, waited out a shower under an arcade, and watched the ferries redraw the lake." },
         { id: "alps-d9", number: 9, date: "26 Aug", title: "One last Como morning", placeId: "como", segmentIds: [], text: "Breakfast stretched into late morning. We packed slowly and returned to the waterfront once more before the long drive north." },
         { id: "alps-d10", number: 10, date: "27 Aug", title: "The long road north", placeId: "freiburg", segmentIds: ["como-freiburg"], text: "The final day crossed the Alps once more, this time in a single long line. Freiburg arrived with evening light and the Black Forest just beyond the city." }

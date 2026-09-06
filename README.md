@@ -25,6 +25,8 @@ Each journey contains:
 
 - places with stable IDs and latitude/longitude
 - route segments connecting place IDs
+- several ordered transport legs within the same day
+- optional `via` coordinates that trace each leg's specific route
 - calendar days, including non-travel days
 - optional photographs linked to days
 
