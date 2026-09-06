@@ -9,11 +9,13 @@
     casing: "#f7f4ed",
     muted: "#7f999c"
   };
-  const labels = { train: "Train", boat: "Boat", bus: "Bus", car: "Car", bike: "Bike" };
+  const labels = { train: "Train", boat: "Boat", bus: "Bus", gondola: "Gondola", walk: "Walk", car: "Car", bike: "Bike" };
   const dashes = {
     train: null,
     boat: [2.2, 1.4],
     bus: [4.2, 2.5],
+    gondola: [0.3, 1.4],
+    walk: [0.2, 1.15],
     car: [0.15, 1.8],
     bike: [1.25, 1.25]
   };
@@ -141,9 +143,12 @@
 
   function dayCoordinates(day) {
     const coordinates = segmentsForDay(day).flatMap(segmentCoordinates);
-    if (coordinates.length) return coordinates;
+    const highlights = (day.highlights || [])
+      .filter((highlight) => Number.isFinite(highlight.lng) && Number.isFinite(highlight.lat))
+      .map((highlight) => [highlight.lng, highlight.lat]);
+    if (coordinates.length) return coordinates.concat(highlights);
     const place = placeById(day.placeId);
-    return place ? [[place.lng, place.lat]] : [];
+    return place ? [[place.lng, place.lat], ...highlights] : highlights;
   }
 
   function journeyCoordinates() {
@@ -335,6 +340,22 @@
     });
   }
 
+  function addHighlightMarkers(map, decorations, day) {
+    (day.highlights || []).forEach((highlight) => {
+      if (!Number.isFinite(highlight.lng) || !Number.isFinite(highlight.lat)) return;
+      const element = document.createElement("div");
+      element.className = "highlight-marker";
+      element.textContent = highlight.icon || "•";
+      element.title = highlight.label;
+      element.setAttribute("role", "img");
+      element.setAttribute("aria-label", highlight.label);
+      const marker = new maplibregl.Marker({ element, anchor: "center" })
+        .setLngLat([highlight.lng, highlight.lat])
+        .addTo(map);
+      decorations.markers.push(marker);
+    });
+  }
+
   function drawMainMap(fit) {
     if (!mainMapReady || !mapIsReady(mainMap)) return;
     clearDecorations(mainMap, mainDecorations);
@@ -348,6 +369,7 @@
       });
     });
     addDayMarkers();
+    addHighlightMarkers(mainMap, mainDecorations, activeDay());
     if (fit) fitRoute();
   }
 
@@ -373,6 +395,7 @@
   }
 
   function renderOverview() {
+    $("#site-badge").textContent = journey.badge || "ATLAS DEMO";
     $("#journey-kicker").textContent = journey.kicker;
     $("#journey-title").textContent = journey.title;
     $("#journey-subtitle").textContent = journey.subtitle;
@@ -405,6 +428,7 @@
       const photos = photosForDay(day.id);
       const muted = activeMode !== "all" && modes.length && !modes.includes(activeMode);
       const pattern = modes[0] || "stay";
+      const icons = (day.highlights || []).slice(0, 3).map((highlight) => highlight.icon).join("");
       return `
         <button class="day-row ${day.id === activeDayId ? "active" : ""} ${muted ? "muted" : ""}" data-day-id="${escapeHtml(day.id)}" type="button">
           <span class="day-index">${String(day.number).padStart(2, "0")}</span>
@@ -413,7 +437,7 @@
             <strong>${escapeHtml(day.title)}</strong>
             <em>${escapeHtml(routeLabel(day))}</em>
           </span>
-          <span class="day-meta">${photos.length ? `${photos.length} photo${photos.length === 1 ? "" : "s"}` : ""}${pattern !== "stay" ? lineSwatch(pattern) : ""}</span>
+          <span class="day-meta">${icons ? `<span class="day-icons" aria-hidden="true">${escapeHtml(icons)}</span>` : ""}${photos.length ? `${photos.length} photo${photos.length === 1 ? "" : "s"}` : ""}${pattern !== "stay" ? lineSwatch(pattern) : ""}</span>
         </button>
       `;
     }).join("");
@@ -446,6 +470,7 @@
     const distance = dayDistance(day);
     const duration = dayDuration(day);
     const modes = modesForDay(day);
+    const highlights = day.highlights || [];
     detailPanel.innerHTML = `
       <div class="detail-eyebrow">DAY ${String(day.number).padStart(2, "0")} · ${escapeHtml(day.date)}</div>
       <h2>${escapeHtml(day.title)}</h2>
@@ -455,6 +480,12 @@
         <div><strong>${duration ? escapeHtml(duration) : "No travel"}</strong><span>${modes.length ? escapeHtml(modeLabel(day).toUpperCase()) : "DAY TYPE"}</span></div>
       </div>
       ${renderRouteLegs(day)}
+      ${highlights.length ? `
+        <div class="day-highlights">
+          <h3>Moments</h3>
+          <ul>${highlights.map((highlight) => `<li><span aria-hidden="true">${escapeHtml(highlight.icon || "•")}</span>${escapeHtml(highlight.label)}</li>`).join("")}</ul>
+        </div>
+      ` : ""}
       <h3>The day</h3>
       <p>${escapeHtml(day.text)}</p>
       <div class="detail-foot">${escapeHtml(journey.note)}</div>
@@ -560,6 +591,7 @@
         opacity: selectedSegments.has(segment.id) ? 1 : 0.24
       });
     });
+    addHighlightMarkers(viewerMap, viewerDecorations, day);
     if (Number.isFinite(photo.lng) && Number.isFinite(photo.lat)) {
       const element = document.createElement("div");
       element.className = "photo-location-marker";

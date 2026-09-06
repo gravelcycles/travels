@@ -95,6 +95,8 @@ button { color: inherit; }
 .line-swatch.train { background: linear-gradient(var(--swatch), var(--swatch)) center / 100% 3px no-repeat; }
 .line-swatch.boat { background: repeating-linear-gradient(90deg, var(--swatch) 0 7px, transparent 7px 11px) center / 100% 3px no-repeat; }
 .line-swatch.bus { background: repeating-linear-gradient(90deg, var(--swatch) 0 12px, transparent 12px 19px) center / 100% 3px no-repeat; }
+.line-swatch.gondola { background: radial-gradient(circle, var(--swatch) 0 1.5px, transparent 1.8px) left center / 7px 7px repeat-x; }
+.line-swatch.walk { background: repeating-linear-gradient(90deg, var(--swatch) 0 2px, transparent 2px 6px) center / 100% 3px no-repeat; }
 .line-swatch.car { background: radial-gradient(circle, var(--swatch) 0 2px, transparent 2.3px) left center / 8px 7px repeat-x; }
 .line-swatch.bike { background: repeating-linear-gradient(90deg, var(--swatch) 0 5px, transparent 5px 9px) center / 100% 3px no-repeat; }
 
@@ -118,6 +120,7 @@ button { color: inherit; }
 .map-status { position: absolute; z-index: 5; left: 50%; bottom: 68px; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 13px; font-size: 0.8rem; box-shadow: var(--shadow); }
 .day-marker { min-width: 36px; height: 36px; padding: 0 8px; display: grid; place-items: center; border-radius: 18px; background: #fbfaf6; border: 2px solid var(--ink); color: var(--ink); font-size: 0.66rem; font-weight: 900; box-shadow: 0 4px 13px rgba(20, 48, 53, 0.27); cursor: pointer; }
 .day-marker.selected { background: var(--selected); border-color: #fff; color: #fff; box-shadow: 0 0 0 5px rgba(179, 95, 63, 0.24), 0 5px 15px rgba(20, 48, 53, 0.3); }
+.highlight-marker { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: #fff8e8; border: 2px solid #fff; box-shadow: 0 0 0 2px var(--selected), 0 5px 13px rgba(20, 48, 53, 0.28); font-size: 1rem; cursor: help; }
 
 .story-media { height: 31%; min-height: 205px; position: relative; overflow: hidden; background: #203f45; }
 .story-media > button { width: 100%; height: 100%; border: 0; padding: 0; display: block; position: relative; text-align: left; background: #203f45; color: #fff; cursor: zoom-in; }
@@ -151,6 +154,12 @@ button { color: inherit; }
 .route-legs small { grid-column: 2; color: var(--muted); font-size: 0.68rem; }
 .leg-mode { display: inline-flex; align-items: center; gap: 7px; color: var(--ink-soft); font-size: 0.68rem; font-weight: 800; text-transform: uppercase; }
 .leg-mode .line-swatch { width: 20px; }
+.day-highlights { margin-top: 18px; }
+.day-highlights h3 { margin-bottom: 9px; }
+.day-highlights ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 7px; }
+.day-highlights li { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: #fff8e8; padding: 7px 9px; font-size: 0.72rem; color: var(--ink-soft); }
+.day-highlights li span { font-size: 1rem; }
+.day-icons { font-size: 0.85rem; letter-spacing: -0.12em; }
 .detail-foot { margin-top: 20px; border-left: 3px solid var(--selected); padding: 8px 0 8px 11px; color: #647578; font-size: 0.78rem; line-height: 1.45; }
 .photo-section { border-top: 1px solid var(--line); padding: 13px 17px 17px; background: var(--panel-cool); }
 .photo-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 9px; }

@@ -21,17 +21,21 @@ Start with `TRIP_CONTENT.md`. Journey data lives in
 `dist/assets/journeys.js`; photographs belong in `dist/assets/photos/` as
 optimized WebP or AVIF files, or can use public HTTPS URLs.
 
+Use `PHOTO_WORKFLOW.md` when transferring iPhone images so capture time and GPS
+survive the import. Open work is tracked in `TODO.md`.
+
 Each journey contains:
 
 - places with stable IDs and latitude/longitude
 - route segments connecting place IDs
 - several ordered transport legs within the same day
 - optional `via` coordinates that trace each leg's specific route
+- map highlights with an emoji icon, label, and latitude/longitude
 - calendar days, including non-travel days
 - optional photographs linked to days
 
-The first real trip will use only `train` route segments. The demo remains in
-place until the real itinerary and journal content are supplied.
+The first real trip combines train, boat, bus, gondola, bicycle, and walking
+segments. The sample journeys remain in the selector as a feature playground.
 
 ## Publish with GitHub Pages
 

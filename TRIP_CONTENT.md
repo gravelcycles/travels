@@ -7,7 +7,7 @@ blank. The site can be updated incrementally.
 ## Known
 
 - Countries: Switzerland and Italy
-- Transport mode: train throughout
+- Transport modes: train, boat, bus, gondola, bicycle, and walking
 - Publishing target: the `travels` GitHub Pages project
 
 ## Journey overview
@@ -30,9 +30,9 @@ follow the actual railway, waterway, or road.
 
 | Day | Date | Mode | From | To / base | Via | Service / route | Journal title | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 |  | train |  |  |  |  |  |  |
-| 2 |  | train |  |  |  |  |  |  |
-| 3 |  | train |  |  |  |  |  |  |
+| 1 |  |  |  |  |  |  |  |  |
+| 2 |  |  |  |  |  |  |  |  |
+| 3 |  |  |  |  |  |  |  |  |
 
 ## Photos
 
