@@ -203,15 +203,20 @@
     });
   }
 
-  function createMap(container, compact) {
-    const map = new maplibregl.Map({
+  function createMap(container, compact, initialBounds) {
+    const options = {
       container,
       style: OPENFREEMAP_STYLE,
       center: [9.2, 47.1],
       zoom: 5,
       minZoom: 2,
       attributionControl: false
-    });
+    };
+    if (initialBounds) {
+      options.bounds = initialBounds;
+      options.fitBoundsOptions = { padding: 62, maxZoom: 8 };
+    }
+    const map = new maplibregl.Map(options);
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     map.addControl(new maplibregl.AttributionControl({ compact: compact, customAttribution: attribution }), "bottom-right");
     return map;
@@ -223,17 +228,23 @@
       mapStatus.textContent = "The live map could not load. The day journal and photos still work.";
       return;
     }
-    mainMap = createMap("map", true);
     const initialBounds = boundsFromCoordinates(journeyCoordinates());
-    if (initialBounds) mainMap.fitBounds(initialBounds, { padding: 62, maxZoom: 8, duration: 0 });
+    mainMap = createMap("map", true, initialBounds);
+    let setupAttempts = 0;
     const finishMainMapSetup = () => {
-      if (mainMapReady || !mapIsReady(mainMap)) return;
+      if (mainMapReady) return;
+      if (!mapIsReady(mainMap)) {
+        setupAttempts += 1;
+        if (setupAttempts < 24) window.setTimeout(finishMainMapSetup, 500);
+        return;
+      }
       mainMapReady = true;
       applyBasemapTreatment(mainMap);
       drawMainMap(true);
     };
     mainMap.on("styledata", finishMainMapSetup);
     mainMap.on("load", finishMainMapSetup);
+    finishMainMapSetup();
     mainMap.on("click", (event) => {
       const feature = mainMap.queryRenderedFeatures(event.point).find((item) => item.properties && item.properties.segmentId);
       if (!feature) return;
