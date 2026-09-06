@@ -388,8 +388,12 @@
     });
   }
 
-  function drawMainMap(fit) {
-    if (!mainMapReady || !mapIsReady(mainMap)) return;
+  function drawMainMap(fit, attempt = 0) {
+    if (!mainMapReady) return;
+    if (!mapIsReady(mainMap)) {
+      if (attempt < 24) window.setTimeout(() => drawMainMap(fit, attempt + 1), 500);
+      return;
+    }
     clearDecorations(mainMap, mainDecorations);
     const selectedSegments = new Set(activeDay().segmentIds);
     [...journey.segments]
@@ -618,8 +622,12 @@
     if (viewerMapReady) syncViewerMap();
   }
 
-  function syncViewerMap() {
-    if (!viewerMapReady || !mapIsReady(viewerMap)) return;
+  function syncViewerMap(attempt = 0) {
+    if (!viewerMapReady) return;
+    if (!mapIsReady(viewerMap)) {
+      if (attempt < 24) window.setTimeout(() => syncViewerMap(attempt + 1), 500);
+      return;
+    }
     clearDecorations(viewerMap, viewerDecorations);
     const photo = orderedPhotos()[viewerPhotoIndex];
     if (!photo) return;
