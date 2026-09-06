@@ -6,9 +6,9 @@
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
     <meta
       name="description"
-      content="A reusable, photo-rich map for past rail, road, bike, and mixed-mode journeys."
+      content="David and Michelle's family journey through Switzerland and Italy, mapped day by day."
     />
-    <title>Journey Atlas</title>
+    <title>Lakes, Rails &amp; Rain · Switzerland &amp; Italy</title>
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
     <link
@@ -19,21 +19,21 @@
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="#" aria-label="Journey Atlas home">
+      <a class="brand" href="#" aria-label="Lakes, Rails and Rain home">
         <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span><small>PAST JOURNEYS</small><strong>Journey Atlas</strong></span>
+        <span><small>SWITZERLAND + ITALY</small><strong>Lakes, Rails &amp; Rain</strong></span>
       </a>
       <div class="header-context">
         <span class="sample-badge" id="site-badge">ATLAS DEMO</span>
-        <button class="plain-button" id="open-notes" type="button">How to use this</button>
+        <button class="plain-button" id="open-notes" type="button">About this atlas</button>
       </div>
     </header>
 
     <main class="atlas-shell" data-mobile-tab="map">
       <aside class="route-panel" aria-label="Journey days">
         <div class="panel-intro">
-          <label for="journey-select">JOURNEY</label>
-          <select id="journey-select" aria-label="Choose a journey"></select>
+          <span class="panel-label">THE JOURNEY</span>
+          <h2 class="journey-name" id="journey-name"></h2>
           <div class="journey-summary" id="journey-summary"></div>
         </div>
 
@@ -86,29 +86,29 @@
     <dialog class="notes-dialog" id="notes-dialog">
       <form method="dialog" class="dialog-card">
         <div class="dialog-top">
-          <div><span>THE TEMPLATE</span><h2>One data file, every shape of journey.</h2></div>
-          <button value="cancel" aria-label="Close template notes">×</button>
+          <div><span>ABOUT THE ATLAS</span><h2>One family trip, mapped day by day.</h2></div>
+          <button value="cancel" aria-label="Close atlas notes">×</button>
         </div>
         <div class="notes-grid">
           <section>
-            <strong>1 · Add the days</strong>
-            <p>Duplicate a journey inside <code>assets/journeys.js</code>. A day can contain several ordered train, boat, bus, gondola, walk, car, or bike legs—or stay in one place.</p>
+            <strong>1 · A Luzern base</strong>
+            <p>David and Michelle traveled with her parents, returning to Luzern on most days and staying in Como for the Italian portion.</p>
           </section>
           <section>
-            <strong>2 · Add photographs</strong>
-            <p>Put web-sized images in <code>assets/photos</code>, or paste any public image URL. Link every photo to a day and add GPS when you have it.</p>
+            <strong>2 · Every leg matters</strong>
+            <p>Train, boat, bus, gondola, walking, and bicycle legs are mapped in their actual order. Open any day to isolate its route.</p>
           </section>
           <section>
-            <strong>3 · Let metadata help</strong>
-            <p>Add <code>via</code> coordinates to each leg so the close-up follows the actual route instead of drawing only between its endpoints.</p>
+            <strong>3 · Rail stops included</strong>
+            <p>Day close-ups mark the scheduled rail stops along each representative route, with selected travel lines brought to the front.</p>
           </section>
           <section>
-            <strong>4 · Publish anywhere</strong>
-            <p>The finished site is static. It can live here, on GitHub Pages, or behind a custom domain without changing the journey format.</p>
+            <strong>4 · Photos are next</strong>
+            <p>The journal is ready for original iPhone photographs. Dates and location metadata will help attach them to the right day and place.</p>
           </section>
         </div>
         <div class="storage-note">
-          <strong>Photo storage:</strong> start with optimized WebP/AVIF files in the project. If the archive becomes large, keep the same day data and switch <code>src</code> values to Cloudinary or object-storage URLs.
+          <strong>Privacy:</strong> the public site asks search engines not to index or archive it, but anyone with the URL can still open it.
         </div>
         <button class="dialog-done" value="default">Back to the atlas</button>
       </form>

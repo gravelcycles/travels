@@ -1,9 +1,8 @@
 # Travels — Journey Atlas
 
-A static, GitHub Pages-friendly atlas for photo-rich journeys by train, bus,
-car, bike, or a combination of modes. This repository currently publishes the
-complete demo and is ready for a first real journey through Switzerland and
-Italy by train.
+A static, GitHub Pages-friendly atlas for David and Michelle's family journey
+through Switzerland and Italy. The published page is intentionally a single,
+standalone trip rather than a multi-trip selector.
 
 ## Preview locally
 
@@ -15,14 +14,15 @@ python3 -m http.server 8000 --directory dist
 
 Then open `http://localhost:8000/`.
 
-## Add the Switzerland–Italy trip
+## Add trip photos
 
 Start with `TRIP_CONTENT.md`. Journey data lives in
 `dist/assets/journeys.js`; photographs belong in `dist/assets/photos/` as
 optimized WebP or AVIF files, or can use public HTTPS URLs.
 
 Use `PHOTO_WORKFLOW.md` when transferring iPhone images so capture time and GPS
-survive the import. Open work is tracked in `TODO.md`.
+survive the import. Route research and its limitations are recorded in
+`ROUTE_SOURCES.md`; open work is tracked in `TODO.md`.
 
 Each journey contains:
 
@@ -30,12 +30,14 @@ Each journey contains:
 - route segments connecting place IDs
 - several ordered transport legs within the same day
 - optional `via` coordinates that trace each leg's specific route
-- map highlights with an emoji icon, label, and latitude/longitude
+- named `stops` that draw and mark each scheduled rail stop in a close-up
+- a `destinationId` so base-based day trips are labeled by destination
 - calendar days, including non-travel days
 - optional photographs linked to days
 
 The first real trip combines train, boat, bus, gondola, bicycle, and walking
-segments. The sample journeys remain in the selector as a feature playground.
+segments. Sample data remains in the content file for future development, but
+the public interface only displays this family trip.
 
 ## Publish with GitHub Pages
 

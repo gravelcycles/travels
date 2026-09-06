@@ -24,6 +24,7 @@
   let journey = data.journeys.find((item) => item.id === data.defaultJourneyId) || data.journeys[0];
   let activeDayId = journey.days[0].id;
   let activeMode = "all";
+  let mapScope = "journey";
   let mainMap;
   let viewerMap;
   let mainMapReady = false;
@@ -34,7 +35,6 @@
   let swipeStartX = null;
 
   const $ = (selector) => document.querySelector(selector);
-  const select = $("#journey-select");
   const dayList = $("#day-list");
   const detailPanel = $("#story-detail");
   const storyMedia = $("#story-media");
@@ -60,6 +60,10 @@
 
   function activeDay() {
     return dayById(activeDayId) || journey.days[0];
+  }
+
+  function destinationForDay(day) {
+    return placeById(day.destinationId || day.placeId);
   }
 
   function segmentsForDay(day) {
@@ -108,12 +112,13 @@
           ${segments.map((segment) => {
             const from = placeById(segment.from);
             const to = placeById(segment.to);
-            const mappedPoints = (segment.via || []).length + 2;
+            const mappedPoints = segmentCoordinates(segment).length;
+            const stopCount = (segment.stops || []).length + 2;
             return `
               <li>
                 <span class="leg-mode">${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)}</span>
                 <strong>${escapeHtml(from.name)} → ${escapeHtml(to.name)}</strong>
-                <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""} · ${mappedPoints} mapped points</small>
+                <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""}${segment.stops ? ` · ${stopCount} stops` : ` · ${mappedPoints} mapped points`}</small>
               </li>
             `;
           }).join("")}
@@ -134,21 +139,19 @@
   function segmentCoordinates(segment) {
     const from = placeById(segment.from);
     const to = placeById(segment.to);
+    const points = segment.stops || segment.via || [];
     return [
       [from.lng, from.lat],
-      ...(segment.via || []).map(([lat, lng]) => [lng, lat]),
+      ...points.map((point) => Array.isArray(point) ? [point[1], point[0]] : [point.lng, point.lat]),
       [to.lng, to.lat]
     ];
   }
 
   function dayCoordinates(day) {
     const coordinates = segmentsForDay(day).flatMap(segmentCoordinates);
-    const highlights = (day.highlights || [])
-      .filter((highlight) => Number.isFinite(highlight.lng) && Number.isFinite(highlight.lat))
-      .map((highlight) => [highlight.lng, highlight.lat]);
-    if (coordinates.length) return coordinates.concat(highlights);
-    const place = placeById(day.placeId);
-    return place ? [[place.lng, place.lat], ...highlights] : highlights;
+    if (coordinates.length) return coordinates;
+    const place = destinationForDay(day);
+    return place ? [[place.lng, place.lat]] : [];
   }
 
   function journeyCoordinates() {
@@ -165,11 +168,11 @@
 
   function routeLabel(day) {
     const segments = segmentsForDay(day);
-    const place = placeById(day.placeId);
+    const place = destinationForDay(day);
     if (!segments.length) return `${place.name} · stayed here`;
     const from = placeById(segments[0].from);
     const to = placeById(segments[segments.length - 1].to);
-    if (from.id === to.id) return `${from.name} · day trip loop`;
+    if (from.id === to.id) return `${place.name} · day trip`;
     return `${from.name} → ${to.name}`;
   }
 
@@ -301,7 +304,7 @@
   function groupedDayMarkers() {
     const groups = new Map();
     journey.days.forEach((day) => {
-      const place = placeById(day.placeId);
+      const place = destinationForDay(day);
       if (!place) return;
       const key = place.id;
       if (!groups.has(key)) groups.set(key, { place, days: [] });
@@ -319,7 +322,9 @@
   }
 
   function addDayMarkers() {
-    groupedDayMarkers().forEach((group) => {
+    groupedDayMarkers()
+      .filter((group) => mapScope === "journey" || group.days.some((day) => day.id === activeDayId))
+      .forEach((group) => {
       const containsActive = group.days.some((day) => day.id === activeDayId);
       const element = document.createElement("button");
       element.type = "button";
@@ -340,19 +345,30 @@
     });
   }
 
-  function addHighlightMarkers(map, decorations, day) {
-    (day.highlights || []).forEach((highlight) => {
-      if (!Number.isFinite(highlight.lng) || !Number.isFinite(highlight.lat)) return;
-      const element = document.createElement("div");
-      element.className = "highlight-marker";
-      element.textContent = highlight.icon || "•";
-      element.title = highlight.label;
-      element.setAttribute("role", "img");
-      element.setAttribute("aria-label", highlight.label);
-      const marker = new maplibregl.Marker({ element, anchor: "center" })
-        .setLngLat([highlight.lng, highlight.lat])
-        .addTo(map);
-      decorations.markers.push(marker);
+  function addRailStopMarkers(map, decorations, day) {
+    const seen = new Set();
+    segmentsForDay(day).filter((segment) => segment.mode === "train").forEach((segment) => {
+      const from = placeById(segment.from);
+      const to = placeById(segment.to);
+      const stops = [
+        { name: from.name, lat: from.lat, lng: from.lng },
+        ...(segment.stops || []),
+        { name: to.name, lat: to.lat, lng: to.lng }
+      ];
+      stops.forEach((stop) => {
+        const key = `${stop.name}-${stop.lat}-${stop.lng}`;
+        if (seen.has(key)) return;
+        seen.add(key);
+        const element = document.createElement("div");
+        element.className = "rail-stop-marker";
+        element.title = stop.name;
+        element.setAttribute("role", "img");
+        element.setAttribute("aria-label", `Rail stop: ${stop.name}`);
+        const marker = new maplibregl.Marker({ element, anchor: "center" })
+          .setLngLat([stop.lng, stop.lat])
+          .addTo(map);
+        decorations.markers.push(marker);
+      });
     });
   }
 
@@ -360,38 +376,49 @@
     if (!mainMapReady || !mapIsReady(mainMap)) return;
     clearDecorations(mainMap, mainDecorations);
     const selectedSegments = new Set(activeDay().segmentIds);
-    journey.segments.forEach((segment) => {
-      const visible = activeMode === "all" || activeMode === segment.mode;
-      addSegmentLayer(mainMap, mainDecorations, segment, {
-        prefix: "main",
-        selected: selectedSegments.has(segment.id),
-        opacity: visible ? (selectedSegments.has(segment.id) ? 1 : 0.78) : 0.12
+    [...journey.segments]
+      .filter((segment) => mapScope === "journey" || selectedSegments.has(segment.id))
+      .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id)))
+      .forEach((segment) => {
+        const visible = activeMode === "all" || activeMode === segment.mode;
+        const selected = selectedSegments.has(segment.id);
+        addSegmentLayer(mainMap, mainDecorations, segment, {
+          prefix: "main",
+          selected,
+          opacity: visible ? (selected ? 1 : 0.72) : 0.025
+        });
       });
-    });
     addDayMarkers();
-    addHighlightMarkers(mainMap, mainDecorations, activeDay());
-    if (fit) fitRoute();
+    if (mapScope === "day") addRailStopMarkers(mainMap, mainDecorations, activeDay());
+    if (fit) fitJourneyBounds();
   }
 
-  function fitRoute() {
+  function fitJourneyBounds() {
     if (!mainMapReady) return;
     const bounds = boundsFromCoordinates(journeyCoordinates());
     if (bounds) mainMap.fitBounds(bounds, { padding: 62, maxZoom: 8, duration: 650 });
   }
 
+  function fitRoute() {
+    mapScope = "journey";
+    drawMainMap(false);
+    fitJourneyBounds();
+  }
+
   function focusDay(day) {
     if (!mainMapReady) return;
+    mapScope = "day";
+    drawMainMap(false);
     const coordinates = dayCoordinates(day);
     if (coordinates.length > 1) {
-      mainMap.fitBounds(boundsFromCoordinates(coordinates), { padding: 90, maxZoom: 9, duration: 650 });
+      mainMap.fitBounds(boundsFromCoordinates(coordinates), { padding: 54, maxZoom: 12.5, duration: 650 });
     } else if (coordinates.length === 1) {
-      mainMap.easeTo({ center: coordinates[0], zoom: Math.max(mainMap.getZoom(), 8.5), duration: 650 });
+      mainMap.easeTo({ center: coordinates[0], zoom: 12, duration: 650 });
     }
   }
 
-  function renderJourneySelector() {
-    select.innerHTML = data.journeys.map((item) => `<option value="${escapeHtml(item.id)}">${escapeHtml(item.label)}</option>`).join("");
-    select.value = journey.id;
+  function renderJourneyIdentity() {
+    $("#journey-name").textContent = journey.label;
   }
 
   function renderOverview() {
@@ -419,7 +446,7 @@
       const label = mode === "all" ? "All modes" : labels[mode];
       return `<button type="button" data-mode="${mode}" class="${activeMode === mode ? "active" : ""}">${mode === "all" ? "" : lineSwatch(mode)}${label}</button>`;
     }).join("");
-    $("#map-legend").innerHTML = modes.map((mode) => `<span>${lineSwatch(mode)}${labels[mode]}</span>`).join("");
+    $("#map-legend").innerHTML = modes.map((mode) => `<span>${lineSwatch(mode)}${labels[mode]}</span>`).join("") + '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>';
   }
 
   function renderDays() {
@@ -428,7 +455,6 @@
       const photos = photosForDay(day.id);
       const muted = activeMode !== "all" && modes.length && !modes.includes(activeMode);
       const pattern = modes[0] || "stay";
-      const icons = (day.highlights || []).slice(0, 3).map((highlight) => highlight.icon).join("");
       return `
         <button class="day-row ${day.id === activeDayId ? "active" : ""} ${muted ? "muted" : ""}" data-day-id="${escapeHtml(day.id)}" type="button">
           <span class="day-index">${String(day.number).padStart(2, "0")}</span>
@@ -437,7 +463,7 @@
             <strong>${escapeHtml(day.title)}</strong>
             <em>${escapeHtml(routeLabel(day))}</em>
           </span>
-          <span class="day-meta">${icons ? `<span class="day-icons" aria-hidden="true">${escapeHtml(icons)}</span>` : ""}${photos.length ? `${photos.length} photo${photos.length === 1 ? "" : "s"}` : ""}${pattern !== "stay" ? lineSwatch(pattern) : ""}</span>
+          <span class="day-meta">${photos.length ? `${photos.length} photo${photos.length === 1 ? "" : "s"}` : ""}${pattern !== "stay" ? lineSwatch(pattern) : ""}</span>
         </button>
       `;
     }).join("");
@@ -461,7 +487,7 @@
       storyMedia.innerHTML = `
         <div class="story-empty" aria-label="No photos for this day">
           <span>DAY ${String(day.number).padStart(2, "0")}</span>
-          <strong>${escapeHtml(placeById(day.placeId).name)}</strong>
+          <strong>${escapeHtml(destinationForDay(day).name)}</strong>
           <small>No photographs added yet</small>
         </div>
       `;
@@ -470,22 +496,15 @@
     const distance = dayDistance(day);
     const duration = dayDuration(day);
     const modes = modesForDay(day);
-    const highlights = day.highlights || [];
     detailPanel.innerHTML = `
       <div class="detail-eyebrow">DAY ${String(day.number).padStart(2, "0")} · ${escapeHtml(day.date)}</div>
       <h2>${escapeHtml(day.title)}</h2>
       <p class="place-line">${escapeHtml(routeLabel(day))}</p>
       <div class="detail-stats">
-        <div><strong>${distance ? formatDistance(distance) : escapeHtml(placeById(day.placeId).name)}</strong><span>${distance ? "DISTANCE" : "WHERE"}</span></div>
+        <div><strong>${distance ? formatDistance(distance) : escapeHtml(destinationForDay(day).name)}</strong><span>${distance ? "DISTANCE" : "WHERE"}</span></div>
         <div><strong>${duration ? escapeHtml(duration) : "No travel"}</strong><span>${modes.length ? escapeHtml(modeLabel(day).toUpperCase()) : "DAY TYPE"}</span></div>
       </div>
       ${renderRouteLegs(day)}
-      ${highlights.length ? `
-        <div class="day-highlights">
-          <h3>Moments</h3>
-          <ul>${highlights.map((highlight) => `<li><span aria-hidden="true">${escapeHtml(highlight.icon || "•")}</span>${escapeHtml(highlight.label)}</li>`).join("")}</ul>
-        </div>
-      ` : ""}
       <h3>The day</h3>
       <p>${escapeHtml(day.text)}</p>
       <div class="detail-foot">${escapeHtml(journey.note)}</div>
@@ -503,7 +522,7 @@
   }
 
   function renderAll(options) {
-    renderJourneySelector();
+    renderJourneyIdentity();
     renderOverview();
     renderModeFilter();
     renderDays();
@@ -516,8 +535,11 @@
     activeDayId = id;
     renderDays();
     renderStory();
-    drawMainMap(false);
-    if (focus) focusDay(activeDay());
+    if (focus) {
+      focusDay(activeDay());
+    } else {
+      drawMainMap(false);
+    }
   }
 
   function setMobileTab(tab) {
@@ -584,14 +606,16 @@
     if (!photo) return;
     const day = dayById(photo.dayId);
     const selectedSegments = new Set(day.segmentIds);
-    journey.segments.forEach((segment) => {
+    [...journey.segments]
+      .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id)))
+      .forEach((segment) => {
       addSegmentLayer(viewerMap, viewerDecorations, segment, {
         prefix: "viewer",
         selected: selectedSegments.has(segment.id),
         opacity: selectedSegments.has(segment.id) ? 1 : 0.24
       });
     });
-    addHighlightMarkers(viewerMap, viewerDecorations, day);
+    addRailStopMarkers(viewerMap, viewerDecorations, day);
     if (Number.isFinite(photo.lng) && Number.isFinite(photo.lat)) {
       const element = document.createElement("div");
       element.className = "photo-location-marker";
@@ -624,13 +648,6 @@
     viewerPhotoIndex = next;
     updateViewer();
   }
-
-  select.addEventListener("change", () => {
-    journey = data.journeys.find((item) => item.id === select.value) || data.journeys[0];
-    activeDayId = journey.days[0].id;
-    activeMode = "all";
-    renderAll({ fit: true });
-  });
 
   $("#mode-filter").addEventListener("click", (event) => {
     const button = event.target.closest("button[data-mode]");
