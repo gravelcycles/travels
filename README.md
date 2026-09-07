@@ -19,6 +19,28 @@ ignored local derivatives instead of GitHub Release URLs.
 - `/dist/` shows only the real family journey.
 - `/dist/demo.html` shows only the sample journeys and includes a selector.
 
+## Annotate photos and redraw routes
+
+Use the local-only Atlas Studio instead of hand-editing generated JavaScript:
+
+```sh
+npm run studio
+```
+
+Then open `http://127.0.0.1:4173/studio/`. In **Photo locations**, select a
+day and photo, click the map (or drag its pin) to set the exact location, and
+add the precise place, caption, scene description, alt text, and preferred map
+zoom. In **Route drawing**, select a day and travel leg, click the orange line
+to add control points, drag them to the intended road/rail/water path, and use
+the optional smooth preview. Undo, redo, reset, and intermediate-point deletion
+are available.
+
+**Save locally** writes reviewable source data to
+`content/photo-overrides.json` and `content/route-overrides.json`, then rebuilds
+`dist/assets/content-overrides.js`. Each save also creates an ignored backup in
+`build/studio-backups/`. The Studio binds only to the loopback interface and is
+not part of the published site.
+
 ## Add trip photos
 
 Start with `TRIP_CONTENT.md`. Journey data lives in
@@ -53,6 +75,8 @@ Each journey contains:
 - a `destinationId` so base-based day trips are labeled by destination
 - calendar days, including non-travel days
 - optional photographs linked to days
+- optional photo overrides with exact coordinates, street-level zoom, caption,
+  description, alt text, day reassignment, or a hidden flag
 
 The first real trip combines train, boat, bus, gondola, bicycle, and walking
 segments. Sample data remains in the shared content file but is only exposed by

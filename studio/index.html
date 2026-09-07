@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Atlas Studio · Lakes, Rails &amp; Rain</title>
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
+    <link rel="stylesheet" href="/studio.css?v=20260907-2" />
+  </head>
+  <body>
+    <header class="studio-header">
+      <div>
+        <span>LOCAL EDITOR</span>
+        <h1>Atlas Studio</h1>
+      </div>
+      <nav aria-label="Editor mode">
+        <button class="active" data-mode="photos" type="button">Photo locations</button>
+        <button data-mode="routes" type="button">Route drawing</button>
+      </nav>
+      <div class="studio-actions">
+        <span id="save-status" role="status">Loading…</span>
+        <a href="/dist/?photoSource=local" target="_blank" rel="noreferrer">Preview atlas</a>
+        <button id="save-all" type="button">Save locally</button>
+      </div>
+    </header>
+
+    <main class="studio-shell" data-mode="photos">
+      <aside class="browser-panel">
+        <section class="photo-browser" data-panel="photos">
+          <label for="photo-day-filter">Photos from</label>
+          <select id="photo-day-filter"></select>
+          <div class="photo-grid" id="studio-photo-grid"></div>
+        </section>
+        <section class="route-browser" data-panel="routes" hidden>
+          <label for="route-day-filter">Routes from</label>
+          <select id="route-day-filter"></select>
+          <div class="route-list" id="studio-route-list"></div>
+        </section>
+      </aside>
+
+      <section class="map-workspace">
+        <div id="studio-map" aria-label="Editable journey map"></div>
+        <div class="map-instructions" id="map-instructions">Click the map or drag the pin to set this photo's exact location.</div>
+        <div class="route-tools" id="route-tools" hidden>
+          <button id="undo-route" type="button">Undo</button>
+          <button id="redo-route" type="button">Redo</button>
+          <button id="smooth-route" type="button">Smooth preview</button>
+          <button id="reset-route" type="button">Reset</button>
+          <button id="delete-route-point" type="button">Delete selected point</button>
+        </div>
+      </section>
+
+      <aside class="editor-panel">
+        <form id="photo-form" data-panel="photos">
+          <div class="selected-photo" id="selected-photo"></div>
+          <label for="photo-day">Journey day</label>
+          <select id="photo-day" name="dayId"></select>
+          <label for="photo-place">Exact place</label>
+          <input id="photo-place" name="locationLabel" placeholder="e.g. Kapellbrücke, north end" />
+          <div class="coordinate-fields">
+            <label>Latitude<input id="photo-lat" name="lat" inputmode="decimal" /></label>
+            <label>Longitude<input id="photo-lng" name="lng" inputmode="decimal" /></label>
+            <label>Map zoom<input id="photo-zoom" name="zoom" inputmode="decimal" value="16" /></label>
+          </div>
+          <button class="secondary" id="clear-photo-location" type="button">Clear location</button>
+          <label for="photo-caption">Short caption</label>
+          <input id="photo-caption" name="caption" />
+          <label for="photo-description">What's happening in this photo?</label>
+          <textarea id="photo-description" name="description" rows="5" placeholder="A few plain-language notes are enough; this appears beside the photo."></textarea>
+          <label for="photo-alt">Accessibility description</label>
+          <textarea id="photo-alt" name="alt" rows="3"></textarea>
+          <label class="checkbox"><input id="photo-hidden" name="hidden" type="checkbox" /> Hide from the public atlas</label>
+          <p class="editor-note">Changes remain local until they are committed and the site is deployed. Private brainstorming belongs outside the description field.</p>
+        </form>
+
+        <section id="route-editor" data-panel="routes" hidden>
+          <span class="eyebrow">SELECTED LEG</span>
+          <h2 id="route-title">Choose a route</h2>
+          <p id="route-summary"></p>
+          <div class="route-instructions">
+            <strong>Drawing controls</strong>
+            <p>Click the line to insert a point. Drag a numbered point to reshape it. Select a point and delete it; endpoints stay fixed.</p>
+            <p><strong>Smooth preview</strong> rounds your control-point line without replacing the editable points. Add enough points to keep the result on the intended road, rail, or water.</p>
+          </div>
+          <dl class="route-stats">
+            <div><dt>Control points</dt><dd id="route-point-count">—</dd></div>
+            <div><dt>Saved override</dt><dd id="route-saved-state">No</dd></div>
+          </dl>
+        </section>
+      </aside>
+    </main>
+
+    <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
+    <script src="/dist/assets/journeys.js"></script>
+    <script src="/dist/assets/route-geometry.js"></script>
+    <script src="/dist/assets/trip-photos.js"></script>
+    <script src="/dist/assets/content-overrides.js"></script>
+    <script src="/studio.js?v=20260907-5"></script>
+  </body>
+</html>

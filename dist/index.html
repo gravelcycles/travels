@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
     />
-    <link rel="stylesheet" href="./assets/styles.css?v=20260906-9" />
+    <link rel="stylesheet" href="./assets/styles.css?v=20260907-3" />
   </head>
   <body>
     <header class="site-header">
@@ -59,7 +59,7 @@
           <div class="map-actions">
             <button id="focus-day" type="button" aria-label="Zoom to the selected day's complete route">Day close-up</button>
             <button id="fit-route" type="button" aria-label="Fit the whole route on the map">Fit route</button>
-            <button id="show-all-photos" type="button">All photos <span id="photo-count"></span></button>
+            <button id="show-all-photos" type="button">Photo days <span id="photo-count"></span></button>
           </div>
         </div>
         <div id="map" aria-label="Map showing the selected journey"></div>
@@ -111,8 +111,8 @@
             <p>Day close-ups mark the scheduled rail stops along each representative route, with selected travel lines brought to the front.</p>
           </section>
           <section>
-            <strong>4 · Photos are next</strong>
-            <p>The journal is ready for original iPhone photographs. Dates and location metadata will help attach them to the right day and place.</p>
+            <strong>4 · Photos follow the day</strong>
+            <p>The full-screen viewer keeps each day's photographs together. Day controls move the route map and journal context with the images.</p>
           </section>
         </div>
         <div class="storage-note">
@@ -122,12 +122,13 @@
       </form>
     </dialog>
 
-    <dialog class="photo-dialog" id="photo-dialog" aria-label="All journey photos">
+    <dialog class="photo-dialog" id="photo-dialog" aria-label="Journey photos by day">
       <div class="photo-viewer">
         <button class="photo-close" aria-label="Close photo viewer">×</button>
         <section class="photo-stage" aria-live="polite">
           <button class="photo-nav photo-prev" type="button" aria-label="Previous photo">‹</button>
           <figure>
+            <div class="viewer-empty" id="viewer-empty" hidden><strong>No photographs</strong><span>Use the day arrows to keep exploring.</span></div>
             <img id="modal-photo" alt="" />
             <figcaption id="modal-caption"></figcaption>
           </figure>
@@ -136,11 +137,18 @@
         <aside class="photo-context">
           <div id="photo-map" aria-label="Map following the current photo"></div>
           <div class="photo-context-copy">
+            <div class="viewer-day-nav">
+              <button id="viewer-previous-day" type="button" aria-label="Previous photo day">←</button>
+              <span id="viewer-day-label"></span>
+              <button id="viewer-next-day" type="button" aria-label="Next photo day">→</button>
+            </div>
             <span id="modal-progress"></span>
             <h2 id="modal-day-title"></h2>
             <p id="modal-day-route"></p>
+            <p class="modal-location" id="modal-location"></p>
+            <p class="modal-description" id="modal-description"></p>
           </div>
-          <div class="viewer-filmstrip" id="viewer-filmstrip" aria-label="All journey photos"></div>
+          <div class="viewer-filmstrip" id="viewer-filmstrip" aria-label="Photos from this day"></div>
         </aside>
       </div>
     </dialog>
@@ -149,6 +157,7 @@
     <script src="./assets/journeys.js?v=20260906-9"></script>
     <script src="./assets/route-geometry.js?v=20260906-9"></script>
     <script src="./assets/trip-photos.js?v=20260906-9"></script>
-    <script src="./assets/app.js?v=20260906-9"></script>
+    <script src="./assets/content-overrides.js?v=20260907-1"></script>
+    <script src="./assets/app.js?v=20260907-3"></script>
   </body>
 </html>

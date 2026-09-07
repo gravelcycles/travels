@@ -3,8 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "content:build": "node scripts/build-content-overrides.mjs",
     "photos:build": "node scripts/build-photo-assets.mjs",
-    "routes:build": "node scripts/build-route-geometry.mjs"
+    "routes:build": "node scripts/build-route-geometry.mjs",
+    "studio": "node scripts/studio-server.mjs"
   },
   "devDependencies": {
     "exifr": "7.1.3",
