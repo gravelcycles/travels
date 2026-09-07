@@ -49,12 +49,20 @@ highlight, and Escape or the close button dismisses a pinned card. Commit
 `ef3841d` deployed successfully in Pages run `34142868328`; a cache-fresh public
 keyboard check confirmed the route card, map, linked day cue, and clean console.
 
+T18 is complete locally: Studio has a journey selector for all real/demo trips,
+a dedicated Day copy mode for date labels, titles, and descriptions, and route
+endpoint editing by draggable first/last pins or exact coordinate fields. The
+existing per-day route list handles every leg (Day 10 exposes all five), endpoint
+changes use route undo/redo, and the photo accessibility-description field was
+removed. Day overrides live in `content/day-overrides.json` and the generated
+asset applies day/photo/route overrides to real and demo journeys.
+
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
 redrawing. The viewer keeps the main story and side map synchronized as its day
 changes and zooms to stored photo coordinates. The Studio provides draggable
-photo pins; caption, description, alt, exact-place, day, zoom, and visibility
-fields; plus route control points, smoothing, undo/redo, reset, and deletion.
+photo pins; caption, description, exact-place, day, zoom, and visibility fields;
+plus route control points, smoothing, undo/redo, reset, and deletion.
 
 Also completed on 7 September: T01 corrected Day 1 to the single 68 km Zürich
 Flughafen → Luzern arrival leg. The obsolete reverse pickup segment and its
@@ -101,9 +109,10 @@ run `34095170234`; a cache-fresh public overview check at
 hierarchy and a clean browser console.
 
 Run `npm run studio` and open `http://127.0.0.1:4173/studio/`. Saves update
-`content/photo-overrides.json`, `content/route-overrides.json`, and generated
-`dist/assets/content-overrides.js`; backups under `build/studio-backups/` are
-ignored. Both source JSON files intentionally start empty. Do not publish the
+`content/photo-overrides.json`, `content/route-overrides.json`,
+`content/day-overrides.json`, and generated `dist/assets/content-overrides.js`;
+backups under `build/studio-backups/` are ignored. Photo and day sources start
+empty; the route source may contain reviewed local edits. Do not publish the
 Studio itself as a server—the public site consumes only the static generated
 asset.
 
@@ -133,8 +142,9 @@ push. The manifest uses the immutable tag rather than a mutable `/latest/` URL.
   putting line layers below basemap labels did not solve DOM markers.
 - Trip Replay remains the preferred future “fun” feature: animate legs by day
   and pause at located photos.
-- The user's unfinished note “maybe we should also be able to edit …” needs a
-  follow-up. Do not guess which additional fields they meant.
+- Studio's confirmed expansion—journey/route selection, editable endpoints and
+  day copy, and removal of its accessibility-description field—is implemented
+  as T18. Continue to preserve stable IDs and reviewed overrides.
 
 ## Known content corrections
 

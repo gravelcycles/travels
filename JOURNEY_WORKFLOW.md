@@ -122,6 +122,9 @@ generated `dist/assets/content-overrides.js`. These overrides take precedence
 over base route geometry and therefore survive regeneration of
 `dist/assets/route-geometry.js`.
 
+Studio day-copy edits live in `content/day-overrides.json`. Studio can switch
+between journey IDs, while override keys remain stable day, route, and photo IDs.
+
 The planned network-aware editor should preserve the same control points as
 human intent, then route through them on the selected mode's network. A route
 rebuild must never overwrite user anchors. If a point cannot snap safely, keep

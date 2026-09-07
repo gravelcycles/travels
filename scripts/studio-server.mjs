@@ -10,6 +10,7 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."
 const port = Number(process.env.ATLAS_STUDIO_PORT || 4173);
 const photoPath = path.join(repoRoot, "content/photo-overrides.json");
 const routePath = path.join(repoRoot, "content/route-overrides.json");
+const dayPath = path.join(repoRoot, "content/day-overrides.json");
 const backupDirectory = path.join(repoRoot, "build/studio-backups");
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
@@ -33,7 +34,7 @@ function validCoordinate(point) {
 }
 
 function validateState(state) {
-  if (!isPlainObject(state) || !isPlainObject(state.photos) || !isPlainObject(state.routes)) throw new Error("State must contain photo and route objects");
+  if (!isPlainObject(state) || !isPlainObject(state.photos) || !isPlainObject(state.routes) || !isPlainObject(state.days)) throw new Error("State must contain photo, route, and day objects");
   for (const [id, photo] of Object.entries(state.photos)) {
     if (!id || !isPlainObject(photo)) throw new Error("Invalid photo override");
     if (photo.location != null) {
@@ -50,6 +51,12 @@ function validateState(state) {
       if (!Array.isArray(route[field]) || route[field].length < 2 || !route[field].every(validCoordinate)) throw new Error(`Invalid ${field} for ${id}`);
     }
   }
+  for (const [id, day] of Object.entries(state.days)) {
+    if (!id || !isPlainObject(day)) throw new Error("Invalid day override");
+    for (const field of ["date", "title", "text"]) {
+      if (day[field] != null && typeof day[field] !== "string") throw new Error(`Invalid ${field} for ${id}`);
+    }
+  }
 }
 
 function writeJsonAtomic(filename, value) {
@@ -64,8 +71,10 @@ function saveState(state) {
   const stamp = new Date().toISOString().replace(/[:.]/g, "-");
   fs.copyFileSync(photoPath, path.join(backupDirectory, `${stamp}-photo-overrides.json`));
   fs.copyFileSync(routePath, path.join(backupDirectory, `${stamp}-route-overrides.json`));
+  fs.copyFileSync(dayPath, path.join(backupDirectory, `${stamp}-day-overrides.json`));
   writeJsonAtomic(photoPath, state.photos);
   writeJsonAtomic(routePath, state.routes);
+  writeJsonAtomic(dayPath, state.days);
   execFileSync(process.execPath, [path.join(repoRoot, "scripts/build-content-overrides.mjs")], { cwd: repoRoot, stdio: "inherit" });
 }
 
@@ -103,7 +112,7 @@ const server = http.createServer((request, response) => {
   if (remote !== "127.0.0.1" && remote !== "::1" && remote !== "::ffff:127.0.0.1") return send(response, 403, "Atlas Studio is local only");
   const url = new URL(request.url, `http://127.0.0.1:${port}`);
   if (request.method === "GET" && url.pathname === "/api/state") {
-    return send(response, 200, JSON.stringify({ photos: readJson(photoPath), routes: readJson(routePath) }), "application/json; charset=utf-8");
+    return send(response, 200, JSON.stringify({ photos: readJson(photoPath), routes: readJson(routePath), days: readJson(dayPath) }), "application/json; charset=utf-8");
   }
   if (request.method === "PUT" && url.pathname === "/api/state") {
     let body = "";

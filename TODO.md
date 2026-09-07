@@ -104,7 +104,7 @@ commands.
 
 ## P2 · Confirmed Studio expansion
 
-- [ ] **T18 — Edit route endpoints and day copy in Studio.** Let editors select
+- [x] **T18 — Edit route endpoints and day copy in Studio.** Let editors select
       any journey, day, and route; edit a leg's start/end point; and edit day
       titles and descriptions. Preserve stable IDs, validate references, keep
       all generated overrides deterministic, and remove the photo accessibility-
