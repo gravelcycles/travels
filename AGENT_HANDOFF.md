@@ -26,7 +26,10 @@ Also completed on 7 September: T01 corrected Day 1 to the single 68 km Zürich
 Flughafen → Luzern arrival leg. The obsolete reverse pickup segment and its
 generated geometry were removed; title, destination, story, trip summary,
 layering, and close-up bounds now agree. Desktop, 390 px mobile, and demo smoke
-checks passed locally without browser warnings or errors.
+checks passed locally without browser warnings or errors. Commit `a72b21b`
+deployed successfully in Pages run `34089946949`; a cache-fresh public check at
+`https://gravelcycles.github.io/travels/?v=a72b21b` confirmed the corrected
+summary, route, and prose without browser errors.
 
 Run `npm run studio` and open `http://127.0.0.1:4173/studio/`. Saves update
 `content/photo-overrides.json`, `content/route-overrides.json`, and generated
