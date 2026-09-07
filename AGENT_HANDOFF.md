@@ -61,8 +61,10 @@ land-cover colors are slightly softer, unselected journey lines are brighter
 blue and wider, selected lines are brighter orange, and both receive stronger
 near-white casings. The same treatment is used in Atlas Studio. Desktop
 overview/Day 10, 390 px Day 10, Studio route mode, and demo checks passed with
-no browser warnings or errors. Add commit, Pages run, and cache-fresh public
-verification details after deployment.
+no browser warnings or errors. Commit `e33a6dc` deployed successfully in Pages
+run `34095170234`; a cache-fresh public overview check at
+`https://gravelcycles.github.io/travels/?v=e33a6dc` confirmed the stronger route
+hierarchy and a clean browser console.
 
 Run `npm run studio` and open `http://127.0.0.1:4173/studio/`. Saves update
 `content/photo-overrides.json`, `content/route-overrides.json`, and generated
