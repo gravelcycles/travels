@@ -8,6 +8,8 @@ commit after it is known.
 
 ### Collision-aware day badges
 
+Commit `2db5eb5`; deployed successfully in Pages run `34141635678`.
+
 - Moved day badges away from their named places and added leader lines back to
   the exact map points.
 - Added placement scoring against rendered basemap labels, other day badges,

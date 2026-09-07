@@ -37,7 +37,9 @@ legs, the updated legend, and a clean browser console.
 T05 is complete locally: day badges now score several offset positions against
 rendered basemap text, other badges, and map edges; a leader line preserves the
 exact place. Placement refreshes after map movement, badges shrink at overview
-zoom, and nonconsecutive groups use compact labels such as `01 +3`.
+zoom, and nonconsecutive groups use compact labels such as `01 +3`. Commit
+`2db5eb5` deployed successfully in Pages run `34141635678`; a cache-fresh
+public check confirmed all ten leader-linked badge groups and a clean console.
 
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
