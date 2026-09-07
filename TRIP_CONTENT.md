@@ -1,5 +1,9 @@
 # Switzerland and Italy by train
 
+This is the original-trip intake sheet. For new journeys and the agent-owned
+build/publish process, use `JOURNEY_WORKFLOW.md`; do not ask the user to run the
+commands documented there.
+
 This is the intake sheet for the first real journey in the atlas. The known
 constraints are already recorded; fill in whatever you know and leave the rest
 blank. The site can be updated incrementally.

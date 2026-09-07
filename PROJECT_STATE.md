@@ -61,6 +61,30 @@ Updated 7 September 2026.
   reviewed shaping points rather than full network geometry. Studio smoothing
   is geometric, not transport-network-aware, so enough control points must be
   used to keep a line on the intended road, rail, or water.
+- Day 1 currently includes an incorrect Luzern → Zürich Flughafen pickup leg;
+  the intended route is only Zürich Flughafen → Luzern.
+- Both Day 10 ferry legs need geometry review; their current lines are visibly
+  wrong in the close-up.
+- Day dots are DOM markers above the basemap and can still obscure place names,
+  even though route line layers are correctly below basemap labels.
+- The current root page is one trip. The approved information architecture is
+  a real-journey atlas at `/travels/` and this trip at
+  `/travels/rushton-switzerland.html`.
+
+## Approved future direction
+
+- Route hover plus tap/focus should explain the day, mode, endpoints, and what
+  happened on that part of the journey.
+- Explore a more topographic, higher-contrast basemap with visible water, land,
+  forest, and mountain character.
+- Increase transport-mode differentiation beyond the current subtle dash
+  patterns, while retaining a non-color cue for every mode.
+- Add mode-aware route regeneration through preserved Studio control points and
+  support GPX import for bicycle days.
+- Keep all build, server, Git, and deployment work agent-driven; the user should
+  not be asked to run npm commands.
+- Build Trip Replay after the underlying route and photo-location data is
+  trustworthy.
 
 ## Main lesson
 

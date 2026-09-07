@@ -36,3 +36,23 @@ be regenerated with `scripts/build-route-geometry.mjs` from reviewed Overpass
 exports. Road, bicycle, walking, and gondola legs retain their existing reviewed
 shaping points until equivalent source geometry is added, except for the
 detailed Bellagio–Como shoreline bus geometry described above.
+
+## Reproducibility requirements for future routes
+
+For every generated route, record the mode, source/provider, profile or OSM tag
+filter, retrieval date, bounding box, ordered waypoints, and any manual
+correction in this file (or a journey-specific source note linked here). Keep
+temporary Overpass/router payloads under ignored `build/route-inputs/`; commit
+the query/provenance and reviewed static result.
+
+`scripts/build-route-geometry.mjs` currently reads one rail and one ferry
+Overpass JSON export, builds connected graphs from ways/nodes, routes through
+the segment's ordered stops or `via` points, and emits simplified `[lng, lat]`
+geometry. Its rail endpoint welding tolerates gaps up to 65 m. It currently
+targets only the default journey, so multi-journey selection and source
+manifests remain TODO items.
+
+Atlas Studio's `controlPoints` are durable human intent and its saved `geometry`
+overrides the generated base line. Future mode-aware routing must route through
+those points rather than overwrite them. See `JOURNEY_WORKFLOW.md` for the full
+train, ferry, road, bicycle, GPX, review, and publishing flow.

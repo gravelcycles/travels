@@ -1,6 +1,8 @@
 # Project principles
 
 - A trip is a standalone story; real and demo content use separate pages.
+- The root is an atlas of real journeys; each real journey has a stable,
+  shareable detail URL.
 - The calendar day is the main unit and may contain any number of ordered modes.
 - For a base-based trip, label the meaningful destination rather than the base.
 - Keep map, segment order, title, prose, stops, and photos consistent.
@@ -21,5 +23,11 @@
   and bounded neighbor preloads so the atlas stays quick without feeling empty.
 - Route smoothing must never imply network accuracy. Keep enough editable
   control points to hold trains on rails, ferries on water, and roads on land.
+- Prefer mode-aware network routing through preserved human control points;
+  accept traveler GPX as the strongest source for a recorded bike/walk route.
+- Route interactions must work with hover, keyboard focus, and touch.
+- Day markers should orient the reader without obscuring essential place names.
+- Operational work is agent-owned: run tools, builds, local servers, publishing,
+  and verification for the user.
 - Verify changes on the deployed GitHub Pages site, including a fresh load.
 - `noindex` discourages discovery but does not make a public Pages site private.
