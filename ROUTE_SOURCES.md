@@ -63,12 +63,14 @@ correction in this file (or a journey-specific source note linked here). Keep
 temporary Overpass/router payloads under ignored `build/route-inputs/`; commit
 the query/provenance and reviewed static result.
 
-`scripts/build-route-geometry.mjs` currently reads one rail and one ferry
-Overpass JSON export, builds connected graphs from ways/nodes, routes through
-the segment's ordered stops or `via` points, and emits simplified `[lng, lat]`
-geometry. Its rail endpoint welding tolerates gaps up to 65 m. It currently
-targets only the default journey, so multi-journey selection and source
-manifests remain TODO items.
+`scripts/build-route-geometry.mjs` selects one journey with `--journey` and
+reads its committed manifest from `content/route-sources/`. The current family
+manifest records the retained rail/ferry provenance and the reviewed manual
+exception for direct Dervio–Bellagio run 809. Network inputs remain ignored in
+`build/route-inputs/`. The builder routes through ordered `stops` or `via`
+points, warns on disconnected and near-tied components, keeps existing reviewed
+geometry when a source is absent or unsafe, and writes a deterministically
+ordered shared static asset. Its rail manifest retains the 65 m gap-weld limit.
 
 Atlas Studio's `controlPoints` are durable human intent and its saved `geometry`
 overrides the generated base line. Future mode-aware routing must route through

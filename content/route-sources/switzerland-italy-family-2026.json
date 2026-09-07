@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "journeyId": "switzerland-italy-family-2026",
+  "networks": {
+    "rail": {
+      "input": "build/route-inputs/rail-overpass.json",
+      "weldGapsKm": 0.065,
+      "maxSnapKm": 4,
+      "ambiguityKm": 0.05,
+      "simplifyTolerance": 0.00008,
+      "provenance": {
+        "provider": "OpenStreetMap via Overpass API",
+        "retrievedAt": "2026-09-06",
+        "query": "Rail ways and child nodes covering every recorded Swiss and Italian rail corridor; the original raw query was not retained.",
+        "bounds": "Swiss and northern Italian journey corridor",
+        "notes": "Endpoint gaps up to 65 metres are welded. Ordered segment stops remain routing waypoints."
+      }
+    },
+    "ferry": {
+      "input": "build/route-inputs/ferry-overpass.json",
+      "maxSnapKm": 4,
+      "ambiguityKm": 0.05,
+      "simplifyTolerance": 0.00008,
+      "provenance": {
+        "provider": "OpenStreetMap via Overpass API",
+        "retrievedAt": "2026-09-06",
+        "query": "Ferry route ways/relations and child nodes for the journey lakes; Como relation 18734598 was checked separately.",
+        "bounds": "Lake Como review used 45.75,8.95,46.15,9.40; other raw query bounds were not retained",
+        "notes": "Ordered scheduled ports remain routing waypoints."
+      }
+    }
+  },
+  "segments": {
+    "family-airport-luzern": { "network": "rail" },
+    "family-luzern-engelberg": { "network": "rail" },
+    "family-engelberg-luzern": { "network": "rail" },
+    "family-luzern-bern": { "network": "rail" },
+    "family-bern-luzern": { "network": "rail" },
+    "family-kehrsiten-luzern-boat": { "network": "ferry" },
+    "family-luzern-brienz": { "network": "rail" },
+    "family-brienz-interlaken-boat": { "network": "ferry" },
+    "family-interlaken-lauterbrunnen": { "network": "rail" },
+    "family-grutschalp-murren": { "network": "rail" },
+    "family-murren-grutschalp": { "network": "rail" },
+    "family-lauterbrunnen-interlaken": { "network": "rail" },
+    "family-interlaken-luzern": { "network": "rail" },
+    "family-luzern-como": { "network": "rail" },
+    "family-como-varenna-boat": { "network": "ferry" },
+    "family-fiumelatte-dervio": { "network": "rail" },
+    "family-dervio-bellagio-boat": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "Reviewed manual water route between OpenStreetMap ferry terminals",
+        "retrievedAt": "2026-09-07",
+        "notes": "No OSM relation represents direct Navigazione Laghi run 809."
+      }
+    },
+    "family-como-lugano": { "network": "rail" },
+    "family-lugano-luzern": { "network": "rail" },
+    "family-pilatus-alpnachstad": { "network": "rail" },
+    "family-alpnachstad-luzern": { "network": "rail" },
+    "family-luzern-airport": { "network": "rail" }
+  }
+}

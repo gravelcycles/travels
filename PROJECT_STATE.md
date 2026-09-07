@@ -57,6 +57,11 @@ Updated 7 September 2026.
   solid, dashed, dotted, dash-dot, or diamond cues in both map and legend.
 - Emoji markers are removed.
 - Route research and accuracy limits are in `ROUTE_SOURCES.md`.
+- Network geometry builds select a journey ID and consume its committed
+  `content/route-sources/` manifest. Ordered stops remain waypoints; ambiguous
+  or disconnected networks produce warnings and retain the last reviewed
+  geometry. Output ordering is deterministic, and fixture tests cover those
+  failure modes.
 - The photo UI supports embedded blurred previews, responsive `srcset`, lazy
   hydration with a generous look-ahead margin, and preloading of neighboring
   full-screen photos.

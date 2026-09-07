@@ -80,6 +80,13 @@ survive the import. Route research and its limitations are recorded in
 `ROUTE_SOURCES.md`; the reusable build flow is in `JOURNEY_WORKFLOW.md`; open
 work is tracked in `TODO.md`.
 
+Network route inputs are declared per journey in
+`content/route-sources/<journey-id>.json`. The agent regenerates one journey's
+routes with `npm run routes:build -- --journey <journey-id>` and runs the
+disconnected/ambiguous-network fixtures with `npm run routes:test`. Missing or
+unsafe network input produces a warning and retains the last reviewed static
+geometry; `--strict` fails without changing the output.
+
 Each journey contains:
 
 - places with stable IDs and latitude/longitude
@@ -123,6 +130,6 @@ Pages site. Keep sensitive trip data and original photos out of this repository.
 
 ## Map and attribution
 
-The map uses MapLibre with OpenFreeMap's Positron vector style. Keep the
+The map uses MapLibre with OpenFreeMap's Liberty vector style. Keep the
 OpenFreeMap, OpenMapTiles, and OpenStreetMap attribution if the map layout or
 implementation changes.

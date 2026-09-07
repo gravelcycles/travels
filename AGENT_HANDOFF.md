@@ -60,6 +60,13 @@ asset applies day/photo/route overrides to real and demo journeys. Commit
 confirmed the 14-day/104-photo real trip, the demo selector, and clean browser
 consoles.
 
+T08 is complete locally: `scripts/build-route-geometry.mjs` now selects a
+journey ID and reads `content/route-sources/<journey-id>.json`. It updates only
+manifested segments, preserves reviewed geometry on missing/disconnected input,
+warns on near-tied network components, retains ordered stops as waypoints, and
+writes deterministically sorted static output. Four route fixtures cover
+disconnection, ambiguity/determinism, ordered stops, and fallback preservation.
+
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
 redrawing. The viewer keeps the main story and side map synchronized as its day
@@ -155,7 +162,7 @@ No remaining P0 content corrections are recorded.
 
 ## Next
 
-T08 is the next unfinished TODO item: generalize network geometry per journey.
+T09 is the next unfinished TODO item: make Studio route edits mode-aware.
 Continue with the independent, acceptance-scoped work items in `TODO.md` and
 update the handoff and changelog whenever an item lands.
 
