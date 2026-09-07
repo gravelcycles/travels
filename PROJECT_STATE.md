@@ -1,6 +1,6 @@
 # Project state
 
-Updated 6 September 2026.
+Updated 7 September 2026.
 
 - Repo: <https://github.com/gravelcycles/travels>
 - Site: <https://gravelcycles.github.io/travels/>
