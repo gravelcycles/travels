@@ -27,6 +27,9 @@ Updated 7 September 2026.
 - Train and ferry lines follow static OpenStreetMap network geometry; the
   Bellagio–Como bus follows the shoreline road instead of cutting across the
   lake.
+- Day 10 follows the timetable-matched SR110 Como–Varenna service and direct
+  Dervio–Bellagio run 809. Its five-leg close-up totals 95 km; ferry timing,
+  stop, geometry, and limitation details are recorded in `ROUTE_SOURCES.md`.
 - Selected routes are orange and drawn above other routes.
 - Basemap labels are drawn above route lines, preserving city-name context.
 - Day focus keeps other routes visible in quiet grey.
@@ -63,8 +66,6 @@ Updated 7 September 2026.
   reviewed shaping points rather than full network geometry. Studio smoothing
   is geometric, not transport-network-aware, so enough control points must be
   used to keep a line on the intended road, rail, or water.
-- Both Day 10 ferry legs need geometry review; their current lines are visibly
-  wrong in the close-up.
 - Day dots are DOM markers above the basemap and can still obscure place names,
   even though route line layers are correctly below basemap labels.
 - The current root page is one trip. The approved information architecture is
