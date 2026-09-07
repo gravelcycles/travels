@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
-    <link rel="stylesheet" href="./assets/styles.css?v=20260906-5" />
+    <link rel="stylesheet" href="./assets/styles.css?v=20260906-9" />
   </head>
   <body>
     <header class="site-header">
@@ -53,6 +53,11 @@
           </div>
         </div>
         <div id="map" aria-label="Map showing the selected journey"></div>
+        <div class="day-navigator" id="day-navigator" hidden aria-live="polite">
+          <button id="previous-day" type="button" aria-label="Previous day">←</button>
+          <span id="focused-day-label"></span>
+          <button id="next-day" type="button" aria-label="Next day">→</button>
+        </div>
         <div class="map-legend" id="map-legend"></div>
         <div class="map-status" id="map-status" hidden></div>
       </section>
@@ -123,7 +128,8 @@
     </dialog>
 
     <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
-    <script src="./assets/journeys.js?v=20260906-5"></script>
-    <script src="./assets/app.js?v=20260906-5"></script>
+    <script src="./assets/journeys.js?v=20260906-9"></script>
+    <script src="./assets/route-geometry.js?v=20260906-9"></script>
+    <script src="./assets/app.js?v=20260906-9"></script>
   </body>
 </html>

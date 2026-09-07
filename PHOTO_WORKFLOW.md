@@ -26,20 +26,78 @@ messaging-app downloads; they may omit or rewrite EXIF metadata.
   provide the intended day/place alongside the filename.
 - Include only images you are comfortable using for the project.
 
-## Safe publishing pipeline
+## Current Rushton trip import
 
-For each selected original:
+`npm run photos:build` reads `photos/rushton-trip/` and writes public-ready
+derivatives to the ignored `build/trip-photos-v1/` directory. The current run:
+
+- matched 104 stills to journey days from local capture dates;
+- found no GPS coordinates, so photos are day-linked but not map-pinned;
+- held six MOV files for a future video-specific pipeline;
+- excluded four stills captured outside 13–26 August 2026;
+- generated 356 WebP files totaling about 169 MB; and
+- generated `dist/assets/trip-photos.js`, including embedded 32 px blurred
+  previews and pinned GitHub Release URLs.
+
+Captions and alt text are useful automatic first passes, not final editorial
+copy. Review day assignment, lead-photo order, captions, and privacy before
+publishing.
+
+## Generated image sizes and loading
+
+Each still gets the source-supported subset of 480, 1280, 2560, and 3200 px
+wide WebP variants. The 480 px version covers thumbnails and most phones; 1280
+px covers panels and ordinary displays; 2560 and 3200 px retain detail for
+large and high-density full-screen viewing without shipping originals.
+
+The browser initially paints an embedded blurred preview. Images close to the
+viewport hydrate through responsive `srcset`; images farther away stay tiny.
+The full-screen viewer also preloads two neighbors in each direction. This is a
+bounded load-ahead strategy rather than preloading all 104 photographs.
+
+The generator uses macOS Quick Look for reliable HEIC decoding, then Sharp for
+resizing and WebP encoding. It validates that decodes contain real pixel
+variation and strips source EXIF metadata from every derivative.
+
+## GitHub Release publishing
+
+Keep originals under ignored `photos/`; never upload them. Publish only the
+WebPs from `build/trip-photos-v1/` in a public Release tagged exactly
+`trip-photos-v1`. The manifest deliberately uses immutable URLs such as:
+
+```text
+https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1425-w1280.webp
+```
+
+[GitHub documents](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)
+a limit of 1,000 assets per Release and 2 GiB per asset, so the 356-file build
+fits comfortably. It also documents
+[direct links to assets under a named release tag](https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases).
+Do not use `/latest/`, because a later unrelated Release would silently change
+those URLs.
+
+The user approved public hosting on 7 September 2026. The initial Release was
+published and verified with:
+
+```sh
+gh release create trip-photos-v1 build/trip-photos-v1/*.webp \
+  --repo gravelcycles/travels \
+  --title "Trip photos v1" \
+  --notes "Optimized, metadata-stripped derivatives for the journey atlas."
+```
+
+Verify several 480, 1280, and 2560/3200 direct asset URLs before committing and
+pushing `dist/assets/trip-photos.js`. Release assets are public even though the
+Pages documents use `noindex`; treat confirmation as a privacy decision.
+
+## Safe publishing rules
 
 1. Read capture time, GPS latitude/longitude, orientation, and caption.
-2. Suggest its matching journey day and map position for review.
-3. Create a 1600–2000 px WebP/AVIF derivative for the website.
-4. Store coordinates in `dist/assets/journeys.js`.
-5. Strip sensitive EXIF metadata from the public derivative unless explicitly
-   needed in the downloadable file.
-6. Commit only the derivative; retain the original privately.
-
-This keeps location-aware behavior in the atlas without publishing the full
-original photo metadata.
+2. Suggest day and map matches for review; do not invent missing GPS.
+3. Keep source files and generated build output out of Git.
+4. Strip sensitive metadata from public derivatives.
+5. Publish the Release assets and matching manifest together.
+6. Retain originals privately.
 
 ## Apple references
 

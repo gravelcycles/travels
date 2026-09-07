@@ -6,22 +6,36 @@ standalone trip; fictional viewer examples live separately at `demo.html`.
 
 ## Preview locally
 
-Serve `dist/` with any static web server. For example:
+Serve the repository root so the production page and ignored local photo build
+can be tested together. For example:
 
 ```sh
-python3 -m http.server 8000 --directory dist
+python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000/`.
+Then open `http://localhost:8000/dist/`. Add `?photoSource=local` to use the
+ignored local derivatives instead of GitHub Release URLs.
 
-- `/` shows only the real family journey.
-- `/demo.html` shows only the sample journeys and includes a sample selector.
+- `/dist/` shows only the real family journey.
+- `/dist/demo.html` shows only the sample journeys and includes a selector.
 
 ## Add trip photos
 
 Start with `TRIP_CONTENT.md`. Journey data lives in
-`dist/assets/journeys.js`; photographs belong in `dist/assets/photos/` as
-optimized WebP or AVIF files, or can use public HTTPS URLs.
+`dist/assets/journeys.js`. Private originals go in ignored `photos/`; the
+checked-in manifest references optimized WebPs hosted as GitHub Release assets.
+
+Install the generator dependencies and build the current trip with:
+
+```sh
+npm install
+npm run photos:build
+```
+
+This creates responsive 480/1280/2560/3200 px variants under ignored `build/`
+and updates `dist/assets/trip-photos.js`. See `PHOTO_WORKFLOW.md` for review,
+privacy, and Release publishing steps. Never commit the originals or generated
+photo binaries.
 
 Use `PHOTO_WORKFLOW.md` when transferring iPhone images so capture time and GPS
 survive the import. Route research and its limitations are recorded in

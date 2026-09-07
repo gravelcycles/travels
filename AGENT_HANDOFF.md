@@ -8,25 +8,30 @@ Read `PROJECT_STATE.md` and `PRINCIPLES.md` first.
 - Deploy `dist/` from `main` with the existing Pages workflow.
 - The user wants results on GitHub or the published site, not a localhost link.
 
-## Next pass
+## Current pass
 
-Completed in the 6 September viewer pass: real/demo page split, demo selector,
-2.5-second initial fit, persistent grey journey context during day focus,
-bottom-safe Day 4 and Day 10 framing, constrained panel heights with visible
-scrollbars, a static patterned legend, mobile deferred map fitting, and support
-for GeoJSON-order `geometry`. The empty real-trip photo button is disabled.
+Locally completed on 6 September: OpenStreetMap-derived geometry for all train
+and ferry legs, shoreline-road geometry for the Bellagio–Como bus, route layers
+below basemap labels, a day-stepper in map close-ups, and a complete progressive
+photo implementation. The photo build contains 104 stills / 356 WebP assets
+(about 169 MB) and excludes originals, metadata, videos, and four out-of-range
+stills. Desktop and 390 px mobile views were tested in the in-app browser.
 
-1. **Improve route fidelity.** Add separate detailed `geometry` to segments;
-   keep `stops` only for stop markers and counts. Prefer reviewed static
-   GeoJSON from operator/open-transport data or OpenStreetMap-derived routing.
-   Trains should follow rails, boats should stay on water, and buses/bikes
-   should follow plausible roads. Record sources in `ROUTE_SOURCES.md`.
-2. **Reduce label collisions.** Investigate route casings, lower route opacity,
-   label halos, or hiding selected basemap labels under active routes. Do not
-   remove useful place context globally.
-3. **Add real photos.** Follow `PHOTO_WORKFLOW.md`, review dates/GPS and privacy,
-   and replace the intentionally empty real-trip photo states.
-4. **Update the demo** for every shared behavior or data-model change.
+The user explicitly approved public photo hosting. The public GitHub Release
+`trip-photos-v1` now contains all 356 WebP derivatives (176,851,380 bytes), and
+representative 480, 1280, and 2560 px direct URLs were verified before the site
+push. The manifest uses the immutable tag rather than a mutable `/latest/` URL.
+
+Next:
+
+1. Review the 104 automatic day matches, generic captions, and lead-photo order.
+2. Decide whether the six MOV files should get a separate video pipeline.
+3. Find reviewed fallback images only if days 9, 11, and 14 need media.
+4. Continue replacing remaining road/walk/gondola shaping points only where a
+   close-up reveals a visible error.
+5. Build a localhost-only Atlas Studio for photo metadata and route control
+   points, writing reviewable JSON overrides rather than editing generated
+   manifests directly.
 
 ## Topographic basemap direction
 
@@ -47,5 +52,8 @@ the trip continues into Italy.
 - Both side panels visibly scroll at short desktop heights and on mobile.
 - `/travels/` contains real content; `/travels/demo.html` contains demos.
 - Line patterns are easy to distinguish and match the legend.
+- City labels remain legible above route lines.
+- Day focus shows working previous/next controls at desktop and phone widths.
+- Only nearby images hydrate; a large-screen viewer selects the 2560 px source.
 - Test the deployed URLs with a cache-fresh query after the Pages workflow
   succeeds. Bump the current static asset version token when assets change.

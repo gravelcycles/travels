@@ -18,7 +18,21 @@ be checked against tickets or photo timestamps when those become available.
 - Fiumelatte–Varenna-Esino–Bellano Tartavalle Terme–Dervio station order: [Trenord R13 line](https://www.trenord.it/linee-e-orari/circolazione/le-nostre-linee/lecco-colico-sondrio/?code=R13).
 - Dervio–Bellagio boat connection: [Navigazione Laghi 2026 timetable](https://www.navigazionelaghi.it/wp-content/uploads/2026/06/Orari_Web-E26.pdf).
 - Bellagio–Como bus corridor: [ASF Autolinee C30 timetable](https://www.asfautolinee.it/wp-content/uploads/pdf/estivo/C30.pdf).
+- Bellagio–Como road geometry: a static route generated with the public
+  [OSRM demo server](https://router.project-osrm.org/) on 6 September 2026 and
+  simplified before being checked in. It follows the C30 shoreline corridor.
 
 The map is a trip narrative, not a live journey planner. Timetables and stopping
 patterns can change, and the selected train may have differed from the
 representative service.
+
+## Drawn geometry
+
+Detailed train and ferry lines were generated from OpenStreetMap ways queried
+through the Overpass API on 6 September 2026. Named stops remain separate and
+are used for meaning and markers; the new geometry follows the connected rail
+or ferry network between those stops. The checked-in output is static and can
+be regenerated with `scripts/build-route-geometry.mjs` from reviewed Overpass
+exports. Road, bicycle, walking, and gondola legs retain their existing reviewed
+shaping points until equivalent source geometry is added, except for the
+detailed Bellagio–Como shoreline bus geometry described above.
