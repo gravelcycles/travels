@@ -42,19 +42,20 @@ hand-edit generated JavaScript or run the server:
 npm run studio
 ```
 
-The agent then opens `http://127.0.0.1:4173/studio/`. In **Photo locations**, select a
-day and photo, click the map (or drag its pin) to set the exact location, and
-add the precise place, caption, scene description, alt text, and preferred map
-zoom. In **Route drawing**, select a day and travel leg, click the orange line
-to add control points, drag them to the intended road/rail/water path, and use
-the optional smooth preview. Undo, redo, reset, and intermediate-point deletion
-are available.
+The agent then opens `http://127.0.0.1:4173/studio/`. Choose any journey first.
+In **Photo locations**, select a day and photo, click the map (or drag its pin)
+to set the exact location, and add the precise place, caption, scene description,
+and preferred map zoom. In **Route drawing**, select a day and any of its travel
+legs, click the orange line to add control points, drag any point—including the
+start and end—or type exact endpoint coordinates. Undo, redo, reset, and
+intermediate-point deletion are available. In **Day copy**, edit date labels,
+titles, and descriptions.
 
 **Save locally** writes reviewable source data to
-`content/photo-overrides.json` and `content/route-overrides.json`, then rebuilds
-`dist/assets/content-overrides.js`. Each save also creates an ignored backup in
-`build/studio-backups/`. The Studio binds only to the loopback interface and is
-not part of the published site.
+`content/photo-overrides.json`, `content/route-overrides.json`, and
+`content/day-overrides.json`, then rebuilds `dist/assets/content-overrides.js`.
+Each save also creates ignored backups in `build/studio-backups/`. The Studio
+binds only to the loopback interface and is not part of the published site.
 
 ## Add trip photos
 
@@ -92,7 +93,8 @@ Each journey contains:
 - calendar days, including non-travel days
 - optional photographs linked to days
 - optional photo overrides with exact coordinates, street-level zoom, caption,
-  description, alt text, day reassignment, or a hidden flag
+  description, day reassignment, or a hidden flag
+- optional day overrides for date labels, titles, and descriptions
 
 The first real trip combines train, boat, bus, gondola, bicycle, and walking
 segments. Sample data remains in the shared content file but is only exposed by

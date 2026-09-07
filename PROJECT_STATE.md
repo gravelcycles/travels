@@ -70,6 +70,11 @@ Updated 7 September 2026.
   editing their text, or redrawing a route with draggable control points,
   smoothing, undo, and redo. Saves write JSON sources plus the generated public
   override asset.
+- Studio can switch among every real or demo journey, select any day and any of
+  its route legs, drag or type exact route endpoints, and edit day date labels,
+  titles, and descriptions. Day copy is stored in `content/day-overrides.json`.
+  The photo accessibility-description field is intentionally not part of the
+  Studio UI.
 - Clicking a photo location—or finishing a pin drag—in Studio now records the
   map's current zoom with the coordinates. The saved 2–20 zoom range is honored
   by the public photo viewer instead of being forced back into 12–18.

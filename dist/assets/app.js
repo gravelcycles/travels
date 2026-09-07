@@ -2,21 +2,24 @@
   "use strict";
 
   const data = window.JOURNEY_ATLAS_DATA;
-  const realJourney = data.journeys.find((item) => item.id === data.defaultJourneyId);
-  if (realJourney && Array.isArray(window.JOURNEY_ATLAS_TRIP_PHOTOS)) {
-    const contentOverrides = window.JOURNEY_ATLAS_CONTENT_OVERRIDES || { photos: {}, routes: {} };
-    realJourney.photos = window.JOURNEY_ATLAS_TRIP_PHOTOS
+  const contentOverrides = window.JOURNEY_ATLAS_CONTENT_OVERRIDES || { photos: {}, routes: {}, days: {} };
+  data.journeys.forEach((item) => {
+    item.days = item.days.map((day) => ({ ...day, ...(contentOverrides.days?.[day.id] || {}) }));
+    item.segments.forEach((segment) => {
+      const override = contentOverrides.routes?.[segment.id];
+      if (override?.geometry?.length > 1) segment.geometry = override.geometry;
+    });
+    const basePhotos = item.id === data.defaultJourneyId && Array.isArray(window.JOURNEY_ATLAS_TRIP_PHOTOS)
+      ? window.JOURNEY_ATLAS_TRIP_PHOTOS
+      : (item.photos || []);
+    item.photos = basePhotos
       .map((photo) => {
         const override = contentOverrides.photos?.[photo.id] || {};
         const location = override.location || {};
         return { ...photo, ...override, ...location };
       })
       .filter((photo) => !photo.hidden);
-    realJourney.segments.forEach((segment) => {
-      const override = contentOverrides.routes?.[segment.id];
-      if (override?.geometry?.length > 1) segment.geometry = override.geometry;
-    });
-  }
+  });
   const OPENFREEMAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
   const PHOTO_ZOOM_LIMITS = { min: 2, max: 20 };
   const palette = {

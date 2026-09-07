@@ -2,15 +2,17 @@
   "use strict";
 
   const data = window.JOURNEY_ATLAS_DATA;
-  const journey = data.journeys.find((item) => item.id === data.defaultJourneyId);
+  let journey = data.journeys.find((item) => item.id === data.defaultJourneyId) || data.journeys[0];
   const routeGeometry = window.JOURNEY_ATLAS_ROUTE_GEOMETRY || {};
-  const basePhotos = window.JOURNEY_ATLAS_TRIP_PHOTOS || [];
+  const tripPhotos = window.JOURNEY_ATLAS_TRIP_PHOTOS || [];
+  let basePhotos = journey.id === data.defaultJourneyId ? tripPhotos : (journey.photos || []);
   const styleUrl = "https://tiles.openfreemap.org/styles/liberty";
   const photoZoomLimits = { min: 2, max: 20 };
-  let state = { photos: {}, routes: {} };
+  let state = { photos: {}, routes: {}, days: {} };
   let mode = "photos";
   let selectedPhotoId = basePhotos[0]?.id || null;
   let selectedSegmentId = journey.days.flatMap((day) => day.segmentIds)[0] || null;
+  let selectedDayId = journey.days[0]?.id || null;
   let map;
   let mapReady = false;
   let activeMarkers = [];
@@ -22,6 +24,15 @@
   let dirty = false;
 
   const $ = (selector) => document.querySelector(selector);
+
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
 
   function clampPhotoZoom(value) {
     return Math.max(photoZoomLimits.min, Math.min(photoZoomLimits.max, value));
@@ -66,15 +77,18 @@
   }
 
   function dayById(id) {
-    return journey.days.find((day) => day.id === id);
+    const day = journey.days.find((item) => item.id === id);
+    return day ? { ...day, ...(state.days[day.id] || {}) } : undefined;
   }
 
   function dayForSegment(segmentId) {
-    return journey.days.find((day) => day.segmentIds.includes(segmentId));
+    const day = journey.days.find((item) => item.segmentIds.includes(segmentId));
+    return day ? dayById(day.id) : undefined;
   }
 
   function photoUrl(url) {
     if (url?.includes("/releases/download/trip-photos-v1/")) return `/build/trip-photos-v1/${decodeURIComponent(url.split("/").pop())}`;
+    if (url?.startsWith("./assets/")) return `/dist/${url.slice(2)}`;
     return url || "";
   }
 
@@ -167,26 +181,72 @@
 
   function optionMarkup(day, includeCount = false) {
     const count = basePhotos.filter((photo) => photoWithOverride(photo).dayId === day.id && !photoWithOverride(photo).hidden).length;
-    return `<option value="${day.id}">Day ${day.number} · ${day.date} · ${day.title}${includeCount ? ` (${count})` : ""}</option>`;
+    return `<option value="${escapeHtml(day.id)}">Day ${day.number} · ${escapeHtml(day.date)} · ${escapeHtml(day.title)}${includeCount ? ` (${count})` : ""}</option>`;
   }
 
   function renderDaySelectors() {
     const photoFilter = $("#photo-day-filter");
     const photoDay = $("#photo-day");
     const routeFilter = $("#route-day-filter");
+    const dayFilter = $("#day-editor-filter");
     const previousPhotoFilter = photoFilter.value;
     const previousRouteFilter = routeFilter.value;
-    photoFilter.innerHTML = '<option value="all">All days</option>' + journey.days.map((day) => optionMarkup(day, true)).join("");
-    photoDay.innerHTML = journey.days.map((day) => optionMarkup(day)).join("");
-    routeFilter.innerHTML = journey.days.map((day) => `<option value="${day.id}">Day ${day.number} · ${day.date} · ${day.title}</option>`).join("");
-    photoFilter.value = previousPhotoFilter || photoWithOverride(basePhotos[0]).dayId;
-    routeFilter.value = previousRouteFilter || dayForSegment(selectedSegmentId)?.id || journey.days[0].id;
+    const previousDayFilter = dayFilter.value;
+    const days = journey.days.map((day) => dayById(day.id));
+    photoFilter.innerHTML = '<option value="all">All days</option>' + days.map((day) => optionMarkup(day, true)).join("");
+    photoDay.innerHTML = days.map((day) => optionMarkup(day)).join("");
+    routeFilter.innerHTML = days.map((day) => `<option value="${escapeHtml(day.id)}">Day ${day.number} · ${escapeHtml(day.date)} · ${escapeHtml(day.title)}</option>`).join("");
+    dayFilter.innerHTML = days.map((day) => `<option value="${escapeHtml(day.id)}">Day ${day.number} · ${escapeHtml(day.date)} · ${escapeHtml(day.title)}</option>`).join("");
+    photoFilter.value = days.some((day) => day.id === previousPhotoFilter) ? previousPhotoFilter : (basePhotos[0] ? photoWithOverride(basePhotos[0]).dayId : "all");
+    routeFilter.value = days.some((day) => day.id === previousRouteFilter) ? previousRouteFilter : (dayForSegment(selectedSegmentId)?.id || days[0]?.id || "");
+    dayFilter.value = days.some((day) => day.id === previousDayFilter) ? previousDayFilter : (selectedDayId || days[0]?.id || "");
+  }
+
+  function renderJourneySelector() {
+    $("#studio-journey").innerHTML = data.journeys.map((item) => `<option value="${escapeHtml(item.id)}" ${item.id === journey.id ? "selected" : ""}>${escapeHtml(item.label)}</option>`).join("");
+  }
+
+  function renderDayList() {
+    $("#studio-day-list").innerHTML = journey.days.map((baseDay) => {
+      const day = dayById(baseDay.id);
+      return `<button type="button" data-day-edit-id="${escapeHtml(day.id)}" class="${day.id === selectedDayId ? "active" : ""}">
+        <small>Day ${day.number} · ${escapeHtml(day.date)}</small>
+        <strong>${escapeHtml(day.title)}</strong>
+      </button>`;
+    }).join("");
+  }
+
+  function selectDay(id, center = true) {
+    const day = dayById(id);
+    if (!day) return;
+    selectedDayId = id;
+    $("#day-editor-filter").value = id;
+    $("#day-editor-heading").textContent = `Day ${day.number}`;
+    $("#day-date").value = day.date || "";
+    $("#day-title").value = day.title || "";
+    $("#day-description").value = day.text || "";
+    renderDayList();
+    if (mapReady && mode === "days") renderDayMap(day, center);
+  }
+
+  function readDayForm() {
+    const baseDay = journey.days.find((day) => day.id === selectedDayId);
+    if (!baseDay) return;
+    state.days[selectedDayId] = {
+      date: $("#day-date").value.trim(),
+      title: $("#day-title").value.trim(),
+      text: $("#day-description").value.trim()
+    };
+    markDirty();
+    renderDaySelectors();
+    $("#day-editor-filter").value = selectedDayId;
+    renderDayList();
   }
 
   function renderPhotoGrid() {
     const filter = $("#photo-day-filter").value;
     const photos = basePhotos.map(photoWithOverride).filter((photo) => filter === "all" || photo.dayId === filter);
-    $("#studio-photo-grid").innerHTML = photos.map((photo) => {
+    $("#studio-photo-grid").innerHTML = photos.length ? photos.map((photo) => {
       const thumb = photo.srcset?.[0]?.src || photo.src;
       const located = Number.isFinite(photo.lat) && Number.isFinite(photo.lng);
       return `<button type="button" data-photo-id="${photo.id}" class="${photo.id === selectedPhotoId ? "active" : ""}" aria-label="Edit ${photo.caption}">
@@ -194,7 +254,7 @@
         <span>${photo.takenAt || photo.caption}</span>
         <i class="${located ? "" : "unlocated"}" title="${located ? "Located" : "Needs location"}"></i>
       </button>`;
-    }).join("");
+    }).join("") : '<p class="editor-note">This journey has no photographs to edit.</p>';
     const selected = $("#studio-photo-grid .active");
     if (selected) selected.scrollIntoView({ block: "nearest" });
   }
@@ -212,7 +272,6 @@
     $("#photo-zoom").value = photo.zoom || 16;
     $("#photo-caption").value = photo.caption || "";
     $("#photo-description").value = photo.description || "";
-    $("#photo-alt").value = photo.alt || "";
     $("#photo-hidden").checked = Boolean(photo.hidden);
     renderPhotoGrid();
     if (mapReady) renderPhotoMap(photo, center);
@@ -228,7 +287,6 @@
       dayId: $("#photo-day").value,
       caption: $("#photo-caption").value.trim(),
       description: $("#photo-description").value.trim(),
-      alt: $("#photo-alt").value.trim(),
       locationLabel: $("#photo-place").value.trim(),
       hidden: $("#photo-hidden").checked
     };
@@ -304,6 +362,29 @@
     }
   }
 
+  function renderDayMap(day, center = true) {
+    clearActiveMap();
+    const coordinates = day.segmentIds.flatMap((id) => {
+      const segment = segmentById(id);
+      return segment ? segmentCoordinates(segment) : [];
+    });
+    const features = day.segmentIds.map(segmentById).filter(Boolean).map((segment) => ({
+      type: "Feature",
+      properties: {},
+      geometry: { type: "LineString", coordinates: segmentCoordinates(segment) }
+    }));
+    if (features.length) {
+      addLine("studio-photo-routes-casing", features, "#fffef8", 8.5, .82);
+      addLine("studio-photo-routes", features, "#006f92", 4.7, .9);
+    }
+    if (!center) return;
+    if (coordinates.length) fitCoordinates(coordinates, 13);
+    else {
+      const destination = placeById(day.destinationId || day.placeId);
+      if (destination) map.easeTo({ center: [destination.lng, destination.lat], zoom: 12, duration: 450 });
+    }
+  }
+
   function renderRouteList() {
     const day = dayById($("#route-day-filter").value);
     const segments = day.segmentIds.map(segmentById).filter(Boolean);
@@ -340,6 +421,7 @@
 
   function updateRouteOverride() {
     state.routes[selectedSegmentId] = {
+      ...(state.routes[selectedSegmentId] || {}),
       controlPoints: routePoints.map((point) => [...point]),
       geometry: editedGeometry(),
       smoothing: routeSmoothed ? "chaikin" : "none"
@@ -348,6 +430,32 @@
     markDirty();
     drawRouteEditor(false);
     renderRouteList();
+  }
+
+  function syncEndpointFields() {
+    const start = routePoints[0] || [];
+    const end = routePoints[routePoints.length - 1] || [];
+    $("#route-start-lng").value = Number.isFinite(start[0]) ? start[0] : "";
+    $("#route-start-lat").value = Number.isFinite(start[1]) ? start[1] : "";
+    $("#route-end-lng").value = Number.isFinite(end[0]) ? end[0] : "";
+    $("#route-end-lat").value = Number.isFinite(end[1]) ? end[1] : "";
+  }
+
+  function readEndpointFields() {
+    if (routePoints.length < 2) return;
+    const values = [
+      Number($("#route-start-lng").value), Number($("#route-start-lat").value),
+      Number($("#route-end-lng").value), Number($("#route-end-lat").value)
+    ];
+    if (!values.every(Number.isFinite) || Math.abs(values[0]) > 180 || Math.abs(values[2]) > 180 || Math.abs(values[1]) > 90 || Math.abs(values[3]) > 90) {
+      setStatus("Enter valid longitude/latitude values for both endpoints", "error");
+      syncEndpointFields();
+      return;
+    }
+    const next = routePoints.map((point) => [...point]);
+    next[0] = [Number(values[0].toFixed(6)), Number(values[1].toFixed(6))];
+    next[next.length - 1] = [Number(values[2].toFixed(6)), Number(values[3].toFixed(6))];
+    commitRoutePoints(next);
   }
 
   function resetHistory(points) {
@@ -393,6 +501,7 @@
     $("#route-summary").textContent = `${segment.mode.toUpperCase()} · ${segment.distanceKm || "—"} km · ${segment.duration || "duration not set"}`;
     $("#route-saved-state").textContent = override ? "Yes" : "No";
     $("#smooth-route").textContent = routeSmoothed ? "Use straight preview" : "Smooth preview";
+    syncEndpointFields();
     renderRouteList();
     if (mapReady) drawRouteEditor(center);
   }
@@ -410,13 +519,14 @@
       element.type = "button";
       element.className = `route-point-marker ${index === selectedRoutePoint ? "selected" : ""}`;
       element.textContent = String(index + 1);
-      element.setAttribute("aria-label", `Route control point ${index + 1}`);
+      const pointName = index === 0 ? "Route start point" : (index === routePoints.length - 1 ? "Route end point" : `Route control point ${index + 1}`);
+      element.setAttribute("aria-label", pointName);
       element.addEventListener("click", (event) => {
         event.stopPropagation();
         selectedRoutePoint = index;
         drawRouteEditor(false);
       });
-      const marker = new maplibregl.Marker({ element, draggable: index > 0 && index < routePoints.length - 1, anchor: "center" }).setLngLat(point).addTo(map);
+      const marker = new maplibregl.Marker({ element, draggable: true, anchor: "center" }).setLngLat(point).addTo(map);
       marker.on("dragend", () => {
         const next = routePoints.map((item) => [...item]);
         const position = marker.getLngLat();
@@ -426,6 +536,7 @@
       activeMarkers.push(marker);
     });
     $("#route-point-count").textContent = String(routePoints.length);
+    syncEndpointFields();
     updateUndoButtons();
     if (center) fitCoordinates(original, 14);
   }
@@ -474,6 +585,30 @@
     }
   }
 
+  function setJourney(id) {
+    const nextJourney = data.journeys.find((item) => item.id === id);
+    if (!nextJourney) return;
+    journey = nextJourney;
+    basePhotos = journey.id === data.defaultJourneyId ? tripPhotos : (journey.photos || []);
+    selectedPhotoId = basePhotos[0]?.id || null;
+    selectedSegmentId = journey.days.flatMap((day) => day.segmentIds)[0] || null;
+    selectedDayId = journey.days[0]?.id || null;
+    renderJourneySelector();
+    renderDaySelectors();
+    renderPhotoGrid();
+    renderRouteList();
+    renderDayList();
+    if (mode === "photos") {
+      if (selectedPhotoId) selectPhoto(selectedPhotoId, true);
+      else if (selectedDayId && mapReady) renderDayMap(dayById(selectedDayId), true);
+    } else if (mode === "routes") {
+      if (selectedSegmentId) selectRoute(selectedSegmentId, true);
+      else if (selectedDayId && mapReady) renderDayMap(dayById(selectedDayId), true);
+    } else if (selectedDayId) {
+      selectDay(selectedDayId, true);
+    }
+  }
+
   function setMode(nextMode) {
     mode = nextMode;
     $(".studio-shell").dataset.mode = mode;
@@ -482,23 +617,34 @@
     $("#route-tools").hidden = mode !== "routes";
     $("#map-instructions").textContent = mode === "photos"
       ? "Click the map or drag the pin to save this photo's exact location and the current map zoom. Located photos open at that view in the atlas."
-      : "Click close to the orange line to insert a control point, then drag numbered points to shape the route.";
+      : (mode === "routes"
+        ? "Click close to the orange line to insert a control point, then drag any numbered point—including the endpoints—to shape the route."
+        : "Edit this day's date label, title, and description. The map shows every travel leg assigned to the day.");
     if (!mapReady) return;
-    if (mode === "photos") selectPhoto(selectedPhotoId, true);
-    else selectRoute(selectedSegmentId, true);
+    if (mode === "photos") {
+      if (selectedPhotoId) selectPhoto(selectedPhotoId, true);
+      else if (selectedDayId) renderDayMap(dayById(selectedDayId), true);
+    } else if (mode === "routes") {
+      if (selectedSegmentId) selectRoute(selectedSegmentId, true);
+      else if (selectedDayId) renderDayMap(dayById(selectedDayId), true);
+    } else if (selectedDayId) selectDay(selectedDayId, true);
   }
 
   async function init() {
     try {
       const response = await fetch("/api/state");
-      state = await response.json();
+      const loadedState = await response.json();
+      state = { photos: loadedState.photos || {}, routes: loadedState.routes || {}, days: loadedState.days || {} };
     } catch (error) {
       setStatus(`Could not load local edits: ${error.message}`, "error");
       return;
     }
+    renderJourneySelector();
     renderDaySelectors();
     renderPhotoGrid();
     renderRouteList();
+    renderDayList();
+    if (selectedDayId) selectDay(selectedDayId, false);
     map = new maplibregl.Map({ container: "studio-map", style: styleUrl, center: [8.45, 46.7], zoom: 7.5, attributionControl: false });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     map.addControl(new maplibregl.AttributionControl({ compact: true, customAttribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }), "bottom-right");
@@ -510,6 +656,7 @@
     });
     map.on("click", (event) => {
       if (mode === "routes") return insertRoutePoint(event);
+      if (mode === "days") return;
       if (!selectedPhotoId) return;
       $("#photo-lat").value = event.lngLat.lat.toFixed(6);
       $("#photo-lng").value = event.lngLat.lng.toFixed(6);
@@ -521,6 +668,7 @@
 
   document.querySelectorAll(".studio-header [data-mode]").forEach((button) => button.addEventListener("click", () => setMode(button.dataset.mode)));
   $("#save-all").addEventListener("click", saveAll);
+  $("#studio-journey").addEventListener("change", (event) => setJourney(event.target.value));
   $("#photo-day-filter").addEventListener("change", renderPhotoGrid);
   $("#route-day-filter").addEventListener("change", () => {
     renderRouteList();
@@ -535,6 +683,12 @@
     const button = event.target.closest("[data-segment-id]");
     if (button) selectRoute(button.dataset.segmentId, true);
   });
+  $("#day-editor-filter").addEventListener("change", (event) => selectDay(event.target.value, true));
+  $("#studio-day-list").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-day-edit-id]");
+    if (button) selectDay(button.dataset.dayEditId, true);
+  });
+  $("#day-form").addEventListener("input", readDayForm);
   $("#photo-form").addEventListener("input", (event) => {
     if (!["photo-lat", "photo-lng", "photo-zoom"].includes(event.target.id)) readPhotoForm();
   });
@@ -545,6 +699,7 @@
     readPhotoForm();
     selectPhoto(selectedPhotoId, true);
   });
+  $("#apply-route-endpoints").addEventListener("click", readEndpointFields);
   $("#smooth-route").addEventListener("click", () => {
     routeSmoothed = !routeSmoothed;
     $("#smooth-route").textContent = routeSmoothed ? "Use straight preview" : "Smooth preview";

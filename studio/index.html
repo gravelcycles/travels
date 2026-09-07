@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Atlas Studio · Lakes, Rails &amp; Rain</title>
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
-    <link rel="stylesheet" href="/studio.css?v=20260907-3" />
+    <link rel="stylesheet" href="/studio.css?v=20260907-4" />
   </head>
   <body>
     <header class="studio-header">
@@ -17,16 +17,21 @@
       <nav aria-label="Editor mode">
         <button class="active" data-mode="photos" type="button">Photo locations</button>
         <button data-mode="routes" type="button">Route drawing</button>
+        <button data-mode="days" type="button">Day copy</button>
       </nav>
       <div class="studio-actions">
         <span id="save-status" role="status">Loading…</span>
-        <a href="/dist/?photoSource=local" target="_blank" rel="noreferrer">Preview atlas</a>
+        <a href="/dist/switzerland-italy.html?photoSource=local" target="_blank" rel="noreferrer">Preview atlas</a>
         <button id="save-all" type="button">Save locally</button>
       </div>
     </header>
 
     <main class="studio-shell" data-mode="photos">
       <aside class="browser-panel">
+        <div class="studio-journey-picker">
+          <label for="studio-journey">Journey</label>
+          <select id="studio-journey"></select>
+        </div>
         <section class="photo-browser" data-panel="photos">
           <label for="photo-day-filter">Photos from</label>
           <select id="photo-day-filter"></select>
@@ -36,6 +41,11 @@
           <label for="route-day-filter">Routes from</label>
           <select id="route-day-filter"></select>
           <div class="route-list" id="studio-route-list"></div>
+        </section>
+        <section class="day-browser" data-panel="days" hidden>
+          <label for="day-editor-filter">Journey day</label>
+          <select id="day-editor-filter"></select>
+          <div class="day-edit-list" id="studio-day-list"></div>
         </section>
       </aside>
 
@@ -68,8 +78,6 @@
           <input id="photo-caption" name="caption" />
           <label for="photo-description">What's happening in this photo?</label>
           <textarea id="photo-description" name="description" rows="5" placeholder="A few plain-language notes are enough; this appears beside the photo."></textarea>
-          <label for="photo-alt">Accessibility description</label>
-          <textarea id="photo-alt" name="alt" rows="3"></textarea>
           <label class="checkbox"><input id="photo-hidden" name="hidden" type="checkbox" /> Hide from the public atlas</label>
           <p class="editor-note">Changes remain local until they are committed and the site is deployed. Private brainstorming belongs outside the description field.</p>
         </form>
@@ -78,9 +86,21 @@
           <span class="eyebrow">SELECTED LEG</span>
           <h2 id="route-title">Choose a route</h2>
           <p id="route-summary"></p>
+          <fieldset class="endpoint-fields">
+            <legend>Route endpoints</legend>
+            <div>
+              <label>Start longitude<input id="route-start-lng" inputmode="decimal" /></label>
+              <label>Start latitude<input id="route-start-lat" inputmode="decimal" /></label>
+            </div>
+            <div>
+              <label>End longitude<input id="route-end-lng" inputmode="decimal" /></label>
+              <label>End latitude<input id="route-end-lat" inputmode="decimal" /></label>
+            </div>
+            <button class="secondary" id="apply-route-endpoints" type="button">Apply endpoint coordinates</button>
+          </fieldset>
           <div class="route-instructions">
             <strong>Drawing controls</strong>
-            <p>Click the line to insert a point. Drag a numbered point to reshape it. Select a point and delete it; endpoints stay fixed.</p>
+            <p>Click the line to insert a point. Drag any numbered point—including the start and end—to reshape it. Select an intermediate point to delete it.</p>
             <p><strong>Smooth preview</strong> rounds your control-point line without replacing the editable points. Add enough points to keep the result on the intended road, rail, or water.</p>
           </div>
           <dl class="route-stats">
@@ -88,6 +108,18 @@
             <div><dt>Saved override</dt><dd id="route-saved-state">No</dd></div>
           </dl>
         </section>
+
+        <form id="day-form" data-panel="days" hidden>
+          <span class="eyebrow">SELECTED DAY</span>
+          <h2 id="day-editor-heading">Choose a day</h2>
+          <label for="day-date">Date label</label>
+          <input id="day-date" name="date" />
+          <label for="day-title">Day title</label>
+          <input id="day-title" name="title" />
+          <label for="day-description">Day description</label>
+          <textarea id="day-description" name="text" rows="10"></textarea>
+          <p class="editor-note">The title appears in the day list and journal. The description is also used as concise route-story context.</p>
+        </form>
       </aside>
     </main>
 
@@ -96,6 +128,6 @@
     <script src="/dist/assets/route-geometry.js"></script>
     <script src="/dist/assets/trip-photos.js"></script>
     <script src="/dist/assets/content-overrides.js"></script>
-    <script src="/studio.js?v=20260907-7"></script>
+    <script src="/studio.js?v=20260907-9"></script>
   </body>
 </html>

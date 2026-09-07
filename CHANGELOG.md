@@ -6,6 +6,16 @@ commit after it is known.
 
 ## 7 September 2026
 
+### Multi-journey Studio and editable day copy
+
+- Added a Studio journey selector covering every real and demo journey, while
+  retaining per-day selection of every route leg.
+- Made route start and end pins draggable and added exact endpoint coordinate
+  fields that participate in route undo/redo.
+- Added a Day copy mode for editing date labels, titles, and descriptions, with
+  readable source overrides in `content/day-overrides.json`.
+- Removed the photo accessibility-description field from Studio.
+
 ### Route stories on hover, tap, and focus
 
 Commit `ef3841d`; deployed successfully in Pages run `34142868328`.
