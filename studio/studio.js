@@ -41,20 +41,20 @@
       if (map.getLayer(id)) map.setPaintProperty(id, property, value);
     };
     paint("background", "background-color", "#f1eee5");
-    paint("natural_earth", "raster-opacity", ["interpolate", ["linear"], ["zoom"], 0, 0.72, 5.5, 0.42, 8, 0.08]);
-    paint("natural_earth", "raster-contrast", 0.2);
-    paint("water", "fill-color", "#94bfd3");
-    paint("waterway_river", "line-color", "#72aeca");
-    paint("waterway_other", "line-color", "#72aeca");
-    paint("park", "fill-color", "#b8d4a6");
-    paint("park", "fill-opacity", 0.78);
-    paint("landcover_wood", "fill-color", "#91b57e");
-    paint("landcover_wood", "fill-opacity", 0.58);
-    paint("landcover_grass", "fill-color", "#bed2ad");
-    paint("landcover_grass", "fill-opacity", 0.46);
-    paint("road_motorway_casing", "line-color", "#c47649");
-    paint("road_trunk_primary_casing", "line-color", "#c98a5d");
-    paint("road_secondary_tertiary_casing", "line-color", "#d1a06e");
+    paint("natural_earth", "raster-opacity", ["interpolate", ["linear"], ["zoom"], 0, 0.62, 5.5, 0.34, 8, 0.06]);
+    paint("natural_earth", "raster-contrast", 0.12);
+    paint("water", "fill-color", "#a5cadb");
+    paint("waterway_river", "line-color", "#82b5cc");
+    paint("waterway_other", "line-color", "#82b5cc");
+    paint("park", "fill-color", "#c2d9b5");
+    paint("park", "fill-opacity", 0.7);
+    paint("landcover_wood", "fill-color", "#a3c393");
+    paint("landcover_wood", "fill-opacity", 0.5);
+    paint("landcover_grass", "fill-color", "#cbdcbe");
+    paint("landcover_grass", "fill-opacity", 0.38);
+    paint("road_motorway_casing", "line-color", "#cf8960");
+    paint("road_trunk_primary_casing", "line-color", "#d19b70");
+    paint("road_secondary_tertiary_casing", "line-color", "#d8ad82");
   }
 
   function placeById(id) {
@@ -247,7 +247,7 @@
   function clearActiveMap() {
     activeMarkers.forEach((marker) => marker.remove());
     activeMarkers = [];
-    ["studio-photo-routes", "studio-original-route", "studio-edited-route"].forEach((id) => {
+    ["studio-photo-routes-casing", "studio-photo-routes", "studio-original-route", "studio-edited-route-casing", "studio-edited-route"].forEach((id) => {
       if (map.getLayer(id)) map.removeLayer(id);
       if (map.getSource(id)) map.removeSource(id);
     });
@@ -279,7 +279,10 @@
       properties: {},
       geometry: { type: "LineString", coordinates: segmentCoordinates(segment) }
     }));
-    if (features.length) addLine("studio-photo-routes", features, "#1f6671", 4, .68);
+    if (features.length) {
+      addLine("studio-photo-routes-casing", features, "#fffef8", 8.5, .82);
+      addLine("studio-photo-routes", features, "#006f92", 4.7, .88);
+    }
     if (Number.isFinite(photo.lat) && Number.isFinite(photo.lng)) {
       const element = document.createElement("div");
       element.className = "studio-photo-marker";
@@ -400,7 +403,8 @@
     if (!segment) return;
     const original = segment.geometry?.length > 1 ? segment.geometry : (routeGeometry[segment.id] || segmentCoordinates(segment));
     addLine("studio-original-route", [{ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: original } }], "#60787b", 7, .42);
-    addLine("studio-edited-route", [{ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: editedGeometry() } }], "#b35f3f", 4.5, 1, !routeSmoothed);
+    addLine("studio-edited-route-casing", [{ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: editedGeometry() } }], "#fffef8", 9.5, .94);
+    addLine("studio-edited-route", [{ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: editedGeometry() } }], "#d4512c", 5.8, 1, !routeSmoothed);
     routePoints.forEach((point, index) => {
       const element = document.createElement("button");
       element.type = "button";

@@ -56,6 +56,14 @@ public overview check at `https://gravelcycles.github.io/travels/?v=af65787`
 confirmed the new terrain treatment, attribution, route layering, and a clean
 browser console.
 
+The follow-up route-contrast adjustment is complete locally: terrain and
+land-cover colors are slightly softer, unselected journey lines are brighter
+blue and wider, selected lines are brighter orange, and both receive stronger
+near-white casings. The same treatment is used in Atlas Studio. Desktop
+overview/Day 10, 390 px Day 10, Studio route mode, and demo checks passed with
+no browser warnings or errors. Add commit, Pages run, and cache-fresh public
+verification details after deployment.
+
 Run `npm run studio` and open `http://127.0.0.1:4173/studio/`. Saves update
 `content/photo-overrides.json`, `content/route-overrides.json`, and generated
 `dist/assets/content-overrides.js`; backups under `build/studio-backups/` are

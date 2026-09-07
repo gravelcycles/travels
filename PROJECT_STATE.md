@@ -37,7 +37,10 @@ Updated 7 September 2026.
   labels and terrain, preventing the atlas from keeping place labels above its
   route layers. Liberty preserves that layer control, Italy coverage, and the
   existing no-key static deployment.
-- Selected routes are orange and drawn above other routes.
+- Journey routes use a saturated blue with a wide near-white casing; selected
+  routes use a brighter orange and a still-wider casing. The slightly softened
+  terrain treatment keeps routes visually dominant without losing map detail.
+- Selected routes are drawn above other routes.
 - Basemap labels are drawn above route lines, preserving city-name context.
 - Day focus keeps other routes visible in quiet grey.
 - Day close-ups show previous/next arrows and `Day N of 14` inside the map.
