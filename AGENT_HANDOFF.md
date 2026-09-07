@@ -23,7 +23,9 @@ current family trip has the neutral detail URL
 `/travels/switzerland-italy.html`. Journey `kind`, `slug`, and page data select
 content while keeping one shared viewer implementation. The demo remains at
 `/travels/demo.html`. The user explicitly does not want their surname used in
-URLs, paths, or copy.
+URLs, paths, or copy. Commit `0db2121` deployed successfully in Pages run
+`34112686435`; cache-fresh checks confirmed the catalog, the stable 14-day trip
+page with 104 photos, low-discovery metadata, and a clean browser console.
 
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
