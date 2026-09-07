@@ -8,6 +8,8 @@ commit after it is known.
 
 ### Unmistakable transport modes
 
+Commit `63e6d2c`; deployed successfully in Pages run `34113344360`.
+
 - Gave train, ferry, bus, gondola, walk, car, and bicycle routes distinct
   color-vision-conscious colors, widths, and line patterns.
 - Matched the map legend to the rendered route grammar, including a diamond cue
