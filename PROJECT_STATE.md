@@ -7,7 +7,7 @@ Updated 7 September 2026.
 - Static MapLibre/OpenFreeMap site; GitHub Actions publishes `dist/` from `main`.
 - The published site remains static and has no backend, database, or API keys.
   Local scripts generate route and photo assets before publication.
-- The real Switzerland–Italy trip has 14 days, 30 ordered segments, and train,
+- The real Switzerland–Italy trip has 14 days, 29 ordered segments, and train,
   boat, bus, gondola, bicycle, and walking legs.
 - A local import matched 104 trip photos to 11 of the 14 days and generated 356
   metadata-stripped WebP derivatives. They are published in the public
@@ -18,6 +18,8 @@ Updated 7 September 2026.
 
 - `/travels/` shows the one real trip with no journey dropdown.
 - `/travels/demo.html` shows only demo journeys with a sample selector.
+- Day 1 is the single Zürich Flughafen → Luzern arrival leg, with a 68 km day
+  summary and a close-up bounded to that direction of travel.
 - Days support multiple modes and close-up map bounds.
 - Destination labels use `destinationId`, so Luzern-based day trips are labeled
   by the place visited.
@@ -61,8 +63,6 @@ Updated 7 September 2026.
   reviewed shaping points rather than full network geometry. Studio smoothing
   is geometric, not transport-network-aware, so enough control points must be
   used to keep a line on the intended road, rail, or water.
-- Day 1 currently includes an incorrect Luzern → Zürich Flughafen pickup leg;
-  the intended route is only Zürich Flughafen → Luzern.
 - Both Day 10 ferry legs need geometry review; their current lines are visibly
   wrong in the close-up.
 - Day dots are DOM markers above the basemap and can still obscure place names,
