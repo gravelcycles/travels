@@ -8,6 +8,8 @@ commit after it is known.
 
 ### Journey-specific route geometry pipeline
 
+Commit `8d85fb8`; deployed successfully in Pages run `34145829874`.
+
 - Replaced the default-trip/two-file route command with journey selection and
   committed per-journey source manifests.
 - Preserved ordered stops and existing reviewed geometry while surfacing

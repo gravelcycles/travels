@@ -66,6 +66,9 @@ manifested segments, preserves reviewed geometry on missing/disconnected input,
 warns on near-tied network components, retains ordered stops as waypoints, and
 writes deterministically sorted static output. Four route fixtures cover
 disconnection, ambiguity/determinism, ordered stops, and fallback preservation.
+Commit `8d85fb8` deployed successfully in Pages run `34145829874`; a
+cache-fresh check confirmed the full 14-day/104-photo trip and Day 10 content
+with a clean browser console.
 
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
