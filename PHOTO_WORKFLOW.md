@@ -43,6 +43,28 @@ Captions and alt text are useful automatic first passes, not final editorial
 copy. Review day assignment, lead-photo order, captions, and privacy before
 publishing.
 
+## Local annotation with Atlas Studio
+
+Run `npm run studio`, then open `http://127.0.0.1:4173/studio/`. The Studio uses
+the ignored local 480/1280/2560/3200 WebPs when available, so reviewing many
+photos does not repeatedly download the public Release assets.
+
+For each photo:
+
+1. Confirm or change its journey day.
+2. Click the map at the actual viewpoint, then drag the pin if needed.
+3. Name the exact place within the city or landscape and adjust the 12–18 map
+   zoom; 16 is a useful street-level default.
+4. Write a short caption and a separate plain-language account of what is
+   happening. Add useful accessibility alt text.
+5. Hide any photo that should not appear publicly.
+6. Choose **Save locally**. Review the JSON diff before committing.
+
+Saves write `content/photo-overrides.json` and rebuild the static
+`dist/assets/content-overrides.js` consumed by the atlas. They do not modify the
+originals or Release files. When a located photo is highlighted in the
+full-screen day viewer, the map moves to this exact coordinate and zoom.
+
 ## Generated image sizes and loading
 
 Each still gets the source-supported subset of 480, 1280, 2560, and 3200 px

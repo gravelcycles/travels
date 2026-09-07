@@ -4,7 +4,18 @@
   const data = window.JOURNEY_ATLAS_DATA;
   const realJourney = data.journeys.find((item) => item.id === data.defaultJourneyId);
   if (realJourney && Array.isArray(window.JOURNEY_ATLAS_TRIP_PHOTOS)) {
-    realJourney.photos = window.JOURNEY_ATLAS_TRIP_PHOTOS;
+    const contentOverrides = window.JOURNEY_ATLAS_CONTENT_OVERRIDES || { photos: {}, routes: {} };
+    realJourney.photos = window.JOURNEY_ATLAS_TRIP_PHOTOS
+      .map((photo) => {
+        const override = contentOverrides.photos?.[photo.id] || {};
+        const location = override.location || {};
+        return { ...photo, ...override, ...location };
+      })
+      .filter((photo) => !photo.hidden);
+    realJourney.segments.forEach((segment) => {
+      const override = contentOverrides.routes?.[segment.id];
+      if (override?.geometry?.length > 1) segment.geometry = override.geometry;
+    });
   }
   const OPENFREEMAP_STYLE = "https://tiles.openfreemap.org/styles/positron";
   const palette = {
@@ -38,6 +49,7 @@
   let viewerMapReady = false;
   let mainDecorations = { layerIds: [], sourceIds: [], markers: [] };
   let viewerDecorations = { layerIds: [], sourceIds: [], markers: [] };
+  let viewerDayId = activeDayId;
   let viewerPhotoIndex = 0;
   let swipeStartX = null;
   let hasPlayedOpeningMove = false;
@@ -729,51 +741,80 @@
   }
 
   function renderViewerFilmstrip(photos) {
-    $("#viewer-filmstrip").innerHTML = photos.map((photo, index) => {
-      const day = dayById(photo.dayId);
-      return `
-        <button type="button" data-viewer-index="${index}" class="${index === viewerPhotoIndex ? "active" : ""}" aria-label="Show photo ${index + 1}, day ${day.number}">
-          ${photoImageMarkup(photo, { alt: "", sizes: "180px" })}
-          <span>D${day.number}</span>
-        </button>
-      `;
-    }).join("");
+    $("#viewer-filmstrip").innerHTML = photos.length
+      ? photos.map((photo, index) => `
+          <button type="button" data-viewer-index="${index}" class="${index === viewerPhotoIndex ? "active" : ""}" aria-label="Show photo ${index + 1} of ${photos.length}">
+            ${photoImageMarkup(photo, { alt: "", sizes: "180px" })}
+            <span>${String(index + 1).padStart(2, "0")}</span>
+          </button>
+        `).join("")
+      : '<div class="viewer-empty-strip">No photographs for this day.</div>';
     prepareProgressiveImages($("#viewer-filmstrip"));
     const activeThumb = $("#viewer-filmstrip .active");
     if (activeThumb) activeThumb.scrollIntoView({ block: "nearest", inline: "center" });
   }
 
+  function viewerDay() {
+    return dayById(viewerDayId) || activeDay();
+  }
+
+  function preloadWithinDay(photos, index, radius = 2, targetWidth = 2560) {
+    for (let offset = 1; offset <= radius; offset += 1) {
+      preloadPhoto(photos[index - offset], targetWidth);
+      preloadPhoto(photos[index + offset], targetWidth);
+    }
+  }
+
   function updateViewer() {
-    const photos = orderedPhotos();
+    const day = viewerDay();
+    const photos = photosForDay(day.id);
+    viewerPhotoIndex = Math.max(0, Math.min(photos.length - 1, viewerPhotoIndex));
     const photo = photos[viewerPhotoIndex];
-    if (!photo) return;
-    const day = dayById(photo.dayId);
     activeDayId = day.id;
     const modalPhoto = $("#modal-photo");
-    modalPhoto.className = photo.blur ? "progressive-image" : "";
-    modalPhoto.srcset = "";
-    modalPhoto.src = photo.blur || photoAssetUrl(photo.src);
-    modalPhoto.alt = photo.alt;
-    modalPhoto.sizes = "(max-width: 900px) 100vw, 75vw";
-    if (photo.width) modalPhoto.width = photo.width;
-    if (photo.height) modalPhoto.height = photo.height;
-    if (photo.srcset?.length) {
-      modalPhoto.dataset.src = photoAssetUrl(photo.src);
-      modalPhoto.dataset.srcset = photoSrcset(photo);
-      modalPhoto.dataset.eager = "true";
-      hydrateImage(modalPhoto);
+    const emptyStage = $("#viewer-empty");
+    modalPhoto.hidden = !photo;
+    emptyStage.hidden = Boolean(photo);
+    if (photo) {
+      modalPhoto.className = photo.blur ? "progressive-image" : "";
+      modalPhoto.srcset = "";
+      modalPhoto.src = photo.blur || photoAssetUrl(photo.src);
+      modalPhoto.alt = photo.alt;
+      modalPhoto.sizes = "(max-width: 900px) 100vw, 75vw";
+      if (photo.width) modalPhoto.width = photo.width;
+      if (photo.height) modalPhoto.height = photo.height;
+      if (photo.srcset?.length) {
+        modalPhoto.dataset.src = photoAssetUrl(photo.src);
+        modalPhoto.dataset.srcset = photoSrcset(photo);
+        modalPhoto.dataset.eager = "true";
+        hydrateImage(modalPhoto);
+      }
+      $("#modal-caption").textContent = `${photo.caption} · ${photo.takenAt || `Day ${day.number}`}`;
+      $("#modal-location").textContent = photo.locationLabel ? `⌖ ${photo.locationLabel}` : "";
+      $("#modal-description").textContent = photo.description || "";
+      preloadWithinDay(photos, viewerPhotoIndex);
+    } else {
+      modalPhoto.removeAttribute("src");
+      modalPhoto.removeAttribute("srcset");
+      modalPhoto.alt = "";
+      $("#modal-caption").textContent = "";
+      $("#modal-location").textContent = "";
+      $("#modal-description").textContent = "This day does not have photographs yet.";
     }
-    $("#modal-caption").textContent = `${photo.caption} · ${photo.takenAt || `Day ${day.number}`}`;
-    $("#modal-progress").textContent = `PHOTO ${viewerPhotoIndex + 1} OF ${photos.length} · DAY ${day.number}`;
+    $("#modal-progress").textContent = photo ? `PHOTO ${viewerPhotoIndex + 1} OF ${photos.length}` : "NO PHOTOS";
     $("#modal-day-title").textContent = day.title;
     $("#modal-day-route").textContent = routeLabel(day);
-    $(".photo-prev").disabled = viewerPhotoIndex === 0;
-    $(".photo-next").disabled = viewerPhotoIndex === photos.length - 1;
+    $("#viewer-day-label").textContent = `Day ${day.number} · ${day.date}`;
+    $("#viewer-day-label").setAttribute("aria-label", `Day ${day.number} of ${journey.days.length} · ${day.date}`);
+    const dayIndex = journey.days.findIndex((item) => item.id === day.id);
+    $("#viewer-previous-day").disabled = dayIndex <= 0;
+    $("#viewer-next-day").disabled = dayIndex >= journey.days.length - 1;
+    $(".photo-prev").disabled = !photo || viewerPhotoIndex === 0;
+    $(".photo-next").disabled = !photo || viewerPhotoIndex === photos.length - 1;
     renderViewerFilmstrip(photos);
     renderDays();
     renderStory();
     drawMainMap(false);
-    preloadAround(photo.id, 2, 2560);
     if (viewerMapReady) syncViewerMap();
   }
 
@@ -784,9 +825,8 @@
       return;
     }
     clearDecorations(viewerMap, viewerDecorations);
-    const photo = orderedPhotos()[viewerPhotoIndex];
-    if (!photo) return;
-    const day = dayById(photo.dayId);
+    const day = viewerDay();
+    const photo = photosForDay(day.id)[viewerPhotoIndex];
     const selectedSegments = new Set(day.segmentIds);
     [...journey.segments]
       .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id)))
@@ -798,13 +838,13 @@
       });
     });
     addRailStopMarkers(viewerMap, viewerDecorations, day);
-    if (Number.isFinite(photo.lng) && Number.isFinite(photo.lat)) {
+    if (photo && Number.isFinite(photo.lng) && Number.isFinite(photo.lat)) {
       const element = document.createElement("div");
       element.className = "photo-location-marker";
       element.setAttribute("aria-label", "Current photo location");
       const marker = new maplibregl.Marker({ element, anchor: "center" }).setLngLat([photo.lng, photo.lat]).addTo(viewerMap);
       viewerDecorations.markers.push(marker);
-      viewerMap.easeTo({ center: [photo.lng, photo.lat], zoom: 9.5, duration: 650 });
+      viewerMap.easeTo({ center: [photo.lng, photo.lat], zoom: Math.max(12, Math.min(18, photo.zoom || 16)), duration: 650 });
     } else {
       const coordinates = dayCoordinates(day);
       if (coordinates.length > 1) {
@@ -816,7 +856,10 @@
   }
 
   function openPhoto(photoId) {
-    const photos = orderedPhotos();
+    const photo = photoById(photoId);
+    if (!photo) return;
+    viewerDayId = photo.dayId;
+    const photos = photosForDay(viewerDayId);
     const index = photos.findIndex((photo) => photo.id === photoId);
     viewerPhotoIndex = index >= 0 ? index : 0;
     if (!photoDialog.open) photoDialog.showModal();
@@ -825,9 +868,27 @@
   }
 
   function moveViewer(delta) {
-    const next = Math.max(0, Math.min(orderedPhotos().length - 1, viewerPhotoIndex + delta));
+    const photos = photosForDay(viewerDay().id);
+    const next = Math.max(0, Math.min(photos.length - 1, viewerPhotoIndex + delta));
     if (next === viewerPhotoIndex) return;
     viewerPhotoIndex = next;
+    updateViewer();
+  }
+
+  function openDayViewer(dayId = activeDayId) {
+    viewerDayId = dayById(dayId)?.id || journey.days[0].id;
+    viewerPhotoIndex = 0;
+    if (!photoDialog.open) photoDialog.showModal();
+    updateViewer();
+    window.requestAnimationFrame(initViewerMap);
+  }
+
+  function moveViewerDay(delta) {
+    const currentIndex = journey.days.findIndex((day) => day.id === viewerDay().id);
+    const nextDay = journey.days[currentIndex + delta];
+    if (!nextDay) return;
+    viewerDayId = nextDay.id;
+    viewerPhotoIndex = 0;
     updateViewer();
   }
 
@@ -836,6 +897,7 @@
     if (!nextJourney) return;
     journey = nextJourney;
     activeDayId = journey.days[0].id;
+    viewerDayId = activeDayId;
     mapScope = "journey";
     renderAll({ fit: false });
     if ($(".map-panel").offsetParent === null) {
@@ -860,13 +922,14 @@
   $("#previous-day").addEventListener("click", () => moveActiveDay(-1));
   $("#next-day").addEventListener("click", () => moveActiveDay(1));
   $("#show-all-photos").addEventListener("click", () => {
-    const first = orderedPhotos()[0];
-    if (first) openPhoto(first.id);
+    openDayViewer(activeDayId);
   });
   $("#open-notes").addEventListener("click", () => $("#notes-dialog").showModal());
   $(".photo-close").addEventListener("click", () => photoDialog.close());
   $(".photo-prev").addEventListener("click", () => moveViewer(-1));
   $(".photo-next").addEventListener("click", () => moveViewer(1));
+  $("#viewer-previous-day").addEventListener("click", () => moveViewerDay(-1));
+  $("#viewer-next-day").addEventListener("click", () => moveViewerDay(1));
   $("#viewer-filmstrip").addEventListener("click", (event) => {
     const button = event.target.closest("[data-viewer-index]");
     if (!button) return;
@@ -885,8 +948,10 @@
   });
   document.addEventListener("keydown", (event) => {
     if (!photoDialog.open) return;
-    if (event.key === "ArrowLeft") moveViewer(-1);
-    if (event.key === "ArrowRight") moveViewer(1);
+    if (event.key === "ArrowLeft" && event.shiftKey) moveViewerDay(-1);
+    else if (event.key === "ArrowRight" && event.shiftKey) moveViewerDay(1);
+    else if (event.key === "ArrowLeft") moveViewer(-1);
+    else if (event.key === "ArrowRight") moveViewer(1);
   });
   document.querySelectorAll(".mobile-nav button").forEach((button) => button.addEventListener("click", () => setMobileTab(button.dataset.tab)));
   window.addEventListener("resize", () => {

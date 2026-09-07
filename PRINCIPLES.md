@@ -11,7 +11,15 @@
 - Line patterns should remain distinguishable without relying only on color.
 - Every shared feature change must also work on the demo page.
 - Preserve private photo originals; publish reviewed, optimized derivatives.
+- Keep human-edited photo and route overrides as readable JSON sources; treat
+  the browser-loaded override JavaScript as generated output.
+- A highlighted located photo should move the map to its exact coordinate and
+  intentional local zoom, while its caption and description explain the scene.
+- Full-screen photo browsing remains anchored to a calendar day; changing days
+  also changes the atlas map/story context.
 - Give photos a tiny embedded preview, responsive sizes, lazy off-screen loads,
   and bounded neighbor preloads so the atlas stays quick without feeling empty.
+- Route smoothing must never imply network accuracy. Keep enough editable
+  control points to hold trains on rails, ferries on water, and roads on land.
 - Verify changes on the deployed GitHub Pages site, including a fresh load.
 - `noindex` discourages discovery but does not make a public Pages site private.

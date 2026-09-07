@@ -37,6 +37,16 @@ Updated 7 September 2026.
 - The photo UI supports embedded blurred previews, responsive `srcset`, lazy
   hydration with a generous look-ahead margin, and preloading of neighboring
   full-screen photos.
+- The full-screen photo viewer is day-based: arrows step through photos within
+  the selected day, separate arrows move between days, and the main story/map
+  follow the viewer day. Days without photos show an intentional empty state.
+- Located photos move the side map to their exact coordinate and stored zoom
+  while highlighted, and the viewer can show both a short caption and longer
+  scene description.
+- `npm run studio` starts a loopback-only Atlas Studio for placing photos and
+  editing their text, or redrawing a route with draggable control points,
+  smoothing, undo, and redo. Saves write JSON sources plus the generated public
+  override asset.
 
 ## Known issues
 
@@ -44,10 +54,13 @@ Updated 7 September 2026.
   from the manifest; replacing a file under the same tag may remain cached, so
   use a new asset filename for edited replacements.
 - The 104 photo captions and day-only matches are automatic first passes. None
-  of the supplied stills contained GPS coordinates, and days 9, 11, and 14 have
-  no family photos.
+  of the supplied stills contained GPS coordinates; the new Studio is ready,
+  but its photo-location and prose overrides are currently empty. Days 9, 11,
+  and 14 have no family photos.
 - Bus, bicycle, walking, and gondola routes other than Bellagio–Como still use
-  reviewed shaping points rather than full network geometry.
+  reviewed shaping points rather than full network geometry. Studio smoothing
+  is geometric, not transport-network-aware, so enough control points must be
+  used to keep a line on the intended road, rail, or water.
 
 ## Main lesson
 

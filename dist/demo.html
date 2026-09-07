@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
-    <link rel="stylesheet" href="./assets/styles.css?v=20260906-9" />
+    <link rel="stylesheet" href="./assets/styles.css?v=20260907-3" />
   </head>
   <body>
     <header class="site-header">
@@ -49,7 +49,7 @@
           <div class="map-actions">
             <button id="focus-day" type="button" aria-label="Zoom to the selected day's complete route">Day close-up</button>
             <button id="fit-route" type="button" aria-label="Fit the whole route on the map">Fit route</button>
-            <button id="show-all-photos" type="button">All photos <span id="photo-count"></span></button>
+            <button id="show-all-photos" type="button">Photo days <span id="photo-count"></span></button>
           </div>
         </div>
         <div id="map" aria-label="Map showing the selected journey"></div>
@@ -107,22 +107,29 @@
       </form>
     </dialog>
 
-    <dialog class="photo-dialog" id="photo-dialog" aria-label="All journey photos">
+    <dialog class="photo-dialog" id="photo-dialog" aria-label="Journey photos by day">
       <div class="photo-viewer">
         <button class="photo-close" aria-label="Close photo viewer">×</button>
         <section class="photo-stage" aria-live="polite">
           <button class="photo-nav photo-prev" type="button" aria-label="Previous photo">‹</button>
-          <figure><img id="modal-photo" alt="" /><figcaption id="modal-caption"></figcaption></figure>
+          <figure><div class="viewer-empty" id="viewer-empty" hidden><strong>No photographs</strong><span>Use the day arrows to keep exploring.</span></div><img id="modal-photo" alt="" /><figcaption id="modal-caption"></figcaption></figure>
           <button class="photo-nav photo-next" type="button" aria-label="Next photo">›</button>
         </section>
         <aside class="photo-context">
           <div id="photo-map" aria-label="Map following the current photo"></div>
           <div class="photo-context-copy">
+            <div class="viewer-day-nav">
+              <button id="viewer-previous-day" type="button" aria-label="Previous photo day">←</button>
+              <span id="viewer-day-label"></span>
+              <button id="viewer-next-day" type="button" aria-label="Next photo day">→</button>
+            </div>
             <span id="modal-progress"></span>
             <h2 id="modal-day-title"></h2>
             <p id="modal-day-route"></p>
+            <p class="modal-location" id="modal-location"></p>
+            <p class="modal-description" id="modal-description"></p>
           </div>
-          <div class="viewer-filmstrip" id="viewer-filmstrip" aria-label="All journey photos"></div>
+          <div class="viewer-filmstrip" id="viewer-filmstrip" aria-label="Photos from this day"></div>
         </aside>
       </div>
     </dialog>
@@ -130,6 +137,7 @@
     <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
     <script src="./assets/journeys.js?v=20260906-9"></script>
     <script src="./assets/route-geometry.js?v=20260906-9"></script>
-    <script src="./assets/app.js?v=20260906-9"></script>
+    <script src="./assets/content-overrides.js?v=20260907-1"></script>
+    <script src="./assets/app.js?v=20260907-3"></script>
   </body>
 </html>

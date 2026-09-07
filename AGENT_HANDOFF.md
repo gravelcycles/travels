@@ -10,12 +10,19 @@ Read `PROJECT_STATE.md` and `PRINCIPLES.md` first.
 
 ## Current pass
 
-Locally completed on 6 September: OpenStreetMap-derived geometry for all train
-and ferry legs, shoreline-road geometry for the Bellagio–Como bus, route layers
-below basemap labels, a day-stepper in map close-ups, and a complete progressive
-photo implementation. The photo build contains 104 stills / 356 WebP assets
-(about 169 MB) and excludes originals, metadata, videos, and four out-of-range
-stills. Desktop and 390 px mobile views were tested in the in-app browser.
+Locally completed on 7 September: a day-scoped full-screen photo viewer and a
+loopback-only Atlas Studio for exact photo positions/text and manual route
+redrawing. The viewer keeps the main story and side map synchronized as its day
+changes and zooms to stored photo coordinates. The Studio provides draggable
+photo pins; caption, description, alt, exact-place, day, zoom, and visibility
+fields; plus route control points, smoothing, undo/redo, reset, and deletion.
+
+Run `npm run studio` and open `http://127.0.0.1:4173/studio/`. Saves update
+`content/photo-overrides.json`, `content/route-overrides.json`, and generated
+`dist/assets/content-overrides.js`; backups under `build/studio-backups/` are
+ignored. Both source JSON files intentionally start empty. Do not publish the
+Studio itself as a server—the public site consumes only the static generated
+asset.
 
 The user explicitly approved public photo hosting. The public GitHub Release
 `trip-photos-v1` now contains all 356 WebP derivatives (176,851,380 bytes), and
@@ -27,11 +34,10 @@ Next:
 1. Review the 104 automatic day matches, generic captions, and lead-photo order.
 2. Decide whether the six MOV files should get a separate video pipeline.
 3. Find reviewed fallback images only if days 9, 11, and 14 need media.
-4. Continue replacing remaining road/walk/gondola shaping points only where a
-   close-up reveals a visible error.
-5. Build a localhost-only Atlas Studio for photo metadata and route control
-   points, writing reviewable JSON overrides rather than editing generated
-   manifests directly.
+4. Use Atlas Studio to replace remaining road/walk/gondola shaping points only
+   where a close-up reveals a visible error.
+5. Consider transport-network-aware snapping as a later enhancement; the
+   current smooth preview deliberately remains predictable and editable.
 
 ## Topographic basemap direction
 
@@ -55,5 +61,9 @@ the trip continues into Italy.
 - City labels remain legible above route lines.
 - Day focus shows working previous/next controls at desktop and phone widths.
 - Only nearby images hydrate; a large-screen viewer selects the 2560 px source.
+- The full-screen viewer stays within one day for photo arrows, while day arrows
+  change both its photo set and the main map/story selection.
+- Atlas Studio changes survive reload after **Save locally**, and route
+  undo/redo remains usable after adding, dragging, or deleting a control point.
 - Test the deployed URLs with a cache-fresh query after the Pages workflow
   succeeds. Bump the current static asset version token when assets change.
