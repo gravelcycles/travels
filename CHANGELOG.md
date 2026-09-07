@@ -8,6 +8,8 @@ commit after it is known.
 
 ### Atlas catalog and stable trip page
 
+Commit `0db2121`; deployed successfully in Pages run `34112686435`.
+
 - Changed `/travels/` into a catalog of real journeys.
 - Moved *Lakes, Rails & Rain* to the neutral, shareable
   `/travels/switzerland-italy.html` URL.
