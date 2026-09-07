@@ -11,5 +11,7 @@
 - Line patterns should remain distinguishable without relying only on color.
 - Every shared feature change must also work on the demo page.
 - Preserve private photo originals; publish reviewed, optimized derivatives.
+- Give photos a tiny embedded preview, responsive sizes, lazy off-screen loads,
+  and bounded neighbor preloads so the atlas stays quick without feeling empty.
 - Verify changes on the deployed GitHub Pages site, including a fresh load.
 - `noindex` discourages discovery but does not make a public Pages site private.
