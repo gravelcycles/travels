@@ -30,7 +30,9 @@ page with 104 photos, low-discovery metadata, and a clean browser console.
 T04 is complete locally: all seven modes now have their own high-contrast color,
 width, and solid/dash/dot/diamond cue. The map and HTML legend share the same
 visual grammar; selected routes remain orange and use the mode's pattern and
-width over a stronger near-white casing.
+width over a stronger near-white casing. Commit `63e6d2c` deployed successfully
+in Pages run `34113344360`; a cache-fresh Day 10 check confirmed all five mixed
+legs, the updated legend, and a clean browser console.
 
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
