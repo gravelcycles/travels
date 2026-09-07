@@ -51,7 +51,7 @@ commands.
 
 ## P1 · Reusable route pipeline
 
-- [ ] **T08 — Generalize network geometry for multiple journeys.** Refactor
+- [x] **T08 — Generalize network geometry for multiple journeys.** Refactor
       `scripts/build-route-geometry.mjs` to select a journey ID and consume a
       per-journey source manifest. Preserve ordered stops, provenance, warnings,
       static deterministic output, and existing reviewed geometry. Follow

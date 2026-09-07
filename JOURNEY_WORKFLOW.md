@@ -39,9 +39,8 @@ Keep these concepts separate:
 - day `placeId`: the overnight/base place;
 - day `destinationId`: the meaningful destination used in the story label.
 
-The current source data lives in `dist/assets/journeys.js`. Before adding many
-real journeys, complete the catalog/detail-page refactor in `TODO.md` so each
-trip has a stable page and the root is an atlas of all real trips.
+The current source data lives in `dist/assets/journeys.js`. The root catalog
+and stable trip-detail URLs are selected from each journey's `kind` and `slug`.
 
 ## Route geometry priority
 
@@ -67,18 +66,23 @@ an Overpass JSON export containing ways and child nodes, builds a connected
 rail graph, snaps the endpoints/stops to a common component, finds the shortest
 network path through them, and simplifies the result:
 
+Each journey with generated network routes has a committed manifest at
+`content/route-sources/<journey-id>.json`. It maps segment IDs to named network
+inputs and records provider, retrieval date, query/filter, bounds, snapping,
+gap-welding, simplification, and reviewed-preserve exceptions. Build exactly
+one journey with:
+
 ```sh
-npm run routes:build -- build/route-inputs/rail-overpass.json \
-  build/route-inputs/ferry-overpass.json
+npm run routes:build -- --journey switzerland-italy-family-2026
 ```
 
-`scripts/build-route-geometry.mjs` currently targets the default journey and
-handles `train` and `boat` segments. Generalizing it to a journey ID and
-per-journey source manifest is a prerequisite for a scalable multi-trip flow.
-Record the Overpass query, bounding box, retrieval date, and any gap welding or
-manual disambiguation in `ROUTE_SOURCES.md`. Raw network exports may remain in
-ignored `build/route-inputs/`; the query/provenance and resulting static
-geometry must be committed.
+The builder routes through the segment's endpoints and ordered `stops`/`via`
+points, updates only IDs named by that journey's manifest, sorts the shared
+static output deterministically, and warns about disconnected or near-tied
+network components. If an input is unavailable or routing fails, the last
+reviewed geometry is retained. `--strict` treats any warning as a failed build
+and leaves the output unchanged. Raw network exports remain in ignored
+`build/route-inputs/`; commit the manifest, provenance, and reviewed result.
 
 ### Ferry routes
 

@@ -6,6 +6,15 @@ commit after it is known.
 
 ## 7 September 2026
 
+### Journey-specific route geometry pipeline
+
+- Replaced the default-trip/two-file route command with journey selection and
+  committed per-journey source manifests.
+- Preserved ordered stops and existing reviewed geometry while surfacing
+  missing, disconnected, and near-tied network inputs as explicit warnings.
+- Made shared route output deterministic and added fixture tests for ordered
+  stops, disconnected networks, ambiguous networks, and fallback preservation.
+
 ### Multi-journey Studio and editable day copy
 
 Commit `14a344e`; deployed successfully in Pages run `34144643931`.
