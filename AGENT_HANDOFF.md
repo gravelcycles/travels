@@ -50,8 +50,11 @@ and Studio now use OpenFreeMap Liberty with stronger water, forest, park,
 shaded-relief, and road treatment. OpenTopoMap was evaluated but not selected:
 its raster tiles would prevent place labels from remaining independently above
 the atlas route layers. Desktop overview/Day 10, 390 px Day 10, Studio, viewer,
-and demo checks passed locally with no browser warnings or errors. Add commit,
-Pages run, and public verification details after deployment.
+and demo checks passed locally with no browser warnings or errors. Commit
+`af65787` deployed successfully in Pages run `34094449848`; a cache-fresh
+public overview check at `https://gravelcycles.github.io/travels/?v=af65787`
+confirmed the new terrain treatment, attribution, route layering, and a clean
+browser console.
 
 Run `npm run studio` and open `http://127.0.0.1:4173/studio/`. Saves update
 `content/photo-overrides.json`, `content/route-overrides.json`, and generated
