@@ -6,6 +6,15 @@ commit after it is known.
 
 ## 7 September 2026
 
+### Unmistakable transport modes
+
+- Gave train, ferry, bus, gondola, walk, car, and bicycle routes distinct
+  color-vision-conscious colors, widths, and line patterns.
+- Matched the map legend to the rendered route grammar, including a diamond cue
+  for gondolas and dash-dot cue for cars.
+- Preserved orange selected-route emphasis and near-white casings while keeping
+  each mode's width and pattern visible.
+
 ### Atlas catalog and stable trip page
 
 Commit `0db2121`; deployed successfully in Pages run `34112686435`.

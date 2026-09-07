@@ -116,15 +116,16 @@ button { color: inherit; }
 .day-copy em { margin-top: 3px; color: var(--ink-soft); font-size: 0.76rem; font-style: normal; }
 .day-meta { min-width: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; color: var(--muted); font-size: 0.65rem; }
 
-.line-swatch { --swatch: var(--route); width: 30px; height: 7px; display: inline-block; flex: 0 0 auto; background-position: center; background-repeat: repeat-x; }
-.line-swatch.train { background: linear-gradient(var(--swatch), var(--swatch)) center / 100% 3px no-repeat; }
-.line-swatch.boat { background: repeating-linear-gradient(90deg, var(--swatch) 0 7px, transparent 7px 11px) center / 100% 3px no-repeat; }
-.line-swatch.bus { background: repeating-linear-gradient(90deg, var(--swatch) 0 12px, transparent 12px 19px) center / 100% 3px no-repeat; }
+.line-swatch { --swatch: var(--route); width: 32px; height: 9px; display: inline-block; flex: 0 0 auto; background-position: center; background-repeat: repeat-x; filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff); }
+.line-swatch.train { --swatch: #0072b2; background: linear-gradient(var(--swatch), var(--swatch)) center / 100% 5px no-repeat; }
+.line-swatch.boat { --swatch: #007f8b; background: repeating-linear-gradient(90deg, var(--swatch) 0 6px, transparent 6px 10px) center / 100% 4px no-repeat; }
+.line-swatch.bus { --swatch: #a85c00; background: repeating-linear-gradient(90deg, var(--swatch) 0 13px, transparent 13px 19px) center / 100% 5px no-repeat; }
 .line-swatch.gondola { position: relative; overflow: hidden; background: linear-gradient(var(--swatch), var(--swatch)) center / 100% 1px no-repeat; }
-.line-swatch.gondola::after { content: "› › ›"; position: absolute; inset: -7px 0 0; color: var(--swatch); font-size: 13px; font-weight: 900; white-space: nowrap; letter-spacing: 1px; }
-.line-swatch.walk { background: repeating-linear-gradient(90deg, var(--swatch) 0 2px, transparent 2px 6px) center / 100% 3px no-repeat; }
-.line-swatch.car { background: radial-gradient(circle, var(--swatch) 0 2px, transparent 2.3px) left center / 8px 7px repeat-x; }
-.line-swatch.bike { background: repeating-linear-gradient(90deg, var(--swatch) 0 5px, transparent 5px 9px) center / 100% 3px no-repeat; }
+.line-swatch.gondola { --swatch: #7b4ba3; }
+.line-swatch.gondola::after { content: "◆  ◆  ◆"; position: absolute; inset: -4px 0 0; color: var(--swatch); font-size: 9px; font-weight: 900; white-space: nowrap; }
+.line-swatch.walk { --swatch: #3d4a4d; background: radial-gradient(circle, var(--swatch) 0 1.6px, transparent 1.9px) left center / 6px 8px repeat-x; }
+.line-swatch.car { --swatch: #a43a2f; background: repeating-linear-gradient(90deg, var(--swatch) 0 13px, transparent 13px 16px, var(--swatch) 16px 19px, transparent 19px 23px) center / auto 5px no-repeat; }
+.line-swatch.bike { --swatch: #24804f; background: repeating-linear-gradient(90deg, var(--swatch) 0 7px, transparent 7px 11px) center / 100% 4px no-repeat; }
 
 .map-panel { min-width: 0; position: relative; overflow: hidden; display: grid; grid-template-rows: auto minmax(0, 1fr); background: var(--map-water); }
 .map-header { min-height: 116px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: 17px 18px 16px; border-bottom: 1px solid var(--line); background: rgba(251, 250, 246, 0.98); position: relative; z-index: 3; }

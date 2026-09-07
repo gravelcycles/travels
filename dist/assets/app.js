@@ -25,15 +25,15 @@
     casing: "#fffef8",
     muted: "#71878a"
   };
-  const labels = { train: "Train", boat: "Boat", bus: "Bus", gondola: "Gondola", walk: "Walk", car: "Car", bike: "Bike" };
-  const dashes = {
-    train: null,
-    boat: [0.1, 2.1],
-    bus: [5.5, 3.2],
-    gondola: [1.2, 2.4],
-    walk: [0.1, 1.45],
-    car: [3.4, 2.3],
-    bike: [2.1, 1.5]
+  const labels = { train: "Train", boat: "Ferry", bus: "Bus", gondola: "Gondola", walk: "Walk", car: "Car", bike: "Bike" };
+  const modeStyles = {
+    train: { color: "#0072b2", width: 5.8, dash: null, cue: "solid" },
+    boat: { color: "#007f8b", width: 5.1, dash: [1.1, 1.6], cue: "short dash" },
+    bus: { color: "#a85c00", width: 5, dash: [5.5, 2.2], cue: "long dash" },
+    gondola: { color: "#7b4ba3", width: 4.2, dash: [0.5, 2.1], cue: "spaced dot" },
+    walk: { color: "#3d4a4d", width: 4, dash: [0.1, 1.5], cue: "fine dot" },
+    car: { color: "#a43a2f", width: 5.4, dash: [7, 1.8, 1.2, 1.8], cue: "dash-dot" },
+    bike: { color: "#24804f", width: 4.7, dash: [2.4, 1.2], cue: "medium dash" }
   };
   const attribution = '<a href="https://openfreemap.org/">OpenFreeMap</a> · <a href="https://openmaptiles.org/">© OpenMapTiles</a> · Data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
@@ -392,6 +392,7 @@
     const sourceId = `${prefix}-source-${segment.id}`;
     const casingId = `${prefix}-casing-${segment.id}`;
     const lineId = `${prefix}-line-${segment.id}`;
+    const modeStyle = modeStyles[segment.mode] || { color: palette.route, width: 4.7, dash: null };
     map.addSource(sourceId, {
       type: "geojson",
       data: {
@@ -409,16 +410,16 @@
       layout: { "line-cap": "round", "line-join": "round" },
       paint: {
         "line-color": palette.casing,
-        "line-width": options.selected ? 10 : 8.5,
+        "line-width": modeStyle.width + (options.selected ? 5.2 : 3.8),
         "line-opacity": options.opacity * (options.selected ? 0.96 : 0.82)
       }
     }, beforeLabelId);
     const paint = {
-      "line-color": options.selected ? palette.selected : (options.color || palette.route),
-      "line-width": options.selected ? 6.4 : 4.7,
+      "line-color": options.selected ? palette.selected : (options.color || modeStyle.color),
+      "line-width": modeStyle.width + (options.selected ? 1.4 : 0),
       "line-opacity": options.opacity
     };
-    if (dashes[segment.mode]) paint["line-dasharray"] = dashes[segment.mode];
+    if (modeStyle.dash) paint["line-dasharray"] = modeStyle.dash;
     map.addLayer({
       id: lineId,
       type: "line",
@@ -516,7 +517,7 @@
         addSegmentLayer(mainMap, mainDecorations, segment, {
           prefix: "main",
           selected,
-          color: mapScope === "day" && !selected ? palette.muted : palette.route,
+          color: mapScope === "day" && !selected ? palette.muted : undefined,
           opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.78)
         });
       });
@@ -608,7 +609,10 @@
 
   function renderLegend() {
     const modes = [...new Set(journey.segments.map((segment) => segment.mode))];
-    $("#map-legend").innerHTML = modes.map((mode) => `<span>${lineSwatch(mode)}${labels[mode]}</span>`).join("") + '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>';
+    $("#map-legend").innerHTML = modes.map((mode) => {
+      const cue = modeStyles[mode]?.cue || "route";
+      return `<span title="${escapeHtml(`${labels[mode]} · ${cue}`)}" aria-label="${escapeHtml(`${labels[mode]}, ${cue} line`)}">${lineSwatch(mode)}${labels[mode]}</span>`;
+    }).join("") + '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>';
   }
 
   function renderJourneyPicker() {

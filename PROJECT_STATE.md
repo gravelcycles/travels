@@ -49,7 +49,8 @@ Updated 7 September 2026.
 - Day close-ups show previous/next arrows and `Day N of 14` inside the map.
 - Fresh load draws the routes immediately, then fits the journey over 2.5s.
 - Left and right panels have independent, visible scrollbars.
-- Transport modes use a static legend with distinct line patterns.
+- Transport modes use a color-vision-conscious palette plus distinct widths and
+  solid, dashed, dotted, dash-dot, or diamond cues in both map and legend.
 - Emoji markers are removed.
 - Route research and accuracy limits are in `ROUTE_SOURCES.md`.
 - The photo UI supports embedded blurred previews, responsive `srcset`, lazy
