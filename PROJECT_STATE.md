@@ -83,8 +83,9 @@ Updated 7 September 2026.
   reviewed shaping points rather than full network geometry. Studio smoothing
   is geometric, not transport-network-aware, so enough control points must be
   used to keep a line on the intended road, rail, or water.
-- Day dots are DOM markers above the basemap and can still obscure place names,
-  even though route line layers are correctly below basemap labels.
+- Day badges choose a label-free offset, avoid one another and map edges, and
+  use a leader line back to the exact place. Grouped overview badges are compact
+  and placement is recalculated after map movement.
 
 ## Approved future direction
 

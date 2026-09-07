@@ -32,7 +32,7 @@ commands.
       distinguishable at overview and close-up scales. Use redundant color plus
       dash/width/casing/symbol cues, retain selected-route emphasis, place lines
       below labels, and test color-vision/low-contrast conditions.
-- [ ] **T05 — Stop day dots covering labels.** Treat day markers and basemap
+- [x] **T05 — Stop day dots covering labels.** Treat day markers and basemap
       place labels as a collision problem. Test smaller/offset/leader-line or
       zoom-dependent markers and avoid pinning DOM markers directly over named
       places. Acceptance: Zürich, Luzern, Como, Lugano, Bellagio, and other key
