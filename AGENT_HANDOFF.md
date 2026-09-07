@@ -45,7 +45,9 @@ T07 is complete locally: every main-map route has a 22 px or wider invisible hit
 line. Hover and tap show a compact day/mode/endpoints/story card, with a gold
 feature-state highlight and matching day-row cue. Tap still selects the day;
 keyboard focus on semantic route-leg buttons provides the same information and
-highlight, and Escape or the close button dismisses a pinned card.
+highlight, and Escape or the close button dismisses a pinned card. Commit
+`ef3841d` deployed successfully in Pages run `34142868328`; a cache-fresh public
+keyboard check confirmed the route card, map, linked day cue, and clean console.
 
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
