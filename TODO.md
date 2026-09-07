@@ -1,22 +1,114 @@
 # Project TODO
 
-- [x] Import the family's 104 in-range iPhone stills and generate responsive,
+Each unchecked top-level item is intended to be a separate agent task. Read
+`PROJECT_STATE.md`, `PRINCIPLES.md`, and `AGENT_HANDOFF.md`, then load only the
+references named by that task. All commands, servers, QA, commits, pushes, and
+deployment checks are agent-owned; never ask the user to run npm or terminal
+commands.
+
+## P0 · Content corrections
+
+- [ ] **T01 — Correct Day 1 legs and story.** In `family-d1`, keep only
+      `family-airport-luzern` (Zürich Flughafen → Luzern). Remove the reverse
+      pickup leg from the day and reconcile title, `destinationId`, prose,
+      distance/summary, route layering, and bounds. Verify desktop/mobile and
+      the deployed trip page.
+- [ ] **T02 — Repair Day 10 ferry geometry.** Research the actual Como → Varenna
+      and Dervio → Bellagio services, correct `family-como-varenna-boat` and
+      `family-dervio-bellagio-boat` so every point remains on the intended water
+      route, record sources/limitations in `ROUTE_SOURCES.md`, and verify all
+      five Day 10 legs together at close zoom.
+
+## P1 · Atlas structure and map clarity
+
+- [ ] **T03 — Split atlas index from trip detail.** Make `/travels/` a polished
+      catalog containing every real journey and move the current trip to
+      `/travels/rushton-switzerland.html`. Establish a reusable trip-page
+      selection mechanism rather than cloning application logic. Keep fictional
+      demos separate, preserve low-discovery metadata, update links, and verify
+      direct/deep navigation on GitHub Pages.
+- [ ] **T04 — Make transport modes unmistakable.** Redesign route styling and
+      legend so train, ferry, bus, gondola, walk, bike, and car are quickly
+      distinguishable at overview and close-up scales. Use redundant color plus
+      dash/width/casing/symbol cues, retain selected-route emphasis, place lines
+      below labels, and test color-vision/low-contrast conditions.
+- [ ] **T05 — Stop day dots covering labels.** Treat day markers and basemap
+      place labels as a collision problem. Test smaller/offset/leader-line or
+      zoom-dependent markers and avoid pinning DOM markers directly over named
+      places. Acceptance: Zürich, Luzern, Como, Lugano, Bellagio, and other key
+      labels remain readable in journey and day views on desktop/mobile.
+- [ ] **T06 — Evaluate a terrain-readable basemap.** Prototype OpenTopoMap first,
+      then compare a restrained vector/topographic option if necessary. Water,
+      land, forest, and mountain terrain should be visually legible with better
+      contrast, while routes, labels, photos, performance, attribution, Italy
+      coverage, and no-key deployment remain acceptable. Document the decision;
+      do not commit to a paid/keyed service without user approval.
+- [ ] **T07 — Add route story hover/tap.** Give route layers generous invisible
+      hit targets. Hover or keyboard focus should show day, mode, endpoints, and
+      a concise “what we did here” summary; tap should provide the equivalent on
+      touch. Highlight the corresponding leg/day without blocking map pan/zoom
+      or covering the route with a large tooltip.
+
+## P1 · Reusable route pipeline
+
+- [ ] **T08 — Generalize network geometry for multiple journeys.** Refactor
+      `scripts/build-route-geometry.mjs` to select a journey ID and consume a
+      per-journey source manifest. Preserve ordered stops, provenance, warnings,
+      static deterministic output, and existing reviewed geometry. Follow
+      `JOURNEY_WORKFLOW.md` and add fixture-based tests for disconnected or
+      ambiguous networks.
+- [ ] **T09 — Make Studio route edits mode-aware.** Preserve user
+      `controlPoints` as via anchors, then snap/re-route between them using the
+      selected mode's rail, ferry, road, walking, or bicycle network. Never
+      overwrite anchors on regeneration; surface failed/unsafe snaps and retain
+      the last reviewed geometry. Show original, proposed, and saved lines for
+      comparison.
+- [ ] **T10 — Add GPX import for bike/walk days.** Let an agent or Atlas Studio
+      attach a GPX track to a segment, validate ordering/gaps, calculate distance,
+      simplify without losing meaningful turns, and save `[lng, lat]` geometry.
+      Keep source GPX private by default and record provenance. Add fixtures and
+      visual QA for a bicycle day.
+- [ ] **T11 — Make new-journey creation repeatable.** Implement the source-file
+      and generation structure described in `JOURNEY_WORKFLOW.md`, including
+      stable slugs, catalog metadata, per-trip pages, journey-specific route and
+      photo outputs, validations for duplicate/broken IDs, and one agent command
+      that builds all public assets.
+
+## P2 · Studio and editorial workflow
+
+- [ ] **T12 — Review all 104 current photos in Studio.** Confirm date-inferred
+      days, exact locations, captions, descriptions, alt text, visibility, and
+      privacy. The supplied stills contained no GPS coordinates. Do not publish
+      sensitive precise locations without review.
+- [ ] **T13 — Add lead-photo ordering to Studio.** Provide keyboard-accessible
+      ordering within each day, make ordering explicit in source overrides, and
+      use it consistently in the story lead, strip, and day viewer.
+- [ ] **T14 — Clarify the unfinished editor request.** The user said “maybe we
+      should also be able to edit …” without finishing the object. Ask what they
+      meant before expanding Studio. Likely candidates include days, prose,
+      places, route legs, and segment metadata, but do not assume.
+- [ ] **T15 — Decide whether to support the six held MOV files.** If approved,
+      design a separate metadata-stripping, poster, encoding, responsive loading,
+      accessibility, and Release publishing pipeline.
+- [ ] **T16 — Decide how to handle days 9, 11, and 14 without family photos.**
+      Prefer intentional empty states. If the user wants fallback media, use only
+      reviewed reusable/licensed sources and record creator, URL, license, and
+      useful alt text; clearly label illustrative images.
+
+## P3 · Fun feature
+
+- [ ] **T17 — Build Trip Replay after route/photo review.** Animate ordered legs
+      day by day, distinguish transport modes, pause or zoom at located photos,
+      and provide play/pause, speed, reduced-motion, keyboard, and timeline
+      controls. Do not build it on top of known-wrong geometry.
+
+## Completed foundation
+
+- [x] Import 104 in-range iPhone stills and generate responsive,
       metadata-stripped WebP derivatives with blurred placeholders.
-- [x] Publish the 356 approved derivatives in the public `trip-photos-v1`
-      GitHub Release and verify representative responsive asset URLs.
-- [ ] Review the 104 date-inferred day matches, generic captions, and lead-photo
-      order. The supplied stills contain no GPS coordinates.
-- [ ] Decide whether to add the six held MOV files with a separate video
-      encoding and loading strategy.
-- [x] Build a localhost Atlas Studio for photo metadata, exact map positions,
-      and route control-point editing with smoothing and undo/redo.
-- [ ] Use Atlas Studio to review photo day assignments, exact locations,
-      captions, descriptions, alt text, and visibility.
-- [ ] Consider transport-network-aware snapping for Studio route edits; until
-      then, keep enough control points to prevent smoothed lines from crossing
-      the wrong terrain.
-- [ ] Find suitable fallback images for days without family photos. Use only
-      reusable/licensed sources, record creator/source/license, and write useful
-      alt text. Clearly distinguish illustrative images from trip photographs.
-- [ ] Confirm the trip year and any approximate route points or durations.
-- [ ] Review personal references and exact dates before wider sharing.
+- [x] Publish 356 approved derivatives in the public `trip-photos-v1` GitHub
+      Release and verify representative responsive asset URLs.
+- [x] Build a local Atlas Studio for photo metadata, exact map positions, and
+      manual route control-point editing with smoothing and undo/redo.
+- [x] Build a day-scoped full-screen photo viewer synchronized with the main
+      map/story, including exact located-photo zoom and empty days.

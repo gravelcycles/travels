@@ -1,8 +1,21 @@
 # Travels — Journey Atlas
 
-A static, GitHub Pages-friendly atlas for David and Michelle's family journey
-through Switzerland and Italy. The main page is intentionally a single,
-standalone trip; fictional viewer examples live separately at `demo.html`.
+A static, GitHub Pages-friendly atlas. It currently opens David and Michelle's
+Switzerland–Italy family journey directly; the planned structure makes the root
+an index of all real journeys and gives this trip its own stable detail page.
+Fictional viewer examples live separately at `demo.html`.
+
+## How we work
+
+The workflow is agent-driven. The user provides trip facts, files, corrections,
+and visual/editorial decisions; the agent runs local commands and servers,
+generates assets, opens review tools, tests, commits, pushes, deploys, and
+verifies the public result. Instructions containing shell commands are for
+agents and documentation—do not ask the user to operate npm or the terminal.
+
+For a repeatable new-trip process, read [JOURNEY_WORKFLOW.md](JOURNEY_WORKFLOW.md).
+It covers the journey schema, exact rail/ferry routing, manual edits, GPX bike
+imports, photos, QA, publishing, and what must be recorded for the next agent.
 
 ## Preview locally
 
@@ -21,13 +34,14 @@ ignored local derivatives instead of GitHub Release URLs.
 
 ## Annotate photos and redraw routes
 
-Use the local-only Atlas Studio instead of hand-editing generated JavaScript:
+The agent launches the local-only Atlas Studio instead of asking the user to
+hand-edit generated JavaScript or run the server:
 
 ```sh
 npm run studio
 ```
 
-Then open `http://127.0.0.1:4173/studio/`. In **Photo locations**, select a
+The agent then opens `http://127.0.0.1:4173/studio/`. In **Photo locations**, select a
 day and photo, click the map (or drag its pin) to set the exact location, and
 add the precise place, caption, scene description, alt text, and preferred map
 zoom. In **Route drawing**, select a day and travel leg, click the orange line
@@ -47,7 +61,7 @@ Start with `TRIP_CONTENT.md`. Journey data lives in
 `dist/assets/journeys.js`. Private originals go in ignored `photos/`; the
 checked-in manifest references optimized WebPs hosted as GitHub Release assets.
 
-Install the generator dependencies and build the current trip with:
+The agent installs the generator dependencies and builds the current trip with:
 
 ```sh
 npm install
@@ -61,7 +75,8 @@ photo binaries.
 
 Use `PHOTO_WORKFLOW.md` when transferring iPhone images so capture time and GPS
 survive the import. Route research and its limitations are recorded in
-`ROUTE_SOURCES.md`; open work is tracked in `TODO.md`.
+`ROUTE_SOURCES.md`; the reusable build flow is in `JOURNEY_WORKFLOW.md`; open
+work is tracked in `TODO.md`.
 
 Each journey contains:
 
