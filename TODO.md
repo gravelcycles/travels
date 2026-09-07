@@ -13,7 +13,7 @@ commands.
       pickup leg from the day and reconcile title, `destinationId`, prose,
       distance/summary, route layering, and bounds. Verify desktop/mobile and
       the deployed trip page.
-- [ ] **T02 — Repair Day 10 ferry geometry.** Research the actual Como → Varenna
+- [x] **T02 — Repair Day 10 ferry geometry.** Research the actual Como → Varenna
       and Dervio → Bellagio services, correct `family-como-varenna-boat` and
       `family-dervio-bellagio-boat` so every point remains on the intended water
       route, record sources/limitations in `ROUTE_SOURCES.md`, and verify all

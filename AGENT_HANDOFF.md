@@ -31,6 +31,15 @@ deployed successfully in Pages run `34089946949`; a cache-fresh public check at
 `https://gravelcycles.github.io/travels/?v=a72b21b` confirmed the corrected
 summary, route, and prose without browser errors.
 
+T02 is also complete locally. Day 10 now uses the timetable-matched SR110
+Como–Varenna service (12:15–13:15, six intermediate calls) and direct run 809
+Dervio–Bellagio (17:17–17:50). The first ferry follows OSM relation `18734598`;
+the second uses the direct open-water path between the exact ferry terminals
+because OSM has no route relation for run 809. The five-leg close-up is 95 km
+and passed desktop, 390 px mobile, and demo smoke checks without browser
+warnings or errors. Add the final commit, Pages run, and public verification
+details here after deployment.
+
 Run `npm run studio` and open `http://127.0.0.1:4173/studio/`. Saves update
 `content/photo-overrides.json`, `content/route-overrides.json`, and generated
 `dist/assets/content-overrides.js`; backups under `build/studio-backups/` are
@@ -69,15 +78,14 @@ push. The manifest uses the immutable tag rather than a mutable `/latest/` URL.
 
 ## Known content corrections
 
-- Day 10's ferry geometry is visibly wrong. Inspect and correct both
-  `family-como-varenna-boat` and `family-dervio-bellagio-boat` against the actual
-  services and water path; verify the complete five-leg close-up afterward.
+No remaining P0 content corrections are recorded.
 
 ## Next
 
-T02 is the next unfinished item. Research and repair both Day 10 ferry legs,
-then continue with the independent, acceptance-scoped work items in `TODO.md`,
-one item per new agent/task. Update the Markdown handoff when an item lands.
+T03 is the next unfinished item: split the real-journey catalog from the current
+trip detail page. Continue with the independent, acceptance-scoped work items
+in `TODO.md`, one item per new agent/task. Update the Markdown handoff when an
+item lands.
 
 ## Topographic basemap direction
 
