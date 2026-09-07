@@ -8,6 +8,8 @@ commit after it is known.
 
 ### Route stories on hover, tap, and focus
 
+Commit `ef3841d`; deployed successfully in Pages run `34142868328`.
+
 - Added wide invisible route hit targets without changing their visible weight.
 - Added a compact route card with day, transport mode, endpoints, and concise
   story context plus a temporary gold line/day highlight.
