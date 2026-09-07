@@ -54,6 +54,7 @@
   let mainMapReady = false;
   let viewerMapReady = false;
   let mainDecorations = { layerIds: [], sourceIds: [], markers: [] };
+  let mainDayMarkers = [];
   let viewerDecorations = { layerIds: [], sourceIds: [], markers: [] };
   let viewerDayId = activeDayId;
   let viewerPhotoIndex = 0;
@@ -355,6 +356,7 @@
     };
     mainMap.on("styledata", finishMainMapSetup);
     mainMap.on("load", finishMainMapSetup);
+    mainMap.on("moveend", refreshDayMarkerOffsets);
     finishMainMapSetup();
     mainMap.on("click", (event) => {
       const feature = mainMap.queryRenderedFeatures(event.point).find((item) => item.properties && item.properties.segmentId);
@@ -448,29 +450,97 @@
     const consecutive = numbers.every((number, index) => index === 0 || number === numbers[index - 1] + 1);
     if (numbers.length === 1) return String(numbers[0]).padStart(2, "0");
     if (consecutive) return `${String(numbers[0]).padStart(2, "0")}–${String(numbers[numbers.length - 1]).padStart(2, "0")}`;
-    return numbers.map((number) => String(number).padStart(2, "0")).join(",");
+    return `${String(numbers[0]).padStart(2, "0")} +${numbers.length - 1}`;
+  }
+
+  function markerBox(center, label) {
+    const width = Math.max(30, 15 + label.length * 6.5);
+    return { left: center.x - width / 2, right: center.x + width / 2, top: center.y - 17, bottom: center.y + 17 };
+  }
+
+  function boxesOverlap(first, second, gap = 6) {
+    return first.left < second.right + gap && first.right > second.left - gap && first.top < second.bottom + gap && first.bottom > second.top - gap;
+  }
+
+  function markerOffsetFor(place, label, occupiedBoxes) {
+    const point = mainMap.project([place.lng, place.lat]);
+    const canvas = mainMap.getCanvas();
+    const compact = mainMap.getZoom() < 7;
+    const radius = compact ? 34 : 42;
+    const candidates = [
+      [0, -radius], [radius, -Math.round(radius * 0.7)], [-radius, -Math.round(radius * 0.7)],
+      [radius, Math.round(radius * 0.7)], [-radius, Math.round(radius * 0.7)], [0, radius],
+      [radius + 12, 0], [-(radius + 12), 0]
+    ];
+    let best = { offset: candidates[0], score: Number.POSITIVE_INFINITY, box: null };
+
+    candidates.forEach((offset, index) => {
+      const center = { x: point.x + offset[0], y: point.y + offset[1] };
+      const box = markerBox(center, label);
+      let score = index * 0.05;
+      if (box.left < 8 || box.top < 8 || box.right > canvas.clientWidth - 8 || box.bottom > canvas.clientHeight - 8) score += 100;
+      occupiedBoxes.forEach((occupied) => { if (boxesOverlap(box, occupied)) score += 40; });
+      try {
+        const labelLayerIds = (mainMap.getStyle().layers || [])
+          .filter((layer) => layer.type === "symbol" && layer.layout?.["text-field"] && layer.layout.visibility !== "none")
+          .map((layer) => layer.id);
+        if (labelLayerIds.length) {
+          score += mainMap.queryRenderedFeatures([[box.left, box.top], [box.right, box.bottom]], { layers: labelLayerIds }).length * 12;
+        }
+      } catch (_error) {
+        // The next map move retries after all style layers are available.
+      }
+      if (score < best.score) best = { offset, score, box };
+    });
+    occupiedBoxes.push(best.box);
+    return { offset: best.offset, compact };
+  }
+
+  function applyDayMarkerOffset(entry, placement) {
+    const [x, y] = placement.offset;
+    const length = Math.hypot(x, y);
+    const angle = Math.atan2(-y, -x) * 180 / Math.PI;
+    entry.marker.setOffset(placement.offset);
+    entry.element.classList.toggle("compact", placement.compact);
+    entry.element.style.setProperty("--leader-length", `${Math.max(0, length - 13)}px`);
+    entry.element.style.setProperty("--leader-angle", `${angle}deg`);
+  }
+
+  function refreshDayMarkerOffsets() {
+    if (!mainMapReady || !mainDayMarkers.length) return;
+    const occupiedBoxes = [];
+    mainDayMarkers.forEach((entry) => applyDayMarkerOffset(entry, markerOffsetFor(entry.place, entry.label, occupiedBoxes)));
   }
 
   function addDayMarkers() {
+    const occupiedBoxes = [];
     groupedDayMarkers()
       .filter((group) => mapScope === "journey" || group.days.some((day) => day.id === activeDayId))
       .forEach((group) => {
       const containsActive = group.days.some((day) => day.id === activeDayId);
-      const element = document.createElement("button");
-      element.type = "button";
-      element.className = `day-marker ${containsActive ? "selected" : ""}`;
-      element.textContent = markerLabel(group.days);
-      element.title = group.days.map((day) => `Day ${day.number}: ${day.title}`).join("\n");
-      element.setAttribute("aria-label", `${group.place.name}: ${group.days.map((day) => `day ${day.number}`).join(", ")}`);
-      element.addEventListener("click", (event) => {
+      const label = markerLabel(group.days);
+      const element = document.createElement("div");
+      element.className = "day-marker-anchor";
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `day-marker ${containsActive ? "selected" : ""}`;
+      button.textContent = label;
+      button.title = group.days.map((day) => `Day ${day.number}: ${day.title}`).join("\n");
+      button.setAttribute("aria-label", `${group.place.name}: ${group.days.map((day) => `day ${day.number}`).join(", ")}`);
+      button.addEventListener("click", (event) => {
         event.stopPropagation();
         const activeIndex = group.days.findIndex((day) => day.id === activeDayId);
         const next = group.days[activeIndex >= 0 ? (activeIndex + 1) % group.days.length : 0];
         setActiveDay(next.id, true);
       });
-      const marker = new maplibregl.Marker({ element, anchor: "center" })
+      element.append(button);
+      const placement = markerOffsetFor(group.place, label, occupiedBoxes);
+      const marker = new maplibregl.Marker({ element, anchor: "center", offset: placement.offset })
         .setLngLat([group.place.lng, group.place.lat])
         .addTo(mainMap);
+      const entry = { marker, element, place: group.place, label };
+      applyDayMarkerOffset(entry, placement);
+      mainDayMarkers.push(entry);
       mainDecorations.markers.push(marker);
     });
   }
@@ -509,6 +579,7 @@
       return;
     }
     clearDecorations(mainMap, mainDecorations);
+    mainDayMarkers = [];
     const selectedSegments = new Set(activeDay().segmentIds);
     [...journey.segments]
       .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id)))

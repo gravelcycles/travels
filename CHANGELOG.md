@@ -6,6 +6,15 @@ commit after it is known.
 
 ## 7 September 2026
 
+### Collision-aware day badges
+
+- Moved day badges away from their named places and added leader lines back to
+  the exact map points.
+- Added placement scoring against rendered basemap labels, other day badges,
+  and map edges, recalculated after map movement.
+- Made overview badges smaller and shortened multi-day labels so place names
+  remain readable on desktop and mobile.
+
 ### Unmistakable transport modes
 
 Commit `63e6d2c`; deployed successfully in Pages run `34113344360`.

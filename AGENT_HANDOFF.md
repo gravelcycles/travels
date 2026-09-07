@@ -34,6 +34,11 @@ width over a stronger near-white casing. Commit `63e6d2c` deployed successfully
 in Pages run `34113344360`; a cache-fresh Day 10 check confirmed all five mixed
 legs, the updated legend, and a clean browser console.
 
+T05 is complete locally: day badges now score several offset positions against
+rendered basemap text, other badges, and map edges; a leader line preserves the
+exact place. Placement refreshes after map movement, badges shrink at overview
+zoom, and nonconsecutive groups use compact labels such as `01 +3`.
+
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
 redrawing. The viewer keeps the main story and side map synchronized as its day
@@ -127,7 +132,7 @@ No remaining P0 content corrections are recorded.
 
 ## Next
 
-T05 is the next unfinished item: stop day markers from covering place labels.
+T07 is the next unfinished map-clarity item: add route story hover/tap/focus.
 Continue with the independent, acceptance-scoped work items in `TODO.md` and
 update the handoff and changelog whenever an item lands.
 
