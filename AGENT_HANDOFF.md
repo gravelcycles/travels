@@ -37,8 +37,11 @@ Dervio–Bellagio (17:17–17:50). The first ferry follows OSM relation `1873459
 the second uses the direct open-water path between the exact ferry terminals
 because OSM has no route relation for run 809. The five-leg close-up is 95 km
 and passed desktop, 390 px mobile, and demo smoke checks without browser
-warnings or errors. Add the final commit, Pages run, and public verification
-details here after deployment.
+warnings or errors. Commit `f5bb7ff` deployed successfully in Pages run
+`34091683711`; a cache-fresh public check at
+`https://gravelcycles.github.io/travels/?v=f5bb7ff` confirmed both corrected
+ferry legs, all five Day 10 route entries, close-up framing, and a clean browser
+console.
 
 Run `npm run studio` and open `http://127.0.0.1:4173/studio/`. Saves update
 `content/photo-overrides.json`, `content/route-overrides.json`, and generated
