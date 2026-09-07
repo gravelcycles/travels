@@ -43,7 +43,7 @@ commands.
       contrast, while routes, labels, photos, performance, attribution, Italy
       coverage, and no-key deployment remain acceptable. Document the decision;
       do not commit to a paid/keyed service without user approval.
-- [ ] **T07 — Add route story hover/tap.** Give route layers generous invisible
+- [x] **T07 — Add route story hover/tap.** Give route layers generous invisible
       hit targets. Hover or keyboard focus should show day, mode, endpoints, and
       a concise “what we did here” summary; tap should provide the equivalent on
       touch. Highlight the corresponding leg/day without blocking map pan/zoom

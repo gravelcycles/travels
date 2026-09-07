@@ -44,6 +44,10 @@ Updated 7 September 2026.
   routes use a brighter orange and a still-wider casing. The slightly softened
   terrain treatment keeps routes visually dominant without losing map detail.
 - Selected routes are drawn above other routes.
+- Routes have generous invisible hit lines. Hover and tap reveal a compact card
+  with day, mode, endpoints, and day context; tapping selects the corresponding
+  day. The journal's route-leg buttons provide the same highlighted interaction
+  for keyboard users.
 - Basemap labels are drawn above route lines, preserving city-name context.
 - Day focus keeps other routes visible in quiet grey.
 - Day close-ups show previous/next arrows and `Day N of 14` inside the map.

@@ -6,6 +6,14 @@ commit after it is known.
 
 ## 7 September 2026
 
+### Route stories on hover, tap, and focus
+
+- Added wide invisible route hit targets without changing their visible weight.
+- Added a compact route card with day, transport mode, endpoints, and concise
+  story context plus a temporary gold line/day highlight.
+- Kept tap-to-select behavior and made each journal route leg a focusable button
+  with the equivalent keyboard interaction.
+
 ### Collision-aware day badges
 
 Commit `2db5eb5`; deployed successfully in Pages run `34141635678`.
