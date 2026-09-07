@@ -27,6 +27,11 @@ URLs, paths, or copy. Commit `0db2121` deployed successfully in Pages run
 `34112686435`; cache-fresh checks confirmed the catalog, the stable 14-day trip
 page with 104 photos, low-discovery metadata, and a clean browser console.
 
+T04 is complete locally: all seven modes now have their own high-contrast color,
+width, and solid/dash/dot/diamond cue. The map and HTML legend share the same
+visual grammar; selected routes remain orange and use the mode's pattern and
+width over a stronger near-white casing.
+
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
 redrawing. The viewer keeps the main story and side map synchronized as its day
@@ -120,7 +125,7 @@ No remaining P0 content corrections are recorded.
 
 ## Next
 
-T04 is the next unfinished item: make every transport mode unmistakable.
+T05 is the next unfinished item: stop day markers from covering place labels.
 Continue with the independent, acceptance-scoped work items in `TODO.md` and
 update the handoff and changelog whenever an item lands.
 

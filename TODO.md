@@ -27,7 +27,7 @@ commands.
       selection mechanism rather than cloning application logic. Keep fictional
       demos separate, preserve low-discovery metadata, update links, and verify
       direct/deep navigation on GitHub Pages.
-- [ ] **T04 — Make transport modes unmistakable.** Redesign route styling and
+- [x] **T04 — Make transport modes unmistakable.** Redesign route styling and
       legend so train, ferry, bus, gondola, walk, bike, and car are quickly
       distinguishable at overview and close-up scales. Use redundant color plus
       dash/width/casing/symbol cues, retain selected-route emphasis, place lines
