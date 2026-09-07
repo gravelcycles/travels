@@ -8,6 +8,8 @@ commit after it is known.
 
 ### Multi-journey Studio and editable day copy
 
+Commit `14a344e`; deployed successfully in Pages run `34144643931`.
+
 - Added a Studio journey selector covering every real and demo journey, while
   retaining per-day selection of every route leg.
 - Made route start and end pins draggable and added exact endpoint coordinate

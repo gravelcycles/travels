@@ -55,7 +55,10 @@ endpoint editing by draggable first/last pins or exact coordinate fields. The
 existing per-day route list handles every leg (Day 10 exposes all five), endpoint
 changes use route undo/redo, and the photo accessibility-description field was
 removed. Day overrides live in `content/day-overrides.json` and the generated
-asset applies day/photo/route overrides to real and demo journeys.
+asset applies day/photo/route overrides to real and demo journeys. Commit
+`14a344e` deployed successfully in Pages run `34144643931`; cache-fresh checks
+confirmed the 14-day/104-photo real trip, the demo selector, and clean browser
+consoles.
 
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
