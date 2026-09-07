@@ -20,10 +20,10 @@
   const OPENFREEMAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
   const PHOTO_ZOOM_LIMITS = { min: 2, max: 20 };
   const palette = {
-    route: "#1f6671",
-    selected: "#b35f3f",
-    casing: "#f7f4ed",
-    muted: "#809194"
+    route: "#006f92",
+    selected: "#d4512c",
+    casing: "#fffef8",
+    muted: "#71878a"
   };
   const labels = { train: "Train", boat: "Boat", bus: "Bus", gondola: "Gondola", walk: "Walk", car: "Car", bike: "Bike" };
   const dashes = {
@@ -294,20 +294,20 @@
       if (map.getLayer(id)) map.setPaintProperty(id, property, value);
     };
     paint("background", "background-color", "#f1eee5");
-    paint("natural_earth", "raster-opacity", ["interpolate", ["linear"], ["zoom"], 0, 0.72, 5.5, 0.42, 8, 0.08]);
-    paint("natural_earth", "raster-contrast", 0.2);
-    paint("water", "fill-color", "#94bfd3");
-    paint("waterway_river", "line-color", "#72aeca");
-    paint("waterway_other", "line-color", "#72aeca");
-    paint("park", "fill-color", "#b8d4a6");
-    paint("park", "fill-opacity", 0.78);
-    paint("landcover_wood", "fill-color", "#91b57e");
-    paint("landcover_wood", "fill-opacity", 0.58);
-    paint("landcover_grass", "fill-color", "#bed2ad");
-    paint("landcover_grass", "fill-opacity", 0.46);
-    paint("road_motorway_casing", "line-color", "#c47649");
-    paint("road_trunk_primary_casing", "line-color", "#c98a5d");
-    paint("road_secondary_tertiary_casing", "line-color", "#d1a06e");
+    paint("natural_earth", "raster-opacity", ["interpolate", ["linear"], ["zoom"], 0, 0.62, 5.5, 0.34, 8, 0.06]);
+    paint("natural_earth", "raster-contrast", 0.12);
+    paint("water", "fill-color", "#a5cadb");
+    paint("waterway_river", "line-color", "#82b5cc");
+    paint("waterway_other", "line-color", "#82b5cc");
+    paint("park", "fill-color", "#c2d9b5");
+    paint("park", "fill-opacity", 0.7);
+    paint("landcover_wood", "fill-color", "#a3c393");
+    paint("landcover_wood", "fill-opacity", 0.5);
+    paint("landcover_grass", "fill-color", "#cbdcbe");
+    paint("landcover_grass", "fill-opacity", 0.38);
+    paint("road_motorway_casing", "line-color", "#cf8960");
+    paint("road_trunk_primary_casing", "line-color", "#d19b70");
+    paint("road_secondary_tertiary_casing", "line-color", "#d8ad82");
   }
 
   function createMap(container, compact) {
@@ -404,13 +404,13 @@
       layout: { "line-cap": "round", "line-join": "round" },
       paint: {
         "line-color": palette.casing,
-        "line-width": options.selected ? 8.5 : 7,
-        "line-opacity": options.opacity * (options.selected ? 0.9 : 0.62)
+        "line-width": options.selected ? 10 : 8.5,
+        "line-opacity": options.opacity * (options.selected ? 0.96 : 0.82)
       }
     }, beforeLabelId);
     const paint = {
       "line-color": options.selected ? palette.selected : (options.color || palette.route),
-      "line-width": options.selected ? 5.5 : 3.6,
+      "line-width": options.selected ? 6.4 : 4.7,
       "line-opacity": options.opacity
     };
     if (dashes[segment.mode]) paint["line-dasharray"] = dashes[segment.mode];
@@ -512,7 +512,7 @@
           prefix: "main",
           selected,
           color: mapScope === "day" && !selected ? palette.muted : palette.route,
-          opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.7)
+          opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.78)
         });
       });
     addDayMarkers();
