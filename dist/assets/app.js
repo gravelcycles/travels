@@ -37,11 +37,16 @@
   };
   const attribution = '<a href="https://openfreemap.org/">OpenFreeMap</a> · <a href="https://openmaptiles.org/">© OpenMapTiles</a> · Data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
-  const isDemoPage = /(?:^|\/)demo\.html$/.test(window.location.pathname);
+  const pageScope = document.body.dataset.journeyScope;
+  const requestedJourneyId = document.body.dataset.journeyId;
+  const isDemoPage = pageScope === "demo";
   const availableJourneys = isDemoPage
-    ? data.journeys.filter((item) => item.id !== data.defaultJourneyId)
-    : data.journeys.filter((item) => item.id === data.defaultJourneyId);
-  let journey = availableJourneys[0] || data.journeys[0];
+    ? data.journeys.filter((item) => item.kind === "demo")
+    : data.journeys.filter((item) => item.kind === "real");
+  let journey = availableJourneys.find((item) => item.id === requestedJourneyId)
+    || availableJourneys.find((item) => item.id === data.defaultJourneyId)
+    || availableJourneys[0]
+    || data.journeys[0];
   let activeDayId = journey.days[0].id;
   let mapScope = "journey";
   let mainMap;
@@ -579,7 +584,7 @@
 
   function renderJourneyIdentity() {
     $("#journey-name").textContent = journey.label;
-    document.title = `${journey.title} · ${isDemoPage ? "Journey samples" : "Switzerland & Italy"}`;
+    document.title = `${journey.title} · ${isDemoPage ? "Journey samples" : "Journey Atlas"}`;
   }
 
   function renderOverview() {

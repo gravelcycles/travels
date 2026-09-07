@@ -16,7 +16,10 @@ Updated 7 September 2026.
 
 ## Current behavior
 
-- `/travels/` shows the one real trip with no journey dropdown.
+- `/travels/` is the catalog of real journeys.
+- `/travels/switzerland-italy.html` is the stable detail page for the current
+  family trip. Trip detail selection is data-driven and shares the viewer code
+  with other trip pages.
 - `/travels/demo.html` shows only demo journeys with a sample selector.
 - Day 1 is the single Zürich Flughafen → Luzern arrival leg, with a 68 km day
   summary and a close-up bounded to that direction of travel.
@@ -81,9 +84,6 @@ Updated 7 September 2026.
   used to keep a line on the intended road, rail, or water.
 - Day dots are DOM markers above the basemap and can still obscure place names,
   even though route line layers are correctly below basemap labels.
-- The current root page is one trip. The approved information architecture is
-  a real-journey atlas at `/travels/` and this trip at
-  `/travels/rushton-switzerland.html`.
 
 ## Approved future direction
 

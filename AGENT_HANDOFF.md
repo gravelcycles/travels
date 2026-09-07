@@ -2,6 +2,9 @@
 
 Read `PROJECT_STATE.md` and `PRINCIPLES.md` first.
 
+Update `CHANGELOG.md` with every user-visible feature, content correction, or
+workflow change before committing. Keep the newest entry first.
+
 - Repo: `/Users/dg/code/travels`
 - GitHub: <https://github.com/gravelcycles/travels>
 - Site: <https://gravelcycles.github.io/travels/>
@@ -14,6 +17,13 @@ Read `PROJECT_STATE.md` and `PRINCIPLES.md` first.
 - Read `JOURNEY_WORKFLOW.md` before adding a journey or changing route tooling.
 
 ## Current pass
+
+T03 is complete locally: `/travels/` is now the real-journey catalog and the
+current family trip has the neutral detail URL
+`/travels/switzerland-italy.html`. Journey `kind`, `slug`, and page data select
+content while keeping one shared viewer implementation. The demo remains at
+`/travels/demo.html`. The user explicitly does not want their surname used in
+URLs, paths, or copy.
 
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
@@ -86,8 +96,8 @@ push. The manifest uses the immutable tag rather than a mutable `/latest/` URL.
 
 ## Confirmed product direction
 
-- `/travels/` becomes an atlas/catalog of every real journey.
-- `/travels/rushton-switzerland.html` becomes the dedicated page for the
+- `/travels/` is an atlas/catalog of every real journey.
+- `/travels/switzerland-italy.html` is the dedicated page for the
   current family trip. Demo journeys remain separate from the real atlas.
 - Hovering a route segment should reveal what happened there: day, mode, leg,
   and concise story context. Provide an equivalent tap/focus interaction.
@@ -108,10 +118,9 @@ No remaining P0 content corrections are recorded.
 
 ## Next
 
-T03 is the next unfinished item: split the real-journey catalog from the current
-trip detail page. Continue with the independent, acceptance-scoped work items
-in `TODO.md`, one item per new agent/task. Update the Markdown handoff when an
-item lands.
+T04 is the next unfinished item: make every transport mode unmistakable.
+Continue with the independent, acceptance-scoped work items in `TODO.md` and
+update the handoff and changelog whenever an item lands.
 
 ## Basemap decision
 
@@ -128,8 +137,8 @@ and swisstopo cannot cover the Italian part of the trip alone.
 - Day 4 and Day 10 close-ups fit completely, including the bottom edge.
 - Other routes remain grey during day focus; orange lines stay on top.
 - Both side panels visibly scroll at short desktop heights and on mobile.
-- Until T03, `/travels/` contains the current real trip. After T03 it contains
-  the real-journey catalog, `/travels/rushton-switzerland.html` contains this
+- `/travels/` contains the real-journey catalog,
+  `/travels/switzerland-italy.html` contains this
   trip, and `/travels/demo.html` contains only demos.
 - Line patterns are easy to distinguish and match the legend.
 - City labels remain legible above route lines.

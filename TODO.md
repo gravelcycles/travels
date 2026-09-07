@@ -21,9 +21,9 @@ commands.
 
 ## P1 · Atlas structure and map clarity
 
-- [ ] **T03 — Split atlas index from trip detail.** Make `/travels/` a polished
+- [x] **T03 — Split atlas index from trip detail.** Make `/travels/` a polished
       catalog containing every real journey and move the current trip to
-      `/travels/rushton-switzerland.html`. Establish a reusable trip-page
+      `/travels/switzerland-italy.html`. Establish a reusable trip-page
       selection mechanism rather than cloning application logic. Keep fictional
       demos separate, preserve low-discovery metadata, update links, and verify
       direct/deep navigation on GitHub Pages.
@@ -83,10 +83,10 @@ commands.
 - [ ] **T13 — Add lead-photo ordering to Studio.** Provide keyboard-accessible
       ordering within each day, make ordering explicit in source overrides, and
       use it consistently in the story lead, strip, and day viewer.
-- [ ] **T14 — Clarify the unfinished editor request.** The user said “maybe we
-      should also be able to edit …” without finishing the object. Ask what they
-      meant before expanding Studio. Likely candidates include days, prose,
-      places, route legs, and segment metadata, but do not assume.
+- [x] **T14 — Clarify the unfinished editor request.** The user confirmed that
+      Studio should edit route start/end points, select among multiple routes,
+      and edit day titles and descriptions. The accessibility-description field
+      can be removed from Studio. Implementation is tracked below as T18.
 - [ ] **T15 — Decide whether to support the six held MOV files.** If approved,
       design a separate metadata-stripping, poster, encoding, responsive loading,
       accessibility, and Release publishing pipeline.
@@ -101,6 +101,14 @@ commands.
       day by day, distinguish transport modes, pause or zoom at located photos,
       and provide play/pause, speed, reduced-motion, keyboard, and timeline
       controls. Do not build it on top of known-wrong geometry.
+
+## P2 · Confirmed Studio expansion
+
+- [ ] **T18 — Edit route endpoints and day copy in Studio.** Let editors select
+      any journey, day, and route; edit a leg's start/end point; and edit day
+      titles and descriptions. Preserve stable IDs, validate references, keep
+      all generated overrides deterministic, and remove the photo accessibility-
+      description field from the Studio UI.
 
 ## Completed foundation
 

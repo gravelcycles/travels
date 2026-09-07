@@ -19,6 +19,8 @@ window.JOURNEY_ATLAS_DATA = {
   journeys: [
     {
       id: "switzerland-italy-family-2026",
+      kind: "real",
+      slug: "switzerland-italy.html",
       badge: "FAMILY JOURNEY",
       label: "Switzerland & Italy · Family trip",
       title: "Lakes, Rails & Rain",
@@ -99,6 +101,7 @@ window.JOURNEY_ATLAS_DATA = {
     },
     {
       id: "alpine-crossing",
+      kind: "demo",
       label: "Across the Alps · Mixed demo",
       title: "Across the Alps",
       subtitle: "Ten days of lake mornings, high passes and the long road north",
@@ -148,6 +151,7 @@ window.JOURNEY_ATLAS_DATA = {
     },
     {
       id: "rail-to-adriatic",
+      kind: "demo",
       label: "North to the Adriatic · Rail/bus demo",
       title: "North to the Adriatic",
       subtitle: "A handful of Eurail days, with the pauses between them left intact",
@@ -181,6 +185,7 @@ window.JOURNEY_ATLAS_DATA = {
     },
     {
       id: "dolomites-road",
+      kind: "demo",
       label: "Dolomites road days · Car demo",
       title: "Dolomites Road Days",
       subtitle: "Moving bases, one loop day, and room for the detours",
@@ -213,6 +218,7 @@ window.JOURNEY_ATLAS_DATA = {
     },
     {
       id: "danube-ride",
+      kind: "demo",
       label: "Danube weekend · Bike demo",
       title: "A Weekend Along the Danube",
       subtitle: "A linear ride told one day at a time",

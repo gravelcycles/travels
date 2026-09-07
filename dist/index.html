@@ -4,160 +4,43 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-    <meta
-      name="description"
-      content="David and Michelle's family journey through Switzerland and Italy, mapped day by day."
-    />
-    <title>Lakes, Rails &amp; Rain · Switzerland &amp; Italy</title>
-    <link rel="preconnect" href="https://unpkg.com" />
-    <link rel="preconnect" href="https://tiles.openfreemap.org" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
-    />
-    <link rel="stylesheet" href="./assets/styles.css?v=20260907-4" />
+    <meta name="description" content="A private-by-link catalog of mapped journeys." />
+    <title>Journey Atlas</title>
+    <link rel="stylesheet" href="./assets/styles.css?v=20260907-5" />
   </head>
-  <body>
+  <body class="catalog-page">
     <header class="site-header">
-      <a class="brand" href="./" aria-label="Lakes, Rails and Rain home">
+      <a class="brand" href="./" aria-label="Journey Atlas home">
         <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span><small>SWITZERLAND + ITALY</small><strong>Lakes, Rails &amp; Rain</strong></span>
+        <span><small>TRAVEL STORIES</small><strong>Journey Atlas</strong></span>
       </a>
       <div class="header-context">
-        <span class="sample-badge" id="site-badge">ATLAS DEMO</span>
+        <span class="sample-badge">REAL JOURNEYS</span>
         <a class="header-link" href="./demo.html">Sample journeys</a>
-        <button class="plain-button" id="open-notes" type="button">About this atlas</button>
       </div>
     </header>
 
-    <main class="atlas-shell" data-mobile-tab="map">
-      <aside class="route-panel" aria-label="Journey days">
-        <div class="panel-intro">
-          <span class="panel-label">THE JOURNEY</span>
-          <h2 class="journey-name" id="journey-name"></h2>
-          <div class="journey-summary" id="journey-summary"></div>
-          <div class="journey-picker" id="journey-picker" hidden>
-            <label for="journey-select">Sample journey</label>
-            <select id="journey-select"></select>
-          </div>
-        </div>
-
-        <div class="route-heading">
-          <span>THE DAYS</span>
-          <small id="day-count"></small>
-        </div>
-        <div class="day-list" id="day-list"></div>
-      </aside>
-
-      <section class="map-panel" aria-label="Interactive journey map">
-        <div class="map-header">
-          <div class="map-title-card">
-            <span id="journey-kicker"></span>
-            <h1 id="journey-title"></h1>
-            <p id="journey-subtitle"></p>
-          </div>
-          <div class="map-actions">
-            <button id="focus-day" type="button" aria-label="Zoom to the selected day's complete route">Day close-up</button>
-            <button id="fit-route" type="button" aria-label="Fit the whole route on the map">Fit route</button>
-            <button id="show-all-photos" type="button">Photo days <span id="photo-count"></span></button>
-          </div>
-        </div>
-        <div id="map" aria-label="Map showing the selected journey"></div>
-        <div class="day-navigator" id="day-navigator" hidden aria-live="polite">
-          <button id="previous-day" type="button" aria-label="Previous day">←</button>
-          <span id="focused-day-label"></span>
-          <button id="next-day" type="button" aria-label="Next day">→</button>
-        </div>
-        <div class="map-legend" id="map-legend"></div>
-        <div class="map-status" id="map-status" hidden></div>
+    <main class="catalog-main">
+      <section class="catalog-hero">
+        <span class="catalog-eyebrow">MAPS · DAYS · PHOTOGRAPHS</span>
+        <h1>Every journey has its own shape.</h1>
+        <p>A growing collection of real trips, traced one day at a time across trains, boats, bicycles, mountain paths, and everything between.</p>
       </section>
 
-      <aside class="story-panel" aria-label="Journey details">
-        <div class="story-media" id="story-media"></div>
-        <div class="story-detail" id="story-detail"></div>
-        <div class="photo-section">
-          <div class="photo-heading">
-            <span>THIS DAY</span>
-            <small>Open any photo full screen</small>
-          </div>
-          <div class="photo-strip" id="photo-strip"></div>
+      <section class="catalog-section" aria-labelledby="journeys-heading">
+        <div class="catalog-heading">
+          <h2 id="journeys-heading">The journeys</h2>
+          <p>Choose a journey to explore its complete route, daily journal, and photographs.</p>
         </div>
-      </aside>
+        <div class="journey-grid" id="journey-catalog"></div>
+      </section>
     </main>
 
-    <nav class="mobile-nav" aria-label="Journey views">
-      <button data-tab="route" type="button">Days</button>
-      <button data-tab="map" class="active" type="button">Map</button>
-      <button data-tab="story" type="button">Journal</button>
-    </nav>
-
-    <dialog class="notes-dialog" id="notes-dialog">
-      <form method="dialog" class="dialog-card">
-        <div class="dialog-top">
-          <div><span>ABOUT THE ATLAS</span><h2>One family trip, mapped day by day.</h2></div>
-          <button value="cancel" aria-label="Close atlas notes">×</button>
-        </div>
-        <div class="notes-grid">
-          <section>
-            <strong>1 · A Luzern base</strong>
-            <p>David and Michelle traveled with her parents, returning to Luzern on most days and staying in Como for the Italian portion.</p>
-          </section>
-          <section>
-            <strong>2 · Every leg matters</strong>
-            <p>Train, boat, bus, gondola, walking, and bicycle legs are mapped in their actual order. Open any day to isolate its route.</p>
-          </section>
-          <section>
-            <strong>3 · Rail stops included</strong>
-            <p>Day close-ups mark the scheduled rail stops along each representative route, with selected travel lines brought to the front.</p>
-          </section>
-          <section>
-            <strong>4 · Photos follow the day</strong>
-            <p>The full-screen viewer keeps each day's photographs together. Day controls move the route map and journal context with the images.</p>
-          </section>
-        </div>
-        <div class="storage-note">
-          <strong>Privacy:</strong> the public site asks search engines not to index or archive it, but anyone with the URL can still open it.
-        </div>
-        <button class="dialog-done" value="default">Back to the atlas</button>
-      </form>
-    </dialog>
-
-    <dialog class="photo-dialog" id="photo-dialog" aria-label="Journey photos by day">
-      <div class="photo-viewer">
-        <button class="photo-close" aria-label="Close photo viewer">×</button>
-        <section class="photo-stage" aria-live="polite">
-          <button class="photo-nav photo-prev" type="button" aria-label="Previous photo">‹</button>
-          <figure>
-            <div class="viewer-empty" id="viewer-empty" hidden><strong>No photographs</strong><span>Use the day arrows to keep exploring.</span></div>
-            <img id="modal-photo" alt="" />
-            <figcaption id="modal-caption"></figcaption>
-          </figure>
-          <button class="photo-nav photo-next" type="button" aria-label="Next photo">›</button>
-        </section>
-        <aside class="photo-context">
-          <div id="photo-map" aria-label="Map following the current photo"></div>
-          <div class="photo-context-copy">
-            <div class="viewer-day-nav">
-              <button id="viewer-previous-day" type="button" aria-label="Previous photo day">←</button>
-              <span id="viewer-day-label"></span>
-              <button id="viewer-next-day" type="button" aria-label="Next photo day">→</button>
-            </div>
-            <span id="modal-progress"></span>
-            <h2 id="modal-day-title"></h2>
-            <p id="modal-day-route"></p>
-            <p class="modal-location" id="modal-location"></p>
-            <p class="modal-description" id="modal-description"></p>
-          </div>
-          <div class="viewer-filmstrip" id="viewer-filmstrip" aria-label="Photos from this day"></div>
-        </aside>
-      </div>
-    </dialog>
-
-    <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
-    <script src="./assets/journeys.js?v=20260907-5"></script>
-    <script src="./assets/route-geometry.js?v=20260907-5"></script>
-    <script src="./assets/trip-photos.js?v=20260906-9"></script>
-    <script src="./assets/content-overrides.js?v=20260907-1"></script>
-    <script src="./assets/app.js?v=20260907-5"></script>
+    <footer class="catalog-footer">
+      <span>This atlas is intentionally kept out of search indexes.</span>
+      <a href="./demo.html">Explore fictional samples</a>
+    </footer>
+    <script src="./assets/journeys.js?v=20260907-6"></script>
+    <script src="./assets/catalog.js?v=20260907-1"></script>
   </body>
 </html>
