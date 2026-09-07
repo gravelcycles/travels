@@ -53,9 +53,11 @@
   let viewerMap;
   let mainMapReady = false;
   let viewerMapReady = false;
-  let mainDecorations = { layerIds: [], sourceIds: [], markers: [] };
+  let mainDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
   let mainDayMarkers = [];
-  let viewerDecorations = { layerIds: [], sourceIds: [], markers: [] };
+  let viewerDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
+  let inspectedSegmentId = null;
+  let routeInspectionPinned = false;
   let viewerDayId = activeDayId;
   let viewerPhotoIndex = 0;
   let swipeStartX = null;
@@ -218,9 +220,11 @@
             const stopCount = (segment.stops || []).length + 2;
             return `
               <li>
-                <span class="leg-mode">${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)}</span>
-                <strong>${escapeHtml(from.name)} → ${escapeHtml(to.name)}</strong>
-                <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""}${segment.stops ? ` · ${stopCount} stops` : ` · ${mappedPoints} mapped points`}</small>
+                <button class="leg-card" type="button" data-route-segment="${escapeHtml(segment.id)}" aria-label="Explore ${escapeHtml(labels[segment.mode] || segment.mode)} route from ${escapeHtml(from.name)} to ${escapeHtml(to.name)}">
+                  <span class="leg-mode">${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)}</span>
+                  <strong>${escapeHtml(from.name)} → ${escapeHtml(to.name)}</strong>
+                  <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""}${segment.stops ? ` · ${stopCount} stops` : ` · ${mappedPoints} mapped points`}</small>
+                </button>
               </li>
             `;
           }).join("")}
@@ -285,6 +289,61 @@
   function modeLabel(day) {
     const modes = modesForDay(day);
     return modes.length ? modes.map((mode) => labels[mode]).join(" + ") : "In one place";
+  }
+
+  function dayForSegment(segmentId) {
+    return journey.days.find((day) => day.segmentIds.includes(segmentId));
+  }
+
+  function conciseDayStory(day) {
+    const text = String(day?.text || "").trim();
+    const firstSentence = text.match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim() || text;
+    return firstSentence.length > 175 ? `${firstSentence.slice(0, 172).trimEnd()}…` : firstSentence;
+  }
+
+  function syncInspectionClasses() {
+    const inspectedDay = inspectedSegmentId ? dayForSegment(inspectedSegmentId) : null;
+    document.querySelectorAll(".day-row").forEach((row) => row.classList.toggle("route-preview", row.dataset.dayId === inspectedDay?.id));
+    document.querySelectorAll(".leg-card").forEach((card) => card.classList.toggle("route-preview", card.dataset.routeSegment === inspectedSegmentId));
+  }
+
+  function setInspectedFeatureState(segmentId, inspected) {
+    if (!mainMapReady || !segmentId) return;
+    const sourceId = `main-source-${segmentId}`;
+    if (mainMap.getSource(sourceId)) mainMap.setFeatureState({ source: sourceId, id: segmentId }, { inspected });
+  }
+
+  function inspectSegment(segmentId, pinned = false) {
+    const segment = segmentById(segmentId);
+    const day = dayForSegment(segmentId);
+    if (!segment || !day) return;
+    if (routeInspectionPinned && !pinned && inspectedSegmentId !== segmentId) return;
+    if (inspectedSegmentId && inspectedSegmentId !== segmentId) setInspectedFeatureState(inspectedSegmentId, false);
+    inspectedSegmentId = segmentId;
+    routeInspectionPinned = pinned || routeInspectionPinned;
+    setInspectedFeatureState(segmentId, true);
+    syncInspectionClasses();
+    const from = placeById(segment.from);
+    const to = placeById(segment.to);
+    $("#route-inspector").hidden = false;
+    $("#route-inspector-meta").textContent = `Day ${day.number} · ${labels[segment.mode] || segment.mode}`;
+    $("#route-inspector-title").textContent = `${from.name} → ${to.name}`;
+    $("#route-inspector-story").textContent = conciseDayStory(day);
+  }
+
+  function clearSegmentInspection(force = false) {
+    if (routeInspectionPinned && !force) return;
+    setInspectedFeatureState(inspectedSegmentId, false);
+    inspectedSegmentId = null;
+    routeInspectionPinned = false;
+    $("#route-inspector").hidden = true;
+    syncInspectionClasses();
+  }
+
+  function routeFeatureAtPoint(point) {
+    const layers = mainDecorations.hitLayerIds.filter((id) => mainMap.getLayer(id));
+    if (!layers.length) return null;
+    return mainMap.queryRenderedFeatures(point, { layers }).find((feature) => feature.properties?.segmentId) || null;
   }
 
   function mapIsReady(map) {
@@ -359,14 +418,25 @@
     mainMap.on("moveend", refreshDayMarkerOffsets);
     finishMainMapSetup();
     mainMap.on("click", (event) => {
-      const feature = mainMap.queryRenderedFeatures(event.point).find((item) => item.properties && item.properties.segmentId);
-      if (!feature) return;
-      const day = journey.days.find((item) => item.segmentIds.includes(feature.properties.segmentId));
+      const feature = routeFeatureAtPoint(event.point);
+      if (!feature) {
+        clearSegmentInspection(true);
+        return;
+      }
+      const segmentId = feature.properties.segmentId;
+      const day = dayForSegment(segmentId);
       if (day) setActiveDay(day.id, true);
+      inspectSegment(segmentId, true);
     });
     mainMap.on("mousemove", (event) => {
-      const overRoute = mainMap.queryRenderedFeatures(event.point).some((item) => item.properties && item.properties.segmentId);
-      mainMap.getCanvas().style.cursor = overRoute ? "pointer" : "";
+      const feature = routeFeatureAtPoint(event.point);
+      mainMap.getCanvas().style.cursor = feature ? "pointer" : "";
+      if (feature) inspectSegment(feature.properties.segmentId);
+      else clearSegmentInspection();
+    });
+    mainMap.on("mouseleave", () => {
+      mainMap.getCanvas().style.cursor = "";
+      clearSegmentInspection();
     });
     mainMap.on("error", () => {
       if (!mainMapReady) {
@@ -387,6 +457,7 @@
     decorations.layerIds = [];
     decorations.sourceIds = [];
     decorations.markers = [];
+    decorations.hitLayerIds = [];
   }
 
   function addSegmentLayer(map, decorations, segment, options) {
@@ -394,11 +465,13 @@
     const sourceId = `${prefix}-source-${segment.id}`;
     const casingId = `${prefix}-casing-${segment.id}`;
     const lineId = `${prefix}-line-${segment.id}`;
+    const hitId = `${prefix}-hit-${segment.id}`;
     const modeStyle = modeStyles[segment.mode] || { color: palette.route, width: 4.7, dash: null };
     map.addSource(sourceId, {
       type: "geojson",
       data: {
         type: "Feature",
+        id: segment.id,
         properties: { segmentId: segment.id },
         geometry: { type: "LineString", coordinates: segmentCoordinates(segment) }
       }
@@ -416,9 +489,11 @@
         "line-opacity": options.opacity * (options.selected ? 0.96 : 0.82)
       }
     }, beforeLabelId);
+    const baseColor = options.selected ? palette.selected : (options.color || modeStyle.color);
+    const baseWidth = modeStyle.width + (options.selected ? 1.4 : 0);
     const paint = {
-      "line-color": options.selected ? palette.selected : (options.color || modeStyle.color),
-      "line-width": modeStyle.width + (options.selected ? 1.4 : 0),
+      "line-color": ["case", ["boolean", ["feature-state", "inspected"], false], "#f0a235", baseColor],
+      "line-width": ["case", ["boolean", ["feature-state", "inspected"], false], baseWidth + 3, baseWidth],
       "line-opacity": options.opacity
     };
     if (modeStyle.dash) paint["line-dasharray"] = modeStyle.dash;
@@ -429,6 +504,17 @@
       layout: { "line-cap": "round", "line-join": "round" },
       paint
     }, beforeLabelId);
+    if (options.interactive) {
+      map.addLayer({
+        id: hitId,
+        type: "line",
+        source: sourceId,
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: { "line-color": "#000000", "line-width": Math.max(22, modeStyle.width + 14), "line-opacity": 0.001 }
+      }, beforeLabelId);
+      decorations.hitLayerIds.push(hitId);
+      decorations.layerIds.push(hitId);
+    }
     decorations.sourceIds.push(sourceId);
     decorations.layerIds.push(casingId, lineId);
   }
@@ -587,6 +673,7 @@
         const selected = selectedSegments.has(segment.id);
         addSegmentLayer(mainMap, mainDecorations, segment, {
           prefix: "main",
+          interactive: true,
           selected,
           color: mapScope === "day" && !selected ? palette.muted : undefined,
           opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.78)
@@ -594,6 +681,7 @@
       });
     addDayMarkers();
     if (mapScope === "day") addRailStopMarkers(mainMap, mainDecorations, activeDay());
+    if (inspectedSegmentId) setInspectedFeatureState(inspectedSegmentId, true);
     renderDayNavigator();
     if (fit) fitJourneyBounds();
   }
@@ -711,6 +799,7 @@
         </button>
       `;
     }).join("");
+    syncInspectionClasses();
     const current = dayList.querySelector(".day-row.active");
     if (current) current.scrollIntoView({ block: "nearest" });
   }
@@ -765,6 +854,7 @@
       : '<div class="photo-empty">This day is ready for photos whenever you add them.</div>';
     prepareProgressiveImages(storyMedia);
     prepareProgressiveImages(photoStrip);
+    syncInspectionClasses();
     if (leadPhoto) preloadAround(leadPhoto.id, 2, 1280);
   }
 
@@ -780,6 +870,7 @@
 
   function setActiveDay(id, focus) {
     if (!dayById(id)) return;
+    if (inspectedSegmentId && !dayById(id).segmentIds.includes(inspectedSegmentId)) clearSegmentInspection(true);
     activeDayId = id;
     renderDays();
     renderStory();
@@ -983,6 +1074,7 @@
   $("#journey-select").addEventListener("change", (event) => {
     const nextJourney = availableJourneys.find((item) => item.id === event.target.value);
     if (!nextJourney) return;
+    clearSegmentInspection(true);
     journey = nextJourney;
     activeDayId = journey.days[0].id;
     viewerDayId = activeDayId;
@@ -1000,6 +1092,29 @@
     if (button) setActiveDay(button.dataset.dayId, true);
   });
 
+  detailPanel.addEventListener("mouseover", (event) => {
+    const card = event.target.closest("[data-route-segment]");
+    if (card && !routeInspectionPinned) inspectSegment(card.dataset.routeSegment);
+  });
+  detailPanel.addEventListener("mouseout", (event) => {
+    const card = event.target.closest("[data-route-segment]");
+    if (card && !card.contains(event.relatedTarget)) clearSegmentInspection();
+  });
+  detailPanel.addEventListener("focusin", (event) => {
+    const card = event.target.closest("[data-route-segment]");
+    if (!card) return;
+    clearSegmentInspection(true);
+    inspectSegment(card.dataset.routeSegment);
+  });
+  detailPanel.addEventListener("focusout", (event) => {
+    const card = event.target.closest("[data-route-segment]");
+    if (card && !card.contains(event.relatedTarget)) clearSegmentInspection();
+  });
+  detailPanel.addEventListener("click", (event) => {
+    const card = event.target.closest("[data-route-segment]");
+    if (card) inspectSegment(card.dataset.routeSegment, true);
+  });
+
   [storyMedia, photoStrip].forEach((container) => container.addEventListener("click", (event) => {
     const button = event.target.closest("[data-open-photo]");
     if (button) openPhoto(button.dataset.openPhoto);
@@ -1013,6 +1128,7 @@
     openDayViewer(activeDayId);
   });
   $("#open-notes").addEventListener("click", () => $("#notes-dialog").showModal());
+  $("#close-route-inspector").addEventListener("click", () => clearSegmentInspection(true));
   $(".photo-close").addEventListener("click", () => photoDialog.close());
   $(".photo-prev").addEventListener("click", () => moveViewer(-1));
   $(".photo-next").addEventListener("click", () => moveViewer(1));
@@ -1035,6 +1151,10 @@
     swipeStartX = null;
   });
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !photoDialog.open && inspectedSegmentId) {
+      clearSegmentInspection(true);
+      return;
+    }
     if (!photoDialog.open) return;
     if (event.key === "ArrowLeft" && event.shiftKey) moveViewerDay(-1);
     else if (event.key === "ArrowRight" && event.shiftKey) moveViewerDay(1);

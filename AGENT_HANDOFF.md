@@ -41,6 +41,12 @@ zoom, and nonconsecutive groups use compact labels such as `01 +3`. Commit
 `2db5eb5` deployed successfully in Pages run `34141635678`; a cache-fresh
 public check confirmed all ten leader-linked badge groups and a clean console.
 
+T07 is complete locally: every main-map route has a 22 px or wider invisible hit
+line. Hover and tap show a compact day/mode/endpoints/story card, with a gold
+feature-state highlight and matching day-row cue. Tap still selects the day;
+keyboard focus on semantic route-leg buttons provides the same information and
+highlight, and Escape or the close button dismisses a pinned card.
+
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
 redrawing. The viewer keeps the main story and side map synchronized as its day
@@ -134,7 +140,7 @@ No remaining P0 content corrections are recorded.
 
 ## Next
 
-T07 is the next unfinished map-clarity item: add route story hover/tap/focus.
+T08 is the next unfinished TODO item: generalize network geometry per journey.
 Continue with the independent, acceptance-scoped work items in `TODO.md` and
 update the handoff and changelog whenever an item lands.
 
