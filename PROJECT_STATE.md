@@ -30,6 +30,13 @@ Updated 7 September 2026.
 - Day 10 follows the timetable-matched SR110 Como–Varenna service and direct
   Dervio–Bellagio run 809. Its five-leg close-up totals 95 km; ferry timing,
   stop, geometry, and limitation details are recorded in `ROUTE_SOURCES.md`.
+- Main, photo-viewer, and Studio maps use OpenFreeMap's Liberty vector style
+  with stronger water, woodland, park, shaded-relief, and major-road treatment.
+  Roads are no longer hidden, while POIs remain suppressed to limit clutter.
+  OpenTopoMap was evaluated but not selected because its raster tiles combine
+  labels and terrain, preventing the atlas from keeping place labels above its
+  route layers. Liberty preserves that layer control, Italy coverage, and the
+  existing no-key static deployment.
 - Selected routes are orange and drawn above other routes.
 - Basemap labels are drawn above route lines, preserving city-name context.
 - Day focus keeps other routes visible in quiet grey.
@@ -52,6 +59,9 @@ Updated 7 September 2026.
   editing their text, or redrawing a route with draggable control points,
   smoothing, undo, and redo. Saves write JSON sources plus the generated public
   override asset.
+- Clicking a photo location—or finishing a pin drag—in Studio now records the
+  map's current zoom with the coordinates. The saved 2–20 zoom range is honored
+  by the public photo viewer instead of being forced back into 12–18.
 
 ## Known issues
 
@@ -76,8 +86,6 @@ Updated 7 September 2026.
 
 - Route hover plus tap/focus should explain the day, mode, endpoints, and what
   happened on that part of the journey.
-- Explore a more topographic, higher-contrast basemap with visible water, land,
-  forest, and mountain character.
 - Increase transport-mode differentiation beyond the current subtle dash
   patterns, while retaining a non-color cue for every mode.
 - Add mode-aware route regeneration through preserved Studio control points and

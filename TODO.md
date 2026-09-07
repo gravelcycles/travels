@@ -37,7 +37,7 @@ commands.
       zoom-dependent markers and avoid pinning DOM markers directly over named
       places. Acceptance: Zürich, Luzern, Como, Lugano, Bellagio, and other key
       labels remain readable in journey and day views on desktop/mobile.
-- [ ] **T06 — Evaluate a terrain-readable basemap.** Prototype OpenTopoMap first,
+- [x] **T06 — Evaluate a terrain-readable basemap.** Prototype OpenTopoMap first,
       then compare a restrained vector/topographic option if necessary. Water,
       land, forest, and mountain terrain should be visually legible with better
       contrast, while routes, labels, photos, performance, attribution, Italy

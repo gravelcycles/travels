@@ -43,6 +43,16 @@ warnings or errors. Commit `f5bb7ff` deployed successfully in Pages run
 ferry legs, all five Day 10 route entries, close-up framing, and a clean browser
 console.
 
+Also completed locally on 7 September: Studio photo placement now captures the
+map's current zoom whenever a location is clicked or a pin drag finishes, and
+the public viewer honors the saved 2–20 range. The main atlas, photo viewer,
+and Studio now use OpenFreeMap Liberty with stronger water, forest, park,
+shaded-relief, and road treatment. OpenTopoMap was evaluated but not selected:
+its raster tiles would prevent place labels from remaining independently above
+the atlas route layers. Desktop overview/Day 10, 390 px Day 10, Studio, viewer,
+and demo checks passed locally with no browser warnings or errors. Add commit,
+Pages run, and public verification details after deployment.
+
 Run `npm run studio` and open `http://127.0.0.1:4173/studio/`. Saves update
 `content/photo-overrides.json`, `content/route-overrides.json`, and generated
 `dist/assets/content-overrides.js`; backups under `build/studio-backups/` are
@@ -90,16 +100,14 @@ trip detail page. Continue with the independent, acceptance-scoped work items
 in `TODO.md`, one item per new agent/task. Update the Markdown handoff when an
 item lands.
 
-## Topographic basemap direction
+## Basemap decision
 
-First test [OpenTopoMap](https://wiki.opentopomap.org/about): it covers both
-countries and needs no API key. It may be visually busy, so mute/desaturate it
-and retain a light casing beneath route lines for contrast.
-
-If stronger styling control and service guarantees are worth adding an account,
-test MapTiler Outdoor with a key restricted to `gravelcycles.github.io`.
-swisstopo is excellent for Switzerland but cannot be the only basemap because
-the trip continues into Italy.
+Keep the checked-in OpenFreeMap Liberty treatment unless later testing finds a
+specific readability or service problem. Its vector layers let route lines sit
+below place labels while water, woodland, roads, and low-zoom relief remain
+distinct. OpenTopoMap's terrain is strong but its raster labels cannot be
+separated from the terrain tile; MapTiler would add an account/key requirement,
+and swisstopo cannot cover the Italian part of the trip alone.
 
 ## Acceptance checks
 

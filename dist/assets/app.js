@@ -17,7 +17,8 @@
       if (override?.geometry?.length > 1) segment.geometry = override.geometry;
     });
   }
-  const OPENFREEMAP_STYLE = "https://tiles.openfreemap.org/styles/positron";
+  const OPENFREEMAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
+  const PHOTO_ZOOM_LIMITS = { min: 2, max: 20 };
   const palette = {
     route: "#1f6671",
     selected: "#b35f3f",
@@ -285,21 +286,28 @@
   }
 
   function applyBasemapTreatment(map) {
-    const roadWords = /(road|highway|motorway|trunk|primary|secondary|tertiary|minor|street|transportation|bridge|tunnel)/i;
-    const keepWords = /(rail|ferry|boundary|waterway)/i;
     const layers = map.getStyle().layers || [];
     layers.forEach((layer) => {
-      const id = layer.id || "";
-      if ((roadWords.test(id) && !keepWords.test(id)) || /poi/i.test(id)) {
-        map.setLayoutProperty(id, "visibility", "none");
-      }
-      if (layer.type === "background") {
-        map.setPaintProperty(id, "background-color", "#edf0ed");
-      }
-      if (layer.type === "fill" && /water/i.test(id)) {
-        map.setPaintProperty(id, "fill-color", "#dce5e4");
-      }
+      if (/poi/i.test(layer.id || "")) map.setLayoutProperty(layer.id, "visibility", "none");
     });
+    const paint = (id, property, value) => {
+      if (map.getLayer(id)) map.setPaintProperty(id, property, value);
+    };
+    paint("background", "background-color", "#f1eee5");
+    paint("natural_earth", "raster-opacity", ["interpolate", ["linear"], ["zoom"], 0, 0.72, 5.5, 0.42, 8, 0.08]);
+    paint("natural_earth", "raster-contrast", 0.2);
+    paint("water", "fill-color", "#94bfd3");
+    paint("waterway_river", "line-color", "#72aeca");
+    paint("waterway_other", "line-color", "#72aeca");
+    paint("park", "fill-color", "#b8d4a6");
+    paint("park", "fill-opacity", 0.78);
+    paint("landcover_wood", "fill-color", "#91b57e");
+    paint("landcover_wood", "fill-opacity", 0.58);
+    paint("landcover_grass", "fill-color", "#bed2ad");
+    paint("landcover_grass", "fill-opacity", 0.46);
+    paint("road_motorway_casing", "line-color", "#c47649");
+    paint("road_trunk_primary_casing", "line-color", "#c98a5d");
+    paint("road_secondary_tertiary_casing", "line-color", "#d1a06e");
   }
 
   function createMap(container, compact) {
@@ -844,7 +852,7 @@
       element.setAttribute("aria-label", "Current photo location");
       const marker = new maplibregl.Marker({ element, anchor: "center" }).setLngLat([photo.lng, photo.lat]).addTo(viewerMap);
       viewerDecorations.markers.push(marker);
-      viewerMap.easeTo({ center: [photo.lng, photo.lat], zoom: Math.max(12, Math.min(18, photo.zoom || 16)), duration: 650 });
+      viewerMap.easeTo({ center: [photo.lng, photo.lat], zoom: Math.max(PHOTO_ZOOM_LIMITS.min, Math.min(PHOTO_ZOOM_LIMITS.max, photo.zoom || 16)), duration: 650 });
     } else {
       const coordinates = dayCoordinates(day);
       if (coordinates.length > 1) {
