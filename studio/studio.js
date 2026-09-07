@@ -5,7 +5,8 @@
   const journey = data.journeys.find((item) => item.id === data.defaultJourneyId);
   const routeGeometry = window.JOURNEY_ATLAS_ROUTE_GEOMETRY || {};
   const basePhotos = window.JOURNEY_ATLAS_TRIP_PHOTOS || [];
-  const styleUrl = "https://tiles.openfreemap.org/styles/positron";
+  const styleUrl = "https://tiles.openfreemap.org/styles/liberty";
+  const photoZoomLimits = { min: 2, max: 20 };
   let state = { photos: {}, routes: {} };
   let mode = "photos";
   let selectedPhotoId = basePhotos[0]?.id || null;
@@ -21,6 +22,40 @@
   let dirty = false;
 
   const $ = (selector) => document.querySelector(selector);
+
+  function clampPhotoZoom(value) {
+    return Math.max(photoZoomLimits.min, Math.min(photoZoomLimits.max, value));
+  }
+
+  function captureCurrentMapZoom() {
+    if (!mapReady) return;
+    $("#photo-zoom").value = clampPhotoZoom(Number(map.getZoom().toFixed(2)));
+  }
+
+  function applyBasemapTreatment() {
+    const layers = map.getStyle().layers || [];
+    layers.forEach((layer) => {
+      if (/poi/i.test(layer.id || "")) map.setLayoutProperty(layer.id, "visibility", "none");
+    });
+    const paint = (id, property, value) => {
+      if (map.getLayer(id)) map.setPaintProperty(id, property, value);
+    };
+    paint("background", "background-color", "#f1eee5");
+    paint("natural_earth", "raster-opacity", ["interpolate", ["linear"], ["zoom"], 0, 0.72, 5.5, 0.42, 8, 0.08]);
+    paint("natural_earth", "raster-contrast", 0.2);
+    paint("water", "fill-color", "#94bfd3");
+    paint("waterway_river", "line-color", "#72aeca");
+    paint("waterway_other", "line-color", "#72aeca");
+    paint("park", "fill-color", "#b8d4a6");
+    paint("park", "fill-opacity", 0.78);
+    paint("landcover_wood", "fill-color", "#91b57e");
+    paint("landcover_wood", "fill-opacity", 0.58);
+    paint("landcover_grass", "fill-color", "#bed2ad");
+    paint("landcover_grass", "fill-opacity", 0.46);
+    paint("road_motorway_casing", "line-color", "#c47649");
+    paint("road_trunk_primary_casing", "line-color", "#c98a5d");
+    paint("road_secondary_tertiary_casing", "line-color", "#d1a06e");
+  }
 
   function placeById(id) {
     return journey.places.find((place) => place.id === id);
@@ -199,7 +234,7 @@
     };
     if (Number.isFinite(lat) && Number.isFinite(lng) && $("#photo-lat").value !== "" && $("#photo-lng").value !== "") {
       override.location = { lat: Number(lat.toFixed(6)), lng: Number(lng.toFixed(6)) };
-      override.zoom = Number.isFinite(zoom) ? Math.max(12, Math.min(18, zoom)) : 16;
+      override.zoom = Number.isFinite(zoom) ? clampPhotoZoom(zoom) : 16;
     }
     state.photos[selectedPhotoId] = override;
     markDirty();
@@ -253,6 +288,7 @@
         const position = marker.getLngLat();
         $("#photo-lat").value = position.lat.toFixed(6);
         $("#photo-lng").value = position.lng.toFixed(6);
+        captureCurrentMapZoom();
         readPhotoForm();
       });
       activeMarkers.push(marker);
@@ -441,7 +477,7 @@
     document.querySelectorAll("[data-panel]").forEach((panel) => { panel.hidden = panel.dataset.panel !== mode; });
     $("#route-tools").hidden = mode !== "routes";
     $("#map-instructions").textContent = mode === "photos"
-      ? "Click the map or drag the pin to set this photo's exact location. Located photos open at this street-level view in the atlas."
+      ? "Click the map or drag the pin to save this photo's exact location and the current map zoom. Located photos open at that view in the atlas."
       : "Click close to the orange line to insert a control point, then drag numbered points to shape the route.";
     if (!mapReady) return;
     if (mode === "photos") selectPhoto(selectedPhotoId, true);
@@ -464,6 +500,7 @@
     map.addControl(new maplibregl.AttributionControl({ compact: true, customAttribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }), "bottom-right");
     map.on("load", () => {
       mapReady = true;
+      applyBasemapTreatment();
       selectPhoto(selectedPhotoId, true);
       markSaved("Ready");
     });
@@ -472,6 +509,7 @@
       if (!selectedPhotoId) return;
       $("#photo-lat").value = event.lngLat.lat.toFixed(6);
       $("#photo-lng").value = event.lngLat.lng.toFixed(6);
+      captureCurrentMapZoom();
       readPhotoForm();
       selectPhoto(selectedPhotoId, false);
     });

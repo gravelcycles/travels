@@ -41,7 +41,7 @@
 
       <section class="map-workspace">
         <div id="studio-map" aria-label="Editable journey map"></div>
-        <div class="map-instructions" id="map-instructions">Click the map or drag the pin to set this photo's exact location.</div>
+        <div class="map-instructions" id="map-instructions">Click the map or drag the pin to save this photo's exact location and the current map zoom.</div>
         <div class="route-tools" id="route-tools" hidden>
           <button id="undo-route" type="button">Undo</button>
           <button id="redo-route" type="button">Redo</button>
@@ -61,7 +61,7 @@
           <div class="coordinate-fields">
             <label>Latitude<input id="photo-lat" name="lat" inputmode="decimal" /></label>
             <label>Longitude<input id="photo-lng" name="lng" inputmode="decimal" /></label>
-            <label>Map zoom<input id="photo-zoom" name="zoom" inputmode="decimal" value="16" /></label>
+            <label>Saved map zoom<input id="photo-zoom" name="zoom" type="number" min="2" max="20" step="0.01" value="16" /></label>
           </div>
           <button class="secondary" id="clear-photo-location" type="button">Clear location</button>
           <label for="photo-caption">Short caption</label>
@@ -96,6 +96,6 @@
     <script src="/dist/assets/route-geometry.js"></script>
     <script src="/dist/assets/trip-photos.js"></script>
     <script src="/dist/assets/content-overrides.js"></script>
-    <script src="/studio.js?v=20260907-5"></script>
+    <script src="/studio.js?v=20260907-6"></script>
   </body>
 </html>
