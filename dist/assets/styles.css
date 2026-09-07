@@ -19,6 +19,7 @@
 * { box-sizing: border-box; }
 html, body { min-height: 100%; }
 body { margin: 0; background: var(--paper); overflow: hidden; }
+body.catalog-page { overflow: auto; }
 button, select { font: inherit; }
 button { color: inherit; }
 
@@ -53,6 +54,30 @@ button { color: inherit; }
 .plain-button { border: 0; background: transparent; color: #fff; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; padding: 9px; }
 .plain-button:hover, .header-link:hover { color: #f0c388; }
 .header-link { color: #d6e1df; font-size: 0.8rem; font-weight: 750; text-decoration: none; padding: 9px 3px; }
+
+.catalog-main { min-height: calc(100dvh - 72px); }
+.catalog-hero { padding: clamp(54px, 9vw, 116px) max(24px, calc((100vw - 1180px) / 2)); background: radial-gradient(circle at 83% 22%, rgba(255,255,255,.13) 0 2px, transparent 2.5px) 0 0/18px 18px, linear-gradient(135deg, #17383e, #315d62); color: #fbfaf6; }
+.catalog-eyebrow { display: block; color: #e7bd84; font-size: .72rem; font-weight: 850; letter-spacing: .16em; }
+.catalog-hero h1 { max-width: 830px; margin: 13px 0 18px; font: 700 clamp(3rem, 7vw, 6.7rem)/.9 Georgia, "Times New Roman", serif; letter-spacing: -.065em; }
+.catalog-hero p { max-width: 650px; margin: 0; color: #d5e1df; font-size: clamp(1rem, 1.8vw, 1.25rem); line-height: 1.6; }
+.catalog-section { max-width: 1180px; margin: 0 auto; padding: clamp(40px, 6vw, 76px) 24px 90px; }
+.catalog-heading { display: flex; justify-content: space-between; align-items: end; gap: 22px; margin-bottom: 24px; }
+.catalog-heading h2 { margin: 0; font: 700 clamp(2rem, 4vw, 3.4rem)/1 Georgia, "Times New Roman", serif; letter-spacing: -.045em; }
+.catalog-heading p { max-width: 420px; margin: 0; color: var(--muted); line-height: 1.55; }
+.journey-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 22px; }
+.journey-card { min-height: 430px; display: grid; grid-template-rows: minmax(240px, 1fr) auto; color: #fff; background: var(--ink); text-decoration: none; box-shadow: var(--shadow); overflow: hidden; }
+.journey-card-media { position: relative; min-height: 240px; overflow: hidden; background: #29474c; }
+.journey-card-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,28,32,.05), rgba(8,28,32,.73)); }
+.journey-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 300ms ease; }
+.journey-card:hover img, .journey-card:focus-visible img { transform: scale(1.035); }
+.journey-card-copy { padding: 24px; }
+.journey-card-copy small { color: #e7bd84; font-size: .68rem; font-weight: 850; letter-spacing: .13em; }
+.journey-card-copy h3 { margin: 8px 0 9px; font: 700 clamp(1.8rem, 3vw, 2.5rem)/1 Georgia, "Times New Roman", serif; letter-spacing: -.04em; }
+.journey-card-copy p { margin: 0; color: #c6d7d5; line-height: 1.5; }
+.journey-card-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 18px; color: #fff; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.catalog-empty { border: 1px solid var(--line); padding: 28px; color: var(--muted); }
+.catalog-footer { display: flex; justify-content: space-between; gap: 20px; padding: 26px max(24px, calc((100vw - 1180px) / 2)); background: #dfe5e1; color: var(--ink-soft); font-size: .78rem; }
+.catalog-footer a { color: var(--ink); font-weight: 800; }
 
 .atlas-shell {
   height: calc(100vh - 72px);
@@ -277,9 +302,14 @@ button:focus-visible, select:focus-visible, .maplibregl-map:focus-visible { outl
   .viewer-day-nav { margin-right: 34px; }
   .viewer-filmstrip { grid-column: 2; grid-row: 2; display: grid; grid-auto-flow: column; grid-auto-columns: 92px; grid-template-columns: none; grid-auto-rows: 76px; overflow-x: auto; overflow-y: hidden; padding: 8px; }
   .photo-context h2 { font-size: 1.45rem; }
+  .catalog-page .site-header { height: 64px; }
+  .catalog-main { min-height: calc(100dvh - 64px); }
 }
 
 @media (max-width: 560px) {
+  .catalog-heading, .catalog-footer { align-items: flex-start; flex-direction: column; }
+  .catalog-hero { padding-top: 58px; padding-bottom: 62px; }
+  .catalog-hero h1 { font-size: clamp(3rem, 17vw, 4.4rem); }
   .journey-summary { grid-template-columns: 1.3fr 1fr 0.5fr; }
   .map-header { min-height: 142px; grid-template-columns: 1fr; align-content: center; gap: 10px; }
   .map-title-card h1 { font-size: 1.85rem; }

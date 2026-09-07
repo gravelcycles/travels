@@ -1,9 +1,9 @@
 # Travels — Journey Atlas
 
-A static, GitHub Pages-friendly atlas. It currently opens David and Michelle's
-Switzerland–Italy family journey directly; the planned structure makes the root
-an index of all real journeys and gives this trip its own stable detail page.
-Fictional viewer examples live separately at `demo.html`.
+A static, GitHub Pages-friendly atlas. The root is an index of real journeys;
+David and Michelle's Switzerland–Italy family journey has its own stable page
+at `switzerland-italy.html`. Fictional viewer examples live separately at
+`demo.html`.
 
 ## How we work
 
@@ -29,7 +29,8 @@ python3 -m http.server 8000
 Then open `http://localhost:8000/dist/`. Add `?photoSource=local` to use the
 ignored local derivatives instead of GitHub Release URLs.
 
-- `/dist/` shows only the real family journey.
+- `/dist/` lists all real journeys.
+- `/dist/switzerland-italy.html` opens the real family journey.
 - `/dist/demo.html` shows only the sample journeys and includes a selector.
 
 ## Annotate photos and redraw routes

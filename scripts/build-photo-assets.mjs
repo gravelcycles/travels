@@ -8,7 +8,7 @@ import vm from "node:vm";
 import exifr from "exifr";
 import sharp from "sharp";
 
-const sourceDirectory = path.resolve(process.argv[2] || "photos/rushton-trip");
+const sourceDirectory = path.resolve(process.argv[2] || "photos/switzerland-italy-trip");
 const outputDirectory = path.resolve(process.argv[3] || "build/trip-photos-v1");
 const manifestPath = path.resolve(process.argv[4] || "dist/assets/trip-photos.js");
 const releaseTag = process.env.TRIP_PHOTO_RELEASE_TAG || "trip-photos-v1";

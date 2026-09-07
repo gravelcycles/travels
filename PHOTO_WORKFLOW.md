@@ -26,9 +26,9 @@ messaging-app downloads; they may omit or rewrite EXIF metadata.
   provide the intended day/place alongside the filename.
 - Include only images you are comfortable using for the project.
 
-## Current Rushton trip import
+## Current Switzerland–Italy trip import
 
-`npm run photos:build` reads `photos/rushton-trip/` and writes public-ready
+`npm run photos:build` reads `photos/switzerland-italy-trip/` and writes public-ready
 derivatives to the ignored `build/trip-photos-v1/` directory. The current run:
 
 - matched 104 stills to journey days from local capture dates;
