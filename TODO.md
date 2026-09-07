@@ -8,7 +8,7 @@ commands.
 
 ## P0 · Content corrections
 
-- [ ] **T01 — Correct Day 1 legs and story.** In `family-d1`, keep only
+- [x] **T01 — Correct Day 1 legs and story.** In `family-d1`, keep only
       `family-airport-luzern` (Zürich Flughafen → Luzern). Remove the reverse
       pickup leg from the day and reconcile title, `destinationId`, prose,
       distance/summary, route layering, and bounds. Verify desktop/mobile and

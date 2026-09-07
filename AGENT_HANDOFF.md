@@ -22,6 +22,12 @@ changes and zooms to stored photo coordinates. The Studio provides draggable
 photo pins; caption, description, alt, exact-place, day, zoom, and visibility
 fields; plus route control points, smoothing, undo/redo, reset, and deletion.
 
+Also completed on 7 September: T01 corrected Day 1 to the single 68 km Zürich
+Flughafen → Luzern arrival leg. The obsolete reverse pickup segment and its
+generated geometry were removed; title, destination, story, trip summary,
+layering, and close-up bounds now agree. Desktop, 390 px mobile, and demo smoke
+checks passed locally without browser warnings or errors.
+
 Run `npm run studio` and open `http://127.0.0.1:4173/studio/`. Saves update
 `content/photo-overrides.json`, `content/route-overrides.json`, and generated
 `dist/assets/content-overrides.js`; backups under `build/studio-backups/` are
@@ -60,18 +66,15 @@ push. The manifest uses the immutable tag rather than a mutable `/latest/` URL.
 
 ## Known content corrections
 
-- Day 1 should contain only Zürich Flughafen → Luzern. Remove
-  `family-luzern-airport-pickup` from `family-d1`; then reconcile the day title,
-  destination label, narrative, distance, and close-up bounds.
 - Day 10's ferry geometry is visibly wrong. Inspect and correct both
   `family-como-varenna-boat` and `family-dervio-bellagio-boat` against the actual
   services and water path; verify the complete five-leg close-up afterward.
 
 ## Next
 
-Use the independent, acceptance-scoped work items in `TODO.md`; assign one item
-per new agent/task so each starts with only the relevant context. Update the
-Markdown handoff when an item lands.
+T02 is the next unfinished item. Research and repair both Day 10 ferry legs,
+then continue with the independent, acceptance-scoped work items in `TODO.md`,
+one item per new agent/task. Update the Markdown handoff when an item lands.
 
 ## Topographic basemap direction
 
