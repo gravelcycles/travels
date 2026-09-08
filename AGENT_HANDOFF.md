@@ -77,7 +77,10 @@ explicit accept before changing the reviewed geometry. Missing, distant,
 disconnected, or ambiguous networks keep that geometry and surface the reason.
 Seven route tests now cover the base pipeline plus successful, unsafe, and
 unavailable Studio proposals. Local Studio/API and 390 px checks passed with no
-browser errors; no external router receives precise journey coordinates.
+browser errors; no external router receives precise journey coordinates. Commit
+`772d051` deployed successfully in Pages run `34195603573`; a cache-fresh public
+check confirmed the 14-day/104-photo trip and route interactions with a clean
+browser console.
 
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
