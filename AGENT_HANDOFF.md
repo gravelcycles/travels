@@ -45,12 +45,16 @@ implementation or commit.
 
 ## Photo/GPX pass · 8 September 2026
 
-T10, T12, and T13 are complete in commit `4801801`. Studio can review a
-private GPX for a bicycle/walking leg without retaining the upload, validates direction,
-endpoints, gaps, and distance, simplifies in meters, and saves only explicitly
-accepted `[lng, lat]` geometry with non-identifying provenance. A bicycle GPX
-fixture covers duplicates, multiple sections, simplification, reversed order,
-large gaps, and private-source handling.
+T10, T12, and T13 are complete in commit `4801801`, deployed successfully in
+Pages run `34277130090` after explicit user approval. Fresh public checks
+confirmed the catalog, 95 visible photos, Day 3's independent lead at
+`PHOTO 14 OF 14`, Day 8's no-photo state, and clean catalog/trip browser
+consoles. Studio can review a private GPX for a bicycle/walking leg without
+retaining the upload, validates direction, endpoints, gaps, and distance,
+simplifies in meters, and saves only explicitly accepted `[lng, lat]` geometry
+with non-identifying provenance. A bicycle GPX fixture covers duplicates,
+multiple sections, simplification, reversed order, large gaps, and
+private-source handling.
 
 All 104 family photos now have reviewed day assignments, captions,
 descriptions, alt text, visibility, privacy, and an explicit no-GPS location
