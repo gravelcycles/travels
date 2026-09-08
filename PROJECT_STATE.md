@@ -31,6 +31,17 @@ output. Failed/empty imports retain reviewed output; GPS stays in a private
 candidate report until review. T19 is the next future-planning priority;
 T23–T25 record additional confirmed bugs/limitations found in this pass.
 
+T15–T17 are complete. The six MOV files remain private and held because no
+reviewed story need currently justifies a video publishing pipeline. Days 9,
+11, and 14 retain intentional no-photo states with no illustrative fallback
+media (Day 8 is also empty after its only source image was hidden in review).
+Trip Replay now follows ordered legs with mode-specific route styling, a moving
+map position, day/segment story context, and reviewed lead photos. Located
+photos become map-zoom pauses when future reviewed coordinates are available.
+The player includes play/pause, three speeds, day stepping, a scrubber,
+keyboard controls, reduced-motion behavior, and replay/explore completion
+actions; it uses the same data-driven viewer on real and demo pages.
+
 ## Current behavior
 
 - `/travels/` is the catalog of real journeys.
@@ -88,6 +99,12 @@ T23–T25 record additional confirmed bugs/limitations found in this pass.
 - Located photos move the side map to their exact coordinate and stored zoom
   while highlighted, and the viewer can show both a short caption and longer
   scene description.
+- Trip Replay opens only on request and draws every leg in day order while
+  completed lines accumulate in their transport-mode color and pattern. The
+  current position follows the route geometry; reviewed located photos receive
+  their own pause and exact map zoom. The player is usable by keyboard, supports
+  speed and day timeline controls, and removes line/camera animation under the
+  reduced-motion preference.
 - `npm run studio` starts a loopback-only Atlas Studio for placing photos and
   editing their text, or redrawing a route with draggable control points,
   smoothing, undo, and redo. Saves write JSON sources plus the generated public

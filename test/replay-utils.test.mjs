@@ -1,0 +1,51 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+
+await import("../dist/assets/replay-utils.js");
+const { createTimeline, firstMomentIndexForDay, initialMomentProgress, partialLine } = globalThis.JOURNEY_ATLAS_REPLAY;
+
+test("partialLine follows the full geometry instead of cutting to the endpoint", () => {
+  const route = [[0, 0], [0, 1], [1, 1]];
+  const halfway = partialLine(route, 0.5);
+  assert.equal(halfway.length, 2);
+  assert.deepEqual(halfway[0], [0, 0]);
+  assert.ok(Math.abs(halfway[1][0]) < 0.01);
+  assert.ok(halfway[1][1] > 0.99);
+  assert.deepEqual(partialLine(route, 1), route);
+});
+
+test("createTimeline preserves day and leg order and adds only located photo pauses", () => {
+  const journey = {
+    days: [
+      { id: "d1", segmentIds: ["s2", "s1"], photoOrder: ["p2", "p1"] },
+      { id: "d2", segmentIds: [] },
+      { id: "d3", segmentIds: ["missing"] }
+    ],
+    segments: [{ id: "s1" }, { id: "s2" }],
+    photos: [
+      { id: "p1", dayId: "d1", lng: 8, lat: 46 },
+      { id: "p2", dayId: "d1" },
+      { id: "p3", dayId: "d2", lng: 9, lat: 47, hidden: true }
+    ]
+  };
+  const timeline = createTimeline(journey);
+  assert.deepEqual(timeline.map((moment) => moment.id), [
+    "d1:segment:s2",
+    "d1:segment:s1",
+    "d1:photo:p1",
+    "d2:day",
+    "d3:day"
+  ]);
+  assert.equal(firstMomentIndexForDay(timeline, "d2"), 3);
+});
+
+test("partialLine always returns valid two-point geometry at the start", () => {
+  assert.deepEqual(partialLine([[8, 46], [9, 47]], 0), [[8, 46], [8, 46]]);
+  assert.deepEqual(partialLine([], 0.5), []);
+});
+
+test("reduced motion renders route moments at their completed position", () => {
+  assert.equal(initialMomentProgress({ type: "segment" }, false), 0);
+  assert.equal(initialMomentProgress({ type: "segment" }, true), 1);
+  assert.equal(initialMomentProgress({ type: "photo" }, false), 1);
+});

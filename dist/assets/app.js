@@ -2,6 +2,7 @@
   "use strict";
 
   const data = window.JOURNEY_ATLAS_DATA;
+  const replayUtils = window.JOURNEY_ATLAS_REPLAY;
   const contentOverrides = window.JOURNEY_ATLAS_CONTENT_OVERRIDES || { photos: {}, routes: {}, days: {} };
   data.journeys.forEach((item) => {
     item.days = item.days.map((day) => ({ ...day, ...(contentOverrides.days?.[day.id] || {}) }));
@@ -52,11 +53,26 @@
   let mapScope = "journey";
   let mainMap;
   let viewerMap;
+  let replayMap;
   let mainMapReady = false;
   let viewerMapReady = false;
+  let replayMapReady = false;
   let mainDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
   let mainDayMarkers = [];
   let viewerDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
+  let replayDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
+  let replayTimeline = [];
+  let replayJourneyId = null;
+  let replayMomentIndex = 0;
+  let replayPlaying = false;
+  let replayCompleted = false;
+  let replayFrame = null;
+  let replayLastTimestamp = null;
+  let replayElapsed = 0;
+  let replayProgress = 0;
+  let replaySpeed = 1;
+  let replayActiveSourceId = null;
+  let replayPositionMarker = null;
   let inspectedSegmentId = null;
   let routeInspectionPinned = false;
   let viewerDayId = activeDayId;
@@ -80,6 +96,7 @@
   const storyMedia = $("#story-media");
   const photoStrip = $("#photo-strip");
   const photoDialog = $("#photo-dialog");
+  const replayDialog = $("#replay-dialog");
   const mapStatus = $("#map-status");
 
   function placeById(id) {
@@ -476,7 +493,7 @@
         type: "Feature",
         id: segment.id,
         properties: { segmentId: segment.id },
-        geometry: { type: "LineString", coordinates: segmentCoordinates(segment) }
+        geometry: { type: "LineString", coordinates: options.coordinates || segmentCoordinates(segment) }
       }
     });
     const firstLabelLayer = (map.getStyle().layers || []).find((layer) => layer.type === "symbol" && layer.layout?.["text-field"]);
@@ -759,6 +776,7 @@
     $("#day-count").textContent = `${journey.days.length} days`;
     $("#photo-count").textContent = journey.photos.length;
     $("#show-all-photos").disabled = journey.photos.length === 0;
+    $("#open-replay").disabled = !replayUtils || journey.days.length === 0;
     $("#focus-day").disabled = !dayCoordinates(activeDay()).length;
     $("#fit-route").disabled = !journeyCoordinates().length;
     $("#journey-summary").innerHTML = `
@@ -1079,6 +1097,373 @@
     updateViewer();
   }
 
+  function currentReplayMoment() {
+    return replayTimeline[replayMomentIndex];
+  }
+
+  function replayMomentDay(moment = currentReplayMoment()) {
+    return dayById(moment?.dayId) || journey.days[0];
+  }
+
+  function replayLeadPhoto(day, moment) {
+    if (moment?.photoId) return photoById(moment.photoId);
+    const photos = photosForDay(day.id);
+    const selectedLead = day.leadPhotoId ? photoById(day.leadPhotoId) : null;
+    return selectedLead?.dayId === day.id ? selectedLead : photos[0];
+  }
+
+  function replaySegment(moment = currentReplayMoment()) {
+    return moment?.type === "segment" ? segmentById(moment.segmentId) : null;
+  }
+
+  function replayMomentProgress(moment) {
+    return replayUtils.initialMomentProgress(moment, prefersReducedMotion());
+  }
+
+  function replayMapPadding() {
+    if (window.matchMedia("(max-width: 700px)").matches) {
+      return { top: Math.min(310, Math.floor(window.innerHeight * 0.42)), right: 34, bottom: 165, left: 34 };
+    }
+    return { top: 70, right: 70, bottom: 145, left: 405 };
+  }
+
+  function fitReplayMoment(moment) {
+    if (!replayMapReady || !moment) return;
+    const day = replayMomentDay(moment);
+    const photo = moment.photoId ? photoById(moment.photoId) : null;
+    const duration = prefersReducedMotion() ? 0 : 700;
+    if (photo && Number.isFinite(photo.lng) && Number.isFinite(photo.lat)) {
+      replayMap.easeTo({
+        center: [photo.lng, photo.lat],
+        zoom: Math.max(PHOTO_ZOOM_LIMITS.min, Math.min(PHOTO_ZOOM_LIMITS.max, photo.zoom || 15)),
+        duration
+      });
+      return;
+    }
+    const coordinates = dayCoordinates(day);
+    if (coordinates.length > 1) {
+      replayMap.fitBounds(boundsFromCoordinates(coordinates), { padding: replayMapPadding(), maxZoom: 11.5, duration });
+    } else if (coordinates.length === 1) {
+      replayMap.easeTo({ center: coordinates[0], zoom: 10.5, duration });
+    } else {
+      const bounds = boundsFromCoordinates(journeyCoordinates());
+      if (bounds) replayMap.fitBounds(bounds, { padding: replayMapPadding(), maxZoom: 7.5, duration });
+    }
+  }
+
+  function addReplayMarker(coordinate, className, label, color) {
+    if (!coordinate || !replayMapReady) return null;
+    const element = document.createElement("div");
+    element.className = className;
+    element.setAttribute("role", "img");
+    element.setAttribute("aria-label", label);
+    if (color) element.style.setProperty("--marker-color", color);
+    const marker = new maplibregl.Marker({ element, anchor: "center" }).setLngLat(coordinate).addTo(replayMap);
+    replayDecorations.markers.push(marker);
+    return marker;
+  }
+
+  function drawReplayMomentMap(moment, progress, fit = true) {
+    if (!replayMapReady || !moment) return;
+    clearDecorations(replayMap, replayDecorations);
+    replayActiveSourceId = null;
+    replayPositionMarker = null;
+
+    journey.segments.forEach((segment) => {
+      addSegmentLayer(replayMap, replayDecorations, segment, {
+        prefix: "replay-base",
+        color: palette.muted,
+        opacity: 0.15,
+        selected: false
+      });
+    });
+
+    const completedSegmentIds = new Set(replayTimeline.slice(0, replayMomentIndex)
+      .filter((item) => item.type === "segment")
+      .map((item) => item.segmentId));
+    journey.segments.filter((segment) => completedSegmentIds.has(segment.id)).forEach((segment) => {
+      addSegmentLayer(replayMap, replayDecorations, segment, {
+        prefix: "replay-complete",
+        opacity: 0.9,
+        selected: false
+      });
+    });
+
+    const segment = replaySegment(moment);
+    if (segment) {
+      const coordinates = replayUtils.partialLine(segmentCoordinates(segment), progress);
+      addSegmentLayer(replayMap, replayDecorations, segment, {
+        prefix: "replay-active",
+        coordinates,
+        opacity: 1,
+        selected: false
+      });
+      replayActiveSourceId = `replay-active-source-${segment.id}`;
+      replayPositionMarker = addReplayMarker(
+        coordinates[coordinates.length - 1],
+        "replay-position-marker",
+        `Current ${labels[segment.mode] || segment.mode} position`,
+        modeStyles[segment.mode]?.color || palette.route
+      );
+    } else if (moment.type === "photo") {
+      const photo = photoById(moment.photoId);
+      if (photo && Number.isFinite(photo.lng) && Number.isFinite(photo.lat)) {
+        addReplayMarker([photo.lng, photo.lat], "replay-photo-marker", `Photograph: ${photo.caption}`, palette.selected);
+      }
+    } else {
+      const place = destinationForDay(replayMomentDay(moment));
+      if (place) addReplayMarker([place.lng, place.lat], "replay-place-marker", `Day destination: ${place.name}`, palette.selected);
+    }
+    if (fit) fitReplayMoment(moment);
+  }
+
+  function setReplayProgress(progress) {
+    replayProgress = replayUtils.clamp(progress);
+    const moment = currentReplayMoment();
+    const segment = replaySegment(moment);
+    if (!segment || !replayMapReady || !replayActiveSourceId) return;
+    const coordinates = replayUtils.partialLine(segmentCoordinates(segment), replayProgress);
+    const source = replayMap.getSource(replayActiveSourceId);
+    if (source) {
+      source.setData({
+        type: "Feature",
+        id: segment.id,
+        properties: { segmentId: segment.id },
+        geometry: { type: "LineString", coordinates }
+      });
+    }
+    if (replayPositionMarker) replayPositionMarker.setLngLat(coordinates[coordinates.length - 1]);
+  }
+
+  function renderReplayPhoto(photo) {
+    const frame = $("#replay-photo-frame");
+    const image = $("#replay-photo");
+    frame.hidden = !photo;
+    if (!photo) {
+      image.className = "";
+      image.removeAttribute("src");
+      image.removeAttribute("srcset");
+      image.alt = "";
+      $("#replay-photo-caption").textContent = "";
+      return;
+    }
+    image.className = photo.blur ? "progressive-image" : "";
+    image.srcset = "";
+    image.src = photo.blur || preferredPhotoUrl(photo, 1280);
+    image.sizes = "(max-width: 900px) 70vw, 355px";
+    image.alt = photo.alt || "";
+    if (photo.blur && photo.srcset?.length) {
+      image.dataset.src = photoAssetUrl(photo.src);
+      image.dataset.srcset = photoSrcset(photo);
+      hydrateImage(image);
+    }
+    $("#replay-photo-caption").textContent = photo.caption || "";
+    preloadPhoto(photo, 1280);
+  }
+
+  function updateReplayControls(day) {
+    const dayIndex = journey.days.findIndex((item) => item.id === day.id);
+    const timeline = $("#replay-timeline");
+    timeline.max = Math.max(0, journey.days.length - 1);
+    timeline.value = Math.max(0, dayIndex);
+    timeline.setAttribute("aria-valuetext", `Day ${dayIndex + 1} of ${journey.days.length}: ${day.title}`);
+    $("#replay-day-label").textContent = `Day ${dayIndex + 1} / ${journey.days.length}`;
+    $("#replay-previous-day").disabled = dayIndex <= 0;
+    $("#replay-next-day").disabled = dayIndex >= journey.days.length - 1;
+    $("#replay-toggle").textContent = replayPlaying ? "Pause" : (replayCompleted ? "Replay" : "Play");
+    $("#replay-toggle").setAttribute("aria-label", replayPlaying ? "Pause Trip Replay" : "Play Trip Replay");
+    $("#replay-status").textContent = replayPlaying
+      ? `Playing at ${replaySpeed}×${prefersReducedMotion() ? " with reduced motion" : ""}`
+      : `Paused${prefersReducedMotion() ? " · reduced motion" : ""}`;
+  }
+
+  function renderReplayMoment({ fit = true } = {}) {
+    const moment = currentReplayMoment();
+    if (!moment) return;
+    const day = replayMomentDay(moment);
+    const segment = replaySegment(moment);
+    const photo = replayLeadPhoto(day, moment);
+    $("#replay-complete").hidden = true;
+    $("#replay-eyebrow").textContent = `DAY ${String(day.number).padStart(2, "0")} · ${day.date}`;
+    $("#replay-title").textContent = day.title;
+    $("#replay-copy").textContent = conciseDayStory(day);
+    if (segment) {
+      const from = placeById(segment.from);
+      const to = placeById(segment.to);
+      $("#replay-mode").innerHTML = `${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)} · leg ${day.segmentIds.indexOf(segment.id) + 1} of ${day.segmentIds.length}`;
+      $("#replay-route").textContent = `${from.name} → ${to.name}`;
+    } else if (moment.type === "photo") {
+      $("#replay-mode").textContent = "Located photograph";
+      $("#replay-route").textContent = photo?.locationLabel || routeLabel(day);
+    } else {
+      $("#replay-mode").textContent = journey.status === "planned" ? "Planned day" : "A day in one place";
+      $("#replay-route").textContent = routeLabel(day);
+    }
+    renderReplayPhoto(photo);
+    updateReplayControls(day);
+    drawReplayMomentMap(moment, replayProgress, fit);
+  }
+
+  function replayMomentDuration(moment) {
+    if (moment?.type === "photo") return 2800;
+    if (moment?.type === "day") return 2200;
+    const pointCount = replaySegment(moment) ? segmentCoordinates(replaySegment(moment)).length : 2;
+    return Math.min(4300, 2300 + pointCount * 8);
+  }
+
+  function pauseReplay() {
+    replayPlaying = false;
+    replayLastTimestamp = null;
+    if (replayFrame !== null) window.cancelAnimationFrame(replayFrame);
+    replayFrame = null;
+    const day = replayMomentDay();
+    if (day) updateReplayControls(day);
+  }
+
+  function finishReplay() {
+    replayPlaying = false;
+    replayCompleted = true;
+    replayLastTimestamp = null;
+    replayFrame = null;
+    replayElapsed = 0;
+    setReplayProgress(1);
+    updateReplayControls(replayMomentDay());
+    $("#replay-status").textContent = "Journey complete";
+    $("#replay-complete-title").textContent = journey.title;
+    $("#replay-complete").hidden = false;
+    $("#replay-again").focus();
+  }
+
+  function advanceReplayMoment() {
+    if (replayMomentIndex >= replayTimeline.length - 1) {
+      finishReplay();
+      return false;
+    }
+    replayMomentIndex += 1;
+    replayElapsed = 0;
+    replayProgress = replayMomentProgress(currentReplayMoment());
+    renderReplayMoment({ fit: replayMomentDay(replayTimeline[replayMomentIndex - 1]).id !== replayMomentDay().id });
+    return true;
+  }
+
+  function replayTick(timestamp) {
+    if (!replayPlaying || !replayDialog.open) return;
+    if (replayLastTimestamp === null) replayLastTimestamp = timestamp;
+    const elapsed = Math.min(100, timestamp - replayLastTimestamp);
+    replayLastTimestamp = timestamp;
+    replayElapsed += elapsed * replaySpeed;
+    const moment = currentReplayMoment();
+    const duration = replayMomentDuration(moment);
+    if (moment.type === "segment" && !prefersReducedMotion()) setReplayProgress(replayElapsed / duration);
+    else if (replayProgress < 1) setReplayProgress(1);
+    if (replayElapsed >= duration && !advanceReplayMoment()) return;
+    replayFrame = window.requestAnimationFrame(replayTick);
+  }
+
+  function startReplay() {
+    if (!replayTimeline.length) return;
+    if (replayCompleted) {
+      replayMomentIndex = 0;
+      replayCompleted = false;
+      replayElapsed = 0;
+      replayProgress = replayMomentProgress(currentReplayMoment());
+      renderReplayMoment();
+    }
+    replayPlaying = true;
+    replayLastTimestamp = null;
+    updateReplayControls(replayMomentDay());
+    if (replayFrame !== null) window.cancelAnimationFrame(replayFrame);
+    replayFrame = window.requestAnimationFrame(replayTick);
+  }
+
+  function toggleReplay() {
+    if (replayPlaying) pauseReplay();
+    else startReplay();
+  }
+
+  function jumpReplayToDay(dayIndex) {
+    const day = journey.days[Math.max(0, Math.min(journey.days.length - 1, dayIndex))];
+    if (!day) return;
+    pauseReplay();
+    replayMomentIndex = replayUtils.firstMomentIndexForDay(replayTimeline, day.id);
+    replayCompleted = false;
+    replayElapsed = 0;
+    replayProgress = replayMomentProgress(currentReplayMoment());
+    renderReplayMoment();
+  }
+
+  function stepReplayDay(delta) {
+    const currentDayIndex = journey.days.findIndex((day) => day.id === replayMomentDay().id);
+    jumpReplayToDay(currentDayIndex + delta);
+  }
+
+  function initReplayMap() {
+    if (replayMap || !window.maplibregl) {
+      if (replayMap) {
+        replayMap.resize();
+        if (replayMapReady) drawReplayMomentMap(currentReplayMoment(), replayProgress, true);
+      } else {
+        $("#replay-status").textContent = "The replay map could not load; the timeline and story controls still work.";
+      }
+      return;
+    }
+    replayMap = createMap("replay-map", true);
+    let setupAttempts = 0;
+    const finishReplayMapSetup = () => {
+      if (replayMapReady) return;
+      try {
+        applyBasemapTreatment(replayMap);
+        replayMapReady = true;
+        window.requestAnimationFrame(() => {
+          replayMap.resize();
+          drawReplayMomentMap(currentReplayMoment(), replayProgress, true);
+        });
+      } catch (_error) {
+        replayMapReady = false;
+        setupAttempts += 1;
+        if (setupAttempts < 24) window.setTimeout(finishReplayMapSetup, 500);
+      }
+    };
+    replayMap.on("load", finishReplayMapSetup);
+    replayMap.on("style.load", finishReplayMapSetup);
+    replayMap.on("error", () => {
+      if (!replayMapReady) $("#replay-status").textContent = "The replay map is temporarily unavailable; the timeline and story controls still work.";
+    });
+  }
+
+  function openReplay() {
+    if (!replayUtils) return;
+    if (replayJourneyId !== journey.id) {
+      replayJourneyId = journey.id;
+      replayTimeline = replayUtils.createTimeline(journey);
+      replayMomentIndex = 0;
+      replayCompleted = false;
+      replayElapsed = 0;
+      replayProgress = replayMomentProgress(currentReplayMoment());
+    }
+    if (!replayDialog.open) replayDialog.showModal();
+    renderReplayMoment({ fit: false });
+    window.requestAnimationFrame(() => {
+      initReplayMap();
+      $("#replay-toggle").focus();
+    });
+  }
+
+  function exploreReplayDay() {
+    const day = replayMomentDay();
+    pauseReplay();
+    replayDialog.close();
+    setActiveDay(day.id, true);
+    if (window.matchMedia("(max-width: 900px)").matches) setMobileTab("story");
+  }
+
+  function exploreReplayJourney() {
+    pauseReplay();
+    replayDialog.close();
+    fitRoute();
+    if (window.matchMedia("(max-width: 900px)").matches) setMobileTab("map");
+  }
+
   $("#journey-select").addEventListener("change", (event) => {
     const nextJourney = availableJourneys.find((item) => item.id === event.target.value);
     if (!nextJourney) return;
@@ -1130,6 +1515,7 @@
 
   $("#fit-route").addEventListener("click", fitRoute);
   $("#focus-day").addEventListener("click", () => focusDay(activeDay()));
+  $("#open-replay").addEventListener("click", openReplay);
   $("#previous-day").addEventListener("click", () => moveActiveDay(-1));
   $("#next-day").addEventListener("click", () => moveActiveDay(1));
   $("#show-all-photos").addEventListener("click", () => {
@@ -1142,6 +1528,19 @@
   $(".photo-next").addEventListener("click", () => moveViewer(1));
   $("#viewer-previous-day").addEventListener("click", () => moveViewerDay(-1));
   $("#viewer-next-day").addEventListener("click", () => moveViewerDay(1));
+  $(".replay-close").addEventListener("click", () => replayDialog.close());
+  $("#replay-toggle").addEventListener("click", toggleReplay);
+  $("#replay-previous-day").addEventListener("click", () => stepReplayDay(-1));
+  $("#replay-next-day").addEventListener("click", () => stepReplayDay(1));
+  $("#replay-speed").addEventListener("change", (event) => {
+    replaySpeed = Number(event.target.value) || 1;
+    updateReplayControls(replayMomentDay());
+  });
+  $("#replay-timeline").addEventListener("input", (event) => jumpReplayToDay(Number(event.target.value)));
+  $("#replay-explore-day").addEventListener("click", exploreReplayDay);
+  $("#replay-again").addEventListener("click", startReplay);
+  $("#replay-explore-journey").addEventListener("click", exploreReplayJourney);
+  replayDialog.addEventListener("close", pauseReplay);
   $("#viewer-filmstrip").addEventListener("click", (event) => {
     const button = event.target.closest("[data-viewer-index]");
     if (!button) return;
@@ -1159,6 +1558,26 @@
     swipeStartX = null;
   });
   document.addEventListener("keydown", (event) => {
+    if (replayDialog.open) {
+      const tag = event.target.tagName;
+      if (event.key === " " && !["BUTTON", "INPUT", "SELECT"].includes(tag)) {
+        event.preventDefault();
+        toggleReplay();
+      } else if (event.key === "ArrowLeft" && !["INPUT", "SELECT"].includes(tag)) {
+        event.preventDefault();
+        stepReplayDay(-1);
+      } else if (event.key === "ArrowRight" && !["INPUT", "SELECT"].includes(tag)) {
+        event.preventDefault();
+        stepReplayDay(1);
+      } else if (event.key === "Home" && !["INPUT", "SELECT"].includes(tag)) {
+        event.preventDefault();
+        jumpReplayToDay(0);
+      } else if (event.key === "End" && !["INPUT", "SELECT"].includes(tag)) {
+        event.preventDefault();
+        jumpReplayToDay(journey.days.length - 1);
+      }
+      return;
+    }
     if (event.key === "Escape" && !photoDialog.open && inspectedSegmentId) {
       clearSegmentInspection(true);
       return;
@@ -1173,6 +1592,7 @@
   window.addEventListener("resize", () => {
     if (mainMap) mainMap.resize();
     if (viewerMap && photoDialog.open) viewerMap.resize();
+    if (replayMap && replayDialog.open) replayMap.resize();
     renderDayNavigator();
   });
 

@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
-    <link rel="stylesheet" href="./assets/styles.css?v=a9131f6fe310" />
+    <link rel="stylesheet" href="./assets/styles.css?v=75e9cdaf6ab3" />
   </head>
   <body data-journey-scope="demo">
     <header class="site-header">
@@ -47,6 +47,7 @@
             <p id="journey-subtitle"></p>
           </div>
           <div class="map-actions">
+            <button id="open-replay" type="button" aria-label="Open Trip Replay">Trip replay</button>
             <button id="focus-day" type="button" aria-label="Zoom to the selected day's complete route">Day close-up</button>
             <button id="fit-route" type="button" aria-label="Fit the whole route on the map">Fit route</button>
             <button id="show-all-photos" type="button">Photo days <span id="photo-count"></span></button>
@@ -140,11 +141,60 @@
       </div>
     </dialog>
 
+    <dialog class="replay-dialog" id="replay-dialog" aria-label="Trip Replay">
+      <div class="replay-player">
+        <div id="replay-map" aria-label="Animated map replaying the journey day by day"></div>
+        <button class="replay-close" type="button" aria-label="Close Trip Replay">×</button>
+        <aside class="replay-story" aria-live="polite">
+          <span class="replay-eyebrow" id="replay-eyebrow"></span>
+          <div class="replay-mode" id="replay-mode"></div>
+          <h2 id="replay-title"></h2>
+          <p class="replay-route" id="replay-route"></p>
+          <p class="replay-copy" id="replay-copy"></p>
+          <figure class="replay-photo" id="replay-photo-frame" hidden>
+            <img id="replay-photo" alt="" />
+            <figcaption id="replay-photo-caption"></figcaption>
+          </figure>
+          <button class="replay-explore" id="replay-explore-day" type="button">Explore this day</button>
+        </aside>
+        <section class="replay-controls" aria-label="Trip Replay controls">
+          <div class="replay-transport">
+            <button id="replay-previous-day" type="button" aria-label="Previous replay day">← Day</button>
+            <button id="replay-toggle" type="button">Play</button>
+            <button id="replay-next-day" type="button" aria-label="Next replay day">Day →</button>
+            <label for="replay-speed">Speed
+              <select id="replay-speed">
+                <option value="0.5">0.5×</option>
+                <option value="1" selected>1×</option>
+                <option value="2">2×</option>
+              </select>
+            </label>
+          </div>
+          <div class="replay-timeline-row">
+            <label for="replay-timeline">Journey timeline</label>
+            <input id="replay-timeline" type="range" min="0" max="0" value="0" step="1" />
+            <output id="replay-day-label" for="replay-timeline"></output>
+          </div>
+          <span class="replay-help" id="replay-help">Space plays or pauses. Left and right arrows change day.</span>
+          <span class="replay-status" id="replay-status" aria-live="polite"></span>
+        </section>
+        <div class="replay-complete" id="replay-complete" hidden>
+          <span>JOURNEY COMPLETE</span>
+          <strong id="replay-complete-title"></strong>
+          <div>
+            <button id="replay-again" type="button">Replay</button>
+            <button id="replay-explore-journey" type="button">Explore the journey</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
     <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
     <script src="./assets/journeys.js?v=7dc20f389177"></script>
     <script src="./assets/route-geometry.js?v=a98271ec07e1"></script>
     <script src="./assets/trip-photos.js?v=0946f44b9de8"></script>
     <script src="./assets/content-overrides.js?v=380a8b864827"></script>
-    <script src="./assets/app.js?v=e4db2a5216c0"></script>
+    <script src="./assets/replay-utils.js?v=e05d15389aac"></script>
+    <script src="./assets/app.js?v=b912a3c633d3"></script>
   </body>
 </html>

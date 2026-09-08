@@ -6,6 +6,23 @@ commit after it is known.
 
 ## 8 September 2026
 
+### Trip Replay and intentional media choices
+
+Implementation complete locally; commit and deployment details pending.
+
+- Added a full-screen Trip Replay that follows stored day/leg order, preserves
+  transport-mode styling, accumulates completed routes, and moves a live map
+  marker along reviewed geometry.
+- Added reviewed lead-photo context plus exact location/zoom pauses for any
+  map-pinned photo, without inventing locations for the current GPS-free set.
+- Added play/pause, three speeds, previous/next day, a day scrubber, keyboard
+  controls, reduced-motion behavior, explore actions, and a completion state on
+  both real and demo journey pages.
+- Kept the six MOV originals private until a specific clip justifies a reviewed
+  video pipeline, and retained intentional no-photo states without stock media.
+- Added focused replay timeline, route-slicing, and reduced-motion tests; all
+  21 tests pass.
+
 ### Reviewed photos, deliberate daily leads, and private GPX intake
 
 Commit `4801801`; deployed successfully in Pages run `34277130090` after

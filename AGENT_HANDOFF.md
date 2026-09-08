@@ -16,6 +16,20 @@ workflow change before committing. Keep the newest entry first.
   deployed result. The user supplies facts, files, corrections, and judgments.
 - Read `JOURNEY_WORKFLOW.md` before adding a journey or changing route tooling.
 
+## Replay and media decisions · 8 September 2026
+
+T15–T17 are complete locally. The media decision is to keep the six held MOV
+files private unless a specific clip later earns a fully reviewed video
+pipeline; Days 9, 11, and 14 keep deliberate empty states without third-party
+filler (Day 8 is also publicly empty after privacy review). Trip Replay is now
+shared by real and demo pages and animates the stored leg order with the
+existing mode grammar, accumulated routes, a moving marker, reviewed lead
+photos, and location/zoom pauses for any future map-pinned photo. Controls cover
+play/pause, 0.5×/1×/2× speed, day stepping/scrubbing, keyboard operation,
+reduced motion, day exploration, and replay completion. Focused route slicing
+and timeline tests bring the suite to 21 passing tests. Deployment details are
+still to be recorded after release.
+
 ## New-trip pass · 8 September 2026
 
 Commit `06f3745`; deployed successfully in Pages run `34271727907` after

@@ -66,6 +66,21 @@ uses macOS Quick Look; JPEG/PNG imports use Sharp directly.
 Naive EXIF timestamps without a UTC offset still need review when camera and
 host time zones differ; T25 tracks the offset-aware parsing follow-up.
 
+## Video and fallback-media decisions
+
+The six held MOV files remain private and are not part of the public atlas.
+There is no reviewed story moment that currently warrants the privacy,
+transcoding, poster-frame, responsive-loading, captioning, and Release
+publishing surface of a separate video pipeline. If a specific clip is approved
+later, design and review that pipeline before generating or publishing any
+derivative; do not pass a MOV through the still-photo workflow.
+
+Days without a visible family photograph use the atlas's intentional empty
+state. No stock or third-party fallback images are used for Days 9, 11, and 14;
+Day 8 also remains visually empty because its only source image is hidden after
+privacy review. The day copy, route, and previous/next navigation remain
+available, so the absence reads as part of the record rather than missing UI.
+
 ## Local annotation with Atlas Studio
 
 Run `npm run studio`, then open `http://127.0.0.1:4173/studio/`. The Studio uses
