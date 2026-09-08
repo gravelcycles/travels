@@ -8,9 +8,11 @@ commit after it is known.
 
 ### Trip Replay and intentional media choices
 
-Local commit `edd1cc5`; publication is pending explicit approval for a direct
-push to the production `main` branch. Local QA passed on the real and demo
-journeys at 1280 × 720 and 390 × 844 with a clean browser console.
+Commits `edd1cc5` and `280b6de` deployed successfully in GitHub Pages run
+`34282041394`. Local QA passed on the real and demo journeys at 1280 × 720 and
+390 × 844. Fresh production checks confirmed the real replay animation, the
+demo's exact located-photo pause, the journey catalog, and a clean browser
+console.
 
 - Added a full-screen Trip Replay that follows stored day/leg order, preserves
   transport-mode styling, accumulates completed routes, and moves a live map

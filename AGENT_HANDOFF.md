@@ -27,9 +27,11 @@ existing mode grammar, accumulated routes, a moving marker, reviewed lead
 photos, and location/zoom pauses for any future map-pinned photo. Controls cover
 play/pause, 0.5×/1×/2× speed, day stepping/scrubbing, keyboard operation,
 reduced motion, day exploration, and replay completion. Focused route slicing
-and timeline tests bring the suite to 21 passing tests. Local commit `edd1cc5`
-contains the implementation. It has not been pushed or deployed because a
-direct production-branch push requires explicit user approval.
+and timeline tests bring the suite to 21 passing tests. Commits `edd1cc5` and
+`280b6de` contain the implementation and verification record; both deployed
+successfully in GitHub Pages run `34282041394`. Fresh public checks confirmed
+the real replay animation, the demo's exact located-photo pause, the journey
+catalog, and a clean browser console.
 
 ## New-trip pass · 8 September 2026
 
