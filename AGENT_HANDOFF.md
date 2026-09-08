@@ -45,8 +45,8 @@ implementation or commit.
 
 ## Photo/GPX pass · 8 September 2026
 
-T10, T12, and T13 are complete locally. Studio can review a private GPX for a
-bicycle/walking leg without retaining the upload, validates direction,
+T10, T12, and T13 are complete in commit `4801801`. Studio can review a
+private GPX for a bicycle/walking leg without retaining the upload, validates direction,
 endpoints, gaps, and distance, simplifies in meters, and saves only explicitly
 accepted `[lng, lat]` geometry with non-identifying provenance. A bicycle GPX
 fixture covers duplicates, multiple sections, simplification, reversed order,

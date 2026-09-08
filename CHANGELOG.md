@@ -8,7 +8,7 @@ commit after it is known.
 
 ### Reviewed photos, deliberate daily leads, and private GPX intake
 
-Implementation completed locally; commit and deployment references follow.
+Commit `4801801`; deployment verification follows.
 
 - Reviewed all 104 family-trip photographs for day, copy, alt text, visibility,
   privacy, and available location evidence without inventing GPS precision.
