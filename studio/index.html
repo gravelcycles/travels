@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Atlas Studio · Lakes, Rails &amp; Rain</title>
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
-    <link rel="stylesheet" href="/studio.css?v=20260907-4" />
+    <link rel="stylesheet" href="/studio.css?v=20260907-5" />
   </head>
   <body>
     <header class="studio-header">
@@ -55,7 +55,7 @@
         <div class="route-tools" id="route-tools" hidden>
           <button id="undo-route" type="button">Undo</button>
           <button id="redo-route" type="button">Redo</button>
-          <button id="smooth-route" type="button">Smooth preview</button>
+          <button id="smooth-route" type="button">Smooth anchor guide</button>
           <button id="reset-route" type="button">Reset</button>
           <button id="delete-route-point" type="button">Delete selected point</button>
         </div>
@@ -86,6 +86,22 @@
           <span class="eyebrow">SELECTED LEG</span>
           <h2 id="route-title">Choose a route</h2>
           <p id="route-summary"></p>
+          <section class="route-network-panel" aria-labelledby="route-network-heading">
+            <strong id="route-network-heading">Mode-aware route proposal</strong>
+            <p>Human control points remain fixed anchors. A proposal follows the selected transport network and does not replace the saved line until you accept it.</p>
+            <div>
+              <button class="secondary" id="propose-route" type="button">Propose network route</button>
+              <button class="secondary" id="accept-route-proposal" type="button" disabled>Use proposed route</button>
+              <button class="secondary" id="accept-manual-route" type="button">Use anchor guide as fallback</button>
+            </div>
+            <p id="route-proposal-status" role="status">No proposal yet. The saved route remains active.</p>
+          </section>
+          <div class="route-comparison" aria-label="Route comparison legend">
+            <span><i class="original"></i>Original</span>
+            <span><i class="saved"></i>Saved</span>
+            <span><i class="anchors"></i>Anchor guide</span>
+            <span><i class="proposed"></i>Proposed</span>
+          </div>
           <fieldset class="endpoint-fields">
             <legend>Route endpoints</legend>
             <div>
@@ -101,7 +117,7 @@
           <div class="route-instructions">
             <strong>Drawing controls</strong>
             <p>Click the line to insert a point. Drag any numbered point—including the start and end—to reshape it. Select an intermediate point to delete it.</p>
-            <p><strong>Smooth preview</strong> rounds your control-point line without replacing the editable points. Add enough points to keep the result on the intended road, rail, or water.</p>
+            <p><strong>Smooth anchor guide</strong> rounds only the manual guide. Network proposals and the last reviewed saved line remain separate until explicitly accepted.</p>
           </div>
           <dl class="route-stats">
             <div><dt>Control points</dt><dd id="route-point-count">—</dd></div>
@@ -128,6 +144,6 @@
     <script src="/dist/assets/route-geometry.js"></script>
     <script src="/dist/assets/trip-photos.js"></script>
     <script src="/dist/assets/content-overrides.js"></script>
-    <script src="/studio.js?v=20260907-9"></script>
+    <script src="/studio.js?v=20260907-10"></script>
   </body>
 </html>

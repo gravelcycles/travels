@@ -1,6 +1,14 @@
 {
   "schemaVersion": 1,
   "journeyId": "switzerland-italy-family-2026",
+  "modeNetworks": {
+    "train": "rail",
+    "boat": "ferry",
+    "bus": "road",
+    "car": "road",
+    "walk": "walking",
+    "bike": "bicycle"
+  },
   "networks": {
     "rail": {
       "input": "build/route-inputs/rail-overpass.json",
@@ -27,6 +35,48 @@
         "query": "Ferry route ways/relations and child nodes for the journey lakes; Como relation 18734598 was checked separately.",
         "bounds": "Lake Como review used 45.75,8.95,46.15,9.40; other raw query bounds were not retained",
         "notes": "Ordered scheduled ports remain routing waypoints."
+      }
+    },
+    "road": {
+      "input": "build/route-inputs/road-overpass.json",
+      "maxSnapKm": 0.75,
+      "safeSnapKm": 0.25,
+      "ambiguityKm": 0.03,
+      "simplifyTolerance": 0.00004,
+      "provenance": {
+        "provider": "Local OpenStreetMap road-network extract",
+        "retrievedAt": "not-yet-retrieved",
+        "query": "Drivable highway ways and child nodes; obey access and direction in the prepared extract.",
+        "bounds": "Journey-specific corridor",
+        "notes": "Used for car and bus proposals only after a reviewed local extract is installed."
+      }
+    },
+    "walking": {
+      "input": "build/route-inputs/walking-overpass.json",
+      "maxSnapKm": 0.5,
+      "safeSnapKm": 0.15,
+      "ambiguityKm": 0.02,
+      "simplifyTolerance": 0.000025,
+      "provenance": {
+        "provider": "Local OpenStreetMap pedestrian-network extract",
+        "retrievedAt": "not-yet-retrieved",
+        "query": "Walkable highway ways and child nodes with access-restricted ways excluded.",
+        "bounds": "Journey-specific corridor",
+        "notes": "Used for walking proposals only after a reviewed local extract is installed."
+      }
+    },
+    "bicycle": {
+      "input": "build/route-inputs/bicycle-overpass.json",
+      "maxSnapKm": 0.75,
+      "safeSnapKm": 0.2,
+      "ambiguityKm": 0.03,
+      "simplifyTolerance": 0.000035,
+      "provenance": {
+        "provider": "Local OpenStreetMap bicycle-network extract",
+        "retrievedAt": "not-yet-retrieved",
+        "query": "Bicycle-accessible highway ways and child nodes with restricted ways excluded.",
+        "bounds": "Journey-specific corridor",
+        "notes": "Used for bicycle proposals only after a reviewed local extract is installed."
       }
     }
   },
