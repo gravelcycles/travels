@@ -351,3 +351,7 @@ button:focus-visible, select:focus-visible, .maplibregl-map:focus-visible { outl
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+
+.journey-card-placeholder { min-height: 240px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 30px; background: #e7ecdf; color: #254e4a; }
+.journey-card-placeholder span { font-size: 11px; letter-spacing: .16em; }
+.journey-card-placeholder strong { font: 30px/1.2 Georgia, serif; }

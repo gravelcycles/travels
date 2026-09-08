@@ -1,0 +1,180 @@
+{
+  "id": "rail-to-adriatic",
+  "kind": "demo",
+  "label": "North to the Adriatic · Rail/bus demo",
+  "title": "North to the Adriatic",
+  "subtitle": "A handful of Eurail days, with the pauses between them left intact",
+  "kicker": "TRAIN + BUS JOURNEY · CENTRAL EUROPE",
+  "dates": "September 2026",
+  "note": "A route made from individual rail days rather than one continuous itinerary.",
+  "cover": "./assets/photos/train-window.webp",
+  "places": [
+    {
+      "id": "berlin",
+      "name": "Berlin",
+      "country": "Germany",
+      "lat": 52.52,
+      "lng": 13.405
+    },
+    {
+      "id": "prague",
+      "name": "Prague",
+      "country": "Czechia",
+      "lat": 50.0755,
+      "lng": 14.4378
+    },
+    {
+      "id": "vienna",
+      "name": "Vienna",
+      "country": "Austria",
+      "lat": 48.2082,
+      "lng": 16.3738
+    },
+    {
+      "id": "ljubljana",
+      "name": "Ljubljana",
+      "country": "Slovenia",
+      "lat": 46.0569,
+      "lng": 14.5058
+    },
+    {
+      "id": "split",
+      "name": "Split",
+      "country": "Croatia",
+      "lat": 43.5081,
+      "lng": 16.4402
+    }
+  ],
+  "segments": [
+    {
+      "id": "berlin-prague",
+      "from": "berlin",
+      "to": "prague",
+      "mode": "train",
+      "distanceKm": 350,
+      "duration": "4 hr 20",
+      "via": [
+        [
+          51.05,
+          13.74
+        ]
+      ]
+    },
+    {
+      "id": "prague-vienna",
+      "from": "prague",
+      "to": "vienna",
+      "mode": "train",
+      "distanceKm": 330,
+      "duration": "4 hrs"
+    },
+    {
+      "id": "vienna-ljubljana",
+      "from": "vienna",
+      "to": "ljubljana",
+      "mode": "train",
+      "distanceKm": 385,
+      "duration": "6 hrs",
+      "via": [
+        [
+          47.07,
+          15.44
+        ],
+        [
+          46.62,
+          15.64
+        ]
+      ]
+    },
+    {
+      "id": "ljubljana-split",
+      "from": "ljubljana",
+      "to": "split",
+      "mode": "bus",
+      "distanceKm": 470,
+      "duration": "7–9 hrs",
+      "via": [
+        [
+          45.81,
+          15.98
+        ],
+        [
+          44.12,
+          15.23
+        ]
+      ]
+    }
+  ],
+  "days": [
+    {
+      "id": "adriatic-d1",
+      "number": 1,
+      "date": "3 Sep",
+      "title": "Berlin before departure",
+      "placeId": "berlin",
+      "segmentIds": [],
+      "text": "A city day before the pass began. The route exists on the map, but the journal still has room for the places where nothing moved."
+    },
+    {
+      "id": "adriatic-d2",
+      "number": 2,
+      "date": "4 Sep",
+      "title": "South along the Elbe",
+      "placeId": "prague",
+      "segmentIds": [
+        "berlin-prague"
+      ],
+      "text": "The first Eurail day carried us south beside the river and into Prague by afternoon."
+    },
+    {
+      "id": "adriatic-d3",
+      "number": 3,
+      "date": "6 Sep",
+      "title": "Prague to Vienna",
+      "placeId": "vienna",
+      "segmentIds": [
+        "prague-vienna"
+      ],
+      "text": "Platforms, a border crossed without ceremony, and enough daylight left for a long walk in Vienna."
+    },
+    {
+      "id": "adriatic-d4",
+      "number": 4,
+      "date": "9 Sep",
+      "title": "Across Austria",
+      "placeId": "ljubljana",
+      "segmentIds": [
+        "vienna-ljubljana"
+      ],
+      "text": "The rail day arced through Austria and over the southern edge of the Alps."
+    },
+    {
+      "id": "adriatic-d5",
+      "number": 5,
+      "date": "12 Sep",
+      "title": "The final road south",
+      "placeId": "split",
+      "segmentIds": [
+        "ljubljana-split"
+      ],
+      "text": "The last leg traded rails for a bus and ended where the streets opened onto the Adriatic."
+    }
+  ],
+  "photos": [
+    {
+      "id": "rail-window-demo",
+      "dayId": "adriatic-d3",
+      "src": "./assets/photos/train-window.webp",
+      "alt": "A lake seen from a moving train",
+      "caption": "Somewhere between Prague and Vienna",
+      "takenAt": "6 Sep · 14:20",
+      "lat": 48.82,
+      "lng": 15.62,
+      "tags": [
+        "train",
+        "window"
+      ]
+    }
+  ],
+  "published": true
+}

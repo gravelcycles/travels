@@ -1,0 +1,17 @@
+[
+  {
+    "id": "road-overlook-demo",
+    "dayId": "road-d2",
+    "src": "./assets/photos/alpine-route.webp",
+    "alt": "A winding alpine route above a lake",
+    "caption": "The road folded back toward our base",
+    "takenAt": "Day 2 · 16:40",
+    "lat": 46.55,
+    "lng": 12.04,
+    "tags": [
+      "road",
+      "mountains",
+      "day trip"
+    ]
+  }
+]

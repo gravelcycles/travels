@@ -28,7 +28,7 @@ messaging-app downloads; they may omit or rewrite EXIF metadata.
 
 ## Current Switzerland–Italy trip import
 
-`npm run photos:build` reads `photos/switzerland-italy-trip/` and writes public-ready
+`npm run photos:build -- --journey switzerland-italy-family-2026` reads `photos/switzerland-italy-trip/` and writes public-ready
 derivatives to the ignored `build/trip-photos-v1/` directory. The current run:
 
 - matched 104 stills to journey days from local capture dates;
@@ -42,6 +42,25 @@ derivatives to the ignored `build/trip-photos-v1/` directory. The current run:
 Captions and alt text are useful automatic first passes, not final editorial
 copy. Review day assignment, lead-photo order, captions, and privacy before
 publishing.
+
+## Other journeys
+
+Always pass `--journey <id>`; the importer never guesses from the default trip.
+Each journey has ISO `calendarDate` values and an IANA `timeZone`. Optional
+`photoImport` configuration holds `sourceDirectory`, `releaseTag`, and a legacy
+`idPrefix`; new trips default to their journey ID for unique photo names.
+`--source`, `--release`, and `--timezone` can override the intake configuration.
+
+The importer writes `content/photo-manifests/<id>.json` for published trips or
+ignored `build/draft-assets/<id>/photos.json` for drafts. GPS candidates remain
+in the private build report for review; no automatic precise map pin is exposed.
+Failed/empty imports retain the previous manifest and derivative directory;
+successful replacements keep a local backup. Review results, then run
+`npm run build` to generate the public bundle. Original HEIC decoding still
+uses macOS Quick Look; JPEG/PNG imports use Sharp directly.
+
+Naive EXIF timestamps without a UTC offset still need review when camera and
+host time zones differ; T25 tracks the offset-aware parsing follow-up.
 
 ## Local annotation with Atlas Studio
 

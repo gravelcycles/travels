@@ -4,6 +4,8 @@ import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
 import { fileURLToPath } from "node:url";
+import { loadJourneys, writeJson } from "./journey-content.mjs";
+import { buildSite } from "./build-site.mjs";
 import { buildGraph, routeSegment } from "./route-geometry-lib.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -28,6 +30,7 @@ function parseArgs(argv) {
 }
 
 function readJourneyData() {
+  if (fs.existsSync(path.join(repoRoot, "content/atlas.json"))) return loadJourneys(repoRoot, { includeDrafts: true });
   const context = { window: {} };
   vm.runInNewContext(fs.readFileSync(path.join(repoRoot, "dist/assets/journeys.js"), "utf8"), context);
   return context.window.JOURNEY_ATLAS_DATA;
@@ -35,6 +38,7 @@ function readJourneyData() {
 
 function readExistingGeometry(filename) {
   if (!fs.existsSync(filename)) return {};
+  if (filename.endsWith(".json")) return JSON.parse(fs.readFileSync(filename, "utf8"));
   const context = { window: {} };
   vm.runInNewContext(fs.readFileSync(filename, "utf8"), context);
   const geometry = context.window.JOURNEY_ATLAS_ROUTE_GEOMETRY;
@@ -101,8 +105,8 @@ function run() {
   const data = readJourneyData();
   const journey = data.journeys.find((item) => item.id === options.journey);
   if (!journey) throw new Error(`Unknown journey: ${options.journey}`);
-  const manifestPath = path.resolve(repoRoot, options.manifest || `content/route-sources/${journey.id}.json`);
-  const outputPath = path.resolve(repoRoot, options.output || "dist/assets/route-geometry.js");
+  const manifestPath = path.resolve(repoRoot, options.manifest || (journey.published === false ? `build/draft-assets/${journey.id}/route-sources.json` : `content/route-sources/${journey.id}.json`));
+  const outputPath = path.resolve(repoRoot, options.output || (journey.published ? `content/route-geometry/${journey.id}.json` : `build/draft-assets/${journey.id}/routes.json`));
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
   validateManifest(manifest, journey);
 
@@ -171,7 +175,9 @@ function run() {
 
   const output = `// Generated deterministically by scripts/build-route-geometry.mjs. Coordinates are [longitude, latitude].\nwindow.JOURNEY_ATLAS_ROUTE_GEOMETRY = ${JSON.stringify(stableGeometry(geometry))};\n`;
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-  fs.writeFileSync(outputPath, output);
+  if (outputPath.endsWith(".json")) writeJson(outputPath, stableGeometry(geometry));
+  else fs.writeFileSync(outputPath, output);
+  if (!options.output) buildSite(repoRoot);
   console.log(`Wrote ${Object.keys(geometry).length} total geometries to ${path.relative(repoRoot, outputPath)} (${generatedCount} generated, ${preservedCount} preserved, ${warnings.length} warnings)`);
 }
 

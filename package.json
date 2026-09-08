@@ -7,7 +7,10 @@
     "photos:build": "node scripts/build-photo-assets.mjs",
     "routes:build": "node scripts/build-route-geometry.mjs",
     "routes:test": "node --test test/*.test.mjs",
-    "studio": "node scripts/studio-server.mjs"
+    "studio": "node scripts/studio-server.mjs",
+    "build": "node scripts/build-site.mjs",
+    "test": "node --test test/*.test.mjs",
+    "journey:new": "node scripts/create-journey.mjs"
   },
   "devDependencies": {
     "exifr": "7.1.3",

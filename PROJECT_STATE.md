@@ -14,6 +14,23 @@ Updated 8 September 2026.
   [`trip-photos-v1` GitHub Release](https://github.com/gravelcycles/travels/releases/tag/trip-photos-v1).
   See `PHOTO_WORKFLOW.md`.
 
+## New-trip foundation (8 September)
+
+T11 is implemented. Studio **+ New trip** creates a local draft from name/dates,
+generates a complete ISO-date calendar, and opens Day copy. Local previews work
+without known places/routes/photos. Draft sources, notes, and generated assets
+are ignored by Git and excluded from all public bundles. Sources now live in
+`content/journeys/`, with journey-specific photo and route JSON; `npm run build`
+generates pages and public assets with validation and content-hashed URLs.
+Pages CI runs tests/build without needing private media or network extracts.
+
+Photo/route editors clear on empty selections, preview follows the selected
+journey, and day editing no longer depends on map load. Photo import explicitly
+selects a journey and uses its ISO calendar/time zone, unique IDs, and Release
+output. Failed/empty imports retain reviewed output; GPS stays in a private
+candidate report until review. T19 is the next future-planning priority;
+T23–T25 record additional confirmed bugs/limitations found in this pass.
+
 ## Current behavior
 
 - `/travels/` is the catalog of real journeys.

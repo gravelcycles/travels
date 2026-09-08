@@ -147,3 +147,28 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   .editor-panel { grid-column: 1; grid-row: 3; }
   .map-instructions { max-width: calc(100% - 82px); }
 }
+
+#new-trip { width: 100%; min-height: 42px; background: var(--ink); color: white; border: 0; font-weight: 750; }
+#new-trip-dialog { width: min(520px, calc(100vw - 28px)); max-height: calc(100dvh - 28px); overflow-y: auto; border: 1px solid var(--line); padding: 26px; color: var(--ink); background: var(--panel); }
+#new-trip-dialog::backdrop { background: #15323899; }
+.new-trip-heading { display: flex; align-items: center; justify-content: space-between; }
+.new-trip-heading h2 { font: 32px Georgia, serif; margin: 0; }
+.new-trip-heading button { border: 0; background: none; font-size: 30px; min-width: 44px; min-height: 44px; }
+#new-trip-form p { line-height: 1.5; }
+#new-trip-form label { display: block; font-size: 13px; font-weight: 750; margin-top: 18px; }
+#new-trip-form input { display: block; width: 100%; min-width: 0; margin-top: 7px; padding: 10px; border: 1px solid #9eadaa; background: white; }
+.new-trip-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+#new-trip-form details { margin-top: 20px; font-size: 13px; }
+#create-trip { width: 100%; min-height: 46px; background: var(--selected); border: 0; color: white; font-weight: 750; }
+#new-trip-error { color: #a32925; }
+[inert] { opacity: .45; }
+.studio-journey-picker select { margin: 0 0 12px; }
+
+@media (max-width: 600px) {
+  .studio-actions { grid-column: 1 / -1; grid-row: 3; justify-content: space-between; }
+  .studio-actions a, .studio-actions #save-status { display: block; }
+  .studio-actions #save-status { max-width: 135px; }
+  .studio-shell[data-mode="days"] { grid-template-rows: minmax(230px, 40dvh) auto 35dvh; }
+  .studio-shell[data-mode="days"] .editor-panel { grid-row: 2; }
+  .studio-shell[data-mode="days"] .map-workspace { grid-row: 3; }
+}

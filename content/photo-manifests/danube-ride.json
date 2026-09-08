@@ -1,0 +1,16 @@
+[
+  {
+    "id": "bike-break-demo",
+    "dayId": "bike-d3",
+    "src": "./assets/photos/bike-pass.webp",
+    "alt": "A loaded touring bicycle on a scenic route",
+    "caption": "Bags down for ten quiet minutes",
+    "takenAt": "Sunday · 13:10",
+    "lat": 48.25,
+    "lng": 15.28,
+    "tags": [
+      "bike",
+      "break"
+    ]
+  }
+]

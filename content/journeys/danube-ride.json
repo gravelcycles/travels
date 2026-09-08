@@ -1,0 +1,148 @@
+{
+  "id": "danube-ride",
+  "kind": "demo",
+  "label": "Danube weekend · Bike demo",
+  "title": "A Weekend Along the Danube",
+  "subtitle": "A linear ride told one day at a time",
+  "kicker": "BIKE JOURNEY · PASSAU TO VIENNA",
+  "dates": "A three-day sample",
+  "note": "Bike days use the same journal and photo system while emphasizing daily distance and saddle time.",
+  "cover": "./assets/photos/bike-pass.webp",
+  "places": [
+    {
+      "id": "passau",
+      "name": "Passau",
+      "country": "Germany",
+      "lat": 48.5667,
+      "lng": 13.4319
+    },
+    {
+      "id": "linz",
+      "name": "Linz",
+      "country": "Austria",
+      "lat": 48.3069,
+      "lng": 14.2858
+    },
+    {
+      "id": "melk",
+      "name": "Melk",
+      "country": "Austria",
+      "lat": 48.227,
+      "lng": 15.3319
+    },
+    {
+      "id": "vienna-bike",
+      "name": "Vienna",
+      "country": "Austria",
+      "lat": 48.2082,
+      "lng": 16.3738
+    }
+  ],
+  "segments": [
+    {
+      "id": "passau-linz",
+      "from": "passau",
+      "to": "linz",
+      "mode": "bike",
+      "distanceKm": 98,
+      "duration": "5–7 hrs",
+      "via": [
+        [
+          48.44,
+          13.76
+        ],
+        [
+          48.33,
+          13.99
+        ]
+      ]
+    },
+    {
+      "id": "linz-melk",
+      "from": "linz",
+      "to": "melk",
+      "mode": "bike",
+      "distanceKm": 116,
+      "duration": "6–8 hrs",
+      "via": [
+        [
+          48.23,
+          14.58
+        ],
+        [
+          48.23,
+          14.85
+        ]
+      ]
+    },
+    {
+      "id": "melk-vienna-bike",
+      "from": "melk",
+      "to": "vienna-bike",
+      "mode": "bike",
+      "distanceKm": 88,
+      "duration": "5–6 hrs",
+      "via": [
+        [
+          48.36,
+          15.42
+        ],
+        [
+          48.41,
+          15.61
+        ]
+      ]
+    }
+  ],
+  "days": [
+    {
+      "id": "bike-d1",
+      "number": 1,
+      "date": "Friday",
+      "title": "Bags packed in Passau",
+      "placeId": "passau",
+      "segmentIds": [],
+      "text": "An evening beside three rivers, with the bicycle packed and the first day waiting downstream."
+    },
+    {
+      "id": "bike-d2",
+      "number": 2,
+      "date": "Saturday",
+      "title": "The long first ride",
+      "placeId": "linz",
+      "segmentIds": [
+        "passau-linz"
+      ],
+      "text": "The river kept the route honest. We rode east all day and arrived in Linz ready to leave the bicycles untouched until morning."
+    },
+    {
+      "id": "bike-d3",
+      "number": 3,
+      "date": "Sunday",
+      "title": "Two stages to Vienna",
+      "placeId": "vienna-bike",
+      "segmentIds": [
+        "linz-melk",
+        "melk-vienna-bike"
+      ],
+      "text": "One day can contain more than one mapped segment. Melk became the midday hinge before the final roll into Vienna."
+    }
+  ],
+  "photos": [
+    {
+      "id": "bike-break-demo",
+      "dayId": "bike-d3",
+      "src": "./assets/photos/bike-pass.webp",
+      "alt": "A loaded touring bicycle on a scenic route",
+      "caption": "Bags down for ten quiet minutes",
+      "takenAt": "Sunday · 13:10",
+      "lat": 48.25,
+      "lng": 15.28,
+      "tags": [
+        "bike",
+        "break"
+      ]
+    }
+  ],
+  "published": true
+}

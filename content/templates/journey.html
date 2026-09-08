@@ -4,23 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-    <meta name="description" content="Sample journeys demonstrating the day-by-day Journey Atlas." />
-    <title>Journey samples · Journey Atlas</title>
+    <meta
+      name="description"
+      content="{{description}}"
+    />
+    <title>{{title}} · Journey Atlas</title>
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
-    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
-    <link rel="stylesheet" href="./assets/styles.css?v=a9131f6fe310" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
+    />
+    <link rel="stylesheet" href="./assets/styles.css?v=20260907-8" />
   </head>
-  <body data-journey-scope="demo">
+  <body data-journey-id="{{id}}">
     <header class="site-header">
-      <a class="brand" href="./demo.html" aria-label="Journey Atlas samples home">
+      <a class="brand" href="./" aria-label="Back to Journey Atlas catalog">
         <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span><small>JOURNEY ATLAS</small><strong>Sample journeys</strong></span>
+        <span><small>JOURNEY ATLAS</small><strong>{{title}}</strong></span>
       </a>
       <div class="header-context">
-        <span class="sample-badge" id="site-badge">ATLAS DEMO</span>
-        <a class="header-link" href="./">Journey catalog</a>
-        <button class="plain-button" id="open-notes" type="button">About these samples</button>
+        <span class="sample-badge" id="site-badge">{{badge}}</span>
+        <a class="header-link" href="./">All journeys</a>
+        <a class="header-link" href="./demo.html">Sample journeys</a>
+        <button class="plain-button" id="open-notes" type="button">About this atlas</button>
       </div>
     </header>
 
@@ -35,7 +42,11 @@
             <select id="journey-select"></select>
           </div>
         </div>
-        <div class="route-heading"><span>THE DAYS</span><small id="day-count"></small></div>
+
+        <div class="route-heading">
+          <span>THE DAYS</span>
+          <small id="day-count"></small>
+        </div>
         <div class="day-list" id="day-list"></div>
       </aside>
 
@@ -72,7 +83,10 @@
         <div class="story-media" id="story-media"></div>
         <div class="story-detail" id="story-detail"></div>
         <div class="photo-section">
-          <div class="photo-heading"><span>THIS DAY</span><small>Open any photo full screen</small></div>
+          <div class="photo-heading">
+            <span>THIS DAY</span>
+            <small>Open any photo full screen</small>
+          </div>
           <div class="photo-strip" id="photo-strip"></div>
         </div>
       </aside>
@@ -87,29 +101,31 @@
     <dialog class="notes-dialog" id="notes-dialog">
       <form method="dialog" class="dialog-card">
         <div class="dialog-top">
-          <div><span>ABOUT THE SAMPLES</span><h2>Different kinds of trip, one day-by-day atlas.</h2></div>
-          <button value="cancel" aria-label="Close sample notes">×</button>
+          <div><span>ABOUT THE ATLAS</span><h2>{{title}}</h2></div>
+          <button value="cancel" aria-label="Close atlas notes">×</button>
         </div>
         <div class="notes-grid">
           <section>
-            <strong>1 · Switch journeys</strong>
-            <p>Use the selector above the day list to try mixed transport, rail and bus, driving, and bicycle stories.</p>
+            <strong>1 · The journey</strong>
+            <p>{{note}}</p>
           </section>
           <section>
             <strong>2 · Every leg matters</strong>
-            <p>Each calendar day can stay still, move once, make a loop, or combine several ordered transport modes.</p>
+            <p>Travel legs appear in their planned or recorded order. Open any day to isolate its route.</p>
           </section>
           <section>
-            <strong>3 · Keep the context</strong>
-            <p>A day close-up leaves the rest of its journey quietly visible while bringing the selected route to the front.</p>
+            <strong>3 · Plans can grow</strong>
+            <p>Days can start with a few notes. Destinations, routes, and photographs can be added as the journey takes shape.</p>
           </section>
           <section>
-            <strong>4 · Photos follow the map</strong>
-            <p>Open any photograph to move through the trip and see its day and location alongside it.</p>
+            <strong>4 · Photos follow the day</strong>
+            <p>The full-screen viewer keeps each day's photographs together. Day controls move the route map and journal context with the images.</p>
           </section>
         </div>
-        <div class="storage-note"><strong>Sample data:</strong> these journeys demonstrate the viewer and are not records of the family trip.</div>
-        <button class="dialog-done" value="default">Back to the samples</button>
+        <div class="storage-note">
+          <strong>Privacy:</strong> the public site asks search engines not to index or archive it, but anyone with the URL can still open it.
+        </div>
+        <button class="dialog-done" value="default">Back to the atlas</button>
       </form>
     </dialog>
 
@@ -118,7 +134,11 @@
         <button class="photo-close" aria-label="Close photo viewer">×</button>
         <section class="photo-stage" aria-live="polite">
           <button class="photo-nav photo-prev" type="button" aria-label="Previous photo">‹</button>
-          <figure><div class="viewer-empty" id="viewer-empty" hidden><strong>No photographs</strong><span>Use the day arrows to keep exploring.</span></div><img id="modal-photo" alt="" /><figcaption id="modal-caption"></figcaption></figure>
+          <figure>
+            <div class="viewer-empty" id="viewer-empty" hidden><strong>No photographs</strong><span>Use the day arrows to keep exploring.</span></div>
+            <img id="modal-photo" alt="" />
+            <figcaption id="modal-caption"></figcaption>
+          </figure>
           <button class="photo-nav photo-next" type="button" aria-label="Next photo">›</button>
         </section>
         <aside class="photo-context">
@@ -141,10 +161,10 @@
     </dialog>
 
     <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
-    <script src="./assets/journeys.js?v=7dc20f389177"></script>
-    <script src="./assets/route-geometry.js?v=a98271ec07e1"></script>
-    <script src="./assets/trip-photos.js?v=87162cf22c87"></script>
-    <script src="./assets/content-overrides.js?v=27ce5b06b4ac"></script>
-    <script src="./assets/app.js?v=6ca37d213f59"></script>
+    <script src="./assets/journeys.js?v=20260907-6"></script>
+    <script src="./assets/route-geometry.js?v=20260907-5"></script>
+    <script src="./assets/trip-photos.js?v=20260906-9"></script>
+    <script src="./assets/content-overrides.js?v=20260907-1"></script>
+    <script src="./assets/app.js?v=20260907-10"></script>
   </body>
 </html>

@@ -17,6 +17,30 @@ For a repeatable new-trip process, read [JOURNEY_WORKFLOW.md](JOURNEY_WORKFLOW.m
 It covers the journey schema, exact rail/ferry routing, manual edits, GPX bike
 imports, photos, QA, publishing, and what must be recorded for the next agent.
 
+## Start a future trip
+
+The agent opens Atlas Studio. Choose **+ New trip**, give it a name and start/end
+dates, and choose **Create trip**. Every calendar day is ready immediately in
+**Day copy**; places, routes, and photos can follow later. **Preview atlas** opens
+that selected trip, including a draft with no destinations yet. On phones, the
+day editor comes before the map and the preview/save status remain available.
+
+Drafts and their edits stay in ignored local files. They do not enter the public
+catalog, generated bundles, or Git until the agent explicitly promotes reviewed
+sources. A public URL is stable even if the display title changes.
+
+Agent equivalent:
+
+```sh
+npm run journey:new -- --title "Autumn in Japan" --slug japan-autumn-2027 --start 2027-10-01 --end 2027-10-14 --timezone Asia/Tokyo
+npm run build
+npm test
+```
+
+`npm run build` validates sources and generates every public journey page,
+catalog data, route/photo bundle, and override bundle. It uses reviewed static
+assets, needs no private originals/network extracts, and runs in Pages CI.
+
 ## Preview locally
 
 Serve the repository root so the production page and ignored local photo build
@@ -63,15 +87,15 @@ binds only to the loopback interface and is not part of the published site.
 
 ## Add trip photos
 
-Start with `TRIP_CONTENT.md`. Journey data lives in
-`dist/assets/journeys.js`. Private originals go in ignored `photos/`; the
+Start with `TRIP_CONTENT.md`. Journey source data lives in
+`content/journeys/<journey-id>.json`. Private originals go in ignored `photos/`; the
 checked-in manifest references optimized WebPs hosted as GitHub Release assets.
 
 The agent installs the generator dependencies and builds the current trip with:
 
 ```sh
 npm install
-npm run photos:build
+npm run photos:build -- --journey switzerland-italy-family-2026
 ```
 
 This creates responsive 480/1280/2560/3200 px variants under ignored `build/`

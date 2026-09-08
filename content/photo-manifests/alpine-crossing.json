@@ -1,0 +1,48 @@
+[
+  {
+    "id": "pass-break",
+    "dayId": "alps-d4",
+    "src": "./assets/photos/bike-pass.webp",
+    "alt": "Loaded touring bicycle beside a mountain café",
+    "caption": "Coffee at the top of the climb",
+    "takenAt": "21 Aug · 12:14",
+    "lat": 46.64,
+    "lng": 8.61,
+    "tags": [
+      "bike",
+      "pass",
+      "coffee"
+    ]
+  },
+  {
+    "id": "alpine-overlook",
+    "dayId": "alps-d5",
+    "src": "./assets/photos/alpine-route.webp",
+    "alt": "Train, road and touring cyclist sharing an alpine valley",
+    "caption": "Three ways through the same valley",
+    "takenAt": "22 Aug · 17:42",
+    "lat": 46.72,
+    "lng": 8.92,
+    "tags": [
+      "train",
+      "bike",
+      "valley"
+    ]
+  },
+  {
+    "id": "window-seat",
+    "dayId": "alps-d5",
+    "src": "./assets/photos/train-window.webp",
+    "alt": "Mountain lake and village seen through a train window",
+    "caption": "The lake appeared between tunnels",
+    "takenAt": "22 Aug · 18:06",
+    "lat": 46.62,
+    "lng": 9.48,
+    "tags": [
+      "train",
+      "window",
+      "lake"
+    ],
+    "ocrText": ""
+  }
+]

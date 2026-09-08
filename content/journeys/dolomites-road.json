@@ -1,0 +1,192 @@
+{
+  "id": "dolomites-road",
+  "kind": "demo",
+  "label": "Dolomites road days · Car demo",
+  "title": "Dolomites Road Days",
+  "subtitle": "Moving bases, one loop day, and room for the detours",
+  "kicker": "CAR JOURNEY · ALPINE ROADS",
+  "dates": "A four-day sample",
+  "note": "This sample includes a day trip that starts and ends at the same base.",
+  "cover": "./assets/photos/alpine-route.webp",
+  "places": [
+    {
+      "id": "innsbruck",
+      "name": "Innsbruck",
+      "country": "Austria",
+      "lat": 47.2692,
+      "lng": 11.4041
+    },
+    {
+      "id": "cortina",
+      "name": "Cortina d'Ampezzo",
+      "country": "Italy",
+      "lat": 46.5405,
+      "lng": 12.1357
+    },
+    {
+      "id": "ortisei",
+      "name": "Ortisei",
+      "country": "Italy",
+      "lat": 46.5743,
+      "lng": 11.672
+    },
+    {
+      "id": "bolzano",
+      "name": "Bolzano",
+      "country": "Italy",
+      "lat": 46.4983,
+      "lng": 11.3548
+    }
+  ],
+  "segments": [
+    {
+      "id": "innsbruck-cortina",
+      "from": "innsbruck",
+      "to": "cortina",
+      "mode": "car",
+      "distanceKm": 165,
+      "duration": "3–4 hrs",
+      "via": [
+        [
+          46.78,
+          11.72
+        ],
+        [
+          46.72,
+          12.22
+        ]
+      ]
+    },
+    {
+      "id": "cortina-loop",
+      "from": "cortina",
+      "to": "cortina",
+      "mode": "car",
+      "distanceKm": 95,
+      "duration": "3–5 hrs",
+      "via": [
+        [
+          46.52,
+          12.01
+        ],
+        [
+          46.53,
+          11.86
+        ],
+        [
+          46.57,
+          11.96
+        ]
+      ]
+    },
+    {
+      "id": "cortina-ortisei",
+      "from": "cortina",
+      "to": "ortisei",
+      "mode": "car",
+      "distanceKm": 85,
+      "duration": "2–3 hrs",
+      "via": [
+        [
+          46.55,
+          11.87
+        ]
+      ]
+    },
+    {
+      "id": "ortisei-seceda-loop",
+      "from": "ortisei",
+      "to": "ortisei",
+      "mode": "gondola",
+      "distanceKm": 10,
+      "duration": "40 min return",
+      "via": [
+        [
+          46.582,
+          11.69
+        ],
+        [
+          46.6002,
+          11.7246
+        ],
+        [
+          46.582,
+          11.69
+        ]
+      ]
+    },
+    {
+      "id": "ortisei-bolzano",
+      "from": "ortisei",
+      "to": "bolzano",
+      "mode": "car",
+      "distanceKm": 40,
+      "duration": "1 hr"
+    }
+  ],
+  "days": [
+    {
+      "id": "road-d1",
+      "number": 1,
+      "date": "Day 1",
+      "title": "The first pass",
+      "placeId": "cortina",
+      "segmentIds": [
+        "innsbruck-cortina"
+      ],
+      "text": "The keys, the first mountain horizon, and a road that kept finding higher ground on the way to Cortina."
+    },
+    {
+      "id": "road-d2",
+      "number": 2,
+      "date": "Day 2",
+      "title": "A loop from Cortina",
+      "placeId": "cortina",
+      "segmentIds": [
+        "cortina-loop"
+      ],
+      "text": "We left most of the bags at the same base and made a loop over the passes. A day trip can start and finish at one marker without breaking the day model."
+    },
+    {
+      "id": "road-d3",
+      "number": 3,
+      "date": "Day 3",
+      "title": "Pass to pass and up to Seceda",
+      "placeId": "ortisei",
+      "segmentIds": [
+        "cortina-ortisei",
+        "ortisei-seceda-loop"
+      ],
+      "text": "Small roads and frequent stops stretched a short distance into most of the day, followed by a gondola ride above Ortisei."
+    },
+    {
+      "id": "road-d4",
+      "number": 4,
+      "date": "Day 4",
+      "title": "Down to the valley",
+      "placeId": "bolzano",
+      "segmentIds": [
+        "ortisei-bolzano"
+      ],
+      "text": "The road dropped out of the mountains and the journey finished in the warmer valley."
+    }
+  ],
+  "photos": [
+    {
+      "id": "road-overlook-demo",
+      "dayId": "road-d2",
+      "src": "./assets/photos/alpine-route.webp",
+      "alt": "A winding alpine route above a lake",
+      "caption": "The road folded back toward our base",
+      "takenAt": "Day 2 · 16:40",
+      "lat": 46.55,
+      "lng": 12.04,
+      "tags": [
+        "road",
+        "mountains",
+        "day trip"
+      ]
+    }
+  ],
+  "published": true
+}

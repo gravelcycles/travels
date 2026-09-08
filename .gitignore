@@ -4,3 +4,6 @@ node_modules/
 photos/
 build/
 
+
+# Future trip drafts stay local until explicitly reviewed for publication.
+content/drafts/
