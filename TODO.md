@@ -89,17 +89,19 @@ commands.
       Studio should edit route start/end points, select among multiple routes,
       and edit day titles and descriptions. The accessibility-description field
       can be removed from Studio. Implementation is tracked below as T18.
-- [ ] **T15 — Decide whether to support the six held MOV files.** If approved,
-      design a separate metadata-stripping, poster, encoding, responsive loading,
-      accessibility, and Release publishing pipeline.
-- [ ] **T16 — Decide how to handle days 9, 11, and 14 without family photos.**
-      Prefer intentional empty states. If the user wants fallback media, use only
-      reviewed reusable/licensed sources and record creator, URL, license, and
-      useful alt text; clearly label illustrative images.
+- [x] **T15 — Decide whether to support the six held MOV files.** Do not publish
+      them in the current atlas: there is no reviewed story need that justifies
+      a separate video pipeline. Keep the originals private and held. If this
+      decision is reopened, require metadata stripping, poster generation,
+      encoding, responsive loading, accessibility, and Release publishing.
+- [x] **T16 — Decide how to handle days 9, 11, and 14 without family photos.**
+      Keep the intentional empty states and do not add illustrative fallback
+      media. The journal and viewer preserve the story, route, and navigation
+      without pretending a third-party image is part of the trip.
 
 ## P3 · Fun feature
 
-- [ ] **T17 — Build Trip Replay after route/photo review.** Animate ordered legs
+- [x] **T17 — Build Trip Replay after route/photo review.** Animate ordered legs
       day by day, distinguish transport modes, pause or zoom at located photos,
       and provide play/pause, speed, reduced-motion, keyboard, and timeline
       controls. Do not build it on top of known-wrong geometry.

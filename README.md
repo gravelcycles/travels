@@ -57,6 +57,20 @@ ignored local derivatives instead of GitHub Release URLs.
 - `/dist/switzerland-italy.html` opens the real family journey.
 - `/dist/demo.html` shows only the sample journeys and includes a selector.
 
+## Replay a trip
+
+Open a journey and choose **Trip replay**. Replay follows every day's travel
+legs in their stored order, retaining each mode's map color and line pattern as
+the route accumulates. It includes play/pause, half/normal/double speed, day
+step buttons, a day timeline, keyboard controls, and a completion state.
+
+The player displays each day's reviewed lead photo when available. A photo with
+reviewed coordinates becomes its own replay pause and moves the map to that
+saved location and zoom; unlocated photos are shown without inventing a map
+position. With reduced motion enabled at the operating-system level, legs and
+camera changes update without animation while timing and manual controls remain
+available.
+
 ## Annotate photos and redraw routes
 
 The agent launches the local-only Atlas Studio instead of asking the user to
