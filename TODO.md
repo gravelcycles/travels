@@ -57,7 +57,7 @@ commands.
       static deterministic output, and existing reviewed geometry. Follow
       `JOURNEY_WORKFLOW.md` and add fixture-based tests for disconnected or
       ambiguous networks.
-- [ ] **T09 — Make Studio route edits mode-aware.** Preserve user
+- [x] **T09 — Make Studio route edits mode-aware.** Preserve user
       `controlPoints` as via anchors, then snap/re-route between them using the
       selected mode's rail, ferry, road, walking, or bicycle network. Never
       overwrite anchors on regeneration; surface failed/unsafe snaps and retain

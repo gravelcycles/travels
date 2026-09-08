@@ -73,6 +73,9 @@ geometry when a source is absent or unsafe, and writes a deterministically
 ordered shared static asset. Its rail manifest retains the 65 m gap-weld limit.
 
 Atlas Studio's `controlPoints` are durable human intent and its saved `geometry`
-overrides the generated base line. Future mode-aware routing must route through
-those points rather than overwrite them. See `JOURNEY_WORKFLOW.md` for the full
-train, ferry, road, bicycle, GPX, review, and publishing flow.
+overrides the generated base line. Studio's loopback proposal service routes
+through those anchors using only the local network extract mapped to the
+segment's mode. It rejects ambiguous or overly distant snaps, retains the last
+reviewed geometry on failure, and does not send precise journey coordinates to
+an external router. See `JOURNEY_WORKFLOW.md` for the full train, ferry, road,
+bicycle, GPX, review, and publishing flow.

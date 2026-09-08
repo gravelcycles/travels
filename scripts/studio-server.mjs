@@ -5,6 +5,7 @@ import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { proposeStudioRoute } from "./studio-route-service.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const port = Number(process.env.ATLAS_STUDIO_PORT || 4173);
@@ -127,6 +128,23 @@ const server = http.createServer((request, response) => {
         send(response, 200, JSON.stringify({ ok: true }), "application/json; charset=utf-8");
       } catch (error) {
         send(response, 400, JSON.stringify({ ok: false, error: error.message }), "application/json; charset=utf-8");
+      }
+    });
+    return;
+  }
+  if (request.method === "POST" && url.pathname === "/api/route-proposal") {
+    let body = "";
+    request.setEncoding("utf8");
+    request.on("data", (chunk) => {
+      body += chunk;
+      if (body.length > 500_000) request.destroy();
+    });
+    request.on("end", () => {
+      try {
+        const proposal = proposeStudioRoute({ repoRoot, ...JSON.parse(body) });
+        send(response, 200, JSON.stringify({ ok: true, proposal }), "application/json; charset=utf-8");
+      } catch (error) {
+        send(response, 422, JSON.stringify({ ok: false, error: error.message, unsafe: Boolean(error.unsafe), warnings: error.warnings || [] }), "application/json; charset=utf-8");
       }
     });
     return;

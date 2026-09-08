@@ -120,19 +120,24 @@ The local Atlas Studio is the review surface. The agent runs `npm run studio`,
 opens `http://127.0.0.1:4173/studio/` for the user, and stops the server after
 the editing session. The user should never need to run the command.
 
-Current Studio route edits write both `controlPoints` and the resulting manual
-`geometry` to `content/route-overrides.json`; the public site loads the
-generated `dist/assets/content-overrides.js`. These overrides take precedence
-over base route geometry and therefore survive regeneration of
-`dist/assets/route-geometry.js`.
+Studio writes durable `controlPoints` and the last explicitly accepted
+`geometry` to `content/route-overrides.json`; the public site loads the generated
+`dist/assets/content-overrides.js`. Moving an anchor does not replace the saved
+geometry. **Propose network route** sends the anchors only to the loopback
+Studio service, which uses the journey manifest's local mode network. Original,
+saved, anchor-guide, and proposed lines stay separate until the editor accepts
+the network result or deliberately chooses the manual guide as a fallback.
+Missing, distant, disconnected, or ambiguous networks retain the reviewed
+geometry. These overrides take precedence over base route geometry and survive
+regeneration of `dist/assets/route-geometry.js`.
 
 Studio day-copy edits live in `content/day-overrides.json`. Studio can switch
 between journey IDs, while override keys remain stable day, route, and photo IDs.
 
-The planned network-aware editor should preserve the same control points as
-human intent, then route through them on the selected mode's network. A route
-rebuild must never overwrite user anchors. If a point cannot snap safely, keep
-the last reviewed geometry and surface the failure for review.
+The local proposal service supports rail, ferry, road, walking, and bicycle
+network extracts declared through `modeNetworks`; it does not send precise
+anchors to an external routing service. Gondolas remain manual. A route rebuild
+must never overwrite user anchors.
 
 ## Photos
 

@@ -70,6 +70,15 @@ Commit `8d85fb8` deployed successfully in Pages run `34145829874`; a
 cache-fresh check confirmed the full 14-day/104-photo trip and Day 10 content
 with a clean browser console.
 
+T09 is complete locally: Studio treats control points as durable anchors and
+offers local-network proposals for train/ferry/road/walk/bicycle modes. It draws
+original, saved, anchor-guide, and proposed lines separately and requires an
+explicit accept before changing the reviewed geometry. Missing, distant,
+disconnected, or ambiguous networks keep that geometry and surface the reason.
+Seven route tests now cover the base pipeline plus successful, unsafe, and
+unavailable Studio proposals. Local Studio/API and 390 px checks passed with no
+browser errors; no external router receives precise journey coordinates.
+
 Locally completed on 7 September: a day-scoped full-screen photo viewer and a
 loopback-only Atlas Studio for exact photo positions/text and manual route
 redrawing. The viewer keeps the main story and side map synchronized as its day
@@ -129,11 +138,12 @@ empty; the route source may contain reviewed local edits. Do not publish the
 Studio itself as a server—the public site consumes only the static generated
 asset.
 
-Current Studio route edits are manual geometry overrides. They survive base
-route regeneration, but smoothing is not mode-aware. The desired editor should
-preserve user control points as anchors and recompute the detailed line on the
-appropriate rail/ferry/road/bicycle network. GPX import is desired for recorded
-bicycle days.
+Current Studio route edits preserve control-point anchors separately from the
+accepted geometry. Network proposals use ignored local extracts configured by
+the journey manifest; absent/unsafe inputs retain the reviewed line. Road,
+walking, and bicycle extracts for the current trip are not installed, and
+gondolas remain manual. GPX import is still desired for recorded bicycle and
+walking days.
 
 The user explicitly approved public photo hosting. The public GitHub Release
 `trip-photos-v1` now contains all 356 WebP derivatives (176,851,380 bytes), and
@@ -165,7 +175,8 @@ No remaining P0 content corrections are recorded.
 
 ## Next
 
-T09 is the next unfinished TODO item: make Studio route edits mode-aware.
+T10 is the next unfinished TODO item: add private-by-default GPX import for
+bicycle and walking segments.
 Continue with the independent, acceptance-scoped work items in `TODO.md` and
 update the handoff and changelog whenever an item lands.
 

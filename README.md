@@ -48,8 +48,12 @@ to set the exact location, and add the precise place, caption, scene description
 and preferred map zoom. In **Route drawing**, select a day and any of its travel
 legs, click the orange line to add control points, drag any point—including the
 start and end—or type exact endpoint coordinates. Undo, redo, reset, and
-intermediate-point deletion are available. In **Day copy**, edit date labels,
-titles, and descriptions.
+intermediate-point deletion are available. A mode-aware proposal routes through
+those durable anchors using the journey's local rail, ferry, road, walking, or
+bicycle network. Original, saved, anchor-guide, and proposed lines stay separate
+until a proposal or manual fallback is accepted; unsafe or unavailable routing
+keeps the reviewed line. In **Day copy**, edit date labels, titles, and
+descriptions.
 
 **Save locally** writes reviewable source data to
 `content/photo-overrides.json`, `content/route-overrides.json`, and

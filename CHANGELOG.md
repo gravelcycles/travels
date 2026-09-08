@@ -4,6 +4,19 @@ Keep this file current whenever a user-visible feature, content correction, or
 workflow change lands. Add the newest entry first and include the matching
 commit after it is known.
 
+## 8 September 2026
+
+### Safe mode-aware route proposals in Studio
+
+- Added local-network route proposals for rail, ferry, road, walking, and
+  bicycle modes while keeping human control points as immutable routing anchors.
+- Separated original, last-saved, manual anchor-guide, and proposed lines so an
+  editor can compare them before explicitly accepting a result.
+- Kept the last reviewed geometry when network data is missing, too distant,
+  disconnected, or ambiguous, with the failure surfaced inside Studio.
+- Added successful, ambiguous, and unavailable-network service tests without
+  sending journey coordinates to an external routing provider.
+
 ## 7 September 2026
 
 ### Journey-specific route geometry pipeline

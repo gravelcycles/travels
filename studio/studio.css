@@ -99,6 +99,20 @@ button, select { cursor: pointer; }
 .endpoint-fields legend { padding: 0 5px; color: var(--muted); font-size: .64rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
 .endpoint-fields > div { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .endpoint-fields label { margin-top: 7px; }
+.route-network-panel { margin-top: 18px; padding: 14px; border: 1px solid var(--line); background: #f1f4ef; }
+.route-network-panel > p { margin: 7px 0 10px; color: var(--ink-soft); font-size: .76rem; line-height: 1.45; }
+.route-network-panel > div { display: flex; flex-wrap: wrap; gap: 7px; }
+.route-network-panel .secondary { margin: 0; }
+#route-proposal-status { padding-top: 9px; border-top: 1px solid var(--line); }
+#route-proposal-status.error { color: #a33427; font-weight: 750; }
+#route-proposal-status.ready { color: #2b6953; font-weight: 750; }
+.route-comparison { display: flex; flex-wrap: wrap; gap: 9px 14px; margin-top: 13px; color: var(--muted); font-size: .68rem; font-weight: 800; text-transform: uppercase; }
+.route-comparison span { display: inline-flex; align-items: center; gap: 6px; }
+.route-comparison i { width: 25px; height: 4px; display: inline-block; background: #60787b; }
+.route-comparison i.original { background: repeating-linear-gradient(90deg, #60787b 0 5px, transparent 5px 9px); }
+.route-comparison i.saved { background: #006f92; }
+.route-comparison i.anchors { background: repeating-linear-gradient(90deg, #d4512c 0 3px, transparent 3px 7px); }
+.route-comparison i.proposed { background: #568c3b; }
 .route-instructions { margin-top: 22px; padding: 15px; background: #e7ece8; }
 .route-instructions p { color: var(--ink-soft); font-size: .8rem; line-height: 1.5; }
 .route-stats { display: grid; grid-template-columns: 1fr 1fr; margin: 18px 0 0; border: 1px solid var(--line); }

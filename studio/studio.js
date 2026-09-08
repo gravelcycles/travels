@@ -21,6 +21,8 @@
   let routeHistory = [];
   let routeHistoryIndex = -1;
   let selectedRoutePoint = -1;
+  let routeProposal = null;
+  let routeProposalMeta = null;
   let dirty = false;
 
   const $ = (selector) => document.querySelector(selector);
@@ -305,7 +307,7 @@
   function clearActiveMap() {
     activeMarkers.forEach((marker) => marker.remove());
     activeMarkers = [];
-    ["studio-photo-routes-casing", "studio-photo-routes", "studio-original-route", "studio-edited-route-casing", "studio-edited-route"].forEach((id) => {
+    ["studio-photo-routes-casing", "studio-photo-routes", "studio-original-route", "studio-saved-route-casing", "studio-saved-route", "studio-anchor-guide", "studio-proposed-route-casing", "studio-proposed-route"].forEach((id) => {
       if (map.getLayer(id)) map.removeLayer(id);
       if (map.getSource(id)) map.removeSource(id);
     });
@@ -315,10 +317,10 @@
     return map.getStyle().layers.find((layer) => layer.type === "symbol" && layer.layout?.["text-field"])?.id;
   }
 
-  function addLine(id, features, color, width, opacity = 1, dashed = false) {
+  function addLine(id, features, color, width, opacity = 1, dashArray = null) {
     map.addSource(id, { type: "geojson", data: { type: "FeatureCollection", features } });
     const paint = { "line-color": color, "line-width": width, "line-opacity": opacity };
-    if (dashed) paint["line-dasharray"] = [2, 2];
+    if (dashArray) paint["line-dasharray"] = dashArray;
     map.addLayer({ id, type: "line", source: id, layout: { "line-cap": "round", "line-join": "round" }, paint }, firstLabelLayerId());
   }
 
@@ -419,17 +421,47 @@
     return routeSmoothed ? chaikin(routePoints) : routePoints.map((point) => [...point]);
   }
 
-  function updateRouteOverride() {
+  function setProposalStatus(message, className = "") {
+    const status = $("#route-proposal-status");
+    status.textContent = message;
+    status.className = className;
+  }
+
+  function clearRouteProposal(message = "Anchors changed. Request a new network proposal; the saved route remains active.") {
+    routeProposal = null;
+    routeProposalMeta = null;
+    $("#accept-route-proposal").disabled = true;
+    setProposalStatus(message);
+  }
+
+  function updateRouteAnchors() {
+    const segment = segmentById(selectedSegmentId);
+    const existing = state.routes[selectedSegmentId] || {};
+    state.routes[selectedSegmentId] = {
+      ...existing,
+      controlPoints: routePoints.map((point) => [...point]),
+      geometry: existing.geometry?.length > 1 ? existing.geometry : baseSegmentCoordinates(segment),
+      smoothing: routeSmoothed ? "chaikin" : "none"
+    };
+    clearRouteProposal();
+    $("#route-saved-state").textContent = "Geometry kept · anchors pending";
+    markDirty("Anchor changes pending; saved geometry kept");
+    drawRouteEditor(false);
+    renderRouteList();
+  }
+
+  function acceptRouteGeometry(geometry, routing, message) {
     state.routes[selectedSegmentId] = {
       ...(state.routes[selectedSegmentId] || {}),
       controlPoints: routePoints.map((point) => [...point]),
-      geometry: editedGeometry(),
-      smoothing: routeSmoothed ? "chaikin" : "none"
+      geometry: geometry.map((point) => [...point]),
+      smoothing: routeSmoothed ? "chaikin" : "none",
+      routing
     };
     $("#route-saved-state").textContent = "Pending save";
-    markDirty();
-    drawRouteEditor(false);
+    markDirty(message);
     renderRouteList();
+    drawRouteEditor(false);
   }
 
   function syncEndpointFields() {
@@ -477,7 +509,7 @@
     routeHistory.push(routePoints.map((point) => [...point]));
     routeHistoryIndex = routeHistory.length - 1;
     selectedRoutePoint = -1;
-    updateRouteOverride();
+    updateRouteAnchors();
   }
 
   function updateUndoButtons() {
@@ -493,6 +525,8 @@
     const override = state.routes[id];
     routePoints = (override?.controlPoints || defaultControlPoints(segment)).map((point) => [...point]);
     routeSmoothed = override?.smoothing === "chaikin";
+    routeProposal = null;
+    routeProposalMeta = null;
     selectedRoutePoint = -1;
     resetHistory(routePoints);
     const from = placeById(segment.from);
@@ -500,7 +534,11 @@
     $("#route-title").textContent = `${from.name} → ${to.name}`;
     $("#route-summary").textContent = `${segment.mode.toUpperCase()} · ${segment.distanceKm || "—"} km · ${segment.duration || "duration not set"}`;
     $("#route-saved-state").textContent = override ? "Yes" : "No";
-    $("#smooth-route").textContent = routeSmoothed ? "Use straight preview" : "Smooth preview";
+    $("#smooth-route").textContent = routeSmoothed ? "Use straight anchor guide" : "Smooth anchor guide";
+    $("#propose-route").textContent = `Propose ${segment.mode === "boat" ? "ferry" : segment.mode} network route`;
+    $("#propose-route").disabled = segment.mode === "gondola";
+    $("#accept-route-proposal").disabled = true;
+    setProposalStatus(segment.mode === "gondola" ? "No automatic gondola network is configured; the reviewed saved route remains active." : "No proposal yet. The saved route remains active.");
     syncEndpointFields();
     renderRouteList();
     if (mapReady) drawRouteEditor(center);
@@ -510,10 +548,17 @@
     clearActiveMap();
     const segment = segmentById(selectedSegmentId);
     if (!segment) return;
-    const original = segment.geometry?.length > 1 ? segment.geometry : (routeGeometry[segment.id] || segmentCoordinates(segment));
-    addLine("studio-original-route", [{ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: original } }], "#60787b", 7, .42);
-    addLine("studio-edited-route-casing", [{ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: editedGeometry() } }], "#fffef8", 9.5, .94);
-    addLine("studio-edited-route", [{ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: editedGeometry() } }], "#d4512c", 5.8, 1, !routeSmoothed);
+    const original = baseSegmentCoordinates(segment);
+    const saved = state.routes[segment.id]?.geometry?.length > 1 ? state.routes[segment.id].geometry : original;
+    const feature = (coordinates) => [{ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates } }];
+    addLine("studio-original-route", feature(original), "#60787b", 7.5, .55, [2, 2]);
+    addLine("studio-saved-route-casing", feature(saved), "#fffef8", 9, .9);
+    addLine("studio-saved-route", feature(saved), "#006f92", 5, .92);
+    addLine("studio-anchor-guide", feature(editedGeometry()), "#d4512c", 3, .92, routeSmoothed ? [1, 1.8] : [1, 2.3]);
+    if (routeProposal?.length > 1) {
+      addLine("studio-proposed-route-casing", feature(routeProposal), "#fffef8", 11, .94);
+      addLine("studio-proposed-route", feature(routeProposal), "#568c3b", 6.5, 1);
+    }
     routePoints.forEach((point, index) => {
       const element = document.createElement("button");
       element.type = "button";
@@ -538,7 +583,7 @@
     $("#route-point-count").textContent = String(routePoints.length);
     syncEndpointFields();
     updateUndoButtons();
-    if (center) fitCoordinates(original, 14);
+    if (center) fitCoordinates([...original, ...saved, ...(routeProposal || [])], 14);
   }
 
   function distanceToSegment(point, a, b) {
@@ -563,6 +608,61 @@
     const next = routePoints.map((point) => [...point]);
     next.splice(nearest.index, 0, [Number(event.lngLat.lng.toFixed(6)), Number(event.lngLat.lat.toFixed(6))]);
     commitRoutePoints(next);
+  }
+
+  async function proposeNetworkRoute() {
+    const requestedJourneyId = journey.id;
+    const requestedSegmentId = selectedSegmentId;
+    const button = $("#propose-route");
+    button.disabled = true;
+    $("#accept-route-proposal").disabled = true;
+    setProposalStatus("Routing through the local mode network…");
+    try {
+      const response = await fetch("/api/route-proposal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ journeyId: requestedJourneyId, segmentId: requestedSegmentId, controlPoints: routePoints })
+      });
+      const result = await response.json();
+      if (journey.id !== requestedJourneyId || selectedSegmentId !== requestedSegmentId) return;
+      if (!response.ok || !result.ok) {
+        const warning = result.warnings?.length ? ` ${result.warnings.join(" ")}` : "";
+        throw new Error(`${result.error || "Route proposal failed"}${warning}`);
+      }
+      routeProposal = result.proposal.geometry.map((point) => [...point]);
+      routeProposalMeta = result.proposal;
+      $("#accept-route-proposal").disabled = false;
+      setProposalStatus(`Proposed ${result.proposal.mode} route: ${result.proposal.pointCount} points, maximum anchor snap ${result.proposal.maxSnapKm.toFixed(2)} km. Review the green line before accepting.`, "ready");
+      drawRouteEditor(false);
+    } catch (error) {
+      routeProposal = null;
+      routeProposalMeta = null;
+      setProposalStatus(error.message, "error");
+      drawRouteEditor(false);
+    } finally {
+      const segment = segmentById(selectedSegmentId);
+      button.disabled = segment?.mode === "gondola";
+    }
+  }
+
+  function acceptNetworkProposal() {
+    if (!routeProposal || !routeProposalMeta) return;
+    acceptRouteGeometry(routeProposal, {
+      kind: "network",
+      mode: routeProposalMeta.mode,
+      network: routeProposalMeta.network,
+      provider: routeProposalMeta.provider
+    }, "Network proposal accepted; save locally to persist it");
+    $("#accept-route-proposal").disabled = true;
+    setProposalStatus("Proposal accepted as the pending saved line. Human anchors were preserved; use Save locally to persist it.", "ready");
+  }
+
+  function acceptManualFallback() {
+    const segment = segmentById(selectedSegmentId);
+    if (!segment) return;
+    acceptRouteGeometry(editedGeometry(), { kind: "manual", mode: segment.mode }, "Manual fallback accepted; save locally to persist it");
+    clearRouteProposal("The anchor guide is now the pending saved fallback. Use Save locally to persist it.");
+    drawRouteEditor(false);
   }
 
   async function saveAll() {
@@ -700,20 +800,27 @@
     selectPhoto(selectedPhotoId, true);
   });
   $("#apply-route-endpoints").addEventListener("click", readEndpointFields);
+  $("#propose-route").addEventListener("click", proposeNetworkRoute);
+  $("#accept-route-proposal").addEventListener("click", acceptNetworkProposal);
+  $("#accept-manual-route").addEventListener("click", acceptManualFallback);
   $("#smooth-route").addEventListener("click", () => {
     routeSmoothed = !routeSmoothed;
-    $("#smooth-route").textContent = routeSmoothed ? "Use straight preview" : "Smooth preview";
-    updateRouteOverride();
+    $("#smooth-route").textContent = routeSmoothed ? "Use straight anchor guide" : "Smooth anchor guide";
+    updateRouteAnchors();
   });
   $("#reset-route").addEventListener("click", () => {
     const segment = segmentById(selectedSegmentId);
     delete state.routes[selectedSegmentId];
+    routeProposal = null;
+    routeProposalMeta = null;
     routeSmoothed = false;
     routePoints = defaultControlPoints(segment);
     resetHistory(routePoints);
     markDirty("Override removed; save to keep the reset");
     $("#route-saved-state").textContent = "Removed pending save";
-    $("#smooth-route").textContent = "Smooth preview";
+    $("#smooth-route").textContent = "Smooth anchor guide";
+    $("#accept-route-proposal").disabled = true;
+    setProposalStatus("Override removed. The original route is active; save locally to persist the reset.");
     renderRouteList();
     drawRouteEditor(false);
   });
@@ -728,14 +835,14 @@
     routeHistoryIndex -= 1;
     routePoints = routeHistory[routeHistoryIndex].map((point) => [...point]);
     selectedRoutePoint = -1;
-    updateRouteOverride();
+    updateRouteAnchors();
   });
   $("#redo-route").addEventListener("click", () => {
     if (routeHistoryIndex >= routeHistory.length - 1) return;
     routeHistoryIndex += 1;
     routePoints = routeHistory[routeHistoryIndex].map((point) => [...point]);
     selectedRoutePoint = -1;
-    updateRouteOverride();
+    updateRouteAnchors();
   });
   window.addEventListener("beforeunload", (event) => {
     if (!dirty) return;

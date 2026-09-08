@@ -1,6 +1,6 @@
 # Project state
 
-Updated 7 September 2026.
+Updated 8 September 2026.
 
 - Repo: <https://github.com/gravelcycles/travels>
 - Site: <https://gravelcycles.github.io/travels/>
@@ -80,6 +80,12 @@ Updated 7 September 2026.
   titles, and descriptions. Day copy is stored in `content/day-overrides.json`.
   The photo accessibility-description field is intentionally not part of the
   Studio UI.
+- Studio route mode keeps human control points as durable anchors and requests
+  proposals from journey-manifested local rail, ferry, road, walking, or bicycle
+  network extracts. Original, saved, anchor-guide, and proposed lines remain
+  visually separate until the editor explicitly accepts a proposal or manual
+  fallback. Missing, distant, disconnected, and ambiguous networks leave the
+  last reviewed geometry intact and show an actionable error.
 - Clicking a photo location—or finishing a pin drag—in Studio now records the
   map's current zoom with the coordinates. The saved 2–20 zoom range is honored
   by the public photo viewer instead of being forced back into 12–18.
@@ -94,9 +100,10 @@ Updated 7 September 2026.
   but its photo-location and prose overrides are currently empty. Days 9, 11,
   and 14 have no family photos.
 - Bus, bicycle, walking, and gondola routes other than Bellagio–Como still use
-  reviewed shaping points rather than full network geometry. Studio smoothing
-  is geometric, not transport-network-aware, so enough control points must be
-  used to keep a line on the intended road, rail, or water.
+  reviewed shaping points rather than full network geometry. Mode-aware Studio
+  proposals require the corresponding ignored local extract under
+  `build/route-inputs/`; those road, walking, and bicycle extracts have not yet
+  been prepared for this journey. Gondola routes remain reviewed/manual.
 - Day badges choose a label-free offset, avoid one another and map edges, and
   use a leader line back to the exact place. Grouped overview badges are compact
   and placement is recalculated after map movement.
@@ -107,8 +114,8 @@ Updated 7 September 2026.
   happened on that part of the journey.
 - Increase transport-mode differentiation beyond the current subtle dash
   patterns, while retaining a non-color cue for every mode.
-- Add mode-aware route regeneration through preserved Studio control points and
-  support GPX import for bicycle days.
+- Add GPX import for bicycle and walking days while keeping original tracks
+  private by default.
 - Keep all build, server, Git, and deployment work agent-driven; the user should
   not be asked to run npm commands.
 - Build Trip Replay after the underlying route and photo-location data is
