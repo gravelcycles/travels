@@ -103,6 +103,18 @@ T23–T25 record additional confirmed bugs/limitations found in this pass.
   visually separate until the editor explicitly accepts a proposal or manual
   fallback. Missing, distant, disconnected, and ambiguous networks leave the
   last reviewed geometry intact and show an actionable error.
+- Bicycle and walking legs accept a private GPX file in Studio. The loopback
+  importer preserves recorded order, rejects reversed/unsafe/gapped tracks,
+  calculates unsimplified distance, simplifies meaningful turns, and saves only
+  accepted `[lng, lat]` geometry plus non-identifying provenance.
+- All 104 family-trip photos have reviewed day, copy, alt text, visibility, and
+  privacy metadata. No exact viewpoints were invented for the GPS-free files.
+  Ninety-five photos remain visible; eight redundant/low-quality frames and one
+  private-residence exterior are excluded from generated public photo data.
+- Every photographed day has explicit album order and a deliberate lead photo.
+  Studio exposes keyboard buttons to move the selected image earlier/later and
+  choose the lead independently; story, strip, and viewer resolve the same
+  ordering, and a lead opens at its real album position.
 - Clicking a photo location—or finishing a pin drag—in Studio now records the
   map's current zoom with the coordinates. The saved 2–20 zoom range is honored
   by the public photo viewer instead of being forced back into 12–18.
@@ -112,10 +124,9 @@ T23–T25 record additional confirmed bugs/limitations found in this pass.
 - Removing a public photo requires deleting its Release assets and removing it
   from the manifest; replacing a file under the same tag may remain cached, so
   use a new asset filename for edited replacements.
-- The 104 photo captions and day-only matches are automatic first passes. None
-  of the supplied stills contained GPS coordinates; the new Studio is ready,
-  but its photo-location and prose overrides are currently empty. Days 9, 11,
-  and 14 have no family photos.
+- The supplied stills contained no GPS coordinates, so their exact viewpoints
+  remain unlocated after review. Days 8, 9, 11, and 14 now have no visible
+  family photos after the private-residence exterior was hidden.
 - Bus, bicycle, walking, and gondola routes other than Bellagio–Como still use
   reviewed shaping points rather than full network geometry. Mode-aware Studio
   proposals require the corresponding ignored local extract under
@@ -131,8 +142,6 @@ T23–T25 record additional confirmed bugs/limitations found in this pass.
   happened on that part of the journey.
 - Increase transport-mode differentiation beyond the current subtle dash
   patterns, while retaining a non-color cue for every mode.
-- Add GPX import for bicycle and walking days while keeping original tracks
-  private by default.
 - Keep all build, server, Git, and deployment work agent-driven; the user should
   not be asked to run npm commands.
 - Build Trip Replay after the underlying route and photo-location data is

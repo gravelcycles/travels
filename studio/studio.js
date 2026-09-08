@@ -100,6 +100,21 @@
     return { ...photo, ...override, ...(override.location || {}) };
   }
 
+  function photosForDay(dayId, { visibleOnly = false } = {}) {
+    const photos = basePhotos.map(photoWithOverride).filter((photo) => photo.dayId === dayId && (!visibleOnly || !photo.hidden));
+    const order = state.days[dayId]?.photoOrder || [];
+    const positions = new Map(order.map((id, index) => [id, index]));
+    return photos.map((photo, index) => ({ photo, index })).sort((a, b) => {
+      const aPosition = positions.has(a.photo.id) ? positions.get(a.photo.id) : order.length + a.index;
+      const bPosition = positions.has(b.photo.id) ? positions.get(b.photo.id) : order.length + b.index;
+      return aPosition - bPosition || a.index - b.index;
+    }).map(({ photo }) => photo);
+  }
+
+  function explicitPhotoOrder(dayId) {
+    return photosForDay(dayId).map((photo) => photo.id);
+  }
+
   function baseSegmentCoordinates(segment) {
     if (segment.geometry?.length > 1) return segment.geometry;
     if (routeGeometry[segment.id]?.length > 1) return routeGeometry[segment.id];
@@ -238,6 +253,7 @@
     const baseDay = journey.days.find((day) => day.id === selectedDayId);
     if (!baseDay) return;
     state.days[selectedDayId] = {
+      ...(state.days[selectedDayId] || {}),
       date: $("#day-date").value.trim(),
       title: $("#day-title").value.trim(),
       text: $("#day-description").value.trim()
@@ -250,18 +266,40 @@
 
   function renderPhotoGrid() {
     const filter = $("#photo-day-filter").value;
-    const photos = basePhotos.map(photoWithOverride).filter((photo) => filter === "all" || photo.dayId === filter);
+    const photos = filter === "all" ? journey.days.flatMap((day) => photosForDay(day.id)) : photosForDay(filter);
     $("#studio-photo-grid").innerHTML = photos.length ? photos.map((photo) => {
       const thumb = photo.srcset?.[0]?.src || photo.src;
       const located = Number.isFinite(photo.lat) && Number.isFinite(photo.lng);
-      return `<button type="button" data-photo-id="${photo.id}" class="${photo.id === selectedPhotoId ? "active" : ""}" aria-label="Edit ${escapeHtml(photo.caption)}">
+      const day = dayById(photo.dayId);
+      const lead = day?.leadPhotoId === photo.id;
+      return `<button type="button" data-photo-id="${photo.id}" class="${photo.id === selectedPhotoId ? "active" : ""}" aria-label="Edit ${escapeHtml(photo.caption)}${lead ? ", lead photo" : ""}">
         <img src="${photoUrl(thumb)}" alt="" loading="lazy" />
-        <span>${escapeHtml(photo.takenAt || photo.caption)}</span>
+        <span>${lead ? "LEAD · " : ""}${escapeHtml(photo.takenAt || photo.caption)}</span>
         <i class="${located ? "" : "unlocated"}" title="${located ? "Located" : "Needs location"}"></i>
       </button>`;
     }).join("") : '<p class="editor-note">This journey has no photographs to edit.</p>';
     const selected = $("#studio-photo-grid .active");
     if (selected) selected.scrollIntoView({ block: "nearest" });
+  }
+
+  function refreshPhotoOrderControls() {
+    const photo = basePhotos.find((item) => item.id === selectedPhotoId);
+    const panel = $(".photo-order-panel");
+    if (!photo) {
+      panel.inert = true;
+      $("#photo-order-status").textContent = "No photo selected.";
+      return;
+    }
+    panel.inert = false;
+    const resolved = photoWithOverride(photo);
+    const ordered = photosForDay(resolved.dayId);
+    const index = ordered.findIndex((item) => item.id === selectedPhotoId);
+    const day = dayById(resolved.dayId);
+    $("#photo-order-status").textContent = `${day?.leadPhotoId === selectedPhotoId ? "Lead photo · " : ""}${index + 1} of ${ordered.length} in Day ${day?.number || "—"}. Album order is independent from the lead choice.`;
+    $("#photo-move-earlier").disabled = index <= 0;
+    $("#photo-move-later").disabled = index < 0 || index >= ordered.length - 1;
+    $("#photo-make-lead").disabled = Boolean(resolved.hidden) || day?.leadPhotoId === selectedPhotoId;
+    $("#photo-make-lead").textContent = day?.leadPhotoId === selectedPhotoId ? "Current lead photo" : "Use as lead photo";
   }
 
   function selectPhoto(id, center = true) {
@@ -283,6 +321,7 @@
     $("#photo-caption").value = photo.caption || "";
     $("#photo-description").value = photo.description || "";
     $("#photo-hidden").checked = Boolean(photo.hidden);
+    refreshPhotoOrderControls();
     renderPhotoGrid();
     if (mapReady) renderPhotoMap(photo, center);
   }
@@ -293,7 +332,9 @@
     const lat = Number($("#photo-lat").value);
     const lng = Number($("#photo-lng").value);
     const zoom = Number($("#photo-zoom").value);
+    const previous = photoWithOverride(base);
     const override = {
+      ...(state.photos[selectedPhotoId] || {}),
       dayId: $("#photo-day").value,
       caption: $("#photo-caption").value.trim(),
       description: $("#photo-description").value.trim(),
@@ -303,12 +344,28 @@
     if (Number.isFinite(lat) && Number.isFinite(lng) && $("#photo-lat").value !== "" && $("#photo-lng").value !== "") {
       override.location = { lat: Number(lat.toFixed(6)), lng: Number(lng.toFixed(6)) };
       override.zoom = Number.isFinite(zoom) ? clampPhotoZoom(zoom) : 16;
+    } else {
+      delete override.location;
+      delete override.zoom;
     }
     state.photos[selectedPhotoId] = override;
+    if (override.hidden && state.days[override.dayId]?.leadPhotoId === selectedPhotoId) {
+      const { leadPhotoId, ...dayOverride } = state.days[override.dayId];
+      state.days[override.dayId] = { ...dayOverride, photoOrder: explicitPhotoOrder(override.dayId) };
+    }
+    if (previous.dayId !== override.dayId) {
+      for (const dayId of [previous.dayId, override.dayId]) {
+        const current = state.days[dayId] || {};
+        const photoOrder = explicitPhotoOrder(dayId);
+        state.days[dayId] = { ...current, photoOrder };
+        if (current.leadPhotoId === selectedPhotoId && dayId !== override.dayId) delete state.days[dayId].leadPhotoId;
+      }
+    }
     markDirty();
     renderDaySelectors();
     $("#photo-day").value = override.dayId;
     renderPhotoGrid();
+    refreshPhotoOrderControls();
     if (mapReady) renderPhotoMap(photoWithOverride(base), false);
   }
 
@@ -441,6 +498,7 @@
     routeProposal = null;
     routeProposalMeta = null;
     $("#accept-route-proposal").disabled = true;
+    $("#accept-route-gpx").disabled = true;
     setProposalStatus(message);
   }
 
@@ -460,13 +518,14 @@
     renderRouteList();
   }
 
-  function acceptRouteGeometry(geometry, routing, message) {
+  function acceptRouteGeometry(geometry, routing, message, source) {
     state.routes[selectedSegmentId] = {
       ...(state.routes[selectedSegmentId] || {}),
       controlPoints: routePoints.map((point) => [...point]),
       geometry: geometry.map((point) => [...point]),
       smoothing: routeSmoothed ? "chaikin" : "none",
-      routing
+      routing,
+      ...(source ? { source } : {})
     };
     $("#route-saved-state").textContent = "Pending save";
     markDirty(message);
@@ -539,6 +598,7 @@
     document.querySelectorAll(".endpoint-fields input").forEach(input => { input.value = ""; });
     $("#route-point-count").textContent = "—";
     $("#route-saved-state").textContent = "—";
+    $("#route-gpx-file").value = "";
     clearRouteProposal("No route selected.");
   }
 
@@ -564,6 +624,11 @@
     $("#propose-route").textContent = `Propose ${segment.mode === "boat" ? "ferry" : segment.mode} network route`;
     $("#propose-route").disabled = segment.mode === "gondola";
     $("#accept-route-proposal").disabled = true;
+    $("#accept-route-gpx").disabled = true;
+    const acceptsGpx = ["bike", "walk"].includes(segment.mode);
+    $("#route-gpx-file").disabled = !acceptsGpx;
+    $("#import-route-gpx").disabled = !acceptsGpx;
+    $("#route-gpx-file").value = "";
     setProposalStatus(segment.mode === "gondola" ? "No automatic gondola network is configured; the reviewed saved route remains active." : "No proposal yet. The saved route remains active.");
     syncEndpointFields();
     renderRouteList();
@@ -656,7 +721,7 @@
         throw new Error(`${result.error || "Route proposal failed"}${warning}`);
       }
       routeProposal = result.proposal.geometry.map((point) => [...point]);
-      routeProposalMeta = result.proposal;
+      routeProposalMeta = { ...result.proposal, kind: "network" };
       $("#accept-route-proposal").disabled = false;
       setProposalStatus(`Proposed ${result.proposal.mode} route: ${result.proposal.pointCount} points, maximum anchor snap ${result.proposal.maxSnapKm.toFixed(2)} km. Review the green line before accepting.`, "ready");
       drawRouteEditor(false);
@@ -672,7 +737,7 @@
   }
 
   function acceptNetworkProposal() {
-    if (!routeProposal || !routeProposalMeta) return;
+    if (!routeProposal || routeProposalMeta?.kind !== "network") return;
     acceptRouteGeometry(routeProposal, {
       kind: "network",
       mode: routeProposalMeta.mode,
@@ -681,6 +746,81 @@
     }, "Network proposal accepted; save locally to persist it");
     $("#accept-route-proposal").disabled = true;
     setProposalStatus("Proposal accepted as the pending saved line. Human anchors were preserved; use Save locally to persist it.", "ready");
+  }
+
+  async function proposeGpxTrack() {
+    const segment = segmentById(selectedSegmentId);
+    const file = $("#route-gpx-file").files[0];
+    if (!["bike", "walk"].includes(segment?.mode)) return setProposalStatus("Choose a bicycle or walking leg before importing GPX.", "error");
+    if (!file) return setProposalStatus("Choose a private .gpx file first.", "error");
+    if (file.size > 12_000_000) return setProposalStatus("The GPX file is larger than the 12 MB review limit.", "error");
+    const requestedJourneyId = journey.id;
+    const requestedSegmentId = selectedSegmentId;
+    const requestedAnchors = JSON.stringify(routePoints);
+    $("#import-route-gpx").disabled = true;
+    $("#accept-route-gpx").disabled = true;
+    $("#accept-route-proposal").disabled = true;
+    setProposalStatus("Checking GPX order, gaps, distance, and meaningful turns…");
+    try {
+      const response = await fetch("/api/gpx-proposal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ journeyId: requestedJourneyId, segmentId: requestedSegmentId, controlPoints: routePoints, text: await file.text() })
+      });
+      const result = await response.json();
+      if (journey.id !== requestedJourneyId || selectedSegmentId !== requestedSegmentId || JSON.stringify(routePoints) !== requestedAnchors) return;
+      if (!response.ok || !result.ok) {
+        const warning = result.warnings?.length ? ` ${result.warnings.join(" ")}` : "";
+        throw new Error(`${result.error || "GPX review failed"}${warning}`);
+      }
+      routeProposal = result.proposal.geometry.map((point) => [...point]);
+      routeProposalMeta = { ...result.proposal, kind: "gpx" };
+      $("#accept-route-gpx").disabled = false;
+      const warnings = result.proposal.warnings.length ? ` ${result.proposal.warnings.join(" ")}` : "";
+      setProposalStatus(`GPX preview: ${result.proposal.distanceKm.toFixed(1)} km recorded, ${result.proposal.rawPointCount} source points simplified to ${result.proposal.pointCount}.${warnings} Review the green line before accepting.`, "ready");
+      drawRouteEditor(false);
+    } catch (error) {
+      routeProposal = null;
+      routeProposalMeta = null;
+      setProposalStatus(error.message, "error");
+      drawRouteEditor(false);
+    } finally {
+      $("#import-route-gpx").disabled = !["bike", "walk"].includes(segmentById(selectedSegmentId)?.mode);
+    }
+  }
+
+  function acceptGpxProposal() {
+    if (!routeProposal || routeProposalMeta?.kind !== "gpx") return;
+    acceptRouteGeometry(routeProposal, { kind: "gpx", mode: routeProposalMeta.mode }, "GPX track accepted; save locally to persist reviewed coordinates", routeProposalMeta.provenance);
+    routePoints = routeProposalMeta.controlPoints.map((point) => [...point]);
+    $("#accept-route-gpx").disabled = true;
+    setProposalStatus("GPX track accepted as the pending saved line. The private original was not copied; use Save locally to persist the reviewed geometry and provenance.", "ready");
+  }
+
+  function moveSelectedPhoto(delta) {
+    const photo = basePhotos.find((item) => item.id === selectedPhotoId);
+    if (!photo) return;
+    const dayId = photoWithOverride(photo).dayId;
+    const order = explicitPhotoOrder(dayId);
+    const index = order.indexOf(selectedPhotoId);
+    const target = index + delta;
+    if (index < 0 || target < 0 || target >= order.length) return;
+    [order[index], order[target]] = [order[target], order[index]];
+    state.days[dayId] = { ...(state.days[dayId] || {}), photoOrder: order };
+    markDirty("Photo order changed; save locally to persist it");
+    renderPhotoGrid();
+    refreshPhotoOrderControls();
+  }
+
+  function makeSelectedPhotoLead() {
+    const photo = basePhotos.find((item) => item.id === selectedPhotoId);
+    if (!photo) return;
+    const resolved = photoWithOverride(photo);
+    if (resolved.hidden) return setStatus("A hidden photo cannot be the day lead", "error");
+    state.days[resolved.dayId] = { ...(state.days[resolved.dayId] || {}), photoOrder: explicitPhotoOrder(resolved.dayId), leadPhotoId: selectedPhotoId };
+    markDirty("Lead photo changed; save locally to persist it");
+    renderPhotoGrid();
+    refreshPhotoOrderControls();
   }
 
   function acceptManualFallback() {
@@ -864,9 +1004,14 @@
     readPhotoForm();
     selectPhoto(selectedPhotoId, true);
   });
+  $("#photo-move-earlier").addEventListener("click", () => moveSelectedPhoto(-1));
+  $("#photo-move-later").addEventListener("click", () => moveSelectedPhoto(1));
+  $("#photo-make-lead").addEventListener("click", makeSelectedPhotoLead);
   $("#apply-route-endpoints").addEventListener("click", readEndpointFields);
   $("#propose-route").addEventListener("click", proposeNetworkRoute);
   $("#accept-route-proposal").addEventListener("click", acceptNetworkProposal);
+  $("#import-route-gpx").addEventListener("click", proposeGpxTrack);
+  $("#accept-route-gpx").addEventListener("click", acceptGpxProposal);
   $("#accept-manual-route").addEventListener("click", acceptManualFallback);
   $("#smooth-route").addEventListener("click", () => {
     routeSmoothed = !routeSmoothed;

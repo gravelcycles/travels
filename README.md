@@ -76,7 +76,12 @@ intermediate-point deletion are available. A mode-aware proposal routes through
 those durable anchors using the journey's local rail, ferry, road, walking, or
 bicycle network. Original, saved, anchor-guide, and proposed lines stay separate
 until a proposal or manual fallback is accepted; unsafe or unavailable routing
-keeps the reviewed line. In **Day copy**, edit date labels, titles, and
+keeps the reviewed line. For a bicycle or walking leg, **Traveler GPX track**
+checks a private local file for travel order, endpoint alignment, large gaps,
+distance, and meaningful turns before offering a simplified line for explicit
+acceptance. The source GPX is never copied into the repository. In **Photo
+locations**, keyboard-accessible controls set the album order and a separate
+lead photo for each day. In **Day copy**, edit date labels, titles, and
 descriptions.
 
 **Save locally** writes reviewable source data to
@@ -128,8 +133,9 @@ Each journey contains:
 - calendar days, including non-travel days
 - optional photographs linked to days
 - optional photo overrides with exact coordinates, street-level zoom, caption,
-  description, day reassignment, or a hidden flag
-- optional day overrides for date labels, titles, and descriptions
+  description, review state, day reassignment, or a hidden flag
+- optional day overrides for date labels, titles, descriptions, explicit photo
+  order, and a separate lead-photo ID
 
 The first real trip combines train, boat, bus, gondola, bicycle, and walking
 segments. Sample data remains in the shared content file but is only exposed by

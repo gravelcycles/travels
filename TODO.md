@@ -63,7 +63,7 @@ commands.
       overwrite anchors on regeneration; surface failed/unsafe snaps and retain
       the last reviewed geometry. Show original, proposed, and saved lines for
       comparison.
-- [ ] **T10 — Add GPX import for bike/walk days.** Let an agent or Atlas Studio
+- [x] **T10 — Add GPX import for bike/walk days.** Let an agent or Atlas Studio
       attach a GPX track to a segment, validate ordering/gaps, calculate distance,
       simplify without losing meaningful turns, and save `[lng, lat]` geometry.
       Keep source GPX private by default and record provenance. Add fixtures and
@@ -78,11 +78,11 @@ commands.
 
 ## P2 · Studio and editorial workflow
 
-- [ ] **T12 — Review all 104 current photos in Studio.** Confirm date-inferred
+- [x] **T12 — Review all 104 current photos in Studio.** Confirm date-inferred
       days, exact locations, captions, descriptions, alt text, visibility, and
       privacy. The supplied stills contained no GPS coordinates. Do not publish
       sensitive precise locations without review.
-- [ ] **T13 — Add lead-photo ordering to Studio.** Provide keyboard-accessible
+- [x] **T13 — Add lead-photo ordering to Studio.** Provide keyboard-accessible
       ordering within each day, make ordering explicit in source overrides, and
       use it consistently in the story lead, strip, and day viewer.
 - [x] **T14 — Clarify the unfinished editor request.** The user confirmed that

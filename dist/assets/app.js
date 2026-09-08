@@ -111,15 +111,18 @@
   }
 
   function photosForDay(dayId) {
-    return journey.photos.filter((photo) => photo.dayId === dayId);
+    const photos = journey.photos.filter((photo) => photo.dayId === dayId);
+    const order = dayById(dayId)?.photoOrder || [];
+    const positions = new Map(order.map((id, index) => [id, index]));
+    return photos.map((photo, index) => ({ photo, index })).sort((a, b) => {
+      const aPosition = positions.has(a.photo.id) ? positions.get(a.photo.id) : order.length + a.index;
+      const bPosition = positions.has(b.photo.id) ? positions.get(b.photo.id) : order.length + b.index;
+      return aPosition - bPosition || a.index - b.index;
+    }).map(({ photo }) => photo);
   }
 
   function orderedPhotos() {
-    const dayOrder = new Map(journey.days.map((day, index) => [day.id, index]));
-    return journey.photos
-      .map((photo, index) => ({ photo, index }))
-      .sort((a, b) => (dayOrder.get(a.photo.dayId) ?? 9999) - (dayOrder.get(b.photo.dayId) ?? 9999) || a.index - b.index)
-      .map(({ photo }) => photo);
+    return journey.days.flatMap((day) => photosForDay(day.id));
   }
 
   function photoAssetUrl(url) {
@@ -811,7 +814,8 @@
     const day = activeDay();
     $("#focus-day").disabled = !dayCoordinates(day).length;
     const photos = photosForDay(day.id);
-    const leadPhoto = photos[0];
+    const selectedLead = day.leadPhotoId ? photoById(day.leadPhotoId) : null;
+    const leadPhoto = selectedLead?.dayId === day.id ? selectedLead : photos[0];
     if (leadPhoto) {
       storyMedia.innerHTML = `
         <button type="button" data-open-photo="${escapeHtml(leadPhoto.id)}" aria-label="Open ${escapeHtml(leadPhoto.caption)} full screen">

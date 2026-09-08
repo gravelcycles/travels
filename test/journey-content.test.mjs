@@ -56,7 +56,7 @@ test("publishes a reviewed second journey with independent photos, escaped page 
   writeJson(path.join(root, `content/photo-manifests/${j.id}.json`), [{ id: `${j.id}-photo`, dayId: j.days[0].id, src: "https://example.com/photo.webp" }]);
   buildSite(root);
   const photos = generated(root, "trip-photos", "JOURNEY_ATLAS_PHOTOS");
-  assert.equal(photos[j.id].length, 1); assert.equal(photos["switzerland-italy-family-2026"].length, 104);
+  assert.equal(photos[j.id].length, 1); assert.equal(photos["switzerland-italy-family-2026"].length, 95);
   assert.match(fs.readFileSync(path.join(root, "dist", j.slug), "utf8"), /Future &lt;trip&gt; &amp; &quot;friends&quot;/);
   assert.ok(generated(root, "journeys", "JOURNEY_ATLAS_DATA").journeys.some(x => x.slug === j.slug));
 });
@@ -83,4 +83,34 @@ test("photo intake uses the chosen journey's calendar, time zone, IDs, and isola
   assert.equal(config.idPrefix, j.id); assert.match(config.manifestPath, /build\/draft-assets\/future-trip\/photos.json$/);
   assert.equal(localDateParts(new Date("2027-12-31T16:00:00Z"), config.timeZone).date, "2028-01-01");
   assert.throws(() => photoImportConfig(root, data), /Select a journey/);
+});
+test("validates daily photo order and lead-photo ownership", () => {
+  const { data } = loadContent(repo);
+  const journey = data.journeys.find(item => item.id === "switzerland-italy-family-2026");
+  const day = journey.days.find(item => item.id === "family-d1");
+  const photos = journey.photos.filter(photo => photo.dayId === day.id).map(photo => photo.id);
+  assert.doesNotThrow(() => validateOverrides({ photos: {}, routes: {}, days: { [day.id]: { photoOrder: photos, leadPhotoId: photos[1] } } }, data));
+  assert.throws(() => validateOverrides({ photos: {}, routes: {}, days: { [day.id]: { photoOrder: [photos[0], photos[0]] } } }, data), /unique photo IDs/);
+  assert.throws(() => validateOverrides({ photos: {}, routes: {}, days: { [day.id]: { leadPhotoId: journey.photos.find(photo => photo.dayId !== day.id).id } } }, data), /another day/);
+});
+test("the family photo review covers every source photo and excludes hidden media from the public build", t => {
+  const root = fixture(t);
+  const manifest = JSON.parse(fs.readFileSync(path.join(root, "content/photo-manifests/switzerland-italy-family-2026.json"), "utf8"));
+  const reviews = JSON.parse(fs.readFileSync(path.join(root, "content/photo-overrides.json"), "utf8"));
+  const dayOverrides = JSON.parse(fs.readFileSync(path.join(root, "content/day-overrides.json"), "utf8"));
+  assert.equal(manifest.length, 104);
+  assert.deepEqual(new Set(Object.keys(reviews)), new Set(manifest.map(photo => photo.id)));
+  for (const review of Object.values(reviews)) {
+    assert.equal(review.reviewed, true);
+    assert.equal(review.locationStatus, "unlocated-no-gps");
+    for (const field of ["caption", "description", "alt", "privacyStatus"]) assert.ok(review[field]);
+  }
+  const ordered = Object.values(dayOverrides).flatMap(day => day.photoOrder || []);
+  assert.equal(ordered.length, 104);
+  assert.equal(new Set(ordered).size, 104);
+  for (const day of Object.values(dayOverrides)) if (day.leadPhotoId) assert.equal(reviews[day.leadPhotoId].hidden, false);
+  buildSite(root);
+  const publicPhotos = generated(root, "trip-photos", "JOURNEY_ATLAS_PHOTOS")["switzerland-italy-family-2026"];
+  assert.equal(publicPhotos.length, 95);
+  assert.ok(!publicPhotos.some(photo => reviews[photo.id].hidden));
 });

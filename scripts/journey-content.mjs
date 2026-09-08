@@ -126,15 +126,34 @@ export function validateOverrides(state, data) {
       const owner = owners[kind].get(id);
       if (!owner) throw new Error(`Unknown ${kind} override ID: ${id}`);
       if (!value || Array.isArray(value) || typeof value !== "object") throw new Error(`Invalid override: ${id}`);
-      const allowed = kind === "days" ? ["date", "title", "text"] : kind === "routes" ? ["controlPoints", "geometry", "smoothed", "smoothing", "routing", "source", "updatedAt"] : ["caption", "description", "alt", "locationLabel", "dayId", "location", "zoom", "hidden"];
+      const allowed = kind === "days" ? ["date", "title", "text", "leadPhotoId", "photoOrder"] : kind === "routes" ? ["controlPoints", "geometry", "smoothed", "smoothing", "routing", "source", "updatedAt"] : ["caption", "description", "alt", "locationLabel", "dayId", "location", "zoom", "hidden", "reviewed", "locationStatus", "privacyStatus"];
       for (const key of Object.keys(value)) if (!allowed.includes(key)) throw new Error(`${id}: unsupported override field ${key}`);
       if (kind === "photos" && value.dayId && !owner.days.some(d => d.id === value.dayId)) throw new Error(`${id}: photo day belongs to another journey or does not exist`);
       if (kind === "routes") for (const key of ["geometry", "controlPoints"]) if (!Array.isArray(value[key]) || value[key].length < 2 || !value[key].every(validCoordinate)) throw new Error(`${id}: invalid ${key}`);
-      for (const key of ["date", "title", "text", "caption", "description", "alt", "locationLabel", "dayId"]) if (value[key] != null && typeof value[key] !== "string") throw new Error(`${id}: invalid ${key}`);
+      for (const key of ["date", "title", "text", "leadPhotoId", "caption", "description", "alt", "locationLabel", "dayId", "locationStatus", "privacyStatus"]) if (value[key] != null && typeof value[key] !== "string") throw new Error(`${id}: invalid ${key}`);
       if (value.title != null && !value.title.trim()) throw new Error(`${id}: title cannot be empty`);
       if (value.location != null && !validCoordinate([value.location.lng, value.location.lat])) throw new Error(`${id}: invalid photo location`);
       if (value.zoom != null && (!Number.isFinite(value.zoom) || value.zoom < 2 || value.zoom > 20)) throw new Error(`${id}: invalid photo zoom`);
       if (value.hidden != null && typeof value.hidden !== "boolean") throw new Error(`${id}: invalid photo visibility`);
+      if (value.reviewed != null && typeof value.reviewed !== "boolean") throw new Error(`${id}: invalid photo review status`);
+      if (value.locationStatus != null && !["unlocated-no-gps", "reviewed-exact"].includes(value.locationStatus)) throw new Error(`${id}: invalid photo location review status`);
+      if (value.privacyStatus != null && !["approved-public", "hidden-private", "hidden-quality"].includes(value.privacyStatus)) throw new Error(`${id}: invalid photo privacy review status`);
+      if (kind === "days" && value.photoOrder != null) {
+        if (!Array.isArray(value.photoOrder) || new Set(value.photoOrder).size !== value.photoOrder.length || value.photoOrder.some(photoId => typeof photoId !== "string")) throw new Error(`${id}: photoOrder must contain unique photo IDs`);
+        for (const photoId of value.photoOrder) {
+          const photoOwner = owners.photos.get(photoId);
+          const photo = photoOwner?.photos.find(item => item.id === photoId);
+          const effectiveDayId = state.photos[photoId]?.dayId || photo?.dayId;
+          if (photoOwner !== owner || effectiveDayId !== id) throw new Error(`${id}: photoOrder contains a photo from another day or journey`);
+        }
+      }
+      if (kind === "days" && value.leadPhotoId != null) {
+        const photoOwner = owners.photos.get(value.leadPhotoId);
+        const photo = photoOwner?.photos.find(item => item.id === value.leadPhotoId);
+        const effectiveDayId = state.photos[value.leadPhotoId]?.dayId || photo?.dayId;
+        if (photoOwner !== owner || effectiveDayId !== id) throw new Error(`${id}: lead photo belongs to another day or journey`);
+        if (value.photoOrder && !value.photoOrder.includes(value.leadPhotoId)) throw new Error(`${id}: lead photo must be present in photoOrder`);
+      }
     }
   }
 }

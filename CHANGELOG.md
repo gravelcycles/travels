@@ -6,6 +6,21 @@ commit after it is known.
 
 ## 8 September 2026
 
+### Reviewed photos, deliberate daily leads, and private GPX intake
+
+Implementation completed locally; commit and deployment references follow.
+
+- Reviewed all 104 family-trip photographs for day, copy, alt text, visibility,
+  privacy, and available location evidence without inventing GPS precision.
+- Kept 95 photos visible and removed eight redundant/low-quality frames plus a
+  private-residence exterior from generated public photo data.
+- Added explicit daily album order and independent lead-photo choices, with
+  accessible Studio controls and consistent story/strip/viewer behavior.
+- Added private, loopback-only GPX review for bicycle and walking legs with
+  order, endpoint, gap, distance, simplification, and provenance checks.
+- Added GPX and content-validation fixtures and passed desktop/390 px Studio and
+  trip-preview QA without browser console errors.
+
 ### Start future trips in Studio
 
 Commit `06f3745`; deployed successfully in Pages run `34271727907` after

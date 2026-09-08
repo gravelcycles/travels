@@ -1,1 +1,160 @@
-{}
+{
+  "family-d1": {
+    "photoOrder": [
+      "family-img-1425",
+      "family-img-1426",
+      "family-img-1434",
+      "family-img-5032",
+      "family-img-2793",
+      "family-img-1463"
+    ],
+    "leadPhotoId": "family-img-1425"
+  },
+  "family-d2": {
+    "photoOrder": [
+      "family-snapseed-camera-capture-20260814-122648-102",
+      "family-img-1469",
+      "family-img-1472",
+      "family-snapseed-camera-capture-20260814-142431-686",
+      "family-img-5036"
+    ],
+    "leadPhotoId": "family-img-1472"
+  },
+  "family-d3": {
+    "photoOrder": [
+      "family-snapseed-camera-capture-20260815-075345-241",
+      "family-snapseed-camera-capture-20260815-080433-893",
+      "family-snapseed-camera-capture-20260815-082220-931",
+      "family-snapseed-camera-capture-20260815-082238-670",
+      "family-img-5040",
+      "family-img-5044",
+      "family-snapseed-camera-capture-20260815-155638-313",
+      "family-img-1488",
+      "family-snapseed-camera-capture-20260815-161546-091",
+      "family-snapseed-camera-capture-20260815-161856-649",
+      "family-snapseed-camera-capture-20260815-162103-557",
+      "family-snapseed-camera-capture-20260815-162408-750",
+      "family-img-1496",
+      "family-img-5047",
+      "family-img-5048"
+    ],
+    "leadPhotoId": "family-img-5047"
+  },
+  "family-d4": {
+    "photoOrder": [
+      "family-img-2834",
+      "family-img-2836",
+      "family-img-1504",
+      "family-img-5050",
+      "family-img-5052",
+      "family-img-5055",
+      "family-img-5056",
+      "family-img-5063",
+      "family-img-5069",
+      "family-img-5071",
+      "family-img-5075",
+      "family-img-5076"
+    ],
+    "leadPhotoId": "family-img-5052"
+  },
+  "family-d5": {
+    "photoOrder": [
+      "family-img-1520"
+    ],
+    "leadPhotoId": "family-img-1520"
+  },
+  "family-d6": {
+    "photoOrder": [
+      "family-snapseed-camera-capture-20260818-081450-402",
+      "family-img-1525",
+      "family-snapseed-camera-capture-20260818-104535-118",
+      "family-img-5081",
+      "family-snapseed-camera-capture-20260818-105419-043",
+      "family-snapseed-camera-capture-20260818-105455-450",
+      "family-img-2870",
+      "family-snapseed-camera-capture-20260818-110323-609",
+      "family-img-2880",
+      "family-img-2881",
+      "family-snapseed-camera-capture-20260818-111028-981",
+      "family-img-2883",
+      "family-img-1559",
+      "family-img-2886",
+      "family-img-2887",
+      "family-snapseed-camera-capture-20260818-162911-897",
+      "family-snapseed-camera-capture-20260818-162931-975",
+      "family-img-5098",
+      "family-img-5099",
+      "family-img-1584",
+      "family-img-1589",
+      "family-img-5102"
+    ],
+    "leadPhotoId": "family-img-2880"
+  },
+  "family-d7": {
+    "photoOrder": [
+      "family-img-1596",
+      "family-img-1598",
+      "family-img-1605",
+      "family-img-1606",
+      "family-snapseed-camera-capture-20260819-203544-659",
+      "family-img-1607",
+      "family-img-1611",
+      "family-snapseed-camera-capture-20260819-201947-521",
+      "family-snapseed-camera-capture-20260819-202000-680",
+      "family-snapseed-camera-capture-20260819-203738-977",
+      "family-snapseed-camera-capture-20260819-203744-788",
+      "family-snapseed-camera-capture-20260819-211851-678",
+      "family-snapseed-camera-capture-20260819-211902-057"
+    ],
+    "leadPhotoId": "family-img-1611"
+  },
+  "family-d8": {
+    "photoOrder": [
+      "family-img-1613"
+    ]
+  },
+  "family-d10": {
+    "photoOrder": [
+      "family-snapseed-camera-capture-20260822-140341-832",
+      "family-img-5119",
+      "family-img-5123",
+      "family-img-5127",
+      "family-img-5130",
+      "family-img-5134",
+      "family-snapseed-camera-capture-20260822-151053-865",
+      "family-img-5136",
+      "family-snapseed-camera-capture-20260822-154412-930",
+      "family-snapseed-camera-capture-20260822-174404-292",
+      "family-snapseed-camera-capture-20260822-175328-988"
+    ],
+    "leadPhotoId": "family-img-5136"
+  },
+  "family-d12": {
+    "photoOrder": [
+      "family-snapseed-camera-capture-20260824-114638-775",
+      "family-snapseed-camera-capture-20260824-114643-710",
+      "family-img-5149",
+      "family-img-5153",
+      "family-img-5157",
+      "family-img-5158",
+      "family-img-5159",
+      "family-img-2987",
+      "family-img-1750",
+      "family-img-1754",
+      "family-img-1756",
+      "family-img-1759",
+      "family-snapseed-camera-capture-20260824-150714-906",
+      "family-img-1761",
+      "family-snapseed-camera-capture-20260824-153232-772",
+      "family-img-1768",
+      "family-img-5165"
+    ],
+    "leadPhotoId": "family-img-1754"
+  },
+  "family-d13": {
+    "photoOrder": [
+      "family-snapseed-camera-capture-20260825-111042-909"
+    ],
+    "leadPhotoId": "family-snapseed-camera-capture-20260825-111042-909"
+  }
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Journey Atlas test fixture" xmlns="http://www.topografix.com/GPX/1/1">
+  <trk>
+    <name>Fixture bicycle day</name>
+    <trkseg>
+      <trkpt lat="47.050200" lon="8.309300"><ele>435</ele></trkpt>
+      <trkpt lat="47.049900" lon="8.310000"><ele>436</ele></trkpt>
+      <trkpt lat="47.049900" lon="8.310000"><ele>436</ele></trkpt>
+      <trkpt lat="47.049400" lon="8.311000"><ele>438</ele></trkpt>
+      <trkpt lat="47.048700" lon="8.311200"><ele>439</ele></trkpt>
+      <trkpt lat="47.048200" lon="8.312100"><ele>440</ele></trkpt>
+    </trkseg>
+    <trkseg>
+      <trkpt lat="47.048100" lon="8.312200"><ele>440</ele></trkpt>
+      <trkpt lat="47.047600" lon="8.313200"><ele>441</ele></trkpt>
+      <trkpt lat="47.047000" lon="8.314000"><ele>442</ele></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

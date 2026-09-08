@@ -6,7 +6,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Atlas Studio · Journey Atlas</title>
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
-    <link rel="stylesheet" href="/studio.css?v=20260907-5" />
+    <link rel="stylesheet" href="/studio.css?v=20260908-1" />
   </head>
   <body>
     <header class="studio-header">
@@ -81,6 +81,15 @@
           <label for="photo-description">What's happening in this photo?</label>
           <textarea id="photo-description" name="description" rows="5" placeholder="A few plain-language notes are enough; this appears beside the photo."></textarea>
           <label class="checkbox"><input id="photo-hidden" name="hidden" type="checkbox" /> Hide from the public atlas</label>
+          <section class="photo-order-panel" aria-labelledby="photo-order-heading">
+            <strong id="photo-order-heading">Daily photo placement</strong>
+            <p id="photo-order-status" role="status">Choose a photo to set its place in this day's album.</p>
+            <div>
+              <button class="secondary" id="photo-move-earlier" type="button">Move earlier</button>
+              <button class="secondary" id="photo-move-later" type="button">Move later</button>
+              <button class="secondary" id="photo-make-lead" type="button">Use as lead photo</button>
+            </div>
+          </section>
           <p class="editor-note">Changes remain local until they are committed and the site is deployed. Private brainstorming belongs outside the description field.</p>
         </form>
 
@@ -96,8 +105,18 @@
               <button class="secondary" id="accept-route-proposal" type="button" disabled>Use proposed route</button>
               <button class="secondary" id="accept-manual-route" type="button">Use anchor guide as fallback</button>
             </div>
-            <p id="route-proposal-status" role="status">No proposal yet. The saved route remains active.</p>
           </section>
+          <section class="route-gpx-panel" aria-labelledby="route-gpx-heading">
+            <strong id="route-gpx-heading">Traveler GPX track</strong>
+            <p>For bicycle and walking legs. The original file stays private; only reviewed coordinates and provenance are saved.</p>
+            <label for="route-gpx-file">Private GPX file</label>
+            <input id="route-gpx-file" type="file" accept=".gpx,application/gpx+xml,application/xml,text/xml" />
+            <div>
+              <button class="secondary" id="import-route-gpx" type="button">Review GPX track</button>
+              <button class="secondary" id="accept-route-gpx" type="button" disabled>Use GPX track</button>
+            </div>
+          </section>
+          <p id="route-proposal-status" role="status">No proposal yet. The saved route remains active.</p>
           <div class="route-comparison" aria-label="Route comparison legend">
             <span><i class="original"></i>Original</span>
             <span><i class="saved"></i>Saved</span>
@@ -167,6 +186,6 @@
     <script src="/api/preview-assets/route-geometry.js"></script>
     <script src="/api/preview-assets/trip-photos.js"></script>
     <script src="/api/preview-assets/content-overrides.js"></script>
-    <script src="/studio.js?v=20260907-10"></script>
+    <script src="/studio.js?v=20260908-1"></script>
   </body>
 </html>

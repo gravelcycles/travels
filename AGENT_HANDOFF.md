@@ -30,7 +30,7 @@ and `npm test`; Pages CI also does this. Local-only draft creation/save/preview
 was checked with a four-day 2027–2028 fixture; it is removed after QA.
 
 Prioritize T19 (trip/date/place/leg editing) next for the user's future-trip goal.
-T10 remains open. T20–T22 record related fixes; T23–T25 track inherited GPS
+T10 is now complete. T20–T22 record related fixes; T23–T25 track inherited GPS
 clearing, stale asynchronous proposals, and naive EXIF timestamp handling.
 Validation: 12 tests passed in the working tree and a separate release copy that
 uses the committed route overrides. Studio create/edit/save/reload, draft preview,
@@ -42,6 +42,29 @@ comparison confirmed all five original stories/places/legs were preserved.
 The pre-existing route override is user work and must be preserved separately.
 `UX_HANDOFF.md` appeared during this pass from other work; it is not part of this
 implementation or commit.
+
+## Photo/GPX pass · 8 September 2026
+
+T10, T12, and T13 are complete locally. Studio can review a private GPX for a
+bicycle/walking leg without retaining the upload, validates direction,
+endpoints, gaps, and distance, simplifies in meters, and saves only explicitly
+accepted `[lng, lat]` geometry with non-identifying provenance. A bicycle GPX
+fixture covers duplicates, multiple sections, simplification, reversed order,
+large gaps, and private-source handling.
+
+All 104 family photos now have reviewed day assignments, captions,
+descriptions, alt text, visibility, privacy, and an explicit no-GPS location
+status. Ninety-five remain visible; eight redundant/low-quality frames and one
+private-residence exterior are excluded from generated public photo data. The
+source manifest and review records still account for all 104.
+
+Daily photo order is explicit in day overrides, with ten deliberate leads.
+Studio exposes keyboard-accessible earlier/later/lead buttons. A lead is
+independent of chronological album order: local QA confirmed Day 3's last
+visible photo as the story lead and `PHOTO 14 OF 14` when opened. Desktop and
+390 px Studio/preview checks passed without browser warnings or errors. The
+pre-existing `family-luzern-kehrsiten-bike` route override remains user work and
+must not be included in this pass's commit or deployment.
 
 ## Current pass
 
@@ -205,8 +228,8 @@ No remaining P0 content corrections are recorded.
 
 ## Next
 
-T19 is the next priority for future-trip planning. T10 (private-by-default GPX
-import for bicycle/walking segments) is also still open.
+T19 is the next priority for future-trip planning. T23–T25 remain the next
+confirmed Studio/photo-import bugs after that.
 Continue with the independent, acceptance-scoped work items in `TODO.md` and
 update the handoff and changelog whenever an item lands.
 

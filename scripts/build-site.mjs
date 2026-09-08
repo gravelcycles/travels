@@ -32,13 +32,14 @@ export function buildSite(root) {
   if (!published.some(j => j.id === data.defaultJourneyId)) throw new Error("Default journey must be published");
   const routeIds = new Set(published.flatMap(j => j.segments.map(s => s.id)));
   const dayIds = new Set(published.flatMap(j => j.days.map(d => d.id)));
-  const photoIds = new Set(published.flatMap(j => j.photos.map(p => p.id)));
+  const visiblePhotos = new Map(published.map(j => [j.id, j.photos.filter(photo => !overrides.photos[photo.id]?.hidden)]));
+  const photoIds = new Set([...visiblePhotos.values()].flat().map(p => p.id));
   const select = (obj, ids) => Object.fromEntries(Object.entries(obj).filter(([id]) => ids.has(id)).sort(([a], [b]) => a.localeCompare(b)));
   const publicData = { ...data, journeys: published.map(({ photoImport, timeZone, ...j }) => ({ ...j, photos: [] })) };
   const outputs = new Map([
     ["assets/journeys.js", script("JOURNEY_ATLAS_DATA", publicData)],
     ["assets/route-geometry.js", script("JOURNEY_ATLAS_ROUTE_GEOMETRY", select(routes, routeIds))],
-    ["assets/trip-photos.js", script("JOURNEY_ATLAS_PHOTOS", Object.fromEntries(published.map(j => [j.id, j.photos])))],
+    ["assets/trip-photos.js", script("JOURNEY_ATLAS_PHOTOS", Object.fromEntries(published.map(j => [j.id, visiblePhotos.get(j.id)])))],
     ["assets/content-overrides.js", script("JOURNEY_ATLAS_CONTENT_OVERRIDES", { photos: select(overrides.photos, photoIds), routes: select(overrides.routes, routeIds), days: select(overrides.days, dayIds) })]
   ]);
   const versions = new Map();

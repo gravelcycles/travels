@@ -142,8 +142,8 @@ cars, pedestrian for walks, and bicycle for bike days. Record the service,
 profile, retrieval date, waypoints, and any manual correction. Do not route a
 bus using the generic straight-line fallback.
 
-When the traveler has a GPX file, prefer it for bicycle/walking geometry. A GPX
-importer should:
+When the traveler has a GPX file, prefer it for bicycle/walking geometry. Atlas
+Studio's **Traveler GPX track** importer now:
 
 - read tracks and route points in their recorded order;
 - convert them to `[lng, lat]` GeoJSON coordinates;
@@ -152,6 +152,13 @@ importer should:
 - report distance and any large gaps instead of joining them silently;
 - keep the original GPX private unless the user explicitly approves it; and
 - write reviewed static geometry plus source/provenance notes.
+
+The loopback service rejects reversed tracks, endpoints that do not align
+safely with the selected leg, and gaps above the review threshold. It reports
+recorded distance from unsimplified points, simplifies each recorded section in
+meters, and requires explicit acceptance before the saved route changes. Only
+the reviewed `[lng, lat]` line and non-identifying private-source provenance are
+saved; the uploaded filename and original GPX are not persisted.
 
 GPX elevation can be retained for a future elevation profile, but it should not
 be mixed into the two-dimensional map coordinate array.

@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import { createJourney } from "./create-journey.mjs";
 import { loadContent, validateOverrides } from "./journey-content.mjs";
 import { renderJourneyPage, studioAsset, readOverrides } from "./build-site.mjs";
+import { proposeGpxRoute } from "./gpx-route-service.mjs";
 import { proposeStudioRoute } from "./studio-route-service.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -177,6 +178,23 @@ const server = http.createServer((request, response) => {
     request.on("end", () => {
       try {
         const proposal = proposeStudioRoute({ ...JSON.parse(body), repoRoot });
+        send(response, 200, JSON.stringify({ ok: true, proposal }), "application/json; charset=utf-8");
+      } catch (error) {
+        send(response, 422, JSON.stringify({ ok: false, error: error.message, unsafe: Boolean(error.unsafe), warnings: error.warnings || [] }), "application/json; charset=utf-8");
+      }
+    });
+    return;
+  }
+  if (request.method === "POST" && url.pathname === "/api/gpx-proposal") {
+    let body = "";
+    request.setEncoding("utf8");
+    request.on("data", (chunk) => {
+      body += chunk;
+      if (body.length > 20_000_000) request.destroy();
+    });
+    request.on("end", () => {
+      try {
+        const proposal = proposeGpxRoute({ ...JSON.parse(body), repoRoot });
         send(response, 200, JSON.stringify({ ok: true, proposal }), "application/json; charset=utf-8");
       } catch (error) {
         send(response, 422, JSON.stringify({ ok: false, error: error.message, unsafe: Boolean(error.unsafe), warnings: error.warnings || [] }), "application/json; charset=utf-8");
