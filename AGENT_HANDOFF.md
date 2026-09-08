@@ -27,8 +27,9 @@ existing mode grammar, accumulated routes, a moving marker, reviewed lead
 photos, and location/zoom pauses for any future map-pinned photo. Controls cover
 play/pause, 0.5×/1×/2× speed, day stepping/scrubbing, keyboard operation,
 reduced motion, day exploration, and replay completion. Focused route slicing
-and timeline tests bring the suite to 21 passing tests. Deployment details are
-still to be recorded after release.
+and timeline tests bring the suite to 21 passing tests. Local commit `edd1cc5`
+contains the implementation. It has not been pushed or deployed because a
+direct production-branch push requires explicit user approval.
 
 ## New-trip pass · 8 September 2026
 
