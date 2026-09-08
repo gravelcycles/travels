@@ -91,6 +91,12 @@ button, select { cursor: pointer; }
 .secondary { margin-top: 9px; border: 1px solid #9eadaa; background: #fff; padding: 8px 10px; font-size: .72rem; font-weight: 800; }
 .checkbox { display: flex !important; align-items: center; gap: 8px; text-transform: none !important; letter-spacing: 0 !important; font-size: .78rem !important; }
 .checkbox input { width: auto; }
+.photo-order-panel, .route-gpx-panel { margin-top: 18px; padding: 14px; border: 1px solid var(--line); background: #f1f4ef; }
+.photo-order-panel p, .route-gpx-panel p { margin: 7px 0 10px; color: var(--ink-soft); font-size: .76rem; line-height: 1.45; }
+.photo-order-panel > div, .route-gpx-panel > div { display: flex; flex-wrap: wrap; gap: 7px; }
+.photo-order-panel .secondary, .route-gpx-panel .secondary { margin: 0; }
+.route-gpx-panel label { margin-top: 10px; }
+.route-gpx-panel input[type="file"] { margin: 0 0 10px; padding: 7px; font-size: .72rem; }
 .editor-note { margin-top: 19px; padding: 12px; border-left: 4px solid var(--selected); background: #e7ece8; color: var(--muted); font-size: .73rem; line-height: 1.5; }
 .eyebrow { color: var(--selected); font-size: .68rem; font-weight: 850; letter-spacing: .1em; }
 #route-editor h2, #day-form h2 { margin: 8px 0 6px; font: 700 2rem/1 Georgia, "Times New Roman", serif; }

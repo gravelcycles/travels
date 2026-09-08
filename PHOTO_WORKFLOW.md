@@ -39,9 +39,13 @@ derivatives to the ignored `build/trip-photos-v1/` directory. The current run:
 - generated `dist/assets/trip-photos.js`, including embedded 32 px blurred
   previews and pinned GitHub Release URLs.
 
-Captions and alt text are useful automatic first passes, not final editorial
-copy. Review day assignment, lead-photo order, captions, and privacy before
-publishing.
+All 104 photographs received an editorial review on 8 September 2026. Their
+date-inferred day assignments were retained, and each now has a concise caption,
+plain-language description, alt text, visibility decision, and review status.
+Because none contains GPS, every photo remains explicitly marked as reviewed
+but unlocated rather than receiving an inferred viewpoint. Ninety-five photos
+remain visible; eight near-duplicate or low-quality frames and one private-
+residence exterior are hidden from generated public photo data.
 
 ## Other journeys
 
@@ -77,7 +81,9 @@ For each photo:
 4. Write a short caption and a separate plain-language account of what is
    happening. Add useful accessibility alt text.
 5. Hide any photo that should not appear publicly.
-6. Choose **Save locally**. Review the JSON diff before committing.
+6. Use **Move earlier**, **Move later**, and **Use as lead photo** to establish
+   an explicit daily album order and a separate representative lead.
+7. Choose **Save locally**. Review the JSON diff before committing.
 
 Saves write `content/photo-overrides.json` and rebuild the static
 `dist/assets/content-overrides.js` consumed by the atlas. They do not modify the
