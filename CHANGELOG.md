@@ -8,6 +8,8 @@ commit after it is known.
 
 ### Safe mode-aware route proposals in Studio
 
+Commit `772d051`; deployed successfully in Pages run `34195603573`.
+
 - Added local-network route proposals for rail, ferry, road, walking, and
   bicycle modes while keeping human control points as immutable routing anchors.
 - Separated original, last-saved, manual anchor-guide, and proposed lines so an
