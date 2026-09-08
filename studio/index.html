@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Atlas Studio · Lakes, Rails &amp; Rain</title>
+    <title>Atlas Studio · Journey Atlas</title>
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
     <link rel="stylesheet" href="/studio.css?v=20260907-5" />
   </head>
@@ -21,7 +21,7 @@
       </nav>
       <div class="studio-actions">
         <span id="save-status" role="status">Loading…</span>
-        <a href="/dist/switzerland-italy.html?photoSource=local" target="_blank" rel="noreferrer">Preview atlas</a>
+        <a id="preview-journey" href="/preview/switzerland-italy.html?photoSource=local" target="_blank" rel="noreferrer">Preview atlas</a>
         <button id="save-all" type="button">Save locally</button>
       </div>
     </header>
@@ -31,6 +31,8 @@
         <div class="studio-journey-picker">
           <label for="studio-journey">Journey</label>
           <select id="studio-journey"></select>
+          <button id="new-trip" type="button">+ New trip</button>
+          <p id="journey-draft-note" class="editor-note" hidden>Local draft · Start with day titles and notes. Destinations and routes can come later.</p>
         </div>
         <section class="photo-browser" data-panel="photos">
           <label for="photo-day-filter">Photos from</label>
@@ -139,11 +141,32 @@
       </aside>
     </main>
 
+    <dialog id="new-trip-dialog" aria-labelledby="new-trip-heading">
+      <form id="new-trip-form">
+        <div class="new-trip-heading"><h2 id="new-trip-heading">Where to next?</h2><button id="cancel-new-trip" type="button" aria-label="Close new trip">×</button></div>
+        <p>A name and dates are enough to start. We'll create a day for every date, ready for your plans.</p>
+        <label for="new-trip-title">Trip name</label>
+        <input id="new-trip-title" name="title" required maxlength="160" placeholder="e.g. Autumn in Japan" />
+        <div class="new-trip-dates">
+          <label>Start date<input id="new-trip-start" name="startDate" type="date" required /></label>
+          <label>End date<input id="new-trip-end" name="endDate" type="date" required /></label>
+        </div>
+        <details><summary>Choose the future page address</summary>
+          <label for="new-trip-slug">URL name (optional)</label>
+          <input id="new-trip-slug" name="slug" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="autumn-in-japan" />
+          <p>The address stays the same when you edit the trip title.</p>
+        </details>
+        <p class="editor-note">Saved as a local draft. It will appear in the public atlas only after it has been reviewed and published.</p>
+        <p id="new-trip-error" role="alert"></p>
+        <button id="create-trip" type="submit">Create trip</button>
+      </form>
+    </dialog>
+
     <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
-    <script src="/dist/assets/journeys.js"></script>
-    <script src="/dist/assets/route-geometry.js"></script>
-    <script src="/dist/assets/trip-photos.js"></script>
-    <script src="/dist/assets/content-overrides.js"></script>
+    <script src="/api/preview-assets/journeys.js"></script>
+    <script src="/api/preview-assets/route-geometry.js"></script>
+    <script src="/api/preview-assets/trip-photos.js"></script>
+    <script src="/api/preview-assets/content-overrides.js"></script>
     <script src="/studio.js?v=20260907-10"></script>
   </body>
 </html>

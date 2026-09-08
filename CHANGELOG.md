@@ -6,6 +6,21 @@ commit after it is known.
 
 ## 8 September 2026
 
+### Start future trips in Studio
+
+- Added **+ New trip** with name/date intake, complete calendars, stable URLs,
+  local drafts, editable day plans, and selected-trip previews.
+- Moved journey content into reusable source JSON with independent photo and
+  route outputs, a shared page template, one deterministic build, validation,
+  automatic asset cache hashes, and CI tests/builds before Pages publication.
+- Kept draft content and edits out of Git/public bundles; photo import now selects
+  a journey, preserves successful output on failure, and holds GPS for review.
+- Fixed stale route/photo editors, wrong-trip previews and day fields, and map
+  loading clearing unsaved status. Added no-destination/no-cover states and
+  placed mobile day editing before the map with preview/save feedback available.
+- Added regression coverage for year/leap-day boundaries, draft exclusion,
+  independent photo albums, broken IDs/ownership, and deterministic generation.
+
 ### Safe mode-aware route proposals in Studio
 
 Commit `772d051`; deployed successfully in Pages run `34195603573`.

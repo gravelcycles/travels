@@ -39,8 +39,50 @@ Keep these concepts separate:
 - day `placeId`: the overnight/base place;
 - day `destinationId`: the meaningful destination used in the story label.
 
-The current source data lives in `dist/assets/journeys.js`. The root catalog
-and stable trip-detail URLs are selected from each journey's `kind` and `slug`.
+Journey sources live in `content/journeys/<journey-id>.json`. The root catalog
+and stable trip-detail URLs are generated from each journey's `kind`, `published`,
+and `slug`. `dist/assets/journeys.js` is generated; do not edit it by hand.
+
+## Start small, as a local draft
+
+Studio's **+ New trip** needs only a title and start/end dates. It creates every
+calendar day (including year crossings and leap days), opens Day copy, and
+supports a local preview before places or routes are known. Use `calendarDate`
+(`YYYY-MM-DD`) for machine date matching; `date` is only the editable display
+label. Set an IANA `timeZone` for photo intake. Never use a fake coordinate for
+an unknown destination.
+
+The agent can do the same with `npm run journey:new -- --title "Trip name"
+--slug stable-url --start YYYY-MM-DD --end YYYY-MM-DD --timezone Area/City`.
+Trip title/date-range changes, place creation, and leg creation after this
+initial scaffold remain agent-owned source edits (T19).
+
+Source/output structure:
+
+- `content/atlas.json`: default journey and existing catalog order.
+- `content/journeys/<id>.json`: reviewed journeys; IDs and page slugs stay stable.
+- `content/drafts/<id>.json`: ignored local drafts (`published: false`).
+- `content/templates/journey.html`: shared detail-page template.
+- `content/route-geometry/<id>.json`: reviewed generated network geometry.
+- `content/photo-manifests/<id>.json`: reviewed derivative metadata per journey.
+- `build/draft-assets/<id>/`: ignored draft routes, photos, and route sources.
+- `build/studio-draft-overrides.json`: ignored draft day/photo/route edits.
+- `content/*-overrides.json`: published-journey editorial overrides.
+
+`npm run build` validates IDs, route/day/photo ownership, geometry coordinates,
+calendar ranges, and overrides before generating public pages and bundles.
+Published photos are keyed by journey ID in `JOURNEY_ATLAS_PHOTOS`; changing the
+default journey cannot transfer an album. Builds are deterministic and asset
+URLs use content hashes. Pages CI runs `npm test` and `npm run build`.
+
+To publish a reviewed draft, the agent moves its source to `content/journeys/`
+and sets `published: true`. Move any `build/draft-assets/<id>/routes.json`,
+`photos.json`, and `route-sources.json` into the matching public source folders;
+move that journey's overrides from the ignored draft file to the public override
+JSON sources. Review photo Release availability, then run the build/tests and
+normal publish checks. Merely creating or editing a draft never publishes it.
+Drafts are local files, so they need a private backup if they must survive loss
+of the workspace.
 
 ## Route geometry priority
 
@@ -77,7 +119,7 @@ npm run routes:build -- --journey switzerland-italy-family-2026
 ```
 
 The builder routes through the segment's endpoints and ordered `stops`/`via`
-points, updates only IDs named by that journey's manifest, sorts the shared
+points, updates only IDs named by that journey's manifest, writes journey-specific geometry and builds shared
 static output deterministically, and warns about disconnected or near-tied
 network components. If an input is unavailable or routing fails, the last
 reviewed geometry is retained. `--strict` treats any warning as a failed build

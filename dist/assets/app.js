@@ -9,9 +9,7 @@
       const override = contentOverrides.routes?.[segment.id];
       if (override?.geometry?.length > 1) segment.geometry = override.geometry;
     });
-    const basePhotos = item.id === data.defaultJourneyId && Array.isArray(window.JOURNEY_ATLAS_TRIP_PHOTOS)
-      ? window.JOURNEY_ATLAS_TRIP_PHOTOS
-      : (item.photos || []);
+    const basePhotos = window.JOURNEY_ATLAS_PHOTOS?.[item.id] || item.photos || [];
     item.photos = basePhotos
       .map((photo) => {
         const override = contentOverrides.photos?.[photo.id] || {};
@@ -127,9 +125,8 @@
   function photoAssetUrl(url) {
     if (!url) return "";
     const useLocalAssets = new URLSearchParams(window.location.search).get("photoSource") === "local";
-    if (useLocalAssets && url.includes("/releases/download/trip-photos-v1/")) {
-      return `../build/trip-photos-v1/${decodeURIComponent(url.split("/").pop())}`;
-    }
+    const release = url.match(/^https:\/\/github\.com\/gravelcycles\/travels\/releases\/download\/([a-z0-9-]+)\/([^/]+\.webp)$/);
+    if (useLocalAssets && release) return `../build/${release[1]}/${release[2]}`;
     return url;
   }
 
@@ -282,7 +279,7 @@
   function routeLabel(day) {
     const segments = segmentsForDay(day);
     const place = destinationForDay(day);
-    if (!segments.length) return `${place.name} · stayed here`;
+    if (!segments.length) return place ? `${place.name} · ${journey.status === "planned" ? "planned stay" : "stayed here"}` : "Destination to plan";
     const from = placeById(segments[0].from);
     const to = placeById(segments[segments.length - 1].to);
     if (from.id === to.id) return `${place.name} · day trip`;
@@ -291,7 +288,7 @@
 
   function modeLabel(day) {
     const modes = modesForDay(day);
-    return modes.length ? modes.map((mode) => labels[mode]).join(" + ") : "In one place";
+    return modes.length ? modes.map((mode) => labels[mode]).join(" + ") : (journey.status === "planned" ? "To plan" : "In one place");
   }
 
   function dayForSegment(segmentId) {
@@ -725,6 +722,7 @@
     if (!mainMapReady) return;
     const bounds = boundsFromCoordinates(journeyCoordinates());
     if (bounds) mainMap.fitBounds(bounds, { padding: mapPadding(76), maxZoom: 8, duration });
+    else mainMap.easeTo({ center: [0, 20], zoom: 1.5, duration: 0 });
   }
 
   function fitRoute() {
@@ -758,9 +756,11 @@
     $("#day-count").textContent = `${journey.days.length} days`;
     $("#photo-count").textContent = journey.photos.length;
     $("#show-all-photos").disabled = journey.photos.length === 0;
+    $("#focus-day").disabled = !dayCoordinates(activeDay()).length;
+    $("#fit-route").disabled = !journeyCoordinates().length;
     $("#journey-summary").innerHTML = `
       <div><strong>${escapeHtml(journey.dates)}</strong><span>TRAVEL DATES</span></div>
-      <div><strong>${formatDistance(totalDistance())}</strong><span>ROUTE LENGTH</span></div>
+      <div><strong>${journey.status === "planned" && !journey.segments.length ? "To plan" : formatDistance(totalDistance())}</strong><span>ROUTE LENGTH</span></div>
       <div><strong>${journey.days.length}</strong><span>DAYS</span></div>
     `;
   }
@@ -774,7 +774,7 @@
     $("#map-legend").innerHTML = modes.map((mode) => {
       const cue = modeStyles[mode]?.cue || "route";
       return `<span title="${escapeHtml(`${labels[mode]} · ${cue}`)}" aria-label="${escapeHtml(`${labels[mode]}, ${cue} line`)}">${lineSwatch(mode)}${labels[mode]}</span>`;
-    }).join("") + '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>';
+    }).join("") + (modes.includes("train") ? '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>' : '');
   }
 
   function renderJourneyPicker() {
@@ -809,6 +809,7 @@
 
   function renderStory() {
     const day = activeDay();
+    $("#focus-day").disabled = !dayCoordinates(day).length;
     const photos = photosForDay(day.id);
     const leadPhoto = photos[0];
     if (leadPhoto) {
@@ -823,7 +824,7 @@
       storyMedia.innerHTML = `
         <div class="story-empty" aria-label="No photos for this day">
           <span>DAY ${String(day.number).padStart(2, "0")}</span>
-          <strong>${escapeHtml(destinationForDay(day).name)}</strong>
+          <strong>${escapeHtml((destinationForDay(day)?.name || "Destination to plan"))}</strong>
           <small>No photographs added yet</small>
         </div>
       `;
@@ -837,8 +838,8 @@
       <h2>${escapeHtml(day.title)}</h2>
       <p class="place-line">${escapeHtml(routeLabel(day))}</p>
       <div class="detail-stats">
-        <div><strong>${distance ? formatDistance(distance) : escapeHtml(destinationForDay(day).name)}</strong><span>${distance ? "DISTANCE" : "WHERE"}</span></div>
-        <div><strong>${duration ? escapeHtml(duration) : "No travel"}</strong><span>${modes.length ? escapeHtml(modeLabel(day).toUpperCase()) : "DAY TYPE"}</span></div>
+        <div><strong>${distance ? formatDistance(distance) : escapeHtml((destinationForDay(day)?.name || "Destination to plan"))}</strong><span>${distance ? "DISTANCE" : "WHERE"}</span></div>
+        <div><strong>${duration ? escapeHtml(duration) : (journey.status === "planned" ? "To plan" : "No travel")}</strong><span>${modes.length ? escapeHtml(modeLabel(day).toUpperCase()) : "DAY TYPE"}</span></div>
       </div>
       ${renderRouteLegs(day)}
       <h3>The day</h3>

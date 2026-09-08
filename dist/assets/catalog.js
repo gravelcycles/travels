@@ -26,7 +26,7 @@
   catalog.innerHTML = realJourneys.map((journey) => `
     <a class="journey-card" href="./${escapeHtml(journey.slug)}">
       <div class="journey-card-media">
-        <img src="${escapeHtml(journey.cover)}" alt="" loading="lazy" />
+        ${journey.cover ? `<img src="${escapeHtml(journey.cover)}" alt="" loading="lazy" />` : '<div class="journey-card-placeholder"><span>A JOURNEY TAKING SHAPE</span><strong>Places to go.<br>Days to make your own.</strong></div>'}
       </div>
       <div class="journey-card-copy">
         <small>${escapeHtml(journey.kicker)}</small>
@@ -35,7 +35,7 @@
         <div class="journey-card-meta">
           <span>${escapeHtml(journey.dates)}</span>
           <span>${journey.days.length} days</span>
-          <span>${Math.round(routeDistance(journey))} km</span>
+          <span>${journey.status === "planned" && !journey.segments.length ? "Route to plan" : `${Math.round(routeDistance(journey))} km`}</span>
         </div>
       </div>
     </a>

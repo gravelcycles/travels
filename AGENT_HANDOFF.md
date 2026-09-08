@@ -16,6 +16,28 @@ workflow change before committing. Keep the newest entry first.
   deployed result. The user supplies facts, files, corrections, and judgments.
 - Read `JOURNEY_WORKFLOW.md` before adding a journey or changing route tooling.
 
+## New-trip pass · 8 September 2026
+
+T11 now provides a source/build pipeline and Studio **+ New trip**. Read the new
+source structure and draft promotion instructions in `JOURNEY_WORKFLOW.md`.
+Never hand-edit generated journey/photo/geometry bundles. Run `npm run build`
+and `npm test`; Pages CI also does this. Local-only draft creation/save/preview
+was checked with a four-day 2027–2028 fixture; it is removed after QA.
+
+Prioritize T19 (trip/date/place/leg editing) next for the user's future-trip goal.
+T10 remains open. T20–T22 record related fixes; T23–T25 track inherited GPS
+clearing, stale asynchronous proposals, and naive EXIF timestamp handling.
+Validation: 12 tests passed in the working tree and a separate release copy that
+uses the committed route overrides. Studio create/edit/save/reload, draft preview,
+empty routes, and 390 px new-trip/day-edit views passed. The existing 14-day,
+104-photo trip, five-leg Day 10, catalog, and four demo choices (including three
+Alpine demo photos) passed browser checks without console errors. A semantic
+comparison confirmed all five original stories/places/legs were preserved.
+
+The pre-existing route override is user work and must be preserved separately.
+`UX_HANDOFF.md` appeared during this pass from other work; it is not part of this
+implementation or commit.
+
 ## Current pass
 
 T03 is complete locally: `/travels/` is now the real-journey catalog and the
@@ -178,8 +200,8 @@ No remaining P0 content corrections are recorded.
 
 ## Next
 
-T10 is the next unfinished TODO item: add private-by-default GPX import for
-bicycle and walking segments.
+T19 is the next priority for future-trip planning. T10 (private-by-default GPX
+import for bicycle/walking segments) is also still open.
 Continue with the independent, acceptance-scoped work items in `TODO.md` and
 update the handoff and changelog whenever an item lands.
 

@@ -68,11 +68,13 @@ commands.
       simplify without losing meaningful turns, and save `[lng, lat]` geometry.
       Keep source GPX private by default and record provenance. Add fixtures and
       visual QA for a bicycle day.
-- [ ] **T11 — Make new-journey creation repeatable.** Implement the source-file
+- [x] **T11 — Make new-journey creation repeatable.** Implement the source-file
       and generation structure described in `JOURNEY_WORKFLOW.md`, including
       stable slugs, catalog metadata, per-trip pages, journey-specific route and
       photo outputs, validations for duplicate/broken IDs, and one agent command
-      that builds all public assets.
+      that builds all public assets. Completed with Studio New trip, private local
+      drafts, complete ISO-date calendars, reusable page generation, separate
+      journey photo/route sources, and `npm run build`.
 
 ## P2 · Studio and editorial workflow
 
@@ -109,6 +111,45 @@ commands.
       titles and descriptions. Preserve stable IDs, validate references, keep
       all generated overrides deterministic, and remove the photo accessibility-
       description field from the Studio UI.
+
+## P1 · Future-trip planning follow-up
+
+- [ ] **T19 — Grow the draft planner beyond day copy.** Add Studio controls for
+      trip title/date-range changes, named places, and ordered travel legs.
+      Preserve existing IDs, notes, and overrides when inserting/reordering days;
+      preview additions before removing dated content. New trip creation now
+      needs only a name and dates, but these later structural edits are still
+      agent-owned source edits. Prioritize this next for future journeys.
+
+## Bugs found during the new-trip pass
+
+- [x] **T20 — Remove default-trip assumptions from photos and previews.** Studio
+      preview always opened Switzerland–Italy; imported photos were assigned to
+      the default journey and the importer hard-coded 2026/Europe-Zurich/family
+      IDs. Use journey-keyed photo manifests, explicit importer selection, ISO
+      day dates, a journey time zone, and the selected trip's local preview.
+- [x] **T21 — Clear stale editors when changing trips or selecting empty days.**
+      Photo-free trips retained the previous photo form; route-free days retained
+      the previous editable route. Switching trips before map load also left old
+      day fields visible, and map load could clear unsaved status. Editor state
+      now updates independently of the map; empty route/photo editors are inert.
+- [x] **T22 — Validate override ownership and exclude draft edits.** Unknown IDs
+      and cross-trip photo-day assignments could be saved. Validate before any
+      save/build; keep draft notes and assets in ignored local files and exclude
+      them from every public bundle. Pages now validates/builds in CI.
+- [ ] **T23 — Make Clear photo location remove inherited GPS.** If a base photo
+      already contains GPS, deleting only its override location lets base
+      coordinates reappear on reload. Add an explicit location-cleared value,
+      honor it in Studio and the viewer, and test clearing/restoring a GPS photo.
+- [ ] **T24 — Discard outdated route proposals after anchor edits.** An in-flight
+      network proposal checks journey/segment identity but not whether anchors
+      changed while it ran. Compare request anchors or a revision token before
+      displaying/accepting the result; test same-segment edits during a request.
+- [ ] **T25 — Resolve photo timestamps without an explicit UTC offset.** The
+      importer now supports each journey's calendar and time zone, but naive
+      EXIF dates can be interpreted in the host's zone before conversion. Add
+      offset-aware fixtures and a documented camera-local-time rule before
+      relying on automatic day matching for trips across time zones.
 
 ## Completed foundation
 

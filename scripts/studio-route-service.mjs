@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
+import { loadJourneys } from "./journey-content.mjs";
 import { buildGraph, routeSegment } from "./route-geometry-lib.mjs";
 
 const graphCache = new Map();
@@ -19,6 +20,7 @@ function validCoordinate(point) {
 }
 
 function journeyData(repoRoot) {
+  if (fs.existsSync(path.join(repoRoot, "content/atlas.json"))) return loadJourneys(repoRoot, { includeDrafts: true });
   const context = { window: {} };
   vm.runInNewContext(fs.readFileSync(path.join(repoRoot, "dist/assets/journeys.js"), "utf8"), context);
   return context.window.JOURNEY_ATLAS_DATA;
@@ -47,7 +49,7 @@ export function proposeStudioRoute({ repoRoot, journeyId, segmentId, controlPoin
   if (!journey) throw new RouteProposalError(`Unknown journey: ${journeyId}`);
   const segment = journey.segments.find((item) => item.id === segmentId);
   if (!segment) throw new RouteProposalError(`Unknown route: ${segmentId}`);
-  const manifestPath = path.join(repoRoot, "content/route-sources", `${journeyId}.json`);
+  const manifestPath = path.join(repoRoot, journey.published === false ? `build/draft-assets/${journeyId}/route-sources.json` : `content/route-sources/${journeyId}.json`);
   if (!fs.existsSync(manifestPath)) throw new RouteProposalError(`No local route-source manifest exists for ${journey.label}. The saved route was kept.`);
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
   const segmentSource = manifest.segments?.[segmentId];

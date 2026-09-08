@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "defaultJourneyId": "switzerland-italy-family-2026",
+  "journeyOrder": [
+    "switzerland-italy-family-2026",
+    "alpine-crossing",
+    "rail-to-adriatic",
+    "dolomites-road",
+    "danube-ride"
+  ]
+}
