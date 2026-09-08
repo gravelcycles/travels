@@ -18,6 +18,11 @@ workflow change before committing. Keep the newest entry first.
 
 ## New-trip pass · 8 September 2026
 
+Commit `06f3745`; deployed successfully in Pages run `34271727907` after
+explicit user approval. Fresh public checks confirmed the catalog, 14 days,
+104 photos, five Day 10 legs, four demo choices, and three Alpine demo photos,
+with no browser warnings or errors.
+
 T11 now provides a source/build pipeline and Studio **+ New trip**. Read the new
 source structure and draft promotion instructions in `JOURNEY_WORKFLOW.md`.
 Never hand-edit generated journey/photo/geometry bundles. Run `npm run build`
