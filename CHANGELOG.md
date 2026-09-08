@@ -8,7 +8,10 @@ commit after it is known.
 
 ### Reviewed photos, deliberate daily leads, and private GPX intake
 
-Commit `4801801`; deployment verification follows.
+Commit `4801801`; deployed successfully in Pages run `34277130090` after
+explicit user approval. Fresh public checks confirmed the catalog, 95 visible
+photos, Day 3's independent lead at `PHOTO 14 OF 14`, Day 8's no-photo state,
+and clean catalog/trip browser consoles.
 
 - Reviewed all 104 family-trip photographs for day, copy, alt text, visibility,
   privacy, and available location evidence without inventing GPS precision.
