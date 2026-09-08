@@ -8,6 +8,11 @@ commit after it is known.
 
 ### Start future trips in Studio
 
+Commit `06f3745`; deployed successfully in Pages run `34271727907` after
+explicit user approval. Fresh public checks confirmed the catalog, 14 days,
+104 photos, five Day 10 legs, four demo choices, and three Alpine demo photos,
+with no browser warnings or errors.
+
 - Added **+ New trip** with name/date intake, complete calendars, stable URLs,
   local drafts, editable day plans, and selected-trip previews.
 - Moved journey content into reusable source JSON with independent photo and
