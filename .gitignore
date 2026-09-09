@@ -7,3 +7,10 @@ build/
 
 # Future trip drafts stay local until explicitly reviewed for publication.
 content/drafts/
+
+# Cloudflare local state and secrets
+.wrangler/
+**/.wrangler/
+.dev.vars*
+**/.dev.vars*
+.env*

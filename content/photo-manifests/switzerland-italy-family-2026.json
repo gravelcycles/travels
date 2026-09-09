@@ -2,22 +2,14 @@
   {
     "id": "family-img-1425",
     "dayId": "family-d1",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1425-w3200.webp",
+    "src": "/private-photos/assets/v1/85bbda460714dff00482ae6310b0aa157a69cfbb467f9038299f79bdbbd81057.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1425-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1425-w1280.webp",
+        "src": "/private-photos/assets/v1/29726dfc0594f50e5ebe9109ea99c9ee4030e77278dad8858e447594f1b73f5e.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1425-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1425-w3200.webp",
+        "src": "/private-photos/assets/v1/85bbda460714dff00482ae6310b0aa157a69cfbb467f9038299f79bdbbd81057.webp",
         "width": 3200
       }
     ],
@@ -27,27 +19,21 @@
     "alt": "Family trip photograph from Zürich Flughafen",
     "caption": "Zürich Flughafen & Luzern · 16:08",
     "takenAt": "13 Aug · 16:08",
-    "sourceFilename": "IMG_1425.HEIC"
+    "sourceFilename": "IMG_1425.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1426",
     "dayId": "family-d1",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1426-w3200.webp",
+    "src": "/private-photos/assets/v1/05def700978350c650c900359585f3d59e67bb5dc8afa7d0fca27e61aedb04af.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1426-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1426-w1280.webp",
+        "src": "/private-photos/assets/v1/04bcd1edad32f560e7687572fcc47685d0a34fad5080fdd72b84e9c3c5fd95aa.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1426-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1426-w3200.webp",
+        "src": "/private-photos/assets/v1/05def700978350c650c900359585f3d59e67bb5dc8afa7d0fca27e61aedb04af.webp",
         "width": 3200
       }
     ],
@@ -57,27 +43,21 @@
     "alt": "Family trip photograph from Zürich Flughafen",
     "caption": "Zürich Flughafen & Luzern · 18:00",
     "takenAt": "13 Aug · 18:00",
-    "sourceFilename": "IMG_1426.HEIC"
+    "sourceFilename": "IMG_1426.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1434",
     "dayId": "family-d1",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1434-w3200.webp",
+    "src": "/private-photos/assets/v1/7c058e94ff8bd7e026a5942dc771cd01cc6b3aa7d265ac4fb2e1cc01a91022d3.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1434-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1434-w1280.webp",
+        "src": "/private-photos/assets/v1/f7af04a806dbd4980752c3f82a57d454197b8f4778f58875ca8bc9f927e80914.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1434-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1434-w3200.webp",
+        "src": "/private-photos/assets/v1/7c058e94ff8bd7e026a5942dc771cd01cc6b3aa7d265ac4fb2e1cc01a91022d3.webp",
         "width": 3200
       }
     ],
@@ -87,23 +67,21 @@
     "alt": "Family trip photograph from Zürich Flughafen",
     "caption": "Zürich Flughafen & Luzern · 20:31",
     "takenAt": "13 Aug · 20:31",
-    "sourceFilename": "IMG_1434.HEIC"
+    "sourceFilename": "IMG_1434.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5032",
     "dayId": "family-d1",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5032-w2400.webp",
+    "src": "/private-photos/assets/v1/3990a544ff42703b1def3c7bc5145d7028f57c039f981a6a8480b3d6e49f8b97.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5032-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5032-w1280.webp",
+        "src": "/private-photos/assets/v1/470e91e809e3b81cf05cf3ac7b3c1f7145577d81ba408d32833d9c7e183fb738.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5032-w2400.webp",
+        "src": "/private-photos/assets/v1/3990a544ff42703b1def3c7bc5145d7028f57c039f981a6a8480b3d6e49f8b97.webp",
         "width": 2400
       }
     ],
@@ -113,23 +91,21 @@
     "alt": "Family trip photograph from Zürich Flughafen",
     "caption": "Zürich Flughafen & Luzern · 21:12",
     "takenAt": "13 Aug · 21:12",
-    "sourceFilename": "IMG_5032.HEIC"
+    "sourceFilename": "IMG_5032.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-2793",
     "dayId": "family-d1",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2793-w2400.webp",
+    "src": "/private-photos/assets/v1/8d0916832749de9385c2923c6d90eec83a9ff36cb85b66458d823fe397bf0c17.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2793-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2793-w1280.webp",
+        "src": "/private-photos/assets/v1/fd07b15f1bd976c91ba9d656e47ef7fa6fd0eb1eb270ff20c30f0ae08fcbbde5.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2793-w2400.webp",
+        "src": "/private-photos/assets/v1/8d0916832749de9385c2923c6d90eec83a9ff36cb85b66458d823fe397bf0c17.webp",
         "width": 2400
       }
     ],
@@ -139,27 +115,21 @@
     "alt": "Family trip photograph from Zürich Flughafen",
     "caption": "Zürich Flughafen & Luzern · 21:17",
     "takenAt": "13 Aug · 21:17",
-    "sourceFilename": "IMG_2793.HEIC"
+    "sourceFilename": "IMG_2793.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1463",
     "dayId": "family-d1",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1463-w3200.webp",
+    "src": "/private-photos/assets/v1/47f181ff895c3386de7f8994ff23634f938cd1ad662de4b37ca3c8259cd14319.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1463-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1463-w1280.webp",
+        "src": "/private-photos/assets/v1/4c3b4ef946fdda9de9f7c4741e1a226d73310258c70e862ef4f25e2202f2f893.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1463-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1463-w3200.webp",
+        "src": "/private-photos/assets/v1/47f181ff895c3386de7f8994ff23634f938cd1ad662de4b37ca3c8259cd14319.webp",
         "width": 3200
       }
     ],
@@ -169,23 +139,21 @@
     "alt": "Family trip photograph from Zürich Flughafen",
     "caption": "Zürich Flughafen & Luzern · 21:38",
     "takenAt": "13 Aug · 21:38",
-    "sourceFilename": "IMG_1463.HEIC"
+    "sourceFilename": "IMG_1463.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260814-122648-102",
     "dayId": "family-d2",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260814-122648-102-w2400.webp",
+    "src": "/private-photos/assets/v1/5011f45af8952f244001ea475ea9c72cee391b961a6607fe66fd0886d9baf925.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260814-122648-102-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260814-122648-102-w1280.webp",
+        "src": "/private-photos/assets/v1/c59142ab658c4d91c470edddc5ffd7eb3794400aac2b7884626e07f9adcbadc0.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260814-122648-102-w2400.webp",
+        "src": "/private-photos/assets/v1/5011f45af8952f244001ea475ea9c72cee391b961a6607fe66fd0886d9baf925.webp",
         "width": 2400
       }
     ],
@@ -195,27 +163,21 @@
     "alt": "Family trip photograph from Engelberg",
     "caption": "Engelberg · 12:26",
     "takenAt": "14 Aug · 12:26",
-    "sourceFilename": "snapseed_camera_capture_20260814_122648_102.heic"
+    "sourceFilename": "snapseed_camera_capture_20260814_122648_102.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1469",
     "dayId": "family-d2",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1469-w3200.webp",
+    "src": "/private-photos/assets/v1/ed75e9bd992999a74b49617ebbe62933f06017403790a3c4cf65f9a0ed8ecfd2.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1469-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1469-w1280.webp",
+        "src": "/private-photos/assets/v1/09dddb119df454d7c2e921e39286a27da7bb6071fe74c02e0d6076ed6b82ade5.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1469-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1469-w3200.webp",
+        "src": "/private-photos/assets/v1/ed75e9bd992999a74b49617ebbe62933f06017403790a3c4cf65f9a0ed8ecfd2.webp",
         "width": 3200
       }
     ],
@@ -225,27 +187,21 @@
     "alt": "Family trip photograph from Engelberg",
     "caption": "Engelberg · 12:28",
     "takenAt": "14 Aug · 12:28",
-    "sourceFilename": "IMG_1469.HEIC"
+    "sourceFilename": "IMG_1469.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1472",
     "dayId": "family-d2",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1472-w3200.webp",
+    "src": "/private-photos/assets/v1/d79e1009ba2cf4f251c9622a055dc2f8260eaa707ee6828818f003fbb356f3f0.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1472-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1472-w1280.webp",
+        "src": "/private-photos/assets/v1/749975ee9be2f89c652fa71a70ade5f3aa362b84c3ea71ad663da911625b611f.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1472-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1472-w3200.webp",
+        "src": "/private-photos/assets/v1/d79e1009ba2cf4f251c9622a055dc2f8260eaa707ee6828818f003fbb356f3f0.webp",
         "width": 3200
       }
     ],
@@ -255,23 +211,21 @@
     "alt": "Family trip photograph from Engelberg",
     "caption": "Engelberg · 13:36",
     "takenAt": "14 Aug · 13:36",
-    "sourceFilename": "IMG_1472.HEIC"
+    "sourceFilename": "IMG_1472.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260814-142431-686",
     "dayId": "family-d2",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260814-142431-686-w2400.webp",
+    "src": "/private-photos/assets/v1/2c179d4c499c538b8e812cf076fb57df1cf94db30323eb5fda5b7f1baa54d2dd.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260814-142431-686-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260814-142431-686-w1280.webp",
+        "src": "/private-photos/assets/v1/19aad4cdbd740d8f28b093ec60059180652bf48d36232217bf96082841f85c2c.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260814-142431-686-w2400.webp",
+        "src": "/private-photos/assets/v1/2c179d4c499c538b8e812cf076fb57df1cf94db30323eb5fda5b7f1baa54d2dd.webp",
         "width": 2400
       }
     ],
@@ -281,23 +235,21 @@
     "alt": "Family trip photograph from Engelberg",
     "caption": "Engelberg · 14:24",
     "takenAt": "14 Aug · 14:24",
-    "sourceFilename": "snapseed_camera_capture_20260814_142431_686.heic"
+    "sourceFilename": "snapseed_camera_capture_20260814_142431_686.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5036",
     "dayId": "family-d2",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5036-w2400.webp",
+    "src": "/private-photos/assets/v1/2b9b194cf08ba2d82a53a7c77eebc4b12c36b67e40a804b29c6e5da707809d2b.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5036-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5036-w1280.webp",
+        "src": "/private-photos/assets/v1/0f3f6cea7f77d21f847cb2ea12ead7dfc1f378169c9541785a8e0c04a7690fff.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5036-w2400.webp",
+        "src": "/private-photos/assets/v1/2b9b194cf08ba2d82a53a7c77eebc4b12c36b67e40a804b29c6e5da707809d2b.webp",
         "width": 2400
       }
     ],
@@ -307,23 +259,21 @@
     "alt": "Family trip photograph from Engelberg",
     "caption": "Engelberg · 17:07",
     "takenAt": "14 Aug · 17:07",
-    "sourceFilename": "IMG_5036.HEIC"
+    "sourceFilename": "IMG_5036.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260815-075345-241",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-075345-241-w2400.webp",
+    "src": "/private-photos/assets/v1/8d15336df2f67eef35fbc2ccaa665f943fe568c4f4c59d68904637869bb13a85.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-075345-241-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-075345-241-w1280.webp",
+        "src": "/private-photos/assets/v1/00c9b17877bc8560e60f6a91c47f03472770bf982430ed9cc2bc7576a51d8616.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-075345-241-w2400.webp",
+        "src": "/private-photos/assets/v1/8d15336df2f67eef35fbc2ccaa665f943fe568c4f4c59d68904637869bb13a85.webp",
         "width": 2400
       }
     ],
@@ -333,23 +283,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 07:53",
     "takenAt": "15 Aug · 07:53",
-    "sourceFilename": "snapseed_camera_capture_20260815_075345_241.heic"
+    "sourceFilename": "snapseed_camera_capture_20260815_075345_241.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260815-080433-893",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-080433-893-w2400.webp",
+    "src": "/private-photos/assets/v1/a4b78b9bac975dc678e28de780db878a58db9dff9d8fdb08a96a54017338c837.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-080433-893-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-080433-893-w1280.webp",
+        "src": "/private-photos/assets/v1/dc589eb9ba8f10460ebebd65994c4a7f5f420ae4092f1936534a821ab0e75794.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-080433-893-w2400.webp",
+        "src": "/private-photos/assets/v1/a4b78b9bac975dc678e28de780db878a58db9dff9d8fdb08a96a54017338c837.webp",
         "width": 2400
       }
     ],
@@ -359,23 +307,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 08:04",
     "takenAt": "15 Aug · 08:04",
-    "sourceFilename": "snapseed_camera_capture_20260815_080433_893.heic"
+    "sourceFilename": "snapseed_camera_capture_20260815_080433_893.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260815-082220-931",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-082220-931-w2400.webp",
+    "src": "/private-photos/assets/v1/99a83ab5f0a1d5b3d6266e26dab8f24f49ae8de822bb76b31ea21f69d8a512a7.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-082220-931-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-082220-931-w1280.webp",
+        "src": "/private-photos/assets/v1/c7ad36ea9baeee62acf5d0fbd5b83f93f966fec0dc3bda3dbab086beb47721f6.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-082220-931-w2400.webp",
+        "src": "/private-photos/assets/v1/99a83ab5f0a1d5b3d6266e26dab8f24f49ae8de822bb76b31ea21f69d8a512a7.webp",
         "width": 2400
       }
     ],
@@ -385,23 +331,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 08:16",
     "takenAt": "15 Aug · 08:16",
-    "sourceFilename": "snapseed_camera_capture_20260815_082220_931.heic"
+    "sourceFilename": "snapseed_camera_capture_20260815_082220_931.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260815-082238-670",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-082238-670-w2400.webp",
+    "src": "/private-photos/assets/v1/11f5a3f95fad45d13d6e93f8de3ed663cd7ea472d4569edce23aec58431bec0d.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-082238-670-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-082238-670-w1280.webp",
+        "src": "/private-photos/assets/v1/e518693d9b796f2cdb205e251eeb2b08635667a33bede504266b41ff08069ac8.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-082238-670-w2400.webp",
+        "src": "/private-photos/assets/v1/11f5a3f95fad45d13d6e93f8de3ed663cd7ea472d4569edce23aec58431bec0d.webp",
         "width": 2400
       }
     ],
@@ -411,23 +355,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 08:22",
     "takenAt": "15 Aug · 08:22",
-    "sourceFilename": "snapseed_camera_capture_20260815_082238_670.heic"
+    "sourceFilename": "snapseed_camera_capture_20260815_082238_670.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5040",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5040-w2400.webp",
+    "src": "/private-photos/assets/v1/574817d0fd599cd43631896fe962d58388445a77850f893b95b6cefb075314d0.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5040-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5040-w1280.webp",
+        "src": "/private-photos/assets/v1/b6c2c26ae9dc15b0593d2d473c2d96af382f64d8a5db0af2fa7eab1f9166758b.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5040-w2400.webp",
+        "src": "/private-photos/assets/v1/574817d0fd599cd43631896fe962d58388445a77850f893b95b6cefb075314d0.webp",
         "width": 2400
       }
     ],
@@ -437,27 +379,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 15:51",
     "takenAt": "15 Aug · 15:51",
-    "sourceFilename": "IMG_5040.HEIC"
+    "sourceFilename": "IMG_5040.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5044",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5044-w3200.webp",
+    "src": "/private-photos/assets/v1/93b30e796acf82b71a7110029cfaa9bf29465c3cb3d6138bd66a7c4852d6d879.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5044-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5044-w1280.webp",
+        "src": "/private-photos/assets/v1/ffc2eec7cd6d98909f36f8ccae2a1c7d56e52e8204b929de92b46ab46fa4524d.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5044-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5044-w3200.webp",
+        "src": "/private-photos/assets/v1/93b30e796acf82b71a7110029cfaa9bf29465c3cb3d6138bd66a7c4852d6d879.webp",
         "width": 3200
       }
     ],
@@ -467,23 +403,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 15:51",
     "takenAt": "15 Aug · 15:51",
-    "sourceFilename": "IMG_5044.HEIC"
+    "sourceFilename": "IMG_5044.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260815-155638-313",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-155638-313-w2400.webp",
+    "src": "/private-photos/assets/v1/62fcb047a3dd50547a2304848804163914a95838563250964d11712885c5a232.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-155638-313-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-155638-313-w1280.webp",
+        "src": "/private-photos/assets/v1/f907c588741e0b921fec1f4d8a012587218e51eb957cdedd0f6c05f88155ea1b.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-155638-313-w2400.webp",
+        "src": "/private-photos/assets/v1/62fcb047a3dd50547a2304848804163914a95838563250964d11712885c5a232.webp",
         "width": 2400
       }
     ],
@@ -493,27 +427,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 15:56",
     "takenAt": "15 Aug · 15:56",
-    "sourceFilename": "snapseed_camera_capture_20260815_155638_313.heic"
+    "sourceFilename": "snapseed_camera_capture_20260815_155638_313.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1488",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1488-w3200.webp",
+    "src": "/private-photos/assets/v1/f88a71bf0e6bef1fcd1553e5fb0b6506452d8382eae0d711a6eafc1008cf5b5d.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1488-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1488-w1280.webp",
+        "src": "/private-photos/assets/v1/5c5d819936fdeb9ab82b585415aa597ca894dcbbf49254b3c0646751c2d4949d.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1488-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1488-w3200.webp",
+        "src": "/private-photos/assets/v1/f88a71bf0e6bef1fcd1553e5fb0b6506452d8382eae0d711a6eafc1008cf5b5d.webp",
         "width": 3200
       }
     ],
@@ -523,23 +451,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 16:15",
     "takenAt": "15 Aug · 16:15",
-    "sourceFilename": "IMG_1488.HEIC"
+    "sourceFilename": "IMG_1488.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260815-161546-091",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-161546-091-w2400.webp",
+    "src": "/private-photos/assets/v1/a1bc06d049791b43d5528e8543dc24e8d3465fd36be6b4c9af4e567ff22a1898.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-161546-091-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-161546-091-w1280.webp",
+        "src": "/private-photos/assets/v1/a092fda579cdc23b3b849bd4137169a4ed0db6f348b776007d7964aae18b751b.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-161546-091-w2400.webp",
+        "src": "/private-photos/assets/v1/a1bc06d049791b43d5528e8543dc24e8d3465fd36be6b4c9af4e567ff22a1898.webp",
         "width": 2400
       }
     ],
@@ -549,23 +475,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 16:15",
     "takenAt": "15 Aug · 16:15",
-    "sourceFilename": "snapseed_camera_capture_20260815_161546_091.heic"
+    "sourceFilename": "snapseed_camera_capture_20260815_161546_091.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260815-161856-649",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-161856-649-w2400.webp",
+    "src": "/private-photos/assets/v1/98befff231f81314d44088e37c0a22c7874d95e377e16929aa1edd6ca4fd502c.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-161856-649-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-161856-649-w1280.webp",
+        "src": "/private-photos/assets/v1/7b76d5f995306eccba9bcca08f4f9099ea92865284f8b65f40af3f0bbf21b452.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-161856-649-w2400.webp",
+        "src": "/private-photos/assets/v1/98befff231f81314d44088e37c0a22c7874d95e377e16929aa1edd6ca4fd502c.webp",
         "width": 2400
       }
     ],
@@ -575,23 +499,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 16:18",
     "takenAt": "15 Aug · 16:18",
-    "sourceFilename": "snapseed_camera_capture_20260815_161856_649.heic"
+    "sourceFilename": "snapseed_camera_capture_20260815_161856_649.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260815-162103-557",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-162103-557-w2400.webp",
+    "src": "/private-photos/assets/v1/eb266e81a7d6053bddb4fc0dcdaa2988d75556ef932dc8ee0eb1a3beb7f3be8f.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-162103-557-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-162103-557-w1280.webp",
+        "src": "/private-photos/assets/v1/7a56ff49d885596ceae2526fb098e4465721f6fbb9525701f1a28e127068d09b.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-162103-557-w2400.webp",
+        "src": "/private-photos/assets/v1/eb266e81a7d6053bddb4fc0dcdaa2988d75556ef932dc8ee0eb1a3beb7f3be8f.webp",
         "width": 2400
       }
     ],
@@ -601,23 +523,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 16:20",
     "takenAt": "15 Aug · 16:20",
-    "sourceFilename": "snapseed_camera_capture_20260815_162103_557.heic"
+    "sourceFilename": "snapseed_camera_capture_20260815_162103_557.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260815-162408-750",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-162408-750-w2400.webp",
+    "src": "/private-photos/assets/v1/b591d5651f814fcd5e51e8152754e6d21089f2a5291189cffcccd9683cdda58b.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-162408-750-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-162408-750-w1280.webp",
+        "src": "/private-photos/assets/v1/1346c4424790331750769b1245598b4ce8decbf54d53895a785bd421c66c081b.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260815-162408-750-w2400.webp",
+        "src": "/private-photos/assets/v1/b591d5651f814fcd5e51e8152754e6d21089f2a5291189cffcccd9683cdda58b.webp",
         "width": 2400
       }
     ],
@@ -627,23 +547,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 16:22",
     "takenAt": "15 Aug · 16:22",
-    "sourceFilename": "snapseed_camera_capture_20260815_162408_750.heic"
+    "sourceFilename": "snapseed_camera_capture_20260815_162408_750.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1496",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1496-w2400.webp",
+    "src": "/private-photos/assets/v1/6fe91838f2bcbce2bb215392123a50a87e686619978cd89f5e6b48a50a6441c5.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1496-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1496-w1280.webp",
+        "src": "/private-photos/assets/v1/a25a1b01f7cf47f3ff17f743f4fc5a94eddf6de24575cc80a4824ddf4c77b7d0.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1496-w2400.webp",
+        "src": "/private-photos/assets/v1/6fe91838f2bcbce2bb215392123a50a87e686619978cd89f5e6b48a50a6441c5.webp",
         "width": 2400
       }
     ],
@@ -653,27 +571,21 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 16:28",
     "takenAt": "15 Aug · 16:28",
-    "sourceFilename": "IMG_1496.HEIC"
+    "sourceFilename": "IMG_1496.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5047",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5047-w3200.webp",
+    "src": "/private-photos/assets/v1/0df5b97c9f6cfb3713ea7099ba3a18dceafab02ce6c91c08bbc1da71680aeb1a.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5047-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5047-w1280.webp",
+        "src": "/private-photos/assets/v1/b4777f600d3e19fc5f2dd22a30065dfeba2d96aee03f12900abc9eb539380afe.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5047-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5047-w3200.webp",
+        "src": "/private-photos/assets/v1/0df5b97c9f6cfb3713ea7099ba3a18dceafab02ce6c91c08bbc1da71680aeb1a.webp",
         "width": 3200
       }
     ],
@@ -683,27 +595,20 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 16:29",
     "takenAt": "15 Aug · 16:29",
-    "sourceFilename": "IMG_5047.HEIC"
+    "sourceFilename": "IMG_5047.HEIC",
+    "protected": true
   },
   {
     "id": "family-img-5048",
     "dayId": "family-d3",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5048-w3200.webp",
+    "src": "/private-photos/assets/v1/2d7b06b41e9441f1cd7a85a50ab4383e0c42c9ec4cbbf90e74cba3ea525676bb.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5048-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5048-w1280.webp",
+        "src": "/private-photos/assets/v1/1f52375945ebc1845bbf7d6beeebd633655539fff64962844dfa380ad9941ae4.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5048-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5048-w3200.webp",
+        "src": "/private-photos/assets/v1/2d7b06b41e9441f1cd7a85a50ab4383e0c42c9ec4cbbf90e74cba3ea525676bb.webp",
         "width": 3200
       }
     ],
@@ -713,27 +618,20 @@
     "alt": "Family trip photograph from Bern",
     "caption": "Bern · 16:29",
     "takenAt": "15 Aug · 16:29",
-    "sourceFilename": "IMG_5048.HEIC"
+    "sourceFilename": "IMG_5048.HEIC",
+    "protected": true
   },
   {
     "id": "family-img-2834",
     "dayId": "family-d4",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2834-w3200.webp",
+    "src": "/private-photos/assets/v1/77c7cea2221da7b018858801504db62e6a0a498f3b371e0d7f567bc73b1ee517.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2834-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2834-w1280.webp",
+        "src": "/private-photos/assets/v1/8939b59259bef052f9b52b94e0d27e1eafd0aaecedc09da5a5837bd4a6a47b13.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2834-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2834-w3200.webp",
+        "src": "/private-photos/assets/v1/77c7cea2221da7b018858801504db62e6a0a498f3b371e0d7f567bc73b1ee517.webp",
         "width": 3200
       }
     ],
@@ -743,27 +641,21 @@
     "alt": "Family trip photograph from Kehrsiten-Bürgenstock",
     "caption": "Lake Luzern & Kehrsiten · 11:00",
     "takenAt": "16 Aug · 11:00",
-    "sourceFilename": "IMG_2834.HEIC"
+    "sourceFilename": "IMG_2834.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-2836",
     "dayId": "family-d4",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2836-w3200.webp",
+    "src": "/private-photos/assets/v1/0586cab207f4976fd4d90a42a678cf4f18b41a7b19687a93d2653b6014d261bf.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2836-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2836-w1280.webp",
+        "src": "/private-photos/assets/v1/fcf660c145559a522867068e5528810a888926aee03744c265521ad0aec549b7.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2836-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2836-w3200.webp",
+        "src": "/private-photos/assets/v1/0586cab207f4976fd4d90a42a678cf4f18b41a7b19687a93d2653b6014d261bf.webp",
         "width": 3200
       }
     ],
@@ -773,27 +665,21 @@
     "alt": "Family trip photograph from Kehrsiten-Bürgenstock",
     "caption": "Lake Luzern & Kehrsiten · 11:01",
     "takenAt": "16 Aug · 11:01",
-    "sourceFilename": "IMG_2836.HEIC"
+    "sourceFilename": "IMG_2836.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1504",
     "dayId": "family-d4",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1504-w3200.webp",
+    "src": "/private-photos/assets/v1/e082d59e67352e9e3f426614b2885d78444561292734dbe13ca50eda3e9b507d.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1504-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1504-w1280.webp",
+        "src": "/private-photos/assets/v1/06cc385d29a72602fd6d83dec6da9a6a356034ae1a7cc1e7f126cfe7e7463687.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1504-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1504-w3200.webp",
+        "src": "/private-photos/assets/v1/e082d59e67352e9e3f426614b2885d78444561292734dbe13ca50eda3e9b507d.webp",
         "width": 3200
       }
     ],
@@ -803,27 +689,21 @@
     "alt": "Family trip photograph from Kehrsiten-Bürgenstock",
     "caption": "Lake Luzern & Kehrsiten · 13:32",
     "takenAt": "16 Aug · 13:32",
-    "sourceFilename": "IMG_1504.HEIC"
+    "sourceFilename": "IMG_1504.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5050",
     "dayId": "family-d4",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5050-w3200.webp",
+    "src": "/private-photos/assets/v1/d780c51340fc1472eddc480fd70e60705d7134344b7ecd873f178273a17def43.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5050-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5050-w1280.webp",
+        "src": "/private-photos/assets/v1/3db5a8989c6db757c543297d01151c11d06e60f95fe7b67c7c33f4dd46fe3147.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5050-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5050-w3200.webp",
+        "src": "/private-photos/assets/v1/d780c51340fc1472eddc480fd70e60705d7134344b7ecd873f178273a17def43.webp",
         "width": 3200
       }
     ],
@@ -833,27 +713,21 @@
     "alt": "Family trip photograph from Kehrsiten-Bürgenstock",
     "caption": "Lake Luzern & Kehrsiten · 16:21",
     "takenAt": "16 Aug · 16:21",
-    "sourceFilename": "IMG_5050.HEIC"
+    "sourceFilename": "IMG_5050.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5052",
     "dayId": "family-d4",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5052-w3200.webp",
+    "src": "/private-photos/assets/v1/d7151b46b7c3dc99cde8d8a56f268eb39f291e4ca419200fb1a9910cc60cac02.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5052-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5052-w1280.webp",
+        "src": "/private-photos/assets/v1/b29e254e1ab0fff9b3540aed6b85fa607b83c0d6f18e4e16a151f4efb13ba55b.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5052-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5052-w3200.webp",
+        "src": "/private-photos/assets/v1/d7151b46b7c3dc99cde8d8a56f268eb39f291e4ca419200fb1a9910cc60cac02.webp",
         "width": 3200
       }
     ],
@@ -863,27 +737,21 @@
     "alt": "Family trip photograph from Kehrsiten-Bürgenstock",
     "caption": "Lake Luzern & Kehrsiten · 16:47",
     "takenAt": "16 Aug · 16:47",
-    "sourceFilename": "IMG_5052.HEIC"
+    "sourceFilename": "IMG_5052.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5055",
     "dayId": "family-d4",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5055-w3200.webp",
+    "src": "/private-photos/assets/v1/ed13901158f7a81f98cdcf84831a5d8047cfdf502525a5e1ed9104540f903982.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5055-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5055-w1280.webp",
+        "src": "/private-photos/assets/v1/21f09eaa2a19970b69f2bff7acfccb0e2f987a47e053ba50260ed2b22a9efdca.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5055-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5055-w3200.webp",
+        "src": "/private-photos/assets/v1/ed13901158f7a81f98cdcf84831a5d8047cfdf502525a5e1ed9104540f903982.webp",
         "width": 3200
       }
     ],
@@ -893,27 +761,20 @@
     "alt": "Family trip photograph from Kehrsiten-Bürgenstock",
     "caption": "Lake Luzern & Kehrsiten · 16:47",
     "takenAt": "16 Aug · 16:47",
-    "sourceFilename": "IMG_5055.HEIC"
+    "sourceFilename": "IMG_5055.HEIC",
+    "protected": true
   },
   {
     "id": "family-img-5056",
     "dayId": "family-d4",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5056-w3200.webp",
+    "src": "/private-photos/assets/v1/40d8ea89fec69e5a972ece9f79f93e618071abcff64d3cc6786d7fbba5e2e242.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5056-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5056-w1280.webp",
+        "src": "/private-photos/assets/v1/ceade35b72827779a5f19a623d60b56f1f2e94d9400974dc7d03f30e083b5afc.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5056-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5056-w3200.webp",
+        "src": "/private-photos/assets/v1/40d8ea89fec69e5a972ece9f79f93e618071abcff64d3cc6786d7fbba5e2e242.webp",
         "width": 3200
       }
     ],
@@ -923,23 +784,21 @@
     "alt": "Family trip photograph from Kehrsiten-Bürgenstock",
     "caption": "Lake Luzern & Kehrsiten · 16:48",
     "takenAt": "16 Aug · 16:48",
-    "sourceFilename": "IMG_5056.HEIC"
+    "sourceFilename": "IMG_5056.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5063",
     "dayId": "family-d4",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5063-w2400.webp",
+    "src": "/private-photos/assets/v1/79a2667f335c1852748434123e3fb6f083590be5539a237ceb413e81f3199574.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5063-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5063-w1280.webp",
+        "src": "/private-photos/assets/v1/e2b2713bc440c7f9777cb4d51e11ffab6b7851b35f79f575b773fb04796effe1.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5063-w2400.webp",
+        "src": "/private-photos/assets/v1/79a2667f335c1852748434123e3fb6f083590be5539a237ceb413e81f3199574.webp",
         "width": 2400
       }
     ],
@@ -949,27 +808,21 @@
     "alt": "Family trip photograph from Kehrsiten-Bürgenstock",
     "caption": "Lake Luzern & Kehrsiten · 16:49",
     "takenAt": "16 Aug · 16:49",
-    "sourceFilename": "IMG_5063.HEIC"
+    "sourceFilename": "IMG_5063.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5069",
     "dayId": "family-d4",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5069-w3200.webp",
+    "src": "/private-photos/assets/v1/e6cc511ef034c7d59223160495b1d2772d6eb49c92e09ffe5c69b6f93410fef1.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5069-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5069-w1280.webp",
+        "src": "/private-photos/assets/v1/54e5d65380e1d069f8271e6162af4d38938d0216f8b6466b5f5cdecd3fca83d0.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5069-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5069-w3200.webp",
+        "src": "/private-photos/assets/v1/e6cc511ef034c7d59223160495b1d2772d6eb49c92e09ffe5c69b6f93410fef1.webp",
         "width": 3200
       }
     ],
@@ -979,23 +832,21 @@
     "alt": "Family trip photograph from Kehrsiten-Bürgenstock",
     "caption": "Lake Luzern & Kehrsiten · 17:57",
     "takenAt": "16 Aug · 17:57",
-    "sourceFilename": "IMG_5069.HEIC"
+    "sourceFilename": "IMG_5069.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5071",
     "dayId": "family-d4",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5071-w2400.webp",
+    "src": "/private-photos/assets/v1/68860313dddb2298a834b497af73e80929af71d16f7466e8b31810c88140bdc1.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5071-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5071-w1280.webp",
+        "src": "/private-photos/assets/v1/6b12f396fa2a3ccc9f6f6922d19bd98aa8327951f4a134ead5006a5dd454f052.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5071-w2400.webp",
+        "src": "/private-photos/assets/v1/68860313dddb2298a834b497af73e80929af71d16f7466e8b31810c88140bdc1.webp",
         "width": 2400
       }
     ],
@@ -1005,23 +856,21 @@
     "alt": "Family trip photograph from Kehrsiten-Bürgenstock",
     "caption": "Lake Luzern & Kehrsiten · 18:09",
     "takenAt": "16 Aug · 18:09",
-    "sourceFilename": "IMG_5071.HEIC"
+    "sourceFilename": "IMG_5071.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5075",
     "dayId": "family-d4",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5075-w2400.webp",
+    "src": "/private-photos/assets/v1/663d5331fb9464e394e6cf96c00ffd5f64bb0f51df16393c66fd10a7dd0613f0.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5075-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5075-w1280.webp",
+        "src": "/private-photos/assets/v1/94a3830eb1d48c0da52e1994af9b507fe9315a883329ed6ab3d6ad9187c7f2ba.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5075-w2400.webp",
+        "src": "/private-photos/assets/v1/663d5331fb9464e394e6cf96c00ffd5f64bb0f51df16393c66fd10a7dd0613f0.webp",
         "width": 2400
       }
     ],
@@ -1031,23 +880,21 @@
     "alt": "Family trip photograph from Kehrsiten-Bürgenstock",
     "caption": "Lake Luzern & Kehrsiten · 20:49",
     "takenAt": "16 Aug · 20:49",
-    "sourceFilename": "IMG_5075.HEIC"
+    "sourceFilename": "IMG_5075.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5076",
     "dayId": "family-d4",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5076-w2400.webp",
+    "src": "/private-photos/assets/v1/6f716733a319f8802ad30de68382245633ee26f0f7f9b4a84c5a26508358b096.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5076-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5076-w1280.webp",
+        "src": "/private-photos/assets/v1/bb4426910443ab1bcc2583fd4b4b2d0327e8214206995dca1730205c8939b24f.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5076-w2400.webp",
+        "src": "/private-photos/assets/v1/6f716733a319f8802ad30de68382245633ee26f0f7f9b4a84c5a26508358b096.webp",
         "width": 2400
       }
     ],
@@ -1057,27 +904,21 @@
     "alt": "Family trip photograph from Kehrsiten-Bürgenstock",
     "caption": "Lake Luzern & Kehrsiten · 20:49",
     "takenAt": "16 Aug · 20:49",
-    "sourceFilename": "IMG_5076.HEIC"
+    "sourceFilename": "IMG_5076.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1520",
     "dayId": "family-d5",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1520-w3200.webp",
+    "src": "/private-photos/assets/v1/e8d57e4d5877a25428f4d8ab3cef7d4308492785286c33b0878dda588f0715a5.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1520-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1520-w1280.webp",
+        "src": "/private-photos/assets/v1/e89c816733881003326592114c7daa0c38b8659efba25527d70772cb65f8b4f9.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1520-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1520-w3200.webp",
+        "src": "/private-photos/assets/v1/e8d57e4d5877a25428f4d8ab3cef7d4308492785286c33b0878dda588f0715a5.webp",
         "width": 3200
       }
     ],
@@ -1087,23 +928,21 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 15:57",
     "takenAt": "17 Aug · 15:57",
-    "sourceFilename": "IMG_1520.HEIC"
+    "sourceFilename": "IMG_1520.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260818-081450-402",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-081450-402-w2400.webp",
+    "src": "/private-photos/assets/v1/bf82f0421d6e86ebcbafc50f0e4380a5fc3836d99803eb5d4ac5b5a9b32ebb56.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-081450-402-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-081450-402-w1280.webp",
+        "src": "/private-photos/assets/v1/154729c6fa10257c7b27e0c6fd4c998fee4bf10c0342c9faee8d75d60ab86069.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-081450-402-w2400.webp",
+        "src": "/private-photos/assets/v1/bf82f0421d6e86ebcbafc50f0e4380a5fc3836d99803eb5d4ac5b5a9b32ebb56.webp",
         "width": 2400
       }
     ],
@@ -1113,27 +952,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 08:02",
     "takenAt": "18 Aug · 08:02",
-    "sourceFilename": "snapseed_camera_capture_20260818_081450_402.heic"
+    "sourceFilename": "snapseed_camera_capture_20260818_081450_402.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1525",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1525-w3200.webp",
+    "src": "/private-photos/assets/v1/2f9cc128839eee3c388a95b908f1948057cb92debe4f5db99e1bf8449ac5f40b.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1525-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1525-w1280.webp",
+        "src": "/private-photos/assets/v1/af74ddf45617deaf7e82c7d385aa066996e5f00da3482f06815ef6aedbd72a7f.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1525-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1525-w3200.webp",
+        "src": "/private-photos/assets/v1/2f9cc128839eee3c388a95b908f1948057cb92debe4f5db99e1bf8449ac5f40b.webp",
         "width": 3200
       }
     ],
@@ -1143,27 +976,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 09:35",
     "takenAt": "18 Aug · 09:35",
-    "sourceFilename": "IMG_1525.HEIC"
+    "sourceFilename": "IMG_1525.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260818-104535-118",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-104535-118-w3200.webp",
+    "src": "/private-photos/assets/v1/d14d6017c131d766f112ddad52fe9bffc91a2e6ec0808e5a4fef8080b8142c4d.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-104535-118-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-104535-118-w1280.webp",
+        "src": "/private-photos/assets/v1/c2881b03e8a00d5f2209a7e4c456c522f9e4967e4775ebcee93221a3aa7bc21d.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-104535-118-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-104535-118-w3200.webp",
+        "src": "/private-photos/assets/v1/d14d6017c131d766f112ddad52fe9bffc91a2e6ec0808e5a4fef8080b8142c4d.webp",
         "width": 3200
       }
     ],
@@ -1173,23 +1000,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 10:45",
     "takenAt": "18 Aug · 10:45",
-    "sourceFilename": "snapseed_camera_capture_20260818_104535_118.heic"
+    "sourceFilename": "snapseed_camera_capture_20260818_104535_118.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5081",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5081-w2400.webp",
+    "src": "/private-photos/assets/v1/b99162cfd6ce07c948f96fa09375edc5a29ff3b7c2aeaad347a75ee9b4beb956.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5081-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5081-w1280.webp",
+        "src": "/private-photos/assets/v1/4e4f5bcda2faff4ad862d0b2add15fec46a98e475c62d815b62ee8bfd6ac1a81.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5081-w2400.webp",
+        "src": "/private-photos/assets/v1/b99162cfd6ce07c948f96fa09375edc5a29ff3b7c2aeaad347a75ee9b4beb956.webp",
         "width": 2400
       }
     ],
@@ -1199,23 +1024,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 10:49",
     "takenAt": "18 Aug · 10:49",
-    "sourceFilename": "IMG_5081.HEIC"
+    "sourceFilename": "IMG_5081.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260818-105419-043",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-105419-043-w2400.webp",
+    "src": "/private-photos/assets/v1/72add3104df7d9a09199ade6f976d0e34e5a3605ece3956903ab9f89177b9e1f.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-105419-043-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-105419-043-w1280.webp",
+        "src": "/private-photos/assets/v1/c493f2745e111db4209a22a64bc2fcf4bf0be3fd5d0e0eef56d3c6914e475e44.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-105419-043-w2400.webp",
+        "src": "/private-photos/assets/v1/72add3104df7d9a09199ade6f976d0e34e5a3605ece3956903ab9f89177b9e1f.webp",
         "width": 2400
       }
     ],
@@ -1225,23 +1048,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 10:54",
     "takenAt": "18 Aug · 10:54",
-    "sourceFilename": "snapseed_camera_capture_20260818_105419_043.heic"
+    "sourceFilename": "snapseed_camera_capture_20260818_105419_043.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260818-105455-450",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-105455-450-w2400.webp",
+    "src": "/private-photos/assets/v1/033ee94b19398b7216aca14564c6a33ada3954265e63d555d5eab846133bd3a3.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-105455-450-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-105455-450-w1280.webp",
+        "src": "/private-photos/assets/v1/976286363349dcb8e05134765ab8d76e80a6c70e5ce87862ed41ff3274ab0de6.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-105455-450-w2400.webp",
+        "src": "/private-photos/assets/v1/033ee94b19398b7216aca14564c6a33ada3954265e63d555d5eab846133bd3a3.webp",
         "width": 2400
       }
     ],
@@ -1251,27 +1072,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 10:54",
     "takenAt": "18 Aug · 10:54",
-    "sourceFilename": "snapseed_camera_capture_20260818_105455_450.heic"
+    "sourceFilename": "snapseed_camera_capture_20260818_105455_450.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-2870",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2870-w3200.webp",
+    "src": "/private-photos/assets/v1/dfa65b943f7101533af01d0070a5891ae1c0b73f5554066a2e0435f3eac1e7ab.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2870-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2870-w1280.webp",
+        "src": "/private-photos/assets/v1/7f182be2fc8a033c7ffaad6f07ffc3435775df94a6fb9e367b5877f8bb262405.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2870-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2870-w3200.webp",
+        "src": "/private-photos/assets/v1/dfa65b943f7101533af01d0070a5891ae1c0b73f5554066a2e0435f3eac1e7ab.webp",
         "width": 3200
       }
     ],
@@ -1281,27 +1096,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 11:02",
     "takenAt": "18 Aug · 11:02",
-    "sourceFilename": "IMG_2870.HEIC"
+    "sourceFilename": "IMG_2870.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260818-110323-609",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-110323-609-w3200.webp",
+    "src": "/private-photos/assets/v1/12599d89fdab2e1d8d52fb54cfdc578362d22f4caa6657cbf7c91aa7c188f2da.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-110323-609-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-110323-609-w1280.webp",
+        "src": "/private-photos/assets/v1/dbaf3ddf3bc8bdbd11c68fd321ad047087b412716184ac80f357f5af8701b021.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-110323-609-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-110323-609-w3200.webp",
+        "src": "/private-photos/assets/v1/12599d89fdab2e1d8d52fb54cfdc578362d22f4caa6657cbf7c91aa7c188f2da.webp",
         "width": 3200
       }
     ],
@@ -1311,27 +1120,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 11:03",
     "takenAt": "18 Aug · 11:03",
-    "sourceFilename": "snapseed_camera_capture_20260818_110323_609.heic"
+    "sourceFilename": "snapseed_camera_capture_20260818_110323_609.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-2880",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2880-w3200.webp",
+    "src": "/private-photos/assets/v1/aa50c748e08ac4951ef9e673c2ee8032c539f1d0c517567eda3156cf0882e2bb.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2880-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2880-w1280.webp",
+        "src": "/private-photos/assets/v1/921b024871d291d7a858cfa65dc49344cd7776c201373483cdfe19df4e299925.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2880-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2880-w3200.webp",
+        "src": "/private-photos/assets/v1/aa50c748e08ac4951ef9e673c2ee8032c539f1d0c517567eda3156cf0882e2bb.webp",
         "width": 3200
       }
     ],
@@ -1341,27 +1144,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 11:04",
     "takenAt": "18 Aug · 11:04",
-    "sourceFilename": "IMG_2880.HEIC"
+    "sourceFilename": "IMG_2880.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-2881",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2881-w3200.webp",
+    "src": "/private-photos/assets/v1/9f5e2eed91b9d18f48f31a2a353b8445bb61e26df35802de1e3f5f2d7bf7c113.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2881-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2881-w1280.webp",
+        "src": "/private-photos/assets/v1/21368647539159f34c43ba2332b81d3106a4be212494e9df247920a091a35291.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2881-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2881-w3200.webp",
+        "src": "/private-photos/assets/v1/9f5e2eed91b9d18f48f31a2a353b8445bb61e26df35802de1e3f5f2d7bf7c113.webp",
         "width": 3200
       }
     ],
@@ -1371,23 +1168,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 11:10",
     "takenAt": "18 Aug · 11:10",
-    "sourceFilename": "IMG_2881.HEIC"
+    "sourceFilename": "IMG_2881.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260818-111028-981",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-111028-981-w2400.webp",
+    "src": "/private-photos/assets/v1/4aaf3975c1fb153445615dd3bf3b54f4a0e732dbcbe1c9ef2f14dff8d834bf78.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-111028-981-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-111028-981-w1280.webp",
+        "src": "/private-photos/assets/v1/20a9189379c86881b94e2241388365ae1e2f9b07246fdab10cdb80b17fd3f990.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-111028-981-w2400.webp",
+        "src": "/private-photos/assets/v1/4aaf3975c1fb153445615dd3bf3b54f4a0e732dbcbe1c9ef2f14dff8d834bf78.webp",
         "width": 2400
       }
     ],
@@ -1397,23 +1192,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 11:10",
     "takenAt": "18 Aug · 11:10",
-    "sourceFilename": "snapseed_camera_capture_20260818_111028_981.heic"
+    "sourceFilename": "snapseed_camera_capture_20260818_111028_981.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-2883",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2883-w2316.webp",
+    "src": "/private-photos/assets/v1/7edac0faa995c0b190de46f20e3a74a7ec58066d6a6854058afe6447e6b7ca87.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2883-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2883-w1280.webp",
+        "src": "/private-photos/assets/v1/9f1f675b23b1b6f281d878eda6ee645838a540debfbe397efc60c79ff8c7f804.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2883-w2316.webp",
+        "src": "/private-photos/assets/v1/7edac0faa995c0b190de46f20e3a74a7ec58066d6a6854058afe6447e6b7ca87.webp",
         "width": 2316
       }
     ],
@@ -1423,23 +1216,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 12:15",
     "takenAt": "18 Aug · 12:15",
-    "sourceFilename": "IMG_2883.HEIC"
+    "sourceFilename": "IMG_2883.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1559",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1559-w2400.webp",
+    "src": "/private-photos/assets/v1/356f958407bbd3637882c299c8fc5d47ed50d6a9bf88e93dad30697505d34379.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1559-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1559-w1280.webp",
+        "src": "/private-photos/assets/v1/616298630ba0ce4d2026d94a0aba85321e9d56320be1593a6e97bffdcfb8c7c4.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1559-w2400.webp",
+        "src": "/private-photos/assets/v1/356f958407bbd3637882c299c8fc5d47ed50d6a9bf88e93dad30697505d34379.webp",
         "width": 2400
       }
     ],
@@ -1449,27 +1240,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 14:48",
     "takenAt": "18 Aug · 14:48",
-    "sourceFilename": "IMG_1559.HEIC"
+    "sourceFilename": "IMG_1559.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-2886",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2886-w3200.webp",
+    "src": "/private-photos/assets/v1/5ef4629bbb3f85b5c2c4e14b53d25256de0603ae6e13f84940442b4d1c3492a6.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2886-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2886-w1280.webp",
+        "src": "/private-photos/assets/v1/7402c8e6165e38fe0bd1f6e96973ad67b905e2c9e009dbc089368b328382830a.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2886-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2886-w3200.webp",
+        "src": "/private-photos/assets/v1/5ef4629bbb3f85b5c2c4e14b53d25256de0603ae6e13f84940442b4d1c3492a6.webp",
         "width": 3200
       }
     ],
@@ -1479,27 +1264,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 15:39",
     "takenAt": "18 Aug · 15:39",
-    "sourceFilename": "IMG_2886.HEIC"
+    "sourceFilename": "IMG_2886.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-2887",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2887-w3200.webp",
+    "src": "/private-photos/assets/v1/6d4a1fcee63b126a9f6a932cf951c71141fee536c8934d0febde15106e774648.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2887-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2887-w1280.webp",
+        "src": "/private-photos/assets/v1/24330808e2da750c36a559bc5e6cdb875020a3be8d770cf75a54c4c3d8761404.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2887-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2887-w3200.webp",
+        "src": "/private-photos/assets/v1/6d4a1fcee63b126a9f6a932cf951c71141fee536c8934d0febde15106e774648.webp",
         "width": 3200
       }
     ],
@@ -1509,23 +1288,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 15:40",
     "takenAt": "18 Aug · 15:40",
-    "sourceFilename": "IMG_2887.HEIC"
+    "sourceFilename": "IMG_2887.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260818-162911-897",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-162911-897-w2400.webp",
+    "src": "/private-photos/assets/v1/169fb581353dab3479d10bfe9f83d8ad3ed02ed260114f6457bb4be5cffb69a5.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-162911-897-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-162911-897-w1280.webp",
+        "src": "/private-photos/assets/v1/574d310d0e54a98dca492edd77401b2fd388a43765c6ee59047e4f6b939d70ed.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-162911-897-w2400.webp",
+        "src": "/private-photos/assets/v1/169fb581353dab3479d10bfe9f83d8ad3ed02ed260114f6457bb4be5cffb69a5.webp",
         "width": 2400
       }
     ],
@@ -1535,23 +1312,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 16:28",
     "takenAt": "18 Aug · 16:28",
-    "sourceFilename": "snapseed_camera_capture_20260818_162911_897.heic"
+    "sourceFilename": "snapseed_camera_capture_20260818_162911_897.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260818-162931-975",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-162931-975-w2400.webp",
+    "src": "/private-photos/assets/v1/5a1a059e361280ca9eccc86c37f6ca2ae74e272c5b7800ced402771654b26220.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-162931-975-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-162931-975-w1280.webp",
+        "src": "/private-photos/assets/v1/d92eb0d680abc3ede91a74854c9c1039de0899edb20026f4f978e56196eec28a.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260818-162931-975-w2400.webp",
+        "src": "/private-photos/assets/v1/5a1a059e361280ca9eccc86c37f6ca2ae74e272c5b7800ced402771654b26220.webp",
         "width": 2400
       }
     ],
@@ -1561,23 +1336,20 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 16:29",
     "takenAt": "18 Aug · 16:29",
-    "sourceFilename": "snapseed_camera_capture_20260818_162931_975.heic"
+    "sourceFilename": "snapseed_camera_capture_20260818_162931_975.heic",
+    "protected": true
   },
   {
     "id": "family-img-5098",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5098-w2400.webp",
+    "src": "/private-photos/assets/v1/464fa138fac3cb539ab855994b66509c47b4152adbddc03cae18b30ed6718af9.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5098-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5098-w1280.webp",
+        "src": "/private-photos/assets/v1/60d77ab9164c7fb9ea35cb802445ebc088f3fc4a350860f648523e2afbb9f97e.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5098-w2400.webp",
+        "src": "/private-photos/assets/v1/464fa138fac3cb539ab855994b66509c47b4152adbddc03cae18b30ed6718af9.webp",
         "width": 2400
       }
     ],
@@ -1587,23 +1359,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 16:30",
     "takenAt": "18 Aug · 16:30",
-    "sourceFilename": "IMG_5098.HEIC"
+    "sourceFilename": "IMG_5098.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5099",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5099-w2400.webp",
+    "src": "/private-photos/assets/v1/df572e41ae6d752e5ba7708d459cea53edf5ea7409bc28b2800e0f8b2c8e9a93.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5099-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5099-w1280.webp",
+        "src": "/private-photos/assets/v1/e82322b94ae4608c19e3b2d769599110c6a12c9aa67c5bb19d721d83d5a5251a.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5099-w2400.webp",
+        "src": "/private-photos/assets/v1/df572e41ae6d752e5ba7708d459cea53edf5ea7409bc28b2800e0f8b2c8e9a93.webp",
         "width": 2400
       }
     ],
@@ -1613,23 +1383,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 16:32",
     "takenAt": "18 Aug · 16:32",
-    "sourceFilename": "IMG_5099.HEIC"
+    "sourceFilename": "IMG_5099.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1584",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1584-w2400.webp",
+    "src": "/private-photos/assets/v1/567b48dd2c924ccd97596c52f5f4120142d3d9730f503ec4b55d7fdb41ff3c22.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1584-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1584-w1280.webp",
+        "src": "/private-photos/assets/v1/5be11b0b222e236e8f34a5cf29d3f7e07d27a62d510a0c359918385ee7c4f21f.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1584-w2400.webp",
+        "src": "/private-photos/assets/v1/567b48dd2c924ccd97596c52f5f4120142d3d9730f503ec4b55d7fdb41ff3c22.webp",
         "width": 2400
       }
     ],
@@ -1639,27 +1407,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 19:38",
     "takenAt": "18 Aug · 19:38",
-    "sourceFilename": "IMG_1584.HEIC"
+    "sourceFilename": "IMG_1584.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1589",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1589-w3200.webp",
+    "src": "/private-photos/assets/v1/bf43c54ed504360f2dc3c249105cb66619856f6714ca2557d5d0384a418ab47e.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1589-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1589-w1280.webp",
+        "src": "/private-photos/assets/v1/adecf4bc6c83a8746a069adb68cdaae93356a1c91ec9c96e5956acf4a110c67c.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1589-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1589-w3200.webp",
+        "src": "/private-photos/assets/v1/bf43c54ed504360f2dc3c249105cb66619856f6714ca2557d5d0384a418ab47e.webp",
         "width": 3200
       }
     ],
@@ -1669,23 +1431,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 19:39",
     "takenAt": "18 Aug · 19:39",
-    "sourceFilename": "IMG_1589.HEIC"
+    "sourceFilename": "IMG_1589.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5102",
     "dayId": "family-d6",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5102-w2400.webp",
+    "src": "/private-photos/assets/v1/f99f6e88edf951954ed97306dbbf2912cfd923affc68a484139c719a4121d677.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5102-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5102-w1280.webp",
+        "src": "/private-photos/assets/v1/7fff7cf2411e9853aa78430119daa159ee48cb1317f48f25aa582bc3639420c4.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5102-w2400.webp",
+        "src": "/private-photos/assets/v1/f99f6e88edf951954ed97306dbbf2912cfd923affc68a484139c719a4121d677.webp",
         "width": 2400
       }
     ],
@@ -1695,23 +1455,21 @@
     "alt": "Family trip photograph from Mürren",
     "caption": "Brienz, Interlaken & Mürren · 20:24",
     "takenAt": "18 Aug · 20:24",
-    "sourceFilename": "IMG_5102.HEIC"
+    "sourceFilename": "IMG_5102.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1596",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1596-w2400.webp",
+    "src": "/private-photos/assets/v1/5b56c2326e7ffe1096e2bbdb011cf663df53de931163db0d223efd882cd01dbf.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1596-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1596-w1280.webp",
+        "src": "/private-photos/assets/v1/d70dd0e0ff22468d2b1cbcef4b5b44d6671e4da906043f3f9c6eb5db0dbdd1d2.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1596-w2400.webp",
+        "src": "/private-photos/assets/v1/5b56c2326e7ffe1096e2bbdb011cf663df53de931163db0d223efd882cd01dbf.webp",
         "width": 2400
       }
     ],
@@ -1721,27 +1479,21 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 14:48",
     "takenAt": "19 Aug · 14:48",
-    "sourceFilename": "IMG_1596.HEIC"
+    "sourceFilename": "IMG_1596.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1598",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1598-w3200.webp",
+    "src": "/private-photos/assets/v1/b618df45c99e7da4d5306d011be16540eb320bb935d83421e53da88b04b3714b.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1598-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1598-w1280.webp",
+        "src": "/private-photos/assets/v1/9f1c47519d196d563614e62e11eb01d6b417f122a28da2f6df137f69140ecde1.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1598-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1598-w3200.webp",
+        "src": "/private-photos/assets/v1/b618df45c99e7da4d5306d011be16540eb320bb935d83421e53da88b04b3714b.webp",
         "width": 3200
       }
     ],
@@ -1751,27 +1503,21 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 15:15",
     "takenAt": "19 Aug · 15:15",
-    "sourceFilename": "IMG_1598.HEIC"
+    "sourceFilename": "IMG_1598.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1605",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1605-w3200.webp",
+    "src": "/private-photos/assets/v1/5586fa7693d83c0b71da8627911d5631fe908b05519eef8e85285d12265dfa22.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1605-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1605-w1280.webp",
+        "src": "/private-photos/assets/v1/4c35e2082037d071eb72078d63d48ae3425e0485c6510b7ce1ac5c8c1c3f427f.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1605-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1605-w3200.webp",
+        "src": "/private-photos/assets/v1/5586fa7693d83c0b71da8627911d5631fe908b05519eef8e85285d12265dfa22.webp",
         "width": 3200
       }
     ],
@@ -1781,27 +1527,21 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 15:44",
     "takenAt": "19 Aug · 15:44",
-    "sourceFilename": "IMG_1605.HEIC"
+    "sourceFilename": "IMG_1605.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1606",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1606-w3200.webp",
+    "src": "/private-photos/assets/v1/88cc912a9f44df48f92b6baafb93427ec8625350e615e78d1f71863df38858ce.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1606-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1606-w1280.webp",
+        "src": "/private-photos/assets/v1/7862a53cc00ecc1da463f955197110bb6e4a14aaa27299e7e3a4b730693ab912.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1606-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1606-w3200.webp",
+        "src": "/private-photos/assets/v1/88cc912a9f44df48f92b6baafb93427ec8625350e615e78d1f71863df38858ce.webp",
         "width": 3200
       }
     ],
@@ -1811,27 +1551,21 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 19:55",
     "takenAt": "19 Aug · 19:55",
-    "sourceFilename": "IMG_1606.HEIC"
+    "sourceFilename": "IMG_1606.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260819-203544-659",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203544-659-w3200.webp",
+    "src": "/private-photos/assets/v1/e2c4eea6d1a7df60cd5c6f80258f89fc6b1ae271c7e4980637f3a54aa67718a7.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203544-659-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203544-659-w1280.webp",
+        "src": "/private-photos/assets/v1/79df931b7f12b281841f72a6c26c15c1769eb5708eb16646ee3dd09efa0dc1af.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203544-659-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203544-659-w3200.webp",
+        "src": "/private-photos/assets/v1/e2c4eea6d1a7df60cd5c6f80258f89fc6b1ae271c7e4980637f3a54aa67718a7.webp",
         "width": 3200
       }
     ],
@@ -1841,23 +1575,20 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 19:55",
     "takenAt": "19 Aug · 19:55",
-    "sourceFilename": "snapseed_camera_capture_20260819_203544_659.heic"
+    "sourceFilename": "snapseed_camera_capture_20260819_203544_659.heic",
+    "protected": true
   },
   {
     "id": "family-img-1607",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1607-w2400.webp",
+    "src": "/private-photos/assets/v1/5dc3b4a1b231ab2fed89f2c3dcc5f030e22cd5f4201ab7cc0f5391b3aa101388.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1607-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1607-w1280.webp",
+        "src": "/private-photos/assets/v1/b5e388b0987544207129334e2fd6c240adf97c42143a6ad3ea420d8e191252fd.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1607-w2400.webp",
+        "src": "/private-photos/assets/v1/5dc3b4a1b231ab2fed89f2c3dcc5f030e22cd5f4201ab7cc0f5391b3aa101388.webp",
         "width": 2400
       }
     ],
@@ -1867,27 +1598,21 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 19:56",
     "takenAt": "19 Aug · 19:56",
-    "sourceFilename": "IMG_1607.HEIC"
+    "sourceFilename": "IMG_1607.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1611",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1611-w3200.webp",
+    "src": "/private-photos/assets/v1/0559a23895a17049dbcce0ac329ffb0e16012bb925c2effbf90a217ccf0a5e58.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1611-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1611-w1280.webp",
+        "src": "/private-photos/assets/v1/b540e16d75b3180de136f1c99e692a204633e5672597480ec3db5cf2adc4555c.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1611-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1611-w3200.webp",
+        "src": "/private-photos/assets/v1/0559a23895a17049dbcce0ac329ffb0e16012bb925c2effbf90a217ccf0a5e58.webp",
         "width": 3200
       }
     ],
@@ -1897,23 +1622,21 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 20:05",
     "takenAt": "19 Aug · 20:05",
-    "sourceFilename": "IMG_1611.HEIC"
+    "sourceFilename": "IMG_1611.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260819-201947-521",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-201947-521-w2400.webp",
+    "src": "/private-photos/assets/v1/233579be1c1f5aafc3407de216f759e13ba3bc2fc8e58f8b1c9018e2564343da.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-201947-521-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-201947-521-w1280.webp",
+        "src": "/private-photos/assets/v1/0f18922b9731ae08891db00b6c05e1e8d1c27fef0ede89e56e57fb39ed4ca294.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-201947-521-w2400.webp",
+        "src": "/private-photos/assets/v1/233579be1c1f5aafc3407de216f759e13ba3bc2fc8e58f8b1c9018e2564343da.webp",
         "width": 2400
       }
     ],
@@ -1923,27 +1646,21 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 20:19",
     "takenAt": "19 Aug · 20:19",
-    "sourceFilename": "snapseed_camera_capture_20260819_201947_521.heic"
+    "sourceFilename": "snapseed_camera_capture_20260819_201947_521.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260819-202000-680",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-202000-680-w3200.webp",
+    "src": "/private-photos/assets/v1/856405075de7ac539f4fe6572804e9d8844acebda444dd8b623c5930478490d7.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-202000-680-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-202000-680-w1280.webp",
+        "src": "/private-photos/assets/v1/11a74161ec12c69c155cbf4b60b0a5194994dfa15ab933fb04d3bc8efd62ce60.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-202000-680-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-202000-680-w3200.webp",
+        "src": "/private-photos/assets/v1/856405075de7ac539f4fe6572804e9d8844acebda444dd8b623c5930478490d7.webp",
         "width": 3200
       }
     ],
@@ -1953,23 +1670,21 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 20:19",
     "takenAt": "19 Aug · 20:19",
-    "sourceFilename": "snapseed_camera_capture_20260819_202000_680.heic"
+    "sourceFilename": "snapseed_camera_capture_20260819_202000_680.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260819-203738-977",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203738-977-w2400.webp",
+    "src": "/private-photos/assets/v1/1d1900f637e9e33fd16e9f59e9b7c6a4d396ab25c23745d6afdf07c83cbfa280.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203738-977-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203738-977-w1280.webp",
+        "src": "/private-photos/assets/v1/8c8196c64272c6e25be324c3c97a07465f0d8676576ad2639c4a1b7516ca44c4.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203738-977-w2400.webp",
+        "src": "/private-photos/assets/v1/1d1900f637e9e33fd16e9f59e9b7c6a4d396ab25c23745d6afdf07c83cbfa280.webp",
         "width": 2400
       }
     ],
@@ -1979,23 +1694,20 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 20:37",
     "takenAt": "19 Aug · 20:37",
-    "sourceFilename": "snapseed_camera_capture_20260819_203738_977.heic"
+    "sourceFilename": "snapseed_camera_capture_20260819_203738_977.heic",
+    "protected": true
   },
   {
     "id": "family-snapseed-camera-capture-20260819-203744-788",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203744-788-w2400.webp",
+    "src": "/private-photos/assets/v1/641b5a525495d1261fc78b7928f49fd1e6bc5a9724f55f45bd37109d3f09c069.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203744-788-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203744-788-w1280.webp",
+        "src": "/private-photos/assets/v1/27418642d54effe59cf3d830f00a2b4bf856500f9ea9260341f4b386a7492777.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-203744-788-w2400.webp",
+        "src": "/private-photos/assets/v1/641b5a525495d1261fc78b7928f49fd1e6bc5a9724f55f45bd37109d3f09c069.webp",
         "width": 2400
       }
     ],
@@ -2005,23 +1717,20 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 20:37",
     "takenAt": "19 Aug · 20:37",
-    "sourceFilename": "snapseed_camera_capture_20260819_203744_788.heic"
+    "sourceFilename": "snapseed_camera_capture_20260819_203744_788.heic",
+    "protected": true
   },
   {
     "id": "family-snapseed-camera-capture-20260819-211851-678",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-211851-678-w2400.webp",
+    "src": "/private-photos/assets/v1/7582f549a23572ced4582e2204cbda4878ffb21e66b65bf09de7b49e0a1a94b4.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-211851-678-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-211851-678-w1280.webp",
+        "src": "/private-photos/assets/v1/be6f1ef558011ea4058fd8ad445502fee07552d1665b784a86fdf59e4d9e2bc5.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-211851-678-w2400.webp",
+        "src": "/private-photos/assets/v1/7582f549a23572ced4582e2204cbda4878ffb21e66b65bf09de7b49e0a1a94b4.webp",
         "width": 2400
       }
     ],
@@ -2031,27 +1740,20 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 21:18",
     "takenAt": "19 Aug · 21:18",
-    "sourceFilename": "snapseed_camera_capture_20260819_211851_678.heic"
+    "sourceFilename": "snapseed_camera_capture_20260819_211851_678.heic",
+    "protected": true
   },
   {
     "id": "family-snapseed-camera-capture-20260819-211902-057",
     "dayId": "family-d7",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-211902-057-w3200.webp",
+    "src": "/private-photos/assets/v1/e6fd84e25484d7ef5acc2eb50aa32c5b10340ffb0ceeb46fed8d38be24e35a36.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-211902-057-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-211902-057-w1280.webp",
+        "src": "/private-photos/assets/v1/a0f8c67744e48b18ba6f79c8256d5b005c3070c79bccc18e59725bd935178ae0.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-211902-057-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260819-211902-057-w3200.webp",
+        "src": "/private-photos/assets/v1/e6fd84e25484d7ef5acc2eb50aa32c5b10340ffb0ceeb46fed8d38be24e35a36.webp",
         "width": 3200
       }
     ],
@@ -2061,27 +1763,20 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 21:19",
     "takenAt": "19 Aug · 21:19",
-    "sourceFilename": "snapseed_camera_capture_20260819_211902_057.heic"
+    "sourceFilename": "snapseed_camera_capture_20260819_211902_057.heic",
+    "protected": true
   },
   {
     "id": "family-img-1613",
     "dayId": "family-d8",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1613-w3200.webp",
+    "src": "/private-photos/assets/v1/e41a2b6f391620aeae92b05771d9480290667a51e0f6a4f9e582b7532fdedf72.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1613-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1613-w1280.webp",
+        "src": "/private-photos/assets/v1/5a784e1dd11b889e53f5e48c37775216bff0de35495725a4865ddb4573ed305e.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1613-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1613-w3200.webp",
+        "src": "/private-photos/assets/v1/e41a2b6f391620aeae92b05771d9480290667a51e0f6a4f9e582b7532fdedf72.webp",
         "width": 3200
       }
     ],
@@ -2091,23 +1786,21 @@
     "alt": "Family trip photograph from Como",
     "caption": "Como · 08:30",
     "takenAt": "20 Aug · 08:30",
-    "sourceFilename": "IMG_1613.HEIC"
+    "sourceFilename": "IMG_1613.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260822-140341-832",
     "dayId": "family-d10",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-140341-832-w2400.webp",
+    "src": "/private-photos/assets/v1/cd39477a94d17367327854a62c4e6292ac95fcfeb7a8668713f5bb43eaea22ca.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-140341-832-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-140341-832-w1280.webp",
+        "src": "/private-photos/assets/v1/c3c3bcfd7b8b355557fd61114742ea8264db18c3ad250d46a22bffd170066bd8.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-140341-832-w2400.webp",
+        "src": "/private-photos/assets/v1/cd39477a94d17367327854a62c4e6292ac95fcfeb7a8668713f5bb43eaea22ca.webp",
         "width": 2400
       }
     ],
@@ -2117,23 +1810,21 @@
     "alt": "Family trip photograph from Bellagio",
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 14:03",
     "takenAt": "22 Aug · 14:03",
-    "sourceFilename": "snapseed_camera_capture_20260822_140341_832.heic"
+    "sourceFilename": "snapseed_camera_capture_20260822_140341_832.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5119",
     "dayId": "family-d10",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5119-w2400.webp",
+    "src": "/private-photos/assets/v1/5dfd2ea48d188e42ccf01489dcc297fccf3b514656c80b4de65bbf86ca47bb9f.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5119-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5119-w1280.webp",
+        "src": "/private-photos/assets/v1/287b25d91283f6e14a31592ebb0666b2c37888969e3735b851e444f6a7e58b5b.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5119-w2400.webp",
+        "src": "/private-photos/assets/v1/5dfd2ea48d188e42ccf01489dcc297fccf3b514656c80b4de65bbf86ca47bb9f.webp",
         "width": 2400
       }
     ],
@@ -2143,23 +1834,21 @@
     "alt": "Family trip photograph from Bellagio",
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 14:09",
     "takenAt": "22 Aug · 14:09",
-    "sourceFilename": "IMG_5119.HEIC"
+    "sourceFilename": "IMG_5119.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5123",
     "dayId": "family-d10",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5123-w2400.webp",
+    "src": "/private-photos/assets/v1/e95223366c9bf5eec3843af08295f46e8209e3c443ffa88250b65b35d2cd8f73.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5123-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5123-w1280.webp",
+        "src": "/private-photos/assets/v1/29cd8fd7bf57c260dcf7950095cf13277c15ea7bd6bc55c84ca064b26b82789c.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5123-w2400.webp",
+        "src": "/private-photos/assets/v1/e95223366c9bf5eec3843af08295f46e8209e3c443ffa88250b65b35d2cd8f73.webp",
         "width": 2400
       }
     ],
@@ -2169,27 +1858,20 @@
     "alt": "Family trip photograph from Bellagio",
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 14:11",
     "takenAt": "22 Aug · 14:11",
-    "sourceFilename": "IMG_5123.HEIC"
+    "sourceFilename": "IMG_5123.HEIC",
+    "protected": true
   },
   {
     "id": "family-img-5127",
     "dayId": "family-d10",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5127-w3200.webp",
+    "src": "/private-photos/assets/v1/3b94d39acabb3485363a77f8a1a160ac323384f8e7e333c563262a2ab64820bb.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5127-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5127-w1280.webp",
+        "src": "/private-photos/assets/v1/96ef5b48696814858f15113d0e1cf89627d691a3d68032ca31574dcf7e48f02a.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5127-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5127-w3200.webp",
+        "src": "/private-photos/assets/v1/3b94d39acabb3485363a77f8a1a160ac323384f8e7e333c563262a2ab64820bb.webp",
         "width": 3200
       }
     ],
@@ -2199,23 +1881,21 @@
     "alt": "Family trip photograph from Bellagio",
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 14:11",
     "takenAt": "22 Aug · 14:11",
-    "sourceFilename": "IMG_5127.HEIC"
+    "sourceFilename": "IMG_5127.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5130",
     "dayId": "family-d10",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5130-w2400.webp",
+    "src": "/private-photos/assets/v1/61bb9eeecac9cff8860f62b8cc9966443c8cb88c8f7b9d9eef49aae9593a3e51.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5130-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5130-w1280.webp",
+        "src": "/private-photos/assets/v1/54569e5b1f5280cc4c0d99e2131bb8577c91993ea126bccc2be99b9847d24afd.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5130-w2400.webp",
+        "src": "/private-photos/assets/v1/61bb9eeecac9cff8860f62b8cc9966443c8cb88c8f7b9d9eef49aae9593a3e51.webp",
         "width": 2400
       }
     ],
@@ -2225,23 +1905,20 @@
     "alt": "Family trip photograph from Bellagio",
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 15:08",
     "takenAt": "22 Aug · 15:08",
-    "sourceFilename": "IMG_5130.HEIC"
+    "sourceFilename": "IMG_5130.HEIC",
+    "protected": true
   },
   {
     "id": "family-img-5134",
     "dayId": "family-d10",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5134-w2400.webp",
+    "src": "/private-photos/assets/v1/4341256f4adc3267f02c1c93310eea7eecc4284638137f3a0c74f779a8921185.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5134-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5134-w1280.webp",
+        "src": "/private-photos/assets/v1/817ad4a4a98ef8a23587188ce337c39442d8d1c3a459b0482ca35df4bf0c21cf.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5134-w2400.webp",
+        "src": "/private-photos/assets/v1/4341256f4adc3267f02c1c93310eea7eecc4284638137f3a0c74f779a8921185.webp",
         "width": 2400
       }
     ],
@@ -2251,23 +1928,20 @@
     "alt": "Family trip photograph from Bellagio",
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 15:09",
     "takenAt": "22 Aug · 15:09",
-    "sourceFilename": "IMG_5134.HEIC"
+    "sourceFilename": "IMG_5134.HEIC",
+    "protected": true
   },
   {
     "id": "family-snapseed-camera-capture-20260822-151053-865",
     "dayId": "family-d10",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-151053-865-w2400.webp",
+    "src": "/private-photos/assets/v1/10b8db0363c0ee3cb76655e9e4b462919385ec18b7e72708c884b1ac89d125b7.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-151053-865-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-151053-865-w1280.webp",
+        "src": "/private-photos/assets/v1/ecd9279cc06fa820a075fa31bb7103af9f8a7408855d3259d5ecd579832c806a.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-151053-865-w2400.webp",
+        "src": "/private-photos/assets/v1/10b8db0363c0ee3cb76655e9e4b462919385ec18b7e72708c884b1ac89d125b7.webp",
         "width": 2400
       }
     ],
@@ -2277,27 +1951,21 @@
     "alt": "Family trip photograph from Bellagio",
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 15:10",
     "takenAt": "22 Aug · 15:10",
-    "sourceFilename": "snapseed_camera_capture_20260822_151053_865.heic"
+    "sourceFilename": "snapseed_camera_capture_20260822_151053_865.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5136",
     "dayId": "family-d10",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5136-w3200.webp",
+    "src": "/private-photos/assets/v1/4e6dcbf42d5bf95da97a9c329376b27fc968aaf214117391e977e837f1fd0346.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5136-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5136-w1280.webp",
+        "src": "/private-photos/assets/v1/3c970117ae4b27b7e0a9cf798cdda7f5cfba3075ca9a8b9c47b4506d5a90fe9e.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5136-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5136-w3200.webp",
+        "src": "/private-photos/assets/v1/4e6dcbf42d5bf95da97a9c329376b27fc968aaf214117391e977e837f1fd0346.webp",
         "width": 3200
       }
     ],
@@ -2307,23 +1975,21 @@
     "alt": "Family trip photograph from Bellagio",
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 15:25",
     "takenAt": "22 Aug · 15:25",
-    "sourceFilename": "IMG_5136.HEIC"
+    "sourceFilename": "IMG_5136.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260822-154412-930",
     "dayId": "family-d10",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-154412-930-w2400.webp",
+    "src": "/private-photos/assets/v1/e99f7f1f75649ea28bb9fff410b424b57012092699b1376f47012235c03124ca.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-154412-930-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-154412-930-w1280.webp",
+        "src": "/private-photos/assets/v1/01f1b0d0f185869d6cb595920cc879c16a5e727bac15d94cc2a82e64db860c14.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-154412-930-w2400.webp",
+        "src": "/private-photos/assets/v1/e99f7f1f75649ea28bb9fff410b424b57012092699b1376f47012235c03124ca.webp",
         "width": 2400
       }
     ],
@@ -2333,23 +1999,21 @@
     "alt": "Family trip photograph from Bellagio",
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 15:44",
     "takenAt": "22 Aug · 15:44",
-    "sourceFilename": "snapseed_camera_capture_20260822_154412_930.heic"
+    "sourceFilename": "snapseed_camera_capture_20260822_154412_930.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260822-174404-292",
     "dayId": "family-d10",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-174404-292-w2400.webp",
+    "src": "/private-photos/assets/v1/53cd8a7aad05ca36907b42b7936d37f86b481db13336be0d65bb5210ef5bf491.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-174404-292-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-174404-292-w1280.webp",
+        "src": "/private-photos/assets/v1/4eafa55445a6c46b7840b90692deb9a169f110420da2f9e56516a6e9804999a6.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-174404-292-w2400.webp",
+        "src": "/private-photos/assets/v1/53cd8a7aad05ca36907b42b7936d37f86b481db13336be0d65bb5210ef5bf491.webp",
         "width": 2400
       }
     ],
@@ -2359,27 +2023,21 @@
     "alt": "Family trip photograph from Bellagio",
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 17:43",
     "takenAt": "22 Aug · 17:43",
-    "sourceFilename": "snapseed_camera_capture_20260822_174404_292.heic"
+    "sourceFilename": "snapseed_camera_capture_20260822_174404_292.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260822-175328-988",
     "dayId": "family-d10",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-175328-988-w3200.webp",
+    "src": "/private-photos/assets/v1/7646b36fa2c9cae2f5fe8c1ab10dfa9efa03a17ab888ec868a77318b0e7fa367.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-175328-988-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-175328-988-w1280.webp",
+        "src": "/private-photos/assets/v1/efac95b3cfc3bf145dc6fa5a6bb0558a3f0c196a74ce71a3e965d483fbd558d8.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-175328-988-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260822-175328-988-w3200.webp",
+        "src": "/private-photos/assets/v1/7646b36fa2c9cae2f5fe8c1ab10dfa9efa03a17ab888ec868a77318b0e7fa367.webp",
         "width": 3200
       }
     ],
@@ -2389,23 +2047,21 @@
     "alt": "Family trip photograph from Bellagio",
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 17:51",
     "takenAt": "22 Aug · 17:51",
-    "sourceFilename": "snapseed_camera_capture_20260822_175328_988.heic"
+    "sourceFilename": "snapseed_camera_capture_20260822_175328_988.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260824-114638-775",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-114638-775-w2400.webp",
+    "src": "/private-photos/assets/v1/fa14a4fd50d0aecb2084de20317aa0b363fcb81152cc6abf7be877fe617128ee.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-114638-775-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-114638-775-w1280.webp",
+        "src": "/private-photos/assets/v1/6a74f4969e4aa96f5689324c7c3cd38846b0ca93a50526e68bda520a269e7c75.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-114638-775-w2400.webp",
+        "src": "/private-photos/assets/v1/fa14a4fd50d0aecb2084de20317aa0b363fcb81152cc6abf7be877fe617128ee.webp",
         "width": 2400
       }
     ],
@@ -2415,23 +2071,20 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 11:46",
     "takenAt": "24 Aug · 11:46",
-    "sourceFilename": "snapseed_camera_capture_20260824_114638_775.heic"
+    "sourceFilename": "snapseed_camera_capture_20260824_114638_775.heic",
+    "protected": true
   },
   {
     "id": "family-snapseed-camera-capture-20260824-114643-710",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-114643-710-w2400.webp",
+    "src": "/private-photos/assets/v1/b92cb70b537b948894da99efa1f86fd66ed9998aef52e6186a69e726dbcb7174.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-114643-710-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-114643-710-w1280.webp",
+        "src": "/private-photos/assets/v1/0250493922246a1403969dd394021f226dc42b2c231c61a7a3a256c708cd0993.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-114643-710-w2400.webp",
+        "src": "/private-photos/assets/v1/b92cb70b537b948894da99efa1f86fd66ed9998aef52e6186a69e726dbcb7174.webp",
         "width": 2400
       }
     ],
@@ -2441,23 +2094,21 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 11:46",
     "takenAt": "24 Aug · 11:46",
-    "sourceFilename": "snapseed_camera_capture_20260824_114643_710.heic"
+    "sourceFilename": "snapseed_camera_capture_20260824_114643_710.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5149",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5149-w2400.webp",
+    "src": "/private-photos/assets/v1/f6727c92fbd1401bb7477de9734bb7fee54191ca7ea4893d1ea6df5700f82afe.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5149-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5149-w1280.webp",
+        "src": "/private-photos/assets/v1/bde3c486158c545d6f3e6b500033c4fcc141e48ab369f419f23f27cca60e6d65.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5149-w2400.webp",
+        "src": "/private-photos/assets/v1/f6727c92fbd1401bb7477de9734bb7fee54191ca7ea4893d1ea6df5700f82afe.webp",
         "width": 2400
       }
     ],
@@ -2467,23 +2118,21 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 11:53",
     "takenAt": "24 Aug · 11:53",
-    "sourceFilename": "IMG_5149.HEIC"
+    "sourceFilename": "IMG_5149.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5153",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5153-w2400.webp",
+    "src": "/private-photos/assets/v1/c039ab249364d5ad01328d4f62acced3f84225d3d912d15aab8984a776991f7c.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5153-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5153-w1280.webp",
+        "src": "/private-photos/assets/v1/64c197a1893fb315efb4424aab1e458ff678e7d0582375872892d99eb8f1a7f5.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5153-w2400.webp",
+        "src": "/private-photos/assets/v1/c039ab249364d5ad01328d4f62acced3f84225d3d912d15aab8984a776991f7c.webp",
         "width": 2400
       }
     ],
@@ -2493,23 +2142,20 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 12:50",
     "takenAt": "24 Aug · 12:50",
-    "sourceFilename": "IMG_5153.HEIC"
+    "sourceFilename": "IMG_5153.HEIC",
+    "protected": true
   },
   {
     "id": "family-img-5157",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5157-w2400.webp",
+    "src": "/private-photos/assets/v1/d7a45ba0c80deb2e87ab678266674734bf2f53c6cab2aaa525dc6553bfc2f7b8.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5157-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5157-w1280.webp",
+        "src": "/private-photos/assets/v1/39c595545f1c7eb2f325019238760c47eade21f603180d43694968c6f8465cbf.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5157-w2400.webp",
+        "src": "/private-photos/assets/v1/d7a45ba0c80deb2e87ab678266674734bf2f53c6cab2aaa525dc6553bfc2f7b8.webp",
         "width": 2400
       }
     ],
@@ -2519,23 +2165,21 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 12:50",
     "takenAt": "24 Aug · 12:50",
-    "sourceFilename": "IMG_5157.HEIC"
+    "sourceFilename": "IMG_5157.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5158",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5158-w2400.webp",
+    "src": "/private-photos/assets/v1/384ebec5133a47b8f71dab1cf7ddbec45895c625e39cd5b49b71d1395918aa8d.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5158-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5158-w1280.webp",
+        "src": "/private-photos/assets/v1/90f7a755565fae20d0fee2b035e0cf968aa88c95a2d1a455f40978d9273d994d.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5158-w2400.webp",
+        "src": "/private-photos/assets/v1/384ebec5133a47b8f71dab1cf7ddbec45895c625e39cd5b49b71d1395918aa8d.webp",
         "width": 2400
       }
     ],
@@ -2545,23 +2189,20 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 12:50",
     "takenAt": "24 Aug · 12:50",
-    "sourceFilename": "IMG_5158.HEIC"
+    "sourceFilename": "IMG_5158.HEIC",
+    "protected": true
   },
   {
     "id": "family-img-5159",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5159-w2400.webp",
+    "src": "/private-photos/assets/v1/65305df9e3ecdca7ba24ea36c88cca6ecd47e6caec60d88d05bd03d3e181380a.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5159-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5159-w1280.webp",
+        "src": "/private-photos/assets/v1/ca2bafb684d6a86bde71b9fb8528ebeec763b54f072cba36e3f4c49d5abf4fb7.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5159-w2400.webp",
+        "src": "/private-photos/assets/v1/65305df9e3ecdca7ba24ea36c88cca6ecd47e6caec60d88d05bd03d3e181380a.webp",
         "width": 2400
       }
     ],
@@ -2571,23 +2212,20 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 12:50",
     "takenAt": "24 Aug · 12:50",
-    "sourceFilename": "IMG_5159.HEIC"
+    "sourceFilename": "IMG_5159.HEIC",
+    "protected": true
   },
   {
     "id": "family-img-2987",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2987-w2400.webp",
+    "src": "/private-photos/assets/v1/11b96024e2658801263aa401035a78c2f1536ee3ec10e246588d68c9f9cfac06.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2987-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2987-w1280.webp",
+        "src": "/private-photos/assets/v1/69e0ebae5d3f833befb0f5a2ba44e40c126f762e63eb16f6c6a2e1338c4683ad.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-2987-w2400.webp",
+        "src": "/private-photos/assets/v1/11b96024e2658801263aa401035a78c2f1536ee3ec10e246588d68c9f9cfac06.webp",
         "width": 2400
       }
     ],
@@ -2597,23 +2235,21 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 14:23",
     "takenAt": "24 Aug · 14:23",
-    "sourceFilename": "IMG_2987.HEIC"
+    "sourceFilename": "IMG_2987.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1750",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1750-w2400.webp",
+    "src": "/private-photos/assets/v1/3d07568ee055887fa542fde08a8b9022822bbcf8f455f6e2c69b637750187a67.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1750-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1750-w1280.webp",
+        "src": "/private-photos/assets/v1/e0432428446b989790b7bab9dfb50b6216964ea7939e6b7ff0618c997a5d6dd6.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1750-w2400.webp",
+        "src": "/private-photos/assets/v1/3d07568ee055887fa542fde08a8b9022822bbcf8f455f6e2c69b637750187a67.webp",
         "width": 2400
       }
     ],
@@ -2623,27 +2259,20 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 14:27",
     "takenAt": "24 Aug · 14:27",
-    "sourceFilename": "IMG_1750.HEIC"
+    "sourceFilename": "IMG_1750.HEIC",
+    "protected": true
   },
   {
     "id": "family-img-1754",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1754-w3200.webp",
+    "src": "/private-photos/assets/v1/43f0785c094fa17dd210e60d393115847a77d959a993e785f0312ecf8e3c5b7c.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1754-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1754-w1280.webp",
+        "src": "/private-photos/assets/v1/20d69a2bceb368aff7cc4259ab756a5a71c7591870fbe18138830daf6baad8e8.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1754-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1754-w3200.webp",
+        "src": "/private-photos/assets/v1/43f0785c094fa17dd210e60d393115847a77d959a993e785f0312ecf8e3c5b7c.webp",
         "width": 3200
       }
     ],
@@ -2653,27 +2282,21 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 14:52",
     "takenAt": "24 Aug · 14:52",
-    "sourceFilename": "IMG_1754.HEIC"
+    "sourceFilename": "IMG_1754.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1756",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1756-w3200.webp",
+    "src": "/private-photos/assets/v1/7316f51aecf999a144fdcb04e339d8ea596b91d60c290fcb3c6c878797680e9d.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1756-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1756-w1280.webp",
+        "src": "/private-photos/assets/v1/37db2dde7c696da28f4ab42d62e345f8be4c0bd0e9bf1ee962f7c0e1ed6dc284.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1756-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1756-w3200.webp",
+        "src": "/private-photos/assets/v1/7316f51aecf999a144fdcb04e339d8ea596b91d60c290fcb3c6c878797680e9d.webp",
         "width": 3200
       }
     ],
@@ -2683,27 +2306,21 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 15:05",
     "takenAt": "24 Aug · 15:05",
-    "sourceFilename": "IMG_1756.HEIC"
+    "sourceFilename": "IMG_1756.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1759",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1759-w3200.webp",
+    "src": "/private-photos/assets/v1/08ab45ed8e52b6588b44b57bd466d1de37e72561c30334421facf1f28bc1620c.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1759-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1759-w1280.webp",
+        "src": "/private-photos/assets/v1/d0784806cd61ac05adc56ef020bc8353918a08d3f65bd9f82f52c2d09ef8335b.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1759-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1759-w3200.webp",
+        "src": "/private-photos/assets/v1/08ab45ed8e52b6588b44b57bd466d1de37e72561c30334421facf1f28bc1620c.webp",
         "width": 3200
       }
     ],
@@ -2713,27 +2330,20 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 15:07",
     "takenAt": "24 Aug · 15:07",
-    "sourceFilename": "IMG_1759.HEIC"
+    "sourceFilename": "IMG_1759.HEIC",
+    "protected": true
   },
   {
     "id": "family-snapseed-camera-capture-20260824-150714-906",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-150714-906-w3200.webp",
+    "src": "/private-photos/assets/v1/e6bdac10ee7f0e3b361ae4045a0a463d9c271f89ce5374f43737407fa7de359f.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-150714-906-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-150714-906-w1280.webp",
+        "src": "/private-photos/assets/v1/ff8a186bdd6ee866caee865dd93bac8fafcf6bc09f639e3f24be2446f58060c8.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-150714-906-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-150714-906-w3200.webp",
+        "src": "/private-photos/assets/v1/e6bdac10ee7f0e3b361ae4045a0a463d9c271f89ce5374f43737407fa7de359f.webp",
         "width": 3200
       }
     ],
@@ -2743,23 +2353,21 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 15:07",
     "takenAt": "24 Aug · 15:07",
-    "sourceFilename": "snapseed_camera_capture_20260824_150714_906.heic"
+    "sourceFilename": "snapseed_camera_capture_20260824_150714_906.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1761",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1761-w2400.webp",
+    "src": "/private-photos/assets/v1/48d7ea1fcd0256abf37b0784f01e6816d2bca853322a8cdea87ba2ef273a59fd.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1761-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1761-w1280.webp",
+        "src": "/private-photos/assets/v1/ba78d212fe7aadceaee3b90e6fc3937528c7829fbe88fb82c27e9e1a98865105.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1761-w2400.webp",
+        "src": "/private-photos/assets/v1/48d7ea1fcd0256abf37b0784f01e6816d2bca853322a8cdea87ba2ef273a59fd.webp",
         "width": 2400
       }
     ],
@@ -2769,27 +2377,21 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 15:30",
     "takenAt": "24 Aug · 15:30",
-    "sourceFilename": "IMG_1761.HEIC"
+    "sourceFilename": "IMG_1761.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260824-153232-772",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-153232-772-w3200.webp",
+    "src": "/private-photos/assets/v1/c8ae09bc94ec44a98d55eac6198de7e54ff7f2a813386e7b9fd80b19d477a2d0.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-153232-772-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-153232-772-w1280.webp",
+        "src": "/private-photos/assets/v1/50ef3127e28e6d1847050064b10e833bd55ce9a0d57a2b3dacb5b1a6bfbdb5b9.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-153232-772-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260824-153232-772-w3200.webp",
+        "src": "/private-photos/assets/v1/c8ae09bc94ec44a98d55eac6198de7e54ff7f2a813386e7b9fd80b19d477a2d0.webp",
         "width": 3200
       }
     ],
@@ -2799,23 +2401,21 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 15:32",
     "takenAt": "24 Aug · 15:32",
-    "sourceFilename": "snapseed_camera_capture_20260824_153232_772.heic"
+    "sourceFilename": "snapseed_camera_capture_20260824_153232_772.heic",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-1768",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1768-w2400.webp",
+    "src": "/private-photos/assets/v1/049e4c5a7ec02087777e3493c16492063aa07833d2a7f8ffbc19ca429fe95e12.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1768-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1768-w1280.webp",
+        "src": "/private-photos/assets/v1/b437333a183aa13983e7cacccb456ea1f08a64d3559a9ea3601065dc4bc7d4c7.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1768-w2400.webp",
+        "src": "/private-photos/assets/v1/049e4c5a7ec02087777e3493c16492063aa07833d2a7f8ffbc19ca429fe95e12.webp",
         "width": 2400
       }
     ],
@@ -2825,23 +2425,21 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 15:48",
     "takenAt": "24 Aug · 15:48",
-    "sourceFilename": "IMG_1768.HEIC"
+    "sourceFilename": "IMG_1768.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-img-5165",
     "dayId": "family-d12",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5165-w2400.webp",
+    "src": "/private-photos/assets/v1/3d369e0da7e4326c66955790d4ba238170730f53065a451c782934838d7c2780.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5165-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5165-w1280.webp",
+        "src": "/private-photos/assets/v1/7ab87a0287c89e36f5e729822d89fb7429f5be6ce7bbae36ffd7baa67b792a36.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-5165-w2400.webp",
+        "src": "/private-photos/assets/v1/3d369e0da7e4326c66955790d4ba238170730f53065a451c782934838d7c2780.webp",
         "width": 2400
       }
     ],
@@ -2851,23 +2449,21 @@
     "alt": "Family trip photograph from Pilatus Kulm",
     "caption": "Pilatus · 15:59",
     "takenAt": "24 Aug · 15:59",
-    "sourceFilename": "IMG_5165.HEIC"
+    "sourceFilename": "IMG_5165.HEIC",
+    "protected": true,
+    "assetStatus": "published"
   },
   {
     "id": "family-snapseed-camera-capture-20260825-111042-909",
     "dayId": "family-d13",
-    "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260825-111042-909-w2400.webp",
+    "src": "/private-photos/assets/v1/e60435c7888a7f021c90aac982974a6bb88a743c903ff9b6326ad0bc6186f7f8.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260825-111042-909-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260825-111042-909-w1280.webp",
+        "src": "/private-photos/assets/v1/1d81fddcefd4b88f1cb5885cddd6157778154b8ed5bcc4f74ef316cb0c8d26d6.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/snapseed-camera-capture-20260825-111042-909-w2400.webp",
+        "src": "/private-photos/assets/v1/e60435c7888a7f021c90aac982974a6bb88a743c903ff9b6326ad0bc6186f7f8.webp",
         "width": 2400
       }
     ],
@@ -2877,6 +2473,8 @@
     "alt": "Family trip photograph from Luzern",
     "caption": "Luzern · 10:54",
     "takenAt": "25 Aug · 10:54",
-    "sourceFilename": "snapseed_camera_capture_20260825_111042_909.heic"
+    "sourceFilename": "snapseed_camera_capture_20260825_111042_909.heic",
+    "protected": true,
+    "assetStatus": "published"
   }
 ]

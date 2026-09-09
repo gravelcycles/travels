@@ -8,6 +8,8 @@ import exifr from "exifr";
 import sharp from "sharp";
 
 import { fileURLToPath } from "node:url";
+import crypto from "node:crypto";
+import { buildPhotoVariants } from "./photo-variants.mjs";
 import { loadJourneys, writeJson } from "./journey-content.mjs";
 import { photoImportConfig, captureDateParts } from "./photo-import-config.mjs";
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -18,17 +20,11 @@ for (let i = 0; i < args.length; i += 2) {
   options[args[i].slice(2)] = args[i + 1];
 }
 const { journey, releaseTag, idPrefix, timeZone, daysByDate, sourceDirectory, outputDirectory, manifestPath } = photoImportConfig(repoRoot, loadJourneys(repoRoot, { includeDrafts: true }), options);
-const releaseBase = `https://github.com/gravelcycles/travels/releases/download/${releaseTag}`;
-const widths = [480, 1280, 2560, 3200];
 fs.mkdirSync(path.join(repoRoot, "build"), { recursive: true });
 const stagingDirectory = fs.mkdtempSync(path.join(repoRoot, "build", "photo-staging-"));
 
 function slugFor(filename) {
   return path.basename(filename, path.extname(filename)).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
-
-function publicUrl(filename) {
-  return `${releaseBase}/${encodeURIComponent(filename)}`;
 }
 
 const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "travels-photos-"));
@@ -71,17 +67,7 @@ try {
       const statistics = await sharp(temporaryImage).stats();
       if (statistics.entropy < 0.05) throw new Error("Decoded image is effectively blank");
 
-      const outputWidths = [...new Set(widths.map((width) => Math.min(width, displayWidth)).filter((width) => width >= 320))].sort((a, b) => a - b);
-      const variants = [];
-      for (const width of outputWidths) {
-        const outputFilename = `${slug}-w${width}.webp`;
-        const outputPath = path.join(stagingDirectory, outputFilename);
-        const result = await sharp(temporaryImage)
-          .resize({ width, withoutEnlargement: true })
-          .webp({ quality: width <= 480 ? 78 : 84, effort: 5, smartSubsample: true })
-          .toFile(outputPath);
-        variants.push({ src: publicUrl(outputFilename), width: result.width, height: result.height, bytes: result.size });
-      }
+      const variants = await buildPhotoVariants(repoRoot, sharp(temporaryImage), displayWidth, displayHeight);
 
       const blurBuffer = await sharp(temporaryImage)
         .resize({ width: 32 })
@@ -103,7 +89,10 @@ try {
         description: "",
         captionSource: "camera-import",
         takenAt: `${day.date} · ${local.time}`,
-        sourceFilename: filename
+        sourceFilename: filename,
+        protected: true,
+        assetStatus: "local",
+        sourceHash: crypto.createHash("sha256").update(fs.readFileSync(sourcePath)).digest("hex")
       };
       if (Number.isFinite(metadata.latitude) && Number.isFinite(metadata.longitude)) {
         candidateLocations.push({ id: photo.id, lat: metadata.latitude, lng: metadata.longitude });
@@ -138,7 +127,7 @@ const report = {
 fs.writeFileSync(path.join(stagingDirectory, "build-report.json"), `${JSON.stringify(report, null, 2)}\n`);
 console.log(`Built ${photos.length} photos; excluded ${excluded.length}; errors ${errors.length}; videos held ${videos.length}.`);
 console.log(`Manifest: ${manifestPath}`);
-console.log(`Release assets: ${outputDirectory}`);
+console.log(`Private derivatives: build/private-photo-assets/`);
 if (errors.length || !photos.length) {
   console.error(`Existing derivatives and manifest retained. Review ${stagingDirectory}/build-report.json`);
   process.exitCode = 1;

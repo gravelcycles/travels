@@ -25,7 +25,7 @@ results; a failed file does not undo successful imports. Repeating identical
 uploaded bytes returns the existing photo and preserves its day and edits.
 
 The importer automatically rotates the image, makes the source-supported
-480/1280/2560/3200 px WebP variants without enlarging small images, and creates
+small (up to 1280 px wide) and big (up to 3200 px longest-edge) WebPs without enlarging small images, and creates
 a tiny blurred preview. It strips EXIF/XMP from derivatives. Untouched originals,
 camera timestamps, and candidate GPS stay under ignored
 `photos/studio-uploads/<journey-id>/`. GPS is never turned into a public pin
@@ -49,10 +49,11 @@ removed from the local preview, and from the live atlas after deployment. Use
 preserves day order, pins, captions, and original visibility, and the cover/lead
 photo falls back to another visible photo. It is different from the existing
 **Hide from the public atlas** checkbox, which keeps the photo in the editor.
-Trash is a recoverable album deletion: originals and already-hosted Release
-assets remain. A request to erase an image from public hosting also requires
-removing its exact Release assets and checking direct URLs; Trash alone does not
-revoke those URLs or erase Git history.
+Trash is recoverable album deletion: originals and already-hosted private R2
+objects remain. Permanent erasure requires checking every journey reference,
+removing the exact unreferenced objects, and verifying their authenticated URLs.
+Historical public Releases also require explicit retirement during cutover;
+see [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md).
 
 Uploads are saved immediately in an append-only intake manifest separate from
 bulk imports: `content/photo-manifests/<journey-id>-uploads.json` for published
@@ -76,19 +77,14 @@ or caption changes in Studio:
 4. Wait for Pages, then open a fresh public journey and verify day assignment,
    photo viewer, and any deleted-photo absence. Record the deployment receipt.
 
-`--publish` uses the agent host's existing GitHub CLI login. It creates or reuses
-the journey-specific `<journey-id>-uploads-v1` Release, uploads only derivative
-WebPs, and verifies every new asset's public URL before marking the manifest
-`assetStatus: "published"` and rebuilding. It skips hidden/trashed uploads and
-refuses to publish a draft journey. It never commits, pushes, uploads originals,
-or overwrites existing Release assets. Size/digest mismatches fail for review.
-If interrupted, repeat the command: existing matching assets are reused and the
-manifest remains local until all checks succeed. A partially completed upload
-may already have public assets even while its album entry remains local.
-
-The public site is static. Studio's upload/delete UI is local only, and GitHub
-credentials never enter the page. A successful local import is not a deployment.
-Bulk import assets still use their original release workflow below.
+`--publish` uses Wrangler's owner authorization to upload to private R2. It
+refuses public bucket settings, checks WebP metadata and content hashes, uploads
+missing objects, then downloads and verifies every selected object before marking
+its manifest published. It skips hidden/trash, refuses draft publication, and
+never uploads originals, overwrites mismatched objects, commits or pushes.
+Retries reuse matching objects. Use `--all` for a complete reviewed migration;
+the default selects pending local photos. Both bulk imports and Studio share
+this publisher and two-size pipeline. Credentials never enter the atlas page.
 
 Studio protects saves with a revision of the saved overrides. If another tab or
 an agent changes the files, a stale save fails while retaining the current form.
@@ -104,7 +100,7 @@ alt text remains separate. A private pre-migration snapshot is in
 `build/studio-backups/before-generated-copy-removal.json`. Do not regenerate the
 removed prose. Future imports leave both visible text fields blank.
 
-## Additional Studio uploads · 9 September 2026
+## Historical public Studio upload · 9 September 2026
 
 The traveler approved 13 new photos and saved location/visibility edits for
 public publication. Their 48 optimized WebP derivatives are in the
@@ -152,7 +148,7 @@ GPS in Studio and the viewer. Entering reviewed coordinates restores a pin;
 deleting the override entirely restores the base metadata. Original media is
 never changed by either action.
 
-## Current Switzerland–Italy trip import
+## Historical initial Switzerland–Italy import (before private migration)
 
 `npm run photos:build -- --journey switzerland-italy-family-2026` reads `photos/switzerland-italy-trip/` and writes public-ready
 derivatives to the ignored `build/trip-photos-v1/` directory. The current run:
@@ -210,8 +206,8 @@ remain available. The Studio uploads above have now added photographs to all
 ## Local annotation with Atlas Studio
 
 Run `npm run studio`, then open `http://127.0.0.1:4173/studio/`. The Studio uses
-the ignored local 480/1280/2560/3200 WebPs when available, so reviewing many
-photos does not repeatedly download the public Release assets.
+the ignored local WebPs in `build/private-photo-assets/v1/`, so reviewing
+photos does not require Cloudflare login or repeated remote downloads.
 
 For each photo:
 
@@ -228,64 +224,25 @@ For each photo:
 
 Saves write `content/photo-overrides.json` and rebuild the static
 `dist/assets/content-overrides.js` consumed by the atlas. They do not modify the
-originals or Release files. When a located photo is highlighted in the
+originals or hosted R2 objects. When a located photo is highlighted in the
 full-screen day viewer, the map moves to this exact coordinate and zoom.
 
-## Generated image sizes and loading
+## Generated image sizes and private publishing
 
-Each still gets the source-supported subset of 480, 1280, 2560, and 3200 px
-wide WebP variants. The 480 px version covers thumbnails and most phones; 1280
-px covers panels and ordinary displays; 2560 and 3200 px retain detail for
-large and high-density full-screen viewing without shipping originals.
+See [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md) for the implemented two-size
+policy, authenticated loading, password maintenance and remaining cutover.
+Unloaded photos use embedded 32 px blur placeholders; no third hosted image is
+needed. Derivatives use content hashes and identical bytes reuse one object.
+Only immediate full-screen neighbors preload, after authentication.
 
-The browser initially paints an embedded blurred preview. Images close to the
-viewport hydrate through responsive `srcset`; images farther away stay tiny.
-The full-screen viewer also preloads two neighbors in each direction. This is a
-bounded load-ahead strategy rather than preloading all 104 photographs.
+The old public GitHub Release publisher is retired. Do not create or repopulate
+`trip-photos-v1` or `<journey-id>-uploads-v1`. Those historical Releases still need
+removal during the verified privacy cutover. The historical import figures above
+record earlier work; they are not instructions for future publishing.
 
-The generator uses macOS Quick Look for reliable HEIC decoding, then Sharp for
-resizing and WebP encoding. It validates that decodes contain real pixel
-variation and strips source EXIF metadata from every derivative.
-
-## GitHub Release publishing
-
-Keep originals under ignored `photos/`; never upload them. Publish only the
-WebPs from `build/trip-photos-v1/` in a public Release tagged exactly
-`trip-photos-v1`. The manifest deliberately uses immutable URLs such as:
-
-```text
-https://github.com/gravelcycles/travels/releases/download/trip-photos-v1/img-1425-w1280.webp
-```
-
-[GitHub documents](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)
-a limit of 1,000 assets per Release and 2 GiB per asset, so the 356-file build
-fits comfortably. It also documents
-[direct links to assets under a named release tag](https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases).
-Do not use `/latest/`, because a later unrelated Release would silently change
-those URLs.
-
-The user approved public hosting on 7 September 2026. The initial Release was
-published and verified with:
-
-```sh
-gh release create trip-photos-v1 build/trip-photos-v1/*.webp \
-  --repo gravelcycles/travels \
-  --title "Trip photos v1" \
-  --notes "Optimized, metadata-stripped derivatives for the journey atlas."
-```
-
-Verify several 480, 1280, and 2560/3200 direct asset URLs before committing and
-pushing `dist/assets/trip-photos.js`. Release assets are public even though the
-Pages documents use `noindex`; treat confirmation as a privacy decision.
-
-## Safe publishing rules
-
-1. Read capture time, GPS latitude/longitude, orientation, and caption.
-2. Suggest day and map matches for review; do not invent missing GPS.
-3. Keep source files and generated build output out of Git.
-4. Strip sensitive metadata from public derivatives.
-5. Publish the Release assets and matching manifest together.
-6. Retain originals privately.
+Keep originals private. Review day/location assignments, strip derivative
+metadata, upload through the private publisher, then deploy the matching manifest.
+Hiding or trashing alone is not permanent media erasure.
 
 ## Apple references
 

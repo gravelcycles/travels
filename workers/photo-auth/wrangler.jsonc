@@ -1,0 +1,14 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "travels-private-photos",
+  "main": "entry.mjs",
+  "compatibility_date": "2026-09-09",
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": { "ALLOWED_ORIGINS": "[\"https://gravelcycles.github.io\"]" },
+  "r2_buckets": [{ "binding": "PHOTOS", "bucket_name": "travels-private-photos" }],
+  "ratelimits": [{ "name": "LOGIN_LIMITER", "namespace_id": "19092026", "simple": { "limit": 10, "period": 60 } }],
+  "durable_objects": { "bindings": [{ "name": "AUTH_CODES", "class_name": "PhotoAuthCode" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["PhotoAuthCode"] }],
+  "observability": { "enabled": false }
+}

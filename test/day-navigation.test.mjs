@@ -17,6 +17,7 @@ function selection() {
   };
   const days = [{ id: 'd1', number: 1, segmentIds: [] }, { id: 'd2', number: 2, segmentIds: [] }];
   const context = vm.createContext({
+    window: {},
     activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null,
     viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null,
     journey: { days, segments: [] }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],

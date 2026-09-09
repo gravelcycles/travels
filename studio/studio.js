@@ -97,6 +97,7 @@
   }
 
   function photoUrl(url) {
+    if (/^\/private-photos\/assets\/v1\/[a-f0-9]{64}\.webp$/.test(url || "")) return `/build/private-photo-assets/${url.slice("/private-photos/assets/".length)}`;
     const release = url?.match(/^https:\/\/github\.com\/gravelcycles\/travels\/releases\/download\/([a-z0-9-]+)\/([^/]+\.webp)$/);
     if (release) return `/build/${release[1]}/${release[2]}`;
     if (url?.startsWith("./assets/")) return `/dist/${url.slice(2)}`;

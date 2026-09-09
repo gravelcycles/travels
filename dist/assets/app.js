@@ -160,6 +160,7 @@
   }
 
   function photoImageMarkup(photo, options = {}) {
+    if (window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) return window.JOURNEY_ATLAS_AUTH.markup(photo, options);
     const alt = options.alt ?? photo.alt ?? "";
     if (!photo.blur || !photo.srcset?.length) {
       return `<img src="${escapeHtml(photo.src)}" alt="${escapeHtml(alt)}" loading="${options.eager ? "eager" : "lazy"}" decoding="async" />`;
@@ -168,6 +169,7 @@
   }
 
   function hydrateImage(image) {
+    if (image?.dataset.privateSrc) return window.JOURNEY_ATLAS_AUTH.hydrate(image);
     if (!image?.dataset.src) return;
     const markLoaded = () => image.classList.add("is-loaded");
     image.addEventListener("load", markLoaded, { once: true });
@@ -179,6 +181,7 @@
   }
 
   function prepareProgressiveImages(container) {
+    window.JOURNEY_ATLAS_AUTH?.prepare(container);
     container.querySelectorAll("img.progressive-image").forEach((image) => {
       if (image.dataset.eager === "true" || !lazyImageObserver) hydrateImage(image);
       else lazyImageObserver.observe(image);
@@ -192,6 +195,7 @@
   }
 
   function preloadPhoto(photo, targetWidth = 1280) {
+    if (window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) return window.JOURNEY_ATLAS_AUTH.preload(photo, targetWidth);
     if (!photo) return;
     const url = preferredPhotoUrl(photo, targetWidth);
     if (!url || preloadedPhotoUrls.has(url)) return;
@@ -991,7 +995,7 @@
     return dayById(viewerDayId) || activeDay();
   }
 
-  function preloadWithinDay(photos, index, radius = 2, targetWidth = 2560) {
+  function preloadWithinDay(photos, index, radius = 1, targetWidth = Infinity) {
     for (let offset = 1; offset <= radius; offset += 1) {
       preloadPhoto(photos[index - offset], targetWidth);
       preloadPhoto(photos[index + offset], targetWidth);
@@ -1011,14 +1015,17 @@
     modalPhoto.hidden = !photo;
     emptyStage.hidden = Boolean(photo);
     if (photo) {
+      if (!window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) window.JOURNEY_ATLAS_AUTH?.clearImage(modalPhoto);
       modalPhoto.className = photo.blur ? "progressive-image" : "";
       modalPhoto.srcset = "";
-      modalPhoto.src = photo.blur || photoAssetUrl(photo.src);
+      modalPhoto.src = photo.blur || (window.JOURNEY_ATLAS_AUTH?.isProtected(photo) ? "" : photoAssetUrl(photo.src));
       modalPhoto.alt = photo.alt;
       modalPhoto.sizes = "(max-width: 900px) 100vw, 75vw";
       if (photo.width) modalPhoto.width = photo.width;
       if (photo.height) modalPhoto.height = photo.height;
-      if (photo.srcset?.length) {
+      if (window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) {
+        window.JOURNEY_ATLAS_AUTH.setImage(modalPhoto, photo, Infinity);
+      } else if (photo.srcset?.length) {
         modalPhoto.dataset.src = photoAssetUrl(photo.src);
         modalPhoto.dataset.srcset = photoSrcset(photo);
         modalPhoto.dataset.eager = "true";
@@ -1030,6 +1037,7 @@
       $("#modal-description").textContent = photo.description || "";
       preloadWithinDay(photos, viewerPhotoIndex);
     } else {
+      window.JOURNEY_ATLAS_AUTH?.clearImage(modalPhoto);
       modalPhoto.removeAttribute("src");
       modalPhoto.removeAttribute("srcset");
       modalPhoto.alt = "";
@@ -1314,11 +1322,12 @@
     $('#replay-retry-photo').hidden=true;
     $('#replay-photo-status').textContent=photo?'Loading photograph…':'';
     image.onload=null; image.onerror=null;
-    if(!photo) {image.removeAttribute('src');image.removeAttribute('srcset');image.alt='';$('#replay-photo-caption').textContent='';return;}
+    if(!photo) {window.JOURNEY_ATLAS_AUTH?.clearImage(image);image.removeAttribute('src');image.removeAttribute('srcset');image.alt='';$('#replay-photo-caption').textContent='';return;}
     image.className=''; image.alt=photo.alt || ''; image.sizes='(max-width: 900px) 100vw, 355px';
     image.onload=()=>{ if(token!==replayPhotoToken) return; replayPhotoReady=true; replayLastTimestamp=null; $('#replay-photo-status').textContent=''; };
     image.onerror=()=>{ if(token!==replayPhotoToken) return; replayPhotoReady=false; pauseReplay(); $('#replay-photo-status').textContent='The photograph could not load. Retry or choose the next moment.'; $('#replay-retry-photo').hidden=false; };
-    image.srcset=photoSrcset(photo); image.src=preferredPhotoUrl(photo,1280);
+    if(window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) { window.JOURNEY_ATLAS_AUTH.setImage(image,photo,1280); if(!window.JOURNEY_ATLAS_AUTH.unlocked){replayPhotoReady=true;$('#replay-photo-status').textContent='Unlock photos to see this photograph.';} }
+    else { window.JOURNEY_ATLAS_AUTH?.clearImage(image); image.srcset=photoSrcset(photo); image.src=preferredPhotoUrl(photo,1280); }
     $('#replay-photo-caption').textContent=photo.caption || '';
     const nextPhoto=replayLeadPhoto(replayMomentDay(replayTimeline[replayMomentIndex+1]),replayTimeline[replayMomentIndex+1]);
     if(nextPhoto) preloadPhoto(nextPhoto,1280);

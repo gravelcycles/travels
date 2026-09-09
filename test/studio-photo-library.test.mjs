@@ -7,6 +7,7 @@ import vm from 'node:vm';
 import sharp from 'sharp';
 import { importStudioPhoto, uploadManifestPath, atomicJson } from '../scripts/studio-photo-service.mjs';
 import { publishPhotoAssets } from '../scripts/publish-photo-assets.mjs';
+import { privatePhotoFile } from '../scripts/photo-variants.mjs';
 import { buildSite } from '../scripts/build-site.mjs';
 import { loadContent, readJson } from '../scripts/journey-content.mjs';
 const repo = path.resolve(import.meta.dirname, '..');
@@ -38,9 +39,9 @@ test('upload appends a deduplicated photo with blank copy, safe sizes, private o
   assert.equal(photo.caption, ''); assert.equal(photo.description, '');
   assert.equal(photo.sourceFilename, 'camera.jpg'); assert.equal(photo.dayId, 'family-d3');
   assert.equal(photo.assetStatus, 'local'); assert.equal(photo.lng, undefined);
-  assert.deepEqual(photo.srcset.map(v => v.width), [480, 700]);
+  assert.deepEqual(photo.srcset.map(v => v.width), [700]);
   assert.ok(photo.blur.startsWith('data:image/webp;base64,'));
-  const file = path.join(root, 'build', `${journeyId}-uploads-v1`, path.basename(photo.src));
+  const file = privatePhotoFile(root, photo.src);
   const meta = await sharp(file).metadata();
   assert.equal(meta.width, 700); assert.equal(meta.exif, undefined); assert.equal(meta.xmp, undefined);
   const originalDir = path.join(root, 'photos/studio-uploads', journeyId);
@@ -65,17 +66,25 @@ test('publishing is preview-only by default and retryable; failed verification k
   const root = fixture(t), bytes = await photoBytes(200);
   const { photo } = await importStudioPhoto(root, { journeyId, dayId:'family-d1', filename:'small.jpg', bytes });
   assert.deepEqual(photo.srcset.map(v => v.width), [200]);
-  const calls = [];
-  const gh = async args => { calls.push(args); if(args[1] === 'list') return JSON.stringify([{tagName:`${journeyId}-uploads-v1`,isDraft:false}]); if(args[1] === 'view') return JSON.stringify({assets:[]}); return ''; };
-  const preview = await publishPhotoAssets(root, journeyId, { gh });
+  const calls = [], stored = new Map(); let offline = false;
+  const remote = async (resource, options = {}) => {
+    calls.push({resource,method:options.method||'GET'});
+    if(options.method==='PUT'){stored.set(resource,options.body);return new Response(null,{status:200});}
+    if(offline && stored.has(resource))throw new Error('offline');
+    return stored.has(resource)?new Response(stored.get(resource)):new Response(null,{status:404});
+  };
+  const preview = await publishPhotoAssets(root, journeyId, { remote });
   assert.equal(preview.photos, 1); assert.equal(calls.length, 0);
-  await assert.rejects(publishPhotoAssets(root, journeyId, { publish:true, gh, verify:async () => { throw new Error('offline'); } }), /offline/);
+  offline=true;
+  await assert.rejects(publishPhotoAssets(root, journeyId, { publish:true, remote }), /offline/);
   const journey = loadContent(root).data.journeys.find(j => j.id === journeyId);
   assert.equal(readJson(uploadManifestPath(root, journey))[0].assetStatus, 'local');
-  const published = await publishPhotoAssets(root, journeyId, { publish:true, gh, verify:async () => {} });
+  offline=false;
+  const published = await publishPhotoAssets(root, journeyId, { publish:true, remote });
   assert.equal(published.published, true); assert.ok(publicPhotos(root).some(p => p.id === photo.id));
-  assert.equal((await publishPhotoAssets(root, journeyId, { publish:true, gh })).photos, 0);
-  assert.ok(calls.filter(c => c[1] === 'upload').every(c => c[3].endsWith('.webp') && !c.includes('--clobber')));
+  assert.equal((await publishPhotoAssets(root, journeyId, { publish:true, remote })).photos, 0);
+  assert.equal(calls.filter(c=>c.method==='PUT').length,1);
+  assert.ok(calls.every(c=>c.resource.includes('/objects/v1/')&&c.resource.endsWith('.webp')));
 });
 
 test('trash excludes photos from public data even without hidden; restoring preserves copy and pins', t => {

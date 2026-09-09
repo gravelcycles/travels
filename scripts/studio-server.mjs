@@ -115,7 +115,7 @@ function staticFileFor(pathname) {
     const distRoot = path.join(repoRoot, "dist");
     if (resolved === distRoot || resolved.startsWith(`${distRoot}${path.sep}`)) return resolved;
   }
-  if (/^\/build\/[a-z0-9-]+\/[^/]+\.webp$/.test(pathname)) {
+  if (/^\/build\/private-photo-assets\/v1\/[a-f0-9]{64}\.webp$/.test(pathname) || /^\/build\/[a-z0-9-]+\/[^/]+\.webp$/.test(pathname)) {
     const resolved = path.resolve(repoRoot, pathname.slice(1));
     if (resolved.startsWith(`${path.join(repoRoot, "build")}${path.sep}`)) return resolved;
   }
@@ -271,6 +271,11 @@ const server = http.createServer((request, response) => {
       }
     });
     return;
+  }
+  if (request.method === "GET" && url.pathname === "/dist/assets/photo-service.js" && process.env.ATLAS_PHOTO_SERVICE_ORIGIN) {
+    const origin = process.env.ATLAS_PHOTO_SERVICE_ORIGIN;
+    if (!/^http:\/\/127\.0\.0\.1:\d+$/.test(origin)) return send(response, 500, "Invalid local photo service");
+    return send(response, 200, `window.JOURNEY_ATLAS_PHOTO_SERVICE = ${JSON.stringify({ origin })};`, "application/javascript");
   }
   if (request.method !== "GET") return send(response, 405, "Method not allowed");
   let pathname;

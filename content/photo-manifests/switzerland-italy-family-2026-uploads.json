@@ -2,18 +2,14 @@
   {
     "id": "switzerland-italy-family-2026-upload-053c290a4372be9e828c",
     "dayId": "family-d5",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-053c290a4372be9e828c-w2400.webp",
+    "src": "/private-photos/assets/v1/76c826d63a9c61adf1e85abbfc673b1022f052d762ed7612fa9705bf62538530.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-053c290a4372be9e828c-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-053c290a4372be9e828c-w1280.webp",
+        "src": "/private-photos/assets/v1/27a630e538f4eb0abefd553d7d85e39998428cd17f950b0b631cb079e5cdf821.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-053c290a4372be9e828c-w2400.webp",
+        "src": "/private-photos/assets/v1/76c826d63a9c61adf1e85abbfc673b1022f052d762ed7612fa9705bf62538530.webp",
         "width": 2400
       }
     ],
@@ -26,23 +22,20 @@
     "alt": "Photo from Day 5",
     "sourceFilename": "IMG_2845.HEIC",
     "takenAt": "2026-08-17 · 15:42",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   },
   {
     "id": "switzerland-italy-family-2026-upload-128e1446001d7e77e4bc",
     "dayId": "family-d9",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-128e1446001d7e77e4bc-w2400.webp",
+    "src": "/private-photos/assets/v1/4795b6455b23548c915df9788e0a42cc245eb4fed495ea2417bdd1f52e441f17.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-128e1446001d7e77e4bc-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-128e1446001d7e77e4bc-w1280.webp",
+        "src": "/private-photos/assets/v1/79ddaf11e8f128c4f95442fbfd205056240988855d8d6e4af7ba1d97e8d841dd.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-128e1446001d7e77e4bc-w2400.webp",
+        "src": "/private-photos/assets/v1/4795b6455b23548c915df9788e0a42cc245eb4fed495ea2417bdd1f52e441f17.webp",
         "width": 2400
       }
     ],
@@ -55,27 +48,20 @@
     "alt": "Photo from Day 9",
     "sourceFilename": "IMG_1632.HEIC",
     "takenAt": "2026-08-21 · 16:31",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   },
   {
     "id": "switzerland-italy-family-2026-upload-a11cac9b929269431afb",
     "dayId": "family-d9",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-a11cac9b929269431afb-w3200.webp",
+    "src": "/private-photos/assets/v1/ad1d44d3444b2b81c1bbaa391546615e39a13b816860169ffb4aab5385877901.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-a11cac9b929269431afb-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-a11cac9b929269431afb-w1280.webp",
+        "src": "/private-photos/assets/v1/2ff6f5776f2b62c1d3009ba4c2b78bc1eb954477c4b3e0a9411e3ed4e67688c2.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-a11cac9b929269431afb-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-a11cac9b929269431afb-w3200.webp",
+        "src": "/private-photos/assets/v1/ad1d44d3444b2b81c1bbaa391546615e39a13b816860169ffb4aab5385877901.webp",
         "width": 3200
       }
     ],
@@ -88,23 +74,20 @@
     "alt": "Photo from Day 9",
     "sourceFilename": "IMG_1630.HEIC",
     "takenAt": "2026-08-21 · 09:58",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   },
   {
     "id": "switzerland-italy-family-2026-upload-1fedc4120b23bfe606e5",
     "dayId": "family-d8",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-1fedc4120b23bfe606e5-w2400.webp",
+    "src": "/private-photos/assets/v1/069abecb955e215aa7a4b67428f9e66896fcc41159e4027ee89e0ae7e575097e.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-1fedc4120b23bfe606e5-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-1fedc4120b23bfe606e5-w1280.webp",
+        "src": "/private-photos/assets/v1/9abae267510713d5238ded9a57f782a5f4385e4d75cc29aa4e31d20a8f03f9b7.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-1fedc4120b23bfe606e5-w2400.webp",
+        "src": "/private-photos/assets/v1/069abecb955e215aa7a4b67428f9e66896fcc41159e4027ee89e0ae7e575097e.webp",
         "width": 2400
       }
     ],
@@ -117,27 +100,20 @@
     "alt": "Photo from Day 8",
     "sourceFilename": "IMG_1628.HEIC",
     "takenAt": "2026-08-20 · 19:20",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   },
   {
     "id": "switzerland-italy-family-2026-upload-883c43b88ab656138936",
     "dayId": "family-d8",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-883c43b88ab656138936-w3200.webp",
+    "src": "/private-photos/assets/v1/9f44682ffdbb3c7730cf3a30bd10db9a086651c22de54539e1f181e36cf1a7a3.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-883c43b88ab656138936-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-883c43b88ab656138936-w1280.webp",
+        "src": "/private-photos/assets/v1/f2112c75edc8f14d5ae47b9ed1ae3991bd5a338e98c5376d68f36613544166a9.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-883c43b88ab656138936-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-883c43b88ab656138936-w3200.webp",
+        "src": "/private-photos/assets/v1/9f44682ffdbb3c7730cf3a30bd10db9a086651c22de54539e1f181e36cf1a7a3.webp",
         "width": 3200
       }
     ],
@@ -150,23 +126,20 @@
     "alt": "Photo from Day 8",
     "sourceFilename": "IMG_1627.HEIC",
     "takenAt": "2026-08-20 · 14:27",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   },
   {
     "id": "switzerland-italy-family-2026-upload-94c8ffbac0c29f07e4d1",
     "dayId": "family-d8",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-94c8ffbac0c29f07e4d1-w2400.webp",
+    "src": "/private-photos/assets/v1/3756fa14ef66146e6fa3958ed42e21d83bc1dfaa4bdcca34e5ed98f6ad2958cd.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-94c8ffbac0c29f07e4d1-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-94c8ffbac0c29f07e4d1-w1280.webp",
+        "src": "/private-photos/assets/v1/c8b88430eea3439af87a73a10dd9297d61a5a579c77f1e237f08c9eebd6f4ed6.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-94c8ffbac0c29f07e4d1-w2400.webp",
+        "src": "/private-photos/assets/v1/3756fa14ef66146e6fa3958ed42e21d83bc1dfaa4bdcca34e5ed98f6ad2958cd.webp",
         "width": 2400
       }
     ],
@@ -179,27 +152,20 @@
     "alt": "Photo from Day 8",
     "sourceFilename": "IMG_1619.HEIC",
     "takenAt": "2026-08-20 · 11:42",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   },
   {
     "id": "switzerland-italy-family-2026-upload-6f6f6bec798531f5ca8f",
     "dayId": "family-d11",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-6f6f6bec798531f5ca8f-w3200.webp",
+    "src": "/private-photos/assets/v1/911798f193a97c56afc37e46ced316459544b5672fac6d2137c07aac6a7200d3.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-6f6f6bec798531f5ca8f-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-6f6f6bec798531f5ca8f-w1280.webp",
+        "src": "/private-photos/assets/v1/88c769d18bfc1837568ee8a66e78dd810ab4e3a1379ae95bd4a73d3652912255.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-6f6f6bec798531f5ca8f-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-6f6f6bec798531f5ca8f-w3200.webp",
+        "src": "/private-photos/assets/v1/911798f193a97c56afc37e46ced316459544b5672fac6d2137c07aac6a7200d3.webp",
         "width": 3200
       }
     ],
@@ -212,27 +178,20 @@
     "alt": "Photo from Day 11",
     "sourceFilename": "IMG_1708.HEIC",
     "takenAt": "2026-08-23 · 14:43",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   },
   {
     "id": "switzerland-italy-family-2026-upload-8764504b8b9143c0aa8e",
     "dayId": "family-d11",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-8764504b8b9143c0aa8e-w3200.webp",
+    "src": "/private-photos/assets/v1/5d35312a2cf1a7335b5af8d26417c78df5cdd32e67dd9ab621fdcacbf7b52743.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-8764504b8b9143c0aa8e-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-8764504b8b9143c0aa8e-w1280.webp",
+        "src": "/private-photos/assets/v1/d32ffbe5907538aee076a2b69cd2b7484dada9f136c03879a2a9008e2c642dd6.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-8764504b8b9143c0aa8e-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-8764504b8b9143c0aa8e-w3200.webp",
+        "src": "/private-photos/assets/v1/5d35312a2cf1a7335b5af8d26417c78df5cdd32e67dd9ab621fdcacbf7b52743.webp",
         "width": 3200
       }
     ],
@@ -245,27 +204,20 @@
     "alt": "Photo from Day 11",
     "sourceFilename": "IMG_1705.HEIC",
     "takenAt": "2026-08-23 · 13:58",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   },
   {
     "id": "switzerland-italy-family-2026-upload-f4dfd2a21679d6502302",
     "dayId": "family-d11",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-f4dfd2a21679d6502302-w3200.webp",
+    "src": "/private-photos/assets/v1/77280059fbd677eeda11086888c5dcb64d092d1128309f5b5a7a9406a04556a7.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-f4dfd2a21679d6502302-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-f4dfd2a21679d6502302-w1280.webp",
+        "src": "/private-photos/assets/v1/22e230af96152a7b09a821fbaa61c77e7f6fd99f3b21e48027ef4615008a6b48.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-f4dfd2a21679d6502302-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-f4dfd2a21679d6502302-w3200.webp",
+        "src": "/private-photos/assets/v1/77280059fbd677eeda11086888c5dcb64d092d1128309f5b5a7a9406a04556a7.webp",
         "width": 3200
       }
     ],
@@ -278,27 +230,20 @@
     "alt": "Photo from Day 11",
     "sourceFilename": "IMG_1702.HEIC",
     "takenAt": "2026-08-23 · 13:21",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   },
   {
     "id": "switzerland-italy-family-2026-upload-d3ccf5723bbd79156476",
     "dayId": "family-d11",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-d3ccf5723bbd79156476-w3200.webp",
+    "src": "/private-photos/assets/v1/6da9ceafa043d11846e75607fb904a52c4e50ee9a251b7422237c39eb03ec724.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-d3ccf5723bbd79156476-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-d3ccf5723bbd79156476-w1280.webp",
+        "src": "/private-photos/assets/v1/b6a4586245f7c5e9d6a707f57852d12ee979d4f434bf8828a5b58864b9740371.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-d3ccf5723bbd79156476-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-d3ccf5723bbd79156476-w3200.webp",
+        "src": "/private-photos/assets/v1/6da9ceafa043d11846e75607fb904a52c4e50ee9a251b7422237c39eb03ec724.webp",
         "width": 3200
       }
     ],
@@ -311,27 +256,20 @@
     "alt": "Photo from Day 11",
     "sourceFilename": "IMG_1697.HEIC",
     "takenAt": "2026-08-23 · 10:40",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   },
   {
     "id": "switzerland-italy-family-2026-upload-c8cc01cd3b3c122c972b",
     "dayId": "family-d14",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-c8cc01cd3b3c122c972b-w3200.webp",
+    "src": "/private-photos/assets/v1/998c18d72cf01d46ed943dec37277060ee0c3611391989933da2518f9557588a.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-c8cc01cd3b3c122c972b-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-c8cc01cd3b3c122c972b-w1280.webp",
+        "src": "/private-photos/assets/v1/831622960923f1f796e833453dd67fcee48b49b2709672a7714eb90a62f202b9.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-c8cc01cd3b3c122c972b-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-c8cc01cd3b3c122c972b-w3200.webp",
+        "src": "/private-photos/assets/v1/998c18d72cf01d46ed943dec37277060ee0c3611391989933da2518f9557588a.webp",
         "width": 3200
       }
     ],
@@ -344,27 +282,20 @@
     "alt": "Photo from Day 14",
     "sourceFilename": "IMG_1786.HEIC",
     "takenAt": "2026-08-26 · 08:20",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   },
   {
     "id": "switzerland-italy-family-2026-upload-fdce47e807c178c97e9e",
     "dayId": "family-d13",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-fdce47e807c178c97e9e-w3200.webp",
+    "src": "/private-photos/assets/v1/00b04eb17f5aca9ce8df7dbbb62b860b1929c528f4afaaf8d196a3846fe936b6.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-fdce47e807c178c97e9e-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-fdce47e807c178c97e9e-w1280.webp",
+        "src": "/private-photos/assets/v1/4a9ffa1607db006fe1fa97a89fee1511922c42ab601f35260c79773be14e26f9.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-fdce47e807c178c97e9e-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-fdce47e807c178c97e9e-w3200.webp",
+        "src": "/private-photos/assets/v1/00b04eb17f5aca9ce8df7dbbb62b860b1929c528f4afaaf8d196a3846fe936b6.webp",
         "width": 3200
       }
     ],
@@ -377,27 +308,20 @@
     "alt": "Photo from Day 13",
     "sourceFilename": "IMG_1783.HEIC",
     "takenAt": "2026-08-25 · 20:26",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   },
   {
     "id": "switzerland-italy-family-2026-upload-2529256de2831fabc58a",
     "dayId": "family-d13",
-    "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-2529256de2831fabc58a-w3200.webp",
+    "src": "/private-photos/assets/v1/fb1d7761d079b46ff3caf35b63bbdacabc5f8727ca0cec5b3c549851758ef1a2.webp",
     "srcset": [
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-2529256de2831fabc58a-w480.webp",
-        "width": 480
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-2529256de2831fabc58a-w1280.webp",
+        "src": "/private-photos/assets/v1/76f21aa8d9f647deec21736d82bc697034307e5062f8a33654b3d74c77d123c8.webp",
         "width": 1280
       },
       {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-2529256de2831fabc58a-w2560.webp",
-        "width": 2560
-      },
-      {
-        "src": "https://github.com/gravelcycles/travels/releases/download/switzerland-italy-family-2026-uploads-v1/switzerland-italy-family-2026-upload-2529256de2831fabc58a-w3200.webp",
+        "src": "/private-photos/assets/v1/fb1d7761d079b46ff3caf35b63bbdacabc5f8727ca0cec5b3c549851758ef1a2.webp",
         "width": 3200
       }
     ],
@@ -410,6 +334,7 @@
     "alt": "Photo from Day 13",
     "sourceFilename": "IMG_1782.HEIC",
     "takenAt": "2026-08-25 · 20:25",
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "protected": true
   }
 ]

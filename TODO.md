@@ -16,7 +16,12 @@ project-level status.
       security testing, deployment, and operations plan in
       [`PHOTO_AUTH_HANDOFF.md`](PHOTO_AUTH_HANDOFF.md). One successful unlock
       with any active shared password must grant that browser access to every
-      protected image across the site.
+      protected image across the site. The confirmed scope keeps the site on
+      GitHub Pages and puts only photos/auth on Cloudflare, without a domain
+      purchase. Retain two image sizes and remember access for 30 days.
+      Code and 198 verified private uploads are ready. The owner-selected initial
+      credential passes production checks on Workers Free. Pages cutover and
+      old public-copy removal remain. Account steps: [`CLOUDFLARE_SETUP.md`](CLOUDFLARE_SETUP.md).
 - [x] **W02 — UX and storytelling.** Reconcile and deliver
       [`UX_HANDOFF.md`](UX_HANDOFF.md). Compare it with the current site first
       because lead-photo selection, no-photo handling, and the initial Trip
