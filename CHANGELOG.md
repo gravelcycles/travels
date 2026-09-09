@@ -8,6 +8,10 @@ commit after it is known.
 
 ### Show only the selected day's photos, with individual map fans
 
+Published as `013dacd` in successful Pages run `34354476031`. A fresh public
+Day 2 load showed exactly its five landmarks; individual viewer opening passed
+with no browser errors.
+
 - Selecting a day immediately removes other days' photo landmarks, even while
   route layers load or the phone map is hidden. Viewer day navigation also
   updates the atlas, and returning to Map frames the selected day correctly.
