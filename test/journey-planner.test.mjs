@@ -45,7 +45,15 @@ test('leg reordering preserves curated selections in the new travel order',()=>{
 });
 test('invalid editorial references, durations and unreviewed cameras fail validation',()=>{
   const moment={...base.replayMoments[0]};
-  for(const patch of [{duration:0},{dayId:'missing'},{photoId:'missing'},{segmentIds:['missing']},{camera:{center:[8,46],zoom:12}}]) {
+  for(const patch of [{caption:42},{duration:0},{dayId:'missing'},{photoId:'missing'},{segmentIds:['missing']},{camera:{center:[8,46],zoom:12}}]) {
     assert.throws(()=>prepareJourneyPlan(data,base,{replayMoments:[{...moment,...patch}]},state),/replay/);
   }
+});
+
+test('Replay allows intentionally blank day copy without changing routes or timing', () => {
+  const moment = {...base.replayMoments[0], caption: ''};
+  const result = prepareJourneyPlan(data, base, {replayMoments: [moment]}, state);
+  assert.equal(result.journey.replayMoments[0].caption, '');
+  assert.equal(result.journey.replayMoments[0].duration, moment.duration);
+  assert.deepEqual(result.journey.replayMoments[0].segmentIds, moment.segmentIds);
 });

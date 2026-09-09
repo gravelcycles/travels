@@ -1,5 +1,27 @@
 # Project state
 
+## Published photos and simpler day panels · 9 September 2026
+
+The traveler explicitly approved publishing the 13 new photos and saved
+location/visibility edits to the public site and GitHub Release. All 48 WebP
+derivatives (22,921,326 bytes) were uploaded and their URLs verified; all 13
+manifest entries are published. Originals remain private. The saved visibility
+change and 13 uploads bring the family album to 99 visible photos.
+
+Cleared all 14 family day descriptions in both source and overrides, plus the
+14 shortened Relive captions. Empty descriptions render no placeholder prose;
+Replay caption validation now accepts blank text. Studio labels this copy
+optional. Trip introduction, day titles, route data and personal photo notes
+remain available.
+
+The photo-count button sits directly below the lead photo and opens that day's
+album. Removed “See this day on the map” and its handler. Travel legs render as
+an always-visible section with a single heading and no collapse control, shared
+by real and demo journeys. Rest-day and 2× Replay pacing remain unchanged.
+
+Validation: 64 tests pass, including blank Replay caption validation with route
+and duration preservation. Studio has been restarted for the updated validator.
+
 ## Relive defaults to 2× · 9 September 2026
 
 Published as `47b635d` in successful Pages run `34362670497`. A fresh public
@@ -12,10 +34,9 @@ both the real journey template and demo. At 2×, days without route segments get
 The 1× and 0.5× timings and travel-day timing are unchanged. Upload test fixtures
 also remove overrides belonging to excluded local intake manifests.
 
-Saved traveler data and 13 pending photos remain local: automatic approval
-review rejected publishing these photos to the public GitHub Release and
-requires explicit approval for the photos and destination. The photo publishing
-preview found 48 WebP derivatives (22,921,326 bytes); originals stay private.
+The initial upload was blocked by automatic approval review; the traveler
+subsequently approved the public destination explicitly. The completed upload
+and saved-data publication are recorded above.
 
 Validation: all 63 tests and the build pass. Local Relive shows the 2× selector
 and “Playing at 2×” with no browser errors.

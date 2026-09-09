@@ -1193,7 +1193,7 @@
     "caption": "",
     "description": "",
     "alt": "The exterior of the private residence used as the family home base is retained locally.",
-    "hidden": true,
+    "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "privacyStatus": "hidden-private",
@@ -1632,5 +1632,161 @@
       "lng": 8.312549
     },
     "zoom": 12.44
+  },
+  "switzerland-italy-family-2026-upload-053c290a4372be9e828c": {
+    "dayId": "family-d5",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 47.057978,
+      "lng": 8.312259
+    },
+    "zoom": 14.16
+  },
+  "switzerland-italy-family-2026-upload-a11cac9b929269431afb": {
+    "dayId": "family-d9",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 45.805791,
+      "lng": 9.089475
+    },
+    "zoom": 12.95
+  },
+  "switzerland-italy-family-2026-upload-128e1446001d7e77e4bc": {
+    "dayId": "family-d9",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 45.810139,
+      "lng": 9.082882
+    },
+    "zoom": 12.95
+  },
+  "switzerland-italy-family-2026-upload-6f6f6bec798531f5ca8f": {
+    "dayId": "family-d11",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 46.005073,
+      "lng": 8.951173
+    },
+    "zoom": 12.01
+  },
+  "switzerland-italy-family-2026-upload-8764504b8b9143c0aa8e": {
+    "dayId": "family-d11",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 46.005073,
+      "lng": 8.951513
+    },
+    "zoom": 12.01
+  },
+  "switzerland-italy-family-2026-upload-f4dfd2a21679d6502302": {
+    "dayId": "family-d11",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 46.003656,
+      "lng": 8.953724
+    },
+    "zoom": 12.01
+  },
+  "switzerland-italy-family-2026-upload-d3ccf5723bbd79156476": {
+    "dayId": "family-d11",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 47.047488,
+      "lng": 8.306931
+    },
+    "zoom": 12.82
+  },
+  "switzerland-italy-family-2026-upload-fdce47e807c178c97e9e": {
+    "dayId": "family-d13",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 47.061431,
+      "lng": 8.322216
+    },
+    "zoom": 13.29
+  },
+  "switzerland-italy-family-2026-upload-2529256de2831fabc58a": {
+    "dayId": "family-d13",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 47.061812,
+      "lng": 8.322286
+    },
+    "zoom": 13.29
+  },
+  "switzerland-italy-family-2026-upload-c8cc01cd3b3c122c972b": {
+    "dayId": "family-d14",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 47.056786,
+      "lng": 8.307359
+    },
+    "zoom": 9.81
+  },
+  "switzerland-italy-family-2026-upload-1fedc4120b23bfe606e5": {
+    "dayId": "family-d8",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 45.809661,
+      "lng": 9.084239
+    },
+    "zoom": 12.21
+  },
+  "switzerland-italy-family-2026-upload-883c43b88ab656138936": {
+    "dayId": "family-d8",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 45.813171,
+      "lng": 9.08335
+    },
+    "zoom": 12.21
+  },
+  "switzerland-italy-family-2026-upload-94c8ffbac0c29f07e4d1": {
+    "dayId": "family-d8",
+    "caption": "",
+    "description": "",
+    "locationLabel": "",
+    "hidden": false,
+    "location": {
+      "lat": 45.810178,
+      "lng": 9.073575
+    },
+    "zoom": 12.21
   }
 }

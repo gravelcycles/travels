@@ -104,6 +104,15 @@ alt text remains separate. A private pre-migration snapshot is in
 `build/studio-backups/before-generated-copy-removal.json`. Do not regenerate the
 removed prose. Future imports leave both visible text fields blank.
 
+## Additional Studio uploads · 9 September 2026
+
+The traveler approved 13 new photos and saved location/visibility edits for
+public publication. Their 48 optimized WebP derivatives are in the
+`switzerland-italy-family-2026-uploads-v1` Release; originals remain private.
+Together with the saved visibility change, the family album now has 99 visible
+photos, including photos on Days 8, 9, 11 and 14. The family day descriptions
+and shortened Replay prose have been cleared; personal photo notes remain.
+
 ## Best transfer from iPhone
 
 1. In Photos, select the images and open the Share sheet.
@@ -193,11 +202,10 @@ publishing surface of a separate video pipeline. If a specific clip is approved
 later, design and review that pipeline before generating or publishing any
 derivative; do not pass a MOV through the still-photo workflow.
 
-Days without a visible family photograph use the atlas's intentional empty
-state. No stock or third-party fallback images are used for Days 9, 11, and 14;
-Day 8 also remains visually empty because its only source image is hidden after
-privacy review. The day copy, route, and previous/next navigation remain
-available, so the absence reads as part of the record rather than missing UI.
+Days without a visible family photograph use an intentional empty state, with
+no stock or third-party fallback images. Day headings, routes and navigation
+remain available. The Studio uploads above have now added photographs to all
+14 family journey days.
 
 ## Local annotation with Atlas Studio
 

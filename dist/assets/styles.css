@@ -193,8 +193,7 @@ button { color: inherit; }
 .detail-stats div + div { border-left: 1px solid var(--line); }
 .detail-stats strong { display: block; font: 700 1.04rem Georgia, "Times New Roman", serif; overflow: hidden; text-overflow: ellipsis; }
 .detail-stats span { color: var(--muted); font-size: 0.62rem; letter-spacing: 0.09em; font-weight: 800; }
-.route-legs { margin-top: 18px; }
-.route-legs h3 { margin-bottom: 9px; }
+.route-legs { margin-top: 0; }
 .route-legs ol { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); }
 .route-legs li { background: #fff; }
 .route-legs li + li { border-top: 1px solid var(--line); }
@@ -427,7 +426,7 @@ button:focus-visible, select:focus-visible, .maplibregl-map:focus-visible { outl
 .journey-card-placeholder span { font-size: 11px; letter-spacing: .16em; }
 .journey-card-placeholder strong { font: 30px/1.2 Georgia, serif; }
 
-/* Story-first atlas: one journal scroll surface, with travel detail on demand. */
+/* Story-first atlas: one journal scroll surface, with travel legs always visible. */
 [hidden] { display:none !important; }
 .atlas-shell { min-height:0; height:calc(100dvh - 72px); grid-template-columns:minmax(240px,20vw) minmax(320px,1fr) minmax(310px,28vw); }
 .story-panel { display:block; overflow-y:auto; scrollbar-color:#7b908f #e3e8e4; }
@@ -435,12 +434,11 @@ button:focus-visible, select:focus-visible, .maplibregl-map:focus-visible { outl
 .story-detail { height:auto; overflow:visible; flex:none; }
 .story-detail h2 { scroll-margin-top:20px; }
 .story-detail .day-story { font-size:1rem; line-height:1.65; margin:14px 0; }
-.story-actions { display:flex; flex-wrap:wrap; gap:8px; }
-.story-actions button,.journal-day-nav button,#resume-replay { padding:10px 12px; min-height:42px; border:1px solid var(--line); background:var(--panel); font-size:.78rem; font-weight:750; cursor:pointer; }
-.story-actions button:first-child { background:var(--ink); color:white; }
+.journal-day-nav button,#resume-replay { padding:10px 12px; min-height:42px; border:1px solid var(--line); background:var(--panel); font-size:.78rem; font-weight:750; cursor:pointer; }
+.story-photo-action { display:block; width:100%; min-height:44px; padding:12px 20px; border:0; border-bottom:1px solid var(--line); background:var(--ink); color:#fff; text-align:center; font-size:.8rem; font-weight:800; cursor:pointer; }
 .travel-summary { font-size:.75rem; color:var(--ink-soft); line-height:1.5; }
 .travel-details { border-block:1px solid var(--line); padding:12px 0; margin:16px 0; }
-.travel-details summary { cursor:pointer; font-size:.8rem; font-weight:800; }
+.travel-details h3 { margin:0 0 12px; font-size:.8rem; font-weight:800; }
 .journal-day-nav { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:20px; }
 .journal-day-nav span { font-size:.7rem; }
 .journal-day-nav button:disabled { opacity:.4; }

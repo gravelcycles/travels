@@ -8,7 +8,8 @@
       "family-img-2793",
       "family-img-1463"
     ],
-    "leadPhotoId": "family-img-1425"
+    "leadPhotoId": "family-img-1425",
+    "text": ""
   },
   "family-d2": {
     "photoOrder": [
@@ -18,7 +19,8 @@
       "family-snapseed-camera-capture-20260814-142431-686",
       "family-img-5036"
     ],
-    "leadPhotoId": "family-img-1472"
+    "leadPhotoId": "family-img-1472",
+    "text": ""
   },
   "family-d3": {
     "photoOrder": [
@@ -38,7 +40,8 @@
       "family-img-5047",
       "family-img-5048"
     ],
-    "leadPhotoId": "family-img-5047"
+    "leadPhotoId": "family-img-5047",
+    "text": ""
   },
   "family-d4": {
     "photoOrder": [
@@ -55,13 +58,15 @@
       "family-img-5075",
       "family-img-5076"
     ],
-    "leadPhotoId": "family-img-5052"
+    "leadPhotoId": "family-img-5052",
+    "text": ""
   },
   "family-d5": {
     "photoOrder": [
       "family-img-1520"
     ],
-    "leadPhotoId": "family-img-1520"
+    "leadPhotoId": "family-img-1520",
+    "text": ""
   },
   "family-d6": {
     "photoOrder": [
@@ -88,7 +93,8 @@
       "family-img-1589",
       "family-img-5102"
     ],
-    "leadPhotoId": "family-img-2880"
+    "leadPhotoId": "family-img-2880",
+    "text": ""
   },
   "family-d7": {
     "photoOrder": [
@@ -106,12 +112,14 @@
       "family-snapseed-camera-capture-20260819-211851-678",
       "family-snapseed-camera-capture-20260819-211902-057"
     ],
-    "leadPhotoId": "family-img-1611"
+    "leadPhotoId": "family-img-1611",
+    "text": ""
   },
   "family-d8": {
     "photoOrder": [
       "family-img-1613"
-    ]
+    ],
+    "text": ""
   },
   "family-d10": {
     "photoOrder": [
@@ -127,7 +135,8 @@
       "family-snapseed-camera-capture-20260822-174404-292",
       "family-snapseed-camera-capture-20260822-175328-988"
     ],
-    "leadPhotoId": "family-img-5136"
+    "leadPhotoId": "family-img-5136",
+    "text": ""
   },
   "family-d12": {
     "photoOrder": [
@@ -149,12 +158,23 @@
       "family-img-1768",
       "family-img-5165"
     ],
-    "leadPhotoId": "family-img-1754"
+    "leadPhotoId": "family-img-1754",
+    "text": ""
   },
   "family-d13": {
     "photoOrder": [
       "family-snapseed-camera-capture-20260825-111042-909"
     ],
-    "leadPhotoId": "family-snapseed-camera-capture-20260825-111042-909"
+    "leadPhotoId": "family-snapseed-camera-capture-20260825-111042-909",
+    "text": ""
+  },
+  "family-d9": {
+    "text": ""
+  },
+  "family-d11": {
+    "text": ""
+  },
+  "family-d14": {
+    "text": ""
   }
 }

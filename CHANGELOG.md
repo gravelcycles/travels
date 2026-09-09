@@ -6,6 +6,16 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Publish saved photos and simplify day panels
+
+- Publish 13 approved uploads as 48 verified WebP derivatives and include saved
+  location/visibility edits, bringing the family album to 99 visible photos.
+- Clear all 14 family day descriptions and shortened Relive captions; allow
+  intentionally blank Replay copy without placeholder descriptions.
+- Move View photos directly below the lead image, remove See this day on the
+  map, and show travel legs permanently expanded with one section heading.
+- All 64 tests pass; Studio supports optional Replay copy.
+
 ### Start Relive at 2× with longer rest-day holds
 
 Published as `47b635d` in successful Pages run `34362670497`. A fresh public
