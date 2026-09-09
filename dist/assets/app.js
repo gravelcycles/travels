@@ -512,14 +512,14 @@
       layout: { "line-cap": "round", "line-join": "round" },
       paint: {
         "line-color": palette.casing,
-        "line-width": modeStyle.width + (options.selected ? 5.2 : 3.8),
+        "line-width": ["case", ["boolean", ["feature-state", "inspected"], false], modeStyle.width + (options.selected ? 8.2 : 6.8), modeStyle.width + (options.selected ? 5.2 : 3.8)],
         "line-opacity": options.opacity * (options.selected ? 0.96 : 0.82)
       }
     }, beforeLabelId);
-    const baseColor = options.selected ? palette.selected : (options.color || modeStyle.color);
+    const baseColor = options.color || modeStyle.color;
     const baseWidth = modeStyle.width + (options.selected ? 1.4 : 0);
     const paint = {
-      "line-color": ["case", ["boolean", ["feature-state", "inspected"], false], "#f0a235", baseColor],
+      "line-color": baseColor,
       "line-width": ["case", ["boolean", ["feature-state", "inspected"], false], baseWidth + 3, baseWidth],
       "line-opacity": options.opacity
     };
@@ -686,6 +686,7 @@
   }
 
   function drawMainMap(fit, attempt = 0) {
+    renderLegend();
     if (!mainMapReady) return;
     if (!mapIsReady(mainMap)) {
       if (attempt < 24) window.setTimeout(() => drawMainMap(fit, attempt + 1), 500);
@@ -760,6 +761,7 @@
 
   function focusDay(day) {
     mapScope = "day";
+    renderLegend();
     if (!mainMapReady) { pendingMapAction="focus"; return; }
     drawMainMap(false);
     const coordinates = dayCoordinates(day);
@@ -793,16 +795,24 @@
     `;
   }
 
-  function lineSwatch(mode) {
-    return `<i class="line-swatch ${escapeHtml(mode)}" aria-hidden="true"></i>`;
+  function lineSwatch(mode, color, opacity = 1) {
+    return `<i class="line-swatch ${escapeHtml(mode)}"${color ? ` style="--swatch:${escapeHtml(color)};opacity:${opacity}"` : ""} aria-hidden="true"></i>`;
   }
 
   function renderLegend() {
-    const modes = [...new Set(journey.segments.map((segment) => segment.mode))];
-    $("#map-legend").innerHTML = modes.map((mode) => {
+    const focused = mapScope === "day";
+    const segments = focused ? segmentsForDay(activeDay()) : journey.segments;
+    const modes = [...new Set(segments.map((segment) => segment.mode))];
+    const selectedSegments = new Set(activeDay().segmentIds);
+    const stateKey = (label, color, opacity = 1) => `<span>${lineSwatch("train", color, opacity)}${escapeHtml(label)}</span>`;
+    let markup = focused ? `<strong class="legend-heading">Day ${activeDay().number}${modes.length ? " routes" : " · In one place"}</strong>` : "";
+    markup += modes.map((mode) => {
       const cue = modeStyles[mode]?.cue || "route";
-      return `<span title="${escapeHtml(`${labels[mode]} · ${cue}`)}" aria-label="${escapeHtml(`${labels[mode]}, ${cue} line`)}">${lineSwatch(mode)}${labels[mode]}</span>`;
-    }).join("") + (modes.includes("train") ? '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>' : '');
+      return `<span title="${escapeHtml(`${labels[mode]} · ${cue}`)}" aria-label="${escapeHtml(`${labels[mode]}, ${cue} line`)}">${lineSwatch(mode, modeStyles[mode]?.color)}${labels[mode]}</span>`;
+    }).join("");
+    if (focused && journey.segments.some((segment) => !selectedSegments.has(segment.id))) markup += stateKey("Other days", palette.muted, 0.32);
+    if (focused && modes.includes("train")) markup += '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>';
+    $("#map-legend").innerHTML = markup;
   }
 
   function renderJourneyPicker() {
