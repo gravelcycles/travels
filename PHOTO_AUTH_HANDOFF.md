@@ -1,9 +1,9 @@
 # Private photo access — implementation handoff
 
-Updated 9 September 2026. **Cutover is not complete.** The local implementation
-and private R2 upload are ready; the live GitHub Pages site and both historical
-public photo Releases still expose the old photographs. Do not mark TODO W01
-complete until the production acceptance and public-copy retirement below pass.
+Updated 9 September 2026. **Private-photo cutover is complete.** The protected
+site is live, the owner-selected initial test credential is active, and both
+historical public photo Releases are deleted. All 404 historical asset URLs
+return 404; all 198 private image URLs reject anonymous requests with 401.
 
 ## Budget and chosen passwords — confirmed implementation
 
@@ -53,8 +53,10 @@ Routes, text, captions, locations, and tiny embedded blur placeholders stay publ
 - Owner Cloudflare account/R2 setup and Wrangler OAuth are complete. OAuth uses
   the OS keychain. The initial owner credential is configured. Future credentials use the local
   password setup page; never ask for passwords or account tokens in chat.
-- Worker code is deployed; the atlas frontend is not committed/pushed yet.
+- Pages implementation commit `55eeb2b`, successful run `34377620269`.
   The service fails closed without configured secrets.
+- Both legacy Releases are deleted. All 404 assets have size/checksum-verified
+  local backups; their historical download URLs return 404.
 
 ## Authentication
 
@@ -153,7 +155,7 @@ holders of an old key may still fetch it. Erasure requires reviewing all journey
 references, deleting the exact unreferenced objects, and checking their URLs.
 There is no automatic destructive prune command.
 
-## Acceptance and remaining cutover
+## Acceptance and deployment receipts
 
 Local verification: **80 tests pass**, build succeeds, and actual workerd tests
 cover login proofs, single-use PKCE exchange, remembered cookies and private R2.
@@ -170,24 +172,28 @@ deployed and verified: login/remembered session 200, authenticated GET/HEAD 200,
 photo checksum matched, anonymous GET/HEAD 401, incorrect password 401.
 All 404 historical Release assets have matching local backups (199,772,706 bytes).
 
-Before changing Pages:
+Production owner-credential acceptance also passed in the in-app browser:
 
-1. Owner enters at least one chosen shared password in the local setup page;
-   deploy secrets and explicitly activate the Worker without echoing values.
-   Never deploy source-code test passwords to a Worker serving real photographs.
-2. Confirm owner production login, remembered access, authenticated GET/HEAD,
-   logout and anonymous denial on Workers Free. Use the in-app browser as requested.
-3. Run `npm test`, `npm run build`, `npm run auth:runtime-test`, and diff/secret
-   checks. Commit/push the reviewed frontend/manifests, wait for Pages, then
-   verify fresh anonymous and authorized visits including viewer and Replay.
-4. Retire BOTH `trip-photos-v1` and
-   `switzerland-italy-family-2026-uploads-v1` public GitHub Releases after private
-   verification. Check representative historical asset URLs no longer deliver
-   images. Preserve private originals/derivatives. Old caches or copies outside
-   the origin may persist; no claim of retroactive secrecy.
-5. Record the Pages commit/run, Worker version, counts and negative URL checks
-   in PROJECT_STATE/AGENT_HANDOFF, then complete W01.
+- Anonymous catalog shows only a 32 px blur; login displays a 1280 px blob image.
+- Journey unlock restores the 30-day remembered cookie without another password.
+- Photo viewer loads a 3200 px image; Trip Replay loads the small 1280 px image.
+- Lock photos clears sharp images and remembered access; the next unlock asks
+  for the password again.
+
+Pages commit `55eeb2b` deployed successfully in run `34377620269`. Active Worker
+version: `125d91b6-75cf-4ff1-b5f8-17e27428b14d`.
+
+Both `trip-photos-v1` (356 assets) and
+`switzerland-italy-family-2026-uploads-v1` (48 assets) public GitHub Releases were
+deleted after private verification. All 404 historical download URLs and both
+Release API endpoints return 404. All 198 private asset URLs return 401 to
+anonymous HEAD requests; representative anonymous GET and authenticated GET/HEAD
+checks also passed. The ignored `build/private-auth/cutover-url-checks.json`
+contains the complete timestamped URL receipt. Local backup inventories and
+originals remain private. Old caches or copies outside the origin may persist;
+this does not provide retroactive secrecy.
 
 Do not restore public hosting as a failure fallback. Keep the atlas locked while
-repairing auth. Existing public Releases must remain on the cutover checklist
-until explicitly verified removed.
+repairing auth. Future passwords should use the local setup form (12-character
+minimum); the initial shorter test credential was explicitly chosen by the
+owner. Replace that test credential with a strong passphrase before broader use.

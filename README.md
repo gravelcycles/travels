@@ -10,13 +10,13 @@ roughly 4–5 journeys on a laptop and 2–3 on a phone. Only published real tri
 appear; demo journeys remain separate. The family trip is titled
 **Switzerland & Italy · Family trip**.
 
-## Photo privacy migration
+## Private photographs
 
 The photo-only Cloudflare implementation supports multiple shared passwords and
 30-day remembered access. Two private WebP sizes replace the old variants; tiny
 embedded blurs remain public. The site address stays on GitHub Pages.
-**Live cutover is pending password setup and verification; historical public
-photo copies have not yet been retired.** See [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md)
+**Password protection is live, and both historical public photo Releases have
+been removed.** See [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md)
 for the current deployment state and password maintenance.
 
 ## How we work
