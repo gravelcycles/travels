@@ -529,3 +529,4 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible {
 }
 .intro-open .mobile-nav { visibility:hidden; }
 @media(max-width:900px) { .atlas-shell:not([data-mobile-tab="story"]) .story-panel { display:none; } }
+.replay-photo:not([hidden]) { display:block; }
