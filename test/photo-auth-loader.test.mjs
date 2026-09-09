@@ -23,6 +23,11 @@ function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:
  return {events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,header:elements[1]};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
+async function waitForNavigation(f) {
+ // Web Crypto completes on a worker thread; a few event-loop turns are not a completion signal.
+ for(let i=0;i<200&&!f.navigations.length;i++)await new Promise(resolve=>setTimeout(resolve,5));
+ assert.equal(f.navigations.length,1,'The remembered-session redirect should finish');
+}
 test('all sharp loads/preloads stay gated; markup contains only a placeholder src',async()=>{
  const f=fixture(),img=new Element();f.auth.setImage(img,photo);f.auth.preload(photo,1280);await settle();assert.equal(f.calls.length,0);assert.equal(img.src,photo.blur);
  const html=f.auth.markup(photo);assert.match(html,/src="data:image/);assert.ok(!html.includes(' src="/private-photos/'));assert.ok(!html.includes(' srcset='));
@@ -246,7 +251,7 @@ test('one-hour expiry automatically restores remembered access once instead of l
  const f=fixture(undefined,{clock:Clock});await f.unlock();const img=new Element();f.auth.setImage(img,photo);await settle();
  const expiry=[...f.timers.values()].find(timer=>timer.delay>3500000);assert.ok(expiry);
  now+=3601000;expiry.fn();f.events.get('focus')();f.events.get('visibilitychange')();
- for(let i=0;i<4;i++)await settle();
+ await waitForNavigation(f);
  assert.equal(f.auth.unlocked,false);assert.equal(f.navigations.length,1);
  assert.equal(new URL(f.navigations[0]).searchParams.get('action'),'restore');assert.equal(f.dialog.open,false);
  await f.returnFrom('photoAuthCode');await settle();assert.equal(f.auth.unlocked,true);assert.match(img.src,/^blob:/);
@@ -256,7 +261,7 @@ test('hidden-tab expiry waits for visibility before restoring and explicit lock 
   const f=fixture();await f.unlock();f.document.hidden=true;
   [...f.timers.values()].find(timer=>timer.delay>3500000).fn();await settle();assert.equal(f.navigations.length,0);
   if(cancel)f.auth.lock();f.document.hidden=false;f.events.get('visibilitychange')();
-  for(let i=0;i<4;i++)await settle();
+  if(!cancel)await waitForNavigation(f);else await settle();
   assert.equal(f.navigations.length,cancel?0:1);
  }
 });
