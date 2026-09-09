@@ -111,8 +111,9 @@ cached internal invocations count against the Workers request allowance in
 addition to the gateway invocation. Workers Free caps account requests at
 100,000/day. R2 storage/read/write allowances still apply across the account.
 
-Filmstrips and album cards now use 480px thumbnails, while large day previews
-and Replay use 1280px and the viewer selects a larger size when needed. The
+Filmstrips and album cards use 480px thumbnails; large day previews use 1280px.
+Viewer and Replay request only the largest derivative and remain blank until
+it has decoded. Their neighbor preloads also use the largest variant. The
 99 visible thumbnails add 4,517,224 bytes to private storage. Generate missing
 thumbnails with `node scripts/add-photo-thumbnails.mjs --apply`, then use the
 existing private publisher before deploying changed manifests. New uploads also

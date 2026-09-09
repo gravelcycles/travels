@@ -170,6 +170,9 @@ button { color: inherit; }
 .story-media img { width: 100%; height: 100%; object-fit: contain; display: block; background: #203f45; transition: transform 220ms ease; }
 .progressive-image { filter: blur(16px); opacity: 0.86; transition: filter 360ms ease, opacity 360ms ease, transform 220ms ease; }
 .progressive-image.is-loaded { filter: blur(0); opacity: 1; }
+#modal-photo, #replay-photo { filter:none; opacity:1; transition:none; }
+#modal-photo[data-photo-state]:not([data-photo-state="ready"]),
+#replay-photo[data-photo-state]:not([data-photo-state="ready"]) { visibility:hidden; }
 .story-media button:hover img { transform: scale(1.025); }
 .story-media button > span, .story-media button > small { position: absolute; z-index: 1; color: #fff; }
 .story-media button > span { top: 17px; right: 19px; font-weight: 900; font-size: 0.68rem; letter-spacing: 0.12em; text-shadow: 0 2px 8px #000; }

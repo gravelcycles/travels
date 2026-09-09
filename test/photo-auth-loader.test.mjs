@@ -48,6 +48,30 @@ test('visible photos receive high browser priority while speculative preloads st
  f.auth.preload(albumPhoto(9),1280);await settle();
  assert.equal(f.calls[1][1].priority,'low');
 });
+test('full-only presentation ignores cached previews and waits for the largest image to decode',async()=>{
+ let finishDownload,finishDecode;
+ const f=fixture(url=>url.endsWith(photo.src)?new Promise(resolve=>finishDownload=resolve):Promise.resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}})));
+ await f.unlock();f.auth.preload(photo,1280);await settle();
+ const img=new Element();img.decode=()=>new Promise(resolve=>finishDecode=resolve);
+ f.auth.setImage(img,photo,1280,{fullOnly:true});await settle();
+ assert.equal(img.dataset.privateSrc,photo.src);assert.equal(img.dataset.photoState,'loading');
+ assert.ok(!img.src.startsWith('blob:'));assert.notEqual(img.src,photo.blur);
+ finishDownload(new Response(new Uint8Array([2]),{headers:{'Content-Type':'image/webp'}}));await settle();
+ assert.match(img.src,/^blob:/);assert.equal(img.dataset.photoState,'loading','Do not reveal an undecoded image');
+ finishDecode();await settle();assert.equal(img.dataset.photoState,'ready');
+ const count=f.calls.length;f.auth.setImage(img,photo,Infinity,{fullOnly:true});assert.equal(img.dataset.photoState,'ready');assert.equal(f.calls.length,count);
+});
+test('full-only failures remain blank rather than falling back to a cached smaller image',async()=>{
+ const f=fixture(url=>Promise.resolve(url.endsWith(photo.src)?new Response('',{status:404}):new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}})));
+ await f.unlock();f.auth.preload(photo,1280);await settle();const img=new Element();
+ f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();
+ assert.equal(img.dataset.photoState,'error');assert.ok(!img.src.startsWith('blob:'));assert.notEqual(img.src,photo.blur);
+});
+test('a full-image decode finishing after lock cannot reveal the photo',async()=>{
+ const f=fixture();await f.unlock();let decoded;const img=new Element();img.decode=()=>new Promise(resolve=>decoded=resolve);
+ f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();assert.equal(img.dataset.photoState,'loading');
+ f.auth.lock();decoded();await settle();assert.equal(img.dataset.photoState,'locked');assert.ok(!img.src.startsWith('blob:'));
+});
 test('authorized consumers share one request, and logout revokes blobs and restores placeholders',async()=>{
  const f=fixture(),a=new Element(),b=new Element();f.auth.setImage(a,photo);f.auth.setImage(b,photo);await f.unlock();await settle();await settle();
  assert.equal(f.calls.length,1);assert.equal(f.calls[0][1].headers.Authorization,'Bearer fixture-access-token');assert.equal(f.calls[0][1].credentials,'omit');assert.match(a.src,/^blob:/);assert.equal(a.src,b.src);
