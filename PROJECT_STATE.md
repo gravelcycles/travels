@@ -2,6 +2,10 @@
 
 ## Day previews start at photo 1 · 9 September 2026
 
+Published as `6bc0561` in successful Pages run `34367258218`. Fresh public
+verification confirmed Day 3’s preview opens photo 1 of 13, with no browser
+errors. The demo starts at photo 1 too. All 64 tests and the build pass.
+
 The day story's large photo and each All photos day card now use the first
 visible photo in the saved album order. Clicking the day image therefore opens
 photo 1, matching View photos and day-album navigation. Direct photo selections
