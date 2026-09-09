@@ -70,7 +70,7 @@
   let replayLastTimestamp = null;
   let replayElapsed = 0;
   let replayProgress = 0;
-  let replaySpeed = 1;
+  let replaySpeed = 2;
   let replayActiveSourceId = null;
   let replayPositionMarker = null;
   let replayDrawnSegmentId = null;
@@ -1375,7 +1375,9 @@
   }
 
   function replayMomentDuration(moment) {
-    return (moment?.duration || 2.4) * 1000;
+    const restDay = replayMomentDay(moment).segmentIds.length === 0;
+    const hold = replaySpeed === 2 && restDay ? 1.5 : 1;
+    return (moment?.duration || 2.4) * 1000 * hold;
   }
 
   function pauseReplay() {
@@ -1645,7 +1647,7 @@
   $("#replay-previous-day").addEventListener("click", () => stepReplayDay(-1));
   $("#replay-next-day").addEventListener("click", () => stepReplayDay(1));
   $("#replay-speed").addEventListener("change", (event) => {
-    replaySpeed = Number(event.target.value) || 1;
+    replaySpeed = Number(event.target.value) || 2;
     updateReplayControls(replayMomentDay());
   });
   $("#replay-timeline").addEventListener("input", (event) => jumpReplayToMoment(Number(event.target.value)));

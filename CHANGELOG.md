@@ -6,6 +6,13 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Start Relive at 2× with longer rest-day holds
+
+- Set the initial playback speed and selector to 2× in real journeys and demos.
+- Give rest days 50% more screen time at 2×; preserve 1×, half speed, and travel
+  pacing. Filter local-upload overrides alongside upload manifests in tests.
+- Local photo/data publishing is prepared but awaiting public-upload approval.
+
 ### Remove map photo landmarks
 
 Published as `147229b` in successful Pages run `34362027798`. Fresh public
