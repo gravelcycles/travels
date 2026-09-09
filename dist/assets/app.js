@@ -1019,7 +1019,7 @@
     }
     viewerMap = createMap("photo-map", true);
     viewerTransition = window.JOURNEY_ATLAS_UTILS.photoMapTransition(viewerMap);
-    const stopPhotoTransition = event => { if (event.originalEvent) viewerTransition.cancel(); };
+    const stopPhotoTransition = event => { if (event.originalEvent) viewerTransition.cancel({ stopMap: false }); };
     viewerMap.on("movestart", stopPhotoTransition);
     viewerMap.on("zoomstart", stopPhotoTransition);
     const finishViewerMapSetup = () => {

@@ -27,6 +27,13 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Soften the loading blur and restore map dragging
+
+- Bring back the earlier 16 px thumbnail blur and a softer photo reveal. Smooth
+  the viewer's tiny loading preview while clipping it to the photograph's bounds.
+- Let manual map gestures cancel pending photo moves without stopping the active
+  drag or zoom. Closing the viewer and switching photos still stop old transitions.
+
 ### Restore a gentle image reveal
 
 - Keep the embedded preview underneath a 480 ms fade into the sharp photograph
