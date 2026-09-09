@@ -48,7 +48,7 @@ export default {
       }
       if (url.pathname === `${PREFIX}auth/window` && request.method === 'GET') {
         let target; try { target = new URL(url.searchParams.get('returnTo')); } catch { return json(400, { error: 'Open this page from the atlas.' }, null); }
-        if (!allowed.includes(url.searchParams.get('origin')) || target.origin !== url.searchParams.get('origin') || (target.origin === 'https://gravelcycles.github.io' && !target.pathname.startsWith('/travels/')) || !/^[A-Za-z0-9_-]{43}$/.test(url.searchParams.get('state') || '') || !/^[A-Za-z0-9_-]{43}$/.test(url.searchParams.get('challenge') || '') || !['login', 'logout'].includes(url.searchParams.get('action') || 'login')) return json(400, { error: 'Open this page from the atlas.' }, null);
+        if (!allowed.includes(url.searchParams.get('origin')) || target.origin !== url.searchParams.get('origin') || (target.origin === 'https://gravelcycles.github.io' && !target.pathname.startsWith('/travels/')) || !/^[A-Za-z0-9_-]{43}$/.test(url.searchParams.get('state') || '') || !/^[A-Za-z0-9_-]{43}$/.test(url.searchParams.get('challenge') || '') || !['login', 'logout', 'restore'].includes(url.searchParams.get('action') || 'login')) return json(400, { error: 'Open this page from the atlas.' }, null);
         const nonce = random();
         return new Response(loginWindow(nonce, credentials(env).map(({ id, salt, iterations }) => ({ id, salt, iterations }))), { headers: headers(null, { 'Content-Type': 'text/html; charset=utf-8', 'Content-Security-Policy': `default-src 'none'; script-src 'nonce-${nonce}'; style-src 'nonce-${nonce}'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'`, 'X-Frame-Options': 'DENY' }) });
       }

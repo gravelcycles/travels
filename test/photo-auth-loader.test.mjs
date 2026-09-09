@@ -7,18 +7,20 @@ class Element extends EventTarget {
  querySelectorAll(){return [];}
  append(){}setAttribute(){}removeAttribute(name){if(name==='srcset')this.srcset='';}focus(){}showModal(){this.open=true;}close(){this.open=false;}
 }
-function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/webp'}})){
+function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/webp'}}),{startup=false}={}){
  const elements=[],header=new Element(),events=new Map(),calls=[],revoked=[];let loginFlow;
  const document={body:new Element(),hidden:false,activeElement:new Element(),createElement(){const e=new Element();elements.push(e);return e;},querySelector(){return header;},querySelectorAll(){return [elements[0].querySelector('[data-unlock]'),elements[1].querySelector('[data-unlock]')];},addEventListener(){}};
  const window={JOURNEY_ATLAS_PHOTO_SERVICE:{origin:'https://photos.example.com'},addEventListener(n,fn){events.set(n,fn);},dispatchEvent(){},open(){throw new Error('Login should not require a popup');}};
  const Url=class extends URL{};Url.createObjectURL=()=>`blob:fixture-${calls.length}`;Url.revokeObjectURL=u=>revoked.push(u);
- const location=new URL('https://gravelcycles.github.io/travels/');location.assign=()=>{};
+ document.body.dataset.journeyScope=startup?'real':'demo';
+ const navigations=[];const location=new URL('https://gravelcycles.github.io/travels/');location.assign=url=>navigations.push(url);
  const storage={getItem:()=>JSON.stringify(loginFlow),removeItem(){},setItem(k,v){loginFlow=JSON.parse(v);}};
  const context=vm.createContext({window,document,location,history:{replaceState(){}},sessionStorage:storage,URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,btoa,setTimeout:()=>1,clearTimeout(){},setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json({token:'fixture-access-token',expiresAt:Math.floor(Date.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
- vm.runInContext(source.replace('})();','window.__completeReturn=completeReturn;})();'),context);
+ vm.runInContext(source.replace('completeReturn();}', 'window.__startup=completeReturn();}').replace('})();','window.__completeReturn=completeReturn;})();'),context);
  async function unlock(spoof=false){loginFlow={state:'fixture-state',verifier:'v'.repeat(43),created:Date.now(),hash:''};location.hash=new URLSearchParams({photoAuthCode:'c'.repeat(43),state:spoof?'wrong-state':'fixture-state'}).toString();await window.__completeReturn();}
 
- return {auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,unlock};
+ async function returnFrom(kind){location.hash=new URLSearchParams({[kind]:kind==='photoAuthCode'?'c'.repeat(43):'1',state:loginFlow.state}).toString();await window.__completeReturn();}
+ return {auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 test('all sharp loads/preloads stay gated; markup contains only a placeholder src',async()=>{
@@ -66,4 +68,31 @@ test('unused photo preloads remain bounded after leaving a large album',async()=
  images.forEach(img=>{img.isConnected=false;});
  for(let i=22;i<=45;i++){f.auth.preload(albumPhoto(i),1280);await settle();}
  assert.ok(f.revoked.length>=33,'Only a bounded set of unused images should remain cached');
+});
+
+test('cached viewer photos display immediately without a placeholder or another request',async()=>{
+ const f=fixture(),img=new Element();await f.unlock();
+ f.auth.setImage(img,photo,Infinity);await settle();const original=img.src;
+ f.auth.setImage(img,albumPhoto(5));await settle();const count=f.calls.length;
+ f.auth.setImage(img,photo,Infinity);
+ assert.equal(img.src,original,'Previously viewed photos should appear synchronously');
+ assert.equal(f.calls.length,count);await settle();assert.equal(f.calls.length,count);
+ f.auth.lock();f.auth.setImage(img,photo,Infinity);assert.equal(img.src,photo.blur);
+});
+test('a fresh page automatically restores remembered access without opening the unlock prompt',async()=>{
+ const f=fixture(undefined,{startup:true});await f.ready;
+ assert.equal(f.dialog.open,false);assert.equal(f.navigations.length,1);
+ assert.equal(new URL(f.navigations[0]).searchParams.get('action'),'restore');
+ await f.returnFrom('photoAuthCode');assert.equal(f.auth.unlocked,true);assert.equal(f.dialog.open,false);
+ assert.equal(f.navigations.length,1,'Completing restoration must not redirect again');
+});
+test('missing remembered access prompts once without a redirect loop',async()=>{
+ const f=fixture(undefined,{startup:true});await f.ready;
+ await f.returnFrom('photoAuthMissing');assert.equal(f.auth.unlocked,false);assert.equal(f.dialog.open,true);assert.equal(f.navigations.length,1);
+});
+test('logout and cancelled login do not automatically unlock again',async()=>{
+ for(const kind of ['photoAuthLogout','photoAuthCancel']){
+  const f=fixture(undefined,{startup:true});await f.ready;
+  await f.returnFrom(kind);assert.equal(f.auth.unlocked,false);assert.equal(f.dialog.open,false);assert.equal(f.navigations.length,1);
+ }
 });

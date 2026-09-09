@@ -978,7 +978,11 @@
   }
 
   function renderViewerFilmstrip(photos) {
-    $("#viewer-filmstrip").innerHTML = photos.length
+    const strip = $("#viewer-filmstrip");
+    const album = JSON.stringify(photos);
+    if (strip.dataset.album !== album) {
+      strip.dataset.album = album;
+      strip.innerHTML = photos.length
       ? photos.map((photo, index) => `
           <button type="button" data-viewer-index="${index}" class="${index === viewerPhotoIndex ? "active" : ""}" aria-pressed="${index === viewerPhotoIndex}" aria-label="Show photo ${index + 1} of ${photos.length}">
             ${photoImageMarkup(photo, { alt: "", sizes: "180px" })}
@@ -986,7 +990,13 @@
           </button>
         `).join("")
       : "";
-    prepareProgressiveImages($("#viewer-filmstrip"));
+      prepareProgressiveImages(strip);
+    }
+    for (const button of strip.querySelectorAll('[data-viewer-index]')) {
+      const selected = Number(button.dataset.viewerIndex) === viewerPhotoIndex;
+      button.classList.toggle('active', selected);
+      button.setAttribute('aria-pressed', String(selected));
+    }
     const activeThumb = $("#viewer-filmstrip .active");
     if (activeThumb) activeThumb.scrollIntoView({ block: "nearest", inline: "center" });
   }
@@ -1005,6 +1015,7 @@
   function updateViewer() {
     const day = viewerDay();
     const dayChanged = activeDayId !== day.id;
+    const scopeChanged = mapScope !== "day";
     const photos = photosForDay(day.id);
     viewerPhotoIndex = Math.max(0, Math.min(photos.length - 1, viewerPhotoIndex));
     const photo = photos[viewerPhotoIndex];
@@ -1018,7 +1029,7 @@
       if (!window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) window.JOURNEY_ATLAS_AUTH?.clearImage(modalPhoto);
       modalPhoto.className = photo.blur ? "progressive-image" : "";
       modalPhoto.srcset = "";
-      modalPhoto.src = photo.blur || (window.JOURNEY_ATLAS_AUTH?.isProtected(photo) ? "" : photoAssetUrl(photo.src));
+      if (!window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) modalPhoto.src = photo.blur || photoAssetUrl(photo.src);
       modalPhoto.alt = photo.alt;
       modalPhoto.sizes = "(max-width: 900px) 100vw, 75vw";
       if (photo.width) modalPhoto.width = photo.width;
@@ -1064,10 +1075,8 @@
     continuation.innerHTML = next ? `<strong>${photo ? 'Next day' : 'Next day with photos'} <span aria-hidden="true">→</span></strong><small>Day ${next.number} · ${escapeHtml(next.title)}</small>` : '<strong>Back to journey →</strong>';
     continuation.classList.toggle('ready-to-continue', Boolean(photo && next && !continuation.hidden));
     renderViewerFilmstrip(photos);
-    renderDays();
-    renderStory();
     if (dayChanged) setActiveDay(day.id, true);
-    else drawMainMap(false);
+    else if (scopeChanged) drawMainMap(false);
     if (viewerMapReady) syncViewerMap();
   }
 
