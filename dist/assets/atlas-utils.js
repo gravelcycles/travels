@@ -113,5 +113,34 @@
     return requests.slice(0, 6);
   }
 
-  root.JOURNEY_ATLAS_UTILS = { photoPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoMapTransition };
+  function dayPreloadPlan(days, currentDayId, direction = 1) {
+    const index = days.findIndex(day => day.id === currentDayId);
+    if (index < 0) return [];
+    const step = direction < 0 ? -1 : 1, ahead = [], behind = [];
+    for (let i = index + step; i >= 0 && i < days.length; i += step) if (days[i].photos.length) ahead.push(days[i]);
+    for (let i = index - step; i >= 0 && i < days.length; i -= step) if (days[i].photos.length) behind.push(days[i]);
+    const ordered = [...ahead, days[index], ...behind].filter(day => day.photos.length);
+    const nearby = ahead.slice(0, 2), requests = [], seen = new Set();
+    // Leave six slots for the viewer's full-size neighbors in the 80-item queue.
+    const limit = 74;
+    const add = (photo, width) => {
+      const key = `${photo.id}:${width}`;
+      if (!seen.has(key) && requests.length < limit) { seen.add(key); requests.push({photo, width}); }
+    };
+    for (const day of nearby) add(day.photos[0], 1280);
+    // The All photos dialog needs a small cover for every nonempty day.
+    for (const day of ordered) add(day.photos[0], 480);
+    // Reserve room for each journal's main image before filling filmstrips.
+    const remainingLeads = ordered.filter(day => !seen.has(`${day.photos[0].id}:1280`));
+    const thumbnailLimit = Math.max(requests.length, limit - remainingLeads.length);
+    // Interleave the next two strips so one large day cannot monopolize the queue.
+    const longest = Math.max(0, ...nearby.map(day => day.photos.length));
+    for (let i = 1; i < longest && requests.length < thumbnailLimit; i++) {
+      for (const day of nearby) if (day.photos[i] && requests.length < thumbnailLimit) add(day.photos[i], 480);
+    }
+    for (const day of remainingLeads) add(day.photos[0], 1280);
+    return requests;
+  }
+
+  root.JOURNEY_ATLAS_UTILS = { photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

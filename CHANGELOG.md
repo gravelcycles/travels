@@ -1,5 +1,18 @@
 # Changelog
 
+## 9 September 2026 — warm day thumbnails and album covers
+
+- Prepare the next two nonempty days’ thumbnail strips, interleaved in reviewed
+  order, plus every day’s All photos cover and journal main image. Viewer and
+  Replay full-size neighbors stay first; returning to the journal resumes its plan.
+- Bound the larger plan to 80 distinct variants and keep one background transfer.
+  New navigation reprioritizes overlapping plans; visible work still preempts
+  speculation, with hidden/data-saving/2G pauses and the existing 64 MiB cache.
+- Remember completed targets so cache eviction cannot cause repeated downloads.
+- Validation: 151 tests and build pass. Local browser checks reused all eight
+  Day 7 thumbnails and all 14 album covers without new requests; all 14 journal
+  lead images were already fetched. No browser errors.
+
 ## 9 September 2026 — recover slow photos and preload across days
 
 - Let full-image transfers continue while bytes arrive: 15-second inactivity

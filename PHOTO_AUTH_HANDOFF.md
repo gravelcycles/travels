@@ -1,5 +1,29 @@
 # Private photo access — implementation handoff
 
+## Expanded day preloading — 9 September 2026
+
+The current planner keeps immediate viewer/Replay full photos first, then adds
+480px covers for every nonempty day in All photos, 1280px journal lead images,
+and interleaved thumbnails for the next two nonempty days (previous days when
+viewing backwards). Each day plan reserves room for leads before filling large
+strips. It uses up to 74 variants plus at most six immediate viewer targets;
+the loader deduplicates actual content keys before its 80-target bound.
+
+One speculative transfer runs after visible work; hidden/data-saving/2G guards
+and the 96-entry/64 MiB unused cache remain. Overlapping new plans can preempt a
+lower-priority target. Completed targets remain marked while in the plan, so
+eviction does not trigger background refetch loops. Visible selection can still
+reload evicted bytes. Closing a player restores the journal preload plan.
+
+Validation: 151 tests and build pass. For the real 14-day journey, all forward
+and backward day plans include all 14 cover/lead pairs; the largest day plan
+has 55 variants. Day 6’s background day plan is 38 variants / 6.44 MiB. Local
+browser checks confirmed all eight Day 7 thumbnails were fetched before day
+switching and none refetched; all 14 album covers and journal lead images were
+already fetched, and opening All photos made no new cover requests. No browser
+errors. No Worker or private-asset changes are required for this release.
+
+
 Production verification for the recovery/preloading release: frontend
 `b2af92345effd996a64e7858920528ebdcfcb400`, successful Pages run
 [34401006337](https://github.com/gravelcycles/travels/actions/runs/34401006337),
