@@ -6,6 +6,15 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Match the loading blur to the full photograph
+
+- Fit the blur to the photo’s exact aspect ratio and display bounds, including
+  portrait photos and window resizes, so it is replaced without a sizing jump.
+- Reuse previously decoded full photos without entering the loading state.
+- Remove the “Loading photograph” message from the viewer and Trip Replay.
+- Verified landscape/portrait loading and cached revisits in the browser;
+  all 120 tests and the build pass.
+
 ### Restore the blurred loading background
 
 - Show the selected photo’s embedded blur behind the full-screen loading state,
