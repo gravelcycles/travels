@@ -22,7 +22,7 @@ function selection() {
     viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null,
     journey: { days, segments: [] }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],
     photosForDay: () => [], routeLabel: () => '', escapeHtml: value => value || '',
-    renderDays() {}, renderStory() {}, drawMainMap() {}, renderViewerFilmstrip() {}, clearSegmentInspection() {}
+    refreshPreloads() {}, renderDays() {}, renderStory() {}, drawMainMap() {}, renderViewerFilmstrip() {}, clearSegmentInspection() {}
   });
   vm.runInContext(`${functionSource('setActiveDay')}\n${functionSource('updateViewer')}`, context);
   return context;
@@ -98,4 +98,14 @@ test('same-day viewer navigation does not rebuild background photos or redraw th
   const context=selection(),calls=[];
   Object.assign(context,{activeDayId:'d2',mapScope:'day',renderDays:()=>calls.push('days'),renderStory:()=>calls.push('photos'),drawMainMap:()=>calls.push('map')});
   vm.runInContext('updateViewer()',context);assert.deepEqual(calls,[]);
+});
+test('viewer route layers are reused within a day and rebuilt when the day changes',()=>{
+ const calls=[];let day={id:'d1',segmentIds:['a']};
+ const context=vm.createContext({viewerMapReady:true,photoDialog:{open:true},viewerMap:{},mapIsReady:()=>true,viewerDay:()=>day,
+  viewerPhotoIndex:0,photosForDay:()=>[{id:'one'},{id:'two'}],viewerCameraPhoto:null,viewerTransition:{cancel(){}},viewerPhotoMarkers:[],viewerRouteKey:null,viewerDecorations:{},
+  journey:{id:'trip',segments:[{id:'a'},{id:'b'}]},dayCoordinates:()=>[],
+  clearDecorations:()=>calls.push('clear'),addSegmentLayer:()=>calls.push('route'),addRailStopMarkers:()=>calls.push('stops')});
+ vm.runInContext(functionSource('syncViewerMap'),context);vm.runInContext('syncViewerMap()',context);
+ assert.deepEqual(calls,['clear','route','route','stops']);context.viewerPhotoIndex=1;vm.runInContext('syncViewerMap()',context);assert.equal(calls.length,4);
+ day={id:'d2',segmentIds:['b']};vm.runInContext('syncViewerMap()',context);assert.deepEqual(calls.slice(4),['clear','route','route','stops']);
 });

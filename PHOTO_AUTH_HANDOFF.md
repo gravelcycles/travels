@@ -1,5 +1,51 @@
 # Private photo access — implementation handoff
 
+## Slow-transfer recovery and bounded cross-day preloading — 9 September 2026
+
+The loader streams successful WebP bodies into a blob and resets a 15-second
+inactivity timer on nonempty chunks. Each attempt also has a two-minute total
+limit and a 16 MiB body bound. Visible requests retry once; speculative failures
+wait for new intent. Failed decoded bytes are evicted; Retry uses browser cache
+reload for that content key. Full-size-only presentation and remembered access
+remain unchanged.
+
+Every status/code-exchange/login-window request has a 15-second deadline,
+including body parsing. A transient startup outage offers recovery on the atlas
+without discarding tab credentials or automatically navigating away. The
+first-party restoration page immediately shows progress and a return action.
+Asset/status 401s enter remembered restoration once, using a tab-stored 60-second
+loop guard. Explicit lock cancels an in-progress redirect preparation; revoked
+credentials still cannot authorize a photo.
+
+The app passes a bounded, ordered preload plan to the loader. Viewer plans favor
+two photos in the browsing direction, one behind, and the adjacent nonempty
+calendar day's first photo plus 480px thumbnail. Journal mode prepares its own
+first full image and the next day's small preview/thumbnail. Replay scans ahead
+for two distinct photos, skipping repeated and photo-free moments. At most six
+variants are planned and one speculative request runs; current full images and
+visible thumbnails preempt speculation. A promoted in-flight target is reused.
+Changing the plan drops obsolete downloads, closing a player clears its plan,
+and hidden/data-saving/2G sessions suspend speculative requests. Completed blobs
+retain the existing bounded cache. Routes in the viewer are rebuilt only when
+its day or journey changes.
+
+DOM timing attributes now separate photoQueueMs, photoHeadersMs, photoBodyMs,
+photoDownloadMs (including retries), photoAttempts, and photoDecodeMs. Existing
+edge and browser cache diagnostics remain. They contain no credentials.
+
+Wrangler's cross_version_cache applies to the enabled internal PhotoCache only;
+the top-level/default gateway cache remains disabled. Immutable WebP responses
+can survive Worker version changes. An intentional cached-object deletion or
+change to inner response semantics must include a cache purge; credential
+revocation remains enforced by the uncached gateway before every HTTP reuse.
+
+Local validation: 138 tests, build, and Worker runtime passed. A real 1.21 MB
+WebP deliberately streamed over 18 seconds loaded at 2400×3200 in one attempt;
+its preloaded next-day photo was fetched only once. A corrupt response produced
+Retry, then a fresh request revealed a 3200×2400 image. Deployment verification
+is recorded separately after publishing.
+
+
 ## Restore expired photo access and tolerate decode interruption — 9 September 2026
 
 A live tab reproduced the all-photos-locked state after its one-hour access

@@ -6,11 +6,14 @@
   let service = '';
   try { const url = new URL(config.origin); if (url.origin === config.origin && (url.protocol === 'https:' || (['127.0.0.1','localhost'].includes(location.hostname) && ['127.0.0.1','localhost'].includes(url.hostname)))) service = url.origin; } catch { /* Unconfigured always stays locked. */ }
   let token = '', expiresAt = 0, generation = 0, expiryTimer, lastFocus, restoreAfterExpiry=false;
-  const ACCESS_KEY='atlas-photo-access';
+  const ACCESS_KEY='atlas-photo-access', RECOVERY_KEY='atlas-photo-recovery';
   const images = new Map(), cache = new Map();
   const MAX_CACHE = 96, MAX_CACHE_BYTES = 64 * 1024 * 1024;
   const STATUS_INTERVAL = 60000;
-  const REQUEST_TIMEOUT = 10000, MAX_DOWNLOADS = 4, MAX_BACKGROUND = 2;
+  const REQUEST_TIMEOUT = 15000, MAX_TRANSFER_TIME = 120000, MAX_DOWNLOADS = 4;
+  const MAX_PREFETCH = 6, MAX_PHOTO_BYTES = 16 * 1024 * 1024;
+  const preloadTargets = new Set(), preloadFailures = new Set(), freshSources = new Set();
+  let pumping = false, navigationPending = false;
   const downloadQueue = [], activeDownloads = new Set();
   let lastCheck = 0, checkPending = null;
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -53,7 +56,8 @@
     }
   }
   function lock(broadcast=true) {
-    token='';expiresAt=0;generation++;lastCheck=0;checkPending=null;restoreAfterExpiry=false;clearTimeout(expiryTimer);
+    token='';expiresAt=0;generation++;lastCheck=0;checkPending=null;restoreAfterExpiry=false;navigationPending=false;clearTimeout(expiryTimer);
+    preloadTargets.clear();preloadFailures.clear();
     try{sessionStorage.removeItem(ACCESS_KEY);}catch{}
     for(const [img,item] of images){item.cleanup?.();img.removeAttribute('srcset');img.src=item.blur;img.classList.remove('is-loaded');item.entry=null;item.loading=false;imageState(img,'locked');}
     for(const entry of cache.values()){entry.controller.abort();if(entry.url)URL.revokeObjectURL(entry.url);}
@@ -61,65 +65,178 @@
     window.dispatchEvent(new Event('atlas-photos-locked'));
   }
   function expireAccess() {
-    // Access is tab-scoped: one expired token must not lock other valid tabs.
-    lock(false);restoreAfterExpiry=true;check();
+    if (!token) return;
+    // Guard survives the round trip: a newly issued but rejected token cannot loop.
+    let recent = false;
+    try {
+      const previous = Number(sessionStorage.getItem(RECOVERY_KEY));
+      recent = previous > 0 && Date.now() - previous < STATUS_INTERVAL;
+      if (!recent) sessionStorage.setItem(RECOVERY_KEY, String(Date.now()));
+    } catch { /* Session storage failures are handled by begin(). */ }
+    lock(false);
+    if (recent) { showPrompt('Photo access could not be restored. Please unlock again.'); return; }
+    restoreAfterExpiry = true;
+    check();
+  }
+  async function requestJson(url, options = {}) {
+    const controller = new AbortController();
+    let timer;
+    const timeout = new Promise((_, reject) => {
+      timer = setTimeout(() => { controller.abort(); reject(new Error('Photo access timed out. Please try again.')); }, REQUEST_TIMEOUT);
+    });
+    try {
+      return await Promise.race([(async () => {
+        const response = await fetch(url, { ...options, signal: controller.signal });
+        return { response, data: await response.json() };
+      })(), timeout]);
+    } finally { clearTimeout(timer); }
   }
   function showPrompt(text='') { updateControls();message.textContent=text;lastFocus=document.activeElement;if(!dialog.open)dialog.showModal(); }
   function closePrompt(){dialog.close();lastFocus?.focus?.();}
+  function abortEntry(src, entry) {
+    if (cache.get(src) === entry) cache.delete(src);
+    entry.controller.abort();
+  }
+  function speculationAllowed() {
+    const connection = window.navigator?.connection;
+    return !document.hidden && !connection?.saveData && !['slow-2g', '2g'].includes(connection?.effectiveType)
+      && ![...images].some(([img, item]) => img.isConnected && item.priority === 0 && ['loading', 'error'].includes(img.dataset.photoState))
+      && !downloadQueue.some(entry => entry.priority < 2)
+      && ![...activeDownloads].some(entry => entry.priority < 2);
+  }
+  function setPreloadSources(sources) {
+    const next = new Set(sources.filter(src => protectedPath.test(src)).slice(0, MAX_PREFETCH));
+    for (const src of preloadFailures) if (!next.has(src)) preloadFailures.delete(src);
+    preloadTargets.clear();for (const src of next) preloadTargets.add(src);
+    for (const [src, entry] of cache) if (!entry.url && entry.priority === 2 && !next.has(src)) abortEntry(src, entry);
+    pumpDownloads();
+  }
+  function setPreloads(requests = []) {
+    setPreloadSources(requests.filter(request => isProtected(request.photo)).map(({photo, width}) => selected(photo, width)));
+  }
   function pumpDownloads() {
-    downloadQueue.sort((a,b)=>a.priority-b.priority);
-    while(activeDownloads.size<MAX_DOWNLOADS&&downloadQueue.length) {
-      const next=downloadQueue[0];
-      if(next.priority>0&&[...activeDownloads].filter(entry=>entry.priority>0).length>=MAX_BACKGROUND)break;
-      downloadQueue.shift();activeDownloads.add(next);next.run();
-    }
+    if (pumping || (!local && !token)) return;
+    pumping = true;
+    try {
+      const speculative = speculationAllowed();
+      if (!speculative) for (const entry of activeDownloads) if (entry.priority === 2) abortEntry(entry.src, entry);
+      downloadQueue.sort((a, b) => a.priority - b.priority);
+      while (activeDownloads.size < MAX_DOWNLOADS) {
+        const next = downloadQueue[0];
+        if (!next) break;
+        if (next.priority === 2 && (!speculative || activeDownloads.size)) break;
+        // One slot remains available for the selected photo, even with many thumbnails.
+        if (next.priority === 1 && [...activeDownloads].filter(entry => entry.priority === 1).length >= MAX_DOWNLOADS - 1) break;
+        downloadQueue.shift();activeDownloads.add(next);next.run();
+      }
+      // Only one speculative transfer, and only after all visible work is ready.
+      if (speculative && !activeDownloads.size && !downloadQueue.length) {
+        const src = [...preloadTargets].find(src => !cache.has(src) && !preloadFailures.has(src));
+        if (src) {
+          fetchPhoto(src, 2).then(prune, prune);
+          const next = downloadQueue.shift();
+          if (next) { activeDownloads.add(next);next.run(); }
+        }
+      }
+    } finally { pumping = false; }
   }
-  async function download(src,entry,epoch) {
-    for(let attempt=0;attempt<2;attempt++) {
-      if(entry.controller.signal.aborted||epoch!==generation)throw new Error('Photo request cancelled');
-      const controller=new AbortController(),abort=()=>controller.abort();
-      entry.controller.signal.addEventListener('abort',abort,{once:true});
-      const timer=setTimeout(abort,REQUEST_TIMEOUT);
+  async function download(src, entry, epoch) {
+    const overallStarted = Date.now();
+    for (let attempt = 0; attempt < (entry.priority === 2 ? 1 : 2); attempt++) {
+      if (entry.controller.signal.aborted || epoch !== generation) throw new Error('Photo request cancelled');
+      const controller = new AbortController(), abort = () => controller.abort();
+      entry.controller.signal.addEventListener('abort', abort, {once:true});
+      let idleTimer, reader;
+      const progress = () => { clearTimeout(idleTimer);idleTimer = setTimeout(abort, REQUEST_TIMEOUT); };
+      const overallTimer = setTimeout(abort, MAX_TRANSFER_TIME);
+      progress();
       try {
-        const started=Date.now();
-        const response=await fetch(local?`/build/private-photo-assets/${src.slice('/private-photos/assets/'.length)}`:`${service}${src}`,{credentials:'omit',headers:local?{}:{Authorization:`Bearer ${token}`},cache:local?'no-store':'no-cache',signal:controller.signal,priority:entry.priority<2?'high':'low'});
-        if(response.status===401){if(epoch===generation)lock();throw new Error('Photos locked');}
-        if(!response.ok){const error=new Error('Photo could not load');error.photoFailure=`HTTP ${response.status}`;error.permanent=response.status<500&&![408,429].includes(response.status);throw error;}
-        if(response.headers.get('Content-Type')?.split(';')[0]!=='image/webp'){const error=new Error('Invalid photo response');error.permanent=true;throw error;}
-        const blob=await response.blob();
-        if(epoch!==generation||entry.controller.signal.aborted||controller.signal.aborted)throw new Error('Photo request cancelled');
-        entry.bytes=blob.size;entry.downloadMs=Date.now()-started;entry.edgeCache=response.headers.get('X-Photo-Cache')||'UNKNOWN';entry.revalidated=response.headers.get('X-Photo-Revalidated')==='1';entry.serverTiming=response.headers.get('Server-Timing')||'';entry.url=URL.createObjectURL(blob);return entry;
-      } catch(error) {
-        if(controller.signal.aborted&&!entry.controller.signal.aborted)error.photoFailure='timeout';
-        if(attempt===1||error.permanent||epoch!==generation||entry.controller.signal.aborted)throw error;
-      } finally {clearTimeout(timer);entry.controller.signal.removeEventListener('abort',abort);}
+        const started = Date.now();
+        const response = await fetch(local ? `/build/private-photo-assets/${src.slice('/private-photos/assets/'.length)}` : `${service}${src}`, {
+          credentials:'omit', headers:local ? {} : {Authorization:`Bearer ${token}`},
+          cache:local ? 'no-store' : freshSources.has(src) ? 'reload' : 'no-cache',
+          signal:controller.signal, priority:entry.priority < 2 ? 'high' : 'low'
+        });
+        entry.headersMs = Date.now() - started;
+        if (response.status === 401) { if (epoch === generation) expireAccess();throw new Error('Photos locked'); }
+        if (!response.ok) { const error = new Error('Photo could not load');error.photoFailure = `HTTP ${response.status}`;error.permanent = response.status < 500 && ![408,429].includes(response.status);throw error; }
+        if (response.headers.get('Content-Type')?.split(';')[0] !== 'image/webp') { const error = new Error('Invalid photo response');error.permanent = true;throw error; }
+        progress();
+        let blob;
+        if (response.body?.getReader) {
+          reader = response.body.getReader();
+          const chunks = [];let bytes = 0;
+          while (true) {
+            const {done, value} = await reader.read();
+            if (done) break;
+            if (controller.signal.aborted) throw new Error('Photo request cancelled');
+            if (value.length) { bytes += value.length;progress(); }
+            if (bytes > MAX_PHOTO_BYTES) { const error = new Error('Photo too large');error.permanent = true;throw error; }
+            chunks.push(value);
+          }
+          blob = new Blob(chunks, {type:'image/webp'});
+        } else blob = await response.blob();
+        if (epoch !== generation || entry.controller.signal.aborted || controller.signal.aborted) throw new Error('Photo request cancelled');
+        entry.bytes = blob.size;entry.bodyMs = Date.now() - started - entry.headersMs;entry.attempts = attempt + 1;
+        entry.downloadMs = Date.now() - overallStarted;entry.edgeCache = response.headers.get('X-Photo-Cache') || 'UNKNOWN';
+        entry.revalidated = response.headers.get('X-Photo-Revalidated') === '1';entry.serverTiming = response.headers.get('Server-Timing') || '';
+        entry.url = URL.createObjectURL(blob);freshSources.delete(src);return entry;
+      } catch (error) {
+        if (controller.signal.aborted && !entry.controller.signal.aborted) error.photoFailure = 'timeout';
+        if (attempt === 1 || entry.priority === 2 || error.permanent || epoch !== generation || entry.controller.signal.aborted) throw error;
+      } finally {
+        clearTimeout(idleTimer);clearTimeout(overallTimer);entry.controller.signal.removeEventListener('abort', abort);
+        // Stop a rejected/error response as well as its body, then free the reader.
+        controller.abort();if (reader) { reader.cancel().catch(() => {});reader.releaseLock(); }
+      }
     }
   }
-  async function fetchPhoto(src,priority=1) {
-    if(!protectedPath.test(src))throw new Error('Invalid photo');
-    if(!local&&(!token||expiresAt<=Date.now()/1000)){if(token)expireAccess();throw new Error('Photos locked');}
-    let entry=cache.get(src);
-    if(entry){cache.delete(src);cache.set(src,entry);entry.priority=Math.min(entry.priority,priority);pumpDownloads();return entry.promise;}
-    const epoch=generation,controller=new AbortController();entry={controller,priority,refs:new Set(),url:null,promise:null,bytes:0};
-    entry.promise=new Promise((resolve,reject)=>{
-      const onAbort=()=>{const index=downloadQueue.indexOf(entry);if(index>=0){downloadQueue.splice(index,1);reject(new Error('Photo request cancelled'));}};
-      controller.signal.addEventListener('abort',onAbort,{once:true});
-      entry.run=()=>download(src,entry,epoch).then(resolve,reject).finally(()=>{controller.signal.removeEventListener('abort',onAbort);activeDownloads.delete(entry);pumpDownloads();});
-    }).catch(error=>{if(cache.get(src)===entry)cache.delete(src);throw error;});
-    cache.set(src,entry);downloadQueue.push(entry);pumpDownloads();prune();return entry.promise;
+  async function fetchPhoto(src, priority = 1) {
+    if (!protectedPath.test(src)) throw new Error('Invalid photo');
+    if (!local && (!token || expiresAt <= Date.now()/1000)) { if (token) expireAccess();throw new Error('Photos locked'); }
+    let entry = cache.get(src);
+    if (entry) { cache.delete(src);cache.set(src, entry);entry.priority = Math.min(entry.priority, priority);pumpDownloads();return entry.promise; }
+    const epoch = generation, controller = new AbortController();
+    entry = {src, controller, priority, refs:new Set(), url:null, promise:null, bytes:0, queuedAt:Date.now()};
+    entry.promise = new Promise((resolve, reject) => {
+      const onAbort = () => { const index = downloadQueue.indexOf(entry);if (index >= 0) { downloadQueue.splice(index,1);reject(new Error('Photo request cancelled')); } };
+      controller.signal.addEventListener('abort', onAbort, {once:true});
+      entry.run = () => {
+        entry.queueMs = Date.now() - entry.queuedAt;
+        download(src, entry, epoch).then(resolve, reject).finally(() => {
+          controller.signal.removeEventListener('abort', onAbort);activeDownloads.delete(entry);pumpDownloads();
+        });
+      };
+    }).catch(error => {
+      if (cache.get(src) === entry) cache.delete(src);
+      if (entry.priority === 2 && !controller.signal.aborted && epoch === generation) preloadFailures.add(src);
+      throw error;
+    });
+    cache.set(src, entry);downloadQueue.push(entry);pumpDownloads();prune();return entry.promise;
   }
   function imageState(img,state) {
-    img.dataset.photoState=state;img.dispatchEvent(new Event('atlas-photo-state'));
+    img.dataset.photoState=state;img.dispatchEvent(new Event('atlas-photo-state'));pumpDownloads();
   }
   function display(img,item,entry) {
     item.cleanup?.();
     item.entry?.refs.delete(img);item.entry=entry;entry.refs.add(img);
     img.dataset.photoCache=entry.edgeCache;img.dataset.photoBrowserCache=entry.revalidated?'revalidated':'download';img.dataset.photoDownloadMs=String(entry.downloadMs);img.dataset.photoServerTiming=entry.serverTiming;
+    const decodeStarted=Date.now();
+    img.dataset.photoQueueMs=String(entry.queueMs);img.dataset.photoHeadersMs=String(entry.headersMs);img.dataset.photoBodyMs=String(entry.bodyMs);img.dataset.photoAttempts=String(entry.attempts);
     let settled=false;
     const current=()=>!settled&&images.get(img)===item&&item.entry===entry&&img.src===entry.url;
     const cleanup=()=>{settled=true;img.removeEventListener('load',loaded);img.removeEventListener('error',failed);};
-    const failed=()=>{if(current()){cleanup();entry.decoded=false;imageState(img,'error');}};
-    const ready=()=>{if(current()){cleanup();entry.decoded=true;img.classList.add('is-loaded');imageState(img,'ready');}};
+    const failed=()=>{
+      if(!current())return;
+      cleanup();entry.decoded=false;freshSources.add(entry.src);
+      if(cache.get(entry.src)===entry)cache.delete(entry.src);
+      for(const consumer of entry.refs){
+        const owner=images.get(consumer);if(owner?.entry!==entry)continue;
+        owner.cleanup?.();owner.entry=null;consumer.src=owner.blur;consumer.classList.remove('is-loaded');consumer.dataset.photoFailure='decode';imageState(consumer,'error');
+      }
+      entry.refs.clear();URL.revokeObjectURL(entry.url);prune();
+    };
+    const ready=()=>{if(current()){cleanup();img.dataset.photoDecodeMs=String(Date.now()-decodeStarted);entry.decoded=true;img.classList.add('is-loaded');imageState(img,'ready');}};
     // A normal load event is authoritative even if decode() rejects or stalls.
     // Ignore queued load events from the old placeholder while a new source loads.
     const loaded=()=>{
@@ -144,6 +261,7 @@
     if(item.loading||(item.entry&&item.entry===cache.get(src)))return;
     item.loading=true;const epoch=generation;
     const current=()=>epoch===generation&&images.get(img)===item&&img.isConnected;
+    const pending=cache.get(src);if(pending)pending.priority=Math.min(pending.priority,item.priority??1);
     if(!item.entry)imageState(img,'loading');
     try {
       if(item.preview&&item.preview!==src&&!item.entry&&!cache.get(src)?.url) {
@@ -159,8 +277,9 @@
   function setImage(img,photo,width=1280,{fullOnly=false}={}) {
     const src=selected(photo,fullOnly?Infinity:width),preview=fullOnly?src:selected(photo,1280),thumbnail=fullOnly?src:selected(photo,480);
     if(token&&expiresAt<=Date.now()/1000)expireAccess();
+    const pending=cache.get(src);if(pending)pending.priority=0;
     const previous=images.get(img);
-    if(previous?.src===src&&previous.loading){for(const key of [src,preview]){const pending=cache.get(key);if(pending)pending.priority=0;}if(img.dataset.photoState==='ready')img.classList.add('is-loaded');imageState(img,img.dataset.photoState||'loading');pumpDownloads();return;}
+    if(previous?.src===src&&previous.loading&&img.dataset.photoState!=='error'){for(const key of [src,preview]){const pending=cache.get(key);if(pending)pending.priority=0;}if(img.dataset.photoState==='ready')img.classList.add('is-loaded');imageState(img,img.dataset.photoState||'loading');pumpDownloads();return;}
     const ready=(local||token)?[src,preview,thumbnail].map(key=>cache.get(key)).find(entry=>entry?.url):null;
     if(ready&&images.get(img)?.entry===ready&&images.get(img)?.src===src&&img.src===ready.url&&img.dataset.photoState==='ready'){img.classList.add('is-loaded');imageState(img,'ready');hydrate(img);return;}
     release(img);img.removeAttribute('srcset');delete img.dataset.src;delete img.dataset.srcset;delete img.dataset.photoError;
@@ -185,13 +304,17 @@
   const FLOW_KEY='atlas-photo-login';
   const randomState=()=>btoa(Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>String.fromCharCode(b)).join('')).replaceAll('+','-').replaceAll('/','_').replaceAll('=','');
   async function begin(action='login') {
+    if(navigationPending)return;
     if(!service){showPrompt('Photo access is being prepared. Please return soon.');return;}
     if(action==='logout')lock();
+    if(action==='login')try{sessionStorage.removeItem(RECOVERY_KEY);}catch{}
+    navigationPending=true;const epoch=generation;
     const state=randomState(),verifier=randomState();
     const challenge=btoa(String.fromCharCode(...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(verifier))))).replaceAll('+','-').replaceAll('/','_').replaceAll('=','');
+    if(epoch!==generation)return;
     const returnTo=location.origin+location.pathname+location.search;
     try{sessionStorage.setItem(FLOW_KEY,JSON.stringify({state,verifier,hash:location.hash,created:Date.now()}));}
-    catch{showPrompt('Allow session storage for this site to complete the secure login.');return;}
+    catch{navigationPending=false;showPrompt('Allow session storage for this site to complete the secure login.');return;}
     location.assign(`${service}/private-photos/auth/window?${new URLSearchParams({origin:location.origin,state,challenge,returnTo,action})}`);
   }
   async function completeReturn() {
@@ -206,12 +329,11 @@
     if(params.has('photoAuthLogout')||params.has('photoAuthCancel')){lock();if(dialog.open)closePrompt();return;}
     const epoch=generation;
     try{
-      const response=await fetch(`${service}/private-photos/auth/redeem`,{method:'POST',credentials:'omit',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:params.get('photoAuthCode'),verifier:flow.verifier})});
-      const data=await response.json();
+      const {response,data}=await requestJson(`${service}/private-photos/auth/redeem`,{method:'POST',credentials:'omit',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:params.get('photoAuthCode'),verifier:flow.verifier})});
       if(epoch!==generation)return;
       if(!response.ok||!validAccess(data))throw new Error('Login expired. Please unlock again.');
       acceptAccess(data);
-    }catch{showPrompt('Could not restore photo access. Please unlock again.');}
+    }catch{if(epoch===generation)showPrompt('Could not restore photo access. Please unlock again.');}
   }
   function validAccess(data){return typeof data?.token==='string'&&data.token.length<=2048&&Number.isInteger(data.expiresAt)&&data.expiresAt>Date.now()/1000&&data.expiresAt<=Date.now()/1000+3630;}
   function acceptAccess(data){
@@ -226,12 +348,12 @@
     if(!validAccess(saved))return false;
     const epoch=generation;
     try{
-      const response=await fetch(`${service}/private-photos/auth/status`,{headers:{Authorization:`Bearer ${saved.token}`},credentials:'omit',cache:'no-store'});
-      const data=await response.json();
+      const {response,data}=await requestJson(`${service}/private-photos/auth/status`,{headers:{Authorization:`Bearer ${saved.token}`},credentials:'omit',cache:'no-store'});
       if(epoch!==generation)return true;
-      if(!response.ok||data.unlocked!==true||data.expiresAt!==saved.expiresAt)return false;
+      if(response.status===401)return false;
+      if(!response.ok||data.unlocked!==true||data.expiresAt!==saved.expiresAt)throw new Error('Photo access unavailable');
       acceptAccess(saved);return true;
-    }catch{return false;}
+    }catch{if(epoch===generation)showPrompt('Photo access is taking too long or unavailable. Please try unlocking again.');return true;}
   }
   async function check(){
     if(document.hidden)return;
@@ -241,18 +363,18 @@
     if(checkPending||Date.now()-lastCheck<STATUS_INTERVAL)return;
     const epoch=generation;lastCheck=Date.now();
     const pending=(async()=>{try{
-      const response=await fetch(`${service}/private-photos/auth/status`,{headers:{Authorization:`Bearer ${token}`},credentials:'omit',cache:'no-store'});
-      if(epoch===generation&&response.status===401)lock();
+      const {response}=await requestJson(`${service}/private-photos/auth/status`,{headers:{Authorization:`Bearer ${token}`},credentials:'omit',cache:'no-store'});
+      if(epoch===generation&&response.status===401)expireAccess();
     }catch{/* A transient network outage does not discard valid access. */}})();
     checkPending=pending;
     try{await pending;}finally{if(checkPending===pending)checkPending=null;}
   }
   channel?.addEventListener('message',event=>{if(event.data==='lock')lock(false);});
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)check();});window.addEventListener('focus',check);setInterval(check,STATUS_INTERVAL);
+  document.addEventListener('visibilitychange',()=>{pumpDownloads();if(!document.hidden)check();});window.navigator?.connection?.addEventListener('change',pumpDownloads);window.addEventListener('focus',check);setInterval(check,STATUS_INTERVAL);
   for(const button of document.querySelectorAll('[data-unlock]'))button.addEventListener('click',()=>begin());
   dialog.querySelector('[data-dismiss]').addEventListener('click',closePrompt);
   dialog.addEventListener('close',()=>lastFocus?.focus?.());
-  window.JOURNEY_ATLAS_AUTH={isProtected,markup,hydrate,prepare,setImage,clearImage,preload(photo,width){if(local||token)fetchPhoto(selected(photo,width),2).then(prune,prune);},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
+  window.JOURNEY_ATLAS_AUTH={isProtected,markup,hydrate,prepare,setImage,clearImage,setPreloads,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets,selected(photo,width)].slice(-MAX_PREFETCH));},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
 })();

@@ -90,5 +90,26 @@
     return { move, cancel };
   }
 
-  root.JOURNEY_ATLAS_UTILS = { resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoMapTransition };
+  // Inputs are already filtered and ordered by the reviewed album/day order.
+  function photoPreloadPlan(days, currentId, direction = 1) {
+    const photos = days.flatMap(day => day.photos);
+    const index = photos.findIndex(photo => photo.id === currentId);
+    if (index < 0) return [];
+    const step = direction < 0 ? -1 : 1, requests = [], seen = new Set();
+    const add = (photo, width = Infinity) => {
+      if (!photo || photo.id === currentId) return;
+      const key = `${photo.id}:${width}`;
+      if (!seen.has(key)) { seen.add(key);requests.push({photo, width}); }
+    };
+    add(photos[index + step]);add(photos[index + step * 2]);add(photos[index - step]);
+    const dayIndex = days.findIndex(day => day.photos.some(photo => photo.id === currentId));
+    for (let i = dayIndex + step; i >= 0 && i < days.length; i += step) {
+      if (!days[i].photos.length) continue;
+      // Day controls open the first photo, including when browsing backwards.
+      add(days[i].photos[0]);add(days[i].photos[0], 480);break;
+    }
+    return requests.slice(0, 6);
+  }
+
+  root.JOURNEY_ATLAS_UTILS = { photoPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

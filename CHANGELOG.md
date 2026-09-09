@@ -1,5 +1,26 @@
 # Changelog
 
+## 9 September 2026 — recover slow photos and preload across days
+
+- Let full-image transfers continue while bytes arrive: 15-second inactivity
+  timeout, two-minute cap per attempt, and one retry for foreground failures.
+- Bound login/status/code-exchange requests and keep restoration controls visible.
+  Restore remembered access once on server 401; prevent repeated redirect loops.
+- Evict failed decoded blobs so Retry fetches fresh bytes. Replay waits for the
+  loader's verified ready state.
+- Preload two likely next photos, one behind, and the adjacent day's first photo
+  and thumbnail in browsing direction. Skip empty days and duplicate requests.
+  Replay prepares the next two distinct upcoming photographs.
+- Keep at most six planned variants and one speculative transfer; visible loads
+  preempt it. Cancel obsolete plans and stop speculation in hidden tabs, on
+  data-saving connections, and while the selected image is loading or failed.
+- Reuse viewer route layers within a day. Preserve immutable inner photo caches
+  across Worker deployments; the public authentication gateway stays uncached.
+- Validation: 138 tests, production build, and local Worker runtime passed.
+  Browser fault checks: 18-second full photo succeeded in one request, the next
+  day's preloaded full image was reused, and corrupt-image Retry loaded 3200px.
+
+
 Keep this file current whenever a user-visible feature, content correction, or
 workflow change lands. Add the newest entry first and include the matching
 commit after it is known.
