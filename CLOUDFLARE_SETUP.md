@@ -133,3 +133,13 @@ two background), retains small previews during large-image upgrades, and times
 out/retries interrupted requests. Neighbor preloads use the smaller variant.
 This improves behavior under slow or stalled connections without a Worker,
 domain, paid-plan, or authentication-policy change. See the newest CHANGELOG.
+
+## Cache reuse across Worker releases
+
+The Worker has `cache.enabled: false` and `cache.cross_version_cache: true`;
+only the internal `PhotoCache` entrypoint enables caching. This retains immutable
+photo bytes across deployments without caching public authorization decisions.
+Cloudflare documents the setting in [cross-version caching](https://developers.cloudflare.com/workers/cache/configuration/#cross-version-caching).
+Changes to cached-object availability or inner response semantics require a
+purge. Password revocation and browser revalidation still run through the
+uncached gateway on every HTTP request. No paid plan or domain is added.

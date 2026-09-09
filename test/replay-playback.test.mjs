@@ -33,7 +33,7 @@ test('Replay waits for image readiness, ignores placeholder loads and reuses a r
  const image=Object.assign(new EventTarget(),{src:'blob:cached',complete:true,naturalWidth:3200,dataset:{photoState:'ready'}}),elements=new Map([['#replay-photo',image]]),photo={protected:true,alt:'Test'},requested=[];
  const context=vm.createContext({replayPhotoToken:0,replayPhotoReady:false,replayLastTimestamp:5,replayTimeline:[],replayMomentIndex:0,photo,
   $:selector=>{if(!elements.has(selector))elements.set(selector,{style:{setProperty(){}}});return elements.get(selector);},
-  window:{JOURNEY_ATLAS_AUTH:{isProtected:()=>true,unlocked:true,setImage(...args){requested.push(args);}}},replayLeadPhoto:()=>null,replayMomentDay(){},pauseReplay(){},preloadPhoto(){}});
+  window:{JOURNEY_ATLAS_AUTH:{isProtected:()=>true,unlocked:true,setImage(...args){requested.push(args);}}},replayLeadPhoto:()=>null,replayMomentDay(){},pauseReplay(){},preloadPhoto(){},refreshPreloads(){}});
  vm.runInContext(fn('renderReplayPhoto')+'\nrenderReplayPhoto(photo)',context);assert.equal(context.replayPhotoReady,true);assert.equal(elements.get('#replay-photo-status').textContent,'');
  assert.equal(requested[0][2],Infinity);assert.equal(requested[0][3].fullOnly,true);
  image.src='data:image/webp;base64,blur';image.dataset.photoState='loading';vm.runInContext('renderReplayPhoto(photo)',context);image.dispatchEvent(new Event('load'));assert.equal(context.replayPhotoReady,false);

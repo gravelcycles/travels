@@ -5,7 +5,7 @@
   "compatibility_date": "2026-09-09",
   "workers_dev": true,
   "preview_urls": false,
-  "cache": { "enabled": false },
+  "cache": { "enabled": false, "cross_version_cache": true },
   "exports": {
     "default": { "type": "worker", "cache": { "enabled": false } },
     "PhotoCache": { "type": "worker", "cache": { "enabled": true } }

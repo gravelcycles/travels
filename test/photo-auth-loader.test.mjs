@@ -15,12 +15,12 @@ function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:
  document.body.dataset.journeyScope=startup?'real':'demo';
  const navigations=[];const location=new URL('https://gravelcycles.github.io/travels/');location.assign=url=>navigations.push(url);
  const storage={getItem:k=>k==='atlas-photo-login'?JSON.stringify(loginFlow):tabStorage.get(k)||null,removeItem:k=>tabStorage.delete(k),setItem(k,v){if(k==='atlas-photo-login')loginFlow=JSON.parse(v);else tabStorage.set(k,v);}};
- const context=vm.createContext({window,document,location,history:{replaceState(){}},sessionStorage:storage,URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,btoa,Date:clock,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json({token:'fixture-access-token',expiresAt:Math.floor(clock.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
+ const context=vm.createContext({window,document,location,history:{replaceState(){}},sessionStorage:storage,URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,Blob,btoa,Date:clock,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json({token:'fixture-access-token',expiresAt:Math.floor(clock.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
  vm.runInContext(source.replace('completeReturn();}', 'window.__startup=completeReturn();}').replace(/\}\)\(\);\s*$/, 'window.__completeReturn=completeReturn;})();'),context);
  async function unlock(spoof=false){loginFlow={state:'fixture-state',verifier:'v'.repeat(43),created:Date.now(),hash:''};location.hash=new URLSearchParams({photoAuthCode:'c'.repeat(43),state:spoof?'wrong-state':'fixture-state'}).toString();await window.__completeReturn();}
 
  async function returnFrom(kind){location.hash=new URLSearchParams({[kind]:kind==='photoAuthCode'?'c'.repeat(43):'1',state:loginFlow.state}).toString();await window.__completeReturn();}
- return {events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,header:elements[1]};
+ return {window,events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,header:elements[1]};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 async function waitForNavigation(f) {
@@ -133,7 +133,7 @@ test('logout during a pending fetch cannot restore a sharp image',async()=>{
  f.auth.lock();complete(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));await settle();await settle();assert.equal(img.src,photo.blur);assert.equal(f.auth.unlocked,false);
 });
 test('401 relocks every loaded photo and clears tab access',async()=>{
- const f=fixture(async()=>new Response('{}',{status:401})),img=new Element();f.auth.setImage(img,photo);await f.unlock();await settle();assert.equal(f.auth.unlocked,false);assert.equal(img.src,photo.blur);assert.ok(!/localStorage|document\.cookie/.test(source));assert.equal(f.tabStorage.size,0);
+ const f=fixture(async()=>new Response('{}',{status:401})),img=new Element();f.auth.setImage(img,photo);await f.unlock();await settle();assert.equal(f.auth.unlocked,false);assert.equal(img.src,photo.blur);assert.ok(!/localStorage|document\.cookie/.test(source));assert.equal(f.tabStorage.has('atlas-photo-access'),false);await waitForNavigation(f);
 });
 test('cleared viewer slots do not regain an old photo when access changes',async()=>{
  const f=fixture(),img=new Element();f.auth.setImage(img,photo);f.auth.clearImage(img);img.src='';
@@ -252,14 +252,14 @@ test('a cached small image stays visible while the full-size download is pending
 test('a stalled photo times out, retries once, and offers a recoverable error',async()=>{
  const f=fixture((_url,options)=>new Promise((_resolve,reject)=>options.signal.addEventListener('abort',()=>reject(new Error('Aborted')))));
  await f.unlock();const img=new Element();f.auth.setImage(img,albumPhoto(1));await settle();
- for(let attempt=0;attempt<2;attempt++){const timer=[...f.timers.values()].find(t=>t.delay===10000);assert.ok(timer);timer.fn();await settle();}
+ for(let attempt=0;attempt<2;attempt++){const timer=[...f.timers.values()].find(t=>t.delay===15000);assert.ok(timer);timer.fn();await settle();}
  assert.equal(f.calls.length,2);assert.equal(img.dataset.photoState,'error');assert.equal(img.dataset.photoError,'true');
  f.auth.setImage(img,albumPhoto(1));await settle();assert.equal(f.calls.length,3);assert.equal(img.dataset.photoState,'loading');f.auth.lock();await settle();
 });
 test('timeouts cover a stalled response body as well as response headers',async()=>{
  const f=fixture((_url,options)=>Promise.resolve({status:200,ok:true,headers:new Headers({'Content-Type':'image/webp'}),blob:()=>new Promise((_resolve,reject)=>options.signal.addEventListener('abort',()=>reject(new Error('Aborted body'))))}));
  await f.unlock();const img=new Element();f.auth.setImage(img,albumPhoto(1));await settle();
- for(let attempt=0;attempt<2;attempt++){[...f.timers.values()].find(t=>t.delay===10000).fn();await settle();}
+ for(let attempt=0;attempt<2;attempt++){[...f.timers.values()].find(t=>t.delay===15000).fn();await settle();}
  assert.equal(f.calls.length,2);assert.equal(img.dataset.photoState,'error');
 });
 test('transient server errors recover automatically; permanent missing photos do not retry',async()=>{
@@ -297,4 +297,93 @@ test('hidden-tab expiry waits for visibility before restoring and explicit lock 
   if(!cancel)await waitForNavigation(f);else await settle();
   assert.equal(f.navigations.length,cancel?0:1);
  }
+});
+
+test('a slow but progressing full image passes the old deadline without restarting',async()=>{
+ let now=Date.now(),stream;
+ class Clock extends Date{static now(){return now;}}
+ const f=fixture((_url,options)=>Promise.resolve(new Response(new ReadableStream({start(controller){stream=controller;options.signal.addEventListener('abort',()=>controller.error(new Error('Aborted')),{once:true});}}),{headers:{'Content-Type':'image/webp'}})),{clock:Clock});
+ await f.unlock();const img=new Element();img.decode=()=>Promise.resolve();f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();
+ for(let i=0;i<3;i++){
+   const oldTimer=[...f.timers].find(([,t])=>t.delay===15000)[0];now+=12000;stream.enqueue(new Uint8Array([1]));await settle();
+   assert.equal(f.timers.has(oldTimer),false,'Each chunk resets the idle timeout');assert.equal(f.calls.length,1);assert.equal(f.calls[0][1].signal.aborted,false);
+ }
+ stream.close();await settle();assert.equal(img.dataset.photoState,'ready');assert.equal(img.dataset.photoDownloadMs,'36000');assert.equal(img.dataset.photoAttempts,'1');
+ assert.equal([...f.timers.values()].filter(t=>t.delay===15000||t.delay===120000).length,0);
+});
+test('an overall transfer cap remains even while the idle deadline is being extended',async()=>{
+ let stream;
+ const f=fixture((_url,options)=>Promise.resolve(new Response(new ReadableStream({start(controller){stream=controller;options.signal.addEventListener('abort',()=>controller.error(new Error('Aborted')),{once:true});}}),{headers:{'Content-Type':'image/webp'}})));
+ await f.unlock();f.auth.setImage(new Element(),photo,Infinity,{fullOnly:true});await settle();
+ stream.enqueue(new Uint8Array([1]));await settle();[...f.timers.values()].find(t=>t.delay===120000).fn();await settle();
+ assert.equal(f.calls[0][1].signal.aborted,true);assert.equal(f.calls.length,2);f.auth.lock();await settle();
+});
+test('failed decoded bytes are evicted and Retry bypasses the browser copy',async()=>{
+ const f=fixture();await f.unlock();const img=new Element();img.decode=()=>Promise.reject(new Error('Bad image'));
+ f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();const bad=img.src;img.dispatchEvent(new Event('error'));
+ assert.equal(img.dataset.photoState,'error');assert.ok(f.revoked.includes(bad));
+ img.decode=()=>Promise.resolve();f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();
+ assert.equal(f.calls.length,2);assert.equal(f.calls[1][1].cache,'reload');assert.notEqual(img.src,bad);assert.equal(img.dataset.photoState,'ready');
+});
+test('startup auth headers and JSON bodies time out without navigating away on network failure',async()=>{
+ for(const phase of ['headers','body']){
+  const tabStorage=new Map([['atlas-photo-access',JSON.stringify({token:'fixture-token',expiresAt:Math.floor(Date.now()/1000)+3600})]]);
+  const f=fixture(()=>phase==='headers'?new Promise(()=>{}):Promise.resolve({ok:true,json:()=>new Promise(()=>{})}),{startup:true,tabStorage});
+  await settle();const img=new Element();f.auth.setImage(img,photo);[...f.timers.values()].find(t=>t.delay===15000).fn();await f.ready;
+  assert.equal(f.auth.unlocked,false);assert.equal(f.navigations.length,0);assert.equal(f.dialog.open,true);assert.equal(f.calls[0][1].signal.aborted,true);
+  assert.ok(f.tabStorage.has('atlas-photo-access'),'A timeout must not delete a potentially valid tab credential');
+ }
+});
+test('timed-out periodic checks release their latch and allow a later check',async()=>{
+ let now=Date.now();class Clock extends Date{static now(){return now;}}
+ const f=fixture(()=>new Promise(()=>{}),{clock:Clock});await f.unlock();now+=60001;
+ const first=f.events.get('focus')();await settle();[...f.timers.values()].find(t=>t.delay===15000).fn();await first;
+ assert.equal(f.auth.unlocked,true);now+=60001;const second=f.events.get('focus')();await settle();assert.equal(f.calls.length,2);
+ [...f.timers.values()].find(t=>t.delay===15000).fn();await second;
+});
+test('a rejected restored token prompts instead of entering another automatic redirect loop',async()=>{
+ const f=fixture(()=>Promise.resolve(new Response('{}',{status:401})));await f.unlock();
+ f.auth.setImage(new Element(),photo,Infinity,{fullOnly:true});await waitForNavigation(f);
+ await f.returnFrom('photoAuthCode');await settle();await settle();
+ assert.equal(f.navigations.length,1);assert.equal(f.auth.unlocked,false);assert.equal(f.dialog.open,true);
+});
+test('locking during asynchronous renewal preparation cancels navigation',async()=>{
+ const f=fixture();await f.unlock();[...f.timers.values()].find(t=>t.delay>3500000).fn();f.auth.lock();
+ for(let i=0;i<10;i++)await settle();assert.equal(f.navigations.length,0);
+});
+test('preload plans are bounded and transfer only one speculative image at a time',async()=>{
+ const pending=[];const f=fixture((_url,options)=>new Promise((resolve,reject)=>{pending.push({resolve,options});options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')));}));await f.unlock();
+ f.auth.setPreloads(Array.from({length:12},(_,i)=>({photo:albumPhoto(i+1),width:Infinity})));await settle();assert.equal(pending.length,1);
+ for(let i=0;i<6;i++){assert.equal(pending.length,i+1);pending[i].resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));await settle();}
+ assert.equal(pending.length,6);f.auth.setPreloads([]);await settle();assert.equal(pending.length,6);
+});
+test('visible thumbnails preempt speculative bytes and resume the plan after loading',async()=>{
+ const pending=[];const f=fixture((url,options)=>new Promise((resolve,reject)=>{pending.push({url,resolve,options});options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')));}));await f.unlock();
+ f.auth.setPreloads([{photo:albumPhoto(1),width:Infinity}]);await settle();const img=new Element();img.dataset.privateSrc=albumPhoto(2).src;
+ const visible=f.auth.hydrate(img);await settle();assert.equal(pending[0].options.signal.aborted,true);assert.ok(pending[1].url.endsWith(albumPhoto(2).src));
+ pending[1].resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));await visible;await settle();
+ assert.equal(pending.length,3);assert.ok(pending[2].url.endsWith(albumPhoto(1).src));f.auth.lock();await settle();
+});
+test('selecting an in-flight preload promotes and reuses its request',async()=>{
+ const pending=[];const f=fixture((url,options)=>new Promise((resolve,reject)=>{pending.push({url,resolve,options});options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')));}));await f.unlock();
+ f.auth.setPreloads([{photo:albumPhoto(1),width:Infinity},{photo:albumPhoto(2),width:Infinity}]);await settle();
+ const img=new Element();img.decode=()=>Promise.resolve();f.auth.setImage(img,albumPhoto(1),Infinity,{fullOnly:true});await settle();
+ assert.equal(pending.length,1);assert.equal(pending[0].options.signal.aborted,false);
+ pending[0].resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));await settle();
+ assert.equal(img.dataset.photoState,'ready');assert.equal(pending.length,2);f.auth.lock();await settle();
+});
+test('changing plans cancels obsolete preloads; a failed visible photo holds speculation',async()=>{
+ const pending=[];const f=fixture((url,options)=>new Promise((resolve,reject)=>{pending.push({url,resolve,options});options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')));}));await f.unlock();
+ f.auth.setPreloads([{photo:albumPhoto(1),width:Infinity}]);await settle();f.auth.setPreloads([{photo:albumPhoto(2),width:Infinity}]);await settle();
+ assert.equal(pending[0].options.signal.aborted,true);assert.ok(pending[1].url.endsWith(albumPhoto(2).src));
+ const img=new Element();f.auth.setImage(img,albumPhoto(3),Infinity,{fullOnly:true});await settle();assert.equal(pending[1].options.signal.aborted,true);
+ pending[2].resolve(new Response('',{status:404}));await settle();assert.equal(img.dataset.photoState,'error');assert.equal(pending.length,3);
+ f.auth.clearImage(img);f.auth.setPreloads([]);await settle();assert.equal(pending.length,3);
+});
+test('hidden tabs and data-saving connections suspend speculative work',async()=>{
+ const f=fixture((_url,options)=>new Promise((_resolve,reject)=>options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')))));await f.unlock();
+ f.window.navigator={connection:{saveData:true,effectiveType:'4g'}};f.auth.setPreloads([{photo:albumPhoto(1),width:Infinity}]);await settle();assert.equal(f.calls.length,0);
+ f.window.navigator.connection.saveData=false;f.document.hidden=true;f.auth.setPreloads([{photo:albumPhoto(1),width:Infinity}]);await settle();assert.equal(f.calls.length,0);
+ f.document.hidden=false;f.events.get('visibilitychange')();await settle();assert.equal(f.calls.length,1);
+ f.document.hidden=true;f.events.get('visibilitychange')();await settle();assert.equal(f.calls[0][1].signal.aborted,true);f.auth.lock();
 });
