@@ -1,5 +1,17 @@
 # Private photo access — implementation handoff
 
+Production verification for the recovery/preloading release: frontend
+`b2af92345effd996a64e7858920528ebdcfcb400`, successful Pages run
+[34401006337](https://github.com/gravelcycles/travels/actions/runs/34401006337),
+and Worker version `fc1db478-e1da-4279-a538-60fb4ba26629`.
+All 142 combined tests pass after integrating the smooth reveal changes.
+A fresh public Day 6 viewer loaded the full 2400×3200 photo in one attempt
+(479 ms with browser bytes revalidated); switching to Day 7 displayed its
+preloaded full image, with no browser errors. Anonymous GET/HEAD returned
+401/no-store. The live restoration page has visible progress, a bounded
+request, and its retry control. Timings are session samples, not guarantees.
+
+
 ## Slow-transfer recovery and bounded cross-day preloading — 9 September 2026
 
 The loader streams successful WebP bodies into a blob and resets a 15-second
