@@ -61,6 +61,18 @@ ignored local derivatives instead of GitHub Release URLs.
 - `/dist/switzerland-italy.html` opens the real family journey.
 - `/dist/demo.html` shows only the sample journeys and includes a selector.
 
+## Find photos on the map
+
+Photos with saved locations appear as small thumbnail landmarks. Nearby photos
+share a numbered stack; select the stack to choose a photo, or select an
+individual landmark to open its viewer. Zooming in separates nearby pins.
+Day close-ups show that day's photos, and map fitting includes their locations.
+
+When moving between two located photos, the viewer map first frames both pins,
+then settles on the next photo's saved location and zoom. The move takes about
+two seconds and respects reduced motion. Photos without locations retain the
+day's map context.
+
 ## Replay a trip
 
 Open a journey and choose **Trip replay**. Replay follows every day's travel

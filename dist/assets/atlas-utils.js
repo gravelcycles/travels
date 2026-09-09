@@ -36,5 +36,74 @@
     let revision = 0;
     return { invalidate() { revision++; }, capture(context) { return { revision: ++revision, context: JSON.stringify(context) }; }, current(token, context) { return token.revision === revision && token.context === JSON.stringify(context); } };
   }
-  root.JOURNEY_ATLAS_UTILS = { resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate };
+  function locatedPhoto(photo) {
+    return Boolean(photo && !photo.hidden && Number.isFinite(photo.lng) && Number.isFinite(photo.lat)
+      && Math.abs(photo.lng) <= 180 && Math.abs(photo.lat) <= 90);
+  }
+
+  function photoLandmarkGroups(photos, project, { width, height, spacing = 60 }) {
+    const groups = [];
+    for (const photo of photos.filter(locatedPhoto)) {
+      const point = project([photo.lng, photo.lat]);
+      if (!Number.isFinite(point.x) || !Number.isFinite(point.y)
+        || point.x < -24 || point.y < -24 || point.x > width + 24 || point.y > height + 24) continue;
+      // Keep the representative at a real photo pin. Fixed representatives also
+      // prevent a chain of nearby photos from swallowing an entire city.
+      const group = groups.find(group => Math.hypot(group.point.x - point.x, group.point.y - point.y) < spacing);
+      if (group) group.photos.push(photo);
+      else groups.push({ point, photos: [photo] });
+    }
+    return groups;
+  }
+
+  function photoMapTransition(map, { schedule = setTimeout, unschedule = clearTimeout } = {}) {
+    let generation = 0, timer = null, listener = null, cleanup = null;
+    function cancel() {
+      generation++;
+      if (timer !== null) unschedule(timer);
+      timer = null;
+      if (listener) map.off("moveend", listener);
+      listener = null;
+      const finish = cleanup; cleanup = null; finish?.();
+      map.stop();
+    }
+    function move(from, to, { reducedMotion = false, padding = 36, onFinish } = {}) {
+      cancel();
+      if (!locatedPhoto(to)) return;
+      const token = generation;
+      cleanup = onFinish;
+      const target = { center: [to.lng, to.lat], zoom: Math.max(2, Math.min(20, to.zoom || 16)) };
+      const finish = () => { const fn = cleanup; cleanup = null; fn?.(); };
+      const listen = fn => {
+        listener = () => {
+          map.off("moveend", listener); listener = null;
+          if (token === generation) fn();
+        };
+        map.on("moveend", listener);
+      };
+      const settle = () => {
+        listen(finish);
+        map.easeTo({ ...target, duration: reducedMotion ? 0 : 950 });
+      };
+      const separate = locatedPhoto(from) && from.id !== to.id
+        && (Math.abs(from.lng - to.lng) > 0.00001 || Math.abs(from.lat - to.lat) > 0.00001);
+      if (!separate || reducedMotion) {
+        listen(finish);
+        map.easeTo({ ...target, duration: reducedMotion ? 0 : 650 });
+        return;
+      }
+      listen(() => {
+        timer = schedule(() => { timer = null; if (token === generation) settle(); }, 150);
+      });
+      // About two seconds total: orient to both pins, pause briefly, settle.
+      map.fitBounds([[Math.min(from.lng, to.lng), Math.min(from.lat, to.lat)],
+        [Math.max(from.lng, to.lng), Math.max(from.lat, to.lat)]], {
+        padding, maxZoom: Math.max(2, Math.min(map.getZoom(), target.zoom) - 0.8),
+        duration: 850, linear: true
+      });
+    }
+    return { move, cancel };
+  }
+
+  root.JOURNEY_ATLAS_UTILS = { resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoLandmarkGroups, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

@@ -1,5 +1,17 @@
 # Next-agent handoff
 
+## Photo landmarks and viewer camera · 9 September 2026
+
+Located visible photos now form compact map thumbnails, grouped at 60 px screen
+spacing with a counted photo chooser. Day scope filters pins; overview includes
+all located photos. Day-marker placement avoids thumbnails, and map bounds
+include photo coordinates. Shared helpers live in `dist/assets/atlas-utils.js`.
+The viewer's 1.95-second camera sequence frames previous/current locations then
+settles at saved zoom; pending movement cancels on new selection, close, manual
+camera movement, and hidden tabs. Reduced motion is immediate. Tests cover
+clustering, filtering, timing and stale cancellation; all 48 tests pass.
+
+
 ## Studio editing and saved traveler edits · 9 September 2026
 
 Published as `d1ca46e` in successful Pages run `34351239971`. Public overrides
