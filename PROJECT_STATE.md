@@ -2,6 +2,10 @@
 
 ## Relive defaults to 2× · 9 September 2026
 
+Published as `47b635d` in successful Pages run `34362670497`. A fresh public
+Relive launch showed speed 2× and “Playing at 2×” with no browser errors. This
+deployment uses previously published trip data; local edits/uploads await approval.
+
 Relive/Trip Replay starts at 2×, with the speed selector matching playback in
 both the real journey template and demo. At 2×, days without route segments get
 50% longer holds: a 2.4-second rest moment lasts 1.8 seconds instead of 1.2.

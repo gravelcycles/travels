@@ -8,6 +8,10 @@ commit after it is known.
 
 ### Start Relive at 2× with longer rest-day holds
 
+Published as `47b635d` in successful Pages run `34362670497`. A fresh public
+Relive launch showed speed 2× and “Playing at 2×” with no browser errors. This
+deployment uses previously published trip data; local edits/uploads await approval.
+
 - Set the initial playback speed and selector to 2× in real journeys and demos.
 - Give rest days 50% more screen time at 2×; preserve 1×, half speed, and travel
   pacing. Filter local-upload overrides alongside upload manifests in tests.
