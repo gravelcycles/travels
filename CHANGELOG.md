@@ -6,6 +6,19 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Show only the selected day's photos, with individual map fans
+
+- Selecting a day immediately removes other days' photo landmarks, even while
+  route layers load or the phone map is hidden. Viewer day navigation also
+  updates the atlas, and returning to Map frames the selected day correctly.
+- Nearby photos spread apart with thin lines to their exact saved locations.
+  Each thumbnail opens its photo directly; placement avoids other thumbnails
+  and the map key. **Fit route** restores photos from all days.
+- Preserve the latest saved Studio photo pins and cleared captions. Accessible
+  landmark labels fall back to photo alt text when a caption is empty.
+- Validation: 55 tests and production build pass; phone day filtering, fan
+  spacing, individual viewer opening, and viewer day navigation checked.
+
 ### Photo landmarks and calmer viewer transitions
 
 Commit `f77cfb7` deployed successfully in Pages run `34352663568`. A fresh

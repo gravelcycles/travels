@@ -49,6 +49,7 @@
     || data.journeys[0];
   let activeDayId = journey.days[0].id;
   let mapScope = "journey";
+  let photoLandmarkDayId = activeDayId;
   let mainMap;
   let viewerMap;
   let replayMap;
@@ -589,7 +590,9 @@
     const candidates = [
       [0, -radius], [radius, -Math.round(radius * 0.7)], [-radius, -Math.round(radius * 0.7)],
       [radius, Math.round(radius * 0.7)], [-radius, Math.round(radius * 0.7)], [0, radius],
-      [radius + 12, 0], [-(radius + 12), 0]
+      [radius + 12, 0], [-(radius + 12), 0],
+      [radius * 2, 0], [-radius * 2, 0], [0, -radius * 2], [0, radius * 2],
+      [radius * 2, -radius], [-radius * 2, -radius]
     ];
     let best = { offset: candidates[0], score: Number.POSITIVE_INFINITY, box: null };
 
@@ -597,7 +600,8 @@
       const center = { x: point.x + offset[0], y: point.y + offset[1] };
       const box = markerBox(center, label);
       let score = index * 0.05;
-      if (box.left < 8 || box.top < 8 || box.right > canvas.clientWidth - 8 || box.bottom > canvas.clientHeight - 8) score += 100;
+      const legendRoom = Math.max(76, canvas.getBoundingClientRect().bottom - $("#map-legend").getBoundingClientRect().top + 12);
+      if (box.left < 8 || box.top < 60 || box.right > canvas.clientWidth - 8 || box.bottom > canvas.clientHeight - legendRoom) score += 100;
       occupiedBoxes.forEach((occupied) => { if (boxesOverlap(box, occupied)) score += 40; });
       try {
         const labelLayerIds = (mainMap.getStyle().layers || [])
@@ -626,49 +630,48 @@
   }
 
   function photoLandmarkBoxes() {
-    return photoLandmarks.map(({ photo }) => {
-      const point = mainMap.project([photo.lng, photo.lat]);
+    return photoLandmarks.map(({ photo, offset }) => {
+      const anchor = mainMap.project([photo.lng, photo.lat]);
+      const point = { x: anchor.x + offset[0], y: anchor.y + offset[1] };
       return { left: point.x - 24, right: point.x + 24, top: point.y - 24, bottom: point.y + 24 };
     });
   }
 
   function refreshPhotoLandmarks() {
-    if (!mainMapReady || !mapIsReady(mainMap)) return;
+    // DOM markers do not depend on route/style loading. Filter immediately so
+    // the previous day's photos cannot linger while new map layers load.
+    if (!mainMapReady) return;
     const canvas = mainMap.getCanvas();
-    const photos = mapScope === "day" ? photosForDay(activeDayId) : orderedPhotos();
-    const groups = window.JOURNEY_ATLAS_UTILS.photoLandmarkGroups(photos, point => mainMap.project(point), {
-      width: canvas.clientWidth, height: canvas.clientHeight
+    const photos = photoLandmarkDayId ? photosForDay(photoLandmarkDayId) : orderedPhotos();
+    const legendRoom = Math.max(76, canvas.getBoundingClientRect().bottom - $("#map-legend").getBoundingClientRect().top + 12);
+    const layout = window.JOURNEY_ATLAS_UTILS.photoLandmarkLayout(photos, point => mainMap.project(point), {
+      width: canvas.clientWidth, height: canvas.clientHeight, bottom: legendRoom
     });
-    const key = JSON.stringify(groups.map(group => group.photos.map(photo => photo.id)));
+    const key = JSON.stringify(layout.map(({ photo, offset }) => [photo.id, ...offset.map(value => Math.round(value))]));
     if (key === photoLandmarkKey) return;
     photoLandmarkKey = key;
     photoLandmarks.forEach(entry => entry.marker.remove());
-    photoLandmarks = groups.map(group => {
-      const photo = group.photos[0];
+    photoLandmarks = layout.map(({ photo, offset }) => {
+      const element = document.createElement("div");
+      element.className = "photo-landmark-anchor";
+      const [x, y] = offset;
+      element.classList.toggle("has-leader", Math.hypot(x, y) > 5);
+      element.style.setProperty("--photo-leader-length", `${Math.hypot(x, y)}px`);
+      element.style.setProperty("--photo-leader-angle", `${Math.atan2(-y, -x)}rad`);
+      element.style.setProperty("--photo-pin-x", `${-x}px`);
+      element.style.setProperty("--photo-pin-y", `${-y}px`);
       const button = document.createElement("button");
       button.type = "button";
-      button.className = `photo-landmark${group.photos.length > 1 ? " photo-landmark-stack" : ""}`;
-      const label = group.photos.length > 1 ? `View ${group.photos.length} photos near ${photo.locationLabel || photo.caption}` : `Open photo landmark: ${photo.caption}`;
+      button.className = "photo-landmark";
+      const label = `Open photo landmark: ${photo.caption || photo.alt || 'Photo'}`;
       button.title = label;
       button.setAttribute("aria-label", label);
-      button.innerHTML = `<img src="${escapeHtml(preferredPhotoUrl(photo, 480))}" alt="" loading="lazy" decoding="async">${group.photos.length > 1 ? `<span class="photo-landmark-count">${group.photos.length}</span>` : ""}`;
-      button.addEventListener("click", event => {
-        event.stopPropagation();
-        if (group.photos.length === 1) openPhoto(photo.id);
-        else openPhotoLandmarkGroup(group.photos);
-      });
-      const marker = new maplibregl.Marker({ element: button, anchor: "center" }).setLngLat([photo.lng, photo.lat]).addTo(mainMap);
-      return { marker, photo };
+      button.innerHTML = `<img src="${escapeHtml(preferredPhotoUrl(photo, 480))}" alt="" loading="lazy" decoding="async">`;
+      button.addEventListener("click", event => { event.stopPropagation(); openPhoto(photo.id); });
+      element.append(button);
+      const marker = new maplibregl.Marker({ element, anchor: "center", offset }).setLngLat([photo.lng, photo.lat]).addTo(mainMap);
+      return { marker, photo, offset };
     });
-  }
-
-  function openPhotoLandmarkGroup(photos) {
-    $('#album-title').textContent = `Photos near this point · ${photos.length}`;
-    $('#album-days').innerHTML = photos.map(photo => `<button class="album-day" data-landmark-photo="${escapeHtml(photo.id)}">
-      ${photoImageMarkup(photo, { sizes: '280px' })}<strong>${escapeHtml(photo.caption)}</strong>
-      <small>Day ${dayById(photo.dayId).number} · ${escapeHtml(photo.locationLabel || dayById(photo.dayId).title)}</small></button>`).join('');
-    $('#album-dialog').showModal();
-    prepareProgressiveImages($('#album-days'));
   }
 
   function refreshDayMarkerOffsets() {
@@ -680,7 +683,8 @@
   function addDayMarkers() {
     const occupiedBoxes = photoLandmarkBoxes();
     groupedDayMarkers()
-      .filter((group) => mapScope === "journey" || group.days.some((day) => day.id === activeDayId))
+      .map(group => ({ ...group, days: mapScope === "day" ? group.days.filter(day => day.id === activeDayId) : group.days }))
+      .filter(group => group.days.length)
       .forEach((group) => {
       const containsActive = group.days.some((day) => day.id === activeDayId);
       const label = markerLabel(group.days);
@@ -740,6 +744,7 @@
   function drawMainMap(fit, attempt = 0) {
     renderLegend();
     if (!mainMapReady) return;
+    refreshPhotoLandmarks();
     if (!mapIsReady(mainMap)) {
       if (attempt < 24) window.setTimeout(() => drawMainMap(fit, attempt + 1), 500);
       return;
@@ -759,7 +764,6 @@
           opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.78)
         });
       });
-    refreshPhotoLandmarks();
     addDayMarkers();
     if (mapScope === "day") addRailStopMarkers(mainMap, mainDecorations, activeDay());
     if (inspectedSegmentId) setInspectedFeatureState(inspectedSegmentId, true);
@@ -808,12 +812,14 @@
 
   function fitRoute() {
     mapScope = "journey";
+    photoLandmarkDayId = null;
     drawMainMap(false);
     fitJourneyBounds();
   }
 
   function focusDay(day) {
     mapScope = "day";
+    photoLandmarkDayId = day.id;
     renderLegend();
     if (!mainMapReady) { pendingMapAction="focus"; return; }
     drawMainMap(false);
@@ -865,7 +871,7 @@
     }).join("");
     if (focused && journey.segments.some((segment) => !selectedSegments.has(segment.id))) markup += stateKey("Other days", palette.muted, 0.32);
     if (focused && modes.includes("train")) markup += '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>';
-    if ((focused ? photosForDay(activeDayId) : journey.photos).some(window.JOURNEY_ATLAS_UTILS.locatedPhoto)) markup += '<span><i class="photo-landmark-swatch" aria-hidden="true"></i>Photo landmark</span>';
+    if ((photoLandmarkDayId ? photosForDay(photoLandmarkDayId) : journey.photos).some(window.JOURNEY_ATLAS_UTILS.locatedPhoto)) markup += '<span><i class="photo-landmark-swatch" aria-hidden="true"></i>Photo landmark</span>';
     $("#map-legend").innerHTML = markup;
   }
 
@@ -967,6 +973,8 @@
     if (!dayById(id)) return;
     if (inspectedSegmentId && !dayById(id).segmentIds.includes(inspectedSegmentId)) clearSegmentInspection(true);
     activeDayId = id;
+    mapScope = "day";
+    photoLandmarkDayId = id;
     renderDays();
     renderStory();
     if (focus) {
@@ -988,8 +996,9 @@
     if (tab === "map" && mainMap) {
       window.setTimeout(() => {
         mainMap.resize();
-        if (pendingMapAction === "focus") focusDay(activeDay());
+        renderDayNavigator();
         if (pendingMapAction === "fit") fitJourneyBounds();
+        else if (pendingMapAction === "focus" || mapScope === "day") focusDay(activeDay());
         pendingMapAction = null;
       }, 80);
     }
@@ -1046,10 +1055,13 @@
 
   function updateViewer() {
     const day = viewerDay();
+    const dayChanged = activeDayId !== day.id;
     const photos = photosForDay(day.id);
     viewerPhotoIndex = Math.max(0, Math.min(photos.length - 1, viewerPhotoIndex));
     const photo = photos[viewerPhotoIndex];
     activeDayId = day.id;
+    mapScope = "day";
+    photoLandmarkDayId = day.id;
     const modalPhoto = $("#modal-photo");
     const emptyStage = $("#viewer-empty");
     modalPhoto.hidden = !photo;
@@ -1102,7 +1114,8 @@
     renderViewerFilmstrip(photos);
     renderDays();
     renderStory();
-    drawMainMap(false);
+    if (dayChanged) setActiveDay(day.id, true);
+    else drawMainMap(false);
     if (viewerMapReady) syncViewerMap();
   }
 
@@ -1593,8 +1606,6 @@
   window.addEventListener('hashchange',handleDeepLink);
   $('#close-album').addEventListener('click',()=>$('#album-dialog').close());
   $('#album-days').addEventListener('click', event => {
-    const photo = event.target.closest('[data-landmark-photo]');
-    if (photo) { $('#album-dialog').close(); openPhoto(photo.dataset.landmarkPhoto); return; }
     const button = event.target.closest('[data-album-day]');
     if (button) { $('#album-dialog').close(); openDayViewer(button.dataset.albumDay); }
   });
@@ -1607,6 +1618,7 @@
     clearSegmentInspection(true);
     journey = nextJourney;
     activeDayId = journey.days[0].id;
+    photoLandmarkDayId = activeDayId;
     viewerDayId = activeDayId;
     mapScope = "journey";
     renderAll({ fit: false });

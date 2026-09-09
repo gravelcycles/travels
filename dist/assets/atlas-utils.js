@@ -56,6 +56,39 @@
     return groups;
   }
 
+  function photoLandmarkLayout(photos, project, { width, height, spacing = 56, top = 54, bottom = 76 }) {
+    const inset = 28;
+    const bounds = { left: inset, right: Math.max(inset, width - inset),
+      top: Math.min(top + inset, height / 3), bottom: Math.max(height / 3, height - bottom - inset) };
+    const clampPoint = point => ({ x: Math.max(bounds.left, Math.min(bounds.right, point.x)),
+      y: Math.max(bounds.top, Math.min(bounds.bottom, point.y)) });
+    const grid = [];
+    for (let y = bounds.top; y <= bounds.bottom; y += spacing) {
+      for (let x = bounds.left; x <= bounds.right; x += spacing) grid.push({ x, y });
+    }
+    const placements = [];
+    const groups = photoLandmarkGroups(photos, project, { width, height, spacing: 64 });
+    for (const group of groups) {
+      const count = group.photos.length;
+      const radius = Math.max(60, count * spacing / (2 * Math.PI));
+      group.photos.forEach((photo, index) => {
+        const anchor = project([photo.lng, photo.lat]);
+        const angle = -Math.PI / 2 + index * 2 * Math.PI / count;
+        const desired = clampPoint(count === 1 ? anchor : {
+          x: group.point.x + Math.cos(angle) * radius,
+          y: group.point.y + Math.sin(angle) * radius
+        });
+        const candidates = [desired, ...grid];
+        const free = candidates.filter(point => placements.every(placed =>
+          Math.abs(point.x - placed.point.x) >= spacing || Math.abs(point.y - placed.point.y) >= spacing));
+        const point = (free.length ? free : candidates).reduce((best, candidate) =>
+          Math.hypot(candidate.x - desired.x, candidate.y - desired.y) < Math.hypot(best.x - desired.x, best.y - desired.y) ? candidate : best);
+        placements.push({ photo, anchor, point, offset: [point.x - anchor.x, point.y - anchor.y] });
+      });
+    }
+    return placements;
+  }
+
   function photoMapTransition(map, { schedule = setTimeout, unschedule = clearTimeout } = {}) {
     let generation = 0, timer = null, listener = null, cleanup = null;
     function cancel() {
@@ -105,5 +138,5 @@
     return { move, cancel };
   }
 
-  root.JOURNEY_ATLAS_UTILS = { resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoLandmarkGroups, photoMapTransition };
+  root.JOURNEY_ATLAS_UTILS = { resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoLandmarkGroups, photoLandmarkLayout, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

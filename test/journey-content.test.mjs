@@ -103,8 +103,9 @@ test("the family photo review covers every source photo and excludes hidden medi
   for (const review of Object.values(reviews)) {
     assert.equal(review.reviewed, true);
     assert.equal(review.locationStatus, "unlocated-no-gps");
-    for (const field of ["caption", "alt", "privacyStatus"]) assert.ok(review[field]);
-    // Story descriptions are optional editorial copy; Studio may clear them.
+    for (const field of ["alt", "privacyStatus"]) assert.ok(review[field]);
+    // Captions and descriptions are optional editorial copy; Studio may clear them.
+    assert.equal(typeof review.caption, "string");
     assert.equal(typeof review.description, "string");
   }
   const ordered = Object.values(dayOverrides).flatMap(day => day.photoOrder || []);
