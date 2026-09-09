@@ -1,5 +1,15 @@
 # Next-agent handoff
 
+## Large album loading fix · 9 September 2026
+
+The private image cache treated pending display requests as unused and canceled
+some when an album exceeded 12 cached images. A 21-photo regression reproduced
+nine canceled requests. Cache pruning now protects both pending display requests
+and displayed blobs, and retains at most 12 additional unused entries. All 82
+tests and the build pass, including large-album loading, bounded cache eviction,
+and logout cleanup. Authenticated HEAD checks returned 200 for all 198 private
+files. Authentication and private storage are unchanged.
+
 ## Private photo access live · 9 September 2026
 
 Published as `55eeb2b` in successful Pages run `34377620269`.
