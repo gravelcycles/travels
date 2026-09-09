@@ -423,3 +423,109 @@ button:focus-visible, select:focus-visible, .maplibregl-map:focus-visible { outl
 .journey-card-placeholder { min-height: 240px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 30px; background: #e7ecdf; color: #254e4a; }
 .journey-card-placeholder span { font-size: 11px; letter-spacing: .16em; }
 .journey-card-placeholder strong { font: 30px/1.2 Georgia, serif; }
+
+/* Story-first atlas: one journal scroll surface, with travel detail on demand. */
+[hidden] { display:none !important; }
+.atlas-shell { min-height:0; height:calc(100dvh - 72px); grid-template-columns:minmax(240px,20vw) minmax(320px,1fr) minmax(310px,28vw); }
+.story-panel { display:block; overflow-y:auto; scrollbar-color:#7b908f #e3e8e4; }
+.story-media { height:210px; min-height:0; }
+.story-detail { height:auto; overflow:visible; flex:none; }
+.story-detail h2 { scroll-margin-top:20px; }
+.story-detail .day-story { font-size:1rem; line-height:1.65; margin:14px 0; }
+.story-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.story-actions button,.journal-day-nav button,#resume-replay { padding:10px 12px; min-height:42px; border:1px solid var(--line); background:var(--panel); font-size:.78rem; font-weight:750; cursor:pointer; }
+.story-actions button:first-child { background:var(--ink); color:white; }
+.travel-summary { font-size:.75rem; color:var(--ink-soft); line-height:1.5; }
+.travel-details { border-block:1px solid var(--line); padding:12px 0; margin:16px 0; }
+.travel-details summary { cursor:pointer; font-size:.8rem; font-weight:800; }
+.journal-day-nav { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:20px; }
+.journal-day-nav span { font-size:.7rem; }
+.journal-day-nav button:disabled { opacity:.4; }
+.photo-section { flex:none; }
+.day-copy strong,.day-copy small,.day-copy em,.journey-summary strong { white-space:normal; overflow:visible; text-overflow:clip; overflow-wrap:anywhere; }
+.journey-summary { grid-template-columns:1fr 1fr; }
+.journey-summary > div:first-child { grid-column:1/-1; }
+.map-title-card h1 { font-size:1.7rem; }
+.map-header { grid-template-columns:1fr; gap:10px; }
+.map-title-card p { display:none; }
+.map-actions { justify-content:flex-start; }
+.map-legend { bottom:30px; }
+.return-to-journal { position:static !important; width:auto !important; height:auto !important; margin-top:10px; font-size:.75rem !important; text-decoration:underline; display:none; }
+.trip-intro { position:fixed; z-index:1100; inset:72px 0 0; display:grid; grid-template-columns:3fr 2fr; background:var(--panel); overflow:auto; }
+.intro-photo { min-height:300px; background:#24464b; }
+.intro-photo img { width:100%; height:100%; object-fit:cover; object-position:var(--cover-position,50% 50%); display:block; }
+.intro-copy { padding:clamp(24px,5vw,72px); align-self:center; }
+.intro-copy > span { font-size:.75rem; font-weight:800; color:var(--route); letter-spacing:.06em; }
+.intro-copy h1 { font:700 clamp(2.4rem,4.5vw,4.7rem)/1 Georgia,serif; letter-spacing:-.045em; margin:18px 0; }
+.intro-copy p { font-size:1.05rem; color:var(--ink-soft); line-height:1.7; }
+.intro-copy > div { display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; }
+.intro-copy button { min-height:48px; padding:12px 20px; background:var(--ink); color:white; border:1px solid var(--ink); font-weight:750; cursor:pointer; }
+.intro-copy button+button { background:transparent; color:var(--ink); }
+.intro-text-art { height:100%; display:grid; place-items:center; padding:40px; font:3rem Georgia,serif; color:var(--panel); background:repeating-linear-gradient(30deg,#284b50 0 1px,transparent 1px 50px); }
+.album-dialog { width:min(1000px,calc(100vw - 28px)); max-height:calc(100dvh - 28px); border:0; padding:24px; background:var(--panel); color:var(--ink); overflow:auto; }
+.album-dialog::backdrop { background:#153238bb; }
+.album-heading { display:flex; justify-content:space-between; align-items:center; gap:16px; }
+.album-heading h2 { font:2rem Georgia,serif; }
+.album-heading button { font-size:1.5rem; border:0; background:none; min-width:44px; min-height:44px; }
+#album-days { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+.album-day { display:flex; flex-direction:column; min-width:0; text-align:left; background:white; border:1px solid var(--line); padding:0; cursor:pointer; }
+.album-day img,.album-text-scene { width:100%; height:150px; object-fit:cover; }
+.album-text-scene { display:grid; place-items:center; background:#e7ecdf; font:1.2rem Georgia,serif; }
+.album-day strong { padding:12px 12px 6px; font:1.2rem Georgia,serif; }
+.album-day small { padding:0 12px 14px; color:var(--ink-soft); }
+.album-continue { display:block; margin:12px auto 0; padding:10px 16px; color:var(--ink); background:var(--panel); border:0; max-width:100%; cursor:pointer; }
+#modal-time { display:block; font-size:.75rem; color:#a8c0c0; margin:5px; }
+.viewer-empty { padding:20px; gap:16px; }
+.viewer-empty span { max-width:55ch; line-height:1.7; font-size:1rem; }
+button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible { outline:3px solid #d4935f; outline-offset:3px; }
+@media(max-width:1050px) and (min-width:901px) { .atlas-shell { grid-template-columns:240px minmax(250px,1fr) 300px; } }
+@media(max-width:900px) {
+  .atlas-shell { height:calc(100dvh - 118px); }
+  .atlas-shell[data-mobile-tab="story"] .story-panel { display:block; }
+  .story-media { height:240px; }
+  .story-detail { padding:22px; }
+  .story-panel { padding-bottom:18px; }
+  .return-to-journal { display:block; }
+  .trip-intro { inset:64px 0 0; display:flex; flex-direction:column; }
+  .intro-photo { flex:0 0 38dvh; min-height:180px; height:38dvh; }
+  .intro-copy { padding:24px; width:100%; }
+  .intro-copy h1 { font-size:2.4rem; margin:12px 0; }
+  .intro-copy p { font-size:.95rem; line-height:1.5; }
+  .intro-copy > div { margin-top:16px; }
+}
+@media(max-width:560px) {
+  .map-title-card h1 { font-size:1.4rem; }
+  .map-title-card > span { display:none; }
+  .map-header { min-height:132px; }
+  .day-navigator { top:145px; }
+  .route-inspector { top:200px; }
+  .story-empty { min-height:180px; }
+  .photo-stage { grid-template-columns:32px minmax(0,1fr) 32px; }
+  .photo-stage figure { padding-bottom:8px; }
+}
+.replay-position-marker { display:grid; place-items:center; width:32px; height:32px; font-size:18px; border-width:2px; }
+.replay-map-error { position:absolute; z-index:7; top:18px; right:80px; max-width:300px; background:var(--panel); padding:12px; font-size:.8rem; box-shadow:var(--shadow); }
+.replay-map-error button,#replay-retry-photo { display:block; margin-top:8px; min-height:40px; border:1px solid var(--line); background:var(--panel); color:var(--ink); padding:8px 12px; cursor:pointer; }
+#replay-photo-status { font-size:.8rem; margin-top:10px; color:var(--ink-soft); }
+.replay-photo img { height:190px; object-fit:contain; }
+.replay-photo figcaption { position:static; background:#203f45; padding:8px 11px; }
+.replay-status { display:block; }
+@media(max-width:900px) {
+  .replay-player { overflow-y:auto; }
+  #replay-map { height:34dvh; min-height:210px; }
+  .replay-story { position:relative; top:auto; left:auto; width:100%; max-height:none; overflow:visible; padding:16px 22px; border:0; box-shadow:none; }
+  .replay-story h2 { font-size:1.5rem; margin-block:8px; }
+  .replay-mode { margin-top:8px; }
+  .replay-copy { display:block; font-size:.83rem; margin-top:8px !important; }
+  .replay-photo { display:block; margin-top:12px; }
+  .replay-photo[hidden] { display:none; }
+  .replay-photo img { height:220px; object-fit:contain; }
+  .replay-explore { margin-top:10px; }
+  .replay-controls { position:sticky; bottom:0; left:0; right:0; margin:0; padding:10px 14px; box-shadow:0 -5px 20px #15323833; }
+  .replay-help { display:none; }
+  .replay-status { display:block; text-align:left; }
+  .replay-map-error { top:64px; right:10px; max-width:calc(100% - 20px); }
+  .replay-complete { position:fixed; }
+}
+.intro-open .mobile-nav { visibility:hidden; }
+@media(max-width:900px) { .atlas-shell:not([data-mobile-tab="story"]) .story-panel { display:none; } }

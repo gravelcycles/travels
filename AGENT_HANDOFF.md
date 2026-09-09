@@ -16,6 +16,26 @@ workflow change before committing. Keep the newest entry first.
   deployed result. The user supplies facts, files, corrections, and judgments.
 - Read `JOURNEY_WORKFLOW.md` before adding a journey or changing route tooling.
 
+## Non-auth backlog completion · 9 September 2026
+
+W02, T19, and T23–T25 are complete. Only W01 remains unchecked in TODO. Auth
+sources and the existing local route edit were preserved separately. Read the
+new top section of `PROJECT_STATE.md` and the W02 reconciliation in
+`UX_HANDOFF.md` for current behavior; older “Next” notes below are historical.
+
+Planner sources live in the existing journey JSON, with durable cover IDs/focal
+points and ordered Replay moments. The planner has a preview/save boundary,
+checks source revisions, preserves IDs and notes through calendar changes, and
+refuses to trim content-bearing dates. New legs remain provisional until route
+review. Clearing inherited photo GPS uses `location: null`. EXIF dates without
+a UTC offset follow the documented camera-local rule.
+
+Validation includes 33 tests and isolated Studio save/reload, places/legs/day
+reordering, cover focal-point persistence, inherited GPS clear/restore, mobile
+Day 6 navigation, no-photo continuation, reduced motion, slow/failed photos,
+and unavailable Replay maps. The compact and spacious story alternatives are
+retained at `studio/story-review.html` (served by local Studio).
+
 ## Replay and media decisions · 8 September 2026
 
 T15–T17 are complete locally. The media decision is to keep the six held MOV

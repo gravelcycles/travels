@@ -4,6 +4,34 @@ Keep this file current whenever a user-visible feature, content correction, or
 workflow change lands. Add the newest entry first and include the matching
 commit after it is known.
 
+## 9 September 2026
+
+### Complete the non-auth backlog: planning, story, and editorial reliability
+
+- Completed T19: Studio edits trip titles, dates, time zones, named places, and
+  ordered travel legs; previews calendar changes; preserves IDs, notes, photo
+  associations, and overrides; and refuses destructive date trims. Local draft
+  output remains excluded from publication. Source revision checks protect plans
+  changed elsewhere, and saves keep backups.
+- Fixed T23–T25: explicit GPS clearing survives reload; stale network/GPX results
+  cannot replace proposals after anchor changes; raw EXIF clock matching follows
+  a documented camera-local rule with explicit-offset conversion.
+- Completed W02: a shared editable journey cover and photo introduction,
+  story-first journal with expandable legs, immediate mobile day/map navigation,
+  a grouped album, story-based empty days, album continuation, readable travel
+  summaries, and clean photo timestamps/attribution.
+- Added 14 editable Replay chapters (116 seconds) using the existing reviewed
+  photos and ordered geometry. Replay has moment seeking, transport symbols,
+  paused return from exploration, hidden-tab pause, manual reduced motion, and
+  usable loading/failure/retry behavior.
+- Retained both story-layout alternatives in `studio/story-review.html`; selected
+  the compact card after comparing Day 6 and photo-free Day 9.
+- Validation: 33 tests pass. Browser QA covers desktop/phone navigation, the
+  nine-leg day, empty albums, an isolated leap-day draft save/reload, cover crop
+  persistence, inherited GPS clearing/restoring, slow/failed photos, unavailable
+  maps, and reduced-motion chapter navigation. Auth work and the pre-existing
+  local route override are excluded from this release.
+
 ## 8 September 2026
 
 ### Trip Replay and intentional media choices

@@ -54,8 +54,24 @@ an unknown destination.
 
 The agent can do the same with `npm run journey:new -- --title "Trip name"
 --slug stable-url --start YYYY-MM-DD --end YYYY-MM-DD --timezone Area/City`.
-Trip title/date-range changes, place creation, and leg creation after this
-initial scaffold remain agent-owned source edits (T19).
+Studio **Trip plan & cover** now handles later title/date/time-zone changes,
+named places, day insertion/reordering, and ordered leg creation. Choose whether
+a date change keeps content on its calendar date or shifts the full itinerary.
+Preview shows added/removed dates before saving; a shortened range cannot
+silently discard notes, overrides, photos, or legs. IDs and the page slug remain
+stable. Default day date labels follow moves; custom date labels and photo
+capture timestamps remain editorial data. Existing reviewed geometry is retained;
+new legs start as explicitly provisional endpoint guides and need route review.
+
+The same editor stores `coverPhoto: { photoId, focal: [xPercent, yPercent] }` and
+an ordered `replayMoments` list in the journey source. Cover choices apply to the
+catalog and opening, with visible-photo/text fallback. Replay moments contain
+stable IDs, day IDs, ordered segment IDs, optional photo IDs, captions, durations
+in seconds, and optional reviewed camera targets. Hidden photos are omitted;
+invalid editorial references fail validation. Only reviewed exact coordinates
+support photo-location zooms. Empty moment lists retain automatic Replay for
+other journeys. Save the plan after preview; the editor checks the source
+revision to avoid overwriting a trip changed in another session.
 
 Source/output structure:
 

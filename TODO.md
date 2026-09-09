@@ -6,6 +6,23 @@ references named by that task. All commands, servers, QA, commits, pushes, and
 deployment checks are agent-owned; never ask the user to run npm or terminal
 commands.
 
+## Independent project workstreams
+
+These larger projects have their own source briefs and sit outside the P0–P3
+backlog. Keep the detailed plans in those files and use this list only for
+project-level status.
+
+- [ ] **W01 — Private photo access.** Deliver the architecture, migration,
+      security testing, deployment, and operations plan in
+      [`PHOTO_AUTH_HANDOFF.md`](PHOTO_AUTH_HANDOFF.md). One successful unlock
+      with any active shared password must grant that browser access to every
+      protected image across the site.
+- [x] **W02 — UX and storytelling.** Reconcile and deliver
+      [`UX_HANDOFF.md`](UX_HANDOFF.md). Compare it with the current site first
+      because lead-photo selection, no-photo handling, and the initial Trip
+      Replay shipped after parts of the brief were written; then stage the
+      remaining approved cover, story, mobile, album, Replay, and polish work.
+
 ## P0 · Content corrections
 
 - [x] **T01 — Correct Day 1 legs and story.** In `family-d1`, keep only
@@ -116,12 +133,13 @@ commands.
 
 ## P1 · Future-trip planning follow-up
 
-- [ ] **T19 — Grow the draft planner beyond day copy.** Add Studio controls for
+- [x] **T19 — Grow the draft planner beyond day copy.** Add Studio controls for
       trip title/date-range changes, named places, and ordered travel legs.
       Preserve existing IDs, notes, and overrides when inserting/reordering days;
       preview additions before removing dated content. New trip creation now
       needs only a name and dates, but these later structural edits are still
-      agent-owned source edits. Prioritize this next for future journeys.
+      agent-owned source edits. Delivered in Studio Trip plan & cover with
+      previewed calendars, stable IDs, places, and ordered legs.
 
 ## Bugs found during the new-trip pass
 
@@ -139,15 +157,15 @@ commands.
       and cross-trip photo-day assignments could be saved. Validate before any
       save/build; keep draft notes and assets in ignored local files and exclude
       them from every public bundle. Pages now validates/builds in CI.
-- [ ] **T23 — Make Clear photo location remove inherited GPS.** If a base photo
+- [x] **T23 — Make Clear photo location remove inherited GPS.** If a base photo
       already contains GPS, deleting only its override location lets base
       coordinates reappear on reload. Add an explicit location-cleared value,
       honor it in Studio and the viewer, and test clearing/restoring a GPS photo.
-- [ ] **T24 — Discard outdated route proposals after anchor edits.** An in-flight
+- [x] **T24 — Discard outdated route proposals after anchor edits.** An in-flight
       network proposal checks journey/segment identity but not whether anchors
       changed while it ran. Compare request anchors or a revision token before
       displaying/accepting the result; test same-segment edits during a request.
-- [ ] **T25 — Resolve photo timestamps without an explicit UTC offset.** The
+- [x] **T25 — Resolve photo timestamps without an explicit UTC offset.** The
       importer now supports each journey's calendar and time zone, but naive
       EXIF dates can be interpreted in the host's zone before conversion. Add
       offset-aware fixtures and a documented camera-local-time rule before

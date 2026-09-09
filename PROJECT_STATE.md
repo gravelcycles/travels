@@ -1,6 +1,6 @@
 # Project state
 
-Updated 8 September 2026.
+Updated 9 September 2026.
 
 - Repo: <https://github.com/gravelcycles/travels>
 - Site: <https://gravelcycles.github.io/travels/>
@@ -13,6 +13,29 @@ Updated 8 September 2026.
   metadata-stripped WebP derivatives. They are published in the public
   [`trip-photos-v1` GitHub Release](https://github.com/gravelcycles/travels/releases/tag/trip-photos-v1).
   See `PHOTO_WORKFLOW.md`.
+
+## Non-auth backlog completion · 9 September
+
+W02 and T19/T23/T24/T25 are complete. The remaining unchecked TODO is W01,
+private photo access; this pass does not change authentication or media hosting.
+Studio's Trip plan & cover edits calendars, titles, time zones, places, ordered
+legs, journey covers, and curated Replay moments with preview and validation.
+Day IDs, notes, overrides, and page slugs survive structural edits; nonempty
+calendar days cannot be silently removed. New legs are marked provisional.
+
+The catalog/opening share the reviewed Lake Brienz family photo. The compact
+journal places story before expandable travel details and uses one scroll
+surface. Mobile day selections open Journal, route taps reveal Map, and the
+95-photo album groups by day with clear boundary/empty-day continuation.
+Replay now has 14 editable chapters, 116 seconds of editorial pacing, every
+ordered leg, loading/retry states, hidden-tab pause, and manual reduced-motion
+navigation. Original automatic Replay remains available for demo journeys.
+
+GPS clearing uses an explicit null value, proposals reject stale anchor
+revisions, and EXIF day matching is host-zone-independent. See
+`JOURNEY_WORKFLOW.md`, `PHOTO_WORKFLOW.md`, and the reconciliation at the top of
+`UX_HANDOFF.md`. The pre-existing local route override remains user work and is
+excluded from generated release output.
 
 ## New-trip foundation (8 September)
 

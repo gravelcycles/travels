@@ -21,9 +21,13 @@
   let routeHistory = [];
   let routeHistoryIndex = -1;
   let selectedRoutePoint = -1;
+  const proposalGate = window.JOURNEY_ATLAS_UTILS.proposalGate();
+  const proposalContext = () => [journey.id, selectedSegmentId, routePoints];
   let routeProposal = null;
   let routeProposalMeta = null;
+  let networkRequestId=0, gpxRequestId=0;
   let dirty = false;
+  let savedRevisions = {};
 
   const $ = (selector) => document.querySelector(selector);
 
@@ -97,7 +101,7 @@
 
   function photoWithOverride(photo) {
     const override = state.photos[photo.id] || {};
-    return { ...photo, ...override, ...(override.location || {}) };
+    return window.JOURNEY_ATLAS_UTILS.resolvePhoto(photo, override);
   }
 
   function photosForDay(dayId, { visibleOnly = false } = {}) {
@@ -185,6 +189,7 @@
   }
 
   function markSaved(message = "Saved locally") {
+    if ([...plans.values()].some(plan=>plan.dirty)) { markDirty("Other trip plans still need saving"); return; }
     dirty = false;
     const status = $("#save-status");
     status.textContent = message;
@@ -345,7 +350,7 @@
       override.location = { lat: Number(lat.toFixed(6)), lng: Number(lng.toFixed(6)) };
       override.zoom = Number.isFinite(zoom) ? clampPhotoZoom(zoom) : 16;
     } else {
-      delete override.location;
+      override.location = null;
       delete override.zoom;
     }
     state.photos[selectedPhotoId] = override;
@@ -495,6 +500,7 @@
   }
 
   function clearRouteProposal(message = "Anchors changed. Request a new network proposal; the saved route remains active.") {
+    proposalGate.invalidate();
     routeProposal = null;
     routeProposalMeta = null;
     $("#accept-route-proposal").disabled = true;
@@ -590,6 +596,7 @@
   function clearSelectedRoute() {
     selectedSegmentId = null;
     routePoints = []; routeHistory = []; routeHistoryIndex = -1;
+    proposalGate.invalidate();
     routeProposal = null; routeProposalMeta = null;
     $("#route-editor").inert = true;
     $("#route-tools").inert = true;
@@ -611,6 +618,7 @@
     const override = state.routes[id];
     routePoints = (override?.controlPoints || defaultControlPoints(segment)).map((point) => [...point]);
     routeSmoothed = override?.smoothing === "chaikin";
+    proposalGate.invalidate();
     routeProposal = null;
     routeProposalMeta = null;
     selectedRoutePoint = -1;
@@ -702,6 +710,10 @@
   }
 
   async function proposeNetworkRoute() {
+    const requestId=++networkRequestId;
+    $("#accept-route-gpx").disabled=true;
+    const token = proposalGate.capture(proposalContext());
+    const requestPoints = routePoints.map(p => [...p]);
     const requestedJourneyId = journey.id;
     const requestedSegmentId = selectedSegmentId;
     const button = $("#propose-route");
@@ -712,32 +724,34 @@
       const response = await fetch("/api/route-proposal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ journeyId: requestedJourneyId, segmentId: requestedSegmentId, controlPoints: routePoints })
+        body: JSON.stringify({ journeyId: requestedJourneyId, segmentId: requestedSegmentId, controlPoints: requestPoints })
       });
       const result = await response.json();
-      if (journey.id !== requestedJourneyId || selectedSegmentId !== requestedSegmentId) return;
+      if (!proposalGate.current(token, proposalContext())) return;
       if (!response.ok || !result.ok) {
         const warning = result.warnings?.length ? ` ${result.warnings.join(" ")}` : "";
         throw new Error(`${result.error || "Route proposal failed"}${warning}`);
       }
       routeProposal = result.proposal.geometry.map((point) => [...point]);
-      routeProposalMeta = { ...result.proposal, kind: "network" };
+      routeProposalMeta = { ...result.proposal, kind: "network", token };
       $("#accept-route-proposal").disabled = false;
       setProposalStatus(`Proposed ${result.proposal.mode} route: ${result.proposal.pointCount} points, maximum anchor snap ${result.proposal.maxSnapKm.toFixed(2)} km. Review the green line before accepting.`, "ready");
       drawRouteEditor(false);
     } catch (error) {
-      routeProposal = null;
+      if (!proposalGate.current(token, proposalContext())) return;
+      proposalGate.invalidate();
+    routeProposal = null;
       routeProposalMeta = null;
       setProposalStatus(error.message, "error");
       drawRouteEditor(false);
     } finally {
       const segment = segmentById(selectedSegmentId);
-      button.disabled = segment?.mode === "gondola";
+      if(requestId===networkRequestId) button.disabled = !segment || segment.mode === "gondola";
     }
   }
 
   function acceptNetworkProposal() {
-    if (!routeProposal || routeProposalMeta?.kind !== "network") return;
+    if (!routeProposal || routeProposalMeta?.kind !== "network" || !proposalGate.current(routeProposalMeta.token, proposalContext())) return;
     acceptRouteGeometry(routeProposal, {
       kind: "network",
       mode: routeProposalMeta.mode,
@@ -749,14 +763,16 @@
   }
 
   async function proposeGpxTrack() {
+    const requestId=++gpxRequestId;
     const segment = segmentById(selectedSegmentId);
     const file = $("#route-gpx-file").files[0];
     if (!["bike", "walk"].includes(segment?.mode)) return setProposalStatus("Choose a bicycle or walking leg before importing GPX.", "error");
     if (!file) return setProposalStatus("Choose a private .gpx file first.", "error");
     if (file.size > 12_000_000) return setProposalStatus("The GPX file is larger than the 12 MB review limit.", "error");
+    const token = proposalGate.capture(proposalContext());
+    const requestPoints = routePoints.map(p => [...p]);
     const requestedJourneyId = journey.id;
     const requestedSegmentId = selectedSegmentId;
-    const requestedAnchors = JSON.stringify(routePoints);
     $("#import-route-gpx").disabled = true;
     $("#accept-route-gpx").disabled = true;
     $("#accept-route-proposal").disabled = true;
@@ -765,32 +781,34 @@
       const response = await fetch("/api/gpx-proposal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ journeyId: requestedJourneyId, segmentId: requestedSegmentId, controlPoints: routePoints, text: await file.text() })
+        body: JSON.stringify({ journeyId: requestedJourneyId, segmentId: requestedSegmentId, controlPoints: requestPoints, text: await file.text() })
       });
       const result = await response.json();
-      if (journey.id !== requestedJourneyId || selectedSegmentId !== requestedSegmentId || JSON.stringify(routePoints) !== requestedAnchors) return;
+      if (!proposalGate.current(token, proposalContext())) return;
       if (!response.ok || !result.ok) {
         const warning = result.warnings?.length ? ` ${result.warnings.join(" ")}` : "";
         throw new Error(`${result.error || "GPX review failed"}${warning}`);
       }
       routeProposal = result.proposal.geometry.map((point) => [...point]);
-      routeProposalMeta = { ...result.proposal, kind: "gpx" };
+      routeProposalMeta = { ...result.proposal, kind: "gpx", token };
       $("#accept-route-gpx").disabled = false;
       const warnings = result.proposal.warnings.length ? ` ${result.proposal.warnings.join(" ")}` : "";
       setProposalStatus(`GPX preview: ${result.proposal.distanceKm.toFixed(1)} km recorded, ${result.proposal.rawPointCount} source points simplified to ${result.proposal.pointCount}.${warnings} Review the green line before accepting.`, "ready");
       drawRouteEditor(false);
     } catch (error) {
-      routeProposal = null;
+      if (!proposalGate.current(token, proposalContext())) return;
+      proposalGate.invalidate();
+    routeProposal = null;
       routeProposalMeta = null;
       setProposalStatus(error.message, "error");
       drawRouteEditor(false);
     } finally {
-      $("#import-route-gpx").disabled = !["bike", "walk"].includes(segmentById(selectedSegmentId)?.mode);
+      if(requestId===gpxRequestId) $("#import-route-gpx").disabled = !["bike", "walk"].includes(segmentById(selectedSegmentId)?.mode);
     }
   }
 
   function acceptGpxProposal() {
-    if (!routeProposal || routeProposalMeta?.kind !== "gpx") return;
+    if (!routeProposal || routeProposalMeta?.kind !== "gpx" || !proposalGate.current(routeProposalMeta.token, proposalContext())) return;
     acceptRouteGeometry(routeProposal, { kind: "gpx", mode: routeProposalMeta.mode }, "GPX track accepted; save locally to persist reviewed coordinates", routeProposalMeta.provenance);
     routePoints = routeProposalMeta.controlPoints.map((point) => [...point]);
     $("#accept-route-gpx").disabled = true;
@@ -832,6 +850,7 @@
   }
 
   async function saveAll() {
+    if (plans.get(journey.id)?.dirty) return savePlan();
     setStatus("Saving…");
     try {
       const response = await fetch("/api/state", {
@@ -860,6 +879,7 @@
     selectedSegmentId = journey.days.flatMap((day) => day.segmentIds)[0] || null;
     selectedDayId = journey.days[0]?.id || null;
     renderJourneySelector();
+    if (mode === "planner") renderPlanner();
     if (!selectedSegmentId) clearSelectedRoute();
     selectPhoto(selectedPhotoId, false);
     renderDaySelectors();
@@ -889,6 +909,7 @@
       : (mode === "routes"
         ? "Click close to the orange line to insert a control point, then drag any numbered point—including the endpoints—to shape the route."
         : "Edit this day's date label, title, and description. The map shows every travel leg assigned to the day.");
+    if (mode === "planner") { renderPlanner(); return; }
     if (mode === "days" && selectedDayId) selectDay(selectedDayId, false);
     if (!mapReady) return;
     if (mode === "photos") {
@@ -900,10 +921,106 @@
     } else if (selectedDayId) selectDay(selectedDayId, true);
   }
 
+  const modeLabels = {train:"Train",boat:"Ferry",bus:"Bus",gondola:"Gondola",walk:"Walk",car:"Car",bike:"Bike"};
+  const plans = new Map();
+  function planForJourney() {
+    if (!plans.has(journey.id)) plans.set(journey.id, { draft:structuredClone(journey), dirty:false, revision:savedRevisions[journey.id] || null });
+    return plans.get(journey.id);
+  }
+  const planFields = ['title','startDate','endDate','timeZone','places','segments','days','coverPhoto','replayMoments','subtitle'];
+  function planChanges(draft) { return Object.fromEntries(planFields.filter(k => draft[k] !== undefined).map(k => [k, draft[k]])); }
+  function dirtyPlan() { const plan = planForJourney(); plan.dirty = true; plan.previewed = false; markDirty('Trip plan changed · preview before saving'); $('#plan-save').disabled = true; }
+  function uniquePlanId(kind, items) { let n=1; while (items.some(item => item.id === `${journey.id}-${kind}${n}`)) n++; return `${journey.id}-${kind}${n}`; }
+  function renderPlanner() {
+    const plan = planForJourney(), draft = plan.draft;
+    $('#plan-title').value = draft.title;
+    $('#plan-subtitle').value = draft.subtitle || '';
+    $('#plan-start').value = draft.startDate || draft.days[0]?.calendarDate || '';
+    $('#plan-end').value = draft.endDate || draft.days.at(-1)?.calendarDate || '';
+    $('#plan-timezone').value = draft.timeZone || 'UTC';
+    const placeOptions = '<option value="">Choose a place</option>'+draft.places.map(p => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)}</option>`).join('');
+    $('#plan-places').innerHTML = draft.places.map(p => `<div class="plan-place" data-place="${escapeHtml(p.id)}"><label>Name<input data-place-field="name" value="${escapeHtml(p.name)}"></label><label>Longitude<input type="number" step="any" min="-180" max="180" data-place-field="lng" value="${p.lng??''}"></label><label>Latitude<input type="number" step="any" min="-90" max="90" data-place-field="lat" value="${p.lat??''}"></label></div>`).join('');
+    $('#plan-days').innerHTML = draft.days.map((day,index) => `<section class="plan-day" data-plan-day="${escapeHtml(day.id)}"><div class="plan-row"><strong>Day ${index+1} · ${escapeHtml(day.calendarDate || day.date)} · ${escapeHtml(state.days[day.id]?.title || day.title)}</strong><button type="button" data-move-day="-1" ${index===0?'disabled':''}>Earlier</button><button type="button" data-move-day="1" ${index===draft.days.length-1?'disabled':''}>Later</button></div><label>Destination<select data-day-destination>${placeOptions}</select></label><ol>${day.segmentIds.map((id, i) => { const s=draft.segments.find(s=>s.id===id); return `<li data-plan-leg="${escapeHtml(id)}"><div class="plan-leg"><label>Mode<select data-leg-field="mode">${Object.entries(modeLabels).map(([key,label])=>`<option value="${key}" ${s.mode===key?'selected':''}>${label}</option>`).join('')}</select></label><label>From<select data-leg-field="from">${draft.places.map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===s.from?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label><label>To<select data-leg-field="to">${draft.places.map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===s.to?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label><label>Travel minutes<input data-leg-field="durationMinutes" type="number" min="0" value="${s.durationMinutes??''}"></label></div><button type="button" data-move-leg="-1" ${i===0?'disabled':''}>Earlier leg</button><button type="button" data-move-leg="1" ${i===day.segmentIds.length-1?'disabled':''}>Later leg</button>${s.geometry || routeGeometry[id] || state.routes[id] ? '<small>Reviewed route: endpoint/mode edits require a new route review.</small>' : '<small>Provisional endpoint guide; review geometry in Route drawing.</small>'}</li>`; }).join('')}</ol><button type="button" data-add-leg ${draft.places.length<1?'disabled':''}>+ Travel leg</button></section>`).join('');
+    draft.days.forEach(day => { const select = [...document.querySelectorAll('[data-plan-day]')].find(e=>e.dataset.planDay===day.id)?.querySelector('[data-day-destination]'); if (select) select.value=day.destinationId || day.placeId || ''; });
+    const visible = basePhotos.map(photoWithOverride).filter(p=>!p.hidden);
+    $('#cover-picker').innerHTML = '<option value="">First visible photo</option>'+visible.map(p=>`<option value="${escapeHtml(p.id)}">${escapeHtml(p.caption || p.id)}</option>`).join('');
+    $('#cover-picker').value = draft.coverPhoto?.photoId || '';
+    $('#cover-x').value = draft.coverPhoto?.focal?.[0] ?? 50; $('#cover-y').value = draft.coverPhoto?.focal?.[1] ?? 50;
+    $('#cover-thumbnails').innerHTML = visible.map(p=>`<button type="button" data-pick-cover="${escapeHtml(p.id)}" aria-label="Use ${escapeHtml(p.caption || p.id)} as trip cover" aria-pressed="${draft.coverPhoto?.photoId===p.id}"><img loading="lazy" src="${escapeHtml(photoUrl(p.srcset?.[0]?.src || p.src))}" alt="${escapeHtml(p.caption || '')}"></button>`).join('');
+    renderCoverPreviews(); renderMomentEditor();
+    $('#plan-save').disabled = !plan.previewed;
+  }
+  function renderCoverPreviews() {
+    const {photo,position} = window.JOURNEY_ATLAS_UTILS.resolveCover(planForJourney().draft, basePhotos.map(photoWithOverride).filter(p=>!p.hidden));
+    $('#cover-previews').innerHTML = ['Desktop','Phone'].map(label=>`<figure class="cover-preview ${label.toLowerCase()}"><figcaption>${label}</figcaption>${photo?`<img src="${escapeHtml(photoUrl(photo.srcset?.find(v=>v.width>=1280)?.src || photo.src))}" style="object-position:${position}" alt="${escapeHtml(photo.caption)}">`:'<p>A journey taking shape</p>'}</figure>`).join('');
+  }
+  function renderMomentEditor() {
+    const draft=planForJourney().draft;
+    $('#plan-moments').innerHTML=(draft.replayMoments||[]).map((m,i)=>`<section class="plan-moment" data-moment="${escapeHtml(m.id)}"><div class="plan-row"><strong>Moment ${i+1}</strong><button type="button" data-move-moment="-1" ${!i?'disabled':''}>Earlier</button><button type="button" data-move-moment="1" ${i===draft.replayMoments.length-1?'disabled':''}>Later</button><button type="button" data-remove-moment>Remove moment</button></div><label>Day<select data-moment-field="dayId">${draft.days.map(d=>`<option value="${escapeHtml(d.id)}" ${d.id===m.dayId?'selected':''}>Day ${d.number} · ${escapeHtml(d.title)}</option>`).join('')}</select></label><label>Photograph<select data-moment-field="photoId"><option value="">Route / text chapter</option>${basePhotos.map(photoWithOverride).filter(p=>!p.hidden && p.dayId===m.dayId).map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===m.photoId?'selected':''}>${escapeHtml(p.caption)}</option>`).join('')}</select></label><label>One sentence<input data-moment-field="caption" value="${escapeHtml(m.caption)}"></label><label>Duration (seconds)<input type="number" min="1" max="120" data-moment-field="duration" value="${m.duration}"></label><fieldset><legend>Travel legs (in day order)</legend>${(draft.days.find(d=>d.id===m.dayId)?.segmentIds||[]).map(id=>{ const s=draft.segments.find(s=>s.id===id); return `<label class="checkbox"><input type="checkbox" data-moment-segment="${escapeHtml(id)}" ${m.segmentIds?.includes(id)?'checked':''}>${escapeHtml(modeLabels[s.mode])} · ${escapeHtml(draft.places.find(p=>p.id===s.from)?.name)} → ${escapeHtml(draft.places.find(p=>p.id===s.to)?.name)}</label>`; }).join('')}</fieldset></section>`).join('') || '<p>Add a few moments to curate Replay. With none selected it follows the existing day/route sequence.</p>';
+  }
+  async function previewPlan() {
+    const plan=planForJourney();
+    const changes={...planChanges(plan.draft),title:$('#plan-title').value,subtitle:$('#plan-subtitle').value,startDate:$('#plan-start').value,endDate:$('#plan-end').value,timeZone:$('#plan-timezone').value};
+    if (!changes.startDate && !changes.endDate) { delete changes.startDate; delete changes.endDate; }
+    const input={journeyId:journey.id,changes,state,alignment:$('#plan-alignment').value,preview:true,revision:plan.revision};
+    try {
+      const result=await (await fetch('/api/journey-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)})).json();
+      if (!result.ok) throw new Error(result.error);
+      state=result.state; plan.draft=result.journey; plan.revision=result.revision; plan.previewed=true;
+      $('#plan-status').textContent=`Ready to save: ${result.journey.days.length} days. Added: ${result.added.join(', ') || 'none'}. Removed empty dates: ${result.removed.join(', ') || 'none'}. Existing IDs, notes and overrides are preserved.`;
+      renderPlanner();
+    } catch(error) { $('#plan-status').textContent=error.message; }
+  }
+  async function savePlan() {
+    const plan=planForJourney();
+    if (!plan.previewed) { setStatus('Preview the trip plan before saving','error'); return false; }
+    try {
+      const result=await (await fetch('/api/journey-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({journeyId:journey.id,changes:planChanges(plan.draft),revision:plan.revision,state,preview:false})})).json();
+      if (!result.ok) throw new Error(result.error);
+      state=result.state; Object.assign(journey,result.journey); plan.revision=result.revision; plan.dirty=false; plan.previewed=false;
+      renderJourneySelector(); renderDaySelectors(); renderDayList(); renderRouteList(); renderPlanner(); markSaved('Trip plan and edits saved locally');
+      $('#plan-status').textContent='Saved. The selected trip preview now includes these changes.'; return true;
+    } catch(error) { $('#plan-status').textContent=error.message; return false; }
+  }
+  $('#trip-planner').addEventListener('input',event=>{
+    const e=event.target, draft=planForJourney().draft;
+    const headerFields={'plan-title':'title','plan-subtitle':'subtitle','plan-start':'startDate','plan-end':'endDate','plan-timezone':'timeZone'};
+    if(headerFields[e.id]) draft[headerFields[e.id]]=e.value;
+    if (e.dataset.placeField) { const p=draft.places.find(p=>p.id===e.closest('[data-place]').dataset.place); p[e.dataset.placeField]=e.dataset.placeField==='name'?e.value:(e.value===''?null:Number(e.value)); }
+    if (e.hasAttribute('data-day-destination')) { const day=draft.days.find(d=>d.id===e.closest('[data-plan-day]').dataset.planDay); if(e.value) day.destinationId=e.value; else delete day.destinationId; }
+    if(e.dataset.legField) { const leg=draft.segments.find(s=>s.id===e.closest('[data-plan-leg]').dataset.planLeg); if (['from','to','mode'].includes(e.dataset.legField) && (leg.geometry || routeGeometry[leg.id] || state.routes[leg.id])) { $('#plan-status').textContent='Reviewed leg endpoints and modes stay fixed here. Use Route drawing to review a changed line; add a new leg for a different journey.'; renderPlanner(); return; } if(e.value==='') delete leg[e.dataset.legField]; else leg[e.dataset.legField]=e.dataset.legField==='durationMinutes'?Number(e.value):e.value; }
+    if (['cover-picker','cover-x','cover-y'].includes(e.id)) { const photoId=$('#cover-picker').value; draft.coverPhoto=photoId?{photoId,focal:[Number($('#cover-x').value),Number($('#cover-y').value)]}:null; renderCoverPreviews(); }
+    if(e.dataset.momentField || e.dataset.momentSegment) {
+      const m=draft.replayMoments.find(m=>m.id===e.closest('[data-moment]').dataset.moment);
+      if(e.dataset.momentSegment) m.segmentIds=[...e.closest('fieldset').querySelectorAll('input:checked')].map(el=>el.dataset.momentSegment);
+      else { if(e.value==='') delete m[e.dataset.momentField]; else m[e.dataset.momentField]=e.dataset.momentField==='duration'?Number(e.value):e.value; if(e.dataset.momentField==='dayId') { delete m.photoId; m.segmentIds=[]; renderMomentEditor(); } }
+    }
+    dirtyPlan();
+  });
+  $('#trip-planner').addEventListener('click',event=>{
+    const e=event.target.closest('button'); if(!e) return;
+    const draft=planForJourney().draft;
+    const day=draft.days.find(d=>d.id===e.closest('[data-plan-day]')?.dataset.planDay);
+    const swap=(arr,i,delta)=>{ const j=i+Number(delta); if(j>=0&&j<arr.length) [arr[i],arr[j]]=[arr[j],arr[i]]; };
+    if(e.hasAttribute('data-move-day')) { const dates=draft.days.map(d=>[d.calendarDate,d.date]); swap(draft.days,draft.days.indexOf(day),e.dataset.moveDay); draft.days.forEach((d,i)=>{d.number=i+1; d.calendarDate=dates[i][0]; d.date=dates[i][1];}); }
+    else if(e.hasAttribute('data-add-leg')) { const id=uniquePlanId('leg',draft.segments); draft.segments.push({id,mode:'walk',from:draft.places[0].id,to:(draft.places[1]||draft.places[0]).id,geometryStatus:'provisional'}); day.segmentIds.push(id); }
+    else if(e.hasAttribute('data-move-leg')) swap(day.segmentIds,day.segmentIds.indexOf(e.closest('[data-plan-leg]').dataset.planLeg),e.dataset.moveLeg);
+    else if(e.dataset.pickCover) draft.coverPhoto={photoId:e.dataset.pickCover,focal:[50,50]};
+    else if(e.hasAttribute('data-move-moment')) swap(draft.replayMoments,draft.replayMoments.findIndex(m=>m.id===e.closest('[data-moment]').dataset.moment),e.dataset.moveMoment);
+    else if(e.hasAttribute('data-remove-moment')) draft.replayMoments=draft.replayMoments.filter(m=>m.id!==e.closest('[data-moment]').dataset.moment);
+    else return;
+    dirtyPlan(); renderPlanner();
+  });
+  $('#plan-add-place').addEventListener('click',()=>{ const draft=planForJourney().draft; draft.places.push({id:uniquePlanId('place',draft.places),name:'New place',lng:null,lat:null}); dirtyPlan(); renderPlanner(); $('#plan-status').textContent='Enter the known coordinates before previewing. Coordinates are never inferred from the name.'; });
+  $('#plan-add-moment').addEventListener('click',()=>{const draft=planForJourney().draft; draft.replayMoments ||= []; draft.replayMoments.push({id:uniquePlanId('moment',draft.replayMoments),dayId:draft.days[0].id,caption:draft.days[0].title,duration:8,segmentIds:[]}); dirtyPlan(); renderMomentEditor();});
+  $('#plan-preview').addEventListener('click',previewPlan);
+  $('#plan-save').addEventListener('click',savePlan);
+
   async function init() {
     try {
       const response = await fetch("/api/state");
       const loadedState = await response.json();
+      savedRevisions = loadedState.revisions || {};
       state = { photos: loadedState.photos || {}, routes: loadedState.routes || {}, days: loadedState.days || {} };
     } catch (error) {
       setStatus(`Could not load local edits: ${error.message}`, "error");
@@ -920,7 +1037,7 @@
     markSaved("Ready");
     map = new maplibregl.Map({ container: "studio-map", style: styleUrl, center: [8.45, 46.7], zoom: 7.5, attributionControl: false });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
-    map.addControl(new maplibregl.AttributionControl({ compact: true, customAttribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }), "bottom-right");
+    map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
     map.on("load", () => {
       mapReady = true;
       applyBasemapTreatment();
@@ -1021,6 +1138,7 @@
   $("#reset-route").addEventListener("click", () => {
     const segment = segmentById(selectedSegmentId);
     delete state.routes[selectedSegmentId];
+    proposalGate.invalidate();
     routeProposal = null;
     routeProposalMeta = null;
     routeSmoothed = false;

@@ -29,3 +29,24 @@ export function localDateParts(date, timeZone) {
   const parts = new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(date).reduce((result, part) => ({ ...result, [part.type]: part.value }), {});
   return { date: `${parts.year}-${parts.month}-${parts.day}`, time: `${parts.hour}:${parts.minute}` };
 }
+
+// Read EXIF with reviveValues:false. A naive camera clock is already local to
+// the journey: never pass it through the host's Date parser or guess DST.
+export function captureDateParts(metadata, timeZone) {
+  const original = Boolean(metadata.DateTimeOriginal);
+  const raw = original ? metadata.DateTimeOriginal : metadata.CreateDate;
+  if (typeof raw !== "string") throw new Error("Missing raw camera capture date");
+  const match = raw.trim().match(/^(\d{4})[:-](\d{2})[:-](\d{2})[ T](\d{2}):(\d{2}):(\d{2})(?:\.\d+)?\s*(Z|[+-]\d{2}:?\d{2})?$/);
+  if (!match) throw new Error("Invalid camera capture date");
+  const [, year, month, day, hour, minute, second, embeddedOffset] = match;
+  const date = `${year}-${month}-${day}`;
+  calendarDate(date);
+  if (+hour > 23 || +minute > 59 || +second > 59) throw new Error("Invalid camera capture time");
+  const offset = embeddedOffset || (original ? metadata.OffsetTimeOriginal : metadata.OffsetTimeDigitized);
+  if (!offset) return { date, time: `${hour}:${minute}`, rule: "camera-local" };
+  if (typeof offset !== "string" || !/^(Z|[+-](?:0\d|1[0-4]):?[0-5]\d)$/.test(offset.trim())) throw new Error("Invalid camera UTC offset");
+  const normalized = offset.trim().replace(/([+-]\d{2})(\d{2})$/, "$1:$2");
+  const instant = new Date(`${date}T${hour}:${minute}:${second}${normalized}`);
+  if (!Number.isFinite(+instant)) throw new Error("Invalid offset-aware capture date");
+  return { ...localDateParts(instant, timeZone), rule: "explicit-offset" };
+}

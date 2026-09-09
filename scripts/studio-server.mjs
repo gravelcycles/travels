@@ -5,6 +5,7 @@ import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { prepareJourneyPlan, journeyRevision } from "./journey-planner.mjs";
 import { createJourney } from "./create-journey.mjs";
 import { loadContent, validateOverrides } from "./journey-content.mjs";
 import { renderJourneyPage, studioAsset, readOverrides } from "./build-site.mjs";
@@ -104,6 +105,7 @@ function serveFile(response, filename) {
 
 function staticFileFor(pathname) {
   if (pathname === "/" || pathname === "/studio" || pathname === "/studio/") return path.join(repoRoot, "studio/index.html");
+  if (pathname === "/studio/story-review.html") return path.join(repoRoot, "studio/story-review.html");
   if (pathname === "/studio.css" || pathname === "/studio.js") return path.join(repoRoot, "studio", pathname.slice(1));
   if (pathname.startsWith("/dist/")) {
     const relative = pathname.slice(6);
@@ -148,8 +150,41 @@ const server = http.createServer((request, response) => {
     });
     return;
   }
+  if (request.method === "POST" && url.pathname === "/api/journey-plan") {
+    let body = "";
+    request.setEncoding("utf8");
+    request.on("data", chunk => { body += chunk; if (body.length > 3_000_000) request.destroy(); });
+    request.on("end", () => {
+      let filename, previous;
+      try {
+        const input = JSON.parse(body);
+        const { data } = loadContent(repoRoot, { includeDrafts: true });
+        const base = data.journeys.find(j => j.id === input.journeyId);
+        if (!base) throw new Error("Unknown journey");
+        const revision = journeyRevision(base);
+        if (input.revision && input.revision !== revision) throw new Error("This trip changed on disk. Reload Studio before saving the plan.");
+        const state = input.state || readOverrides(repoRoot);
+        const result = prepareJourneyPlan(data, base, input.changes || {}, state, input.alignment);
+        if (!input.preview) {
+          if (!input.revision) throw new Error("Preview the plan before saving");
+          filename = path.join(repoRoot, `content/${base.published ? "journeys" : "drafts"}/${base.id}.json`);
+          previous = fs.readFileSync(filename, "utf8");
+          const source = JSON.parse(previous);
+          fs.mkdirSync(backupDirectory, { recursive: true });
+          fs.writeFileSync(path.join(backupDirectory, `${Date.now()}-${base.id}.json`), previous);
+          writeJsonAtomic(filename, { ...result.journey, photos: source.photos });
+          saveState(result.state);
+        }
+        send(response, 200, JSON.stringify({ ok:true, ...result, revision:input.preview ? revision : journeyRevision(result.journey) }), "application/json; charset=utf-8");
+      } catch (error) {
+        if (filename && previous) fs.writeFileSync(filename, previous);
+        send(response, 400, JSON.stringify({ ok:false, error:error.message }), "application/json; charset=utf-8");
+      }
+    });
+    return;
+  }
   if (request.method === "GET" && url.pathname === "/api/state") {
-    return send(response, 200, JSON.stringify(readOverrides(repoRoot)), "application/json; charset=utf-8");
+    return send(response, 200, JSON.stringify({ ...readOverrides(repoRoot), revisions:Object.fromEntries(loadContent(repoRoot,{includeDrafts:true}).data.journeys.map(j=>[j.id,journeyRevision(j)])) }), "application/json; charset=utf-8");
   }
   if (request.method === "PUT" && url.pathname === "/api/state") {
     let body = "";
