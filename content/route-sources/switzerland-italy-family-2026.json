@@ -81,22 +81,59 @@
     }
   },
   "segments": {
-    "family-airport-luzern": { "network": "rail" },
-    "family-luzern-engelberg": { "network": "rail" },
-    "family-engelberg-luzern": { "network": "rail" },
-    "family-luzern-bern": { "network": "rail" },
-    "family-bern-luzern": { "network": "rail" },
-    "family-kehrsiten-luzern-boat": { "network": "ferry" },
-    "family-luzern-brienz": { "network": "rail" },
-    "family-brienz-interlaken-boat": { "network": "ferry" },
-    "family-interlaken-lauterbrunnen": { "network": "rail" },
-    "family-grutschalp-murren": { "network": "rail" },
-    "family-murren-grutschalp": { "network": "rail" },
-    "family-lauterbrunnen-interlaken": { "network": "rail" },
-    "family-interlaken-luzern": { "network": "rail" },
-    "family-luzern-como": { "network": "rail" },
-    "family-como-varenna-boat": { "network": "ferry" },
-    "family-fiumelatte-dervio": { "network": "rail" },
+    "family-airport-luzern": {
+      "network": "rail"
+    },
+    "family-luzern-engelberg": {
+      "network": "rail"
+    },
+    "family-engelberg-luzern": {
+      "network": "rail"
+    },
+    "family-luzern-bern": {
+      "network": "rail"
+    },
+    "family-bern-luzern": {
+      "network": "rail"
+    },
+    "family-kehrsiten-luzern-boat": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenStreetMap direct Kehrsiten–Luzern ferry ways; SGV direct service",
+        "retrievedAt": "2026-09-09",
+        "notes": "Reviewed shoreline/landing correction. Static geometry and accepted anchors are retained; see ROUTE_SOURCES.md for query and way IDs."
+      }
+    },
+    "family-luzern-brienz": {
+      "network": "rail"
+    },
+    "family-brienz-interlaken-boat": {
+      "network": "ferry"
+    },
+    "family-interlaken-lauterbrunnen": {
+      "network": "rail"
+    },
+    "family-grutschalp-murren": {
+      "network": "rail"
+    },
+    "family-murren-grutschalp": {
+      "network": "rail"
+    },
+    "family-lauterbrunnen-interlaken": {
+      "network": "rail"
+    },
+    "family-interlaken-luzern": {
+      "network": "rail"
+    },
+    "family-luzern-como": {
+      "network": "rail"
+    },
+    "family-como-varenna-boat": {
+      "network": "ferry"
+    },
+    "family-fiumelatte-dervio": {
+      "network": "rail"
+    },
     "family-dervio-bellagio-boat": {
       "strategy": "preserve",
       "provenance": {
@@ -105,10 +142,28 @@
         "notes": "No OSM relation represents direct Navigazione Laghi run 809."
       }
     },
-    "family-como-lugano": { "network": "rail" },
-    "family-lugano-luzern": { "network": "rail" },
-    "family-pilatus-alpnachstad": { "network": "rail" },
-    "family-alpnachstad-luzern": { "network": "rail" },
-    "family-luzern-airport": { "network": "rail" }
+    "family-como-lugano": {
+      "network": "rail"
+    },
+    "family-lugano-luzern": {
+      "network": "rail"
+    },
+    "family-pilatus-alpnachstad": {
+      "network": "rail"
+    },
+    "family-alpnachstad-luzern": {
+      "network": "rail"
+    },
+    "family-luzern-airport": {
+      "network": "rail"
+    },
+    "family-luzern-kehrsiten-bike": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenStreetMap bicycle-accessible shoreline roads through Stansstad and Kehrsitenstrasse",
+        "retrievedAt": "2026-09-09",
+        "notes": "Reviewed shoreline/landing correction. Static geometry and accepted anchors are retained; see ROUTE_SOURCES.md for query and way IDs."
+      }
+    }
   }
 }

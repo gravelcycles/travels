@@ -68,6 +68,11 @@ an ordered `replayMoments` list in the journey source. Cover choices apply to th
 catalog and opening, with visible-photo/text fallback. Replay moments contain
 stable IDs, day IDs, ordered segment IDs, optional photo IDs, captions, durations
 in seconds, and optional reviewed camera targets. Hidden photos are omitted;
+Travel scenes enforce a distance-based minimum per leg, including a brief
+camera-settling pause; longer editorial durations slow the travel proportionally.
+Changing geometry point density does not change the pacing. The family journey
+uses 2.4-second rest-day scenes and approximately 50 seconds for the nine-leg
+Mürren day. Replay frames each active leg and preserves reduced-motion controls.
 invalid editorial references fail validation. Only reviewed exact coordinates
 support photo-location zooms. Empty moment lists retain automatic Replay for
 other journeys. Save the plan after preview; the editor checks the source
@@ -116,6 +121,9 @@ not automatically more accurate; the important thing is using the correct
 network and enough meaningful anchors to disambiguate it.
 
 ### Train routes
+
+For the complete recipe, query and manifest templates, coordinate conventions,
+and troubleshooting, read [TRAIN_ROUTE_WORKFLOW.md](TRAIN_ROUTE_WORKFLOW.md).
 
 Research the actual or representative service's ordered stops first and cite
 the source in `ROUTE_SOURCES.md`. Obtain an OpenStreetMap rail-network extract

@@ -6,6 +6,30 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Document how to reproduce rail-aligned routes
+
+- Added `TRAIN_ROUTE_WORKFLOW.md` with the current OSM rail-geometry pipeline,
+  query and manifest templates, coordinate conventions, review steps, override
+  precedence, and reproducibility limitations. Linked it from the README and
+  journey workflow; no route data or application behavior changed.
+
+### Clearer photo selection, calmer Replay, and corrected Lake Luzern routes
+
+- Photo thumbnails show a strong selection border, a visible Selected label,
+  and pressed state. The rounded last-photo Next day button stays in its own
+  sidebar row and gives three gentle pulses; reduced motion disables the pulse.
+- Replay allocates travel time by distance, pauses briefly for each camera
+  transition, and frames the active leg. Rest days last 2.4 seconds, Mürren's
+  nine legs receive about 50 seconds, and the full trip lasts about 3m 38s at 1×.
+- Day 4 now follows shoreline bicycle roads to the Kehrsiten landing and a
+  direct ferry to Luzern without intermediate stops. Reviewed OSM geometry,
+  preserved anchors, approximate distances, and provenance were updated.
+- Validation: all 35 release-build tests pass, including distance-weighted
+  Replay pacing and point-density independence. Desktop/390 px browser checks
+  cover selected thumbnails, last-photo continuation, Mürren's mountain legs,
+  the brief rest-day transition, and the corrected lake loop. Unrelated Studio
+  photo edits remain local and are excluded from this release.
+
 ### Keep the map key in sync with highlighted routes
 
 Commit `6754575` deployed successfully in Pages run `34348023018`. A fresh

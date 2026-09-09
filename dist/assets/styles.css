@@ -250,7 +250,7 @@ code { background: #dfe6e2; padding: 2px 4px; font-size: 0.8rem; }
 .photo-nav:hover:not(:disabled) { opacity: 1; background: rgba(255,255,255,0.045); }
 .photo-nav:disabled { opacity: 0.18; cursor: default; }
 .photo-close { position: fixed; z-index: 10; top: 14px; right: 14px; width: 42px; height: 42px; border-radius: 50%; border: 2px solid #fff; background: var(--ink); color: #fff; font-size: 1.55rem; line-height: 1; cursor: pointer; box-shadow: var(--shadow); }
-.photo-context { min-width: 0; min-height: 0; display: grid; grid-template-rows: minmax(230px, 42vh) auto minmax(0, 1fr); background: var(--panel); color: var(--ink); border-left: 1px solid #617376; }
+.photo-context { min-width: 0; min-height: 0; display: grid; grid-template-rows: minmax(150px, 32vh) auto auto minmax(0, 1fr); background: var(--panel); color: var(--ink); border-left: 1px solid #617376; }
 #photo-map { min-height: 0; background: var(--map-water); border-bottom: 1px solid var(--line); }
 .photo-context-copy { padding: 20px 20px 17px; border-bottom: 1px solid var(--line); }
 .viewer-day-nav { display: grid; grid-template-columns: 36px minmax(0, 1fr) 36px; min-height: 36px; margin: -5px 36px 16px 0; border: 1px solid var(--line); background: #fff; }
@@ -267,7 +267,9 @@ code { background: #dfe6e2; padding: 2px 4px; font-size: 0.8rem; }
 .photo-context .modal-description:empty { display: none; }
 .viewer-filmstrip { min-height: 0; overflow-y: auto; display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 104px; gap: 7px; padding: 10px; align-content: start; scrollbar-width: thin; }
 .viewer-filmstrip button { min-width: 0; border: 0; padding: 0; position: relative; overflow: hidden; background: #29474c; cursor: pointer; }
-.viewer-filmstrip button.active { outline: 3px solid var(--selected); outline-offset: -3px; }
+.viewer-filmstrip button.active { outline: 4px solid var(--selected); outline-offset: -4px; box-shadow: 0 0 0 2px #fff; }
+.viewer-filmstrip button.active::after { content:""; position:absolute; inset:0; border:4px solid var(--selected); pointer-events:none; }
+.photo-selected-label { position:absolute; bottom:0; left:0; right:0; padding:5px 4px; background:var(--selected); color:#fff; font-size:.7rem; text-align:center; }
 .viewer-filmstrip img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.78; }
 .viewer-filmstrip button.active img, .viewer-filmstrip button:hover img { opacity: 1; }
 .viewer-filmstrip span { position: absolute; top: 7px; left: 7px; padding: 3px 5px; background: rgba(13,34,38,.8); color: #fff; font-size: 0.65rem; font-weight: 850; }
@@ -355,11 +357,11 @@ button:focus-visible, select:focus-visible, .maplibregl-map:focus-visible { outl
   .mobile-nav button { border: 0; background: transparent; color: #adc0c0; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 850; }
   .mobile-nav button.active { color: #fff; box-shadow: inset 0 3px var(--selected); }
   .photo-viewer { grid-template-columns: 1fr; grid-template-rows: minmax(0, 62dvh) minmax(0, 38dvh); }
-  .photo-context { grid-template-columns: 42% minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) 94px; border-left: 0; border-top: 1px solid #617376; }
-  #photo-map { grid-column: 1; grid-row: 1 / 3; border: 0; border-right: 1px solid var(--line); }
+  .photo-context { grid-template-columns: 42% minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto 94px; border-left: 0; border-top: 1px solid #617376; }
+  #photo-map { grid-column: 1; grid-row: 1 / 4; border: 0; border-right: 1px solid var(--line); }
   .photo-context-copy { grid-column: 2; grid-row: 1; padding: 16px; min-height: 0; overflow-y: auto; }
   .viewer-day-nav { margin-right: 34px; }
-  .viewer-filmstrip { grid-column: 2; grid-row: 2; display: grid; grid-auto-flow: column; grid-auto-columns: 92px; grid-template-columns: none; grid-auto-rows: 76px; overflow-x: auto; overflow-y: hidden; padding: 8px; }
+  .viewer-filmstrip { grid-column: 2; grid-row: 3; display: grid; grid-auto-flow: column; grid-auto-columns: 92px; grid-template-columns: none; grid-auto-rows: 76px; overflow-x: auto; overflow-y: hidden; padding: 8px; }
   .photo-context h2 { font-size: 1.45rem; }
   .catalog-page .site-header { height: 64px; }
   .catalog-main { min-height: calc(100dvh - 64px); }
@@ -474,7 +476,14 @@ button:focus-visible, select:focus-visible, .maplibregl-map:focus-visible { outl
 .album-text-scene { display:grid; place-items:center; background:#e7ecdf; font:1.2rem Georgia,serif; }
 .album-day strong { padding:12px 12px 6px; font:1.2rem Georgia,serif; }
 .album-day small { padding:0 12px 14px; color:var(--ink-soft); }
-.album-continue { display:block; margin:12px auto 0; padding:10px 16px; color:var(--ink); background:var(--panel); border:0; max-width:100%; cursor:pointer; }
+.album-continue { display:block; width:calc(100% - 40px); margin:12px 20px; padding:12px 16px; color:#fff; background:var(--selected); border:2px solid transparent; border-radius:22px; text-align:left; cursor:pointer; }
+.album-continue strong { display:flex; justify-content:space-between; gap:8px; font-size:.92rem; }
+.album-continue small { display:block; margin-top:4px; font-size:.72rem; line-height:1.35; }
+.album-continue:hover { background:#ae3c1f; }
+.album-continue:focus-visible { outline:3px solid var(--ink); outline-offset:3px; }
+@keyframes continue-glow { 0%, 100% { box-shadow:0 0 0 0 rgba(212,81,44,.05); } 50% { box-shadow:0 0 0 5px rgba(212,81,44,.22); } }
+@media (prefers-reduced-motion: no-preference) { .album-continue.ready-to-continue { animation:continue-glow 2.6s ease-in-out 3; } }
+@media (max-width:900px) { .album-continue { grid-column:2; grid-row:2; width:calc(100% - 24px); margin:8px 12px; padding:9px 12px; border-radius:18px; } }
 #modal-time { display:block; font-size:.75rem; color:#a8c0c0; margin:5px; }
 .viewer-empty { padding:20px; gap:16px; }
 .viewer-empty span { max-width:55ch; line-height:1.7; font-size:1rem; }

@@ -14,7 +14,7 @@ still outstanding.
 
 W02 is implemented. T13's independent daily leads and T16's intentional empty
 days were retained. The former automatic T17 player now also supports editable
-curated moments: this trip has 14 chapters totaling 116 seconds, covering all
+curated moments: this trip has 14 chapters totaling about 218 seconds (after the pacing follow-up), covering all
 29 legs and ten selected photographs, including arrival and departure.
 
 The catalog and compact trip introduction share a Studio-selected existing

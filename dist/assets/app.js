@@ -963,9 +963,10 @@
   function renderViewerFilmstrip(photos) {
     $("#viewer-filmstrip").innerHTML = photos.length
       ? photos.map((photo, index) => `
-          <button type="button" data-viewer-index="${index}" class="${index === viewerPhotoIndex ? "active" : ""}" aria-label="Show photo ${index + 1} of ${photos.length}">
+          <button type="button" data-viewer-index="${index}" class="${index === viewerPhotoIndex ? "active" : ""}" aria-pressed="${index === viewerPhotoIndex}" aria-label="Show photo ${index + 1} of ${photos.length}${index === viewerPhotoIndex ? ', selected' : ''}">
             ${photoImageMarkup(photo, { alt: "", sizes: "180px" })}
             <span>${String(index + 1).padStart(2, "0")}</span>
+            ${index === viewerPhotoIndex ? '<strong class="photo-selected-label">✓ Selected</strong>' : ''}
           </button>
         `).join("")
       : "";
@@ -1038,7 +1039,8 @@
     const continuation = $("#album-continue");
     continuation.hidden = Boolean(photo && viewerPhotoIndex < photos.length-1);
     continuation.dataset.day = next?.id || '';
-    continuation.textContent = next ? `${photo ? 'Continue to' : 'Next day with photos ·'} Day ${next.number} · ${next.title}` : 'Back to journey';
+    continuation.innerHTML = next ? `<strong>${photo ? 'Next day' : 'Next day with photos'} <span aria-hidden="true">→</span></strong><small>Day ${next.number} · ${escapeHtml(next.title)}</small>` : '<strong>Back to journey →</strong>';
+    continuation.classList.toggle('ready-to-continue', Boolean(photo && next && !continuation.hidden));
     renderViewerFilmstrip(photos);
     renderDays();
     renderStory();
@@ -1165,9 +1167,10 @@
       });
       return;
     }
-    const coordinates = dayCoordinates(day);
+    const segment = replaySegment(moment);
+    const coordinates = segment ? segmentCoordinates(segment) : dayCoordinates(day);
     if (coordinates.length > 1) {
-      replayMap.fitBounds(boundsFromCoordinates(coordinates), { padding: replayMapPadding(), maxZoom: 11.5, duration });
+      replayMap.fitBounds(boundsFromCoordinates(coordinates), { padding: replayMapPadding(), maxZoom: 13, duration });
     } else if (coordinates.length === 1) {
       replayMap.easeTo({ center: coordinates[0], zoom: 10.5, duration });
     } else {
@@ -1249,7 +1252,7 @@
     const moment = currentReplayMoment();
     const segment = replaySegment(moment);
     if (segment && segment.id !== replayLabeledSegmentId) renderReplayRouteLabel(moment);
-    if (replayMapReady && segment && segment.id !== replayDrawnSegmentId) drawReplayMomentMap(moment,replayProgress,false);
+    if (replayMapReady && segment && segment.id !== replayDrawnSegmentId) drawReplayMomentMap(moment,replayProgress,true);
     if (!segment || !replayMapReady || !replayActiveSourceId) return;
     const coordinates = replayUtils.partialLine(segmentCoordinates(segment), replayUtils.routePhase(moment,replayProgress).progress);
     const source = replayMap.getSource(replayActiveSourceId);
@@ -1331,11 +1334,7 @@
   }
 
   function replayMomentDuration(moment) {
-    if(moment?.duration) return moment.duration * 1000;
-    if (moment?.type === "photo") return 2800;
-    if (moment?.type === "day") return 2200;
-    const pointCount = replaySegment(moment) ? segmentCoordinates(replaySegment(moment)).length : 2;
-    return Math.min(4300, 2300 + pointCount * 8);
+    return (moment?.duration || 2.4) * 1000;
   }
 
   function pauseReplay() {
@@ -1663,7 +1662,7 @@
   window.addEventListener("resize", () => {
     if (mainMap) mainMap.resize();
     if (viewerMap && photoDialog.open) viewerMap.resize();
-    if (replayMap && replayDialog.open) replayMap.resize();
+    if (replayMap && replayDialog.open) { replayMap.resize(); fitReplayMoment(currentReplayMoment()); }
     renderDayNavigator();
   });
 

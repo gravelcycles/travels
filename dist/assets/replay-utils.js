@@ -63,10 +63,29 @@
     }).map(({ photo }) => photo);
   }
 
+  function pacedMoment(moment, journey) {
+    const ids = moment.segmentIds || (moment.segmentId ? [moment.segmentId] : []);
+    if (!ids.length) return { ...moment, duration: moment.duration || (moment.type === "photo" ? 2.8 : 2.4) };
+    const legs = ids.map(id => {
+      const segment = journey.segments?.find(item => item.id === id);
+      const coordinates = segment?.geometry || root.JOURNEY_ATLAS_ROUTE_GEOMETRY?.[id] || [];
+      const measuredKm = coordinates.slice(1).reduce((sum, point, index) => sum + coordinateDistance(coordinates[index], point) / 1000, 0);
+      const km = Math.max(0, Number(segment?.distanceKm) || measuredKm);
+      // Give long crossings more time, with a readable minimum for short links.
+      const travel = Math.max(2.4, 1.8 + Math.sqrt(km) * 0.7, km / 12);
+      return { id, settle: 0.7, travel, arrival: 0.25 };
+    });
+    const travelDuration = legs.reduce((sum, leg) => sum + leg.settle + leg.travel + leg.arrival, 0);
+    const duration = Math.max(Number(moment.duration) || 0, travelDuration + (moment.curated ? 1.2 : 0));
+    // Longer editorial durations slow travel too, rather than adding a long idle tail.
+    const scale = (duration - (moment.curated ? 1.2 : 0)) / travelDuration;
+    return { ...moment, duration, legTiming: legs.map(leg => ({ ...leg, travel: leg.travel * scale, settle: leg.settle * scale, arrival: leg.arrival * scale })) };
+  }
+
   function createTimeline(journey) {
     if (journey.replayMoments?.length) return journey.replayMoments.map(moment => {
       const photo = journey.photos?.find(p => p.id === moment.photoId && !p.hidden && p.dayId === moment.dayId);
-      return { ...moment, curated:true, type:'chapter', photoId:photo?.id, segmentIds:(moment.segmentIds || []).filter(id => journey.days.find(d => d.id === moment.dayId)?.segmentIds.includes(id)) };
+      return pacedMoment({ ...moment, curated:true, type:'chapter', photoId:photo?.id, segmentIds:(moment.segmentIds || []).filter(id => journey.days.find(d => d.id === moment.dayId)?.segmentIds.includes(id)) }, journey);
     });
     const segmentIds = new Set((journey.segments || []).map((segment) => segment.id));
     return (journey.days || []).flatMap((day) => {
@@ -78,7 +97,7 @@
         .forEach((photo) => moments.push({ id: `${day.id}:photo:${photo.id}`, type: "photo", dayId: day.id, photoId: photo.id }));
       if (!moments.length) moments.push({ id: `${day.id}:day`, type: "day", dayId: day.id });
       return moments;
-    });
+    }).map(moment => pacedMoment(moment, journey));
   }
 
   function firstMomentIndexForDay(timeline, dayId) {
@@ -92,6 +111,20 @@
   function routePhase(moment, progress) {
     const ids = moment?.segmentIds || (moment?.segmentId ? [moment.segmentId] : []);
     if (!ids.length) return {segmentId:null,completed:[],progress:1};
+    if (moment.legTiming?.length) {
+      let elapsed = clamp(progress) * moment.duration;
+      for (let index = 0; index < moment.legTiming.length; index += 1) {
+        const leg = moment.legTiming[index];
+        const duration = leg.settle + leg.travel + leg.arrival;
+        if (elapsed < duration || index === moment.legTiming.length - 1) {
+          const amount = clamp((elapsed - leg.settle) / leg.travel);
+          // Gentle acceleration/deceleration without a jarring stop at each endpoint.
+          const eased = amount * amount * (3 - 2 * amount);
+          return { segmentId: leg.id, completed: ids.slice(0, index), progress: eased };
+        }
+        elapsed -= duration;
+      }
+    }
     // Curated scenes leave the last third for the photograph/text after travel.
     const travel = clamp(progress / (moment.curated ? 0.65 : 1));
     const index = Math.min(ids.length-1, Math.floor(travel*ids.length));
