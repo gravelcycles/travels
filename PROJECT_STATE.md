@@ -2,6 +2,11 @@
 
 ## Compact catalog, trip title and photo selection · 9 September 2026
 
+Published as `bcdca9b` in successful Pages run `34366124964`. A fresh public
+load confirmed the new landing copy, compact 106 px desktop card, renamed
+journey introduction, and orange photo selection with no Selected badge.
+The catalog still contains only the one real trip. No browser errors.
+
 The catalog now uses compact horizontal cover-and-text rows and a short
 introduction: “Where we went.” / “The routes we took and the photos we brought
 home, one trip at a time.” It has one real journey; no placeholder journeys
