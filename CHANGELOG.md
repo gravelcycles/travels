@@ -6,6 +6,11 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Use the traveler's landing-page headline
+
+- Replace the catalog headline with “We wander but aren't lost...yet”.
+  Keep the supporting sentence and compact journey layout.
+
 ### Compact the catalog and improve its copy
 
 Published as `bcdca9b` in successful Pages run `34366124964`. A fresh public

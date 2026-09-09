@@ -5,7 +5,7 @@ David and Michelle's Switzerland–Italy family journey has its own stable page
 at `switzerland-italy.html`. Fictional viewer examples live separately at
 `demo.html`.
 
-The catalog uses compact photo rows under **Where we went.**, sized to show
+The catalog uses compact photo rows under **We wander but aren't lost...yet**, sized to show
 roughly 4–5 journeys on a laptop and 2–3 on a phone. Only published real trips
 appear; demo journeys remain separate. The family trip is titled
 **Switzerland & Italy · Family trip**.

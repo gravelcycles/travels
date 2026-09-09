@@ -8,7 +8,7 @@ journey introduction, and orange photo selection with no Selected badge.
 The catalog still contains only the one real trip. No browser errors.
 
 The catalog now uses compact horizontal cover-and-text rows and a short
-introduction: “Where we went.” / “The routes we took and the photos we brought
+introduction: “We wander but aren't lost...yet” / “The routes we took and the photos we brought
 home, one trip at a time.” It has one real journey; no placeholder journeys
 were published. Covers use image sizes matching their displayed widths and
 later entries load lazily. On phones, cards prioritize title, dates and facts.
