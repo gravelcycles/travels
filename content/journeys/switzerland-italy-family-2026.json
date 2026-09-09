@@ -41,10 +41,10 @@
     },
     {
       "id": "kehrsiten",
-      "name": "Kehrsiten-Bürgenstock",
+      "name": "Kehrsiten-Bürgenstock landing",
       "country": "Switzerland",
-      "lat": 46.9939,
-      "lng": 8.3725
+      "lat": 47.0030759,
+      "lng": 8.3824029
     },
     {
       "id": "brienz",
@@ -301,7 +301,7 @@
       "from": "luzern",
       "to": "kehrsiten",
       "mode": "bike",
-      "distanceKm": 25,
+      "distanceKm": 23.1,
       "duration": "2–3 hrs with stops",
       "via": [
         [
@@ -309,20 +309,40 @@
           8.309951
         ],
         [
-          47.039429,
-          8.30196
+          47.040048,
+          8.322386
         ],
         [
-          47.028791,
-          8.30078
+          47.029961,
+          8.336292
         ],
         [
-          47.022723,
-          8.304623
+          47.024274,
+          8.334405
         ],
         [
-          47.01603,
-          8.307064
+          47.01994,
+          8.338974
+        ],
+        [
+          47.010323,
+          8.339272
+        ],
+        [
+          47.001653,
+          8.32914
+        ],
+        [
+          47.012084,
+          8.318413
+        ],
+        [
+          47.010391,
+          8.30858
+        ],
+        [
+          47.00775,
+          8.304905
         ],
         [
           47.004591,
@@ -333,8 +353,16 @@
           8.312576
         ],
         [
-          46.985211,
-          8.311873
+          46.990164,
+          8.315153
+        ],
+        [
+          46.98454,
+          8.311975
+        ],
+        [
+          46.979593,
+          8.311975
         ],
         [
           46.979099,
@@ -345,28 +373,44 @@
           8.329543
         ],
         [
-          46.977397,
-          8.337966
+          46.97921,
+          8.336454
         ],
         [
-          46.97988,
-          8.3423
+          46.980374,
+          8.340924
         ],
         [
-          46.980337,
-          8.343592
+          46.981257,
+          8.342276
         ],
         [
-          46.979069,
-          8.344615
+          46.981858,
+          8.346217
         ],
         [
-          46.979171,
-          8.348456
+          46.985269,
+          8.351568
         ],
         [
-          46.980636,
-          8.360055
+          46.988558,
+          8.351921
+        ],
+        [
+          46.993773,
+          8.358155
+        ],
+        [
+          46.995725,
+          8.362181
+        ],
+        [
+          47.000511,
+          8.36627
+        ],
+        [
+          47.002434,
+          8.369517
         ]
       ],
       "durationMinutes": 120,
@@ -378,23 +422,20 @@
       "from": "kehrsiten",
       "to": "luzern",
       "mode": "boat",
-      "distanceKm": 11,
-      "duration": "55 min",
+      "distanceKm": 7.9,
+      "duration": "About 30 min",
       "via": [
         [
-          47.0008,
-          8.358
+          47.029697,
+          8.351576
         ],
         [
-          47.0185,
-          8.342
-        ],
-        [
-          47.037,
-          8.323
+          47.0463602,
+          8.3299858
         ]
       ],
-      "durationMinutes": 55
+      "durationMinutes": 30,
+      "durationQualifier": "approx."
     },
     {
       "id": "family-luzern-brienz",
@@ -1577,7 +1618,7 @@
         "family-luzern-kehrsiten-bike",
         "family-kehrsiten-luzern-boat"
       ],
-      "text": "Bicycles turned the lake into the day's route: a picnic and swim broke up the ride before the group continued to Kehrsiten. A cliff jump and the climb back up to the ferry gave the afternoon its edge; the boat carried everyone home, and Abi's dinner was eaten on a bench overlooking the Reuss and the covered bridge.",
+      "text": "Bicycles turned the lake into the day's route: a picnic and swim broke up the ride before the group followed the coastal road to the Kehrsiten landing. A cliff jump gave the afternoon its edge; the ferry carried everyone directly back to Luzern without intermediate stops, and Abi's dinner was eaten on a bench overlooking the Reuss and the covered bridge.",
       "calendarDate": "2026-08-16"
     },
     {
@@ -1744,7 +1785,7 @@
         "family-airport-luzern"
       ],
       "caption": "The train from Zürich Airport brought the family to Luzern for a first evening by the river.",
-      "duration": 8,
+      "duration": 9.8,
       "photoId": "family-img-1425"
     },
     {
@@ -1755,7 +1796,7 @@
         "family-engelberg-luzern"
       ],
       "caption": "A train ride to Engelberg led to cold water, lunch, and a waterfall walk.",
-      "duration": 8,
+      "duration": 15,
       "photoId": "family-img-1472"
     },
     {
@@ -1766,7 +1807,7 @@
         "family-bern-luzern"
       ],
       "caption": "Bern brought gelato, an Aare float, an old-town walk, and a visit to the bears.",
-      "duration": 8,
+      "duration": 21.5,
       "photoId": "family-img-5047"
     },
     {
@@ -1777,7 +1818,7 @@
         "family-kehrsiten-luzern-boat"
       ],
       "caption": "Bikes, a picnic, and a swim led to Kehrsiten, with a boat ride home.",
-      "duration": 8,
+      "duration": 12.1,
       "photoId": "family-img-5052"
     },
     {
@@ -1785,7 +1826,7 @@
       "dayId": "family-d5",
       "segmentIds": [],
       "caption": "Rain made Luzern a day for resting and watching The Odyssey.",
-      "duration": 8,
+      "duration": 2.4,
       "photoId": "family-img-1520"
     },
     {
@@ -1803,7 +1844,7 @@
         "family-interlaken-luzern"
       ],
       "caption": "Train, boat, gondola, and mountain railway carried us from Luzern to Mürren and back.",
-      "duration": 10,
+      "duration": 50.1,
       "photoId": "family-img-2880"
     },
     {
@@ -1811,7 +1852,7 @@
       "dayId": "family-d7",
       "segmentIds": [],
       "caption": "A local day of browsing, floating on the Reuss, and visiting the castle.",
-      "duration": 8,
+      "duration": 2.4,
       "photoId": "family-img-1611"
     },
     {
@@ -1821,14 +1862,14 @@
         "family-luzern-como"
       ],
       "caption": "A rainy train journey through the Gotthard corridor took the family south to Como.",
-      "duration": 8
+      "duration": 18.4
     },
     {
       "id": "family-moment-9",
       "dayId": "family-d9",
       "segmentIds": [],
       "caption": "Rain in Como meant cards and spades, followed by dinner at a trattoria.",
-      "duration": 8
+      "duration": 2.4
     },
     {
       "id": "family-moment-10",
@@ -1841,7 +1882,7 @@
         "family-bellagio-como-bus"
       ],
       "caption": "Ferry, footpath, train, boat, and bus connected Varenna, Fiumelatte, Dervio, and Bellagio.",
-      "duration": 10,
+      "duration": 29.1,
       "photoId": "family-img-5136"
     },
     {
@@ -1852,7 +1893,7 @@
         "family-lugano-luzern"
       ],
       "caption": "The journey back to Luzern paused beside the lake in Lugano.",
-      "duration": 8
+      "duration": 23.2
     },
     {
       "id": "family-moment-12",
@@ -1864,7 +1905,7 @@
         "family-alpnachstad-luzern"
       ],
       "caption": "Pilatus made a circuit of bus, gondola, mountain railway, and train.",
-      "duration": 8,
+      "duration": 19.8,
       "photoId": "family-img-1754"
     },
     {
@@ -1872,7 +1913,7 @@
       "dayId": "family-d13",
       "segmentIds": [],
       "caption": "A loose final day in Luzern, with familiar streets and no connection to catch.",
-      "duration": 8,
+      "duration": 2.4,
       "photoId": "family-snapseed-camera-capture-20260825-111042-909"
     },
     {
@@ -1882,7 +1923,7 @@
         "family-luzern-airport"
       ],
       "caption": "The train back to Zürich Airport closed two weeks of lakes, mountains, rain, and shared meals.",
-      "duration": 8
+      "duration": 9.8
     }
   ]
 }

@@ -18,6 +18,13 @@ workflow change before committing. Keep the newest entry first.
 
 ## Non-auth backlog completion · 9 September 2026
 
+Latest follow-up: the photo viewer has explicit selected-thumbnail styling and
+a rounded last-photo continuation button in a fixed sidebar row. Its short
+pulse is disabled for reduced motion. Replay now has distance-based leg timing
+and individual leg framing, with 2.4-second rest days, about 50 seconds for
+Mürren, and about 218 seconds total. Day 4's corrected bicycle/ferry geometry
+uses the actual Kehrsiten landing; see the updated `ROUTE_SOURCES.md`.
+
 Latest map correction: selected and inspected routes retain their transport
 colors, using line width for emphasis. Day focus keeps other routes grey, and
 the key follows the day's modes. This supersedes the historical orange-route

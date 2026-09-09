@@ -27,9 +27,20 @@ The catalog/opening share the reviewed Lake Brienz family photo. The compact
 journal places story before expandable travel details and uses one scroll
 surface. Mobile day selections open Journal, route taps reveal Map, and the
 95-photo album groups by day with clear boundary/empty-day continuation.
-Replay now has 14 editable chapters, 116 seconds of editorial pacing, every
+Replay now has 14 editable chapters, about 218 seconds of distance-based pacing, every
 ordered leg, loading/retry states, hidden-tab pause, and manual reduced-motion
 navigation. Original automatic Replay remains available for demo journeys.
+
+Rest days take 2.4 seconds; Mürren's nine legs take approximately 50 seconds.
+Each leg gets a brief camera transition, a distance-based travel interval, and
+gentle acceleration/deceleration. Photo selection has a strong border and
+Selected label. Last-photo continuation sits in a dedicated sidebar row with
+a rounded button and a brief pulse that respects reduced motion.
+
+Day 4 now ends the coastal bicycle route at the Kehrsiten-Bürgenstock landing,
+and its ferry goes directly to Luzern Bahnhofquai without intermediate calls.
+Both routes have reviewed OSM geometry and preserved source entries; the
+previous local bicycle override was backed up before the requested correction.
 
 GPS clearing uses an explicit null value, proposals reject stale anchor
 revisions, and EXIF day matching is host-zone-independent. See

@@ -54,6 +54,39 @@ test('curated chapters preserve ordered legs and drop hidden photos safely', () 
   const {createTimeline,routePhase}=globalThis.JOURNEY_ATLAS_REPLAY;
   const j={days:[{id:'day',segmentIds:['out','return']}],photos:[{id:'hidden',dayId:'day',hidden:true}],replayMoments:[{id:'moment',dayId:'day',segmentIds:['out','return'],photoId:'hidden',caption:'A return trip',duration:8}]};
   const timeline=createTimeline(j); assert.equal(timeline.length,1);assert.equal(timeline[0].photoId,undefined);
-  assert.equal(routePhase(timeline[0],0).segmentId,'out');assert.equal(routePhase(timeline[0],.4).segmentId,'return');
+  assert.equal(routePhase(timeline[0],0).segmentId,'out');assert.equal(routePhase(timeline[0],.6).segmentId,'return');
   assert.equal(routePhase(timeline[0],1).progress,1);assert.equal(routePhase(timeline[0],.1).completed.length,0);
+});
+
+test('Replay budgets time for distance, camera settling, and every connection', () => {
+  const { createTimeline, routePhase } = globalThis.JOURNEY_ATLAS_REPLAY;
+  const journey = {
+    days: [{ id: 'travel', segmentIds: ['long', 'short'] }, { id: 'rest', segmentIds: [] }],
+    segments: [{ id: 'long', distanceKm: 195 }, { id: 'short', distanceKm: 1.5 }],
+    replayMoments: [
+      { id: 'travel', dayId: 'travel', segmentIds: ['long', 'short'], duration: 8 },
+      { id: 'rest', dayId: 'rest', segmentIds: [], duration: 2.4 }
+    ]
+  };
+  const [travel, rest] = createTimeline(journey);
+  assert.equal(rest.duration, 2.4);
+  assert.ok(travel.legTiming[0].travel >= 16);
+  assert.ok(travel.legTiming[1].travel >= 2.4);
+  assert.ok(travel.legTiming[0].travel > travel.legTiming[1].travel * 4);
+  assert.equal(routePhase(travel, 0.5 / travel.duration).progress, 0);
+  const first = travel.legTiming[0];
+  const connection = first.settle + first.travel + first.arrival;
+  const phase = routePhase(travel, (connection + 0.1) / travel.duration);
+  assert.equal(phase.segmentId, 'short');
+  assert.deepEqual(phase.completed, ['long']);
+  assert.equal(phase.progress, 0);
+  assert.equal(routePhase(travel, 1).progress, 1);
+  assert.deepEqual(routePhase(travel, 0).completed, []);
+});
+
+test('Replay timing does not depend on geometry point density', () => {
+  const make = geometry => createTimeline({ days: [{ id: 'd', segmentIds: ['s'] }], segments: [{ id: 's', geometry }] })[0];
+  const sparse = make([[8, 47], [9, 47]]);
+  const dense = make(Array.from({length:101}, (_,i) => [8 + i / 100, 47]));
+  assert.ok(Math.abs(sparse.duration - dense.duration) < 0.01);
 });
