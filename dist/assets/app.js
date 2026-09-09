@@ -67,6 +67,7 @@
   let replayPlaying = false;
   let replayCompleted = false;
   let replayFrame = null;
+  let replayAutoplayTimer = null;
   let replayLastTimestamp = null;
   let replayElapsed = 0;
   let replayProgress = 0;
@@ -1012,6 +1013,11 @@
     }
   }
 
+  function viewerPhotoWidth() {
+    const width = window.innerWidth * (window.innerWidth <= 900 ? 1 : 0.75);
+    return Math.ceil(width * (window.devicePixelRatio || 1));
+  }
+
   function updateViewer() {
     const day = viewerDay();
     const dayChanged = activeDayId !== day.id;
@@ -1035,7 +1041,7 @@
       if (photo.width) modalPhoto.width = photo.width;
       if (photo.height) modalPhoto.height = photo.height;
       if (window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) {
-        window.JOURNEY_ATLAS_AUTH.setImage(modalPhoto, photo, Infinity);
+        window.JOURNEY_ATLAS_AUTH.setImage(modalPhoto, photo, viewerPhotoWidth());
       } else if (photo.srcset?.length) {
         modalPhoto.dataset.src = photoAssetUrl(photo.src);
         modalPhoto.dataset.srcset = photoSrcset(photo);
@@ -1046,7 +1052,7 @@
       $("#modal-time").textContent = photo.takenAt || day.date;
       $("#modal-location").textContent = photo.locationLabel ? `⌖ ${photo.locationLabel}` : "";
       $("#modal-description").textContent = photo.description || "";
-      preloadWithinDay(photos, viewerPhotoIndex);
+      preloadWithinDay(photos, viewerPhotoIndex, 1, viewerPhotoWidth());
     } else {
       window.JOURNEY_ATLAS_AUTH?.clearImage(modalPhoto);
       modalPhoto.removeAttribute("src");
@@ -1333,10 +1339,12 @@
     image.onload=null; image.onerror=null;
     if(!photo) {window.JOURNEY_ATLAS_AUTH?.clearImage(image);image.removeAttribute('src');image.removeAttribute('srcset');image.alt='';$('#replay-photo-caption').textContent='';return;}
     image.className=''; image.alt=photo.alt || ''; image.sizes='(max-width: 900px) 100vw, 355px';
-    image.onload=()=>{ if(token!==replayPhotoToken) return; replayPhotoReady=true; replayLastTimestamp=null; $('#replay-photo-status').textContent=''; };
+    image.onload=()=>{ if(token!==replayPhotoToken || (window.JOURNEY_ATLAS_AUTH?.isProtected(photo) && !image.src.startsWith('blob:'))) return; replayPhotoReady=true; replayLastTimestamp=null; $('#replay-photo-status').textContent=''; };
     image.onerror=()=>{ if(token!==replayPhotoToken) return; replayPhotoReady=false; pauseReplay(); $('#replay-photo-status').textContent='The photograph could not load. Retry or choose the next moment.'; $('#replay-retry-photo').hidden=false; };
     if(window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) { window.JOURNEY_ATLAS_AUTH.setImage(image,photo,1280); if(!window.JOURNEY_ATLAS_AUTH.unlocked){replayPhotoReady=true;$('#replay-photo-status').textContent='Unlock photos to see this photograph.';} }
     else { window.JOURNEY_ATLAS_AUTH?.clearImage(image); image.srcset=photoSrcset(photo); image.src=preferredPhotoUrl(photo,1280); }
+    // A retained blob already displayed in this slot does not emit another load event.
+    if(image.complete && image.naturalWidth) image.onload();
     $('#replay-photo-caption').textContent=photo.caption || '';
     const nextPhoto=replayLeadPhoto(replayMomentDay(replayTimeline[replayMomentIndex+1]),replayTimeline[replayMomentIndex+1]);
     if(nextPhoto) preloadPhoto(nextPhoto,1280);
@@ -1351,11 +1359,11 @@
     $("#replay-day-label").textContent = `${replayMomentIndex+1} / ${replayTimeline.length} · Day ${day.number}`;
     $("#replay-previous-day").disabled = replayMomentIndex <= 0;
     $("#replay-next-day").disabled = replayMomentIndex >= replayTimeline.length - 1;
-    $("#replay-toggle").textContent = replayPlaying ? "Pause" : (replayCompleted ? "Replay" : "Play");
-    $("#replay-toggle").setAttribute("aria-label", replayPlaying ? "Pause Trip Replay" : "Play Trip Replay");
+    $("#replay-toggle").textContent = (replayPlaying || replayAutoplayTimer !== null) ? "Pause" : (replayCompleted ? "Replay" : "Play");
+    $("#replay-toggle").setAttribute("aria-label", (replayPlaying || replayAutoplayTimer !== null) ? "Pause Trip Replay" : "Play Trip Replay");
     $("#replay-status").textContent = replayPlaying
       ? `Playing at ${replaySpeed}×${prefersReducedMotion() ? " with reduced motion" : ""}`
-      : `Paused${prefersReducedMotion() ? " · reduced motion" : ""}`;
+      : replayAutoplayTimer !== null ? "Starting in 2 seconds…" : `Paused${prefersReducedMotion() ? " · reduced motion" : ""}`;
   }
 
   function renderReplayMoment({ fit = true } = {}) {
@@ -1397,7 +1405,22 @@
     return (moment?.duration || 2.4) * 1000 * hold;
   }
 
+  function cancelReplayAutoplay() {
+    if (replayAutoplayTimer !== null) window.clearTimeout(replayAutoplayTimer);
+    replayAutoplayTimer = null;
+  }
+
+  function scheduleReplayAutoplay() {
+    cancelReplayAutoplay();
+    replayAutoplayTimer = window.setTimeout(() => {
+      replayAutoplayTimer = null;
+      if (replayDialog.open && !document.hidden) startReplay();
+    }, 2000);
+    updateReplayControls(replayMomentDay());
+  }
+
   function pauseReplay() {
+    cancelReplayAutoplay();
     replayPlaying = false;
     replayLastTimestamp = null;
     if (replayFrame !== null) window.cancelAnimationFrame(replayFrame);
@@ -1447,6 +1470,7 @@
   }
 
   function startReplay() {
+    cancelReplayAutoplay();
     if (!replayTimeline.length) return;
     if (replayCompleted) {
       replayMomentIndex = 0;
@@ -1463,7 +1487,7 @@
   }
 
   function toggleReplay() {
-    if (replayPlaying) pauseReplay();
+    if (replayPlaying || replayAutoplayTimer !== null) pauseReplay();
     else startReplay();
   }
 
@@ -1514,6 +1538,7 @@
 
   function openReplay() {
     if (!replayUtils) return;
+    pauseReplay();
     if (replayJourneyId !== journey.id) {
       replayJourneyId = journey.id;
       replayTimeline = replayUtils.createTimeline(journey);
@@ -1524,6 +1549,7 @@
     }
     if (!replayDialog.open) replayDialog.showModal();
     renderReplayMoment({ fit: false });
+    scheduleReplayAutoplay();
     window.requestAnimationFrame(() => {
       if(!replayDialog.open) return;
       initReplayMap();
@@ -1566,7 +1592,7 @@
     intro.hidden=false; document.body.classList.add('intro-open'); $('.atlas-shell').inert=true; $('.mobile-nav').inert=true;
     prepareProgressiveImages(intro);
     $('#intro-map').onclick=()=>{dismissIntroduction();setMobileTab('map');fitRoute();};
-    $('#intro-relive').onclick=()=>{dismissIntroduction();openReplay();if(!prefersReducedMotion()) startReplay();};
+    $('#intro-relive').onclick=()=>{dismissIntroduction();openReplay();};
   }
   function dismissIntroduction() { document.body.classList.remove('intro-open'); $('#trip-intro').hidden=true; $('.atlas-shell').inert=false; $('.mobile-nav').inert=false; }
   function handleDeepLink() {

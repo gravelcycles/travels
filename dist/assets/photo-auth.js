@@ -8,7 +8,9 @@
   let token = '', expiresAt = 0, generation = 0, expiryTimer, lastFocus;
   const ACCESS_KEY='atlas-photo-access';
   const images = new Map(), cache = new Map();
-  const MAX_CACHE = 12;
+  const MAX_CACHE = 96, MAX_CACHE_BYTES = 64 * 1024 * 1024;
+  const STATUS_INTERVAL = 60000;
+  let lastCheck = 0, checkPending = null;
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const placeholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="24"%3E%3Cpath fill="%23d4ded8" d="M0 0h32v24H0z"/%3E%3C/svg%3E';
   const isProtected = photo => Boolean(photo?.protected || protectedPath.test(photo?.src || ''));
@@ -35,12 +37,15 @@
     // A loading image has not attached its blob yet, but already needs its request.
     const loading=new Set([...images.values()].filter(item=>item.loading).map(item=>item.src));
     const unused=[...cache].filter(([key,entry])=>!entry.refs.size&&!loading.has(key));
-    for(const [key,entry] of unused.slice(0,Math.max(0,unused.length-MAX_CACHE))) {
+    let bytes=unused.reduce((total,[,entry])=>total+(entry.bytes||0),0), count=unused.length;
+    for(const [key,entry] of unused) {
+      if(count<=MAX_CACHE&&bytes<=MAX_CACHE_BYTES)break;
+      bytes-=entry.bytes||0;count--;
       entry.controller.abort();if(entry.url)URL.revokeObjectURL(entry.url);cache.delete(key);
     }
   }
   function lock(broadcast=true) {
-    token='';expiresAt=0;generation++;clearTimeout(expiryTimer);
+    token='';expiresAt=0;generation++;lastCheck=0;checkPending=null;clearTimeout(expiryTimer);
     try{sessionStorage.removeItem(ACCESS_KEY);}catch{}
     for(const [img,item] of images){img.removeAttribute('srcset');img.src=item.blur;img.classList.remove('is-loaded');item.entry=null;item.loading=false;}
     for(const entry of cache.values()){entry.controller.abort();if(entry.url)URL.revokeObjectURL(entry.url);}
@@ -56,11 +61,11 @@
     const epoch=generation,controller=new AbortController();entry={controller,refs:new Set(),url:null,promise:null};
     entry.promise=(async()=>{
       const response=await fetch(local?`/build/private-photo-assets/${src.slice('/private-photos/assets/'.length)}`:`${service}${src}`,{credentials:'omit',headers:local?{}:{Authorization:`Bearer ${token}`},cache:'no-store',signal:controller.signal});
-      if(response.status===401){lock();throw new Error('Photos locked');}
+      if(response.status===401){if(epoch===generation)lock();throw new Error('Photos locked');}
       if(!response.ok||response.headers.get('Content-Type')?.split(';')[0]!=='image/webp')throw new Error('Photo could not load');
       const blob=await response.blob();
       if(epoch!==generation||controller.signal.aborted)throw new Error('Photo request cancelled');
-      entry.url=URL.createObjectURL(blob);return entry;
+      entry.bytes=blob.size;entry.url=URL.createObjectURL(blob);return entry;
     })().catch(error=>{if(cache.get(src)===entry)cache.delete(src);throw error;});
     cache.set(src,entry);prune();return entry.promise;
   }
@@ -70,7 +75,7 @@
     if(!item||item.src!==src){release(img);item={src,blur:img.dataset.privateBlur||placeholder,entry:null};images.set(img,item);}
     if(item.loading||item.entry)return;item.loading=true;const epoch=generation;
     try{const entry=await fetchPhoto(src);if(epoch!==generation||images.get(img)!==item||!img.isConnected)return;entry.refs.add(img);item.entry=entry;img.addEventListener('load',()=>img.classList.add('is-loaded'),{once:true});img.src=entry.url;img.removeAttribute('data-photo-error');}
-    catch(error){if(epoch===generation&&token){img.dataset.photoError='true';img.dispatchEvent(new Event('error'));}}
+    catch(error){if(epoch===generation&&(local||token)){img.dataset.photoError='true';img.dispatchEvent(new Event('error'));}}
     finally{item.loading=false;prune();}
   }
   function setImage(img,photo,width=1280) {
@@ -127,7 +132,7 @@
   }
   function validAccess(data){return typeof data?.token==='string'&&data.token.length<=2048&&Number.isInteger(data.expiresAt)&&data.expiresAt>Date.now()/1000&&data.expiresAt<=Date.now()/1000+3630;}
   function acceptAccess(data){
-    lock(false);token=data.token;expiresAt=data.expiresAt;
+    lock(false);token=data.token;expiresAt=data.expiresAt;lastCheck=Date.now();
     // Only the one-hour access token is tab-scoped; the 30-day cookie stays HttpOnly.
     try{sessionStorage.setItem(ACCESS_KEY,JSON.stringify({token,expiresAt}));}catch{}
     expiryTimer=setTimeout(()=>lock(),Math.max(0,expiresAt*1000-Date.now()));
@@ -145,13 +150,24 @@
       acceptAccess(saved);return true;
     }catch{return false;}
   }
-  async function check(){if(!token||document.hidden)return;try{const response=await fetch(`${service}/private-photos/auth/status`,{headers:{Authorization:`Bearer ${token}`},credentials:'omit',cache:'no-store'});if(response.status===401)lock();}catch{/* A transient network outage does not discard valid access. */}}
+  async function check(){
+    if(!token||document.hidden)return;
+    if(expiresAt<=Date.now()/1000){lock();return;}
+    if(checkPending||Date.now()-lastCheck<STATUS_INTERVAL)return;
+    const epoch=generation;lastCheck=Date.now();
+    const pending=(async()=>{try{
+      const response=await fetch(`${service}/private-photos/auth/status`,{headers:{Authorization:`Bearer ${token}`},credentials:'omit',cache:'no-store'});
+      if(epoch===generation&&response.status===401)lock();
+    }catch{/* A transient network outage does not discard valid access. */}})();
+    checkPending=pending;
+    try{await pending;}finally{if(checkPending===pending)checkPending=null;}
+  }
   channel?.addEventListener('message',event=>{if(event.data==='lock')lock(false);});
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)check();});window.addEventListener('focus',check);setInterval(check,60000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)check();});window.addEventListener('focus',check);setInterval(check,STATUS_INTERVAL);
   for(const button of document.querySelectorAll('[data-unlock]'))button.addEventListener('click',()=>begin());
   dialog.querySelector('[data-dismiss]').addEventListener('click',closePrompt);
   dialog.addEventListener('close',()=>lastFocus?.focus?.());
-  window.JOURNEY_ATLAS_AUTH={isProtected,markup,hydrate,prepare,setImage,clearImage,preload(photo,width){if(local||token)fetchPhoto(selected(photo,width)).catch(()=>{});},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
+  window.JOURNEY_ATLAS_AUTH={isProtected,markup,hydrate,prepare,setImage,clearImage,preload(photo,width){if(local||token)fetchPhoto(selected(photo,width)).then(prune,prune);},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
 })();

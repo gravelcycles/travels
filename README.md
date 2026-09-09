@@ -106,7 +106,9 @@ day's map context.
 
 ## Replay a trip
 
-Open a journey and choose **Trip replay**. Replay follows every day's travel
+Open a journey and choose **Trip replay** or **Relive the trip**. Playback starts
+automatically after two seconds; Pause cancels the countdown. Closing, changing
+moments, or hiding the tab also cancels pending autoplay. Replay follows every day's travel
 legs in their stored order, retaining each mode's map color and line pattern as
 the route accumulates. Playback starts at **2×** by default, with 50% longer holds for rest days
 at that speed. The 1× timing is unchanged. It includes

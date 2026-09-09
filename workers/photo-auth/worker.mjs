@@ -44,7 +44,7 @@ export default {
       if (request.method === 'OPTIONS') {
         const requested = (request.headers.get('Access-Control-Request-Headers') || '').toLowerCase().split(',').map(x => x.trim()).filter(Boolean);
         if (!corsOrigin || !['GET', 'HEAD', 'POST'].includes(request.headers.get('Access-Control-Request-Method')) || requested.some(h => !['authorization', 'content-type'].includes(h)) || !(url.pathname.startsWith(`${PREFIX}assets/`) || url.pathname === `${PREFIX}auth/status` || url.pathname === `${PREFIX}auth/redeem`)) return json(403, { error: 'Not allowed' }, corsOrigin);
-        return new Response(null, { status: 204, headers: headers(corsOrigin, { 'Access-Control-Allow-Methods': 'GET, HEAD, POST', 'Access-Control-Allow-Headers': 'Authorization, Content-Type' }) });
+        return new Response(null, { status: 204, headers: headers(corsOrigin, { 'Access-Control-Allow-Methods': 'GET, HEAD, POST', 'Access-Control-Allow-Headers': 'Authorization, Content-Type', 'Access-Control-Max-Age': '86400' }) });
       }
       if (url.pathname === `${PREFIX}auth/window` && request.method === 'GET') {
         let target; try { target = new URL(url.searchParams.get('returnTo')); } catch { return json(400, { error: 'Open this page from the atlas.' }, null); }
