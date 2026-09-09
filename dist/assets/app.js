@@ -1854,4 +1854,5 @@
   setMobileTab('map');
   handleDeepLink();
   renderIntroduction();
+  document.documentElement.classList.remove('journey-starting');
 })();

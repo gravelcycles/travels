@@ -20,6 +20,8 @@
 html, body { min-height: 100%; }
 body { margin: 0; background: var(--paper); overflow: hidden; }
 body.catalog-page { overflow: auto; }
+/* Preserve map dimensions while scripts select the introduction or a deep link. */
+.journey-starting .atlas-shell, .journey-starting .mobile-nav { visibility: hidden; }
 button, select { font: inherit; }
 button { color: inherit; }
 
