@@ -28,6 +28,8 @@
   let networkRequestId=0, gpxRequestId=0;
   let dirty = false;
   let savedRevisions = {};
+  let savedStateRevision = null;
+  let uploadingPhotos = false;
 
   const $ = (selector) => document.querySelector(selector);
 
@@ -105,7 +107,7 @@
   }
 
   function photosForDay(dayId, { visibleOnly = false } = {}) {
-    const photos = basePhotos.map(photoWithOverride).filter((photo) => photo.dayId === dayId && (!visibleOnly || !photo.hidden));
+    const photos = basePhotos.map(photoWithOverride).filter((photo) => photo.dayId === dayId && (!visibleOnly || (!photo.hidden && !photo.trashed)));
     const order = state.days[dayId]?.photoOrder || [];
     const positions = new Map(order.map((id, index) => [id, index]));
     return photos.map((photo, index) => ({ photo, index })).sort((a, b) => {
@@ -203,7 +205,7 @@
   }
 
   function optionMarkup(day, includeCount = false) {
-    const count = basePhotos.filter((photo) => photoWithOverride(photo).dayId === day.id && !photoWithOverride(photo).hidden).length;
+    const count = basePhotos.filter((photo) => photoWithOverride(photo).dayId === day.id && !photoWithOverride(photo).hidden && !photoWithOverride(photo).trashed).length;
     return `<option value="${escapeHtml(day.id)}">Day ${day.number} · ${escapeHtml(day.date)} · ${escapeHtml(day.title)}${includeCount ? ` (${count})` : ""}</option>`;
   }
 
@@ -218,6 +220,10 @@
     const days = journey.days.map((day) => dayById(day.id));
     photoFilter.innerHTML = '<option value="all">All days</option>' + days.map((day) => optionMarkup(day, true)).join("");
     photoDay.innerHTML = days.map((day) => optionMarkup(day)).join("");
+    const uploadDay = $('#upload-photo-day');
+    const previousUploadDay = uploadDay.value;
+    uploadDay.innerHTML = days.map(day => optionMarkup(day)).join('');
+    uploadDay.value = days.some(day => day.id === previousUploadDay) ? previousUploadDay : (days.find(day => day.id === previousPhotoFilter)?.id || days[0]?.id || '');
     routeFilter.innerHTML = days.map((day) => `<option value="${escapeHtml(day.id)}">Day ${day.number} · ${escapeHtml(day.date)} · ${escapeHtml(day.title)}</option>`).join("");
     dayFilter.innerHTML = days.map((day) => `<option value="${escapeHtml(day.id)}">Day ${day.number} · ${escapeHtml(day.date)} · ${escapeHtml(day.title)}</option>`).join("");
     photoFilter.value = days.some((day) => day.id === previousPhotoFilter) ? previousPhotoFilter : (basePhotos[0] ? photoWithOverride(basePhotos[0]).dayId : "all");
@@ -271,18 +277,19 @@
 
   function renderPhotoGrid() {
     const filter = $("#photo-day-filter").value;
-    const photos = filter === "all" ? journey.days.flatMap((day) => photosForDay(day.id)) : photosForDay(filter);
+    const inTrash = $('#show-photo-trash').checked;
+    const photos = (filter === "all" ? journey.days.flatMap(day => photosForDay(day.id)) : photosForDay(filter)).filter(photo => Boolean(photo.trashed) === inTrash);
     $("#studio-photo-grid").innerHTML = photos.length ? photos.map((photo) => {
       const thumb = photo.srcset?.[0]?.src || photo.src;
       const located = Number.isFinite(photo.lat) && Number.isFinite(photo.lng);
       const day = dayById(photo.dayId);
       const lead = day?.leadPhotoId === photo.id;
-      return `<button type="button" data-photo-id="${photo.id}" class="${photo.id === selectedPhotoId ? "active" : ""}" aria-label="Edit ${escapeHtml(photo.caption)}${lead ? ", lead photo" : ""}">
+      return `<button type="button" data-photo-id="${photo.id}" class="${photo.id === selectedPhotoId ? "active" : ""}" aria-label="Edit ${escapeHtml(photo.caption || photo.sourceFilename || photo.id)}${lead ? ", lead photo" : ""}">
         <img src="${photoUrl(thumb)}" alt="" loading="lazy" />
         <span>${lead ? "LEAD · " : ""}${escapeHtml(photo.takenAt || photo.caption)}</span>
         <i class="${located ? "" : "unlocated"}" title="${located ? "Located" : "Needs location"}"></i>
       </button>`;
-    }).join("") : '<p class="editor-note">This journey has no photographs to edit.</p>';
+    }).join("") : `<p class="editor-note">${inTrash ? 'No photos in trash for this selection.' : 'No photos here yet. Use Upload photos to add some.'}</p>`;
     const selected = $("#studio-photo-grid .active");
     if (selected) selected.scrollIntoView({ block: "nearest" });
   }
@@ -295,8 +302,8 @@
       $("#photo-order-status").textContent = "No photo selected.";
       return;
     }
-    panel.inert = false;
     const resolved = photoWithOverride(photo);
+    panel.inert = Boolean(resolved.trashed);
     const ordered = photosForDay(resolved.dayId);
     const index = ordered.findIndex((item) => item.id === selectedPhotoId);
     const day = dayById(resolved.dayId);
@@ -312,8 +319,10 @@
     $("#photo-form").inert = !base;
     $("#switch-photo-view").disabled = true;
     if (!base) {
+      selectedPhotoId = null;
+      if (mapReady) clearActiveMap();
       $("#photo-form").reset();
-      $("#selected-photo").textContent = "No photographs yet. Start with the day plan.";
+      $("#selected-photo").textContent = "Choose a photo, or use Upload photos to add one.";
       return;
     }
     const previous = basePhotos.find(photo => photo.id === selectedPhotoId);
@@ -322,7 +331,7 @@
     // Initial load and journey/mode changes can still request an explicit fit.
     center ??= !previous || photoWithOverride(previous).dayId !== photo.dayId;
     selectedPhotoId = id;
-    $("#selected-photo").innerHTML = `<img src="${photoUrl(photo.srcset?.find((item) => item.width >= 1280)?.src || photo.src)}" alt="" /><span>${photo.sourceFilename || photo.id}</span>`;
+    $("#selected-photo").innerHTML = `<img src="${photoUrl(photo.srcset?.find((item) => item.width >= 1280)?.src || photo.src)}" alt="" /><span>${escapeHtml(photo.sourceFilename || photo.id)}</span>`;
     $("#photo-day").value = photo.dayId;
     $("#photo-place").value = photo.locationLabel || "";
     $("#photo-lat").value = Number.isFinite(photo.lat) ? photo.lat : "";
@@ -331,6 +340,8 @@
     $("#photo-caption").value = photo.caption || "";
     $("#photo-description").value = photo.description || "";
     $("#photo-hidden").checked = Boolean(photo.hidden);
+    $('#trash-photo').textContent = photo.trashed ? 'Restore photo from trash' : 'Move photo to trash';
+    $('#photo-asset-status').textContent = photo.trashed ? 'In trash. Save locally to remove it from the atlas on the next deployment. Originals and hosted files are retained for recovery.' : photo.assetStatus === 'local' ? 'Local upload · ready to review. Asset publishing is needed before this photo can appear on the live site.' : 'Photo assets published · edits appear after the next site deployment.';
     refreshPhotoOrderControls();
     renderPhotoGrid();
     if (mapReady) {
@@ -905,6 +916,53 @@
     drawRouteEditor(false);
   }
 
+  async function uploadPhotos() {
+    const files = [...$('#upload-photo-files').files];
+    const dayId = $('#upload-photo-day').value;
+    const currentJourney = journey;
+    if (!files.length || !dayById(dayId)) { $('#photo-upload-status').textContent = 'Choose photos and a journey day first.'; return; }
+    if (uploadingPhotos) return;
+    uploadingPhotos = true;
+    $('#upload-photos').disabled = true;
+    $('#studio-journey').disabled = true;
+    const messages = [];
+    let lastPhotoId;
+    try {
+      for (const [index, file] of files.entries()) {
+        $('#photo-upload-status').textContent = `Processing ${index + 1} of ${files.length}: ${file.name}`;
+        try {
+          if (file.size > 50 * 1024 * 1024) throw new Error('File exceeds 50 MB.');
+          const query = new URLSearchParams({ journeyId:currentJourney.id, dayId, filename:file.name });
+          const response = await fetch(`/api/photos/import?${query}`, { method:'POST', headers:{'Content-Type':'application/octet-stream'}, body:file });
+          const result = await response.json();
+          if (!response.ok || !result.ok) throw new Error(result.error || 'Import failed.');
+          if (!basePhotos.some(photo => photo.id === result.photo.id)) basePhotos.push(result.photo);
+          photosByJourney[currentJourney.id] = basePhotos;
+          currentJourney.photos = basePhotos;
+          lastPhotoId = result.photo.id;
+          messages.push(`${file.name}: ${result.duplicate ? 'already imported' : 'added locally'}.${result.warnings.length ? ' ' + result.warnings.join(' ') : ''}`);
+        } catch(error) { messages.push(`${file.name}: ${error.message} You can retry this file.`); }
+      }
+      // Photo intake changes the planner revision; force a fresh preview.
+      const revisions = await (await fetch('/api/state')).json();
+      savedRevisions = revisions.revisions || savedRevisions;
+      const plan = plans.get(currentJourney.id);
+      if (plan) { plan.revision = savedRevisions[currentJourney.id]; plan.previewed = false; plan.draft.photos = basePhotos; }
+      renderDaySelectors();
+      $('#photo-day-filter').value = lastPhotoId ? photoWithOverride(basePhotos.find(p => p.id === lastPhotoId)).dayId : dayId;
+      $('#show-photo-trash').checked = Boolean(lastPhotoId && photoWithOverride(basePhotos.find(p => p.id === lastPhotoId)).trashed);
+      renderPhotoGrid();
+      if (lastPhotoId) selectPhoto(lastPhotoId, false);
+      $('#upload-photo-files').value = '';
+    } catch(error) { messages.push(error.message); }
+    finally {
+      uploadingPhotos = false;
+      $('#upload-photos').disabled = false;
+      $('#studio-journey').disabled = false;
+      $('#photo-upload-status').textContent = messages.join('\n');
+    }
+  }
+
   async function saveAll() {
     if (plans.get(journey.id)?.dirty) return savePlan();
     setStatus("Saving…");
@@ -912,10 +970,11 @@
       const response = await fetch("/api/state", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(state)
+        body: JSON.stringify({ ...state, stateRevision:savedStateRevision })
       });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || "Save failed");
+      savedStateRevision = result.stateRevision;
       markSaved();
       if (mode === "routes") {
         $("#route-saved-state").textContent = "Yes";
@@ -998,7 +1057,7 @@
     $('#plan-places').innerHTML = draft.places.map(p => `<div class="plan-place" data-place="${escapeHtml(p.id)}"><label>Name<input data-place-field="name" value="${escapeHtml(p.name)}"></label><label>Longitude<input type="number" step="any" min="-180" max="180" data-place-field="lng" value="${p.lng??''}"></label><label>Latitude<input type="number" step="any" min="-90" max="90" data-place-field="lat" value="${p.lat??''}"></label></div>`).join('');
     $('#plan-days').innerHTML = draft.days.map((day,index) => `<section class="plan-day" data-plan-day="${escapeHtml(day.id)}"><div class="plan-row"><strong>Day ${index+1} · ${escapeHtml(day.calendarDate || day.date)} · ${escapeHtml(state.days[day.id]?.title || day.title)}</strong><button type="button" data-move-day="-1" ${index===0?'disabled':''}>Earlier</button><button type="button" data-move-day="1" ${index===draft.days.length-1?'disabled':''}>Later</button></div><label>Destination<select data-day-destination>${placeOptions}</select></label><ol>${day.segmentIds.map((id, i) => { const s=draft.segments.find(s=>s.id===id); return `<li data-plan-leg="${escapeHtml(id)}"><div class="plan-leg"><label>Mode<select data-leg-field="mode">${Object.entries(modeLabels).map(([key,label])=>`<option value="${key}" ${s.mode===key?'selected':''}>${label}</option>`).join('')}</select></label><label>From<select data-leg-field="from">${draft.places.map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===s.from?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label><label>To<select data-leg-field="to">${draft.places.map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===s.to?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label><label>Travel minutes<input data-leg-field="durationMinutes" type="number" min="0" value="${s.durationMinutes??''}"></label></div><button type="button" data-move-leg="-1" ${i===0?'disabled':''}>Earlier leg</button><button type="button" data-move-leg="1" ${i===day.segmentIds.length-1?'disabled':''}>Later leg</button>${s.geometry || routeGeometry[id] || state.routes[id] ? '<small>Reviewed route: endpoint/mode edits require a new route review.</small>' : '<small>Provisional endpoint guide; review geometry in Route drawing.</small>'}</li>`; }).join('')}</ol><button type="button" data-add-leg ${draft.places.length<1?'disabled':''}>+ Travel leg</button></section>`).join('');
     draft.days.forEach(day => { const select = [...document.querySelectorAll('[data-plan-day]')].find(e=>e.dataset.planDay===day.id)?.querySelector('[data-day-destination]'); if (select) select.value=day.destinationId || day.placeId || ''; });
-    const visible = basePhotos.map(photoWithOverride).filter(p=>!p.hidden);
+    const visible = basePhotos.map(photoWithOverride).filter(p=>!p.hidden && !p.trashed);
     $('#cover-picker').innerHTML = '<option value="">First visible photo</option>'+visible.map(p=>`<option value="${escapeHtml(p.id)}">${escapeHtml(p.caption || p.id)}</option>`).join('');
     $('#cover-picker').value = draft.coverPhoto?.photoId || '';
     $('#cover-x').value = draft.coverPhoto?.focal?.[0] ?? 50; $('#cover-y').value = draft.coverPhoto?.focal?.[1] ?? 50;
@@ -1007,12 +1066,12 @@
     $('#plan-save').disabled = !plan.previewed;
   }
   function renderCoverPreviews() {
-    const {photo,position} = window.JOURNEY_ATLAS_UTILS.resolveCover(planForJourney().draft, basePhotos.map(photoWithOverride).filter(p=>!p.hidden));
+    const {photo,position} = window.JOURNEY_ATLAS_UTILS.resolveCover(planForJourney().draft, basePhotos.map(photoWithOverride).filter(p=>!p.hidden && !p.trashed));
     $('#cover-previews').innerHTML = ['Desktop','Phone'].map(label=>`<figure class="cover-preview ${label.toLowerCase()}"><figcaption>${label}</figcaption>${photo?`<img src="${escapeHtml(photoUrl(photo.srcset?.find(v=>v.width>=1280)?.src || photo.src))}" style="object-position:${position}" alt="${escapeHtml(photo.caption)}">`:'<p>A journey taking shape</p>'}</figure>`).join('');
   }
   function renderMomentEditor() {
     const draft=planForJourney().draft;
-    $('#plan-moments').innerHTML=(draft.replayMoments||[]).map((m,i)=>`<section class="plan-moment" data-moment="${escapeHtml(m.id)}"><div class="plan-row"><strong>Moment ${i+1}</strong><button type="button" data-move-moment="-1" ${!i?'disabled':''}>Earlier</button><button type="button" data-move-moment="1" ${i===draft.replayMoments.length-1?'disabled':''}>Later</button><button type="button" data-remove-moment>Remove moment</button></div><label>Day<select data-moment-field="dayId">${draft.days.map(d=>`<option value="${escapeHtml(d.id)}" ${d.id===m.dayId?'selected':''}>Day ${d.number} · ${escapeHtml(d.title)}</option>`).join('')}</select></label><label>Photograph<select data-moment-field="photoId"><option value="">Route / text chapter</option>${basePhotos.map(photoWithOverride).filter(p=>!p.hidden && p.dayId===m.dayId).map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===m.photoId?'selected':''}>${escapeHtml(p.caption)}</option>`).join('')}</select></label><label>One sentence<input data-moment-field="caption" value="${escapeHtml(m.caption)}"></label><label>Duration (seconds)<input type="number" min="1" max="120" data-moment-field="duration" value="${m.duration}"></label><fieldset><legend>Travel legs (in day order)</legend>${(draft.days.find(d=>d.id===m.dayId)?.segmentIds||[]).map(id=>{ const s=draft.segments.find(s=>s.id===id); return `<label class="checkbox"><input type="checkbox" data-moment-segment="${escapeHtml(id)}" ${m.segmentIds?.includes(id)?'checked':''}>${escapeHtml(modeLabels[s.mode])} · ${escapeHtml(draft.places.find(p=>p.id===s.from)?.name)} → ${escapeHtml(draft.places.find(p=>p.id===s.to)?.name)}</label>`; }).join('')}</fieldset></section>`).join('') || '<p>Add a few moments to curate Replay. With none selected it follows the existing day/route sequence.</p>';
+    $('#plan-moments').innerHTML=(draft.replayMoments||[]).map((m,i)=>`<section class="plan-moment" data-moment="${escapeHtml(m.id)}"><div class="plan-row"><strong>Moment ${i+1}</strong><button type="button" data-move-moment="-1" ${!i?'disabled':''}>Earlier</button><button type="button" data-move-moment="1" ${i===draft.replayMoments.length-1?'disabled':''}>Later</button><button type="button" data-remove-moment>Remove moment</button></div><label>Day<select data-moment-field="dayId">${draft.days.map(d=>`<option value="${escapeHtml(d.id)}" ${d.id===m.dayId?'selected':''}>Day ${d.number} · ${escapeHtml(d.title)}</option>`).join('')}</select></label><label>Photograph<select data-moment-field="photoId"><option value="">Route / text chapter</option>${basePhotos.map(photoWithOverride).filter(p=>!p.hidden && !p.trashed && p.dayId===m.dayId).map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===m.photoId?'selected':''}>${escapeHtml(p.caption)}</option>`).join('')}</select></label><label>One sentence<input data-moment-field="caption" value="${escapeHtml(m.caption)}"></label><label>Duration (seconds)<input type="number" min="1" max="120" data-moment-field="duration" value="${m.duration}"></label><fieldset><legend>Travel legs (in day order)</legend>${(draft.days.find(d=>d.id===m.dayId)?.segmentIds||[]).map(id=>{ const s=draft.segments.find(s=>s.id===id); return `<label class="checkbox"><input type="checkbox" data-moment-segment="${escapeHtml(id)}" ${m.segmentIds?.includes(id)?'checked':''}>${escapeHtml(modeLabels[s.mode])} · ${escapeHtml(draft.places.find(p=>p.id===s.from)?.name)} → ${escapeHtml(draft.places.find(p=>p.id===s.to)?.name)}</label>`; }).join('')}</fieldset></section>`).join('') || '<p>Add a few moments to curate Replay. With none selected it follows the existing day/route sequence.</p>';
   }
   async function previewPlan() {
     const plan=planForJourney();
@@ -1031,8 +1090,9 @@
     const plan=planForJourney();
     if (!plan.previewed) { setStatus('Preview the trip plan before saving','error'); return false; }
     try {
-      const result=await (await fetch('/api/journey-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({journeyId:journey.id,changes:planChanges(plan.draft),revision:plan.revision,state,preview:false})})).json();
+      const result=await (await fetch('/api/journey-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({journeyId:journey.id,changes:planChanges(plan.draft),revision:plan.revision,state,stateRevision:savedStateRevision,preview:false})})).json();
       if (!result.ok) throw new Error(result.error);
+      savedStateRevision=result.stateRevision;
       state=result.state; Object.assign(journey,result.journey); plan.revision=result.revision; plan.dirty=false; plan.previewed=false;
       renderJourneySelector(); renderDaySelectors(); renderDayList(); renderRouteList(); renderPlanner(); markSaved('Trip plan and edits saved locally');
       $('#plan-status').textContent='Saved. The selected trip preview now includes these changes.'; return true;
@@ -1077,6 +1137,7 @@
       const response = await fetch("/api/state");
       const loadedState = await response.json();
       savedRevisions = loadedState.revisions || {};
+      savedStateRevision = loadedState.stateRevision;
       state = { photos: loadedState.photos || {}, routes: loadedState.routes || {}, days: loadedState.days || {} };
     } catch (error) {
       setStatus(`Could not load local edits: ${error.message}`, "error");
@@ -1146,7 +1207,24 @@
   });
   $("#save-all").addEventListener("click", saveAll);
   $("#studio-journey").addEventListener("change", (event) => setJourney(event.target.value));
-  $("#photo-day-filter").addEventListener("change", renderPhotoGrid);
+  $("#photo-day-filter").addEventListener("change", () => {
+    if (dayById($('#photo-day-filter').value)) $('#upload-photo-day').value = $('#photo-day-filter').value;
+    renderPhotoGrid();
+  });
+  $('#show-photo-trash').addEventListener('change', () => {
+    renderPhotoGrid();
+    selectPhoto($('#studio-photo-grid [data-photo-id]')?.dataset.photoId || null, false);
+  });
+  $('#trash-photo').addEventListener('click', () => {
+    const photo = basePhotos.find(p => p.id === selectedPhotoId);
+    if (!photo) return;
+    const trashed = !photoWithOverride(photo).trashed;
+    state.photos[photo.id] = { ...(state.photos[photo.id] || {}), trashed };
+    markDirty(trashed ? 'Photo moved to trash · Save locally to keep this change' : 'Photo restored · Save locally to keep this change');
+    renderPhotoGrid();
+    selectPhoto($('#studio-photo-grid [data-photo-id]')?.dataset.photoId || null, false);
+  });
+  $('#upload-photos').addEventListener('click', uploadPhotos);
   $("#route-day-filter").addEventListener("change", () => {
     renderRouteList();
     const first = dayById($("#route-day-filter").value).segmentIds[0];
@@ -1218,7 +1296,7 @@
   $("#undo-route").addEventListener("click", () => restoreRouteHistory(-1));
   $("#redo-route").addEventListener("click", () => restoreRouteHistory(1));
   window.addEventListener("beforeunload", (event) => {
-    if (!dirty) return;
+    if (!dirty && !uploadingPhotos) return;
     event.preventDefault();
     event.returnValue = "";
   });

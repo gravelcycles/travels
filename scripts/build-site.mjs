@@ -32,7 +32,7 @@ export function buildSite(root) {
   if (!published.some(j => j.id === data.defaultJourneyId)) throw new Error("Default journey must be published");
   const routeIds = new Set(published.flatMap(j => j.segments.map(s => s.id)));
   const dayIds = new Set(published.flatMap(j => j.days.map(d => d.id)));
-  const visiblePhotos = new Map(published.map(j => [j.id, j.photos.filter(photo => !overrides.photos[photo.id]?.hidden)]));
+  const visiblePhotos = new Map(published.map(j => [j.id, j.photos.filter(photo => !overrides.photos[photo.id]?.hidden && !overrides.photos[photo.id]?.trashed && photo.assetStatus !== "local")]));
   const photoIds = new Set([...visiblePhotos.values()].flat().map(p => p.id));
   const select = (obj, ids) => Object.fromEntries(Object.entries(obj).filter(([id]) => ids.has(id)).sort(([a], [b]) => a.localeCompare(b)));
   const publicData = { ...data, journeys: published.map(({ photoImport, timeZone, ...j }) => ({ ...j, photos: [] })) };

@@ -25,6 +25,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install locked image-processing dependencies
+        run: npm ci
+
       - name: Validate and build public journeys
         run: |
           npm test

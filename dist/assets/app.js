@@ -663,7 +663,7 @@
       const button = document.createElement("button");
       button.type = "button";
       button.className = "photo-landmark";
-      const label = `Open photo landmark: ${photo.caption || photo.alt || 'Photo'}`;
+      const label = photo.caption ? `Open photo landmark: ${photo.caption}` : `Open photo ${photosForDay(photo.dayId).findIndex(item => item.id === photo.id) + 1} from Day ${dayById(photo.dayId).number}`;
       button.title = label;
       button.setAttribute("aria-label", label);
       button.innerHTML = `<img src="${escapeHtml(preferredPhotoUrl(photo, 480))}" alt="" loading="lazy" decoding="async">`;
@@ -912,7 +912,7 @@
     const leadPhoto = selectedLead?.dayId === day.id ? selectedLead : photos[0];
     if (leadPhoto) {
       storyMedia.innerHTML = `
-        <button type="button" data-open-photo="${escapeHtml(leadPhoto.id)}" aria-label="Open ${escapeHtml(leadPhoto.caption)} full screen">
+        <button type="button" data-open-photo="${escapeHtml(leadPhoto.id)}" aria-label="Open ${escapeHtml(leadPhoto.caption || leadPhoto.alt || 'photo')} full screen">
           ${photoImageMarkup(leadPhoto, { alt: leadPhoto.alt, sizes: "(max-width: 900px) 100vw, 26vw", eager: true })}
           <span>DAY ${String(day.number).padStart(2, "0")} · ${photos.length} PHOTO${photos.length === 1 ? "" : "S"}</span>
           <small>${escapeHtml(leadPhoto.caption)}</small>
@@ -945,7 +945,7 @@
 
     photoStrip.innerHTML = photos.length
       ? photos.map((photo, index) => `
-          <button type="button" data-open-photo="${escapeHtml(photo.id)}" aria-label="Open ${escapeHtml(photo.caption)} full screen">
+          <button type="button" data-open-photo="${escapeHtml(photo.id)}" aria-label="Open ${escapeHtml(photo.caption || photo.alt || 'photo')} full screen">
             ${photoImageMarkup(photo, { alt: "", sizes: "180px" })}
             <span>${String(index + 1).padStart(2, "0")}</span>
             <small>${escapeHtml(photo.caption)}</small>

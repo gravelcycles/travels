@@ -6,6 +6,22 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Upload and trash photos; remove generated photo prose
+
+- Add local Studio multi-file photo upload with day selection, automatic WebP
+  sizes/blur previews, private originals/GPS, blank copy, duplicate detection,
+  per-file errors, and separate append-only upload manifests.
+- Add recoverable Trash/Restore; exclude trashed images from preview/public data.
+  Automate reviewed Release asset publishing with a preview command, retries,
+  immutable files and URL checks. Keep pending photos outside production.
+- Clear 95 generated captions and 89 generated descriptions while preserving
+  the traveler's edited copy. Label optional fields **Your caption** and **Your
+  notes**. Retain the latest saved photo pins and route edits.
+- Protect saves against stale Studio tabs. Document local editing, processing,
+  publishing, restore, and permanent asset-removal boundaries in PHOTO_WORKFLOW.
+- Validate with 60 tests and an isolated HTTP/browser upload/trash/restore check;
+  install locked image-processing dependencies in Pages CI.
+
 ### Show only the selected day's photos, with individual map fans
 
 Published as `013dacd` in successful Pages run `34354476031`. A fresh public
