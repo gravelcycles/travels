@@ -2,6 +2,10 @@
 
 ## Day-only photo groups, Studio counts, and Replay camera · 9 September 2026
 
+Published as `aca28dc` in successful Pages run `34358287577`. Fresh public
+checks verified Day 1’s geographic groups, zero photo landmarks after Fit route,
+and Replay framing the Zürich–Luzern leg. No browser errors were reported.
+
 Map photo landmarks appear only in day scope. Initial overview and **Fit route**
 show none. Group membership uses geographic distance, with every pair at most
 500 metres apart; it is independent of zoom and cannot chain distant photos.
