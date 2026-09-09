@@ -8,6 +8,10 @@ commit after it is known.
 
 ### Day-only 500 metre photo groups and route-led Replay cameras
 
+Published as `aca28dc` in successful Pages run `34358287577`. Fresh public
+checks verified Day 1’s geographic groups, zero photo landmarks after Fit route,
+and Replay framing the Zürich–Luzern leg. No browser errors were reported.
+
 - Show photo landmarks only in day view; remove them from initial overview and
   **Fit route**. Group photos only when every pair is within 500 m, independent
   of zoom. Counted thumbnails open a photo chooser.
