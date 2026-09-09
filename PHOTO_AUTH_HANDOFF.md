@@ -2,6 +2,13 @@
 
 ## Expanded day preloading — 9 September 2026
 
+Deployed frontend `1a7fc31ce86f24e149b8691ec521995d372b16ed` successfully in
+[Pages run 34403469400](https://github.com/gravelcycles/travels/actions/runs/34403469400).
+All 153 tests passed after integrating the latest reveal/gesture changes.
+A fresh public page loaded the new script hashes, displayed the full Day 6
+image, and switched to Day 7 with its full photo and visible thumbnails ready.
+No browser errors. Demo album covers also rendered correctly locally.
+
 The current planner keeps immediate viewer/Replay full photos first, then adds
 480px covers for every nonempty day in All photos, 1280px journal lead images,
 and interleaved thumbnails for the next two nonempty days (previous days when
@@ -15,7 +22,7 @@ lower-priority target. Completed targets remain marked while in the plan, so
 eviction does not trigger background refetch loops. Visible selection can still
 reload evicted bytes. Closing a player restores the journal preload plan.
 
-Validation: 151 tests and build pass. For the real 14-day journey, all forward
+Validation: 153 combined tests and build pass. For the real 14-day journey, all forward
 and backward day plans include all 14 cover/lead pairs; the largest day plan
 has 55 variants. Day 6’s background day plan is 38 variants / 6.44 MiB. Local
 browser checks confirmed all eight Day 7 thumbnails were fetched before day

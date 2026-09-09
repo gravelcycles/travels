@@ -9,7 +9,7 @@
   New navigation reprioritizes overlapping plans; visible work still preempts
   speculation, with hidden/data-saving/2G pauses and the existing 64 MiB cache.
 - Remember completed targets so cache eviction cannot cause repeated downloads.
-- Validation: 151 tests and build pass. Local browser checks reused all eight
+- Validation: 153 combined tests and build pass. Local browser checks reused all eight
   Day 7 thumbnails and all 14 album covers without new requests; all 14 journal
   lead images were already fetched. No browser errors.
 
