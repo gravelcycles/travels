@@ -6,6 +6,19 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Day-only 500 metre photo groups and route-led Replay cameras
+
+- Show photo landmarks only in day view; remove them from initial overview and
+  **Fit route**. Group photos only when every pair is within 500 m, independent
+  of zoom. Counted thumbnails open a photo chooser.
+- Make Studio **Photos from** counts match the current grid, including hidden
+  photos or the selected Trash view; update counts after trash/restore.
+- Frame Replay travel using the current route leg, even if its chapter contains
+  a photo with a saved close-up zoom. Photo-only moments retain photo zooms.
+- Preserve the latest saved traveler photo/route edits. All 65 tests pass;
+  browser checks cover Day 8 counts, grouped selection, overview clearing, and
+  animated travel at route scale.
+
 ### Upload and trash photos; remove generated photo prose
 
 Published as `32cf654` in successful Pages run `34356358778`. Fresh public

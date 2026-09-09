@@ -79,3 +79,31 @@ test('returning to the mobile map positions day controls and frames the selected
   vm.runInContext('setMobileTab("map")', context);
   assert.deepEqual(calls, ['resize', 'controls', 'd2']);
 });
+
+test('overview and Fit route remove photo landmarks while day views supply only the selected day', () => {
+  const context = selection(), supplied = [], removed = [];
+  Object.assign(context, {
+    mainMapReady:true, photoLandmarkKey:'previous', photoLandmarks:[{marker:{remove(){removed.push(true);}}}],
+    mainMap:{getCanvas:()=>({clientWidth:600,clientHeight:500,getBoundingClientRect:()=>({bottom:500})})},
+    $:()=>({getBoundingClientRect:()=>({top:420})}), photosForDay:id=>[{id:`${id}-photo`}],
+    window:{JOURNEY_ATLAS_UTILS:{photoLandmarkLayout:photos=>{supplied.push(photos);return [];}}}, fitJourneyBounds(){}
+  });
+  vm.runInContext(functionSource('refreshPhotoLandmarks'),context);
+  context.photoLandmarkDayId='d1';
+  vm.runInContext('refreshPhotoLandmarks()',context);
+  assert.equal(supplied.at(-1).length,0);assert.equal(removed.length,1);
+  context.mapScope='day';
+  vm.runInContext('refreshPhotoLandmarks()',context);
+  assert.deepEqual(supplied.at(-1),[{id:'d1-photo'}]);
+  context.drawMainMap=()=>vm.runInContext('refreshPhotoLandmarks()',context);
+  vm.runInContext(functionSource('fitRoute'),context);
+  vm.runInContext('fitRoute()',context);
+  assert.equal(supplied.at(-1).length,0);assert.equal(context.mapScope,'journey');
+});
+
+
+test('Fit route bounds use routes and journey places, excluding distant photo pins', () => {
+  const context=vm.createContext({journey:{segments:[{geometry:[[8,47],[9,46]]}],places:[{lng:8,lat:47}],photos:[{lng:-80,lat:20}]},segmentCoordinates:s=>s.geometry});
+  vm.runInContext(functionSource('journeyCoordinates'),context);
+  assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('journeyCoordinates()',context))),[[8,47],[9,46],[8,47]]);
+});

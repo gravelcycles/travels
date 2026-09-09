@@ -27,6 +27,11 @@ text into these fields. Resizing, metadata extraction, asset upload, and manifes
 updates are deterministic code tasks; no LLM or API key is needed. Accessibility
 alt text is a separate field; new uploads use a neutral day-based label.
 
+**Photos from** counts exactly the photos shown in the current Studio grid:
+hidden photos are included and labelled **HIDDEN**, while trashed photos appear
+only with **Show trash** enabled. The public atlas excludes hidden photos, so its
+count can be lower than the editor's count.
+
 Select a photo and choose **Move photo to trash**, then **Save locally**. It is
 removed from the local preview, and from the live atlas after deployment. Use
 **Show trash → Restore photo from trash → Save locally** to recover it. Trashing

@@ -1212,7 +1212,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.010096,
+      "lng": 9.284391
+    },
+    "zoom": 12.07
   },
   "family-img-5119": {
     "dayId": "family-d10",
@@ -1222,7 +1228,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.009339,
+      "lng": 9.285226
+    },
+    "zoom": 14.57
   },
   "family-img-5123": {
     "dayId": "family-d10",
@@ -1243,7 +1255,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.009158,
+      "lng": 9.285922
+    },
+    "zoom": 14.57
   },
   "family-img-5130": {
     "dayId": "family-d10",
@@ -1264,7 +1282,13 @@
     "hidden": true,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "hidden-quality"
+    "privacyStatus": "hidden-quality",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.000031,
+      "lng": 9.291667
+    },
+    "zoom": 16.43
   },
   "family-snapseed-camera-capture-20260822-151053-865": {
     "dayId": "family-d10",
@@ -1274,7 +1298,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.000026,
+      "lng": 9.291659
+    },
+    "zoom": 16.43
   },
   "family-img-5136": {
     "dayId": "family-d10",
@@ -1284,7 +1314,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.000043,
+      "lng": 9.291667
+    },
+    "zoom": 16.43
   },
   "family-snapseed-camera-capture-20260822-154412-930": {
     "dayId": "family-d10",
@@ -1294,7 +1330,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.000964,
+      "lng": 9.292754
+    },
+    "zoom": 16.43
   },
   "family-snapseed-camera-capture-20260822-174404-292": {
     "dayId": "family-d10",
@@ -1304,7 +1346,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.007177,
+      "lng": 9.267869
+    },
+    "zoom": 11.6
   },
   "family-snapseed-camera-capture-20260822-175328-988": {
     "dayId": "family-d10",
@@ -1314,7 +1362,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.996335,
+      "lng": 9.263571
+    },
+    "zoom": 11.6
   },
   "family-snapseed-camera-capture-20260824-114638-775": {
     "dayId": "family-d12",
@@ -1335,7 +1389,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.052704,
+      "lng": 8.306389
+    },
+    "zoom": 14.2
   },
   "family-img-5149": {
     "dayId": "family-d12",
@@ -1345,7 +1405,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.052196,
+      "lng": 8.306016
+    },
+    "zoom": 14.2
   },
   "family-img-5153": {
     "dayId": "family-d12",
@@ -1366,7 +1432,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.011514,
+      "lng": 8.257096
+    },
+    "zoom": 12.5
   },
   "family-img-5158": {
     "dayId": "family-d12",
@@ -1398,7 +1470,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.981631,
+      "lng": 8.253751
+    },
+    "zoom": 14.92
   },
   "family-img-1750": {
     "dayId": "family-d12",
@@ -1408,7 +1486,13 @@
     "hidden": true,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "hidden-quality"
+    "privacyStatus": "hidden-quality",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.980064,
+      "lng": 8.254225
+    },
+    "zoom": 11.75
   },
   "family-img-1754": {
     "dayId": "family-d12",
@@ -1418,7 +1502,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.979367,
+      "lng": 8.254634
+    },
+    "zoom": 11.75
   },
   "family-img-1756": {
     "dayId": "family-d12",
@@ -1428,7 +1518,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.979507,
+      "lng": 8.254634
+    },
+    "zoom": 11.75
   },
   "family-img-1759": {
     "dayId": "family-d12",
@@ -1449,7 +1545,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.979089,
+      "lng": 8.25443
+    },
+    "zoom": 11.75
   },
   "family-img-1761": {
     "dayId": "family-d12",
@@ -1459,7 +1561,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.979367,
+      "lng": 8.25443
+    },
+    "zoom": 11.75
   },
   "family-snapseed-camera-capture-20260824-153232-772": {
     "dayId": "family-d12",
@@ -1469,7 +1577,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.979646,
+      "lng": 8.254021
+    },
+    "zoom": 11.75
   },
   "family-img-1768": {
     "dayId": "family-d12",
@@ -1479,7 +1593,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.979785,
+      "lng": 8.254021
+    },
+    "zoom": 11.75
   },
   "family-img-5165": {
     "dayId": "family-d12",
@@ -1489,7 +1609,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.979785,
+      "lng": 8.254225
+    },
+    "zoom": 11.75
   },
   "family-snapseed-camera-capture-20260825-111042-909": {
     "dayId": "family-d13",
@@ -1499,6 +1625,12 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.058099,
+      "lng": 8.312549
+    },
+    "zoom": 12.44
   }
 }

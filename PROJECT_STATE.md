@@ -1,5 +1,26 @@
 # Project state
 
+## Day-only photo groups, Studio counts, and Replay camera · 9 September 2026
+
+Map photo landmarks appear only in day scope. Initial overview and **Fit route**
+show none. Group membership uses geographic distance, with every pair at most
+500 metres apart; it is independent of zoom and cannot chain distant photos.
+A counted thumbnail opens a chooser, and each photo opens the viewer. Separate
+groups retain collision avoidance and exact-pin leader lines when displaced.
+This supersedes the all-days overview and individual fan behavior below.
+
+Studio **Photos from** now counts the current grid, including hidden photos
+marked HIDDEN. Show trash counts only trashed photos, and counts refresh after
+trash/restore. Day 8's hidden photo now correctly counts as 1 in the editor.
+Replay's active route leg takes camera priority over a chapter photo or saved
+camera. Explicit photo-only moments retain their saved photo zoom.
+
+Validation: 65 tests pass, covering the 500 m boundary, zoom independence,
+non-chaining groups, overview clearing, Studio count/grid agreement, route-leg
+camera changes, and photo-only zoom. Browser checks verified group chooser,
+photo opening, Fit route clearing, Day 8 counts, and animated Zürich–Luzern
+travel with the entire leg in view. Latest saved traveler edits are preserved.
+
 ## Studio photo library and traveler-only copy · 9 September 2026
 
 Published as `32cf654` in successful Pages run `34356358778`. Fresh public
