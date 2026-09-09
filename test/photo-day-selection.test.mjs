@@ -19,7 +19,7 @@ function selection() {
   const context = vm.createContext({
     activeDayId: 'd1', photoLandmarkDayId: null, mapScope: 'journey', inspectedSegmentId: null,
     viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null,
-    journey: { days }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],
+    journey: { days, segments: [] }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],
     photosForDay: () => [], routeLabel: () => '', escapeHtml: value => value || '',
     renderDays() {}, renderStory() {}, drawMainMap() {}, renderViewerFilmstrip() {}, clearSegmentInspection() {}
   });

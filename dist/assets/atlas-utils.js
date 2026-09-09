@@ -65,24 +65,53 @@
     });
   }
 
-  function photoLandmarkLayout(photos, project, { width, height, spacing = 56, top = 54, bottom = 76 }) {
+  function routeIntersectsPhotoBox(point, routes, radius = 36) {
+    const left = point.x - radius, right = point.x + radius;
+    const top = point.y - radius, bottom = point.y + radius;
+    return routes.some(route => route.some((end, index) => {
+      if (!index) return false;
+      const start = route[index - 1];
+      if (Math.max(start.x, end.x) < left || Math.min(start.x, end.x) > right
+        || Math.max(start.y, end.y) < top || Math.min(start.y, end.y) > bottom) return false;
+      // Clip the entire segment to the padded thumbnail box; checking vertices
+      // alone misses long route edges crossing between two off-box endpoints.
+      let enter = 0, exit = 1;
+      for (const [origin, delta, min, max] of [[start.x, end.x - start.x, left, right], [start.y, end.y - start.y, top, bottom]]) {
+        if (!delta) { if (origin < min || origin > max) return false; }
+        else {
+          const a = (min - origin) / delta, b = (max - origin) / delta;
+          enter = Math.max(enter, Math.min(a, b)); exit = Math.min(exit, Math.max(a, b));
+          if (enter > exit) return false;
+        }
+      }
+      return true;
+    }));
+  }
+
+  function photoLandmarkLayout(photos, project, { width, height, spacing = 64, top = 54, bottom = 76, routes = [] }) {
     const inset = 28;
     const bounds = { left: inset, right: Math.max(inset, width - inset),
       top: Math.min(top + inset, height / 3), bottom: Math.max(height / 3, height - bottom - inset) };
     const clampPoint = point => ({ x: Math.max(bounds.left, Math.min(bounds.right, point.x)),
       y: Math.max(bounds.top, Math.min(bounds.bottom, point.y)) });
     const grid = [];
-    for (let y = bounds.top; y <= bounds.bottom; y += spacing) {
-      for (let x = bounds.left; x <= bounds.right; x += spacing) grid.push({ x, y });
+    for (let y = bounds.top; y <= bounds.bottom; y += 20) {
+      for (let x = bounds.left; x <= bounds.right; x += 20) {
+        const point = { x, y };
+        if (!routeIntersectsPhotoBox(point, routes)) grid.push(point);
+      }
     }
     const placements = [];
     for (const group of photoLandmarkGroups(photos, project, { width, height })) {
       const anchor = group.point;
       const desired = clampPoint(anchor);
-      const candidates = [desired, ...grid];
+      const candidates = routeIntersectsPhotoBox(desired, routes) ? grid : [desired, ...grid];
       const free = candidates.filter(point => placements.every(placed =>
         Math.abs(point.x - placed.point.x) >= spacing || Math.abs(point.y - placed.point.y) >= spacing));
-      const point = (free.length ? free : candidates).reduce((best, candidate) =>
+      // Never fall back to placing a thumbnail over the route. At a completely
+      // packed view the day's album still provides access to every photograph.
+      if (!free.length) continue;
+      const point = free.reduce((best, candidate) =>
         Math.hypot(candidate.x - desired.x, candidate.y - desired.y) < Math.hypot(best.x - desired.x, best.y - desired.y) ? candidate : best);
       placements.push({ photo: group.photo, photos: group.photos, anchor, point, offset: [point.x - anchor.x, point.y - anchor.y] });
     }
@@ -138,5 +167,5 @@
     return { move, cancel };
   }
 
-  root.JOURNEY_ATLAS_UTILS = { resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoDistanceMeters, photoLandmarkGroups, photoLandmarkLayout, photoMapTransition };
+  root.JOURNEY_ATLAS_UTILS = { resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoDistanceMeters, routeIntersectsPhotoBox, photoLandmarkGroups, photoLandmarkLayout, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

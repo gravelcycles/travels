@@ -219,3 +219,6 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .photo-upload-panel input[type="file"] { max-width:100%; font-size:12px; }
 #photo-upload-status { white-space:pre-line; font-size:12px; line-height:1.5; margin-top:10px; overflow-wrap:anywhere; }
 button.danger { color:#963d2b; }
+
+.upload-day-review { padding:10px; border:1px solid var(--line); border-radius:6px; margin-top:10px; font-size:12px; overflow-wrap:anywhere; }
+.upload-day-review p { margin:6px 0; }
