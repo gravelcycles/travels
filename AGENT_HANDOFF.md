@@ -1,5 +1,21 @@
 # Next-agent handoff
 
+## Relive defaults to 2× · 9 September 2026
+
+Relive/Trip Replay starts at 2×, with the speed selector matching playback in
+both the real journey template and demo. At 2×, days without route segments get
+50% longer holds: a 2.4-second rest moment lasts 1.8 seconds instead of 1.2.
+The 1× and 0.5× timings and travel-day timing are unchanged. Upload test fixtures
+also remove overrides belonging to excluded local intake manifests.
+
+Saved traveler data and 13 pending photos remain local: automatic approval
+review rejected publishing these photos to the public GitHub Release and
+requires explicit approval for the photos and destination. The photo publishing
+preview found 48 WebP derivatives (22,921,326 bytes); originals stay private.
+
+Validation: all 63 tests and the build pass. Local Relive shows the 2× selector
+and “Playing at 2×” with no browser errors.
+
 ## Map photo landmarks removed · 9 September 2026
 
 Published as `147229b` in successful Pages run `34362027798`. Fresh public

@@ -16,6 +16,9 @@ function fixture(t) {
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   // Each test owns its upload manifest and generated assets; exclude local intake.
   fs.cpSync(path.join(repo, 'content'), path.join(root, 'content'), { recursive: true, filter: name => !name.includes('/drafts') && !name.endsWith('-uploads.json') });
+  const overridesPath = path.join(root, 'content/photo-overrides.json');
+  const knownPhotos = new Set(loadContent(root).data.journeys.flatMap(journey => journey.photos.map(photo => photo.id)));
+  atomicJson(overridesPath, Object.fromEntries(Object.entries(readJson(overridesPath)).filter(([id]) => knownPhotos.has(id))));
   fs.cpSync(path.join(repo, 'dist'), path.join(root, 'dist'), { recursive: true });
   return root;
 }

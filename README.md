@@ -90,7 +90,9 @@ day's map context.
 
 Open a journey and choose **Trip replay**. Replay follows every day's travel
 legs in their stored order, retaining each mode's map color and line pattern as
-the route accumulates. It includes play/pause, half/normal/double speed, day
+the route accumulates. Playback starts at **2×** by default, with 50% longer holds for rest days
+at that speed. The 1× timing is unchanged. It includes
+play/pause, half/normal/double speed, day
 step buttons, a day timeline, keyboard controls, and a completion state.
 
 During travel, Replay frames each active route leg even when a chapter displays

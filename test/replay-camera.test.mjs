@@ -34,3 +34,18 @@ test('photo-only Replay moments still use their own saved zoom; reduced motion s
   context.prefersReducedMotion=()=>true;
   vm.runInContext('fitReplayMoment(moment)',context);assert.equal(calls[1].options.duration,0);
 });
+
+test('2× gives rest days 50% more screen time while 1× and travel timing stay unchanged', () => {
+  const context = vm.createContext({ replaySpeed: 1, replayMomentDay: () => ({segmentIds: []}) });
+  vm.runInContext(fn('replayMomentDuration'), context);
+  for (const duration of [2.4, 2.8, 6]) {
+    context.moment = {duration};
+    const wallTime = speed => { context.replaySpeed = speed; return vm.runInContext('replayMomentDuration(moment)', context) / speed; };
+    assert.equal(wallTime(1), duration * 1000);
+    assert.equal(wallTime(0.5), duration * 2000);
+    assert.equal(wallTime(2), duration * 750);
+    context.replayMomentDay = () => ({segmentIds: ['train']});
+    assert.equal(wallTime(2), duration * 500);
+    context.replayMomentDay = () => ({segmentIds: []});
+  }
+});
