@@ -80,12 +80,33 @@ test('revisiting a decoded full photo skips loading state without another downlo
  img.decode=()=>new Promise(()=>{});
  f.auth.setImage(img,photo,Infinity,{fullOnly:true});
  assert.equal(img.src,original);assert.equal(img.dataset.photoState,'ready');assert.deepEqual(states,['ready']);
+ assert.equal(img.dataset.photoReveal,'instant');
  await settle();assert.equal(f.calls.length,count);
 });
 test('a full-image decode finishing after lock cannot reveal the photo',async()=>{
  const f=fixture();await f.unlock();let decoded;const img=new Element();img.decode=()=>new Promise(resolve=>decoded=resolve);
  f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();assert.equal(img.dataset.photoState,'loading');
  f.auth.lock();decoded();await settle();assert.equal(img.dataset.photoState,'locked');assert.ok(!img.src.startsWith('blob:'));
+});
+test('thumbnail reveal waits for decoding and ignores a queued blur load',async()=>{
+ const f=fixture();await f.unlock();let decoded;const img=new Element();img.decode=()=>new Promise(resolve=>decoded=resolve);
+ f.auth.setImage(img,photo,1280);await settle();assert.equal(img.dataset.photoState,'loading');
+ img.complete=false;img.naturalWidth=32;img.currentSrc=photo.blur;img.dispatchEvent(new Event('load'));
+ assert.equal(img.dataset.photoState,'loading');decoded();await settle();assert.equal(img.dataset.photoState,'ready');
+ assert.equal(img.dataset.photoReveal,'soft');
+});
+test('late decoding cannot reveal a newly selected photo or finish its animation early',async()=>{
+ const f=fixture();await f.unlock();const decodes=[],img=new Element();img.decode=()=>new Promise(resolve=>decodes.push(resolve));
+ f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();
+ f.auth.setImage(img,albumPhoto(5),Infinity,{fullOnly:true});await settle();const current=img.src;
+ decodes[0]();await settle();assert.equal(img.src,current);assert.equal(img.dataset.photoState,'loading');
+ decodes[1]();await settle();assert.equal(img.dataset.photoState,'ready');
+});
+test('reselecting a photo with bytes but unfinished decoding keeps it loading',async()=>{
+ const f=fixture();await f.unlock();let decoded;const img=new Element();img.decode=()=>new Promise(resolve=>decoded=resolve);
+ f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();
+ f.auth.setImage(img,photo,Infinity,{fullOnly:true});assert.equal(img.dataset.photoState,'loading');
+ decoded();await settle();assert.equal(img.dataset.photoState,'ready');
 });
 test('a loaded full photo is revealed even when decode stalls, ignoring a queued placeholder load',async()=>{
  const f=fixture();await f.unlock();const img=new Element();img.decode=()=>new Promise(()=>{});
@@ -223,7 +244,9 @@ test('a selected photo bypasses a backlog of preloads using reserved download ca
 test('a cached small image stays visible while the full-size download is pending or fails',async()=>{
  let fail;const f=fixture(url=>url.endsWith(photo.src)?new Promise(resolve=>fail=resolve):Promise.resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}})));
  await f.unlock();f.auth.preload(photo,1280);await settle();const img=new Element();f.auth.setImage(img,photo,Infinity);
- assert.match(img.src,/^blob:/);assert.equal(img.dataset.photoState,'ready');const preview=img.src;await settle();
+ assert.match(img.src,/^blob:/);assert.equal(img.dataset.photoState,'loading');
+ img.complete=true;img.naturalWidth=1280;img.currentSrc=img.src;img.dispatchEvent(new Event('load'));
+ assert.equal(img.dataset.photoState,'ready');const preview=img.src;await settle();
  fail(new Response('',{status:404}));await settle();assert.equal(img.src,preview);assert.equal(img.dataset.photoState,'ready');assert.equal(img.dataset.photoError,undefined);
 });
 test('a stalled photo times out, retries once, and offers a recoverable error',async()=>{
@@ -246,7 +269,7 @@ test('transient server errors recover automatically; permanent missing photos do
 });
 test('changing photos cancels an abandoned request without reporting its failure on the new photo',async()=>{
  let late;const f=fixture(url=>url.endsWith(albumPhoto(1).src)?new Promise(resolve=>late=resolve):Promise.resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}})));await f.unlock();
- const img=new Element();f.auth.setImage(img,albumPhoto(1));await settle();f.auth.setImage(img,albumPhoto(2));await settle();assert.equal(f.calls[0][1].signal.aborted,true);
+ const img=new Element();img.decode=()=>Promise.resolve();f.auth.setImage(img,albumPhoto(1));await settle();f.auth.setImage(img,albumPhoto(2));await settle();assert.equal(f.calls[0][1].signal.aborted,true);
  late(new Response('',{status:503}));await settle();assert.equal(img.dataset.photoState,'ready');assert.equal(img.dataset.photoError,undefined);assert.match(img.src,/^blob:/);
 });
 
