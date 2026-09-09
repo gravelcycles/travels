@@ -2,6 +2,9 @@
 
 ## Photo landmarks and viewer camera · 9 September 2026
 
+Published as `f77cfb7` in successful Pages run `34352663568`; public landmark
+selection and viewer navigation passed without browser errors.
+
 Located visible photos now form compact map thumbnails, grouped at 60 px screen
 spacing with a counted photo chooser. Day scope filters pins; overview includes
 all located photos. Day-marker placement avoids thumbnails, and map bounds
