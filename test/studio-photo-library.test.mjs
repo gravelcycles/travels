@@ -14,7 +14,8 @@ const journeyId = 'switzerland-italy-family-2026';
 function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'atlas-photo-library-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  fs.cpSync(path.join(repo, 'content'), path.join(root, 'content'), { recursive: true, filter: name => !name.includes('/drafts') });
+  // Each test owns its upload manifest and generated assets; exclude local intake.
+  fs.cpSync(path.join(repo, 'content'), path.join(root, 'content'), { recursive: true, filter: name => !name.includes('/drafts') && !name.endsWith('-uploads.json') });
   fs.cpSync(path.join(repo, 'dist'), path.join(root, 'dist'), { recursive: true });
   return root;
 }

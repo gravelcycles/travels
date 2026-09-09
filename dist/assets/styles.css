@@ -541,20 +541,4 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible {
 @media(max-width:900px) { .atlas-shell:not([data-mobile-tab="story"]) .story-panel { display:none; } }
 .replay-photo:not([hidden]) { display:block; }
 
-/* Day-only geographic photo groups; displaced thumbnails point to exact pins. */
-.photo-landmark { width:44px; height:44px; padding:3px; border:1px solid #fff; border-radius:9px; background:var(--panel); box-shadow:0 2px 8px #15323866; cursor:pointer; z-index:2; }
-.photo-landmark img { display:block; width:100%; height:100%; border-radius:5px; object-fit:cover; }
-.photo-landmark:hover, .photo-landmark:focus-visible { outline:3px solid var(--selected); outline-offset:2px; z-index:5; }
-.photo-landmark-swatch { width:15px; height:13px; border:2px solid var(--ink); border-radius:3px; background:linear-gradient(145deg,var(--panel) 40%,var(--muted) 41%); }
 .photo-location-previous { background:var(--muted); box-shadow:0 0 0 4px #71878a33; opacity:.7; }
-
-.photo-landmark-anchor { width:44px; height:44px; z-index:2; pointer-events:none; }
-.photo-landmark-anchor .photo-landmark { position:relative; pointer-events:auto; }
-.photo-landmark-anchor:focus-within, .photo-landmark-anchor:hover { z-index:5; }
-.photo-landmark-anchor.has-leader::before { content:""; position:absolute; left:50%; top:50%; width:var(--photo-leader-length); height:1.5px; background:#39575c; box-shadow:0 0 0 1px #fff9; transform:rotate(var(--photo-leader-angle)); transform-origin:0 50%; pointer-events:none; }
-.photo-landmark-anchor.has-leader::after { content:""; position:absolute; left:calc(50% + var(--photo-pin-x)); top:calc(50% + var(--photo-pin-y)); width:6px; height:6px; border-radius:50%; background:var(--ink); border:1px solid #fff; transform:translate(-50%,-50%); pointer-events:none; }
-
-.photo-landmark-stack { box-shadow:3px 3px 0 var(--panel), 4px 4px 0 #687b7e, 0 3px 9px #15323855; }
-.photo-landmark-count { position:absolute; right:-7px; top:-8px; min-width:21px; height:21px; padding:0 4px; display:grid; place-items:center; border-radius:12px; background:var(--ink); color:#fff; border:2px solid #fff; font-size:11px; font-weight:800; }
-
-.photo-layout-moving .photo-landmark-anchor { visibility:hidden; }
