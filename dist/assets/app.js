@@ -1023,6 +1023,11 @@
     activeDayId = day.id;
     mapScope = "day";
     const modalPhoto = $("#modal-photo");
+    const photoStage = modalPhoto.closest('.photo-stage');
+    // The embedded blur is decoration only; the foreground still waits for the full photo.
+    const backdrop = photo?.blur;
+    photoStage.style.setProperty('--photo-backdrop', /^data:image\/(webp|png|jpeg);base64,/.test(backdrop || '') ? `url("${backdrop}")` : 'none');
+    photoStage.classList.remove('is-photo-loading');
     const emptyStage = $("#viewer-empty");
     modalPhoto.hidden = !photo;
     emptyStage.hidden = Boolean(photo);
@@ -1040,7 +1045,9 @@
       } else {
         const src=preferredPhotoUrl(photo,Infinity);
         modalPhoto.dataset.photoState='loading';
-        modalPhoto.onload=()=>{modalPhoto.dataset.photoState='ready';modalPhoto.classList.add('is-loaded');};
+        photoStage.classList.add('is-photo-loading');
+        modalPhoto.onload=()=>{modalPhoto.dataset.photoState='ready';modalPhoto.classList.add('is-loaded');photoStage.classList.remove('is-photo-loading');};
+        modalPhoto.onerror=()=>{modalPhoto.dataset.photoState='error';photoStage.classList.remove('is-photo-loading');};
         modalPhoto.src=src;
         if(modalPhoto.complete&&modalPhoto.naturalWidth)modalPhoto.onload();
       }
@@ -1682,6 +1689,7 @@
   const viewerImage = $('#modal-photo');
   viewerImage.addEventListener('atlas-photo-state', () => {
     const state=viewerImage.dataset.photoState, feedback=$('#viewer-photo-feedback');
+    viewerImage.closest('.photo-stage').classList.toggle('is-photo-loading', state === 'loading');
     feedback.hidden=!['loading','error','locked'].includes(state);
     $('#viewer-photo-message').textContent=state==='error'?'This photo could not load. Try again.':state==='locked'?'Unlock photos to see this photograph.':'Loading photograph…';
     $('#viewer-photo-retry').hidden=state==='loading';

@@ -12,7 +12,7 @@ function functionSource(name) {
 function selection() {
   const nodes = new Map();
   const getNode = selector => {
-    if (!nodes.has(selector)) nodes.set(selector, { dataset: {}, classList: { toggle() {} }, offsetParent: null, setAttribute() {}, removeAttribute() {} });
+    if (!nodes.has(selector)) nodes.set(selector, { dataset: {}, style: { setProperty() {} }, closest: getNode, classList: { toggle() {}, remove() {} }, offsetParent: null, setAttribute() {}, removeAttribute() {} });
     return nodes.get(selector);
   };
   const days = [{ id: 'd1', number: 1, segmentIds: [] }, { id: 'd2', number: 2, segmentIds: [] }];

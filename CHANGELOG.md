@@ -6,6 +6,14 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Restore the blurred loading background
+
+- Show the selected photo’s embedded blur behind the full-screen loading state,
+  with no extra image request. Remove it when the full-size photo is ready.
+- Keep the foreground full-size only and preserve small filmstrip thumbnails.
+- Verified the loading backdrop and recovery to a 3200px photo in the browser;
+  all 119 tests and the build pass.
+
 ### Recover photos after access expiry and interrupted decoding
 
 - Automatically restore the remembered login when a tab’s one-hour access
