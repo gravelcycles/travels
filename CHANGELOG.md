@@ -15,6 +15,11 @@ commit after it is known.
 
 ### Clearer photo selection, calmer Replay, and corrected Lake Luzern routes
 
+Commit `eb11be1` deployed successfully in Pages run `34349939474`.
+Fresh public checks confirmed the corrected lake loop and the last-photo
+sidebar selection/continuation controls, plus live progression through Mürren's
+connections with no browser errors.
+
 - Photo thumbnails show a strong selection border, a visible Selected label,
   and pressed state. The rounded last-photo Next day button stays in its own
   sidebar row and gives three gentle pulses; reduced motion disables the pulse.
