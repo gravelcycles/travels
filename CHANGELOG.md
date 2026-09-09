@@ -8,6 +8,10 @@ commit after it is known.
 
 ### Prioritize visible photos above map downloads
 
+Published as `fbbed8a` in successful Pages run `34387210417`. All 112 tests
+passed in CI. Live navigation through the 21-photo album passed without errors;
+a warmed private photo still rejects anonymous GET and HEAD with 401.
+
 - Give visible previews and thumbnails high browser network priority; only
   speculative neighbor preloads remain low priority. Keep selected viewer
   upgrades in the foreground queue even when a preview is already displayed.

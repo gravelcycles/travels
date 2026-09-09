@@ -2,6 +2,16 @@
 
 ## Edge caching and small thumbnails — 9 September 2026
 
+Production verification: frontend `fbbed8a`, successful Pages run
+`34387210417`; the full CI suite has 112 passing tests. The live 21-photo
+album navigated without errors. Warm cache fetches took 6–17 ms inside Cloudflare;
+observed browser transfers were 241–761 ms for fresh-page cached images and
+512 ms for the first full viewer image. One new full-size cache miss took
+1495 ms (211 ms inside Cloudflare). These are session samples, not latency
+guarantees. Anonymous GET and HEAD for a warmed photo still returned 401 and
+no-store, without consulting the inner cache. Visible photos now use high
+browser network priority; only speculative preloads use low priority.
+
 The owner approved implementation and deployment conditional on staying free.
 The existing Workers Free/R2 setup is retained; no domain, subscription or paid
 plan was added. Worker version `4a6edd8b-d588-4460-a514-67c749442134`
