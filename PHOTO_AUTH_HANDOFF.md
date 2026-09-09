@@ -1,5 +1,28 @@
 # Private photo access — implementation handoff
 
+## Browser photo reuse — 9 September 2026
+
+Worker version: `d3b798dd-4c07-433c-8a62-063d366a86ee`.
+
+The user requested long-lived reuse of already downloaded photos. Successful
+photo GET/HEAD responses now use `Cache-Control: private, no-cache` and an ETag
+derived from the immutable content hash. The browser stores photo bytes across
+reloads and sends a conditional request before HTTP reuse. After the normal
+origin/token checks, the gateway checks the inner photo service with HEAD and
+returns a bodyless 304 for a matching ETag. Invalid/revoked/expired credentials
+and errors remain no-store; status and login endpoints remain no-store.
+
+This supersedes earlier notes saying all visitor image responses are no-store.
+Photos may remain in the device's private browser cache; lock clears the app's
+blobs and tokens but does not promise to erase the browser disk cache. Network
+reuse still requires valid authorization. Browser eviction is possible, and
+480/1280/full-size variants are separate files. Cloudflare's one-year internal
+cache and the existing free plan are unchanged. The loader uses cache:no-cache
+and reports revalidated reuse through data-photo-browser-cache diagnostics.
+All 113 tests, build, and workerd runtime checks pass, including bodyless 304,
+unknown keys, mismatched ETags, and denied conditional requests.
+
+
 ## Edge caching and small thumbnails — 9 September 2026
 
 Production verification: frontend `fbbed8a`, successful Pages run

@@ -44,6 +44,7 @@ test('visible photos receive high browser priority while speculative preloads st
  const f=fixture();await f.unlock();const img=new Element();
  img.dataset.privateSrc=photo.src;await f.auth.hydrate(img);
  assert.equal(f.calls[0][1].priority,'high');
+ assert.equal(f.calls[0][1].cache,'no-cache','Allow browser storage with access revalidation');
  f.auth.preload(albumPhoto(9),1280);await settle();
  assert.equal(f.calls[1][1].priority,'low');
 });

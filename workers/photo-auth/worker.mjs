@@ -43,8 +43,8 @@ export default {
       corsOrigin = allowed.includes(origin) ? origin : null;
       if (request.method === 'OPTIONS') {
         const requested = (request.headers.get('Access-Control-Request-Headers') || '').toLowerCase().split(',').map(x => x.trim()).filter(Boolean);
-        if (!corsOrigin || !['GET', 'HEAD', 'POST'].includes(request.headers.get('Access-Control-Request-Method')) || requested.some(h => !['authorization', 'content-type'].includes(h)) || !(url.pathname.startsWith(`${PREFIX}assets/`) || url.pathname === `${PREFIX}auth/status` || url.pathname === `${PREFIX}auth/redeem`)) return json(403, { error: 'Not allowed' }, corsOrigin);
-        return new Response(null, { status: 204, headers: headers(corsOrigin, { 'Access-Control-Allow-Methods': 'GET, HEAD, POST', 'Access-Control-Allow-Headers': 'Authorization, Content-Type', 'Access-Control-Max-Age': '86400' }) });
+        if (!corsOrigin || !['GET', 'HEAD', 'POST'].includes(request.headers.get('Access-Control-Request-Method')) || requested.some(h => !['authorization', 'content-type', 'if-none-match'].includes(h)) || !(url.pathname.startsWith(`${PREFIX}assets/`) || url.pathname === `${PREFIX}auth/status` || url.pathname === `${PREFIX}auth/redeem`)) return json(403, { error: 'Not allowed' }, corsOrigin);
+        return new Response(null, { status: 204, headers: headers(corsOrigin, { 'Access-Control-Allow-Methods': 'GET, HEAD, POST', 'Access-Control-Allow-Headers': 'Authorization, Content-Type, If-None-Match', 'Access-Control-Max-Age': '86400' }) });
       }
       if (url.pathname === `${PREFIX}auth/window` && request.method === 'GET') {
         let target; try { target = new URL(url.searchParams.get('returnTo')); } catch { return json(400, { error: 'Open this page from the atlas.' }, null); }
@@ -98,22 +98,32 @@ export default {
         if (url.pathname.endsWith('/auth/status')) return json(200, { unlocked: true, expiresAt: session.exp }, corsOrigin);
         const key = url.pathname.slice(`${PREFIX}assets/`.length);
         if (!assetPattern.test(key) || url.search) return json(404, { error: 'Photo not found' }, corsOrigin);
+        const etag = `"${key.slice(3,-5)}"`;
+        const unchanged = (request.headers.get('If-None-Match') || '').split(',').some(tag => tag.trim() === '*' || tag.trim().replace(/^W\//,'') === etag);
         stage = 'photo-cache';
         // A fresh header-free request keeps credentials, Origin, Range and browser
         // no-cache directives out of the internal shared cache key and policy.
         // The default public entrypoint is NEVER cached: auth above runs on hits too.
         const started = performance.now();
-        const response = await ctx.exports.PhotoCache.fetch(new Request(url.toString(), { method: request.method }));
+        // Check the photo service even on revalidation; unknown keys cannot claim 304.
+        const response = await ctx.exports.PhotoCache.fetch(new Request(url.toString(), { method: unchanged ? 'HEAD' : request.method }));
         if (response.status === 404) return json(404, { error: 'Photo not found' }, corsOrigin);
         if (!response.ok || response.headers.get('Content-Type') !== 'image/webp') throw new Error('Photo cache unavailable');
         const cacheStatus = response.headers.get('Cf-Cache-Status') || 'UNKNOWN';
-        return new Response(request.method === 'HEAD' ? null : response.body, { headers: headers(corsOrigin, {
-          'Content-Type': 'image/webp', 'Content-Length': response.headers.get('Content-Length'),
-          'Content-Disposition': 'inline', 'Cross-Origin-Resource-Policy': 'cross-origin',
+        const photoHeaders = headers(corsOrigin, {
+          // Store bytes privately on the device, but revalidate authorization on
+          // every HTTP reuse. No time-based expiry and no offline/stale fallback.
+          'Cache-Control': 'private, no-cache', 'ETag': etag,
+          'Cross-Origin-Resource-Policy': 'cross-origin',
           'X-Photo-Cache': cacheStatus,
+          'X-Photo-Revalidated': unchanged ? '1' : '0',
           'Server-Timing': `photo;dur=${(performance.now()-started).toFixed(1)}`,
-          'Access-Control-Expose-Headers': 'X-Photo-Cache, Server-Timing',
-        }) });
+          'Access-Control-Expose-Headers': 'X-Photo-Cache, X-Photo-Revalidated, Server-Timing, ETag',
+        });
+        if (unchanged) return new Response(null, { status: 304, headers: photoHeaders });
+        return new Response(request.method === 'HEAD' ? null : response.body, { headers: {
+          ...photoHeaders, 'Content-Type': 'image/webp', 'Content-Length': response.headers.get('Content-Length'), 'Content-Disposition': 'inline',
+        } });
       }
       return json(404, { error: 'Not found' }, corsOrigin);
     } catch (error) {
