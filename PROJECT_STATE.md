@@ -2,6 +2,9 @@
 
 ## Studio editing and saved traveler edits · 9 September 2026
 
+Published as `d1ca46e` in successful Pages run `34351239971`. Public overrides
+match the built asset exactly; a fresh journey load passed without browser errors.
+
 Endpoint drags and typed coordinates now preserve the rest of the detailed
 route, with complete geometry undo/redo. Same-day photo selections keep the
 working camera; **Switch to current point’s zoom** restores a saved photo view.

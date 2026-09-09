@@ -8,6 +8,10 @@ commit after it is known.
 
 ### Publish saved Studio edits and editing improvements
 
+Commit `d1ca46e` deployed successfully in Pages run `34351239971`.
+The public override bundle matches the local build byte-for-byte, and a fresh
+journey load passed with no browser errors.
+
 - Include the traveler's saved photo captions, descriptions, map locations and
   Replay zooms, plus the Varenna–Fiumelatte walking-route override.
 - Include the endpoint-preserving route editor, steady same-day photo map,
