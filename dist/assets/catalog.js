@@ -23,17 +23,17 @@
     return;
   }
 
-  catalog.innerHTML = realJourneys.map((journey) => {
+  catalog.innerHTML = realJourneys.map((journey, index) => {
     const photos = window.JOURNEY_ATLAS_UTILS.visiblePhotos(journey, window.JOURNEY_ATLAS_PHOTOS, window.JOURNEY_ATLAS_CONTENT_OVERRIDES);
     const {photo,position} = window.JOURNEY_ATLAS_UTILS.resolveCover(journey, photos);
     return `
     <a class="journey-card" href="./${escapeHtml(journey.slug)}">
       <div class="journey-card-media">
-        ${photo ? `<img src="${escapeHtml(photo.srcset?.find(v=>v.width>=1280)?.src || photo.src)}" srcset="${escapeHtml((photo.srcset||[]).map(v=>`${v.src} ${v.width}w`).join(", "))}" sizes="(max-width: 700px) 100vw, 1180px" style="object-position:${position};${photo.blur?`background-image:url(${escapeHtml(photo.blur)})`:""}" alt="${escapeHtml(photo.alt || "")}" loading="eager" fetchpriority="high" />` : '<div class="journey-card-placeholder"><span>A JOURNEY TAKING SHAPE</span><strong>Places to go.<br>Days to make your own.</strong></div>'}
+        ${photo ? `<img src="${escapeHtml(photo.srcset?.find(v=>v.width>=480)?.src || photo.src)}" srcset="${escapeHtml((photo.srcset||[]).map(v=>`${v.src} ${v.width}w`).join(", "))}" sizes="(max-width: 560px) 112px, 176px" style="object-position:${position};${photo.blur?`background-image:url(${escapeHtml(photo.blur)})`:""}" alt="${escapeHtml(photo.alt || "")}" loading="${index < 5 ? "eager" : "lazy"}" fetchpriority="${index === 0 ? "high" : "auto"}" />` : '<div class="journey-card-placeholder"><span>A JOURNEY TAKING SHAPE</span><strong>Places to go.<br>Days to make your own.</strong></div>'}
       </div>
       <div class="journey-card-copy">
         <small>${escapeHtml(journey.kicker)}</small>
-        <h3>${escapeHtml(journey.title)}</h3>
+        <h2>${escapeHtml(journey.title)}</h2>
         <p>${escapeHtml(journey.subtitle)}</p>
         <div class="journey-card-meta">
           <span>${escapeHtml(journey.dates)}</span>

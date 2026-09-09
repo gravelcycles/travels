@@ -6,6 +6,15 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Compact the catalog and improve its copy
+
+- Replace the oversized hero/cards with “Where we went.” and a compact journey
+  list: 4–5 entries at checked Mac dimensions and 2–3 at checked iPhone sizes.
+  A local five-entry fixture verifies capacity; the public catalog has one trip.
+- Use “Switzerland & Italy · Family trip” as the family journey's title.
+- Remove the photo viewer's Selected badge and redundant accessible wording;
+  preserve the orange outline and pressed state. All 64 tests and build pass.
+
 ### Publish saved photos and simplify day panels
 
 Published as `a3112e3` in successful Pages run `34363408065`. Fresh public

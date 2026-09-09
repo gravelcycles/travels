@@ -977,10 +977,9 @@
   function renderViewerFilmstrip(photos) {
     $("#viewer-filmstrip").innerHTML = photos.length
       ? photos.map((photo, index) => `
-          <button type="button" data-viewer-index="${index}" class="${index === viewerPhotoIndex ? "active" : ""}" aria-pressed="${index === viewerPhotoIndex}" aria-label="Show photo ${index + 1} of ${photos.length}${index === viewerPhotoIndex ? ', selected' : ''}">
+          <button type="button" data-viewer-index="${index}" class="${index === viewerPhotoIndex ? "active" : ""}" aria-pressed="${index === viewerPhotoIndex}" aria-label="Show photo ${index + 1} of ${photos.length}">
             ${photoImageMarkup(photo, { alt: "", sizes: "180px" })}
             <span>${String(index + 1).padStart(2, "0")}</span>
-            ${index === viewerPhotoIndex ? '<strong class="photo-selected-label">✓ Selected</strong>' : ''}
           </button>
         `).join("")
       : "";
