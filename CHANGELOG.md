@@ -8,6 +8,8 @@ commit after it is known.
 
 ### Complete the non-auth backlog: planning, story, and editorial reliability
 
+Implementation commit: `ff0587e`.
+
 - Completed T19: Studio edits trip titles, dates, time zones, named places, and
   ordered travel legs; previews calendar changes; preserves IDs, notes, photo
   associations, and overrides; and refuses destructive date trims. Local draft
@@ -26,6 +28,7 @@ commit after it is known.
   usable loading/failure/retry behavior.
 - Retained both story-layout alternatives in `studio/story-review.html`; selected
   the compact card after comparing Day 6 and photo-free Day 9.
+- Kept Replay photos visible on short desktop screens; verified at 1280 × 600.
 - Validation: 33 tests pass. Browser QA covers desktop/phone navigation, the
   nine-leg day, empty albums, an isolated leap-day draft save/reload, cover crop
   persistence, inherited GPS clearing/restoring, slow/failed photos, unavailable
