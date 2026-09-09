@@ -9,6 +9,11 @@
       content="{{description}}"
     />
     <title>{{title}} · Journey Atlas</title>
+    <script>
+      // Keep the atlas out of the first paint until the entry view is chosen.
+      document.documentElement.classList.add('journey-starting');
+      window.addEventListener('load', () => document.documentElement.classList.remove('journey-starting'), { once: true });
+    </script>
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
     <link

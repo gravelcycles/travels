@@ -6,10 +6,15 @@
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
     <meta name="description" content="Sample journeys demonstrating the day-by-day Journey Atlas." />
     <title>Journey samples · Journey Atlas</title>
+    <script>
+      // Keep the atlas out of the first paint until the entry view is chosen.
+      document.documentElement.classList.add('journey-starting');
+      window.addEventListener('load', () => document.documentElement.classList.remove('journey-starting'), { once: true });
+    </script>
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
-    <link rel="stylesheet" href="./assets/styles.css?v=8a8d9ed5c54f" />
+    <link rel="stylesheet" href="./assets/styles.css?v=cfa16952e16f" />
   </head>
   <body data-journey-scope="demo">
     <header class="site-header">
@@ -206,6 +211,6 @@
     <script src="./assets/photo-service.js?v=7cf17f81b44e"></script>
     <script src="./assets/photo-auth.js?v=41c299ece292"></script>
     <script src="./assets/atlas-utils.js?v=436f8de04091"></script>
-    <script src="./assets/app.js?v=9da470d6a0a1"></script>
+    <script src="./assets/app.js?v=185a80613c33"></script>
   </body>
 </html>
