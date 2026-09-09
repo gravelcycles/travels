@@ -2,6 +2,11 @@
 
 ## Route clearance and automatic batch photo days · 9 September 2026
 
+Published as `f350a06` in successful Pages run `34359916696`. A fresh public
+load verified Day 1 thumbnails clear the Zürich–Luzern route and the four-photo
+chooser opens correctly, with no browser errors. Studio remains available on
+port 4173. The isolated upload test server has been stopped.
+
 Photo thumbnails and count badges now avoid every journey route, including
 muted context routes. Placement checks whole projected line segments, then
 moves thumbnails to clear positions with exact-pin leader lines. Thumbnails

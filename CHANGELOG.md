@@ -8,6 +8,11 @@ commit after it is known.
 
 ### Keep photo thumbnails off routes and automatically sort batch uploads
 
+Published as `f350a06` in successful Pages run `34359916696`. A fresh public
+load verified Day 1 thumbnails clear the Zürich–Luzern route and the four-photo
+chooser opens correctly, with no browser errors. Studio remains available on
+port 4173. The isolated upload test server has been stopped.
+
 - Check entire route segments when placing photo thumbnails and count badges;
   use clear positions with leader lines, reflow after camera movement, and omit
   crowded landmarks when no clear position exists. Albums retain every photo.
