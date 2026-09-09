@@ -8,6 +8,10 @@ commit after it is known.
 
 ### Photo landmarks and calmer viewer transitions
 
+Commit `f77cfb7` deployed successfully in Pages run `34352663568`. A fresh
+public check verified landmarks, viewer opening, and previous/current pins during
+navigation with no browser errors. Public app/helper assets match the tested build.
+
 - Saved photo locations appear as compact thumbnail landmarks. Nearby pins share
   a counted stack that opens a photo chooser; individual photos open the viewer.
   Day focus limits landmarks to that day, and day labels avoid the thumbnails.
