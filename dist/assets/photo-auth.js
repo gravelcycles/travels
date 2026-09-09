@@ -33,9 +33,11 @@
   }
   function prune() {
     for(const [img] of images)if(!img.isConnected)release(img);
-    for(const [key,entry] of cache) {
-      if(cache.size<=MAX_CACHE)break;
-      if(!entry.refs.size){entry.controller.abort();if(entry.url)URL.revokeObjectURL(entry.url);cache.delete(key);}
+    // A loading image has not attached its blob yet, but already needs its request.
+    const loading=new Set([...images.values()].filter(item=>item.loading).map(item=>item.src));
+    const unused=[...cache].filter(([key,entry])=>!entry.refs.size&&!loading.has(key));
+    for(const [key,entry] of unused.slice(0,Math.max(0,unused.length-MAX_CACHE))) {
+      entry.controller.abort();if(entry.url)URL.revokeObjectURL(entry.url);cache.delete(key);
     }
   }
   function lock(broadcast=true) {

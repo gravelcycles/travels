@@ -42,3 +42,28 @@ test('cleared viewer slots do not regain an old photo when access changes',async
  const f=fixture(),img=new Element();f.auth.setImage(img,photo);f.auth.clearImage(img);img.src='';
  await f.unlock();await settle();assert.equal(f.calls.length,0);f.auth.lock();assert.equal(img.src,'');
 });
+const albumPhoto=index=>({...photo,src:`/private-photos/assets/v1/${index.toString(16).padStart(64,'0')}.webp`,srcset:[]});
+test('a large album keeps every requested image alive while loads are pending',async()=>{
+ const pending=[];
+ const f=fixture((url,options)=>new Promise((resolve,reject)=>{
+  options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')),{once:true});
+  pending.push({resolve,signal:options.signal});
+ }));
+ const images=Array.from({length:21},(_,i)=>{const img=new Element();f.auth.setImage(img,albumPhoto(i+1));return img;});
+ await f.unlock();await settle();
+ assert.equal(pending.length,21);
+ assert.equal(pending.filter(p=>p.signal.aborted).length,0,'Cache eviction must not cancel images waiting to display');
+ for(const p of pending)p.resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));
+ await settle();await settle();
+ assert.ok(images.every(img=>img.src.startsWith('blob:')),'All 21 photographs must become sharp');
+ assert.equal(f.revoked.length,0,'Displayed images must keep their blob URLs');
+ f.auth.lock();assert.ok(images.every(img=>img.src===photo.blur));assert.equal(f.revoked.length,21);
+});
+test('unused photo preloads remain bounded after leaving a large album',async()=>{
+ const f=fixture();await f.unlock();
+ const images=Array.from({length:21},(_,i)=>{const img=new Element();f.auth.setImage(img,albumPhoto(i+1));return img;});
+ await settle();await settle();assert.ok(images.every(img=>img.src.startsWith('blob:')));
+ images.forEach(img=>{img.isConnected=false;});
+ for(let i=22;i<=45;i++){f.auth.preload(albumPhoto(i),1280);await settle();}
+ assert.ok(f.revoked.length>=33,'Only a bounded set of unused images should remain cached');
+});
