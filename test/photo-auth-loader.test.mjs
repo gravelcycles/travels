@@ -15,7 +15,7 @@ function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:
  document.body.dataset.journeyScope=startup?'real':'demo';
  const navigations=[];const location=new URL('https://gravelcycles.github.io/travels/');location.assign=url=>navigations.push(url);
  const storage={getItem:k=>k==='atlas-photo-login'?JSON.stringify(loginFlow):tabStorage.get(k)||null,removeItem:k=>tabStorage.delete(k),setItem(k,v){if(k==='atlas-photo-login')loginFlow=JSON.parse(v);else tabStorage.set(k,v);}};
- const context=vm.createContext({window,document,location,history:{replaceState(){}},sessionStorage:storage,URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,btoa,Date:clock,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json({token:'fixture-access-token',expiresAt:Math.floor(Date.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
+ const context=vm.createContext({window,document,location,history:{replaceState(){}},sessionStorage:storage,URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,btoa,Date:clock,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json({token:'fixture-access-token',expiresAt:Math.floor(clock.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
  vm.runInContext(source.replace('completeReturn();}', 'window.__startup=completeReturn();}').replace(/\}\)\(\);\s*$/, 'window.__completeReturn=completeReturn;})();'),context);
  async function unlock(spoof=false){loginFlow={state:'fixture-state',verifier:'v'.repeat(43),created:Date.now(),hash:''};location.hash=new URLSearchParams({photoAuthCode:'c'.repeat(43),state:spoof?'wrong-state':'fixture-state'}).toString();await window.__completeReturn();}
 
@@ -71,6 +71,21 @@ test('a full-image decode finishing after lock cannot reveal the photo',async()=
  const f=fixture();await f.unlock();let decoded;const img=new Element();img.decode=()=>new Promise(resolve=>decoded=resolve);
  f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();assert.equal(img.dataset.photoState,'loading');
  f.auth.lock();decoded();await settle();assert.equal(img.dataset.photoState,'locked');assert.ok(!img.src.startsWith('blob:'));
+});
+test('a loaded full photo is revealed even when decode stalls, ignoring a queued placeholder load',async()=>{
+ const f=fixture();await f.unlock();const img=new Element();img.decode=()=>new Promise(()=>{});
+ f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();
+ img.complete=false;img.naturalWidth=32;img.currentSrc=photo.blur;img.dispatchEvent(new Event('load'));
+ assert.equal(img.dataset.photoState,'loading');
+ img.complete=true;img.naturalWidth=3200;img.currentSrc=img.src;img.dispatchEvent(new Event('load'));
+ assert.equal(img.dataset.photoState,'ready');
+});
+test('decode rejection does not hide a full image that subsequently loads normally',async()=>{
+ const f=fixture();await f.unlock();const img=new Element();img.decode=()=>Promise.reject(new Error('Decode interrupted'));
+ f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();
+ assert.equal(img.dataset.photoState,'loading');
+ img.complete=true;img.naturalWidth=3200;img.currentSrc=img.src;img.dispatchEvent(new Event('load'));
+ assert.equal(img.dataset.photoState,'ready');
 });
 test('authorized consumers share one request, and logout revokes blobs and restores placeholders',async()=>{
  const f=fixture(),a=new Element(),b=new Element();f.auth.setImage(a,photo);f.auth.setImage(b,photo);await f.unlock();await settle();await settle();
@@ -225,4 +240,23 @@ test('reselecting a pending photo cannot bypass expired access',async()=>{
  const f=fixture((_url,options)=>new Promise((_resolve,reject)=>options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')))),{clock:Clock});
  await f.unlock();const img=new Element();f.auth.setImage(img,albumPhoto(1));await settle();now+=3601000;
  f.auth.setImage(img,albumPhoto(1));await settle();assert.equal(f.auth.unlocked,false);assert.equal(img.dataset.photoState,'locked');assert.equal(f.calls.length,1);assert.equal(f.calls[0][1].signal.aborted,true);
+});
+test('one-hour expiry automatically restores remembered access once instead of leaving every photo locked',async()=>{
+ let now=Date.now();class Clock extends Date{static now(){return now;}}
+ const f=fixture(undefined,{clock:Clock});await f.unlock();const img=new Element();f.auth.setImage(img,photo);await settle();
+ const expiry=[...f.timers.values()].find(timer=>timer.delay>3500000);assert.ok(expiry);
+ now+=3601000;expiry.fn();f.events.get('focus')();f.events.get('visibilitychange')();
+ for(let i=0;i<4;i++)await settle();
+ assert.equal(f.auth.unlocked,false);assert.equal(f.navigations.length,1);
+ assert.equal(new URL(f.navigations[0]).searchParams.get('action'),'restore');assert.equal(f.dialog.open,false);
+ await f.returnFrom('photoAuthCode');await settle();assert.equal(f.auth.unlocked,true);assert.match(img.src,/^blob:/);
+});
+test('hidden-tab expiry waits for visibility before restoring and explicit lock cancels restoration',async()=>{
+ for(const cancel of [false,true]){
+  const f=fixture();await f.unlock();f.document.hidden=true;
+  [...f.timers.values()].find(timer=>timer.delay>3500000).fn();await settle();assert.equal(f.navigations.length,0);
+  if(cancel)f.auth.lock();f.document.hidden=false;f.events.get('visibilitychange')();
+  for(let i=0;i<4;i++)await settle();
+  assert.equal(f.navigations.length,cancel?0:1);
+ }
 });

@@ -6,6 +6,16 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Recover photos after access expiry and interrupted decoding
+
+- Automatically restore the remembered login when a tab’s one-hour access
+  expires, preserving the current photo/day. Hidden tabs restore when visible.
+- Do not let one expired tab lock other still-valid tabs; explicit lock cancels
+  deferred restoration.
+- Reveal a fully loaded image even if decode() stalls/rejects, while ignoring
+  stale placeholder events and keeping the full-screen viewer free of previews.
+- Preserve 480px thumbnails. All 119 tests and the build pass.
+
 ### Show the full photo or leave the viewer blank
 
 - Viewer and Replay display only the largest image, after it decodes; cached

@@ -5,7 +5,7 @@
   const protectedPath = /^\/private-photos\/assets\/v1\/[a-f0-9]{64}\.webp$/;
   let service = '';
   try { const url = new URL(config.origin); if (url.origin === config.origin && (url.protocol === 'https:' || (['127.0.0.1','localhost'].includes(location.hostname) && ['127.0.0.1','localhost'].includes(url.hostname)))) service = url.origin; } catch { /* Unconfigured always stays locked. */ }
-  let token = '', expiresAt = 0, generation = 0, expiryTimer, lastFocus;
+  let token = '', expiresAt = 0, generation = 0, expiryTimer, lastFocus, restoreAfterExpiry=false;
   const ACCESS_KEY='atlas-photo-access';
   const images = new Map(), cache = new Map();
   const MAX_CACHE = 96, MAX_CACHE_BYTES = 64 * 1024 * 1024;
@@ -53,12 +53,16 @@
     }
   }
   function lock(broadcast=true) {
-    token='';expiresAt=0;generation++;lastCheck=0;checkPending=null;clearTimeout(expiryTimer);
+    token='';expiresAt=0;generation++;lastCheck=0;checkPending=null;restoreAfterExpiry=false;clearTimeout(expiryTimer);
     try{sessionStorage.removeItem(ACCESS_KEY);}catch{}
     for(const [img,item] of images){img.removeAttribute('srcset');img.src=item.blur;img.classList.remove('is-loaded');item.entry=null;item.loading=false;imageState(img,'locked');}
     for(const entry of cache.values()){entry.controller.abort();if(entry.url)URL.revokeObjectURL(entry.url);}
     cache.clear();updateControls();if(broadcast)channel?.postMessage('lock');
     window.dispatchEvent(new Event('atlas-photos-locked'));
+  }
+  function expireAccess() {
+    // Access is tab-scoped: one expired token must not lock other valid tabs.
+    lock(false);restoreAfterExpiry=true;check();
   }
   function showPrompt(text='') { updateControls();message.textContent=text;lastFocus=document.activeElement;if(!dialog.open)dialog.showModal(); }
   function closePrompt(){dialog.close();lastFocus?.focus?.();}
@@ -93,7 +97,7 @@
   }
   async function fetchPhoto(src,priority=1) {
     if(!protectedPath.test(src))throw new Error('Invalid photo');
-    if(!local&&(!token||expiresAt<=Date.now()/1000)){if(token)lock();throw new Error('Photos locked');}
+    if(!local&&(!token||expiresAt<=Date.now()/1000)){if(token)expireAccess();throw new Error('Photos locked');}
     let entry=cache.get(src);
     if(entry){cache.delete(src);cache.set(src,entry);entry.priority=Math.min(entry.priority,priority);pumpDownloads();return entry.promise;}
     const epoch=generation,controller=new AbortController();entry={controller,priority,refs:new Set(),url:null,promise:null,bytes:0};
@@ -110,11 +114,20 @@
   function display(img,item,entry) {
     item.entry?.refs.delete(img);item.entry=entry;entry.refs.add(img);
     img.dataset.photoCache=entry.edgeCache;img.dataset.photoBrowserCache=entry.revalidated?'revalidated':'download';img.dataset.photoDownloadMs=String(entry.downloadMs);img.dataset.photoServerTiming=entry.serverTiming;
-    const ready=()=>{if(images.get(img)===item&&img.src===entry.url){img.classList.add('is-loaded');imageState(img,'ready');}};
-    if(!item.fullOnly||!img.decode)img.addEventListener('load',ready,{once:true});
+    const failed=()=>{if(images.get(img)===item&&img.src===entry.url)imageState(img,'error');};
+    const ready=()=>{if(images.get(img)===item&&img.src===entry.url){img.removeEventListener('error',failed);img.classList.add('is-loaded');imageState(img,'ready');}};
+    // A normal load event is authoritative even if decode() rejects or stalls.
+    // Ignore queued load events from the old placeholder while a new source loads.
+    const loaded=()=>{
+      if(images.get(img)!==item||img.src!==entry.url){img.removeEventListener('load',loaded);img.removeEventListener('error',failed);return;}
+      if(item.fullOnly&&(!img.complete||!img.naturalWidth||(img.currentSrc&&img.currentSrc!==entry.url)))return;
+      img.removeEventListener('load',loaded);ready();
+    };
+    img.addEventListener('load',loaded);
+    if(item.fullOnly)img.addEventListener('error',failed,{once:true});
     if(item.fullOnly)imageState(img,'loading');
     img.src=entry.url;delete img.dataset.photoError;delete img.dataset.photoFailure;
-    if(item.fullOnly&&img.decode)img.decode().then(ready,()=>{if(images.get(img)===item&&img.src===entry.url){imageState(img,'error');img.dispatchEvent(new Event('error'));}});
+    if(item.fullOnly&&img.decode)img.decode().then(ready,()=>{if(img.complete&&img.naturalWidth>0&&(!img.currentSrc||img.currentSrc===entry.url))ready();});
     else if(!item.fullOnly)ready();
   }
   async function hydrate(img) {
@@ -138,7 +151,7 @@
   }
   function setImage(img,photo,width=1280,{fullOnly=false}={}) {
     const src=selected(photo,fullOnly?Infinity:width),preview=fullOnly?src:selected(photo,1280),thumbnail=fullOnly?src:selected(photo,480);
-    if(token&&expiresAt<=Date.now()/1000)lock();
+    if(token&&expiresAt<=Date.now()/1000)expireAccess();
     const previous=images.get(img);
     if(previous?.src===src&&previous.loading){for(const key of [src,preview]){const pending=cache.get(key);if(pending)pending.priority=0;}if(previous.entry)img.classList.add('is-loaded');imageState(img,previous.entry?'ready':'loading');pumpDownloads();return;}
     const ready=(local||token)?[src,preview,thumbnail].map(key=>cache.get(key)).find(entry=>entry?.url):null;
@@ -179,6 +192,7 @@
     let flow;try{flow=JSON.parse(sessionStorage.getItem(FLOW_KEY));sessionStorage.removeItem(FLOW_KEY);}catch{}
     // Remove the short-lived one-use code before loading anything else from this page.
     history.replaceState(null,'',location.pathname+location.search+(flow?.hash||''));
+    window.dispatchEvent(new Event('hashchange'));
     if(!flow||params.get('state')!==flow.state||Date.now()-flow.created>300000){showPrompt('Login expired. Please unlock again.');return;}
     if(params.has('photoAuthMissing')){showPrompt();return;}
     if(params.has('photoAuthLogout')||params.has('photoAuthCancel')){lock();if(dialog.open)closePrompt();return;}
@@ -196,7 +210,7 @@
     lock(false);token=data.token;expiresAt=data.expiresAt;lastCheck=Date.now();
     // Only the one-hour access token is tab-scoped; the 30-day cookie stays HttpOnly.
     try{sessionStorage.setItem(ACCESS_KEY,JSON.stringify({token,expiresAt}));}catch{}
-    expiryTimer=setTimeout(()=>lock(),Math.max(0,expiresAt*1000-Date.now()));
+    expiryTimer=setTimeout(expireAccess,Math.max(0,expiresAt*1000-Date.now()));
     updateControls();if(dialog.open)closePrompt();for(const [img,item] of images)if(img.isConnected&&item.priority===0)hydrate(img);prepare();window.dispatchEvent(new Event('atlas-photos-unlocked'));
   }
   async function restoreTabAccess(){
@@ -212,8 +226,10 @@
     }catch{return false;}
   }
   async function check(){
-    if(!token||document.hidden)return;
-    if(expiresAt<=Date.now()/1000){lock();return;}
+    if(document.hidden)return;
+    if(restoreAfterExpiry){restoreAfterExpiry=false;window.dispatchEvent(new Event('atlas-photos-renewing'));await begin('restore');return;}
+    if(!token)return;
+    if(expiresAt<=Date.now()/1000){expireAccess();return;}
     if(checkPending||Date.now()-lastCheck<STATUS_INTERVAL)return;
     const epoch=generation;lastCheck=Date.now();
     const pending=(async()=>{try{

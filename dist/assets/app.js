@@ -1598,6 +1598,11 @@
     else if(dayById(day)) {if(replayDialog.open)replayDialog.close(); photoDialog.close(); $('#album-dialog').close(); dismissIntroduction();setActiveDay(day,true);showJournal(true);}
   }
   window.addEventListener('hashchange',handleDeepLink);
+  window.addEventListener('atlas-photos-renewing',()=>{
+    const photo=photoDialog.open?photosForDay(viewerDay().id)[viewerPhotoIndex]:null;
+    const params=new URLSearchParams(photo?{photo:photo.id}:{day:activeDayId});
+    history.replaceState(null,'',location.pathname+location.search+'#'+params);
+  });
   $('#close-album').addEventListener('click',()=>$('#album-dialog').close());
   $('#album-days').addEventListener('click', event => {
     const button = event.target.closest('[data-album-day]');
