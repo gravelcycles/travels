@@ -72,6 +72,16 @@ test('full-only failures remain blank rather than falling back to a cached small
  f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();
  assert.equal(img.dataset.photoState,'error');assert.ok(!img.src.startsWith('blob:'));assert.notEqual(img.src,photo.blur);
 });
+test('revisiting a decoded full photo skips loading state without another download',async()=>{
+ const f=fixture();await f.unlock();const img=new Element();img.decode=()=>Promise.resolve();
+ f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();const original=img.src;
+ f.auth.setImage(img,albumPhoto(5),Infinity,{fullOnly:true});await settle();const count=f.calls.length;
+ const states=[];img.addEventListener('atlas-photo-state',()=>states.push(img.dataset.photoState));
+ img.decode=()=>new Promise(()=>{});
+ f.auth.setImage(img,photo,Infinity,{fullOnly:true});
+ assert.equal(img.src,original);assert.equal(img.dataset.photoState,'ready');assert.deepEqual(states,['ready']);
+ await settle();assert.equal(f.calls.length,count);
+});
 test('a full-image decode finishing after lock cannot reveal the photo',async()=>{
  const f=fixture();await f.unlock();let decoded;const img=new Element();img.decode=()=>new Promise(resolve=>decoded=resolve);
  f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();assert.equal(img.dataset.photoState,'loading');

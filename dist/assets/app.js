@@ -1013,6 +1013,14 @@
     }
   }
 
+  function sizeViewerBackdrop() {
+    const frame = $('#viewer-photo-frame'), image = $('#modal-photo');
+    const ratio = Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
+    const width = Number.isFinite(ratio) && ratio > 0 ? Math.min(frame.clientWidth, frame.clientHeight * ratio) : 0;
+    frame.style.setProperty('--photo-backdrop-width', `${width}px`);
+    frame.style.setProperty('--photo-backdrop-height', `${width ? width / ratio : 0}px`);
+  }
+
   function updateViewer() {
     const day = viewerDay();
     const dayChanged = activeDayId !== day.id;
@@ -1040,6 +1048,7 @@
       modalPhoto.sizes = "(max-width: 900px) 100vw, 75vw";
       if (photo.width) modalPhoto.width = photo.width;
       if (photo.height) modalPhoto.height = photo.height;
+      sizeViewerBackdrop();
       if (window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) {
         window.JOURNEY_ATLAS_AUTH.setImage(modalPhoto, photo, Infinity, {fullOnly:true});
       } else {
@@ -1338,7 +1347,7 @@
     const token=++replayPhotoToken;
     replayPhotoReady=!photo; frame.hidden=!photo;
     $('#replay-retry-photo').hidden=true;
-    $('#replay-photo-status').textContent=photo?'Loading photograph…':'';
+    $('#replay-photo-status').textContent='';
     image.onload=null; image.onerror=null;
     if(!photo) {window.JOURNEY_ATLAS_AUTH?.clearImage(image);image.removeAttribute('src');image.removeAttribute('srcset');image.alt='';$('#replay-photo-caption').textContent='';return;}
     image.className=''; image.alt=photo.alt || ''; image.sizes='(max-width: 900px) 100vw, 355px';
@@ -1687,11 +1696,12 @@
   $("#open-notes").addEventListener("click", () => $("#notes-dialog").showModal());
   $("#close-route-inspector").addEventListener("click", () => clearSegmentInspection(true));
   const viewerImage = $('#modal-photo');
+  new ResizeObserver(sizeViewerBackdrop).observe($('#viewer-photo-frame'));
   viewerImage.addEventListener('atlas-photo-state', () => {
     const state=viewerImage.dataset.photoState, feedback=$('#viewer-photo-feedback');
     viewerImage.closest('.photo-stage').classList.toggle('is-photo-loading', state === 'loading');
-    feedback.hidden=!['loading','error','locked'].includes(state);
-    $('#viewer-photo-message').textContent=state==='error'?'This photo could not load. Try again.':state==='locked'?'Unlock photos to see this photograph.':'Loading photograph…';
+    feedback.hidden=!['error','locked'].includes(state);
+    $('#viewer-photo-message').textContent=state==='error'?'This photo could not load. Try again.':state==='locked'?'Unlock photos to see this photograph.':'';
     $('#viewer-photo-retry').hidden=state==='loading';
     $('#viewer-photo-retry').textContent=state==='locked'?'Unlock photos':'Retry photo';
   });

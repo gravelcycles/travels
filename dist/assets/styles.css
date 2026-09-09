@@ -236,9 +236,11 @@ code { background: #dfe6e2; padding: 2px 4px; font-size: 0.8rem; }
 .photo-dialog::backdrop { background: #0d2226; }
 .photo-viewer { width: 100%; height: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(310px, 25vw); }
 .photo-stage { position: relative; isolation: isolate; overflow: hidden; min-width: 0; min-height: 0; display: grid; grid-template-columns: 58px minmax(0, 1fr) 58px; align-items: stretch; background: #0a1b1f; touch-action: pan-y; }
-.photo-stage::before { content: ""; position: absolute; z-index: -1; inset: -32px; background-image: var(--photo-backdrop, none); background-size: cover; background-position: center; filter: blur(24px); opacity: 0; pointer-events: none; }
-.photo-stage.is-photo-loading::before { opacity: .55; }
-.photo-stage figure { min-width: 0; min-height: 0; margin: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; position: relative; }
+.viewer-photo-frame { position: relative; min-width: 0; min-height: 0; }
+.viewer-photo-frame::before { content: ""; position: absolute; inset: 0; background-image: var(--photo-backdrop, none); background-size: var(--photo-backdrop-width, 0px) var(--photo-backdrop-height, 0px); background-repeat: no-repeat; background-position: center; opacity: 0; pointer-events: none; }
+.photo-stage.is-photo-loading .viewer-photo-frame::before { opacity: 1; }
+.photo-stage figure { min-width: 0; min-height: 0; margin: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto auto; position: relative; }
+.viewer-photo-frame #modal-photo { position: absolute; inset: 0; }
 .photo-stage img { width: 100%; height: 100%; min-height: 0; display: block; object-fit: contain; }
 .photo-stage img[hidden] { display: none; }
 .photo-stage figcaption { min-height: 54px; padding: 15px 12px 17px; color: #e9efed; text-align: center; font: italic 1rem Georgia, "Times New Roman", serif; }

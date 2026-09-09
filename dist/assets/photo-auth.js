@@ -114,8 +114,8 @@
   function display(img,item,entry) {
     item.entry?.refs.delete(img);item.entry=entry;entry.refs.add(img);
     img.dataset.photoCache=entry.edgeCache;img.dataset.photoBrowserCache=entry.revalidated?'revalidated':'download';img.dataset.photoDownloadMs=String(entry.downloadMs);img.dataset.photoServerTiming=entry.serverTiming;
-    const failed=()=>{if(images.get(img)===item&&img.src===entry.url)imageState(img,'error');};
-    const ready=()=>{if(images.get(img)===item&&img.src===entry.url){img.removeEventListener('error',failed);img.classList.add('is-loaded');imageState(img,'ready');}};
+    const failed=()=>{if(images.get(img)===item&&img.src===entry.url){entry.decoded=false;imageState(img,'error');}};
+    const ready=(decoded=true)=>{if(images.get(img)===item&&img.src===entry.url){if(decoded)entry.decoded=true;img.removeEventListener('error',failed);img.classList.add('is-loaded');imageState(img,'ready');}};
     // A normal load event is authoritative even if decode() rejects or stalls.
     // Ignore queued load events from the old placeholder while a new source loads.
     const loaded=()=>{
@@ -125,10 +125,12 @@
     };
     img.addEventListener('load',loaded);
     if(item.fullOnly)img.addEventListener('error',failed,{once:true});
-    if(item.fullOnly)imageState(img,'loading');
+    if(item.fullOnly&&!entry.decoded)imageState(img,'loading');
     img.src=entry.url;delete img.dataset.photoError;delete img.dataset.photoFailure;
+    // A previously displayed blob can be reused without flashing the loading UI.
+    if(item.fullOnly&&entry.decoded){img.classList.add('is-loaded');imageState(img,'ready');}
     if(item.fullOnly&&img.decode)img.decode().then(ready,()=>{if(img.complete&&img.naturalWidth>0&&(!img.currentSrc||img.currentSrc===entry.url))ready();});
-    else if(!item.fullOnly)ready();
+    else if(!item.fullOnly)ready(false);
   }
   async function hydrate(img) {
     const src=img.dataset.privateSrc;if(!src||(!local&&!token))return;
