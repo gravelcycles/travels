@@ -8,6 +8,11 @@ commit after it is known.
 
 ### Compact the catalog and improve its copy
 
+Published as `bcdca9b` in successful Pages run `34366124964`. A fresh public
+load confirmed the new landing copy, compact 106 px desktop card, renamed
+journey introduction, and orange photo selection with no Selected badge.
+The catalog still contains only the one real trip. No browser errors.
+
 - Replace the oversized hero/cards with “Where we went.” and a compact journey
   list: 4–5 entries at checked Mac dimensions and 2–3 at checked iPhone sizes.
   A local five-entry fixture verifies capacity; the public catalog has one trip.
