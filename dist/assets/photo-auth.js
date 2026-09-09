@@ -11,8 +11,8 @@
   const MAX_CACHE = 96, MAX_CACHE_BYTES = 64 * 1024 * 1024;
   const STATUS_INTERVAL = 60000;
   const REQUEST_TIMEOUT = 15000, MAX_TRANSFER_TIME = 120000, MAX_DOWNLOADS = 4;
-  const MAX_PREFETCH = 6, MAX_PHOTO_BYTES = 16 * 1024 * 1024;
-  const preloadTargets = new Set(), preloadFailures = new Set(), freshSources = new Set();
+  const MAX_PREFETCH = 80, MAX_PHOTO_BYTES = 16 * 1024 * 1024;
+  const preloadTargets = new Set(), preloadCompleted = new Set(), preloadFailures = new Set(), freshSources = new Set();
   let pumping = false, navigationPending = false;
   const downloadQueue = [], activeDownloads = new Set();
   let lastCheck = 0, checkPending = null;
@@ -57,7 +57,7 @@
   }
   function lock(broadcast=true) {
     token='';expiresAt=0;generation++;lastCheck=0;checkPending=null;restoreAfterExpiry=false;navigationPending=false;clearTimeout(expiryTimer);
-    preloadTargets.clear();preloadFailures.clear();
+    preloadTargets.clear();preloadCompleted.clear();preloadFailures.clear();
     try{sessionStorage.removeItem(ACCESS_KEY);}catch{}
     for(const [img,item] of images){item.cleanup?.();img.removeAttribute('srcset');img.src=item.blur;img.classList.remove('is-loaded');item.entry=null;item.loading=false;imageState(img,'locked');}
     for(const entry of cache.values()){entry.controller.abort();if(entry.url)URL.revokeObjectURL(entry.url);}
@@ -105,10 +105,13 @@
       && ![...activeDownloads].some(entry => entry.priority < 2);
   }
   function setPreloadSources(sources) {
-    const next = new Set(sources.filter(src => protectedPath.test(src)).slice(0, MAX_PREFETCH));
+    const next = new Set([...new Set(sources.filter(src => protectedPath.test(src)))].slice(0, MAX_PREFETCH));
     for (const src of preloadFailures) if (!next.has(src)) preloadFailures.delete(src);
+    for (const src of preloadCompleted) if (!next.has(src)) preloadCompleted.delete(src);
+    for (const src of next) if (cache.get(src)?.url) preloadCompleted.add(src);
     preloadTargets.clear();for (const src of next) preloadTargets.add(src);
-    for (const [src, entry] of cache) if (!entry.url && entry.priority === 2 && !next.has(src)) abortEntry(src, entry);
+    const first = [...next].find(src => !cache.get(src)?.url && !preloadCompleted.has(src) && !preloadFailures.has(src));
+    for (const [src, entry] of cache) if (!entry.url && entry.priority === 2 && src !== first) abortEntry(src, entry);
     pumpDownloads();
   }
   function setPreloads(requests = []) {
@@ -131,7 +134,7 @@
       }
       // Only one speculative transfer, and only after all visible work is ready.
       if (speculative && !activeDownloads.size && !downloadQueue.length) {
-        const src = [...preloadTargets].find(src => !cache.has(src) && !preloadFailures.has(src));
+        const src = [...preloadTargets].find(src => !cache.has(src) && !preloadCompleted.has(src) && !preloadFailures.has(src));
         if (src) {
           fetchPhoto(src, 2).then(prune, prune);
           const next = downloadQueue.shift();
@@ -180,7 +183,10 @@
         entry.bytes = blob.size;entry.bodyMs = Date.now() - started - entry.headersMs;entry.attempts = attempt + 1;
         entry.downloadMs = Date.now() - overallStarted;entry.edgeCache = response.headers.get('X-Photo-Cache') || 'UNKNOWN';
         entry.revalidated = response.headers.get('X-Photo-Revalidated') === '1';entry.serverTiming = response.headers.get('Server-Timing') || '';
-        entry.url = URL.createObjectURL(blob);freshSources.delete(src);return entry;
+        entry.url = URL.createObjectURL(blob);freshSources.delete(src);
+        // Memory eviction must not turn a completed background plan into a fetch loop.
+        if (preloadTargets.has(src)) preloadCompleted.add(src);
+        return entry;
       } catch (error) {
         if (controller.signal.aborted && !entry.controller.signal.aborted) error.photoFailure = 'timeout';
         if (attempt === 1 || entry.priority === 2 || error.permanent || epoch !== generation || entry.controller.signal.aborted) throw error;

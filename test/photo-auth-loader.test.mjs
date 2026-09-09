@@ -223,6 +223,10 @@ test('unused image bytes stay bounded even before the entry-count limit',async()
  const f=fixture(async()=>({status:200,ok:true,headers:new Headers({'Content-Type':'image/webp'}),blob:async()=>({size:10*1024*1024})}));await f.unlock();
  for(let i=1;i<=10;i++){f.auth.preload(albumPhoto(i));await settle();}
  assert.equal(f.revoked.length,4,'64 MiB retains six unused ten-MiB photos');
+ assert.equal(f.calls.length,10,'Evicted background bytes must not be fetched in a loop');
+ f.auth.setPreloads(Array.from({length:10},(_,i)=>({photo:albumPhoto(i+1),width:Infinity})));
+ await settle();assert.equal(f.calls.length,10);
+ f.auth.setImage(new Element(),albumPhoto(1),Infinity,{fullOnly:true});await settle();assert.equal(f.calls.length,11,'Visible selection can reload an evicted photo');
 });
 test('focus, visibility and timer checks share a minute throttle and ignore stale 401s',async()=>{
  let now=Date.now(),resolveStatus;
@@ -237,9 +241,9 @@ test('focus, visibility and timer checks share a minute throttle and ignore stal
 
 test('a selected photo bypasses a backlog of preloads using reserved download capacity',async()=>{
  const f=fixture((_url,options)=>new Promise((_resolve,reject)=>options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')))));
- await f.unlock();for(let i=1;i<=10;i++)f.auth.preload(albumPhoto(i));await settle();assert.equal(f.calls.length,2);
- const img=new Element();f.auth.setImage(img,albumPhoto(11));await settle();assert.equal(f.calls.length,3);
- assert.ok(f.calls[2][0].endsWith(albumPhoto(11).src));assert.equal(f.calls[2][1].priority,'high');f.auth.lock();await settle();
+ await f.unlock();for(let i=1;i<=10;i++)f.auth.preload(albumPhoto(i));await settle();assert.equal(f.calls.length,1);
+ const img=new Element();f.auth.setImage(img,albumPhoto(11));await settle();assert.equal(f.calls.length,2);
+ assert.ok(f.calls[1][0].endsWith(albumPhoto(11).src));assert.equal(f.calls[1][1].priority,'high');f.auth.lock();await settle();
 });
 test('a cached small image stays visible while the full-size download is pending or fails',async()=>{
  let fail;const f=fixture(url=>url.endsWith(photo.src)?new Promise(resolve=>fail=resolve):Promise.resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}})));
@@ -353,9 +357,9 @@ test('locking during asynchronous renewal preparation cancels navigation',async(
 });
 test('preload plans are bounded and transfer only one speculative image at a time',async()=>{
  const pending=[];const f=fixture((_url,options)=>new Promise((resolve,reject)=>{pending.push({resolve,options});options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')));}));await f.unlock();
- f.auth.setPreloads(Array.from({length:12},(_,i)=>({photo:albumPhoto(i+1),width:Infinity})));await settle();assert.equal(pending.length,1);
- for(let i=0;i<6;i++){assert.equal(pending.length,i+1);pending[i].resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));await settle();}
- assert.equal(pending.length,6);f.auth.setPreloads([]);await settle();assert.equal(pending.length,6);
+ f.auth.setPreloads(Array.from({length:100},(_,i)=>({photo:albumPhoto(i+1),width:Infinity})));await settle();assert.equal(pending.length,1);
+ for(let i=0;i<80;i++){assert.equal(pending.length,i+1);pending[i].resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));await settle();}
+ assert.equal(pending.length,80);f.auth.setPreloads([]);await settle();assert.equal(pending.length,80);
 });
 test('visible thumbnails preempt speculative bytes and resume the plan after loading',async()=>{
  const pending=[];const f=fixture((url,options)=>new Promise((resolve,reject)=>{pending.push({url,resolve,options});options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')));}));await f.unlock();
@@ -386,4 +390,19 @@ test('hidden tabs and data-saving connections suspend speculative work',async()=
  f.window.navigator.connection.saveData=false;f.document.hidden=true;f.auth.setPreloads([{photo:albumPhoto(1),width:Infinity}]);await settle();assert.equal(f.calls.length,0);
  f.document.hidden=false;f.events.get('visibilitychange')();await settle();assert.equal(f.calls.length,1);
  f.document.hidden=true;f.events.get('visibilitychange')();await settle();assert.equal(f.calls[0][1].signal.aborted,true);f.auth.lock();
+});
+
+test('a newly relevant photo preempts a later target even when both remain in the plan',async()=>{
+ const pending=[];const f=fixture((url,options)=>new Promise((resolve,reject)=>{pending.push({url,resolve,options});options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')));}));await f.unlock();
+ const a={photo:albumPhoto(1),width:Infinity},b={photo:albumPhoto(2),width:Infinity};
+ f.auth.setPreloads([a,b]);await settle();f.auth.setPreloads([b,a]);await settle();
+ assert.equal(pending[0].options.signal.aborted,true);assert.ok(pending[1].url.endsWith(b.photo.src));
+ pending[1].resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));await settle();
+ assert.ok(pending[2].url.endsWith(a.photo.src));f.auth.lock();await settle();
+});
+test('shared variants are deduplicated before the preload bound and cached plans do not refetch',async()=>{
+ const f=fixture();await f.unlock();const same={photo:albumPhoto(1),width:480};
+ const requests=[...Array(90).fill(same),{photo:albumPhoto(2),width:1280}];
+ f.auth.setPreloads(requests);for(let i=0;i<5;i++)await settle();assert.equal(f.calls.length,2);
+ f.auth.setPreloads(requests);await settle();assert.equal(f.calls.length,2);
 });

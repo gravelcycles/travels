@@ -243,6 +243,7 @@
   }
 
   function refreshPreloads() {
+    const days = journey.days.map(day => ({id:day.id, photos:photosForDay(day.id)}));
     if (replayDialog.open) {
       const current = replayLeadPhoto(replayMomentDay(), currentReplayMoment());
       const seen = new Set(current ? [current.id] : []), requests = [];
@@ -252,7 +253,7 @@
         seen.add(photo.id);requests.push({photo, width:Infinity});
         if (requests.length === 2) break;
       }
-      applyPreloads(requests);return;
+      applyPreloads([...requests, ...window.JOURNEY_ATLAS_UTILS.dayPreloadPlan(days, replayMomentDay().id)]);return;
     }
     if (photoDialog.open) {
       const photo = photosForDay(viewerDay().id)[viewerPhotoIndex];
@@ -260,13 +261,14 @@
       const all = orderedPhotos(), previous = all.findIndex(item => item.id === preloadSelection), current = all.findIndex(item => item.id === photo.id);
       if (previous >= 0 && previous !== current) preloadDirection = current > previous ? 1 : -1;
       preloadSelection = photo.id;
-      applyPreloads(window.JOURNEY_ATLAS_UTILS.photoPreloadPlan(journey.days.map(day => ({photos:photosForDay(day.id)})), photo.id, preloadDirection));
+      applyPreloads([
+        ...window.JOURNEY_ATLAS_UTILS.photoPreloadPlan(days, photo.id, preloadDirection),
+        ...window.JOURNEY_ATLAS_UTILS.dayPreloadPlan(days, viewerDay().id, preloadDirection)
+      ]);
       return;
     }
-    const dayIndex = journey.days.findIndex(day => day.id === activeDayId);
     const current = photosForDay(activeDayId)[0];
-    const next = journey.days.slice(dayIndex + 1).map(day => photosForDay(day.id)[0]).find(Boolean);
-    applyPreloads([...(current ? [{photo:current, width:Infinity}] : []), ...(next ? [{photo:next, width:1280},{photo:next, width:480}] : [])]);
+    applyPreloads([...(current ? [{photo:current, width:Infinity}] : []), ...window.JOURNEY_ATLAS_UTILS.dayPreloadPlan(days, activeDayId)]);
   }
 
   function modesForDay(day) {
@@ -1772,7 +1774,7 @@
   photoDialog.addEventListener("close", () => {
     viewerTransition?.cancel();viewerCameraPhoto = null;preloadSelection = null;preloadDirection = 1;
     window.JOURNEY_ATLAS_AUTH?.clearImage(viewerImage);viewerImage.removeAttribute('src');
-    window.JOURNEY_ATLAS_AUTH?.setPreloads([]);
+    refreshPreloads();
   });
   $(".photo-prev").addEventListener("click", () => moveViewer(-1));
   $(".photo-next").addEventListener("click", () => moveViewer(1));
@@ -1790,7 +1792,7 @@
   $("#replay-explore-day").addEventListener("click", exploreReplayDay);
   $("#replay-again").addEventListener("click", startReplay);
   $("#replay-explore-journey").addEventListener("click", exploreReplayJourney);
-  replayDialog.addEventListener("close", ()=>{ pauseReplay(); replayPhotoToken++; const img=$('#replay-photo'); img.onload=null;img.onerror=null; if(replayMap) replayMap.stop();window.JOURNEY_ATLAS_AUTH?.clearImage(img);img.removeAttribute('src');window.JOURNEY_ATLAS_AUTH?.setPreloads([]); });
+  replayDialog.addEventListener("close", ()=>{ pauseReplay(); replayPhotoToken++; const img=$('#replay-photo'); img.onload=null;img.onerror=null; if(replayMap) replayMap.stop();window.JOURNEY_ATLAS_AUTH?.clearImage(img);img.removeAttribute('src');refreshPreloads(); });
   document.addEventListener('visibilitychange',()=>{if(document.hidden) { pauseReplay(); viewerTransition?.cancel(); }});
   $('#replay-retry-photo').addEventListener('click',()=>renderReplayPhoto(replayLeadPhoto(replayMomentDay(),currentReplayMoment())));
   $('#replay-retry-map').addEventListener('click',()=>{if(replayMap)replayMap.remove();replayMap=null;replayMapReady=false;replayDecorations={layerIds:[],sourceIds:[],markers:[],hitLayerIds:[]};initReplayMap();});
