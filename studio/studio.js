@@ -30,6 +30,8 @@
   let savedRevisions = {};
   let savedStateRevision = null;
   let uploadingPhotos = false;
+  const pendingPhotoDays = new Map();
+  let photoUploadSerial = 0;
 
   const $ = (selector) => document.querySelector(selector);
 
@@ -227,8 +229,8 @@
     photoDay.innerHTML = days.map((day) => optionMarkup(day)).join("");
     const uploadDay = $('#upload-photo-day');
     const previousUploadDay = uploadDay.value;
-    uploadDay.innerHTML = days.map(day => optionMarkup(day)).join('');
-    uploadDay.value = days.some(day => day.id === previousUploadDay) ? previousUploadDay : (days.find(day => day.id === previousPhotoFilter)?.id || days[0]?.id || '');
+    uploadDay.innerHTML = '<option value="auto">Automatically match capture dates</option>' + days.map(day => optionMarkup(day)).join('');
+    uploadDay.value = days.some(day => day.id === previousUploadDay) ? previousUploadDay : 'auto';
     routeFilter.innerHTML = days.map((day) => `<option value="${escapeHtml(day.id)}">Day ${day.number} · ${escapeHtml(day.date)} · ${escapeHtml(day.title)}</option>`).join("");
     dayFilter.innerHTML = days.map((day) => `<option value="${escapeHtml(day.id)}">Day ${day.number} · ${escapeHtml(day.date)} · ${escapeHtml(day.title)}</option>`).join("");
     photoFilter.value = previousPhotoFilter === "all" || days.some((day) => day.id === previousPhotoFilter) ? previousPhotoFilter : (basePhotos[0] ? photoWithOverride(basePhotos[0]).dayId : "all");
@@ -921,31 +923,52 @@
     drawRouteEditor(false);
   }
 
-  async function uploadPhotos() {
-    const files = [...$('#upload-photo-files').files];
-    const dayId = $('#upload-photo-day').value;
+  function renderPendingPhotoDays() {
+    $('#photo-upload-review').innerHTML = [...pendingPhotoDays].filter(([,item]) => item.journeyId === journey.id).map(([id,item]) => `<section class="upload-day-review">
+      <strong>${escapeHtml(item.file.name)}</strong><p>${escapeHtml(item.error)}</p>
+      <label for="pending-photo-day-${id}">Journey day for this photo</label>
+      <select id="pending-photo-day-${id}">${journey.days.map(day => optionMarkup(day)).join('')}</select>
+      <button type="button" data-retry-photo-day="${id}" ${uploadingPhotos ? 'disabled' : ''}>Add this photo</button>
+    </section>`).join('');
+  }
+
+  async function uploadPhotos(retries) {
+    const dayId = $('#upload-photo-day').value || 'auto';
+    const entries = retries || [...$('#upload-photo-files').files].map(file => ({file, dayId}));
     const currentJourney = journey;
-    if (!files.length || !dayById(dayId)) { $('#photo-upload-status').textContent = 'Choose photos and a journey day first.'; return; }
+    if (!entries.length) { $('#photo-upload-status').textContent = 'Choose one or more photos first.'; return; }
     if (uploadingPhotos) return;
     uploadingPhotos = true;
     $('#upload-photos').disabled = true;
     $('#studio-journey').disabled = true;
+    ['#new-trip', '#upload-photo-files', '#upload-photo-day'].forEach(id => { $(id).disabled = true; });
     const messages = [];
+    const addedDayIds = new Set();
+    renderPendingPhotoDays();
     let lastPhotoId;
     try {
-      for (const [index, file] of files.entries()) {
-        $('#photo-upload-status').textContent = `Processing ${index + 1} of ${files.length}: ${file.name}`;
+      for (const [index, entry] of entries.entries()) {
+        const {file} = entry;
+        $('#photo-upload-status').textContent = `Processing ${index + 1} of ${entries.length}: ${file.name}`;
         try {
           if (file.size > 50 * 1024 * 1024) throw new Error('File exceeds 50 MB.');
-          const query = new URLSearchParams({ journeyId:currentJourney.id, dayId, filename:file.name });
+          const query = new URLSearchParams({ journeyId:currentJourney.id, dayId:entry.dayId, filename:file.name });
           const response = await fetch(`/api/photos/import?${query}`, { method:'POST', headers:{'Content-Type':'application/octet-stream'}, body:file });
           const result = await response.json();
-          if (!response.ok || !result.ok) throw new Error(result.error || 'Import failed.');
+          if (!response.ok || !result.ok) {
+            if (result.needsDay) {
+              const reviewId = entry.reviewId || String(++photoUploadSerial);
+              pendingPhotoDays.set(reviewId, {file, journeyId:currentJourney.id, error:result.error});
+            }
+            throw new Error(result.error || 'Import failed.');
+          }
+          if (entry.reviewId) pendingPhotoDays.delete(entry.reviewId);
           if (!basePhotos.some(photo => photo.id === result.photo.id)) basePhotos.push(result.photo);
           photosByJourney[currentJourney.id] = basePhotos;
           currentJourney.photos = basePhotos;
           lastPhotoId = result.photo.id;
-          messages.push(`${file.name}: ${result.duplicate ? 'already imported' : 'added locally'}.${result.warnings.length ? ' ' + result.warnings.join(' ') : ''}`);
+          addedDayIds.add(photoWithOverride(result.photo).dayId);
+          messages.push(`${file.name}: ${result.duplicate ? 'already imported' : 'added locally'} · Day ${dayById(photoWithOverride(result.photo).dayId)?.number || '—'}.${result.warnings.length ? ' ' + result.warnings.join(' ') : ''}`);
         } catch(error) { messages.push(`${file.name}: ${error.message} You can retry this file.`); }
       }
       // Photo intake changes the planner revision; force a fresh preview.
@@ -954,17 +977,19 @@
       const plan = plans.get(currentJourney.id);
       if (plan) { plan.revision = savedRevisions[currentJourney.id]; plan.previewed = false; plan.draft.photos = basePhotos; }
       renderDaySelectors();
-      $('#photo-day-filter').value = lastPhotoId ? photoWithOverride(basePhotos.find(p => p.id === lastPhotoId)).dayId : dayId;
+      $('#photo-day-filter').value = addedDayIds.size > 1 ? 'all' : lastPhotoId ? photoWithOverride(basePhotos.find(p => p.id === lastPhotoId)).dayId : dayId === 'auto' ? 'all' : dayId;
       $('#show-photo-trash').checked = Boolean(lastPhotoId && photoWithOverride(basePhotos.find(p => p.id === lastPhotoId)).trashed);
       renderPhotoGrid();
       if (lastPhotoId) selectPhoto(lastPhotoId, false);
-      $('#upload-photo-files').value = '';
+      if (!retries) { $('#upload-photo-files').value = ''; $('#photo-upload-selection').textContent = 'Choose more photos to add another batch.'; }
     } catch(error) { messages.push(error.message); }
     finally {
       uploadingPhotos = false;
       $('#upload-photos').disabled = false;
       $('#studio-journey').disabled = false;
+      ['#new-trip', '#upload-photo-files', '#upload-photo-day'].forEach(id => { $(id).disabled = false; });
       $('#photo-upload-status').textContent = messages.join('\n');
+      renderPendingPhotoDays();
     }
   }
 
@@ -999,6 +1024,7 @@
     selectedSegmentId = journey.days.flatMap((day) => day.segmentIds)[0] || null;
     selectedDayId = journey.days[0]?.id || null;
     renderJourneySelector();
+    renderPendingPhotoDays();
     if (mode === "planner") renderPlanner();
     if (!selectedSegmentId) clearSelectedRoute();
     selectPhoto(selectedPhotoId, false);
@@ -1213,7 +1239,6 @@
   $("#save-all").addEventListener("click", saveAll);
   $("#studio-journey").addEventListener("change", (event) => setJourney(event.target.value));
   $("#photo-day-filter").addEventListener("change", () => {
-    if (dayById($('#photo-day-filter').value)) $('#upload-photo-day').value = $('#photo-day-filter').value;
     renderPhotoGrid();
   });
   $('#show-photo-trash').addEventListener('change', () => {
@@ -1231,7 +1256,18 @@
     renderPhotoGrid();
     selectPhoto($('#studio-photo-grid [data-photo-id]')?.dataset.photoId || null, false);
   });
-  $('#upload-photos').addEventListener('click', uploadPhotos);
+  $('#upload-photos').addEventListener('click', () => uploadPhotos());
+  $('#upload-photo-files').addEventListener('change', () => {
+    const files = [...$('#upload-photo-files').files];
+    $('#photo-upload-selection').textContent = `${files.length} photo${files.length === 1 ? '' : 's'} selected${files.length ? ': ' + files.map(file => file.name).join(', ') : ''}`;
+  });
+  $('#photo-upload-review').addEventListener('click', event => {
+    const button = event.target.closest('[data-retry-photo-day]');
+    if (!button || uploadingPhotos) return;
+    const reviewId = button.dataset.retryPhotoDay;
+    const item = pendingPhotoDays.get(reviewId);
+    if (item?.journeyId === journey.id) uploadPhotos([{file:item.file, dayId:$(`#pending-photo-day-${reviewId}`).value, reviewId}]);
+  });
   $("#route-day-filter").addEventListener("change", () => {
     renderRouteList();
     const first = dayById($("#route-day-filter").value).segmentIds[0];
@@ -1303,7 +1339,7 @@
   $("#undo-route").addEventListener("click", () => restoreRouteHistory(-1));
   $("#redo-route").addEventListener("click", () => restoreRouteHistory(1));
   window.addEventListener("beforeunload", (event) => {
-    if (!dirty && !uploadingPhotos) return;
+    if (!dirty && !uploadingPhotos && !pendingPhotoDays.size) return;
     event.preventDefault();
     event.returnValue = "";
   });

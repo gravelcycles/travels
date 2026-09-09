@@ -556,3 +556,5 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible {
 
 .photo-landmark-stack { box-shadow:3px 3px 0 var(--panel), 4px 4px 0 #687b7e, 0 3px 9px #15323855; }
 .photo-landmark-count { position:absolute; right:-7px; top:-8px; min-width:21px; height:21px; padding:0 4px; display:grid; place-items:center; border-radius:12px; background:var(--ink); color:#fff; border:2px solid #fff; font-size:11px; font-weight:800; }
+
+.photo-layout-moving .photo-landmark-anchor { visibility:hidden; }

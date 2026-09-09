@@ -63,8 +63,10 @@ ignored local derivatives instead of GitHub Release URLs.
 
 ## Manage photos in Studio
 
-In **Photos**, expand **Upload photos**, choose a day and files, and click
-**Add photos locally**. Resizing and metadata processing are automatic. New
+In **Photos**, expand **Upload photos**, select multiple files, and click
+**Add photos locally**. Capture dates automatically assign each photo to its
+journey day; unmatched dates get an individual day picker. You can also choose
+a destination day explicitly. Resizing and metadata processing are automatic. New
 captions and notes are blank. **Move photo to trash** and **Show trash** provide
 recoverable deletion and restore; save those changes locally.
 
@@ -79,6 +81,9 @@ Photos with saved locations appear only when a day is selected. Photos within
 500 metres of one another share a counted thumbnail; click it to choose a
 photo. Every pair in a group must meet that distance limit, regardless of zoom.
 Distant groups remain separate, with thin lines to their saved pins if needed.
+Thumbnails and count badges stay clear of every route line. They hide during
+map movement and reappear in clear positions afterward. If a packed map has no
+clear space, the day album still contains every photo.
 **Fit route** and the initial journey overview show no photo landmarks and fit only the route and journey places.
 
 When moving between two located photos, the viewer map first frames both pins,

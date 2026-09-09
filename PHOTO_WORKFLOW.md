@@ -6,12 +6,22 @@ transfer, then publish a separate web-sized copy.
 
 ## Upload and delete in Studio
 
-Open **Photos → Upload photos**, choose the destination day and one or more
-JPEG, PNG, WebP or HEIC files, then choose **Add photos locally**. Each file can
-be up to 50 MB. Processing happens one photo at a time with per-file results;
-a failed file does not undo successful imports. The chosen day wins over the
-camera date, with a message if they differ. Repeating the same uploaded bytes
-returns the existing photo and preserves its day and edits.
+Open **Photos → Upload photos**, leave **Automatically match capture dates**
+selected, and choose multiple JPEG, PNG, WebP or HEIC files in one batch. Choose
+**Add photos locally**. Each photo is assigned to its own journey day using its
+capture date and the journey time zone, following the camera clock rule below.
+The file picker shows the selected count and names. A batch spanning days opens
+the **All days** grid so every successful import is available.
+
+Photos with missing, invalid, or out-of-trip dates stay in an individual day
+review list. Choose a day beside each file and click **Add this photo**; the
+file stays available in the tab without selecting it again. Finish these choices
+before closing the tab. You can also choose an explicit day for an entire batch
+when camera dates are wrong; a message explains any date mismatch.
+
+Each file can be up to 50 MB. Processing happens one photo at a time with per-file
+results; a failed file does not undo successful imports. Repeating identical
+uploaded bytes returns the existing photo and preserves its day and edits.
 
 The importer automatically rotates the image, makes the source-supported
 480/1280/2560/3200 px WebP variants without enlarging small images, and creates

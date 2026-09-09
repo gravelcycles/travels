@@ -86,7 +86,7 @@ test('trash excludes photos from public data even without hidden; restoring pres
 
 test('the upload UI retains successful files when a batch also contains a failure', async () => {
   const source = fs.readFileSync(path.join(repo, 'studio/studio.js'), 'utf8');
-  const start = source.indexOf('  async function uploadPhotos()');
+  const start = source.indexOf('  async function uploadPhotos(');
   const end = source.indexOf('\n  async function saveAll()', start);
   const nodes = new Map();
   const node = id => { if(!nodes.has(id)) nodes.set(id, { value:'', textContent:'', disabled:false }); return nodes.get(id); };
@@ -96,7 +96,8 @@ test('the upload UI retains successful files when a batch also contains a failur
   const basePhotos = [];
   const context = vm.createContext({
     $:node, journey:{id:'trip'}, basePhotos, photosByJourney:{}, plans:new Map(), savedRevisions:{}, uploadingPhotos:false,
-    URLSearchParams, dayById:id=>({id}), photoWithOverride:p=>p,
+    URLSearchParams, dayById:id=>({id,number:1}), photoWithOverride:p=>p,
+    pendingPhotoDays:new Map(),photoUploadSerial:0,renderPendingPhotoDays(){},
     renderDaySelectors(){},renderPhotoGrid(){},selectPhoto(id){context.selected=id;},
     fetch:async url=>({ok:true,json:async()=>url.includes('filename=broken')?{ok:false,error:'Cannot decode'}:url==='/api/state'?{revisions:{trip:'new-revision'}}:{ok:true,photo,duplicate:false,warnings:[]}})
   });
@@ -106,4 +107,55 @@ test('the upload UI retains successful files when a batch also contains a failur
   assert.match(node('#photo-upload-status').textContent,/broken.jpg: Cannot decode/);
   assert.match(node('#photo-upload-status').textContent,/good.jpg: added locally/);
   assert.equal(node('#upload-photos').disabled,false);
+});
+
+test('batch imports use each capture date with the journey timezone and keep captions blank', async t => {
+  const root=fixture(t);
+  const bytesFor=async metadata=>sharp({create:{width:480,height:320,channels:3,background:'#38745e'}}).jpeg().withExif({IFD2:metadata}).toBuffer();
+  const first=await importStudioPhoto(root,{journeyId,filename:'late-evening.jpg',bytes:await bytesFor({DateTimeOriginal:'2026:08:13 23:30:00',OffsetTimeOriginal:'-04:00'})});
+  const second=await importStudioPhoto(root,{journeyId,dayId:'auto',filename:'afternoon.jpg',bytes:await bytesFor({DateTimeOriginal:'2026:08:15 15:00:00'})});
+  assert.equal(first.photo.dayId,'family-d2');
+  assert.equal(second.photo.dayId,'family-d3');
+  assert.match(first.photo.takenAt,/2026-08-14/);
+  assert.equal(first.photo.caption,'');assert.equal(second.photo.description,'');
+  assert.equal(first.photo.lng,undefined);
+});
+
+test('missing and out-of-trip capture dates require an individual day instead of guessing', async t=>{
+  const root=fixture(t), bytes=await photoBytes();
+  await assert.rejects(importStudioPhoto(root,{journeyId,filename:'undated.jpg',bytes}),error=>error.needsDay===true && /No usable capture date/.test(error.message));
+  const outside=await sharp({create:{width:480,height:320,channels:3,background:'#356754'}}).jpeg().withExif({IFD2:{DateTimeOriginal:'2025:01:01 12:00:00'}}).toBuffer();
+  await assert.rejects(importStudioPhoto(root,{journeyId,filename:'outside.jpg',bytes:outside}),error=>error.needsDay===true && /outside this journey/.test(error.message));
+  const manual=await importStudioPhoto(root,{journeyId,filename:'undated.jpg',bytes,dayId:'family-d4'});
+  assert.equal(manual.photo.dayId,'family-d4');
+  const duplicate=await importStudioPhoto(root,{journeyId,filename:'renamed.jpg',bytes});
+  assert.equal(duplicate.duplicate,true);assert.equal(duplicate.photo.dayId,'family-d4');
+});
+
+test('auto batch UI shows all assigned days and retains undated files for individual retry', async () => {
+  const source=fs.readFileSync(path.join(repo,'studio/studio.js'),'utf8');
+  const start=source.indexOf('  async function uploadPhotos('), end=source.indexOf('\n  async function saveAll()',start);
+  const nodes=new Map(), node=id=>{if(!nodes.has(id))nodes.set(id,{value:'',textContent:'',disabled:false});return nodes.get(id);};
+  node('#upload-photo-day').value='auto';
+  node('#upload-photo-files').files=['first','second','undated'].map(name=>({name:`${name}.jpg`,size:10}));
+  const basePhotos=[], pendingPhotoDays=new Map(), requested=[];
+  const context=vm.createContext({$:node,journey:{id:'trip'},basePhotos,photosByJourney:{},plans:new Map(),savedRevisions:{},uploadingPhotos:false,
+    pendingPhotoDays,photoUploadSerial:0,URLSearchParams,dayById:id=>({id,number:id==='d1'?1:2}),photoWithOverride:p=>p,
+    renderPendingPhotoDays(){},renderDaySelectors(){},renderPhotoGrid(){},selectPhoto(){},
+    fetch:async url=>({ok:true,json:async()=>{
+      if(url==='/api/state')return {revisions:{trip:'revision'}};
+      const query=new URL(url,'http://localhost').searchParams;requested.push(query.get('dayId'));
+      const id=query.get('filename');
+      if(id==='undated.jpg' && query.get('dayId')==='auto')return {ok:false,needsDay:true,error:'Choose a day'};
+      return {ok:true,photo:{id,dayId:id==='first.jpg'?'d1':'d2'},duplicate:false,warnings:[]};
+    }})});
+  vm.runInContext(source.slice(start,end),context);
+  await vm.runInContext('uploadPhotos()',context);
+  assert.deepEqual(requested,['auto','auto','auto']);assert.equal(basePhotos.length,2);
+  assert.equal(node('#photo-day-filter').value,'all');assert.equal(pendingPhotoDays.size,1);
+  const [reviewId,pending]=[...pendingPhotoDays][0];
+  context.retries=[{file:pending.file,dayId:'d2',reviewId}];
+  await vm.runInContext('uploadPhotos(retries)',context);
+  assert.equal(basePhotos.length,3);assert.equal(pendingPhotoDays.size,0);
+  assert.equal(requested.at(-1),'d2');
 });

@@ -1,5 +1,27 @@
 # Next-agent handoff
 
+## Route clearance and automatic batch photo days · 9 September 2026
+
+Photo thumbnails and count badges now avoid every journey route, including
+muted context routes. Placement checks whole projected line segments, then
+moves thumbnails to clear positions with exact-pin leader lines. Thumbnails
+hide during camera movement and reflow afterward. A fully obstructed view omits
+a landmark instead of covering the route; all photos remain in the day album.
+Day-only scope and the 500 m all-pairs grouping limit remain unchanged.
+
+Studio multi-file upload defaults to capture-date assignment per photo, using
+the journey time zone. Missing/invalid/out-of-trip dates retain the file in an
+individual day picker for retry. Explicit batch-day assignment remains available.
+A batch spanning multiple days opens All days. Import processing, blank copy,
+private originals and reviewed asset publishing remain as documented in
+`PHOTO_WORKFLOW.md`. No traveler photos were imported during QA.
+
+Validation: 70 tests pass, including complete route-edge clearance, obstructed
+maps, timezone-aware batch assignments, mixed-success uploads and individual
+retry. An isolated HTTP server assigned dated JPEGs to Days 1 and 3, rejected an
+undated photo for review, then imported it on the explicitly selected Day 2.
+Browser checks confirmed automatic/multiple selection defaults and route clearance.
+
 ## Day-only photo groups, Studio counts, and Replay camera · 9 September 2026
 
 Published as `aca28dc` in successful Pages run `34358287577`. Fresh public

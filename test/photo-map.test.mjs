@@ -121,3 +121,23 @@ test('distant groups that overlap on screen move apart without merging', () => {
     assert.ok(Math.abs(item.point.x-other.point.x)>=56 || Math.abs(item.point.y-other.point.y)>=56);
   }
 });
+
+test('photo boxes and count badges avoid entire route segments, including long crossings', () => {
+  const {photoLandmarkLayout,routeIntersectsPhotoBox}=globalThis.JOURNEY_ATLAS_UTILS;
+  const routes=[[{x:-100,y:230},{x:900,y:230}],[{x:180,y:-100},{x:180,y:800}]];
+  const photos=[photo('a',8,47),photo('b',8.03,47)];
+  const layout=photoLandmarkLayout(photos,()=>({x:180,y:230}),{width:650,height:500,routes});
+  assert.equal(layout.length,2);
+  for(const item of layout) {
+    assert.equal(routeIntersectsPhotoBox(item.point,routes),false);
+    assert.ok(Math.hypot(...item.offset)>36);
+  }
+  assert.equal(routeIntersectsPhotoBox({x:180,y:230},routes),true);
+  assert.equal(routeIntersectsPhotoBox({x:50,y:50},routes),false);
+});
+
+test('a fully obstructed view never falls back to putting photographs over routes', () => {
+  const routes=Array.from({length:57},(_,i)=>[{x:0,y:i*10},{x:390,y:i*10}]);
+  const layout=globalThis.JOURNEY_ATLAS_UTILS.photoLandmarkLayout([photo('a',8,47)],()=>({x:180,y:230}),{width:390,height:560,routes});
+  assert.equal(layout.length,0);
+});

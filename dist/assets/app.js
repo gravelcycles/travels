@@ -448,7 +448,11 @@
     };
     mainMap.on("styledata", finishMainMapSetup);
     mainMap.on("load", finishMainMapSetup);
-    mainMap.on("moveend", () => { refreshPhotoLandmarks(); refreshDayMarkerOffsets(); });
+    mainMap.on("movestart", () => { $('#map').classList.add('photo-layout-moving'); });
+    mainMap.on("moveend", () => {
+      refreshPhotoLandmarks(); refreshDayMarkerOffsets();
+      $('#map').classList.remove('photo-layout-moving');
+    });
     finishMainMapSetup();
     mainMap.on("click", (event) => {
       const feature = routeFeatureAtPoint(event.point);
@@ -644,7 +648,8 @@
     const photos = mapScope === "day" && photoLandmarkDayId ? photosForDay(photoLandmarkDayId) : [];
     const legendRoom = Math.max(76, canvas.getBoundingClientRect().bottom - $("#map-legend").getBoundingClientRect().top + 12);
     const layout = window.JOURNEY_ATLAS_UTILS.photoLandmarkLayout(photos, point => mainMap.project(point), {
-      width: canvas.clientWidth, height: canvas.clientHeight, bottom: legendRoom
+      width: canvas.clientWidth, height: canvas.clientHeight, bottom: legendRoom,
+      routes: photos.length ? journey.segments.map(segment => segmentCoordinates(segment).map(point => mainMap.project(point))) : []
     });
     const key = JSON.stringify(layout.map(({ photo, photos, offset }) => [photo.id, photos.map(item => item.id), ...offset.map(value => Math.round(value))]));
     if (key === photoLandmarkKey) return;

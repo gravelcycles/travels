@@ -19,16 +19,34 @@ export function atomicJson(filename, value) {
   fs.renameSync(temporary, filename);
 }
 
+export function assignPhotoDay(journey, metadata, dayId = 'auto') {
+  let captured;
+  try { captured = captureDateParts(metadata, journey.timeZone); } catch { /* Requires a manual day below. */ }
+  if (!dayId || dayId === 'auto') {
+    const day = captured && journey.days.find(day => day.calendarDate === captured.date);
+    if (!day) {
+      const error = new Error(captured ? `Capture date ${captured.date} is outside this journey. Choose a day for this photo.` : 'No usable capture date. Choose a day for this photo.');
+      error.needsDay = true;
+      throw error;
+    }
+    return { day, captured, warnings: [] };
+  }
+  const day = journey.days.find(day => day.id === dayId);
+  if (!day) throw new Error('Choose a day in this journey.');
+  const warnings = !captured ? ['No usable capture date; used your selected day.']
+    : captured.date !== day.calendarDate ? [`Camera date is ${captured.date}; used your selected day (${day.calendarDate}).`] : [];
+  return { day, captured, warnings };
+}
+
 // Imports append separately from bulk camera imports. Originals and GPS stay
 // private; the public build excludes assetStatus:local until publishing succeeds.
-export async function importStudioPhoto(root, { journeyId, dayId, filename, bytes }) {
+export async function importStudioPhoto(root, { journeyId, dayId = 'auto', filename, bytes }) {
   if (!Buffer.isBuffer(bytes) || !bytes.length || bytes.length > MAX_PHOTO_BYTES) throw new Error('Choose a nonempty photo up to 50 MB.');
   const extension = path.extname(filename || '').toLowerCase();
   if (!['.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif'].includes(extension)) throw new Error('Choose a JPEG, PNG, WebP, or HEIC photograph. Videos are not supported.');
   const config = photoImportConfig(root, loadJourneys(root, { includeDrafts: true }), { journey: journeyId });
-  const { journey, timeZone } = config;
-  const day = journey.days.find(d => d.id === dayId);
-  if (!day) throw new Error('Choose a day in this journey.');
+  const { journey } = config;
+  if (dayId && dayId !== 'auto' && !journey.days.some(day => day.id === dayId)) throw new Error('Choose a day in this journey.');
   const hash = crypto.createHash('sha256').update(bytes).digest('hex');
   const id = `${journey.id}-upload-${hash.slice(0, 20)}`;
   const manifestPath = uploadManifestPath(root, journey);
@@ -47,10 +65,10 @@ export async function importStudioPhoto(root, { journeyId, dayId, filename, byte
   try {
     let metadata = {};
     try { metadata = await exifr.parse(source, { reviveValues: false, pick: ['DateTimeOriginal', 'CreateDate', 'OffsetTimeOriginal', 'OffsetTimeDigitized', 'latitude', 'longitude', 'Orientation'] }) || {}; }
-    catch { warnings.push('Camera metadata could not be read; the selected day was used.'); }
-    let captured;
-    try { captured = captureDateParts(metadata, timeZone); if (captured.date !== day.calendarDate) warnings.push(`Camera date is ${captured.date}; kept your selected day (${day.calendarDate}).`); }
-    catch { warnings.push('No usable capture date; kept your selected day.'); }
+    catch { warnings.push('Camera metadata could not be read.'); }
+    const assignment = assignPhotoDay(journey, metadata, dayId);
+    const { day, captured } = assignment;
+    warnings.push(...assignment.warnings);
     let decoded = source;
     if (['.heic', '.heif'].includes(extension)) {
       if (process.platform !== 'darwin') throw new Error('HEIC conversion requires macOS. Export a JPEG and try again.');
@@ -70,7 +88,7 @@ export async function importStudioPhoto(root, { journeyId, dayId, filename, byte
     }
     const blur = await image.clone().resize({ width: 32, withoutEnlargement: true }).blur(1.1).webp({ quality: 28 }).toBuffer();
     const largest = variants.at(-1);
-    const photo = { id, dayId, src: largest.src, srcset: variants.map(({ src, width }) => ({ src, width })), width: largest.width, height: largest.height,
+    const photo = { id, dayId: day.id, src: largest.src, srcset: variants.map(({ src, width }) => ({ src, width })), width: largest.width, height: largest.height,
       blur: `data:image/webp;base64,${blur.toString('base64')}`, caption: '', description: '', captionSource: 'user',
       alt: `Photo from Day ${day.number}`, sourceFilename: path.basename(filename),
       takenAt: captured ? `${captured.date} · ${captured.time}` : '', assetStatus: 'local' };

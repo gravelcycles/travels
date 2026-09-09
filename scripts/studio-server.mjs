@@ -155,7 +155,7 @@ const server = http.createServer((request, response) => {
         if (tooLarge) return;
         const result = await importStudioPhoto(repoRoot, { journeyId:url.searchParams.get('journeyId'), dayId:url.searchParams.get('dayId'), filename:url.searchParams.get('filename'), bytes:Buffer.concat(chunks) });
         send(response, 201, JSON.stringify({ ok:true, ...result }), 'application/json');
-      } catch(error) { send(response, 400, JSON.stringify({ ok:false, error:error.message }), 'application/json'); }
+      } catch(error) { send(response, 400, JSON.stringify({ ok:false, error:error.message, needsDay:Boolean(error.needsDay) }), 'application/json'); }
       finally { photoImportBusy = false; }
     });
     return;

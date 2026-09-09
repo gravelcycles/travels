@@ -6,6 +6,17 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Keep photo thumbnails off routes and automatically sort batch uploads
+
+- Check entire route segments when placing photo thumbnails and count badges;
+  use clear positions with leader lines, reflow after camera movement, and omit
+  crowded landmarks when no clear position exists. Albums retain every photo.
+- Default multi-file Studio uploads to each photo's capture date in the journey
+  time zone. Retain unmatched files for individual day selection and retry;
+  preserve an explicit batch-day override and show all assigned days afterward.
+- Document the automatic intake and exception flow. All 70 tests pass; isolated
+  HTTP tests verify dated and undated uploads without changing traveler albums.
+
 ### Day-only 500 metre photo groups and route-led Replay cameras
 
 Published as `aca28dc` in successful Pages run `34358287577`. Fresh public

@@ -41,13 +41,15 @@
           <label class="checkbox"><input id="show-photo-trash" type="checkbox" /> Show trash</label>
           <details class="photo-upload-panel">
             <summary>Upload photos</summary>
-            <label for="upload-photo-day">Add to day</label>
+            <label for="upload-photo-day">Assign photos to days</label>
             <select id="upload-photo-day"></select>
-            <label for="upload-photo-files">Choose photos</label>
+            <label for="upload-photo-files">Choose photos (select multiple)</label>
             <input id="upload-photo-files" type="file" accept=".jpg,.jpeg,.png,.webp,.heic,.heif" multiple />
-            <p class="editor-note">JPEG, PNG, WebP or HEIC · Up to 50 MB each. Images are resized automatically and kept local until published. Captions start blank.</p>
+            <p id="photo-upload-selection" class="editor-note" role="status">Select as many photos as you like in one batch.</p>
+            <p class="editor-note">Capture dates automatically match journey days. Photos without a matching date can be assigned individually. JPEG, PNG, WebP or HEIC · Up to 50 MB each. Images are resized automatically and kept local until published. Captions start blank.</p>
             <button id="upload-photos" type="button">Add photos locally</button>
             <div id="photo-upload-status" role="status" aria-live="polite"></div>
+            <div id="photo-upload-review"></div>
           </details>
           <div class="photo-grid" id="studio-photo-grid"></div>
         </section>
@@ -218,6 +220,6 @@
     <script src="/api/preview-assets/trip-photos.js"></script>
     <script src="/api/preview-assets/content-overrides.js"></script>
     <script src="/dist/assets/atlas-utils.js"></script>
-    <script src="/studio.js?v=20260909-photo-counts"></script>
+    <script src="/studio.js?v=20260909-photo-auto-dates"></script>
   </body>
 </html>
