@@ -1,5 +1,47 @@
 # Private photo access — implementation handoff
 
+## Edge caching and small thumbnails — 9 September 2026
+
+The owner approved implementation and deployment conditional on staying free.
+The existing Workers Free/R2 setup is retained; no domain, subscription or paid
+plan was added. Worker version `4a6edd8b-d588-4460-a514-67c749442134`
+uses Workers Cache on an internal PhotoCache entrypoint. The public gateway has
+caching explicitly disabled and validates origin/token on every GET/HEAD before
+calling that entrypoint with a clean request. Immutable successful WebP bytes
+are cacheable for one year internally; visitor responses and errors stay no-store.
+X-Photo-Cache and Server-Timing expose cache behavior without exposing credentials.
+Cached internal fetches count against Workers request allowances as well as the
+gateway request; do not describe these as unlimited free requests.
+
+The visible album has 99 new 480px thumbnails (4,517,224 bytes total) alongside
+the existing 1280px previews and large photos. Filmstrips and album cards request
+480px. The viewer immediately reuses a loaded thumbnail or preview while upgrading,
+with the tested bounded queue, timeouts and retries. All 111 tests and the Worker
+runtime pass; the local 21-photo album passes navigation without stalls. New imports and
+the private publisher support thumbnail/preview/full-size variants.
+
+
+## Photo loading recovery and request priority — 9 September 2026
+
+The earlier cache change did not address hung downloads or request competition.
+The shared private-photo loader now limits downloads to four, with at most two
+background requests so a selected photo has capacity. It shows the available
+1280px image before fetching a larger viewer image, preloads only small neighbors,
+cancels abandoned requests, and avoids eagerly hydrating every tracked image at
+unlock. Private images use only the auth loader's visibility observer.
+
+Each download attempt has a ten-second timeout covering both headers and body,
+with one retry for transient failures. The viewer shows loading/error/locked
+states with Retry photo or Unlock photos actions. Failed large-image upgrades
+retain the smaller photo; old request failures cannot affect a new selection.
+
+Build and all 108 tests pass, including stalled headers/body, transient recovery,
+foreground priority, abandoned loads, preview retention, and expired access.
+The 21-photo album passes browser navigation. A localhost fault server reproduced
+a hung download, the eventual Retry button, and successful recovery on retry.
+No Worker or authentication-policy change is required for this frontend fix.
+
+
 ## Performance and Replay improvements — 9 September 2026
 
 Photo memory caching, responsive viewer requests, coalesced status checks,

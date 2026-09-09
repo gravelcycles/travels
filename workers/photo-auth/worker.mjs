@@ -35,7 +35,7 @@ async function grantCode(env, id, origin, challenge, rememberExpires) {
   return { code };
 }
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     let corsOrigin = null, stage = 'configuration';
     try {
       const url = new URL(request.url), ownOrigin = url.origin, origin = request.headers.get('Origin');
@@ -98,11 +98,22 @@ export default {
         if (url.pathname.endsWith('/auth/status')) return json(200, { unlocked: true, expiresAt: session.exp }, corsOrigin);
         const key = url.pathname.slice(`${PREFIX}assets/`.length);
         if (!assetPattern.test(key) || url.search) return json(404, { error: 'Photo not found' }, corsOrigin);
-        if (!env.PHOTOS?.get || !env.PHOTOS?.head) throw new Error('Missing storage');
-        const object = request.method === 'HEAD' ? await env.PHOTOS.head(key) : await env.PHOTOS.get(key);
-        if (!object) return json(404, { error: 'Photo not found' }, corsOrigin);
-        if (object.httpMetadata?.contentType !== 'image/webp') throw new Error('Unexpected object type');
-        return new Response(request.method === 'HEAD' ? null : object.body, { headers: headers(corsOrigin, { 'Content-Type': 'image/webp', 'Content-Length': String(object.size), 'Content-Disposition': 'inline', 'Cross-Origin-Resource-Policy': 'cross-origin' }) });
+        stage = 'photo-cache';
+        // A fresh header-free request keeps credentials, Origin, Range and browser
+        // no-cache directives out of the internal shared cache key and policy.
+        // The default public entrypoint is NEVER cached: auth above runs on hits too.
+        const started = performance.now();
+        const response = await ctx.exports.PhotoCache.fetch(new Request(url.toString(), { method: request.method }));
+        if (response.status === 404) return json(404, { error: 'Photo not found' }, corsOrigin);
+        if (!response.ok || response.headers.get('Content-Type') !== 'image/webp') throw new Error('Photo cache unavailable');
+        const cacheStatus = response.headers.get('Cf-Cache-Status') || 'UNKNOWN';
+        return new Response(request.method === 'HEAD' ? null : response.body, { headers: headers(corsOrigin, {
+          'Content-Type': 'image/webp', 'Content-Length': response.headers.get('Content-Length'),
+          'Content-Disposition': 'inline', 'Cross-Origin-Resource-Policy': 'cross-origin',
+          'X-Photo-Cache': cacheStatus,
+          'Server-Timing': `photo;dur=${(performance.now()-started).toFixed(1)}`,
+          'Access-Control-Expose-Headers': 'X-Photo-Cache, Server-Timing',
+        }) });
       }
       return json(404, { error: 'Not found' }, corsOrigin);
     } catch (error) {

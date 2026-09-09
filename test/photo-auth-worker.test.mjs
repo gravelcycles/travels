@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import worker from '../workers/photo-auth/worker.mjs';
+import { cachedPhoto } from '../workers/photo-auth/photo-cache.mjs';
 import { createCredential, issueToken, random, validateToken, base64url, hashPasswordProof } from '../workers/photo-auth/crypto.mjs';
 import { derivePasswordProofs } from '../workers/photo-auth/password-kdf.mjs';
 import { pbkdf2Sync } from 'node:crypto';
@@ -20,10 +21,12 @@ function fixture() {
   const reads = [], grants = new Map();
   const AUTH_CODES={idFromName:id=>id,get:id=>({fetch:async(url,options)=>{const body=JSON.parse(options.body);if(url.endsWith('/create')){grants.set(id,body);return Response.json({ok:true});}const grant=grants.get(id);if(!grant||grant.exp<=Date.now()/1000||grant.origin!==body.origin||grant.challenge!==body.challenge)return Response.json(null,{status:401});grants.delete(id);return Response.json(grant);}})};
   const env = { AUTH_CODES, PHOTO_CREDENTIALS: JSON.stringify({ version: 2, credentials: [first, second] }), SESSION_SIGNING_KEY: random(), ALLOWED_ORIGINS: JSON.stringify([origin]), LOGIN_LIMITER: { limit: async () => ({ success: true }) }, PHOTOS: { get: async k => { reads.push(k); return { body: new Uint8Array([1,2,3]), size: 3, httpMetadata: { contentType: 'image/webp' } }; }, head: async k => { reads.push(k); return { size: 3, httpMetadata: { contentType: 'image/webp' } }; } } };
-  const request = (route, options = {}) => worker.fetch(new Request(`${host}/private-photos/${route}`, options), env);
+  const forwarded = [];
+  const ctx = { exports: { PhotoCache: { fetch: async request => { forwarded.push(request); return cachedPhoto(request,env); } } } };
+  const request = (route, options = {}) => worker.fetch(new Request(`${host}/private-photos/${route}`, options), env, ctx);
   const post = async (route, body, cookie) => { if(route==='login'&&typeof body.password==='string'&&body.password.length<=512){const {password,...rest}=body;body={...rest,proofs:await derivePasswordProofs(password,[first,second])};} return request(`auth/${route}`, { method: 'POST', headers: { Origin: host, 'Content-Type': 'application/json', ...(cookie ? { Cookie: cookie } : {}) }, body: JSON.stringify({ origin, challenge, ...body }) }); };
   const redeem=code=>request('auth/redeem',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({code,verifier})});
-  return { env, reads, request, post, redeem };
+  return { env, reads, forwarded, ctx, request, post, redeem };
 }
 test('both passwords unlock, repeat logins differ, and cookies remember only on the first-party service', async () => {
   const f = fixture();
@@ -114,4 +117,41 @@ test('server verification never derives passwords and rejects leaked stored veri
  assert.equal((await f.post('login',{proofs:[{id:first.id,proof:first.hash},{id:second.id,proof:second.hash}]})).status,401);
  assert.equal((await f.post('login',{proofs:[proofs[0],proofs[0]]})).status,401);
  assert.equal((await f.request('auth/login',{method:'POST',headers:{Origin:host,'Content-Type':'application/json'},body:JSON.stringify({origin,challenge,password:'fixture-only-family-password'})})).status,401);
+});
+
+test('internal cache hits remain behind auth; credentials and browser bypass headers never enter the cache', async () => {
+  const f=fixture(), token=await issueToken(f.env,first.id,origin);
+  let stored, calls=0;
+  f.ctx.exports.PhotoCache.fetch=async request=>{
+    calls++;
+    assert.deepEqual([...request.headers],[]);
+    if(!stored)stored=await cachedPhoto(request,f.env);
+    const response=stored.clone();response.headers.set('Cf-Cache-Status',calls===1?'MISS':'HIT');return response;
+  };
+  const headers={Origin:origin,Authorization:`Bearer ${token.token}`,Cookie:'ignored=value','Cache-Control':'no-cache',Range:'bytes=0-1'};
+  for(const expected of ['MISS','HIT']) {
+    const response=await f.request(`assets/${key}`,{headers});
+    assert.equal(response.status,200);assert.equal(response.headers.get('X-Photo-Cache'),expected);
+    assert.equal(response.headers.get('Cache-Control'),'no-store');
+    assert.equal(response.headers.get('Access-Control-Allow-Origin'),origin);
+    assert.equal(response.headers.get('Set-Cookie'),null);
+    assert.equal((await response.arrayBuffer()).byteLength,3);
+  }
+  assert.equal(f.reads.length,1);
+  assert.equal((await f.request(`assets/${key}`,{headers:{Origin:origin}})).status,401);
+  assert.equal((await f.request(`assets/${key}`,{headers:{...headers,Origin:'https://evil.example'}})).status,401);
+  f.env.PHOTO_CREDENTIALS=JSON.stringify({version:2,credentials:[second]});
+  assert.equal((await f.request(`assets/${key}`,{headers})).status,401);
+  assert.equal(calls,2,'revoked and anonymous requests must not consult a warm cache');
+});
+
+test('only immutable successful photo bytes are cacheable internally', async () => {
+  const f=fixture(),request=new Request(`${host}/private-photos/assets/${key}`);
+  const good=await cachedPhoto(request,f.env);
+  assert.equal(good.headers.get('Cache-Control'),'public, max-age=31536000, immutable');
+  f.env.PHOTOS.get=async()=>null;
+  for(const url of [request.url,request.url+'?extra=1',`${host}/private-photos/auth/status`]) {
+    const response=await cachedPhoto(new Request(url),f.env);
+    assert.equal(response.status,404);assert.equal(response.headers.get('Cache-Control'),'no-store');
+  }
 });

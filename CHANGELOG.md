@@ -6,6 +6,30 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Cache private photos after authentication and restore small thumbnails
+
+- Enable internal Workers Cache on workers.dev while keeping the public gateway
+  uncached and checking access on every request. No paid plan or domain added.
+- Restore 480px filmstrip/day-card images: 99 visible thumbnails total 4.52 MB,
+  compared with 34.45 MB for the previous smallest variants.
+- Reuse loaded thumbnails immediately in the viewer and keep larger upgrades
+  behind foreground requests. Include the stalled-download recovery fix below.
+- Add cache-status/timing diagnostics and regression checks for warm-cache auth,
+  stripped internal request headers, uncached errors, and thumbnail reuse.
+
+### Recover stalled photo loads and prioritize the selected photograph
+
+- Limit private downloads to four and background downloads to two. Selected
+  photos bypass queued thumbnails/preloads; abandoned loads are canceled.
+- Display a cached or quickly fetched 1280px photo while its larger viewer image
+  loads. Keep that preview if the large-image request fails. Neighbor preloads
+  use 1280px; unlocking respects lazy image loading and avoids duplicate observers.
+- Time out stalled response headers/bodies after ten seconds and retry transient
+  failures once. Offer Retry photo on failure and Unlock photos for locked access.
+- All 108 tests pass. Browser QA covers the 21-photo album and a deliberately
+  hung local server: the viewer surfaces Retry and recovers when service resumes.
+
+
 ### Photo request efficiency, delayed Replay, and site QA
 
 - Retain up to 96 unused private image variants within 64 MiB instead of only

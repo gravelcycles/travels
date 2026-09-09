@@ -11,7 +11,7 @@ export async function publishPhotoAssets(root,journeyId,{publish=false,all=false
  const files=['','-uploads'].map(suffix=>path.join(root,journey.published?`content/photo-manifests/${journeyId}${suffix}.json`:`build/draft-assets/${journeyId}/${suffix?'uploads':'photos'}.json`)).filter(f=>fs.existsSync(f));
  const overrides=readOverrides(root),photos=files.flatMap(f=>readJson(f)).filter(p=>(all||p.assetStatus==='local')&&!overrides.photos[p.id]?.hidden&&!overrides.photos[p.id]?.trashed);
  const assets=new Map();
- for(const photo of photos){if(!photo.protected||!photo.srcset?.length||photo.srcset.length>2)throw new Error('Migrate this photo to the private two-size format first.');for(const variant of photo.srcset){
+ for(const photo of photos){if(!photo.protected||!photo.srcset?.length||photo.srcset.length>3)throw new Error('Migrate this photo to the private thumbnail/preview/full-size format first.');for(const variant of photo.srcset){
   if(!isPrivatePhotoUrl(variant.src))throw new Error('Only private photo paths may be published.');
   const filename=privatePhotoFile(root,variant.src),data=fs.readFileSync(filename),key=variant.src.slice(PRIVATE_PREFIX.length),digest=crypto.createHash('sha256').update(data).digest('hex');
   if(key!==`v1/${digest}.webp`)throw new Error('Photo checksum does not match its storage key.');

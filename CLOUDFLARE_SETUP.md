@@ -89,15 +89,41 @@ the GitHub Pages workflow.
   the CORS preflight permission subject to their own caps; every actual photo
   GET/HEAD still validates access. Auth and image responses retain `no-store`.
 
-Cloudflare's Free plan includes ten Cache Rules, but these require a domain
-proxied through Cloudflare. The current site is on GitHub Pages and the photo
-Worker uses workers.dev. Cloudflare's R2 Cache API example says that edge caching
-requires a custom domain or Worker route; workers.dev deployments have no effect.
-An existing domain on Cloudflare could support this without a paid plan, with
-Worker authentication before every cache lookup and private/no-store responses
-to visitors. Do not put a shared cache in front of authentication or expose R2
-publicly. No domain or paid plan was added in this review.
+The deployed photo Worker uses the newer Workers Cache on workers.dev. The
+public default entrypoint has caching explicitly disabled, so every request
+validates the token and origin before invoking the internal PhotoCache entrypoint.
+Only that inner entrypoint caches immutable successful WebP responses for one
+year. It receives a fresh request without browser cache directives, cookies,
+Authorization, Origin, conditional or Range headers. Errors remain no-store.
+The gateway rebuilds the visitor response with no-store and the allowed Origin;
+R2 stays private. X-Photo-Cache and Server-Timing report the inner cache result
+and elapsed time; the frontend records these on the displayed image for QA.
+
+Correction to earlier guidance: the older R2 Cache API example needs a custom
+domain or route, but Workers Cache supports workers.dev and internal entrypoints.
+No domain or paid plan was added. Workers Cache has no separate cache fee, but
+cached internal invocations count against the Workers request allowance in
+addition to the gateway invocation. Workers Free caps account requests at
+100,000/day. R2 storage/read/write allowances still apply across the account.
+
+Filmstrips and album cards now use 480px thumbnails, while large day previews
+and Replay use 1280px and the viewer selects a larger size when needed. The
+99 visible thumbnails add 4,517,224 bytes to private storage. Generate missing
+thumbnails with `node scripts/add-photo-thumbnails.mjs --apply`, then use the
+existing private publisher before deploying changed manifests. New uploads also
+produce thumbnail/preview/full-size variants.
 
 Sources checked 9 September 2026:
 - https://developers.cloudflare.com/r2/examples/cache-api/
 - https://developers.cloudflare.com/cache/how-to/cache-rules/
+- https://developers.cloudflare.com/workers/cache/
+- https://developers.cloudflare.com/workers/cache/examples/
+- https://developers.cloudflare.com/workers/platform/pricing/
+
+### Follow-up: stalled requests
+
+The frontend also reserves download capacity for the selected photo (four total,
+two background), retains small previews during large-image upgrades, and times
+out/retries interrupted requests. Neighbor preloads use the smaller variant.
+This improves behavior under slow or stalled connections without a Worker,
+domain, paid-plan, or authentication-policy change. See the newest CHANGELOG.
