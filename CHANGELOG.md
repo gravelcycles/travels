@@ -6,6 +6,15 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Keep the map key in sync with highlighted routes
+
+- Selected days keep each transport mode's color, with thicker lines and full
+  opacity against muted trip context. Inspection increases width without
+  replacing the mode color. The key follows the focused day's modes and marks
+  other days in grey; rail stops appear only when the map shows them.
+- Validation: 33 tests pass; browser checks cover mixed-mode Day 6, inspected
+  routes, stationary Day 7, the overview, and the Alpine demo's cycling day.
+
 ### Complete the non-auth backlog: planning, story, and editorial reliability
 
 Implementation commit: `ff0587e`.
