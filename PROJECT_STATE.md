@@ -1,5 +1,24 @@
 # Project state
 
+## Restore expired photo access and tolerate decode interruption — 9 September 2026
+
+A live tab reproduced the all-photos-locked state after its one-hour access
+token expired. Restoring the remembered login loaded 480px thumbnails and a
+3200px viewer photo. Expiry now restores through the existing first-party
+remembered-session flow automatically, with one navigation per expiry; hidden
+tabs wait until visible. An expired tab no longer broadcasts a lock to other
+valid tabs. Explicit lock cancels a pending restoration. The current photo/day
+is preserved through a deep link, applied again after the authorization return.
+
+Full-size presentation now also accepts the image's normal load event if
+decode() stalls or rejects. Queued placeholder events and callbacks from an
+older/locked selection cannot reveal a photo. Actual image errors remain
+errors; fullscreen still never substitutes a small photo. The existing 480px
+filmstrip/album thumbnails and private browser cache remain enabled.
+All 119 tests and build pass, including expiry, hidden tabs, cancellation,
+interrupted decoding and full-image readiness. No Worker or plan change.
+
+
 ## Full-size-only viewer and Replay — 9 September 2026
 
 The user requested the full photo or no photo, rather than a low-resolution
