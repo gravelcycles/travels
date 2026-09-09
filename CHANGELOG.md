@@ -6,6 +6,28 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Photo request efficiency, delayed Replay, and site QA
+
+- Retain up to 96 unused private image variants within 64 MiB instead of only
+  twelve; keep active images alive and clear all blobs on lock. Phone viewers
+  and their neighbor preloads now select an appropriate responsive size.
+- Coalesce overlapping photo-access checks and throttle them to one per minute
+  per tab; ignore responses from an older access session. Cache CORS preflight
+  permissions for up to a day while keeping actual photos and auth uncached.
+- Start Replay two seconds after either entry button or returning to Replay.
+  Pause, close, day/moment selection and hiding the tab cancel the countdown.
+- Fix Replay waiting forever on an already displayed cached image, and prevent
+  blur placeholders from marking a private Replay photo ready too early.
+- Move Replay map zoom controls below the close button, which overlapped them.
+- QA: all 14 real days and 99 photo positions clicked locally; filmstrip jumps,
+  day boundaries, album chooser, route inspection, notes, desktop and 390px
+  layouts checked. All 22 days across four demo journeys clicked. No browser
+  warnings/errors in these checks. Build, 101 tests, and Worker runtime pass.
+- The user explicitly approved production publication. Worker version
+  `946e0e05-267c-420e-95c7-40629afcfbf4` contains the preflight-cache change;
+  the matching frontend publishes through the main-branch Pages workflow.
+
+
 ### Start each day album at its first photo
 
 Published as `6bc0561` in successful Pages run `34367258218`. Fresh public

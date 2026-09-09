@@ -58,7 +58,7 @@ test('anonymous, tampered, expired, wrong-audience and revoked tokens never touc
 test('preflight allows only explicit origins/headers; cookie endpoints reject cross-site calls', async () => {
   const f = fixture();
   const pre = await f.request(`assets/${key}`, { method: 'OPTIONS', headers: { Origin: origin, 'Access-Control-Request-Method':'GET', 'Access-Control-Request-Headers':'authorization' } });
-  assert.equal(pre.status, 204); assert.equal(pre.headers.get('access-control-allow-origin'), origin); assert.equal(pre.headers.get('access-control-allow-credentials'), null);
+  assert.equal(pre.status, 204); assert.equal(pre.headers.get('access-control-max-age'), '86400'); assert.equal(pre.headers.get('access-control-allow-origin'), origin); assert.equal(pre.headers.get('access-control-allow-credentials'), null);
   const bad = await f.request(`assets/${key}`, { method: 'OPTIONS', headers: { Origin:'https://evil.example', 'Access-Control-Request-Method':'GET' } }); assert.equal(bad.status, 403); assert.equal(bad.headers.get('access-control-allow-origin'), null);
   const csrf = await f.request('auth/login', { method:'POST', headers: { Origin: origin, 'Content-Type':'application/json' }, body: JSON.stringify({origin,password:'fixture-only-family-password'}) }); assert.equal(csrf.status, 403);
   assert.equal(f.reads.length, 0);

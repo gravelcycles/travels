@@ -68,3 +68,36 @@ Local Worker development/security tests, the two-size image pipeline, and
 frontend preparation need no Cloudflare account or payment information. Account
 activation and browser authorization are needed only for remote upload and
 deployment. This account setup and the private-photo cutover are complete.
+
+## Photo loading and free caching (9 September review)
+
+The user approved publication. The preflight-cache Worker is deployed as
+`946e0e05-267c-420e-95c7-40629afcfbf4`; the matching frontend publishes through
+the GitHub Pages workflow.
+
+- The browser retains up to 96 unused image variants / 64 MiB of compressed
+  blobs, plus images still displayed or actively loading. Leaving the page or
+  locking access clears this memory. No photo disk cache is introduced.
+- Phone viewers request the size needed for viewport width and pixel density;
+  neighbor preloads request the same size. Large retina displays still select
+  the full-size derivative. A thumbnail and a large viewer photo are different
+  assets, so the first full-size load is expected.
+- Access status requests now coalesce focus, visibility and polling triggers,
+  allowing at most one in-flight request and one new check per minute per tab
+  after validated access. Fresh-page restoration still validates its saved token.
+- OPTIONS responses advertise `Access-Control-Max-Age: 86400`. Browsers can reuse
+  the CORS preflight permission subject to their own caps; every actual photo
+  GET/HEAD still validates access. Auth and image responses retain `no-store`.
+
+Cloudflare's Free plan includes ten Cache Rules, but these require a domain
+proxied through Cloudflare. The current site is on GitHub Pages and the photo
+Worker uses workers.dev. Cloudflare's R2 Cache API example says that edge caching
+requires a custom domain or Worker route; workers.dev deployments have no effect.
+An existing domain on Cloudflare could support this without a paid plan, with
+Worker authentication before every cache lookup and private/no-store responses
+to visitors. Do not put a shared cache in front of authentication or expose R2
+publicly. No domain or paid plan was added in this review.
+
+Sources checked 9 September 2026:
+- https://developers.cloudflare.com/r2/examples/cache-api/
+- https://developers.cloudflare.com/cache/how-to/cache-rules/

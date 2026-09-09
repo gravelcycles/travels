@@ -1,5 +1,17 @@
 # Next-agent handoff
 
+## Performance and Replay improvements — 9 September 2026
+
+Photo memory caching, responsive viewer requests, coalesced status checks,
+CORS preflight caching, two-second Replay autoplay, cached-photo readiness, and
+Replay zoom/close spacing are implemented. See the newest CHANGELOG entry
+and CLOUDFLARE_SETUP caching section. Build, 101 tests, and Worker runtime pass.
+The user explicitly approved production deployment. The preflight-cache Worker
+is deployed as version `946e0e05-267c-420e-95c7-40629afcfbf4`. The matching Pages
+changes publish through the main-branch workflow; verify its successful run and
+a fresh public load when checking this release.
+
+
 ## Quiet access UI and additional shared passwords · 9 September 2026
 
 Authenticated pages have no photo-access control or status in the header.
