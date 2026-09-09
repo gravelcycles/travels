@@ -1,5 +1,17 @@
 # Next-agent handoff
 
+## Studio editing and saved traveler edits · 9 September 2026
+
+Endpoint drags and typed coordinates now preserve the rest of the detailed
+route, with complete geometry undo/redo. Same-day photo selections keep the
+working camera; **Switch to current point’s zoom** restores a saved photo view.
+Saved photo pins/zooms and copy, and the Varenna–Fiumelatte route override are
+included in this release. Blank descriptions are deliberate editorial values;
+the review test permits them and verifies exact public override preservation.
+All 42 tests and the production build pass. `TRAIN_ROUTE_WORKFLOW.md` and
+`PHOTO_AUTH_HANDOFF.md` are included; the latter is a plan, not implemented auth.
+
+
 Read `PROJECT_STATE.md` and `PRINCIPLES.md` first.
 
 Update `CHANGELOG.md` with every user-visible feature, content correction, or

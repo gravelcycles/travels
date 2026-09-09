@@ -196,7 +196,13 @@ the editing session. The user should never need to run the command.
 Studio writes durable `controlPoints` and the last explicitly accepted
 `geometry` to `content/route-overrides.json`; the public site loads the generated
 `dist/assets/content-overrides.js`. Moving an anchor does not replace the saved
-geometry. **Propose network route** sends the anchors only to the loopback
+geometry, except for endpoint edits: dragging the first/last marker or applying
+endpoint coordinates updates only the corresponding terminal vertex of the
+current detailed geometry. The adjoining line section changes; every other
+coordinate stays exact. **Save locally** persists that edit without accepting a
+network proposal or simplified manual guide. Undo/redo restores both anchors
+and the complete geometry, including pre-existing overrides.
+**Propose network route** sends the anchors only to the loopback
 Studio service, which uses the journey manifest's local mode network. Original,
 saved, anchor-guide, and proposed lines stay separate until the editor accepts
 the network result or deliberately chooses the manual guide as a fallback.

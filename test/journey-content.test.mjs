@@ -103,7 +103,9 @@ test("the family photo review covers every source photo and excludes hidden medi
   for (const review of Object.values(reviews)) {
     assert.equal(review.reviewed, true);
     assert.equal(review.locationStatus, "unlocated-no-gps");
-    for (const field of ["caption", "description", "alt", "privacyStatus"]) assert.ok(review[field]);
+    for (const field of ["caption", "alt", "privacyStatus"]) assert.ok(review[field]);
+    // Story descriptions are optional editorial copy; Studio may clear them.
+    assert.equal(typeof review.description, "string");
   }
   const ordered = Object.values(dayOverrides).flatMap(day => day.photoOrder || []);
   assert.equal(ordered.length, 104);
@@ -113,4 +115,9 @@ test("the family photo review covers every source photo and excludes hidden medi
   const publicPhotos = generated(root, "trip-photos", "JOURNEY_ATLAS_PHOTOS")["switzerland-italy-family-2026"];
   assert.equal(publicPhotos.length, 95);
   assert.ok(!publicPhotos.some(photo => reviews[photo.id].hidden));
+  const publicOverrides = generated(root, "content-overrides", "JOURNEY_ATLAS_CONTENT_OVERRIDES");
+  for (const photo of publicPhotos) {
+    // Preserve the saved edits exactly, including blank copy, pins, and zooms.
+    assert.deepEqual(publicOverrides.photos[photo.id], reviews[photo.id]);
+  }
 });

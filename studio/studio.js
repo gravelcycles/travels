@@ -307,16 +307,21 @@
     $("#photo-make-lead").textContent = day?.leadPhotoId === selectedPhotoId ? "Current lead photo" : "Use as lead photo";
   }
 
-  function selectPhoto(id, center = true) {
+  function selectPhoto(id, center) {
     const base = basePhotos.find((photo) => photo.id === id);
     $("#photo-form").inert = !base;
+    $("#switch-photo-view").disabled = true;
     if (!base) {
       $("#photo-form").reset();
       $("#selected-photo").textContent = "No photographs yet. Start with the day plan.";
       return;
     }
-    selectedPhotoId = id;
+    const previous = basePhotos.find(photo => photo.id === selectedPhotoId);
     const photo = photoWithOverride(base);
+    // Keep the working camera when moving between points in the same day.
+    // Initial load and journey/mode changes can still request an explicit fit.
+    center ??= !previous || photoWithOverride(previous).dayId !== photo.dayId;
+    selectedPhotoId = id;
     $("#selected-photo").innerHTML = `<img src="${photoUrl(photo.srcset?.find((item) => item.width >= 1280)?.src || photo.src)}" alt="" /><span>${photo.sourceFilename || photo.id}</span>`;
     $("#photo-day").value = photo.dayId;
     $("#photo-place").value = photo.locationLabel || "";
@@ -328,7 +333,18 @@
     $("#photo-hidden").checked = Boolean(photo.hidden);
     refreshPhotoOrderControls();
     renderPhotoGrid();
-    if (mapReady) renderPhotoMap(photo, center);
+    if (mapReady) {
+      if (!center) map.stop();
+      renderPhotoMap(photo, center);
+    }
+  }
+
+  function switchToCurrentPhotoView() {
+    const base = basePhotos.find(photo => photo.id === selectedPhotoId);
+    if (!mapReady || !base) return;
+    const photo = photoWithOverride(base);
+    if (!Number.isFinite(photo.lat) || !Number.isFinite(photo.lng)) return;
+    renderPhotoMap(photo, true);
   }
 
   function readPhotoForm() {
@@ -402,6 +418,7 @@
   }
 
   function renderPhotoMap(photo, center = true) {
+    $("#switch-photo-view").disabled = !Number.isFinite(photo.lat) || !Number.isFinite(photo.lng);
     clearActiveMap();
     const day = dayById(photo.dayId);
     const features = day.segmentIds.map(segmentById).filter(Boolean).map((segment) => ({
@@ -508,18 +525,27 @@
     setProposalStatus(message);
   }
 
-  function updateRouteAnchors() {
+  function updateRouteAnchors(changedEndpoints = []) {
     const segment = segmentById(selectedSegmentId);
     const existing = state.routes[selectedSegmentId] || {};
+    // Endpoint edits touch only the detailed line's terminal vertices. Never
+    // regenerate the route from the much sparser drawing anchors here.
+    const geometry = (existing.geometry?.length > 1 ? existing.geometry : baseSegmentCoordinates(segment)).map(point => [...point]);
+    for (const end of changedEndpoints) {
+      geometry[end === "start" ? 0 : geometry.length - 1] = [...routePoints[end === "start" ? 0 : routePoints.length - 1]];
+    }
     state.routes[selectedSegmentId] = {
       ...existing,
       controlPoints: routePoints.map((point) => [...point]),
-      geometry: existing.geometry?.length > 1 ? existing.geometry : baseSegmentCoordinates(segment),
-      smoothing: routeSmoothed ? "chaikin" : "none"
+      geometry,
+      smoothing: routeSmoothed ? "chaikin" : "none",
+      ...(changedEndpoints.length ? { routing: { kind: "manual", mode: segment.mode, edit: "endpoints" } } : {})
     };
-    clearRouteProposal();
-    $("#route-saved-state").textContent = "Geometry kept · anchors pending";
-    markDirty("Anchor changes pending; saved geometry kept");
+    clearRouteProposal(changedEndpoints.length
+      ? "Endpoint updated; the rest of the detailed route is unchanged. Save locally to keep it."
+      : undefined);
+    $("#route-saved-state").textContent = changedEndpoints.length ? "Endpoint changed · pending save" : "Geometry kept · anchors pending";
+    markDirty(changedEndpoints.length ? "Endpoint updated · Save locally" : "Anchor changes pending; saved geometry kept");
     drawRouteEditor(false);
     renderRouteList();
   }
@@ -550,41 +576,71 @@
 
   function readEndpointFields() {
     if (routePoints.length < 2) return;
-    const values = [
-      Number($("#route-start-lng").value), Number($("#route-start-lat").value),
-      Number($("#route-end-lng").value), Number($("#route-end-lat").value)
-    ];
+    const values = ["#route-start-lng", "#route-start-lat", "#route-end-lng", "#route-end-lat"].map(selector => {
+      const value = $(selector).value.trim();
+      return value ? Number(value) : NaN;
+    });
     if (!values.every(Number.isFinite) || Math.abs(values[0]) > 180 || Math.abs(values[2]) > 180 || Math.abs(values[1]) > 90 || Math.abs(values[3]) > 90) {
       setStatus("Enter valid longitude/latitude values for both endpoints", "error");
       syncEndpointFields();
       return;
     }
     const next = routePoints.map((point) => [...point]);
-    next[0] = [Number(values[0].toFixed(6)), Number(values[1].toFixed(6))];
-    next[next.length - 1] = [Number(values[2].toFixed(6)), Number(values[3].toFixed(6))];
-    commitRoutePoints(next);
+    if (values[0] !== next[0][0] || values[1] !== next[0][1]) next[0] = [values[0], values[1]];
+    if (values[2] !== next.at(-1)[0] || values[3] !== next.at(-1)[1]) next[next.length - 1] = [values[2], values[3]];
+    commitRoutePoints(next, { endpointsOnly: true });
+  }
+
+  function routeEditSnapshot() {
+    return {
+      points: routePoints.map(point => [...point]),
+      smoothed: routeSmoothed,
+      override: state.routes[selectedSegmentId] ? structuredClone(state.routes[selectedSegmentId]) : null
+    };
   }
 
   function resetHistory(points) {
-    routeHistory = [points.map((point) => [...point])];
+    routeHistory = [{ ...routeEditSnapshot(), points: points.map(point => [...point]) }];
     routeHistoryIndex = 0;
     $("#undo-route").disabled = true;
     $("#redo-route").disabled = true;
   }
 
-  function commitRoutePoints(points) {
-    const previous = routePoints.map((point) => [...point]);
-    const recorded = routeHistory[routeHistoryIndex];
-    if (!recorded || JSON.stringify(recorded) !== JSON.stringify(previous)) {
-      routeHistory = [previous];
-      routeHistoryIndex = 0;
-    }
-    routePoints = points.map((point) => [...point]);
-    routeHistory = routeHistory.slice(0, routeHistoryIndex + 1);
-    routeHistory.push(routePoints.map((point) => [...point]));
-    routeHistoryIndex = routeHistory.length - 1;
+  function commitRoutePoints(points, { endpointsOnly = false } = {}) {
+    const previous = routeEditSnapshot();
+    if (JSON.stringify(previous.points) === JSON.stringify(points)) return;
+    routeHistory[routeHistoryIndex] = previous;
+    const changedEndpoints = endpointsOnly
+      ? ["start", "end"].filter(end => {
+        const index = end === "start" ? 0 : points.length - 1;
+        return JSON.stringify(points[index]) !== JSON.stringify(previous.points[index]);
+      }) : [];
+    routePoints = points.map(point => [...point]);
     selectedRoutePoint = -1;
-    updateRouteAnchors();
+    updateRouteAnchors(changedEndpoints);
+    routeHistory = routeHistory.slice(0, routeHistoryIndex + 1);
+    routeHistory.push(routeEditSnapshot());
+    routeHistoryIndex = routeHistory.length - 1;
+    updateUndoButtons();
+  }
+
+  function restoreRouteHistory(direction) {
+    const nextIndex = routeHistoryIndex + direction;
+    if (nextIndex < 0 || nextIndex >= routeHistory.length) return;
+    routeHistory[routeHistoryIndex] = routeEditSnapshot();
+    routeHistoryIndex = nextIndex;
+    const snapshot = routeHistory[routeHistoryIndex];
+    routePoints = snapshot.points.map(point => [...point]);
+    routeSmoothed = snapshot.smoothed;
+    if (snapshot.override) state.routes[selectedSegmentId] = structuredClone(snapshot.override);
+    else delete state.routes[selectedSegmentId];
+    selectedRoutePoint = -1;
+    clearRouteProposal("Route edit restored. Save locally to keep it.");
+    $("#smooth-route").textContent = routeSmoothed ? "Use straight anchor guide" : "Smooth anchor guide";
+    $("#route-saved-state").textContent = "Pending save";
+    markDirty("Route edit restored · Save locally");
+    renderRouteList();
+    drawRouteEditor(false);
   }
 
   function updateUndoButtons() {
@@ -675,7 +731,7 @@
         const next = routePoints.map((item) => [...item]);
         const position = marker.getLngLat();
         next[index] = [Number(position.lng.toFixed(6)), Number(position.lat.toFixed(6))];
-        commitRoutePoints(next);
+        commitRoutePoints(next, { endpointsOnly: index === 0 || index === routePoints.length - 1 });
       });
       activeMarkers.push(marker);
     });
@@ -907,7 +963,7 @@
     $("#map-instructions").textContent = mode === "photos"
       ? "Click the map or drag the pin to save this photo's exact location and the current map zoom. Located photos open at that view in the atlas."
       : (mode === "routes"
-        ? "Click close to the orange line to insert a control point, then drag any numbered point—including the endpoints—to shape the route."
+        ? "Drag the first or last numbered point to adjust only that endpoint, then Save locally. Click the orange guide to add intermediate anchors for a route proposal."
         : "Edit this day's date label, title, and description. The map shows every travel leg assigned to the day.");
     if (mode === "planner") { renderPlanner(); return; }
     if (mode === "days" && selectedDayId) selectDay(selectedDayId, false);
@@ -1099,7 +1155,7 @@
   });
   $("#studio-photo-grid").addEventListener("click", (event) => {
     const button = event.target.closest("[data-photo-id]");
-    if (button) selectPhoto(button.dataset.photoId, true);
+    if (button) selectPhoto(button.dataset.photoId);
   });
   $("#studio-route-list").addEventListener("click", (event) => {
     const button = event.target.closest("[data-segment-id]");
@@ -1115,11 +1171,12 @@
     if (!["photo-lat", "photo-lng", "photo-zoom"].includes(event.target.id)) readPhotoForm();
   });
   $("#photo-form").addEventListener("change", readPhotoForm);
+  $("#switch-photo-view").addEventListener("click", switchToCurrentPhotoView);
   $("#clear-photo-location").addEventListener("click", () => {
     $("#photo-lat").value = "";
     $("#photo-lng").value = "";
     readPhotoForm();
-    selectPhoto(selectedPhotoId, true);
+    selectPhoto(selectedPhotoId, false);
   });
   $("#photo-move-earlier").addEventListener("click", () => moveSelectedPhoto(-1));
   $("#photo-move-later").addEventListener("click", () => moveSelectedPhoto(1));
@@ -1158,20 +1215,8 @@
     next.splice(selectedRoutePoint, 1);
     commitRoutePoints(next);
   });
-  $("#undo-route").addEventListener("click", () => {
-    if (routeHistoryIndex <= 0) return;
-    routeHistoryIndex -= 1;
-    routePoints = routeHistory[routeHistoryIndex].map((point) => [...point]);
-    selectedRoutePoint = -1;
-    updateRouteAnchors();
-  });
-  $("#redo-route").addEventListener("click", () => {
-    if (routeHistoryIndex >= routeHistory.length - 1) return;
-    routeHistoryIndex += 1;
-    routePoints = routeHistory[routeHistoryIndex].map((point) => [...point]);
-    selectedRoutePoint = -1;
-    updateRouteAnchors();
-  });
+  $("#undo-route").addEventListener("click", () => restoreRouteHistory(-1));
+  $("#redo-route").addEventListener("click", () => restoreRouteHistory(1));
   window.addEventListener("beforeunload", (event) => {
     if (!dirty) return;
     event.preventDefault();
