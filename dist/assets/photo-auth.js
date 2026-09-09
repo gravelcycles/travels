@@ -78,14 +78,15 @@
       const timer=setTimeout(abort,REQUEST_TIMEOUT);
       try {
         const started=Date.now();
-        const response=await fetch(local?`/build/private-photo-assets/${src.slice('/private-photos/assets/'.length)}`:`${service}${src}`,{credentials:'omit',headers:local?{}:{Authorization:`Bearer ${token}`},cache:'no-store',signal:controller.signal,priority:entry.priority===0?'high':'low'});
+        const response=await fetch(local?`/build/private-photo-assets/${src.slice('/private-photos/assets/'.length)}`:`${service}${src}`,{credentials:'omit',headers:local?{}:{Authorization:`Bearer ${token}`},cache:'no-store',signal:controller.signal,priority:entry.priority<2?'high':'low'});
         if(response.status===401){if(epoch===generation)lock();throw new Error('Photos locked');}
-        if(!response.ok){const error=new Error('Photo could not load');error.permanent=response.status<500&&![408,429].includes(response.status);throw error;}
+        if(!response.ok){const error=new Error('Photo could not load');error.photoFailure=`HTTP ${response.status}`;error.permanent=response.status<500&&![408,429].includes(response.status);throw error;}
         if(response.headers.get('Content-Type')?.split(';')[0]!=='image/webp'){const error=new Error('Invalid photo response');error.permanent=true;throw error;}
         const blob=await response.blob();
         if(epoch!==generation||entry.controller.signal.aborted||controller.signal.aborted)throw new Error('Photo request cancelled');
-        entry.bytes=blob.size;entry.downloadMs=Date.now()-started;entry.edgeCache=response.headers.get('X-Photo-Cache')||'UNKNOWN';entry.url=URL.createObjectURL(blob);return entry;
+        entry.bytes=blob.size;entry.downloadMs=Date.now()-started;entry.edgeCache=response.headers.get('X-Photo-Cache')||'UNKNOWN';entry.serverTiming=response.headers.get('Server-Timing')||'';entry.url=URL.createObjectURL(blob);return entry;
       } catch(error) {
+        if(controller.signal.aborted&&!entry.controller.signal.aborted)error.photoFailure='timeout';
         if(attempt===1||error.permanent||epoch!==generation||entry.controller.signal.aborted)throw error;
       } finally {clearTimeout(timer);entry.controller.signal.removeEventListener('abort',abort);}
     }
@@ -108,9 +109,9 @@
   }
   function display(img,item,entry) {
     item.entry?.refs.delete(img);item.entry=entry;entry.refs.add(img);
-    img.dataset.photoCache=entry.edgeCache;img.dataset.photoDownloadMs=String(entry.downloadMs);
+    img.dataset.photoCache=entry.edgeCache;img.dataset.photoDownloadMs=String(entry.downloadMs);img.dataset.photoServerTiming=entry.serverTiming;
     img.addEventListener('load',()=>{if(images.get(img)===item){img.classList.add('is-loaded');imageState(img,'ready');}},{once:true});
-    img.src=entry.url;img.classList.add('is-loaded');delete img.dataset.photoError;imageState(img,'ready');
+    img.src=entry.url;img.classList.add('is-loaded');delete img.dataset.photoError;delete img.dataset.photoFailure;imageState(img,'ready');
   }
   async function hydrate(img) {
     const src=img.dataset.privateSrc;if(!src||(!local&&!token))return;
@@ -128,7 +129,7 @@
       const entry=await fetchPhoto(src,item.priority??1);
       if(!current())return;display(img,item,entry);
     } catch(error) {
-      if(current()&&(local||token)&&!item.entry){img.dataset.photoError='true';imageState(img,'error');img.dispatchEvent(new Event('error'));}
+      if(current()&&(local||token)&&!item.entry){img.dataset.photoError='true';img.dataset.photoFailure=error.photoFailure||'network';imageState(img,'error');img.dispatchEvent(new Event('error'));}
     } finally {item.loading=false;prune();}
   }
   function setImage(img,photo,width=1280) {
