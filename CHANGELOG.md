@@ -8,6 +8,9 @@ commit after it is known.
 
 ### Use the traveler's landing-page headline
 
+Published as `0352e29` in successful Pages run `34366574353`; the exact
+headline was verified on a fresh public load. All 64 tests pass.
+
 - Replace the catalog headline with “We wander but aren't lost...yet”.
   Keep the supporting sentence and compact journey layout.
 
