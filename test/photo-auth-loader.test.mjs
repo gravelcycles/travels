@@ -8,25 +8,37 @@ class Element extends EventTarget {
  append(){}setAttribute(){}removeAttribute(name){if(name==='srcset')this.srcset='';}focus(){}showModal(){this.open=true;}close(){this.open=false;}
 }
 function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/webp'}}),{startup=false,tabStorage=new Map(),clock=Date}={}){
- const elements=[],header=new Element(),events=new Map(),calls=[],revoked=[];let loginFlow;
+ const elements=[],header=new Element(),events=new Map(),calls=[],revoked=[],timers=new Map();let loginFlow,timerId=0;
  const document={body:new Element(),hidden:false,activeElement:new Element(),createElement(){const e=new Element();elements.push(e);return e;},querySelector(){return header;},querySelectorAll(){return [elements[0].querySelector('[data-unlock]'),elements[1].querySelector('[data-unlock]')];},addEventListener(n,fn){events.set(n,fn);}};
  const window={JOURNEY_ATLAS_PHOTO_SERVICE:{origin:'https://photos.example.com'},addEventListener(n,fn){events.set(n,fn);},dispatchEvent(){},open(){throw new Error('Login should not require a popup');}};
  const Url=class extends URL{};Url.createObjectURL=()=>`blob:fixture-${calls.length}`;Url.revokeObjectURL=u=>revoked.push(u);
  document.body.dataset.journeyScope=startup?'real':'demo';
  const navigations=[];const location=new URL('https://gravelcycles.github.io/travels/');location.assign=url=>navigations.push(url);
  const storage={getItem:k=>k==='atlas-photo-login'?JSON.stringify(loginFlow):tabStorage.get(k)||null,removeItem:k=>tabStorage.delete(k),setItem(k,v){if(k==='atlas-photo-login')loginFlow=JSON.parse(v);else tabStorage.set(k,v);}};
- const context=vm.createContext({window,document,location,history:{replaceState(){}},sessionStorage:storage,URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,btoa,Date:clock,setTimeout:()=>1,clearTimeout(){},setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json({token:'fixture-access-token',expiresAt:Math.floor(Date.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
+ const context=vm.createContext({window,document,location,history:{replaceState(){}},sessionStorage:storage,URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,btoa,Date:clock,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json({token:'fixture-access-token',expiresAt:Math.floor(Date.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
  vm.runInContext(source.replace('completeReturn();}', 'window.__startup=completeReturn();}').replace(/\}\)\(\);\s*$/, 'window.__completeReturn=completeReturn;})();'),context);
  async function unlock(spoof=false){loginFlow={state:'fixture-state',verifier:'v'.repeat(43),created:Date.now(),hash:''};location.hash=new URLSearchParams({photoAuthCode:'c'.repeat(43),state:spoof?'wrong-state':'fixture-state'}).toString();await window.__completeReturn();}
 
  async function returnFrom(kind){location.hash=new URLSearchParams({[kind]:kind==='photoAuthCode'?'c'.repeat(43):'1',state:loginFlow.state}).toString();await window.__completeReturn();}
- return {events,document,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,header:elements[1]};
+ return {events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,header:elements[1]};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 test('all sharp loads/preloads stay gated; markup contains only a placeholder src',async()=>{
  const f=fixture(),img=new Element();f.auth.setImage(img,photo);f.auth.preload(photo,1280);await settle();assert.equal(f.calls.length,0);assert.equal(img.src,photo.blur);
  const html=f.auth.markup(photo);assert.match(html,/src="data:image/);assert.ok(!html.includes(' src="/private-photos/'));assert.ok(!html.includes(' srcset='));
  await f.unlock(true);await settle();assert.equal(f.calls.length,0);assert.equal(f.auth.unlocked,false);
+});
+test('filmstrips request a thumbnail and the viewer reuses it while the full photo downloads',async()=>{
+ const thumb={src:`/private-photos/assets/v1/${'c'.repeat(64)}.webp`,width:480};
+ const sized={...photo,srcset:[thumb,...photo.srcset]};
+ const f=fixture();
+ const markup=f.auth.markup(sized,{targetWidth:480});assert.ok(markup.includes(`data-private-src="${thumb.src}"`));
+ await f.unlock();f.auth.preload(sized,480);await settle();
+ const img=new Element();f.auth.setImage(img,sized,Infinity);
+ assert.match(img.src,/^blob:/,'The loaded thumbnail should appear synchronously');
+ await settle();assert.ok(f.calls.some(([url])=>url.endsWith(photo.src)));
+ assert.equal(f.calls.filter(([url])=>url.endsWith(thumb.src)).length,1);
+ assert.equal(f.calls.filter(([url])=>url.endsWith(photo.srcset[0].src)).length,0,'A cached thumbnail avoids downloading an extra preview on the way to full size');
 });
 test('authorized consumers share one request, and logout revokes blobs and restores placeholders',async()=>{
  const f=fixture(),a=new Element(),b=new Element();f.auth.setImage(a,photo);f.auth.setImage(b,photo);await f.unlock();await settle();await settle();
@@ -53,9 +65,9 @@ test('a large album keeps every requested image alive while loads are pending',a
  }));
  const images=Array.from({length:21},(_,i)=>{const img=new Element();f.auth.setImage(img,albumPhoto(i+1));return img;});
  await f.unlock();await settle();
- assert.equal(pending.length,21);
+ assert.equal(pending.length,4,'Visible downloads must stay within the four-request budget');
  assert.equal(pending.filter(p=>p.signal.aborted).length,0,'Cache eviction must not cancel images waiting to display');
- for(const p of pending)p.resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));
+ for(let i=0;i<21;i++){assert.ok(pending[i]);pending[i].resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));await settle();}
  await settle();await settle();
  assert.ok(images.every(img=>img.src.startsWith('blob:')),'All 21 photographs must become sharp');
  assert.equal(f.revoked.length,0,'Displayed images must keep their blob URLs');
@@ -137,4 +149,48 @@ test('focus, visibility and timer checks share a minute throttle and ignore stal
  now+=60001;const check=f.events.get('focus')();f.events.get('visibilitychange')();f.events.get('focus')();await settle();assert.equal(f.calls.length,1);
  await f.unlock();resolveStatus(Response.json({unlocked:false},{status:401}));await check;assert.equal(f.auth.unlocked,true,'An old check cannot relock new access');
  now+=60001;const current=f.events.get('focus')();await settle();resolveStatus(Response.json({unlocked:false},{status:401}));await current;assert.equal(f.auth.unlocked,false);
+});
+
+
+test('a selected photo bypasses a backlog of preloads using reserved download capacity',async()=>{
+ const f=fixture((_url,options)=>new Promise((_resolve,reject)=>options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')))));
+ await f.unlock();for(let i=1;i<=10;i++)f.auth.preload(albumPhoto(i));await settle();assert.equal(f.calls.length,2);
+ const img=new Element();f.auth.setImage(img,albumPhoto(11));await settle();assert.equal(f.calls.length,3);
+ assert.ok(f.calls[2][0].endsWith(albumPhoto(11).src));assert.equal(f.calls[2][1].priority,'high');f.auth.lock();await settle();
+});
+test('a cached small image stays visible while the full-size download is pending or fails',async()=>{
+ let fail;const f=fixture(url=>url.endsWith(photo.src)?new Promise(resolve=>fail=resolve):Promise.resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}})));
+ await f.unlock();f.auth.preload(photo,1280);await settle();const img=new Element();f.auth.setImage(img,photo,Infinity);
+ assert.match(img.src,/^blob:/);assert.equal(img.dataset.photoState,'ready');const preview=img.src;await settle();
+ fail(new Response('',{status:404}));await settle();assert.equal(img.src,preview);assert.equal(img.dataset.photoState,'ready');assert.equal(img.dataset.photoError,undefined);
+});
+test('a stalled photo times out, retries once, and offers a recoverable error',async()=>{
+ const f=fixture((_url,options)=>new Promise((_resolve,reject)=>options.signal.addEventListener('abort',()=>reject(new Error('Aborted')))));
+ await f.unlock();const img=new Element();f.auth.setImage(img,albumPhoto(1));await settle();
+ for(let attempt=0;attempt<2;attempt++){const timer=[...f.timers.values()].find(t=>t.delay===10000);assert.ok(timer);timer.fn();await settle();}
+ assert.equal(f.calls.length,2);assert.equal(img.dataset.photoState,'error');assert.equal(img.dataset.photoError,'true');
+ f.auth.setImage(img,albumPhoto(1));await settle();assert.equal(f.calls.length,3);assert.equal(img.dataset.photoState,'loading');f.auth.lock();await settle();
+});
+test('timeouts cover a stalled response body as well as response headers',async()=>{
+ const f=fixture((_url,options)=>Promise.resolve({status:200,ok:true,headers:new Headers({'Content-Type':'image/webp'}),blob:()=>new Promise((_resolve,reject)=>options.signal.addEventListener('abort',()=>reject(new Error('Aborted body'))))}));
+ await f.unlock();const img=new Element();f.auth.setImage(img,albumPhoto(1));await settle();
+ for(let attempt=0;attempt<2;attempt++){[...f.timers.values()].find(t=>t.delay===10000).fn();await settle();}
+ assert.equal(f.calls.length,2);assert.equal(img.dataset.photoState,'error');
+});
+test('transient server errors recover automatically; permanent missing photos do not retry',async()=>{
+ let requests=0;const f=fixture(async()=>++requests===1?new Response('',{status:503}):new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));await f.unlock();
+ const img=new Element();f.auth.setImage(img,albumPhoto(1));await settle();assert.equal(f.calls.length,2);assert.match(img.src,/^blob:/);
+ const missing=fixture(async()=>new Response('',{status:404}));await missing.unlock();missing.auth.setImage(new Element(),albumPhoto(1));await settle();assert.equal(missing.calls.length,1);
+});
+test('changing photos cancels an abandoned request without reporting its failure on the new photo',async()=>{
+ let late;const f=fixture(url=>url.endsWith(albumPhoto(1).src)?new Promise(resolve=>late=resolve):Promise.resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}})));await f.unlock();
+ const img=new Element();f.auth.setImage(img,albumPhoto(1));await settle();f.auth.setImage(img,albumPhoto(2));await settle();assert.equal(f.calls[0][1].signal.aborted,true);
+ late(new Response('',{status:503}));await settle();assert.equal(img.dataset.photoState,'ready');assert.equal(img.dataset.photoError,undefined);assert.match(img.src,/^blob:/);
+});
+
+test('reselecting a pending photo cannot bypass expired access',async()=>{
+ let now=Date.now();class Clock extends Date{static now(){return now;}}
+ const f=fixture((_url,options)=>new Promise((_resolve,reject)=>options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')))),{clock:Clock});
+ await f.unlock();const img=new Element();f.auth.setImage(img,albumPhoto(1));await settle();now+=3601000;
+ f.auth.setImage(img,albumPhoto(1));await settle();assert.equal(f.auth.unlocked,false);assert.equal(img.dataset.photoState,'locked');assert.equal(f.calls.length,1);assert.equal(f.calls[0][1].signal.aborted,true);
 });

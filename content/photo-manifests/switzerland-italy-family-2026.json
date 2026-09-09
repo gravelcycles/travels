@@ -5,6 +5,12 @@
     "src": "/private-photos/assets/v1/85bbda460714dff00482ae6310b0aa157a69cfbb467f9038299f79bdbbd81057.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/24dfd6ab419a0af48906af2d40caca9c459fb6b452266ca50fdbb8a9f21b1e5e.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 37364
+      },
+      {
         "src": "/private-photos/assets/v1/29726dfc0594f50e5ebe9109ea99c9ee4030e77278dad8858e447594f1b73f5e.webp",
         "width": 1280
       },
@@ -28,6 +34,12 @@
     "dayId": "family-d1",
     "src": "/private-photos/assets/v1/05def700978350c650c900359585f3d59e67bb5dc8afa7d0fca27e61aedb04af.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/5621a1d1065497a71aa9b3dd9aaa8cc0a6fe39bbee44fec8b3a6be0ba60a9146.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 31202
+      },
       {
         "src": "/private-photos/assets/v1/04bcd1edad32f560e7687572fcc47685d0a34fad5080fdd72b84e9c3c5fd95aa.webp",
         "width": 1280
@@ -53,6 +65,12 @@
     "src": "/private-photos/assets/v1/7c058e94ff8bd7e026a5942dc771cd01cc6b3aa7d265ac4fb2e1cc01a91022d3.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/e21dfd576f8c0dda35e57826d4f50a267df96993db5cc9219da1928627e8598e.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 32966
+      },
+      {
         "src": "/private-photos/assets/v1/f7af04a806dbd4980752c3f82a57d454197b8f4778f58875ca8bc9f927e80914.webp",
         "width": 1280
       },
@@ -76,6 +94,12 @@
     "dayId": "family-d1",
     "src": "/private-photos/assets/v1/3990a544ff42703b1def3c7bc5145d7028f57c039f981a6a8480b3d6e49f8b97.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/1afda8d84810a2adebe25ab6d3b891a710492a0cad6a14c5316c7b2b081c3441.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 23574
+      },
       {
         "src": "/private-photos/assets/v1/470e91e809e3b81cf05cf3ac7b3c1f7145577d81ba408d32833d9c7e183fb738.webp",
         "width": 1280
@@ -101,6 +125,12 @@
     "src": "/private-photos/assets/v1/8d0916832749de9385c2923c6d90eec83a9ff36cb85b66458d823fe397bf0c17.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/721cd5a6efd779e39b7d39fa829c71123725d34e0e233a10b97c51e9ccf8a091.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 36492
+      },
+      {
         "src": "/private-photos/assets/v1/fd07b15f1bd976c91ba9d656e47ef7fa6fd0eb1eb270ff20c30f0ae08fcbbde5.webp",
         "width": 1280
       },
@@ -124,6 +154,12 @@
     "dayId": "family-d1",
     "src": "/private-photos/assets/v1/47f181ff895c3386de7f8994ff23634f938cd1ad662de4b37ca3c8259cd14319.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/8643a8674cf237c59413529d5eb2e6400c00ea16bf35cd603396bc2d78d861b5.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 27122
+      },
       {
         "src": "/private-photos/assets/v1/4c3b4ef946fdda9de9f7c4741e1a226d73310258c70e862ef4f25e2202f2f893.webp",
         "width": 1280
@@ -149,6 +185,12 @@
     "src": "/private-photos/assets/v1/5011f45af8952f244001ea475ea9c72cee391b961a6607fe66fd0886d9baf925.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/3addbd5dede69865b3b03ed11f4d916659f314854d2b5ed55e9e9bba791868fc.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 79160
+      },
+      {
         "src": "/private-photos/assets/v1/c59142ab658c4d91c470edddc5ffd7eb3794400aac2b7884626e07f9adcbadc0.webp",
         "width": 1280
       },
@@ -172,6 +214,12 @@
     "dayId": "family-d2",
     "src": "/private-photos/assets/v1/ed75e9bd992999a74b49617ebbe62933f06017403790a3c4cf65f9a0ed8ecfd2.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/448273c32edaaa31cf85cca3ce158dab51f69a9ba94d7e61f9fde926b5234439.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 32650
+      },
       {
         "src": "/private-photos/assets/v1/09dddb119df454d7c2e921e39286a27da7bb6071fe74c02e0d6076ed6b82ade5.webp",
         "width": 1280
@@ -197,6 +245,12 @@
     "src": "/private-photos/assets/v1/d79e1009ba2cf4f251c9622a055dc2f8260eaa707ee6828818f003fbb356f3f0.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/398ed37e69b938a5803a352e48ca1b733cdaea23d430405b13983551ef4f3c1b.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 61128
+      },
+      {
         "src": "/private-photos/assets/v1/749975ee9be2f89c652fa71a70ade5f3aa362b84c3ea71ad663da911625b611f.webp",
         "width": 1280
       },
@@ -220,6 +274,12 @@
     "dayId": "family-d2",
     "src": "/private-photos/assets/v1/2c179d4c499c538b8e812cf076fb57df1cf94db30323eb5fda5b7f1baa54d2dd.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/dbb5390679019a054489fed7b26ab5927fa4cdfa7ccb0dd04b93d3082ba9fcdb.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 35034
+      },
       {
         "src": "/private-photos/assets/v1/19aad4cdbd740d8f28b093ec60059180652bf48d36232217bf96082841f85c2c.webp",
         "width": 1280
@@ -245,6 +305,12 @@
     "src": "/private-photos/assets/v1/2b9b194cf08ba2d82a53a7c77eebc4b12c36b67e40a804b29c6e5da707809d2b.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/bcc600fe1a35a97a60945e214a2cf7b236f1facbd47114e265e6896ee34a98de.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 44820
+      },
+      {
         "src": "/private-photos/assets/v1/0f3f6cea7f77d21f847cb2ea12ead7dfc1f378169c9541785a8e0c04a7690fff.webp",
         "width": 1280
       },
@@ -268,6 +334,12 @@
     "dayId": "family-d3",
     "src": "/private-photos/assets/v1/8d15336df2f67eef35fbc2ccaa665f943fe568c4f4c59d68904637869bb13a85.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/23a75a1bafd085ad08696e130ce399e3cad04a04ddbb3860edbd7f70a6190ba7.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 84162
+      },
       {
         "src": "/private-photos/assets/v1/00c9b17877bc8560e60f6a91c47f03472770bf982430ed9cc2bc7576a51d8616.webp",
         "width": 1280
@@ -293,6 +365,12 @@
     "src": "/private-photos/assets/v1/a4b78b9bac975dc678e28de780db878a58db9dff9d8fdb08a96a54017338c837.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/21afa9d87561a6509a742b50d60a0d5b6a4ff473e27fb8dfb4e388613ec7a520.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 62174
+      },
+      {
         "src": "/private-photos/assets/v1/dc589eb9ba8f10460ebebd65994c4a7f5f420ae4092f1936534a821ab0e75794.webp",
         "width": 1280
       },
@@ -316,6 +394,12 @@
     "dayId": "family-d3",
     "src": "/private-photos/assets/v1/99a83ab5f0a1d5b3d6266e26dab8f24f49ae8de822bb76b31ea21f69d8a512a7.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/3fe439beba1ad3a88bbd51d409c5403d638727174f181a2bd9faf43e0a17aa47.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 94134
+      },
       {
         "src": "/private-photos/assets/v1/c7ad36ea9baeee62acf5d0fbd5b83f93f966fec0dc3bda3dbab086beb47721f6.webp",
         "width": 1280
@@ -341,6 +425,12 @@
     "src": "/private-photos/assets/v1/11f5a3f95fad45d13d6e93f8de3ed663cd7ea472d4569edce23aec58431bec0d.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/1a132616309ce446da789b97673c18a3039f6acee907e68fe1db8fa816d22a8f.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 87086
+      },
+      {
         "src": "/private-photos/assets/v1/e518693d9b796f2cdb205e251eeb2b08635667a33bede504266b41ff08069ac8.webp",
         "width": 1280
       },
@@ -364,6 +454,12 @@
     "dayId": "family-d3",
     "src": "/private-photos/assets/v1/574817d0fd599cd43631896fe962d58388445a77850f893b95b6cefb075314d0.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/32716c47127cdbb0cbb43f98fe0b2571efb5f019626276550ea9e6c4f5916eaf.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 78972
+      },
       {
         "src": "/private-photos/assets/v1/b6c2c26ae9dc15b0593d2d473c2d96af382f64d8a5db0af2fa7eab1f9166758b.webp",
         "width": 1280
@@ -389,6 +485,12 @@
     "src": "/private-photos/assets/v1/93b30e796acf82b71a7110029cfaa9bf29465c3cb3d6138bd66a7c4852d6d879.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/d12cf2b5db12de53985408578d0d86898fb66c73b12e05a9a81b638959c0ad0c.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 49916
+      },
+      {
         "src": "/private-photos/assets/v1/ffc2eec7cd6d98909f36f8ccae2a1c7d56e52e8204b929de92b46ab46fa4524d.webp",
         "width": 1280
       },
@@ -412,6 +514,12 @@
     "dayId": "family-d3",
     "src": "/private-photos/assets/v1/62fcb047a3dd50547a2304848804163914a95838563250964d11712885c5a232.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/dd0b1b0acda2f69cffa9c57b7add258e0754fa635709a1181c303f726c5b44a3.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 81144
+      },
       {
         "src": "/private-photos/assets/v1/f907c588741e0b921fec1f4d8a012587218e51eb957cdedd0f6c05f88155ea1b.webp",
         "width": 1280
@@ -437,6 +545,12 @@
     "src": "/private-photos/assets/v1/f88a71bf0e6bef1fcd1553e5fb0b6506452d8382eae0d711a6eafc1008cf5b5d.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/a5d11b09bb2fc91f29b359a2942e083597c104dcc7d096967252bdc4700690e3.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 65576
+      },
+      {
         "src": "/private-photos/assets/v1/5c5d819936fdeb9ab82b585415aa597ca894dcbbf49254b3c0646751c2d4949d.webp",
         "width": 1280
       },
@@ -460,6 +574,12 @@
     "dayId": "family-d3",
     "src": "/private-photos/assets/v1/a1bc06d049791b43d5528e8543dc24e8d3465fd36be6b4c9af4e567ff22a1898.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/a54bbbf57c59ee2fea6ace0100da58e1ba7c9b9796cb942b31b78592b860f263.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 129566
+      },
       {
         "src": "/private-photos/assets/v1/a092fda579cdc23b3b849bd4137169a4ed0db6f348b776007d7964aae18b751b.webp",
         "width": 1280
@@ -485,6 +605,12 @@
     "src": "/private-photos/assets/v1/98befff231f81314d44088e37c0a22c7874d95e377e16929aa1edd6ca4fd502c.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/aa39c960a5c11bc50bca70ee2f8f954bead50cfd87494379bef7c5dd19dcb89a.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 93960
+      },
+      {
         "src": "/private-photos/assets/v1/7b76d5f995306eccba9bcca08f4f9099ea92865284f8b65f40af3f0bbf21b452.webp",
         "width": 1280
       },
@@ -508,6 +634,12 @@
     "dayId": "family-d3",
     "src": "/private-photos/assets/v1/eb266e81a7d6053bddb4fc0dcdaa2988d75556ef932dc8ee0eb1a3beb7f3be8f.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/1e463274c99e18077abf6b9bf5af5c685d225e757b1184d91a06ea3afae4be7d.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 87054
+      },
       {
         "src": "/private-photos/assets/v1/7a56ff49d885596ceae2526fb098e4465721f6fbb9525701f1a28e127068d09b.webp",
         "width": 1280
@@ -533,6 +665,12 @@
     "src": "/private-photos/assets/v1/b591d5651f814fcd5e51e8152754e6d21089f2a5291189cffcccd9683cdda58b.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/21439d187b4f71df8d045e1413a65e9fac9804e323c8d931b55b8ed41831b2b8.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 43806
+      },
+      {
         "src": "/private-photos/assets/v1/1346c4424790331750769b1245598b4ce8decbf54d53895a785bd421c66c081b.webp",
         "width": 1280
       },
@@ -556,6 +694,12 @@
     "dayId": "family-d3",
     "src": "/private-photos/assets/v1/6fe91838f2bcbce2bb215392123a50a87e686619978cd89f5e6b48a50a6441c5.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/d819e940bbca90ec3e165ee73d4f56f65239b744c8f2de40141e87d2c5279d3a.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 72002
+      },
       {
         "src": "/private-photos/assets/v1/a25a1b01f7cf47f3ff17f743f4fc5a94eddf6de24575cc80a4824ddf4c77b7d0.webp",
         "width": 1280
@@ -581,6 +725,12 @@
     "src": "/private-photos/assets/v1/0df5b97c9f6cfb3713ea7099ba3a18dceafab02ce6c91c08bbc1da71680aeb1a.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/e7010ea91e4be9863ed712cacf709cb1c86f704de7e26ec1323cc98ce36f07fd.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 34670
+      },
+      {
         "src": "/private-photos/assets/v1/b4777f600d3e19fc5f2dd22a30065dfeba2d96aee03f12900abc9eb539380afe.webp",
         "width": 1280
       },
@@ -596,13 +746,20 @@
     "caption": "Bern · 16:29",
     "takenAt": "15 Aug · 16:29",
     "sourceFilename": "IMG_5047.HEIC",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-img-5048",
     "dayId": "family-d3",
     "src": "/private-photos/assets/v1/2d7b06b41e9441f1cd7a85a50ab4383e0c42c9ec4cbbf90e74cba3ea525676bb.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/191305bf4d09eeb9216890e7749b2e5e23298add80ea67c6ee66b674acec749d.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 34496
+      },
       {
         "src": "/private-photos/assets/v1/1f52375945ebc1845bbf7d6beeebd633655539fff64962844dfa380ad9941ae4.webp",
         "width": 1280
@@ -619,13 +776,20 @@
     "caption": "Bern · 16:29",
     "takenAt": "15 Aug · 16:29",
     "sourceFilename": "IMG_5048.HEIC",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-img-2834",
     "dayId": "family-d4",
     "src": "/private-photos/assets/v1/77c7cea2221da7b018858801504db62e6a0a498f3b371e0d7f567bc73b1ee517.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/69b5f599fa9cb7e046f15f3e39090b8643adeb57bc83b61dc02c28cd728f5064.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 34084
+      },
       {
         "src": "/private-photos/assets/v1/8939b59259bef052f9b52b94e0d27e1eafd0aaecedc09da5a5837bd4a6a47b13.webp",
         "width": 1280
@@ -651,6 +815,12 @@
     "src": "/private-photos/assets/v1/0586cab207f4976fd4d90a42a678cf4f18b41a7b19687a93d2653b6014d261bf.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/4ad4172b5fa813f3eeab057af15ea8a173630e902055cda6312a1a7303b0e7ad.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 15112
+      },
+      {
         "src": "/private-photos/assets/v1/fcf660c145559a522867068e5528810a888926aee03744c265521ad0aec549b7.webp",
         "width": 1280
       },
@@ -674,6 +844,12 @@
     "dayId": "family-d4",
     "src": "/private-photos/assets/v1/e082d59e67352e9e3f426614b2885d78444561292734dbe13ca50eda3e9b507d.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/5cd0003759418abea1eeade4cb33fcb6cd7ab052872a7106706c26dbe8b1d63b.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 34828
+      },
       {
         "src": "/private-photos/assets/v1/06cc385d29a72602fd6d83dec6da9a6a356034ae1a7cc1e7f126cfe7e7463687.webp",
         "width": 1280
@@ -699,6 +875,12 @@
     "src": "/private-photos/assets/v1/d780c51340fc1472eddc480fd70e60705d7134344b7ecd873f178273a17def43.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/fb79dbe1638e29ad282e926c47c65718f7e6ec8377da3bb4053c886417892e71.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 22904
+      },
+      {
         "src": "/private-photos/assets/v1/3db5a8989c6db757c543297d01151c11d06e60f95fe7b67c7c33f4dd46fe3147.webp",
         "width": 1280
       },
@@ -722,6 +904,12 @@
     "dayId": "family-d4",
     "src": "/private-photos/assets/v1/d7151b46b7c3dc99cde8d8a56f268eb39f291e4ca419200fb1a9910cc60cac02.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/1be1f839c9d746885be27ef11c5c8fa3fcfe5d0e2736b35d5fbaee168b5e14f0.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 30658
+      },
       {
         "src": "/private-photos/assets/v1/b29e254e1ab0fff9b3540aed6b85fa607b83c0d6f18e4e16a151f4efb13ba55b.webp",
         "width": 1280
@@ -747,6 +935,12 @@
     "src": "/private-photos/assets/v1/ed13901158f7a81f98cdcf84831a5d8047cfdf502525a5e1ed9104540f903982.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/b52148536fb72ea0606d37c69818c45d5947caf48e70279f772303f6a0144c8c.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 29292
+      },
+      {
         "src": "/private-photos/assets/v1/21f09eaa2a19970b69f2bff7acfccb0e2f987a47e053ba50260ed2b22a9efdca.webp",
         "width": 1280
       },
@@ -762,13 +956,20 @@
     "caption": "Lake Luzern & Kehrsiten · 16:47",
     "takenAt": "16 Aug · 16:47",
     "sourceFilename": "IMG_5055.HEIC",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-img-5056",
     "dayId": "family-d4",
     "src": "/private-photos/assets/v1/40d8ea89fec69e5a972ece9f79f93e618071abcff64d3cc6786d7fbba5e2e242.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/00082dcc00026c335cd13e966cb4b853549de394a855b80912cca0a1233c1116.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 33264
+      },
       {
         "src": "/private-photos/assets/v1/ceade35b72827779a5f19a623d60b56f1f2e94d9400974dc7d03f30e083b5afc.webp",
         "width": 1280
@@ -794,6 +995,12 @@
     "src": "/private-photos/assets/v1/79a2667f335c1852748434123e3fb6f083590be5539a237ceb413e81f3199574.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/ee95d87fde053360f45369094750822beed3fc1758b44e98a869140a056ff30d.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 64766
+      },
+      {
         "src": "/private-photos/assets/v1/e2b2713bc440c7f9777cb4d51e11ffab6b7851b35f79f575b773fb04796effe1.webp",
         "width": 1280
       },
@@ -817,6 +1024,12 @@
     "dayId": "family-d4",
     "src": "/private-photos/assets/v1/e6cc511ef034c7d59223160495b1d2772d6eb49c92e09ffe5c69b6f93410fef1.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/4a2e52e35b5525fed544050483ed6c192bef4284b205f2591ad705bb95de19fc.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 25504
+      },
       {
         "src": "/private-photos/assets/v1/54e5d65380e1d069f8271e6162af4d38938d0216f8b6466b5f5cdecd3fca83d0.webp",
         "width": 1280
@@ -842,6 +1055,12 @@
     "src": "/private-photos/assets/v1/68860313dddb2298a834b497af73e80929af71d16f7466e8b31810c88140bdc1.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/a94ed09ba2557143d730651578e55e50857398800b2ccbb3e46c80d87a814552.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 79526
+      },
+      {
         "src": "/private-photos/assets/v1/6b12f396fa2a3ccc9f6f6922d19bd98aa8327951f4a134ead5006a5dd454f052.webp",
         "width": 1280
       },
@@ -865,6 +1084,12 @@
     "dayId": "family-d4",
     "src": "/private-photos/assets/v1/663d5331fb9464e394e6cf96c00ffd5f64bb0f51df16393c66fd10a7dd0613f0.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/4812b119b232d917036cb954426ac8de9baf04464e603b4208e448fd754ee8a4.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 23172
+      },
       {
         "src": "/private-photos/assets/v1/94a3830eb1d48c0da52e1994af9b507fe9315a883329ed6ab3d6ad9187c7f2ba.webp",
         "width": 1280
@@ -890,6 +1115,12 @@
     "src": "/private-photos/assets/v1/6f716733a319f8802ad30de68382245633ee26f0f7f9b4a84c5a26508358b096.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/aca143e85bacd5b02787c7daff04fe6cd2f8589b999cb1609770e538a0bab56a.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 43794
+      },
+      {
         "src": "/private-photos/assets/v1/bb4426910443ab1bcc2583fd4b4b2d0327e8214206995dca1730205c8939b24f.webp",
         "width": 1280
       },
@@ -913,6 +1144,12 @@
     "dayId": "family-d5",
     "src": "/private-photos/assets/v1/e8d57e4d5877a25428f4d8ab3cef7d4308492785286c33b0878dda588f0715a5.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/d4dc35441d49db308fd431fa8b722ef83eb55245e9593aa3997e0d5ab210a088.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 41876
+      },
       {
         "src": "/private-photos/assets/v1/e89c816733881003326592114c7daa0c38b8659efba25527d70772cb65f8b4f9.webp",
         "width": 1280
@@ -938,6 +1175,12 @@
     "src": "/private-photos/assets/v1/bf82f0421d6e86ebcbafc50f0e4380a5fc3836d99803eb5d4ac5b5a9b32ebb56.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/37e3658201f1bfee598896ef0bfa35144c3e0fcdd56278a732e98fb109d659d7.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 67240
+      },
+      {
         "src": "/private-photos/assets/v1/154729c6fa10257c7b27e0c6fd4c998fee4bf10c0342c9faee8d75d60ab86069.webp",
         "width": 1280
       },
@@ -961,6 +1204,12 @@
     "dayId": "family-d6",
     "src": "/private-photos/assets/v1/2f9cc128839eee3c388a95b908f1948057cb92debe4f5db99e1bf8449ac5f40b.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/06ae32bb5b4a765fb1bbc048f2433a8c0eed3757d9d95e86ad9a28688acd5a57.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 30420
+      },
       {
         "src": "/private-photos/assets/v1/af74ddf45617deaf7e82c7d385aa066996e5f00da3482f06815ef6aedbd72a7f.webp",
         "width": 1280
@@ -986,6 +1235,12 @@
     "src": "/private-photos/assets/v1/d14d6017c131d766f112ddad52fe9bffc91a2e6ec0808e5a4fef8080b8142c4d.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/0b30485e840107c90eb8fa67da7b696a6af0421b4da95929a79244e74f32e958.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 24918
+      },
+      {
         "src": "/private-photos/assets/v1/c2881b03e8a00d5f2209a7e4c456c522f9e4967e4775ebcee93221a3aa7bc21d.webp",
         "width": 1280
       },
@@ -1009,6 +1264,12 @@
     "dayId": "family-d6",
     "src": "/private-photos/assets/v1/b99162cfd6ce07c948f96fa09375edc5a29ff3b7c2aeaad347a75ee9b4beb956.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/d40df20c1447adac6207876e5187c7132623b8b8e5a7b3829ee3d656c9e2fbb0.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 29638
+      },
       {
         "src": "/private-photos/assets/v1/4e4f5bcda2faff4ad862d0b2add15fec46a98e475c62d815b62ee8bfd6ac1a81.webp",
         "width": 1280
@@ -1034,6 +1295,12 @@
     "src": "/private-photos/assets/v1/72add3104df7d9a09199ade6f976d0e34e5a3605ece3956903ab9f89177b9e1f.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/2b7711fe172c742a0f579eeb83e0546e8d760f1a75dd6c10e64ba90fa4fed138.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 27156
+      },
+      {
         "src": "/private-photos/assets/v1/c493f2745e111db4209a22a64bc2fcf4bf0be3fd5d0e0eef56d3c6914e475e44.webp",
         "width": 1280
       },
@@ -1057,6 +1324,12 @@
     "dayId": "family-d6",
     "src": "/private-photos/assets/v1/033ee94b19398b7216aca14564c6a33ada3954265e63d555d5eab846133bd3a3.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/996cc5b5b69ac0f9cd9bf3756b6a0f31a7e51d6c00921a539fab80fc301397f5.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 34636
+      },
       {
         "src": "/private-photos/assets/v1/976286363349dcb8e05134765ab8d76e80a6c70e5ce87862ed41ff3274ab0de6.webp",
         "width": 1280
@@ -1082,6 +1355,12 @@
     "src": "/private-photos/assets/v1/dfa65b943f7101533af01d0070a5891ae1c0b73f5554066a2e0435f3eac1e7ab.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/c5448c2b5d7a1d2d8556f9be401f1d8eef962680c022dd434ed9a309645fadf1.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 14378
+      },
+      {
         "src": "/private-photos/assets/v1/7f182be2fc8a033c7ffaad6f07ffc3435775df94a6fb9e367b5877f8bb262405.webp",
         "width": 1280
       },
@@ -1105,6 +1384,12 @@
     "dayId": "family-d6",
     "src": "/private-photos/assets/v1/12599d89fdab2e1d8d52fb54cfdc578362d22f4caa6657cbf7c91aa7c188f2da.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/16ac14615b9bdd6c27e6b6accca183e50a266fe066b93a193f0be4e39b755b37.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 27546
+      },
       {
         "src": "/private-photos/assets/v1/dbaf3ddf3bc8bdbd11c68fd321ad047087b412716184ac80f357f5af8701b021.webp",
         "width": 1280
@@ -1130,6 +1415,12 @@
     "src": "/private-photos/assets/v1/aa50c748e08ac4951ef9e673c2ee8032c539f1d0c517567eda3156cf0882e2bb.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/2c803039a67015acb83b2bd249d2cd9901e30acb73eabd150c1f52d6cd212f7f.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 24612
+      },
+      {
         "src": "/private-photos/assets/v1/921b024871d291d7a858cfa65dc49344cd7776c201373483cdfe19df4e299925.webp",
         "width": 1280
       },
@@ -1153,6 +1444,12 @@
     "dayId": "family-d6",
     "src": "/private-photos/assets/v1/9f5e2eed91b9d18f48f31a2a353b8445bb61e26df35802de1e3f5f2d7bf7c113.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/12591e879c2d610ea1735d9c2c25e9f21dd5868899d92d785b7f4d01a6504fec.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 13702
+      },
       {
         "src": "/private-photos/assets/v1/21368647539159f34c43ba2332b81d3106a4be212494e9df247920a091a35291.webp",
         "width": 1280
@@ -1178,6 +1475,12 @@
     "src": "/private-photos/assets/v1/4aaf3975c1fb153445615dd3bf3b54f4a0e732dbcbe1c9ef2f14dff8d834bf78.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/1a2c78ae16efff9536f89b93a9bc2d816b3513fe1dbd5d5ed1fec8d969d6e719.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 38376
+      },
+      {
         "src": "/private-photos/assets/v1/20a9189379c86881b94e2241388365ae1e2f9b07246fdab10cdb80b17fd3f990.webp",
         "width": 1280
       },
@@ -1201,6 +1504,12 @@
     "dayId": "family-d6",
     "src": "/private-photos/assets/v1/7edac0faa995c0b190de46f20e3a74a7ec58066d6a6854058afe6447e6b7ca87.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/813c4a3f53913008a1b03002e026471dac8ca00ca00c7bd782e7cd21649d194d.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 63534
+      },
       {
         "src": "/private-photos/assets/v1/9f1f675b23b1b6f281d878eda6ee645838a540debfbe397efc60c79ff8c7f804.webp",
         "width": 1280
@@ -1226,6 +1535,12 @@
     "src": "/private-photos/assets/v1/356f958407bbd3637882c299c8fc5d47ed50d6a9bf88e93dad30697505d34379.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/ba1e4edfdc5b7d7f55f986d5152d24d534a0203fc5ac0ccc07ca06352cab5902.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 65904
+      },
+      {
         "src": "/private-photos/assets/v1/616298630ba0ce4d2026d94a0aba85321e9d56320be1593a6e97bffdcfb8c7c4.webp",
         "width": 1280
       },
@@ -1249,6 +1564,12 @@
     "dayId": "family-d6",
     "src": "/private-photos/assets/v1/5ef4629bbb3f85b5c2c4e14b53d25256de0603ae6e13f84940442b4d1c3492a6.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/0ba64a61fe06a35f279bd58b094483e56d754fab1680e5b192318ced277208a6.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 26596
+      },
       {
         "src": "/private-photos/assets/v1/7402c8e6165e38fe0bd1f6e96973ad67b905e2c9e009dbc089368b328382830a.webp",
         "width": 1280
@@ -1274,6 +1595,12 @@
     "src": "/private-photos/assets/v1/6d4a1fcee63b126a9f6a932cf951c71141fee536c8934d0febde15106e774648.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/03d940b84f0e7eab399678d2e6ca111a39a7cf171251b39e613df09ea668d5cd.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 29552
+      },
+      {
         "src": "/private-photos/assets/v1/24330808e2da750c36a559bc5e6cdb875020a3be8d770cf75a54c4c3d8761404.webp",
         "width": 1280
       },
@@ -1297,6 +1624,12 @@
     "dayId": "family-d6",
     "src": "/private-photos/assets/v1/169fb581353dab3479d10bfe9f83d8ad3ed02ed260114f6457bb4be5cffb69a5.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/311940fc33b50ebea26bea1a29a9dbd05a3f2ff29aa2e2c8e3ceb46e6259e171.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 46238
+      },
       {
         "src": "/private-photos/assets/v1/574d310d0e54a98dca492edd77401b2fd388a43765c6ee59047e4f6b939d70ed.webp",
         "width": 1280
@@ -1322,6 +1655,12 @@
     "src": "/private-photos/assets/v1/5a1a059e361280ca9eccc86c37f6ca2ae74e272c5b7800ced402771654b26220.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/0121677f094460b570fb81bf1cb77adae7ea4fcc819aad8d2f87c27115be03ce.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 27936
+      },
+      {
         "src": "/private-photos/assets/v1/d92eb0d680abc3ede91a74854c9c1039de0899edb20026f4f978e56196eec28a.webp",
         "width": 1280
       },
@@ -1337,13 +1676,20 @@
     "caption": "Brienz, Interlaken & Mürren · 16:29",
     "takenAt": "18 Aug · 16:29",
     "sourceFilename": "snapseed_camera_capture_20260818_162931_975.heic",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-img-5098",
     "dayId": "family-d6",
     "src": "/private-photos/assets/v1/464fa138fac3cb539ab855994b66509c47b4152adbddc03cae18b30ed6718af9.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/7432e9c0090cc1af5d53cc7f49071b64ef214ce68bcb2139f74d03822b51c295.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 73470
+      },
       {
         "src": "/private-photos/assets/v1/60d77ab9164c7fb9ea35cb802445ebc088f3fc4a350860f648523e2afbb9f97e.webp",
         "width": 1280
@@ -1369,6 +1715,12 @@
     "src": "/private-photos/assets/v1/df572e41ae6d752e5ba7708d459cea53edf5ea7409bc28b2800e0f8b2c8e9a93.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/cd208f7241a41217aae5b06f3e90b9b3f08bd812f46630dc44672d517ee6ae0e.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 54108
+      },
+      {
         "src": "/private-photos/assets/v1/e82322b94ae4608c19e3b2d769599110c6a12c9aa67c5bb19d721d83d5a5251a.webp",
         "width": 1280
       },
@@ -1392,6 +1744,12 @@
     "dayId": "family-d6",
     "src": "/private-photos/assets/v1/567b48dd2c924ccd97596c52f5f4120142d3d9730f503ec4b55d7fdb41ff3c22.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/ab25c0945dab9a49f89eddca72bc38071520fea85ff6c5a117217f0bc614fbc0.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 58202
+      },
       {
         "src": "/private-photos/assets/v1/5be11b0b222e236e8f34a5cf29d3f7e07d27a62d510a0c359918385ee7c4f21f.webp",
         "width": 1280
@@ -1417,6 +1775,12 @@
     "src": "/private-photos/assets/v1/bf43c54ed504360f2dc3c249105cb66619856f6714ca2557d5d0384a418ab47e.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/06e42393a6f69f4be1e46a494c7f192a4aab36faec7b342f17b2ec24ef580652.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 49798
+      },
+      {
         "src": "/private-photos/assets/v1/adecf4bc6c83a8746a069adb68cdaae93356a1c91ec9c96e5956acf4a110c67c.webp",
         "width": 1280
       },
@@ -1440,6 +1804,12 @@
     "dayId": "family-d6",
     "src": "/private-photos/assets/v1/f99f6e88edf951954ed97306dbbf2912cfd923affc68a484139c719a4121d677.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/3705934e1291b8f5538afc6176f027a060a756e4ccf5295b1e44f1953b4ea4f1.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 22434
+      },
       {
         "src": "/private-photos/assets/v1/7fff7cf2411e9853aa78430119daa159ee48cb1317f48f25aa582bc3639420c4.webp",
         "width": 1280
@@ -1465,6 +1835,12 @@
     "src": "/private-photos/assets/v1/5b56c2326e7ffe1096e2bbdb011cf663df53de931163db0d223efd882cd01dbf.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/7466d6833ac939b04534cc7a20a8cb2e83b98250bd09cf968f8418e888fe0695.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 85648
+      },
+      {
         "src": "/private-photos/assets/v1/d70dd0e0ff22468d2b1cbcef4b5b44d6671e4da906043f3f9c6eb5db0dbdd1d2.webp",
         "width": 1280
       },
@@ -1488,6 +1864,12 @@
     "dayId": "family-d7",
     "src": "/private-photos/assets/v1/b618df45c99e7da4d5306d011be16540eb320bb935d83421e53da88b04b3714b.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/6fbf23250c8c5854ff53ef0882b458553c57568fb062cd9b49820e95a94ffea8.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 33116
+      },
       {
         "src": "/private-photos/assets/v1/9f1c47519d196d563614e62e11eb01d6b417f122a28da2f6df137f69140ecde1.webp",
         "width": 1280
@@ -1513,6 +1895,12 @@
     "src": "/private-photos/assets/v1/5586fa7693d83c0b71da8627911d5631fe908b05519eef8e85285d12265dfa22.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/bc73230bb51acbf228ced520509a5ebd42623433c7f653e75e8de1c12f58edc2.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 30622
+      },
+      {
         "src": "/private-photos/assets/v1/4c35e2082037d071eb72078d63d48ae3425e0485c6510b7ce1ac5c8c1c3f427f.webp",
         "width": 1280
       },
@@ -1536,6 +1924,12 @@
     "dayId": "family-d7",
     "src": "/private-photos/assets/v1/88cc912a9f44df48f92b6baafb93427ec8625350e615e78d1f71863df38858ce.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/b0296499ec24d9fd075f112b2eb4835af31d331f04c02de4c04da2637b7d3418.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 24730
+      },
       {
         "src": "/private-photos/assets/v1/7862a53cc00ecc1da463f955197110bb6e4a14aaa27299e7e3a4b730693ab912.webp",
         "width": 1280
@@ -1561,6 +1955,12 @@
     "src": "/private-photos/assets/v1/e2c4eea6d1a7df60cd5c6f80258f89fc6b1ae271c7e4980637f3a54aa67718a7.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/1f0230c45c66f65cd3447766084b627c417d71d260ef3dc04609927db6cf6333.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 32880
+      },
+      {
         "src": "/private-photos/assets/v1/79df931b7f12b281841f72a6c26c15c1769eb5708eb16646ee3dd09efa0dc1af.webp",
         "width": 1280
       },
@@ -1576,13 +1976,20 @@
     "caption": "Luzern · 19:55",
     "takenAt": "19 Aug · 19:55",
     "sourceFilename": "snapseed_camera_capture_20260819_203544_659.heic",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-img-1607",
     "dayId": "family-d7",
     "src": "/private-photos/assets/v1/5dc3b4a1b231ab2fed89f2c3dcc5f030e22cd5f4201ab7cc0f5391b3aa101388.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/bc08e8c32f43c82fb3d4939b7fdf509cec568208188e73fbb94846354cf4d528.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 59214
+      },
       {
         "src": "/private-photos/assets/v1/b5e388b0987544207129334e2fd6c240adf97c42143a6ad3ea420d8e191252fd.webp",
         "width": 1280
@@ -1608,6 +2015,12 @@
     "src": "/private-photos/assets/v1/0559a23895a17049dbcce0ac329ffb0e16012bb925c2effbf90a217ccf0a5e58.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/e147d31a03de664a21a54a2decc036de0a8489294104a797d7521b0f9494c603.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 28760
+      },
+      {
         "src": "/private-photos/assets/v1/b540e16d75b3180de136f1c99e692a204633e5672597480ec3db5cf2adc4555c.webp",
         "width": 1280
       },
@@ -1631,6 +2044,12 @@
     "dayId": "family-d7",
     "src": "/private-photos/assets/v1/233579be1c1f5aafc3407de216f759e13ba3bc2fc8e58f8b1c9018e2564343da.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/80efe73418e51983237b542b0c043ed042a24e07df3576ae1a823dae967d73e7.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 22270
+      },
       {
         "src": "/private-photos/assets/v1/0f18922b9731ae08891db00b6c05e1e8d1c27fef0ede89e56e57fb39ed4ca294.webp",
         "width": 1280
@@ -1656,6 +2075,12 @@
     "src": "/private-photos/assets/v1/856405075de7ac539f4fe6572804e9d8844acebda444dd8b623c5930478490d7.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/1c7cb7178e4ef1d659f14b272374c5ca719a283042a0436e6754a9078cdc007e.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 17360
+      },
+      {
         "src": "/private-photos/assets/v1/11a74161ec12c69c155cbf4b60b0a5194994dfa15ab933fb04d3bc8efd62ce60.webp",
         "width": 1280
       },
@@ -1680,6 +2105,12 @@
     "src": "/private-photos/assets/v1/1d1900f637e9e33fd16e9f59e9b7c6a4d396ab25c23745d6afdf07c83cbfa280.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/a95a93607afc9c39b0d84629624f13e16f5fea9313f5ee4a5740f1342471bbc9.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 79832
+      },
+      {
         "src": "/private-photos/assets/v1/8c8196c64272c6e25be324c3c97a07465f0d8676576ad2639c4a1b7516ca44c4.webp",
         "width": 1280
       },
@@ -1695,13 +2126,20 @@
     "caption": "Luzern · 20:37",
     "takenAt": "19 Aug · 20:37",
     "sourceFilename": "snapseed_camera_capture_20260819_203738_977.heic",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-snapseed-camera-capture-20260819-203744-788",
     "dayId": "family-d7",
     "src": "/private-photos/assets/v1/641b5a525495d1261fc78b7928f49fd1e6bc5a9724f55f45bd37109d3f09c069.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/cfa2cff0bb9898b871a2940fa32895bc35b888eae833853c0ca25a79a026e086.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 83732
+      },
       {
         "src": "/private-photos/assets/v1/27418642d54effe59cf3d830f00a2b4bf856500f9ea9260341f4b386a7492777.webp",
         "width": 1280
@@ -1718,13 +2156,20 @@
     "caption": "Luzern · 20:37",
     "takenAt": "19 Aug · 20:37",
     "sourceFilename": "snapseed_camera_capture_20260819_203744_788.heic",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-snapseed-camera-capture-20260819-211851-678",
     "dayId": "family-d7",
     "src": "/private-photos/assets/v1/7582f549a23572ced4582e2204cbda4878ffb21e66b65bf09de7b49e0a1a94b4.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/cd1d4591c70957db7849c0d21dace04f9280eccfa3e15686ed5564b9dc7d5623.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 18108
+      },
       {
         "src": "/private-photos/assets/v1/be6f1ef558011ea4058fd8ad445502fee07552d1665b784a86fdf59e4d9e2bc5.webp",
         "width": 1280
@@ -1741,13 +2186,20 @@
     "caption": "Luzern · 21:18",
     "takenAt": "19 Aug · 21:18",
     "sourceFilename": "snapseed_camera_capture_20260819_211851_678.heic",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-snapseed-camera-capture-20260819-211902-057",
     "dayId": "family-d7",
     "src": "/private-photos/assets/v1/e6fd84e25484d7ef5acc2eb50aa32c5b10340ffb0ceeb46fed8d38be24e35a36.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/7b3ec902e3f1cd66e525615cebee52cece0cb96d6ed8d2d0cd70ff0d5f9a1a05.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 8970
+      },
       {
         "src": "/private-photos/assets/v1/a0f8c67744e48b18ba6f79c8256d5b005c3070c79bccc18e59725bd935178ae0.webp",
         "width": 1280
@@ -1764,13 +2216,20 @@
     "caption": "Luzern · 21:19",
     "takenAt": "19 Aug · 21:19",
     "sourceFilename": "snapseed_camera_capture_20260819_211902_057.heic",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-img-1613",
     "dayId": "family-d8",
     "src": "/private-photos/assets/v1/e41a2b6f391620aeae92b05771d9480290667a51e0f6a4f9e582b7532fdedf72.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/a95e09dcd6be3b61f28007c27fdd167b2a4175e37ad618769dd5cfcfc2d44daa.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 32786
+      },
       {
         "src": "/private-photos/assets/v1/5a784e1dd11b889e53f5e48c37775216bff0de35495725a4865ddb4573ed305e.webp",
         "width": 1280
@@ -1796,6 +2255,12 @@
     "src": "/private-photos/assets/v1/cd39477a94d17367327854a62c4e6292ac95fcfeb7a8668713f5bb43eaea22ca.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/a732838ed24ff58881af862e81c110d8d661564e7b048227194af7ffb22ebf7f.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 37338
+      },
+      {
         "src": "/private-photos/assets/v1/c3c3bcfd7b8b355557fd61114742ea8264db18c3ad250d46a22bffd170066bd8.webp",
         "width": 1280
       },
@@ -1819,6 +2284,12 @@
     "dayId": "family-d10",
     "src": "/private-photos/assets/v1/5dfd2ea48d188e42ccf01489dcc297fccf3b514656c80b4de65bbf86ca47bb9f.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/d26e6050eff6f96d4f3facfa427e54387384cea8d1c093c17ebfa39f4a86f54b.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 79232
+      },
       {
         "src": "/private-photos/assets/v1/287b25d91283f6e14a31592ebb0666b2c37888969e3735b851e444f6a7e58b5b.webp",
         "width": 1280
@@ -1844,6 +2315,12 @@
     "src": "/private-photos/assets/v1/e95223366c9bf5eec3843af08295f46e8209e3c443ffa88250b65b35d2cd8f73.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/e1f12a4d27e3ae52a8c7d7be4790883dbc7e571d75fb777f39515b4aba6e8359.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 48892
+      },
+      {
         "src": "/private-photos/assets/v1/29cd8fd7bf57c260dcf7950095cf13277c15ea7bd6bc55c84ca064b26b82789c.webp",
         "width": 1280
       },
@@ -1859,13 +2336,20 @@
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 14:11",
     "takenAt": "22 Aug · 14:11",
     "sourceFilename": "IMG_5123.HEIC",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-img-5127",
     "dayId": "family-d10",
     "src": "/private-photos/assets/v1/3b94d39acabb3485363a77f8a1a160ac323384f8e7e333c563262a2ab64820bb.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/cb5f8f64ece3d7c9743360261ff22ba01996ce96a83152909c7aae64de093699.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 33970
+      },
       {
         "src": "/private-photos/assets/v1/96ef5b48696814858f15113d0e1cf89627d691a3d68032ca31574dcf7e48f02a.webp",
         "width": 1280
@@ -1891,6 +2375,12 @@
     "src": "/private-photos/assets/v1/61bb9eeecac9cff8860f62b8cc9966443c8cb88c8f7b9d9eef49aae9593a3e51.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/2fdc0a87d0e37226141623f2c16ce18a1d6a09725fa0070de1eb59b91d2d9cae.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 42938
+      },
+      {
         "src": "/private-photos/assets/v1/54569e5b1f5280cc4c0d99e2131bb8577c91993ea126bccc2be99b9847d24afd.webp",
         "width": 1280
       },
@@ -1906,13 +2396,20 @@
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 15:08",
     "takenAt": "22 Aug · 15:08",
     "sourceFilename": "IMG_5130.HEIC",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-img-5134",
     "dayId": "family-d10",
     "src": "/private-photos/assets/v1/4341256f4adc3267f02c1c93310eea7eecc4284638137f3a0c74f779a8921185.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/b967cb85264d5e1cff8cc68a814d6c6ba1a8f3f16bd7b1bd2c2b1f56204289a7.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 65872
+      },
       {
         "src": "/private-photos/assets/v1/817ad4a4a98ef8a23587188ce337c39442d8d1c3a459b0482ca35df4bf0c21cf.webp",
         "width": 1280
@@ -1929,13 +2426,20 @@
     "caption": "Varenna, Fiumelatte, Dervio & Bellagio · 15:09",
     "takenAt": "22 Aug · 15:09",
     "sourceFilename": "IMG_5134.HEIC",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-snapseed-camera-capture-20260822-151053-865",
     "dayId": "family-d10",
     "src": "/private-photos/assets/v1/10b8db0363c0ee3cb76655e9e4b462919385ec18b7e72708c884b1ac89d125b7.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/b3e1f3da0b9855b9ffb1837be9098a7e04a1ed11464272886800d8b7687e7473.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 83398
+      },
       {
         "src": "/private-photos/assets/v1/ecd9279cc06fa820a075fa31bb7103af9f8a7408855d3259d5ecd579832c806a.webp",
         "width": 1280
@@ -1961,6 +2465,12 @@
     "src": "/private-photos/assets/v1/4e6dcbf42d5bf95da97a9c329376b27fc968aaf214117391e977e837f1fd0346.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/9498b3055cb1aad6197b65b52722d37aaf6f7e6ee31284ea55af3f203716797a.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 34194
+      },
+      {
         "src": "/private-photos/assets/v1/3c970117ae4b27b7e0a9cf798cdda7f5cfba3075ca9a8b9c47b4506d5a90fe9e.webp",
         "width": 1280
       },
@@ -1984,6 +2494,12 @@
     "dayId": "family-d10",
     "src": "/private-photos/assets/v1/e99f7f1f75649ea28bb9fff410b424b57012092699b1376f47012235c03124ca.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/cacbfe894b29ba04f89f8165c84e233c4a592158d0e3b304040e1e0d637a997b.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 83986
+      },
       {
         "src": "/private-photos/assets/v1/01f1b0d0f185869d6cb595920cc879c16a5e727bac15d94cc2a82e64db860c14.webp",
         "width": 1280
@@ -2009,6 +2525,12 @@
     "src": "/private-photos/assets/v1/53cd8a7aad05ca36907b42b7936d37f86b481db13336be0d65bb5210ef5bf491.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/3ff6598a93756098e14c52a880021c060ce1792e8b6738cbabf2423bc1e380d3.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 43900
+      },
+      {
         "src": "/private-photos/assets/v1/4eafa55445a6c46b7840b90692deb9a169f110420da2f9e56516a6e9804999a6.webp",
         "width": 1280
       },
@@ -2032,6 +2554,12 @@
     "dayId": "family-d10",
     "src": "/private-photos/assets/v1/7646b36fa2c9cae2f5fe8c1ab10dfa9efa03a17ab888ec868a77318b0e7fa367.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/b648ceae35a3ff37afe3249156ada0f551eb64af761962bf5521ee8586ae5702.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 45784
+      },
       {
         "src": "/private-photos/assets/v1/efac95b3cfc3bf145dc6fa5a6bb0558a3f0c196a74ce71a3e965d483fbd558d8.webp",
         "width": 1280
@@ -2057,6 +2585,12 @@
     "src": "/private-photos/assets/v1/fa14a4fd50d0aecb2084de20317aa0b363fcb81152cc6abf7be877fe617128ee.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/4b7d92c44abe58c8b0c17d28e6dc63cc0908d4840d77f0ef0dff1c4966666a37.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 19538
+      },
+      {
         "src": "/private-photos/assets/v1/6a74f4969e4aa96f5689324c7c3cd38846b0ca93a50526e68bda520a269e7c75.webp",
         "width": 1280
       },
@@ -2072,13 +2606,20 @@
     "caption": "Pilatus · 11:46",
     "takenAt": "24 Aug · 11:46",
     "sourceFilename": "snapseed_camera_capture_20260824_114638_775.heic",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-snapseed-camera-capture-20260824-114643-710",
     "dayId": "family-d12",
     "src": "/private-photos/assets/v1/b92cb70b537b948894da99efa1f86fd66ed9998aef52e6186a69e726dbcb7174.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/2f4bf223697521d8e383dc9867fc2e23d3cf75d94245234754b5ef116e1a1820.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 77044
+      },
       {
         "src": "/private-photos/assets/v1/0250493922246a1403969dd394021f226dc42b2c231c61a7a3a256c708cd0993.webp",
         "width": 1280
@@ -2104,6 +2645,12 @@
     "src": "/private-photos/assets/v1/f6727c92fbd1401bb7477de9734bb7fee54191ca7ea4893d1ea6df5700f82afe.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/2bb0f772122c8e2b06d8a5f81ceba0f6f773885c505d45cc8b11377fb51b83ae.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 59664
+      },
+      {
         "src": "/private-photos/assets/v1/bde3c486158c545d6f3e6b500033c4fcc141e48ab369f419f23f27cca60e6d65.webp",
         "width": 1280
       },
@@ -2128,6 +2675,12 @@
     "src": "/private-photos/assets/v1/c039ab249364d5ad01328d4f62acced3f84225d3d912d15aab8984a776991f7c.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/af88a85071bf5047f4041b0fa6c0d83d7c435e98616746d152c215a7febb4fa2.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 41420
+      },
+      {
         "src": "/private-photos/assets/v1/64c197a1893fb315efb4424aab1e458ff678e7d0582375872892d99eb8f1a7f5.webp",
         "width": 1280
       },
@@ -2143,13 +2696,20 @@
     "caption": "Pilatus · 12:50",
     "takenAt": "24 Aug · 12:50",
     "sourceFilename": "IMG_5153.HEIC",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-img-5157",
     "dayId": "family-d12",
     "src": "/private-photos/assets/v1/d7a45ba0c80deb2e87ab678266674734bf2f53c6cab2aaa525dc6553bfc2f7b8.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/5471c5f00288d15fdfa093fcc3a6cd064f17fb475b1d83c1aac42dd6ad31b814.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 41678
+      },
       {
         "src": "/private-photos/assets/v1/39c595545f1c7eb2f325019238760c47eade21f603180d43694968c6f8465cbf.webp",
         "width": 1280
@@ -2175,6 +2735,12 @@
     "src": "/private-photos/assets/v1/384ebec5133a47b8f71dab1cf7ddbec45895c625e39cd5b49b71d1395918aa8d.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/ee463463a062216f4a8e9aecf743e7865873e0f3923a592b0c934c7d9c27c94a.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 39456
+      },
+      {
         "src": "/private-photos/assets/v1/90f7a755565fae20d0fee2b035e0cf968aa88c95a2d1a455f40978d9273d994d.webp",
         "width": 1280
       },
@@ -2190,13 +2756,20 @@
     "caption": "Pilatus · 12:50",
     "takenAt": "24 Aug · 12:50",
     "sourceFilename": "IMG_5158.HEIC",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-img-5159",
     "dayId": "family-d12",
     "src": "/private-photos/assets/v1/65305df9e3ecdca7ba24ea36c88cca6ecd47e6caec60d88d05bd03d3e181380a.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/08ee701807e23c65c34bdc01c6ecab1d1ce28b7aa1be1d20532e1a4b701e80ce.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 37824
+      },
       {
         "src": "/private-photos/assets/v1/ca2bafb684d6a86bde71b9fb8528ebeec763b54f072cba36e3f4c49d5abf4fb7.webp",
         "width": 1280
@@ -2213,13 +2786,20 @@
     "caption": "Pilatus · 12:50",
     "takenAt": "24 Aug · 12:50",
     "sourceFilename": "IMG_5159.HEIC",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-img-2987",
     "dayId": "family-d12",
     "src": "/private-photos/assets/v1/11b96024e2658801263aa401035a78c2f1536ee3ec10e246588d68c9f9cfac06.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/b0b300ccc18081802a6f6f2548d644e022c6e9088630100eba22913c9ffe9bd3.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 47458
+      },
       {
         "src": "/private-photos/assets/v1/69e0ebae5d3f833befb0f5a2ba44e40c126f762e63eb16f6c6a2e1338c4683ad.webp",
         "width": 1280
@@ -2245,6 +2825,12 @@
     "src": "/private-photos/assets/v1/3d07568ee055887fa542fde08a8b9022822bbcf8f455f6e2c69b637750187a67.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/af046f6563da9d744eaa20547fa339e42e42cecfd5fe989c48fb155bf47e4800.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 48798
+      },
+      {
         "src": "/private-photos/assets/v1/e0432428446b989790b7bab9dfb50b6216964ea7939e6b7ff0618c997a5d6dd6.webp",
         "width": 1280
       },
@@ -2260,13 +2846,20 @@
     "caption": "Pilatus · 14:27",
     "takenAt": "24 Aug · 14:27",
     "sourceFilename": "IMG_1750.HEIC",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-img-1754",
     "dayId": "family-d12",
     "src": "/private-photos/assets/v1/43f0785c094fa17dd210e60d393115847a77d959a993e785f0312ecf8e3c5b7c.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/f8601a28fbacb716b676a9738eefc13e56ec2330d68a87bc28226cf94dce075b.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 31552
+      },
       {
         "src": "/private-photos/assets/v1/20d69a2bceb368aff7cc4259ab756a5a71c7591870fbe18138830daf6baad8e8.webp",
         "width": 1280
@@ -2292,6 +2885,12 @@
     "src": "/private-photos/assets/v1/7316f51aecf999a144fdcb04e339d8ea596b91d60c290fcb3c6c878797680e9d.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/fcc670aa74a92a8d032b859e0ff569d85994313b96b9ea1c2a4e072bbbc1415e.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 23108
+      },
+      {
         "src": "/private-photos/assets/v1/37db2dde7c696da28f4ab42d62e345f8be4c0bd0e9bf1ee962f7c0e1ed6dc284.webp",
         "width": 1280
       },
@@ -2316,6 +2915,12 @@
     "src": "/private-photos/assets/v1/08ab45ed8e52b6588b44b57bd466d1de37e72561c30334421facf1f28bc1620c.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/7ceb93388824fad9f8f537930b6852883e433607dc108bc2b178861bc95e7f14.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 30638
+      },
+      {
         "src": "/private-photos/assets/v1/d0784806cd61ac05adc56ef020bc8353918a08d3f65bd9f82f52c2d09ef8335b.webp",
         "width": 1280
       },
@@ -2331,13 +2936,20 @@
     "caption": "Pilatus · 15:07",
     "takenAt": "24 Aug · 15:07",
     "sourceFilename": "IMG_1759.HEIC",
-    "protected": true
+    "protected": true,
+    "assetStatus": "local"
   },
   {
     "id": "family-snapseed-camera-capture-20260824-150714-906",
     "dayId": "family-d12",
     "src": "/private-photos/assets/v1/e6bdac10ee7f0e3b361ae4045a0a463d9c271f89ce5374f43737407fa7de359f.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/30fd4a0c7d3acc082629321578a61f892927dd9aa5352ce388f955cb98a60ec0.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 19022
+      },
       {
         "src": "/private-photos/assets/v1/ff8a186bdd6ee866caee865dd93bac8fafcf6bc09f639e3f24be2446f58060c8.webp",
         "width": 1280
@@ -2363,6 +2975,12 @@
     "src": "/private-photos/assets/v1/48d7ea1fcd0256abf37b0784f01e6816d2bca853322a8cdea87ba2ef273a59fd.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/820b3ec742f2324c4ecf30e0f054766fbae081b43894d5e0f5b6f647bb48a277.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 36042
+      },
+      {
         "src": "/private-photos/assets/v1/ba78d212fe7aadceaee3b90e6fc3937528c7829fbe88fb82c27e9e1a98865105.webp",
         "width": 1280
       },
@@ -2386,6 +3004,12 @@
     "dayId": "family-d12",
     "src": "/private-photos/assets/v1/c8ae09bc94ec44a98d55eac6198de7e54ff7f2a813386e7b9fd80b19d477a2d0.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/f25944bea7ac888f9c4a2aef38257ba41aaff9fd224719235fa3996c9eaa1694.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 14206
+      },
       {
         "src": "/private-photos/assets/v1/50ef3127e28e6d1847050064b10e833bd55ce9a0d57a2b3dacb5b1a6bfbdb5b9.webp",
         "width": 1280
@@ -2411,6 +3035,12 @@
     "src": "/private-photos/assets/v1/049e4c5a7ec02087777e3493c16492063aa07833d2a7f8ffbc19ca429fe95e12.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/568669eb98001e771e572af2e11974965b48d178afc46310b349fc6bd744cb75.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 56870
+      },
+      {
         "src": "/private-photos/assets/v1/b437333a183aa13983e7cacccb456ea1f08a64d3559a9ea3601065dc4bc7d4c7.webp",
         "width": 1280
       },
@@ -2435,6 +3065,12 @@
     "src": "/private-photos/assets/v1/3d369e0da7e4326c66955790d4ba238170730f53065a451c782934838d7c2780.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/fd9cebd59c59256db5cf4e60e9b12b02591ef1f07e3f18ee38e445d4d41308c2.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 36608
+      },
+      {
         "src": "/private-photos/assets/v1/7ab87a0287c89e36f5e729822d89fb7429f5be6ce7bbae36ffd7baa67b792a36.webp",
         "width": 1280
       },
@@ -2458,6 +3094,12 @@
     "dayId": "family-d13",
     "src": "/private-photos/assets/v1/e60435c7888a7f021c90aac982974a6bb88a743c903ff9b6326ad0bc6186f7f8.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/d2d1dec1b6c26435a271472e15f4cbde34c0a4bf2d8000c0dc87a78cc6ee3ca3.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 25246
+      },
       {
         "src": "/private-photos/assets/v1/1d81fddcefd4b88f1cb5885cddd6157778154b8ed5bcc4f74ef316cb0c8d26d6.webp",
         "width": 1280

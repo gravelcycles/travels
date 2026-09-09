@@ -183,7 +183,7 @@
 
   function prepareProgressiveImages(container) {
     window.JOURNEY_ATLAS_AUTH?.prepare(container);
-    container.querySelectorAll("img.progressive-image").forEach((image) => {
+    container.querySelectorAll("img.progressive-image:not([data-private-src])").forEach((image) => {
       if (image.dataset.eager === "true" || !lazyImageObserver) hydrateImage(image);
       else lazyImageObserver.observe(image);
     });
@@ -898,7 +898,7 @@
     photoStrip.innerHTML = photos.length
       ? photos.map((photo, index) => `
           <button type="button" data-open-photo="${escapeHtml(photo.id)}" aria-label="Open ${escapeHtml(photo.caption || photo.alt || 'photo')} full screen">
-            ${photoImageMarkup(photo, { alt: "", sizes: "180px" })}
+            ${photoImageMarkup(photo, { alt: "", sizes: "180px", targetWidth: 480 })}
             <span>${String(index + 1).padStart(2, "0")}</span>
             <small>${escapeHtml(photo.caption)}</small>
           </button>
@@ -908,7 +908,7 @@
     prepareProgressiveImages(storyMedia);
     prepareProgressiveImages(photoStrip);
     syncInspectionClasses();
-    if (firstPhoto) preloadAround(firstPhoto.id, 2, 1280);
+
   }
 
   function renderAll(options) {
@@ -986,7 +986,7 @@
       strip.innerHTML = photos.length
       ? photos.map((photo, index) => `
           <button type="button" data-viewer-index="${index}" class="${index === viewerPhotoIndex ? "active" : ""}" aria-pressed="${index === viewerPhotoIndex}" aria-label="Show photo ${index + 1} of ${photos.length}">
-            ${photoImageMarkup(photo, { alt: "", sizes: "180px" })}
+            ${photoImageMarkup(photo, { alt: "", sizes: "180px", targetWidth: 480 })}
             <span>${String(index + 1).padStart(2, "0")}</span>
           </button>
         `).join("")
@@ -1031,6 +1031,7 @@
     const emptyStage = $("#viewer-empty");
     modalPhoto.hidden = !photo;
     emptyStage.hidden = Boolean(photo);
+    $('#viewer-photo-feedback').hidden=true;
     if (photo) {
       if (!window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) window.JOURNEY_ATLAS_AUTH?.clearImage(modalPhoto);
       modalPhoto.className = photo.blur ? "progressive-image" : "";
@@ -1052,7 +1053,7 @@
       $("#modal-time").textContent = photo.takenAt || day.date;
       $("#modal-location").textContent = photo.locationLabel ? `⌖ ${photo.locationLabel}` : "";
       $("#modal-description").textContent = photo.description || "";
-      preloadWithinDay(photos, viewerPhotoIndex, 1, viewerPhotoWidth());
+      preloadWithinDay(photos, viewerPhotoIndex, 1, 1280);
     } else {
       window.JOURNEY_ATLAS_AUTH?.clearImage(modalPhoto);
       modalPhoto.removeAttribute("src");
@@ -1580,7 +1581,7 @@
     $('#album-title').textContent = `All photos · ${journey.photos.length}`;
     $('#album-days').innerHTML = journey.days.map(day=>{
       const photos=photosForDay(day.id); const first=photos[0];
-      return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${first?photoImageMarkup(first,{sizes:'280px'}):'<span class="album-text-scene">A page from the journey</span>'}<strong>Day ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?`${photos.length} photo${photos.length===1?'':'s'}`:'Read the story'}</small></button>`;
+      return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${first?photoImageMarkup(first,{sizes:'280px',targetWidth:480}):'<span class="album-text-scene">A page from the journey</span>'}<strong>Day ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?`${photos.length} photo${photos.length===1?'':'s'}`:'Read the story'}</small></button>`;
     }).join('');
     $('#album-dialog').showModal(); prepareProgressiveImages($('#album-days'));
   }
@@ -1678,6 +1679,18 @@
   });
   $("#open-notes").addEventListener("click", () => $("#notes-dialog").showModal());
   $("#close-route-inspector").addEventListener("click", () => clearSegmentInspection(true));
+  const viewerImage = $('#modal-photo');
+  viewerImage.addEventListener('atlas-photo-state', () => {
+    const state=viewerImage.dataset.photoState, feedback=$('#viewer-photo-feedback');
+    feedback.hidden=!['loading','error','locked'].includes(state);
+    $('#viewer-photo-message').textContent=state==='error'?'This photo could not load. Try again.':state==='locked'?'Unlock photos to see this photograph.':'Loading photograph…';
+    $('#viewer-photo-retry').hidden=state==='loading';
+    $('#viewer-photo-retry').textContent=state==='locked'?'Unlock photos':'Retry photo';
+  });
+  $('#viewer-photo-retry').addEventListener('click', () => {
+    if(!window.JOURNEY_ATLAS_AUTH?.unlocked)window.JOURNEY_ATLAS_AUTH?.showPrompt();
+    else {const photo=photosForDay(viewerDay().id)[viewerPhotoIndex];if(photo)window.JOURNEY_ATLAS_AUTH.setImage(viewerImage,photo,viewerPhotoWidth());}
+  });
   $(".photo-close").addEventListener("click", () => photoDialog.close());
   photoDialog.addEventListener("close", () => { viewerTransition?.cancel(); viewerCameraPhoto = null; });
   $(".photo-prev").addEventListener("click", () => moveViewer(-1));

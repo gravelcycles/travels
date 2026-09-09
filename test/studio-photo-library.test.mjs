@@ -39,7 +39,7 @@ test('upload appends a deduplicated photo with blank copy, safe sizes, private o
   assert.equal(photo.caption, ''); assert.equal(photo.description, '');
   assert.equal(photo.sourceFilename, 'camera.jpg'); assert.equal(photo.dayId, 'family-d3');
   assert.equal(photo.assetStatus, 'local'); assert.equal(photo.lng, undefined);
-  assert.deepEqual(photo.srcset.map(v => v.width), [700]);
+  assert.deepEqual(photo.srcset.map(v => v.width), [480, 700]);
   assert.ok(photo.blur.startsWith('data:image/webp;base64,'));
   const file = privatePhotoFile(root, photo.src);
   const meta = await sharp(file).metadata();

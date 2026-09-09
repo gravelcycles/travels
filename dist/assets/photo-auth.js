@@ -10,6 +10,8 @@
   const images = new Map(), cache = new Map();
   const MAX_CACHE = 96, MAX_CACHE_BYTES = 64 * 1024 * 1024;
   const STATUS_INTERVAL = 60000;
+  const REQUEST_TIMEOUT = 10000, MAX_DOWNLOADS = 4, MAX_BACKGROUND = 2;
+  const downloadQueue = [], activeDownloads = new Set();
   let lastCheck = 0, checkPending = null;
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const placeholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="24"%3E%3Cpath fill="%23d4ded8" d="M0 0h32v24H0z"/%3E%3C/svg%3E';
@@ -28,6 +30,12 @@
   }
   function release(img) {
     const previous=images.get(img);if(previous?.entry)previous.entry.refs.delete(img);images.delete(img);
+    for(const src of [previous?.src,previous?.preview]) {
+      const entry=cache.get(src);
+      if(entry&&!entry.url&&![...images.values()].some(item=>item.src===src||item.preview===src)) {
+        cache.delete(src);entry.controller.abort();
+      }
+    }
   }
   function clearImage(img) {
     release(img);observer?.unobserve(img);delete img.dataset.privateSrc;delete img.dataset.privateBlur;
@@ -35,7 +43,7 @@
   function prune() {
     for(const [img] of images)if(!img.isConnected)release(img);
     // A loading image has not attached its blob yet, but already needs its request.
-    const loading=new Set([...images.values()].filter(item=>item.loading).map(item=>item.src));
+    const loading=new Set([...images.values()].filter(item=>item.loading).flatMap(item=>[item.src,item.preview]));
     const unused=[...cache].filter(([key,entry])=>!entry.refs.size&&!loading.has(key));
     let bytes=unused.reduce((total,[,entry])=>total+(entry.bytes||0),0), count=unused.length;
     for(const [key,entry] of unused) {
@@ -47,47 +55,95 @@
   function lock(broadcast=true) {
     token='';expiresAt=0;generation++;lastCheck=0;checkPending=null;clearTimeout(expiryTimer);
     try{sessionStorage.removeItem(ACCESS_KEY);}catch{}
-    for(const [img,item] of images){img.removeAttribute('srcset');img.src=item.blur;img.classList.remove('is-loaded');item.entry=null;item.loading=false;}
+    for(const [img,item] of images){img.removeAttribute('srcset');img.src=item.blur;img.classList.remove('is-loaded');item.entry=null;item.loading=false;imageState(img,'locked');}
     for(const entry of cache.values()){entry.controller.abort();if(entry.url)URL.revokeObjectURL(entry.url);}
     cache.clear();updateControls();if(broadcast)channel?.postMessage('lock');
     window.dispatchEvent(new Event('atlas-photos-locked'));
   }
   function showPrompt(text='') { updateControls();message.textContent=text;lastFocus=document.activeElement;if(!dialog.open)dialog.showModal(); }
   function closePrompt(){dialog.close();lastFocus?.focus?.();}
-  async function fetchPhoto(src) {
+  function pumpDownloads() {
+    downloadQueue.sort((a,b)=>a.priority-b.priority);
+    while(activeDownloads.size<MAX_DOWNLOADS&&downloadQueue.length) {
+      const next=downloadQueue[0];
+      if(next.priority>0&&[...activeDownloads].filter(entry=>entry.priority>0).length>=MAX_BACKGROUND)break;
+      downloadQueue.shift();activeDownloads.add(next);next.run();
+    }
+  }
+  async function download(src,entry,epoch) {
+    for(let attempt=0;attempt<2;attempt++) {
+      if(entry.controller.signal.aborted||epoch!==generation)throw new Error('Photo request cancelled');
+      const controller=new AbortController(),abort=()=>controller.abort();
+      entry.controller.signal.addEventListener('abort',abort,{once:true});
+      const timer=setTimeout(abort,REQUEST_TIMEOUT);
+      try {
+        const started=Date.now();
+        const response=await fetch(local?`/build/private-photo-assets/${src.slice('/private-photos/assets/'.length)}`:`${service}${src}`,{credentials:'omit',headers:local?{}:{Authorization:`Bearer ${token}`},cache:'no-store',signal:controller.signal,priority:entry.priority===0?'high':'low'});
+        if(response.status===401){if(epoch===generation)lock();throw new Error('Photos locked');}
+        if(!response.ok){const error=new Error('Photo could not load');error.permanent=response.status<500&&![408,429].includes(response.status);throw error;}
+        if(response.headers.get('Content-Type')?.split(';')[0]!=='image/webp'){const error=new Error('Invalid photo response');error.permanent=true;throw error;}
+        const blob=await response.blob();
+        if(epoch!==generation||entry.controller.signal.aborted||controller.signal.aborted)throw new Error('Photo request cancelled');
+        entry.bytes=blob.size;entry.downloadMs=Date.now()-started;entry.edgeCache=response.headers.get('X-Photo-Cache')||'UNKNOWN';entry.url=URL.createObjectURL(blob);return entry;
+      } catch(error) {
+        if(attempt===1||error.permanent||epoch!==generation||entry.controller.signal.aborted)throw error;
+      } finally {clearTimeout(timer);entry.controller.signal.removeEventListener('abort',abort);}
+    }
+  }
+  async function fetchPhoto(src,priority=1) {
     if(!protectedPath.test(src))throw new Error('Invalid photo');
     if(!local&&(!token||expiresAt<=Date.now()/1000)){if(token)lock();throw new Error('Photos locked');}
-    let entry=cache.get(src);if(entry){cache.delete(src);cache.set(src,entry);return entry.promise;}
-    const epoch=generation,controller=new AbortController();entry={controller,refs:new Set(),url:null,promise:null};
-    entry.promise=(async()=>{
-      const response=await fetch(local?`/build/private-photo-assets/${src.slice('/private-photos/assets/'.length)}`:`${service}${src}`,{credentials:'omit',headers:local?{}:{Authorization:`Bearer ${token}`},cache:'no-store',signal:controller.signal});
-      if(response.status===401){if(epoch===generation)lock();throw new Error('Photos locked');}
-      if(!response.ok||response.headers.get('Content-Type')?.split(';')[0]!=='image/webp')throw new Error('Photo could not load');
-      const blob=await response.blob();
-      if(epoch!==generation||controller.signal.aborted)throw new Error('Photo request cancelled');
-      entry.bytes=blob.size;entry.url=URL.createObjectURL(blob);return entry;
-    })().catch(error=>{if(cache.get(src)===entry)cache.delete(src);throw error;});
-    cache.set(src,entry);prune();return entry.promise;
+    let entry=cache.get(src);
+    if(entry){cache.delete(src);cache.set(src,entry);entry.priority=Math.min(entry.priority,priority);pumpDownloads();return entry.promise;}
+    const epoch=generation,controller=new AbortController();entry={controller,priority,refs:new Set(),url:null,promise:null,bytes:0};
+    entry.promise=new Promise((resolve,reject)=>{
+      const onAbort=()=>{const index=downloadQueue.indexOf(entry);if(index>=0){downloadQueue.splice(index,1);reject(new Error('Photo request cancelled'));}};
+      controller.signal.addEventListener('abort',onAbort,{once:true});
+      entry.run=()=>download(src,entry,epoch).then(resolve,reject).finally(()=>{controller.signal.removeEventListener('abort',onAbort);activeDownloads.delete(entry);pumpDownloads();});
+    }).catch(error=>{if(cache.get(src)===entry)cache.delete(src);throw error;});
+    cache.set(src,entry);downloadQueue.push(entry);pumpDownloads();prune();return entry.promise;
+  }
+  function imageState(img,state) {
+    img.dataset.photoState=state;img.dispatchEvent(new Event('atlas-photo-state'));
+  }
+  function display(img,item,entry) {
+    item.entry?.refs.delete(img);item.entry=entry;entry.refs.add(img);
+    img.dataset.photoCache=entry.edgeCache;img.dataset.photoDownloadMs=String(entry.downloadMs);
+    img.addEventListener('load',()=>{if(images.get(img)===item){img.classList.add('is-loaded');imageState(img,'ready');}},{once:true});
+    img.src=entry.url;img.classList.add('is-loaded');delete img.dataset.photoError;imageState(img,'ready');
   }
   async function hydrate(img) {
     const src=img.dataset.privateSrc;if(!src||(!local&&!token))return;
     let item=images.get(img);
-    if(!item||item.src!==src){release(img);item={src,blur:img.dataset.privateBlur||placeholder,entry:null};images.set(img,item);}
-    if(item.loading||item.entry)return;item.loading=true;const epoch=generation;
-    try{const entry=await fetchPhoto(src);if(epoch!==generation||images.get(img)!==item||!img.isConnected)return;entry.refs.add(img);item.entry=entry;img.addEventListener('load',()=>img.classList.add('is-loaded'),{once:true});img.src=entry.url;img.removeAttribute('data-photo-error');}
-    catch(error){if(epoch===generation&&(local||token)){img.dataset.photoError='true';img.dispatchEvent(new Event('error'));}}
-    finally{item.loading=false;prune();}
+    if(!item||item.src!==src){release(img);item={src,blur:img.dataset.privateBlur||placeholder,entry:null,priority:1};images.set(img,item);}
+    if(item.loading||(item.entry&&item.entry===cache.get(src)))return;
+    item.loading=true;const epoch=generation;
+    const current=()=>epoch===generation&&images.get(img)===item&&img.isConnected;
+    if(!item.entry)imageState(img,'loading');
+    try {
+      if(item.preview&&item.preview!==src&&!item.entry&&!cache.get(src)?.url) {
+        try {const preview=await fetchPhoto(item.preview,0);if(!current())return;display(img,item,preview);}
+        catch(error){if(!current()||(!local&&!token))return;}
+      }
+      const entry=await fetchPhoto(src,item.priority??1);
+      if(!current())return;display(img,item,entry);
+    } catch(error) {
+      if(current()&&(local||token)&&!item.entry){img.dataset.photoError='true';imageState(img,'error');img.dispatchEvent(new Event('error'));}
+    } finally {item.loading=false;prune();}
   }
   function setImage(img,photo,width=1280) {
-    const src=selected(photo,width);
+    const src=selected(photo,width),preview=selected(photo,1280),thumbnail=selected(photo,480);
     if(token&&expiresAt<=Date.now()/1000)lock();
-    const ready=(local||token)&&cache.get(src)?.url?cache.get(src):null;
-    if(ready&&images.get(img)?.entry===ready&&img.src===ready.url){img.classList.add('is-loaded');return;}
-    release(img);img.removeAttribute('srcset');delete img.dataset.src;delete img.dataset.srcset;
+    const previous=images.get(img);
+    if(previous?.src===src&&previous.loading){for(const key of [src,preview]){const pending=cache.get(key);if(pending)pending.priority=0;}if(previous.entry)img.classList.add('is-loaded');imageState(img,previous.entry?'ready':'loading');pumpDownloads();return;}
+    const ready=(local||token)?[src,preview,thumbnail].map(key=>cache.get(key)).find(entry=>entry?.url):null;
+    if(ready&&images.get(img)?.entry===ready&&images.get(img)?.src===src&&img.src===ready.url){img.classList.add('is-loaded');imageState(img,'ready');hydrate(img);return;}
+    release(img);img.removeAttribute('srcset');delete img.dataset.src;delete img.dataset.srcset;delete img.dataset.photoError;
     img.dataset.privateSrc=src;img.dataset.privateBlur=photo.blur||placeholder;
-    images.set(img,{src,blur:img.dataset.privateBlur,entry:ready});
-    if(ready){cache.delete(src);cache.set(src,ready);ready.refs.add(img);img.src=ready.url;img.classList.add('is-loaded');img.removeAttribute('data-photo-error');prune();}
-    else {img.src=photo.blur||placeholder;img.classList.remove('is-loaded');hydrate(img);}
+    const item={src,preview,blur:img.dataset.privateBlur,entry:null,priority:0};images.set(img,item);
+    if(ready){display(img,item,ready);prune();}
+    else {img.src=photo.blur||placeholder;img.classList.remove('is-loaded');imageState(img,(local||token)?'loading':'locked');}
+    hydrate(img);
   }
   const observer='IntersectionObserver'in window?new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){hydrate(entry.target);observer.unobserve(entry.target);}},{rootMargin:'250px'}):null;
   function prepare(container=document) {
@@ -136,7 +192,7 @@
     // Only the one-hour access token is tab-scoped; the 30-day cookie stays HttpOnly.
     try{sessionStorage.setItem(ACCESS_KEY,JSON.stringify({token,expiresAt}));}catch{}
     expiryTimer=setTimeout(()=>lock(),Math.max(0,expiresAt*1000-Date.now()));
-    updateControls();if(dialog.open)closePrompt();for(const [img] of images)if(img.isConnected)hydrate(img);prepare();window.dispatchEvent(new Event('atlas-photos-unlocked'));
+    updateControls();if(dialog.open)closePrompt();for(const [img,item] of images)if(img.isConnected&&item.priority===0)hydrate(img);prepare();window.dispatchEvent(new Event('atlas-photos-unlocked'));
   }
   async function restoreTabAccess(){
     let saved;try{saved=JSON.parse(sessionStorage.getItem(ACCESS_KEY));}catch{}
@@ -167,7 +223,7 @@
   for(const button of document.querySelectorAll('[data-unlock]'))button.addEventListener('click',()=>begin());
   dialog.querySelector('[data-dismiss]').addEventListener('click',closePrompt);
   dialog.addEventListener('close',()=>lastFocus?.focus?.());
-  window.JOURNEY_ATLAS_AUTH={isProtected,markup,hydrate,prepare,setImage,clearImage,preload(photo,width){if(local||token)fetchPhoto(selected(photo,width)).then(prune,prune);},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
+  window.JOURNEY_ATLAS_AUTH={isProtected,markup,hydrate,prepare,setImage,clearImage,preload(photo,width){if(local||token)fetchPhoto(selected(photo,width),2).then(prune,prune);},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
 })();

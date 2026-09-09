@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 import fs from 'node:fs';import path from 'node:path';import {fileURLToPath} from 'node:url';
 import {loadJourneys,readJson,writeJson} from './journey-content.mjs';
-import {existingTwoVariants,isPrivatePhotoUrl,privatePhotoFile,storeDerivative} from './photo-variants.mjs';
+import {existingPhotoVariants,isPrivatePhotoUrl,privatePhotoFile,storeDerivative} from './photo-variants.mjs';
 export function migratePrivatePhotos(root,{apply=false}={}){
   const changes=[];let photos=0,objects=0,bytes=0;
   for(const journey of loadJourneys(root,{includeDrafts:true}).journeys.filter(j=>j.kind==='real'))for(const suffix of ['', '-uploads']){
     const file=path.join(root,journey.published?`content/photo-manifests/${journey.id}${suffix}.json`:`build/draft-assets/${journey.id}/${suffix?'uploads':'photos'}.json`);
     if(!fs.existsSync(file))continue;
     const updated=readJson(file).map(photo=>{
-      const selected=existingTwoVariants(photo);photos++;
+      const selected=existingPhotoVariants(photo);photos++;
       const variants=selected.map(v=>{
         let source;
         if(isPrivatePhotoUrl(v.src))source=privatePhotoFile(root,v.src);

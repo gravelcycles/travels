@@ -5,6 +5,12 @@
     "src": "/private-photos/assets/v1/76c826d63a9c61adf1e85abbfc673b1022f052d762ed7612fa9705bf62538530.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/1d897e3e5b3067897e9d5dbc2ab68bfa213d50cdc27026b13fd6d87e40be7e02.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 55678
+      },
+      {
         "src": "/private-photos/assets/v1/27a630e538f4eb0abefd553d7d85e39998428cd17f950b0b631cb079e5cdf821.webp",
         "width": 1280
       },
@@ -30,6 +36,12 @@
     "dayId": "family-d9",
     "src": "/private-photos/assets/v1/4795b6455b23548c915df9788e0a42cc245eb4fed495ea2417bdd1f52e441f17.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/08f37df99b4545be23348bfceb832a2819c85779a0a3036ed23f265f2bce1c85.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 46100
+      },
       {
         "src": "/private-photos/assets/v1/79ddaf11e8f128c4f95442fbfd205056240988855d8d6e4af7ba1d97e8d841dd.webp",
         "width": 1280
@@ -57,6 +69,12 @@
     "src": "/private-photos/assets/v1/ad1d44d3444b2b81c1bbaa391546615e39a13b816860169ffb4aab5385877901.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/46558715fb15ab97215a9e7aba5a0c99187dacc361b31cf4983531313e0984b7.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 22858
+      },
+      {
         "src": "/private-photos/assets/v1/2ff6f5776f2b62c1d3009ba4c2b78bc1eb954477c4b3e0a9411e3ed4e67688c2.webp",
         "width": 1280
       },
@@ -82,6 +100,12 @@
     "dayId": "family-d8",
     "src": "/private-photos/assets/v1/069abecb955e215aa7a4b67428f9e66896fcc41159e4027ee89e0ae7e575097e.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/60fb755fb236203657d62d1c6da72703e95c64bebb238b5821e191a5fbe854d0.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 53348
+      },
       {
         "src": "/private-photos/assets/v1/9abae267510713d5238ded9a57f782a5f4385e4d75cc29aa4e31d20a8f03f9b7.webp",
         "width": 1280
@@ -109,6 +133,12 @@
     "src": "/private-photos/assets/v1/9f44682ffdbb3c7730cf3a30bd10db9a086651c22de54539e1f181e36cf1a7a3.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/52471c476731d8fcddd70cc3bed2ca6dc61601b462764639ff32fa6d25fe4bd9.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 32426
+      },
+      {
         "src": "/private-photos/assets/v1/f2112c75edc8f14d5ae47b9ed1ae3991bd5a338e98c5376d68f36613544166a9.webp",
         "width": 1280
       },
@@ -134,6 +164,12 @@
     "dayId": "family-d8",
     "src": "/private-photos/assets/v1/3756fa14ef66146e6fa3958ed42e21d83bc1dfaa4bdcca34e5ed98f6ad2958cd.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/fa4558884f966a3c9bf368d3b8edb772bde27f56978925178b3c4fedaa8a0e1c.webp",
+        "width": 480,
+        "height": 640,
+        "bytes": 88250
+      },
       {
         "src": "/private-photos/assets/v1/c8b88430eea3439af87a73a10dd9297d61a5a579c77f1e237f08c9eebd6f4ed6.webp",
         "width": 1280
@@ -161,6 +197,12 @@
     "src": "/private-photos/assets/v1/911798f193a97c56afc37e46ced316459544b5672fac6d2137c07aac6a7200d3.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/d08a694ba0e1697c0d8ebe4a58f260f7c944e92b810e7fe9540a03052e9ba259.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 38896
+      },
+      {
         "src": "/private-photos/assets/v1/88c769d18bfc1837568ee8a66e78dd810ab4e3a1379ae95bd4a73d3652912255.webp",
         "width": 1280
       },
@@ -186,6 +228,12 @@
     "dayId": "family-d11",
     "src": "/private-photos/assets/v1/5d35312a2cf1a7335b5af8d26417c78df5cdd32e67dd9ab621fdcacbf7b52743.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/db4c3652b65f342ec6aaab2cdab8ebcfa152f358dacc55800f9cc4cb54f343fa.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 29010
+      },
       {
         "src": "/private-photos/assets/v1/d32ffbe5907538aee076a2b69cd2b7484dada9f136c03879a2a9008e2c642dd6.webp",
         "width": 1280
@@ -213,6 +261,12 @@
     "src": "/private-photos/assets/v1/77280059fbd677eeda11086888c5dcb64d092d1128309f5b5a7a9406a04556a7.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/f08be19ed110b50f8fab2059df79fcb4db05b2e3eb8ae3029682b1744e6fa0de.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 34858
+      },
+      {
         "src": "/private-photos/assets/v1/22e230af96152a7b09a821fbaa61c77e7f6fd99f3b21e48027ef4615008a6b48.webp",
         "width": 1280
       },
@@ -238,6 +292,12 @@
     "dayId": "family-d11",
     "src": "/private-photos/assets/v1/6da9ceafa043d11846e75607fb904a52c4e50ee9a251b7422237c39eb03ec724.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/19caa42b953972e157efb47c3eb16dd5687bc9e71260a96451af0c43140410e7.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 34524
+      },
       {
         "src": "/private-photos/assets/v1/b6a4586245f7c5e9d6a707f57852d12ee979d4f434bf8828a5b58864b9740371.webp",
         "width": 1280
@@ -265,6 +325,12 @@
     "src": "/private-photos/assets/v1/998c18d72cf01d46ed943dec37277060ee0c3611391989933da2518f9557588a.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/3a779dabbfa08885d963b21c7a3601f26843dbb2a30bf3bc28bc0f5ecad754ba.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 42500
+      },
+      {
         "src": "/private-photos/assets/v1/831622960923f1f796e833453dd67fcee48b49b2709672a7714eb90a62f202b9.webp",
         "width": 1280
       },
@@ -291,6 +357,12 @@
     "src": "/private-photos/assets/v1/00b04eb17f5aca9ce8df7dbbb62b860b1929c528f4afaaf8d196a3846fe936b6.webp",
     "srcset": [
       {
+        "src": "/private-photos/assets/v1/31aa8001e4d4662706d3fd7aeab9fcac17d14c9de14f57813d1849ac9731f6b0.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 23490
+      },
+      {
         "src": "/private-photos/assets/v1/4a9ffa1607db006fe1fa97a89fee1511922c42ab601f35260c79773be14e26f9.webp",
         "width": 1280
       },
@@ -316,6 +388,12 @@
     "dayId": "family-d13",
     "src": "/private-photos/assets/v1/fb1d7761d079b46ff3caf35b63bbdacabc5f8727ca0cec5b3c549851758ef1a2.webp",
     "srcset": [
+      {
+        "src": "/private-photos/assets/v1/c6d0f9992ee6dd97fb971f759d94134f127773202750ba7b4d657d763794c5e9.webp",
+        "width": 480,
+        "height": 360,
+        "bytes": 27470
+      },
       {
         "src": "/private-photos/assets/v1/76f21aa8d9f647deec21736d82bc697034307e5062f8a33654b3d74c77d123c8.webp",
         "width": 1280
