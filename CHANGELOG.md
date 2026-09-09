@@ -6,6 +6,23 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Photo landmarks and calmer viewer transitions
+
+- Saved photo locations appear as compact thumbnail landmarks. Nearby pins share
+  a counted stack that opens a photo chooser; individual photos open the viewer.
+  Day focus limits landmarks to that day, and day labels avoid the thumbnails.
+  Map fitting includes located photos, including pins away from the travel line.
+- Moving between located photos frames both pins for 850 ms, pauses for 150 ms,
+  then settles at the next photo's saved zoom over 950 ms. The previous pin is
+  muted during the transition and removed on arrival. Rapid navigation, closing
+  the viewer, and manual map movement cancel pending camera moves.
+- Reduced motion skips animation; unlocated and coincident photos avoid an
+  unnecessary two-stage move. Hidden photos never become landmarks.
+- Validation: 48 tests and production build pass; desktop/mobile landmark
+  selection, stacked photo chooser, viewer transition, and rapid navigation
+  were checked in the browser.
+
+
 ### Publish saved Studio edits and editing improvements
 
 Commit `d1ca46e` deployed successfully in Pages run `34351239971`.

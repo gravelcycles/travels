@@ -57,6 +57,10 @@
   let replayMapReady = false;
   let mainDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
   let mainDayMarkers = [];
+  let photoLandmarks = [];
+  let photoLandmarkKey = "";
+  let viewerCameraPhoto = null;
+  let viewerTransition = null;
   let viewerDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
   let replayDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
   let replayTimeline = [];
@@ -280,14 +284,16 @@
   }
 
   function dayCoordinates(day) {
-    const coordinates = segmentsForDay(day).flatMap(segmentCoordinates);
+    const coordinates = segmentsForDay(day).flatMap(segmentCoordinates)
+      .concat(photosForDay(day.id).filter(window.JOURNEY_ATLAS_UTILS.locatedPhoto).map(photo => [photo.lng, photo.lat]));
     if (coordinates.length) return coordinates;
     const place = destinationForDay(day);
     return place ? [[place.lng, place.lat]] : [];
   }
 
   function journeyCoordinates() {
-    return journey.segments.flatMap(segmentCoordinates).concat(journey.places.map((place) => [place.lng, place.lat]));
+    return journey.segments.flatMap(segmentCoordinates).concat(journey.places.map((place) => [place.lng, place.lat]),
+      journey.photos.filter(window.JOURNEY_ATLAS_UTILS.locatedPhoto).map(photo => [photo.lng, photo.lat]));
   }
 
   function boundsFromCoordinates(coordinates) {
@@ -442,7 +448,7 @@
     };
     mainMap.on("styledata", finishMainMapSetup);
     mainMap.on("load", finishMainMapSetup);
-    mainMap.on("moveend", refreshDayMarkerOffsets);
+    mainMap.on("moveend", () => { refreshPhotoLandmarks(); refreshDayMarkerOffsets(); });
     finishMainMapSetup();
     mainMap.on("click", (event) => {
       const feature = routeFeatureAtPoint(event.point);
@@ -619,14 +625,60 @@
     entry.element.style.setProperty("--leader-angle", `${angle}deg`);
   }
 
+  function photoLandmarkBoxes() {
+    return photoLandmarks.map(({ photo }) => {
+      const point = mainMap.project([photo.lng, photo.lat]);
+      return { left: point.x - 24, right: point.x + 24, top: point.y - 24, bottom: point.y + 24 };
+    });
+  }
+
+  function refreshPhotoLandmarks() {
+    if (!mainMapReady || !mapIsReady(mainMap)) return;
+    const canvas = mainMap.getCanvas();
+    const photos = mapScope === "day" ? photosForDay(activeDayId) : orderedPhotos();
+    const groups = window.JOURNEY_ATLAS_UTILS.photoLandmarkGroups(photos, point => mainMap.project(point), {
+      width: canvas.clientWidth, height: canvas.clientHeight
+    });
+    const key = JSON.stringify(groups.map(group => group.photos.map(photo => photo.id)));
+    if (key === photoLandmarkKey) return;
+    photoLandmarkKey = key;
+    photoLandmarks.forEach(entry => entry.marker.remove());
+    photoLandmarks = groups.map(group => {
+      const photo = group.photos[0];
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `photo-landmark${group.photos.length > 1 ? " photo-landmark-stack" : ""}`;
+      const label = group.photos.length > 1 ? `View ${group.photos.length} photos near ${photo.locationLabel || photo.caption}` : `Open photo landmark: ${photo.caption}`;
+      button.title = label;
+      button.setAttribute("aria-label", label);
+      button.innerHTML = `<img src="${escapeHtml(preferredPhotoUrl(photo, 480))}" alt="" loading="lazy" decoding="async">${group.photos.length > 1 ? `<span class="photo-landmark-count">${group.photos.length}</span>` : ""}`;
+      button.addEventListener("click", event => {
+        event.stopPropagation();
+        if (group.photos.length === 1) openPhoto(photo.id);
+        else openPhotoLandmarkGroup(group.photos);
+      });
+      const marker = new maplibregl.Marker({ element: button, anchor: "center" }).setLngLat([photo.lng, photo.lat]).addTo(mainMap);
+      return { marker, photo };
+    });
+  }
+
+  function openPhotoLandmarkGroup(photos) {
+    $('#album-title').textContent = `Photos near this point · ${photos.length}`;
+    $('#album-days').innerHTML = photos.map(photo => `<button class="album-day" data-landmark-photo="${escapeHtml(photo.id)}">
+      ${photoImageMarkup(photo, { sizes: '280px' })}<strong>${escapeHtml(photo.caption)}</strong>
+      <small>Day ${dayById(photo.dayId).number} · ${escapeHtml(photo.locationLabel || dayById(photo.dayId).title)}</small></button>`).join('');
+    $('#album-dialog').showModal();
+    prepareProgressiveImages($('#album-days'));
+  }
+
   function refreshDayMarkerOffsets() {
     if (!mainMapReady || !mainDayMarkers.length) return;
-    const occupiedBoxes = [];
+    const occupiedBoxes = photoLandmarkBoxes();
     mainDayMarkers.forEach((entry) => applyDayMarkerOffset(entry, markerOffsetFor(entry.place, entry.label, occupiedBoxes)));
   }
 
   function addDayMarkers() {
-    const occupiedBoxes = [];
+    const occupiedBoxes = photoLandmarkBoxes();
     groupedDayMarkers()
       .filter((group) => mapScope === "journey" || group.days.some((day) => day.id === activeDayId))
       .forEach((group) => {
@@ -707,6 +759,7 @@
           opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.78)
         });
       });
+    refreshPhotoLandmarks();
     addDayMarkers();
     if (mapScope === "day") addRailStopMarkers(mainMap, mainDecorations, activeDay());
     if (inspectedSegmentId) setInspectedFeatureState(inspectedSegmentId, true);
@@ -812,6 +865,7 @@
     }).join("");
     if (focused && journey.segments.some((segment) => !selectedSegments.has(segment.id))) markup += stateKey("Other days", palette.muted, 0.32);
     if (focused && modes.includes("train")) markup += '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>';
+    if ((focused ? photosForDay(activeDayId) : journey.photos).some(window.JOURNEY_ATLAS_UTILS.locatedPhoto)) markup += '<span><i class="photo-landmark-swatch" aria-hidden="true"></i>Photo landmark</span>';
     $("#map-legend").innerHTML = markup;
   }
 
@@ -950,6 +1004,10 @@
       return;
     }
     viewerMap = createMap("photo-map", true);
+    viewerTransition = window.JOURNEY_ATLAS_UTILS.photoMapTransition(viewerMap);
+    const stopPhotoTransition = event => { if (event.originalEvent) viewerTransition.cancel(); };
+    viewerMap.on("movestart", stopPhotoTransition);
+    viewerMap.on("zoomstart", stopPhotoTransition);
     const finishViewerMapSetup = () => {
       if (viewerMapReady || !mapIsReady(viewerMap)) return;
       viewerMapReady = true;
@@ -1049,7 +1107,7 @@
   }
 
   function syncViewerMap(attempt = 0) {
-    if (!viewerMapReady) return;
+    if (!viewerMapReady || !photoDialog.open) return;
     if (!mapIsReady(viewerMap)) {
       if (attempt < 24) window.setTimeout(() => syncViewerMap(attempt + 1), 500);
       return;
@@ -1057,6 +1115,10 @@
     clearDecorations(viewerMap, viewerDecorations);
     const day = viewerDay();
     const photo = photosForDay(day.id)[viewerPhotoIndex];
+    const previous = viewerCameraPhoto;
+    const photoChanged = previous?.id !== photo?.id;
+    if (photoChanged) viewerTransition?.cancel();
+    viewerCameraPhoto = photo || null;
     const selectedSegments = new Set(day.segmentIds);
     [...journey.segments]
       .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id)))
@@ -1074,13 +1136,26 @@
       element.setAttribute("aria-label", "Current photo location");
       const marker = new maplibregl.Marker({ element, anchor: "center" }).setLngLat([photo.lng, photo.lat]).addTo(viewerMap);
       viewerDecorations.markers.push(marker);
-      viewerMap.easeTo({ center: [photo.lng, photo.lat], zoom: Math.max(PHOTO_ZOOM_LIMITS.min, Math.min(PHOTO_ZOOM_LIMITS.max, photo.zoom || 16)), duration: 650 });
+      if (photoChanged) {
+        let previousMarker;
+        if (window.JOURNEY_ATLAS_UTILS.locatedPhoto(previous) && !prefersReducedMotion()) {
+          const oldPoint = document.createElement("div");
+          oldPoint.className = "photo-location-marker photo-location-previous";
+          oldPoint.setAttribute("aria-label", "Previous photo location");
+          previousMarker = new maplibregl.Marker({ element: oldPoint, anchor: "center" }).setLngLat([previous.lng, previous.lat]).addTo(viewerMap);
+          viewerDecorations.markers.push(previousMarker);
+        }
+        const canvas = viewerMap.getCanvas();
+        const padding = Math.max(16, Math.min(40, canvas.clientWidth / 5, canvas.clientHeight / 5));
+        viewerTransition.move(previous, photo, { reducedMotion: prefersReducedMotion(), padding, onFinish: () => previousMarker?.remove() });
+      }
     } else {
+      viewerTransition?.cancel();
       const coordinates = dayCoordinates(day);
       if (coordinates.length > 1) {
-        viewerMap.fitBounds(boundsFromCoordinates(coordinates), { padding: 45, maxZoom: 9, duration: 650 });
+        viewerMap.fitBounds(boundsFromCoordinates(coordinates), { padding: 45, maxZoom: 9, duration: prefersReducedMotion() ? 0 : 650 });
       } else if (coordinates.length === 1) {
-        viewerMap.easeTo({ center: coordinates[0], zoom: 9, duration: 650 });
+        viewerMap.easeTo({ center: coordinates[0], zoom: 9, duration: prefersReducedMotion() ? 0 : 650 });
       }
     }
   }
@@ -1517,7 +1592,12 @@
   }
   window.addEventListener('hashchange',handleDeepLink);
   $('#close-album').addEventListener('click',()=>$('#album-dialog').close());
-  $('#album-days').addEventListener('click',event=>{const button=event.target.closest('[data-album-day]');if(button){$('#album-dialog').close();openDayViewer(button.dataset.albumDay);}});
+  $('#album-days').addEventListener('click', event => {
+    const photo = event.target.closest('[data-landmark-photo]');
+    if (photo) { $('#album-dialog').close(); openPhoto(photo.dataset.landmarkPhoto); return; }
+    const button = event.target.closest('[data-album-day]');
+    if (button) { $('#album-dialog').close(); openDayViewer(button.dataset.albumDay); }
+  });
   $('#album-continue').addEventListener('click',()=>{const id=$('#album-continue').dataset.day;if(id)openDayViewer(id);else {photoDialog.close();showJournal();}});
   $('#return-to-journal').addEventListener('click',()=>showJournal());
 
@@ -1591,6 +1671,7 @@
   $("#open-notes").addEventListener("click", () => $("#notes-dialog").showModal());
   $("#close-route-inspector").addEventListener("click", () => clearSegmentInspection(true));
   $(".photo-close").addEventListener("click", () => photoDialog.close());
+  photoDialog.addEventListener("close", () => { viewerTransition?.cancel(); viewerCameraPhoto = null; });
   $(".photo-prev").addEventListener("click", () => moveViewer(-1));
   $(".photo-next").addEventListener("click", () => moveViewer(1));
   $("#viewer-previous-day").addEventListener("click", () => moveViewerDay(-1));
@@ -1608,7 +1689,7 @@
   $("#replay-again").addEventListener("click", startReplay);
   $("#replay-explore-journey").addEventListener("click", exploreReplayJourney);
   replayDialog.addEventListener("close", ()=>{ pauseReplay(); replayPhotoToken++; const img=$('#replay-photo'); img.onload=null;img.onerror=null; if(replayMap) replayMap.stop(); });
-  document.addEventListener('visibilitychange',()=>{if(document.hidden) pauseReplay();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden) { pauseReplay(); viewerTransition?.cancel(); }});
   $('#replay-retry-photo').addEventListener('click',()=>renderReplayPhoto(replayLeadPhoto(replayMomentDay(),currentReplayMoment())));
   $('#replay-retry-map').addEventListener('click',()=>{if(replayMap)replayMap.remove();replayMap=null;replayMapReady=false;replayDecorations={layerIds:[],sourceIds:[],markers:[],hitLayerIds:[]};initReplayMap();});
   $("#viewer-filmstrip").addEventListener("click", (event) => {

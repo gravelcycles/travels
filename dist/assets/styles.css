@@ -540,3 +540,12 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible {
 .intro-open .mobile-nav { visibility:hidden; }
 @media(max-width:900px) { .atlas-shell:not([data-mobile-tab="story"]) .story-panel { display:none; } }
 .replay-photo:not([hidden]) { display:block; }
+
+/* Located photographs stay compact; nearby pins share a counted stack. */
+.photo-landmark { width:44px; height:44px; padding:3px; border:1px solid #fff; border-radius:9px; background:var(--panel); box-shadow:0 2px 8px #15323866; cursor:pointer; z-index:2; }
+.photo-landmark img { display:block; width:100%; height:100%; border-radius:5px; object-fit:cover; }
+.photo-landmark:hover, .photo-landmark:focus-visible { outline:3px solid var(--selected); outline-offset:2px; z-index:5; }
+.photo-landmark-stack { box-shadow:3px 3px 0 var(--panel), 4px 4px 0 #687b7e, 0 3px 9px #15323855; }
+.photo-landmark-count { position:absolute; right:-7px; top:-8px; min-width:21px; height:21px; padding:0 4px; display:grid; place-items:center; border-radius:12px; background:var(--ink); color:#fff; border:2px solid #fff; font-size:11px; font-weight:800; }
+.photo-landmark-swatch { width:15px; height:13px; border:2px solid var(--ink); border-radius:3px; background:linear-gradient(145deg,var(--panel) 40%,var(--muted) 41%); }
+.photo-location-previous { background:var(--muted); box-shadow:0 0 0 4px #71878a33; opacity:.7; }
