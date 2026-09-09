@@ -25,27 +25,34 @@ function cameraHarness() {
   };
 }
 
-test('landmarks group nearby pins, split at closer zoom, and retain every located photo exactly once', () => {
-  const photos = [photo('a', 10), photo('b', 12), photo('same-position', 12), photo('far', 50)];
-  const view = { width: 800, height: 600 };
-  const zoomedOut = photoLandmarkGroups(photos, ([x,y]) => ({ x: x * 5, y }), view);
-  assert.deepEqual(zoomedOut.map(g => g.photos.map(p => p.id)), [['a','b','same-position'],['far']]);
-  const zoomedIn = photoLandmarkGroups(photos, ([x,y]) => ({ x: (x - 10) * 40, y }), { width: 2000, height: 600 });
-  assert.deepEqual(zoomedIn.map(g => g.photos.map(p => p.id)), [['a'],['b','same-position'],['far']]);
-  assert.deepEqual(zoomedIn.flatMap(g => g.photos), photos);
+test('photo groups use a 500 metre limit independent of screen distance and zoom', () => {
+  const photos = [photo('a', 8, 47), photo('near', 8.003, 47), photo('far', 8.03, 47)];
+  const view = { width: 2000, height: 1000 };
+  const project = scale => ([lng,lat]) => ({ x: 200 + (lng - 8) * scale, y: 200 });
+  const ids = scale => photoLandmarkGroups(photos, project(scale), view).map(g => g.photos.map(p => p.id));
+  assert.deepEqual(ids(10), [['a', 'near'], ['far']]);
+  assert.deepEqual(ids(50000), ids(10));
+  const meters = globalThis.JOURNEY_ATLAS_UTILS.photoDistanceMeters;
+  const edge = delta => photo('edge', 8, 47 + delta / 6371000 * 180 / Math.PI);
+  assert.ok(meters(photos[0], edge(499.9)) < 500);
+  assert.equal(photoLandmarkGroups([photos[0],edge(499.9)], project(10), view).length, 1);
+  assert.equal(photoLandmarkGroups([photos[0],edge(500.1)], project(10), view).length, 2);
 });
 
-test('hidden, missing, invalid and offscreen locations never become landmarks', () => {
-  const photos = [photo('valid', 10), { ...photo('hidden', 11), hidden: true }, { id: 'missing' },
+test('hidden, trashed, missing, invalid and offscreen photos never become landmarks', () => {
+  const photos = [photo('valid', 10), { ...photo('hidden', 11), hidden: true }, { ...photo('trashed', 10), trashed:true }, { id: 'missing' },
     photo('invalid', 181), photo('nan', NaN), photo('offscreen', 100)];
   const groups = photoLandmarkGroups(photos, ([x,y]) => ({ x: x * 10, y }), { width: 400, height: 300 });
   assert.deepEqual(groups.flatMap(g => g.photos.map(p => p.id)), ['valid']);
 });
 
-test('groups use fixed real pins instead of chaining all adjacent locations together', () => {
-  const groups = photoLandmarkGroups([photo('a', 0), photo('b', 5), photo('c', 10)],
-    ([x,y]) => ({ x: x * 10, y }), { width: 400, height: 300 });
+test('groups never chain beyond 500 metres or combine different days', () => {
+  const latitude = meters => 47 + meters / 6371000 * 180 / Math.PI;
+  const photos = [photo('a',8,latitude(0)), photo('b',8,latitude(400)), photo('c',8,latitude(800))];
+  const groups = photoLandmarkGroups(photos, () => ({ x: 100, y:100 }), { width: 400, height: 300 });
   assert.deepEqual(groups.map(g => g.photos.map(p => p.id)), [['a','b'],['c']]);
+  const days = photoLandmarkGroups([{...photos[0],dayId:'d1'}, {...photos[0],id:'d2-photo',dayId:'d2'}], () => ({x:100,y:100}), {width:400,height:300});
+  assert.equal(days.length,2);
 });
 
 test('photo transition frames both pins then settles at the saved zoom in about two seconds', () => {
@@ -96,31 +103,21 @@ test('reduced motion, first photos and coincident points avoid the two-stage tou
   assert.equal(h.calls.filter(c => c.type !== 'stop').length, 0);
 });
 
-test('overlapping photos fan out as individual non-overlapping targets with exact pin connections', () => {
-  const photos = Array.from({ length: 6 }, (_, index) => photo(`p${index}`, 8 + index * 0.00001, 47));
-  const project = ([lng, lat]) => ({ x: 250 + (lng - 8) * 100, y: 220 + (lat - 47) * 100 });
-  const layout = globalThis.JOURNEY_ATLAS_UTILS.photoLandmarkLayout(photos, project, { width: 650, height: 500 });
-  assert.deepEqual(layout.map(item => item.photo.id), photos.map(item => item.id));
-  for (const item of layout) {
-    assert.deepEqual(item.anchor, project([item.photo.lng, item.photo.lat]));
-    assert.equal(item.anchor.x + item.offset[0], item.point.x);
-    assert.equal(item.anchor.y + item.offset[1], item.point.y);
-    assert.ok(Math.hypot(...item.offset) > 5);
-    for (const other of layout.filter(other => other !== item)) {
-      assert.ok(Math.abs(item.point.x - other.point.x) >= 56 || Math.abs(item.point.y - other.point.y) >= 56);
-    }
-  }
+test('a nearby group occupies one clickable target retaining all its photos', () => {
+  const photos = Array.from({length:12}, (_,i) => photo(`p${i}`, 8 + i * .00001, 47));
+  const layout = globalThis.JOURNEY_ATLAS_UTILS.photoLandmarkLayout(photos, () => ({ x:5,y:540 }), {width:390,height:560});
+  assert.equal(layout.length,1);
+  assert.deepEqual(layout[0].photos.map(p => p.id), photos.map(p => p.id));
+  assert.ok(layout[0].point.x >= 28 && layout[0].point.y <= 456);
+  assert.equal(layout[0].anchor.x + layout[0].offset[0], layout[0].point.x);
+  assert.equal(layout[0].anchor.y + layout[0].offset[1], layout[0].point.y);
 });
 
-test('fans stay inside a phone map even when all pins share an edge location', () => {
-  const photos = Array.from({ length: 12 }, (_, index) => photo(`p${index}`, 8, 47));
-  const layout = globalThis.JOURNEY_ATLAS_UTILS.photoLandmarkLayout(photos, () => ({ x: 5, y: 540 }), { width: 390, height: 560 });
-  assert.equal(layout.length, photos.length);
-  for (const item of layout) {
-    assert.ok(item.point.x >= 28 && item.point.x <= 362);
-    assert.ok(item.point.y >= 82 && item.point.y <= 456);
-    for (const other of layout.filter(other => other !== item)) {
-      assert.ok(Math.abs(item.point.x - other.point.x) >= 56 || Math.abs(item.point.y - other.point.y) >= 56);
-    }
+test('distant groups that overlap on screen move apart without merging', () => {
+  const photos = Array.from({length:6}, (_,i) => photo(`p${i}`, 8 + i * .03, 47));
+  const layout = globalThis.JOURNEY_ATLAS_UTILS.photoLandmarkLayout(photos, () => ({x:180,y:230}), {width:390,height:560});
+  assert.equal(layout.length,6);
+  for (const item of layout) for (const other of layout.filter(p => p !== item)) {
+    assert.ok(Math.abs(item.point.x-other.point.x)>=56 || Math.abs(item.point.y-other.point.y)>=56);
   }
 });

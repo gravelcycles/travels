@@ -204,8 +204,13 @@
     status.className = className;
   }
 
+  function photoBrowserPhotos(dayId) {
+    const inTrash = $('#show-photo-trash').checked;
+    return photosForDay(dayId).filter(photo => Boolean(photo.trashed) === inTrash);
+  }
+
   function optionMarkup(day, includeCount = false) {
-    const count = basePhotos.filter((photo) => photoWithOverride(photo).dayId === day.id && !photoWithOverride(photo).hidden && !photoWithOverride(photo).trashed).length;
+    const count = photoBrowserPhotos(day.id).length;
     return `<option value="${escapeHtml(day.id)}">Day ${day.number} · ${escapeHtml(day.date)} · ${escapeHtml(day.title)}${includeCount ? ` (${count})` : ""}</option>`;
   }
 
@@ -226,7 +231,7 @@
     uploadDay.value = days.some(day => day.id === previousUploadDay) ? previousUploadDay : (days.find(day => day.id === previousPhotoFilter)?.id || days[0]?.id || '');
     routeFilter.innerHTML = days.map((day) => `<option value="${escapeHtml(day.id)}">Day ${day.number} · ${escapeHtml(day.date)} · ${escapeHtml(day.title)}</option>`).join("");
     dayFilter.innerHTML = days.map((day) => `<option value="${escapeHtml(day.id)}">Day ${day.number} · ${escapeHtml(day.date)} · ${escapeHtml(day.title)}</option>`).join("");
-    photoFilter.value = days.some((day) => day.id === previousPhotoFilter) ? previousPhotoFilter : (basePhotos[0] ? photoWithOverride(basePhotos[0]).dayId : "all");
+    photoFilter.value = previousPhotoFilter === "all" || days.some((day) => day.id === previousPhotoFilter) ? previousPhotoFilter : (basePhotos[0] ? photoWithOverride(basePhotos[0]).dayId : "all");
     routeFilter.value = days.some((day) => day.id === previousRouteFilter) ? previousRouteFilter : (dayForSegment(selectedSegmentId)?.id || days[0]?.id || "");
     dayFilter.value = days.some((day) => day.id === previousDayFilter) ? previousDayFilter : (selectedDayId || days[0]?.id || "");
   }
@@ -278,7 +283,7 @@
   function renderPhotoGrid() {
     const filter = $("#photo-day-filter").value;
     const inTrash = $('#show-photo-trash').checked;
-    const photos = (filter === "all" ? journey.days.flatMap(day => photosForDay(day.id)) : photosForDay(filter)).filter(photo => Boolean(photo.trashed) === inTrash);
+    const photos = (filter === "all" ? journey.days.flatMap(day => photoBrowserPhotos(day.id)) : photoBrowserPhotos(filter));
     $("#studio-photo-grid").innerHTML = photos.length ? photos.map((photo) => {
       const thumb = photo.srcset?.[0]?.src || photo.src;
       const located = Number.isFinite(photo.lat) && Number.isFinite(photo.lng);
@@ -286,7 +291,7 @@
       const lead = day?.leadPhotoId === photo.id;
       return `<button type="button" data-photo-id="${photo.id}" class="${photo.id === selectedPhotoId ? "active" : ""}" aria-label="Edit ${escapeHtml(photo.caption || photo.sourceFilename || photo.id)}${lead ? ", lead photo" : ""}">
         <img src="${photoUrl(thumb)}" alt="" loading="lazy" />
-        <span>${lead ? "LEAD · " : ""}${escapeHtml(photo.takenAt || photo.caption)}</span>
+        <span>${photo.hidden ? "HIDDEN · " : ""}${lead ? "LEAD · " : ""}${escapeHtml(photo.takenAt || photo.caption)}</span>
         <i class="${located ? "" : "unlocated"}" title="${located ? "Located" : "Needs location"}"></i>
       </button>`;
     }).join("") : `<p class="editor-note">${inTrash ? 'No photos in trash for this selection.' : 'No photos here yet. Use Upload photos to add some.'}</p>`;
@@ -1212,6 +1217,7 @@
     renderPhotoGrid();
   });
   $('#show-photo-trash').addEventListener('change', () => {
+    renderDaySelectors();
     renderPhotoGrid();
     selectPhoto($('#studio-photo-grid [data-photo-id]')?.dataset.photoId || null, false);
   });
@@ -1221,6 +1227,7 @@
     const trashed = !photoWithOverride(photo).trashed;
     state.photos[photo.id] = { ...(state.photos[photo.id] || {}), trashed };
     markDirty(trashed ? 'Photo moved to trash · Save locally to keep this change' : 'Photo restored · Save locally to keep this change');
+    renderDaySelectors();
     renderPhotoGrid();
     selectPhoto($('#studio-photo-grid [data-photo-id]')?.dataset.photoId || null, false);
   });

@@ -41,19 +41,28 @@
       && Math.abs(photo.lng) <= 180 && Math.abs(photo.lat) <= 90);
   }
 
-  function photoLandmarkGroups(photos, project, { width, height, spacing = 60 }) {
+  function photoDistanceMeters(a, b) {
+    const radians = Math.PI / 180;
+    const dLat = (b.lat - a.lat) * radians, dLng = (b.lng - a.lng) * radians;
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * radians) * Math.cos(b.lat * radians) * Math.sin(dLng / 2) ** 2;
+    return 6371000 * 2 * Math.asin(Math.sqrt(Math.min(1, h)));
+  }
+
+  function photoLandmarkGroups(photos, project, { width, height, maxDistance = 500 }) {
     const groups = [];
     for (const photo of photos.filter(locatedPhoto)) {
-      const point = project([photo.lng, photo.lat]);
-      if (!Number.isFinite(point.x) || !Number.isFinite(point.y)
-        || point.x < -24 || point.y < -24 || point.x > width + 24 || point.y > height + 24) continue;
-      // Keep the representative at a real photo pin. Fixed representatives also
-      // prevent a chain of nearby photos from swallowing an entire city.
-      const group = groups.find(group => Math.hypot(group.point.x - point.x, group.point.y - point.y) < spacing);
+      // Every pair must satisfy the distance limit: nearby chains must not join
+      // photos more than 500 metres apart. Grouping never depends on zoom.
+      const group = groups.find(group => group.photos.every(member => member.dayId === photo.dayId && photoDistanceMeters(member, photo) <= maxDistance));
       if (group) group.photos.push(photo);
-      else groups.push({ point, photos: [photo] });
+      else groups.push({ photos: [photo] });
     }
-    return groups;
+    const visible = point => Number.isFinite(point.x) && Number.isFinite(point.y)
+      && point.x >= -24 && point.y >= -24 && point.x <= width + 24 && point.y <= height + 24;
+    return groups.flatMap(group => {
+      const photo = group.photos.find(photo => visible(project([photo.lng, photo.lat])));
+      return photo ? [{ ...group, photo, point: project([photo.lng, photo.lat]) }] : [];
+    });
   }
 
   function photoLandmarkLayout(photos, project, { width, height, spacing = 56, top = 54, bottom = 76 }) {
@@ -67,24 +76,15 @@
       for (let x = bounds.left; x <= bounds.right; x += spacing) grid.push({ x, y });
     }
     const placements = [];
-    const groups = photoLandmarkGroups(photos, project, { width, height, spacing: 64 });
-    for (const group of groups) {
-      const count = group.photos.length;
-      const radius = Math.max(60, count * spacing / (2 * Math.PI));
-      group.photos.forEach((photo, index) => {
-        const anchor = project([photo.lng, photo.lat]);
-        const angle = -Math.PI / 2 + index * 2 * Math.PI / count;
-        const desired = clampPoint(count === 1 ? anchor : {
-          x: group.point.x + Math.cos(angle) * radius,
-          y: group.point.y + Math.sin(angle) * radius
-        });
-        const candidates = [desired, ...grid];
-        const free = candidates.filter(point => placements.every(placed =>
-          Math.abs(point.x - placed.point.x) >= spacing || Math.abs(point.y - placed.point.y) >= spacing));
-        const point = (free.length ? free : candidates).reduce((best, candidate) =>
-          Math.hypot(candidate.x - desired.x, candidate.y - desired.y) < Math.hypot(best.x - desired.x, best.y - desired.y) ? candidate : best);
-        placements.push({ photo, anchor, point, offset: [point.x - anchor.x, point.y - anchor.y] });
-      });
+    for (const group of photoLandmarkGroups(photos, project, { width, height })) {
+      const anchor = group.point;
+      const desired = clampPoint(anchor);
+      const candidates = [desired, ...grid];
+      const free = candidates.filter(point => placements.every(placed =>
+        Math.abs(point.x - placed.point.x) >= spacing || Math.abs(point.y - placed.point.y) >= spacing));
+      const point = (free.length ? free : candidates).reduce((best, candidate) =>
+        Math.hypot(candidate.x - desired.x, candidate.y - desired.y) < Math.hypot(best.x - desired.x, best.y - desired.y) ? candidate : best);
+      placements.push({ photo: group.photo, photos: group.photos, anchor, point, offset: [point.x - anchor.x, point.y - anchor.y] });
     }
     return placements;
   }
@@ -138,5 +138,5 @@
     return { move, cancel };
   }
 
-  root.JOURNEY_ATLAS_UTILS = { resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoLandmarkGroups, photoLandmarkLayout, photoMapTransition };
+  root.JOURNEY_ATLAS_UTILS = { resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoDistanceMeters, photoLandmarkGroups, photoLandmarkLayout, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

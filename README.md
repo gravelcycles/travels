@@ -75,10 +75,11 @@ for the full agent-operated flow and what Trash does to existing hosted assets.
 
 ## Find photos on the map
 
-Photos with saved locations appear as small thumbnail landmarks. Nearby photos
-spread apart with thin lines pointing to their exact saved locations. Select
-any thumbnail to open its viewer. Selecting a day shows only that day's photos;
-**Fit route** restores all days. Map fitting includes photo locations.
+Photos with saved locations appear only when a day is selected. Photos within
+500 metres of one another share a counted thumbnail; click it to choose a
+photo. Every pair in a group must meet that distance limit, regardless of zoom.
+Distant groups remain separate, with thin lines to their saved pins if needed.
+**Fit route** and the initial journey overview show no photo landmarks and fit only the route and journey places.
 
 When moving between two located photos, the viewer map first frames both pins,
 then settles on the next photo's saved location and zoom. The move takes about
@@ -92,6 +93,8 @@ legs in their stored order, retaining each mode's map color and line pattern as
 the route accumulates. It includes play/pause, half/normal/double speed, day
 step buttons, a day timeline, keyboard controls, and a completion state.
 
+During travel, Replay frames each active route leg even when a chapter displays
+a photograph. The accompanying photo's zoom cannot override route framing.
 The player displays each day's reviewed lead photo when available. A photo with
 reviewed coordinates becomes its own replay pause and moves the map to that
 saved location and zoom; unlocated photos are shown without inventing a map

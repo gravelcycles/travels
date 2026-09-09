@@ -293,8 +293,7 @@
   }
 
   function journeyCoordinates() {
-    return journey.segments.flatMap(segmentCoordinates).concat(journey.places.map((place) => [place.lng, place.lat]),
-      journey.photos.filter(window.JOURNEY_ATLAS_UTILS.locatedPhoto).map(photo => [photo.lng, photo.lat]));
+    return journey.segments.flatMap(segmentCoordinates).concat(journey.places.map((place) => [place.lng, place.lat]));
   }
 
   function boundsFromCoordinates(coordinates) {
@@ -642,16 +641,16 @@
     // the previous day's photos cannot linger while new map layers load.
     if (!mainMapReady) return;
     const canvas = mainMap.getCanvas();
-    const photos = photoLandmarkDayId ? photosForDay(photoLandmarkDayId) : orderedPhotos();
+    const photos = mapScope === "day" && photoLandmarkDayId ? photosForDay(photoLandmarkDayId) : [];
     const legendRoom = Math.max(76, canvas.getBoundingClientRect().bottom - $("#map-legend").getBoundingClientRect().top + 12);
     const layout = window.JOURNEY_ATLAS_UTILS.photoLandmarkLayout(photos, point => mainMap.project(point), {
       width: canvas.clientWidth, height: canvas.clientHeight, bottom: legendRoom
     });
-    const key = JSON.stringify(layout.map(({ photo, offset }) => [photo.id, ...offset.map(value => Math.round(value))]));
+    const key = JSON.stringify(layout.map(({ photo, photos, offset }) => [photo.id, photos.map(item => item.id), ...offset.map(value => Math.round(value))]));
     if (key === photoLandmarkKey) return;
     photoLandmarkKey = key;
     photoLandmarks.forEach(entry => entry.marker.remove());
-    photoLandmarks = layout.map(({ photo, offset }) => {
+    photoLandmarks = layout.map(({ photo, photos: groupPhotos, offset }) => {
       const element = document.createElement("div");
       element.className = "photo-landmark-anchor";
       const [x, y] = offset;
@@ -662,16 +661,25 @@
       element.style.setProperty("--photo-pin-y", `${-y}px`);
       const button = document.createElement("button");
       button.type = "button";
-      button.className = "photo-landmark";
-      const label = photo.caption ? `Open photo landmark: ${photo.caption}` : `Open photo ${photosForDay(photo.dayId).findIndex(item => item.id === photo.id) + 1} from Day ${dayById(photo.dayId).number}`;
+      button.className = `photo-landmark${groupPhotos.length > 1 ? " photo-landmark-stack" : ""}`;
+      const label = groupPhotos.length > 1 ? `View ${groupPhotos.length} nearby photos from Day ${dayById(photo.dayId).number}` : photo.caption ? `Open photo landmark: ${photo.caption}` : `Open photo ${photosForDay(photo.dayId).findIndex(item => item.id === photo.id) + 1} from Day ${dayById(photo.dayId).number}`;
       button.title = label;
       button.setAttribute("aria-label", label);
-      button.innerHTML = `<img src="${escapeHtml(preferredPhotoUrl(photo, 480))}" alt="" loading="lazy" decoding="async">`;
-      button.addEventListener("click", event => { event.stopPropagation(); openPhoto(photo.id); });
+      button.innerHTML = `<img src="${escapeHtml(preferredPhotoUrl(photo, 480))}" alt="" loading="lazy" decoding="async">${groupPhotos.length > 1 ? `<span class="photo-landmark-count">${groupPhotos.length}</span>` : ""}`;
+      button.addEventListener("click", event => { event.stopPropagation(); if (groupPhotos.length > 1) openPhotoLandmarkGroup(groupPhotos); else openPhoto(photo.id); });
       element.append(button);
       const marker = new maplibregl.Marker({ element, anchor: "center", offset }).setLngLat([photo.lng, photo.lat]).addTo(mainMap);
       return { marker, photo, offset };
     });
+  }
+
+  function openPhotoLandmarkGroup(photos) {
+    $('#album-title').textContent = `Day ${dayById(photos[0].dayId).number} · ${photos.length} nearby photos`;
+    $('#album-days').innerHTML = photos.map(photo => `<button class="album-day" data-landmark-photo="${escapeHtml(photo.id)}">
+      ${photoImageMarkup(photo, { sizes: '280px' })}<strong>${escapeHtml(photo.caption || `Photo ${photosForDay(photo.dayId).findIndex(item => item.id === photo.id) + 1}`)}</strong>
+      <small>${escapeHtml(photo.takenAt || '')}</small></button>`).join('');
+    $('#album-dialog').showModal();
+    prepareProgressiveImages($('#album-days'));
   }
 
   function refreshDayMarkerOffsets() {
@@ -871,7 +879,7 @@
     }).join("");
     if (focused && journey.segments.some((segment) => !selectedSegments.has(segment.id))) markup += stateKey("Other days", palette.muted, 0.32);
     if (focused && modes.includes("train")) markup += '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>';
-    if ((photoLandmarkDayId ? photosForDay(photoLandmarkDayId) : journey.photos).some(window.JOURNEY_ATLAS_UTILS.locatedPhoto)) markup += '<span><i class="photo-landmark-swatch" aria-hidden="true"></i>Photo landmark</span>';
+    if (focused && photosForDay(activeDayId).some(window.JOURNEY_ATLAS_UTILS.locatedPhoto)) markup += '<span><i class="photo-landmark-swatch" aria-hidden="true"></i>Photo landmark</span>';
     $("#map-legend").innerHTML = markup;
   }
 
@@ -1246,6 +1254,15 @@
     const day = replayMomentDay(moment);
     const photo = moment.photoId ? photoById(moment.photoId) : null;
     const duration = prefersReducedMotion() ? 0 : 700;
+    const segment = replaySegment(moment);
+    // Chapters may show a photograph alongside travel. Its pin/zoom must never
+    // override the active leg's route framing, including at leg changes.
+    if (segment) {
+      const coordinates = segmentCoordinates(segment);
+      if (coordinates.length > 1) replayMap.fitBounds(boundsFromCoordinates(coordinates), { padding: replayMapPadding(), maxZoom: 13, duration });
+      else if (coordinates.length === 1) replayMap.easeTo({ center: coordinates[0], zoom: 10.5, duration });
+      return;
+    }
     if (moment.camera?.reviewed) { replayMap.easeTo({center:moment.camera.center,zoom:moment.camera.zoom,duration}); return; }
     if (photo && Number.isFinite(photo.lng) && Number.isFinite(photo.lat)) {
       replayMap.easeTo({
@@ -1255,8 +1272,7 @@
       });
       return;
     }
-    const segment = replaySegment(moment);
-    const coordinates = segment ? segmentCoordinates(segment) : dayCoordinates(day);
+    const coordinates = dayCoordinates(day);
     if (coordinates.length > 1) {
       replayMap.fitBounds(boundsFromCoordinates(coordinates), { padding: replayMapPadding(), maxZoom: 13, duration });
     } else if (coordinates.length === 1) {
@@ -1606,6 +1622,8 @@
   window.addEventListener('hashchange',handleDeepLink);
   $('#close-album').addEventListener('click',()=>$('#album-dialog').close());
   $('#album-days').addEventListener('click', event => {
+    const photo = event.target.closest('[data-landmark-photo]');
+    if (photo) { $('#album-dialog').close(); openPhoto(photo.dataset.landmarkPhoto); return; }
     const button = event.target.closest('[data-album-day]');
     if (button) { $('#album-dialog').close(); openDayViewer(button.dataset.albumDay); }
   });
