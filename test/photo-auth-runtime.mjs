@@ -19,7 +19,10 @@ try{
  const asset='https://photos.example.com/private-photos/assets/'+key;
  assert.equal((await mf.dispatchFetch(asset)).status,401);
  const photo=await mf.dispatchFetch(asset,{headers:{Origin:'https://gravelcycles.github.io',Authorization:`Bearer ${access.token}`}});
- assert.equal(photo.status,200);assert.deepEqual(new Uint8Array(await photo.arrayBuffer()),bytes);assert.equal(photo.headers.get('Cache-Control'),'no-store');
+ assert.equal(photo.status,200);assert.deepEqual(new Uint8Array(await photo.arrayBuffer()),bytes);assert.equal(photo.headers.get('Cache-Control'),'private, no-cache');
+ const repeated=await mf.dispatchFetch(asset,{headers:{Origin:'https://gravelcycles.github.io',Authorization:`Bearer ${access.token}`,'If-None-Match':photo.headers.get('ETag')}});
+ assert.equal(repeated.status,304);assert.equal((await repeated.arrayBuffer()).byteLength,0);
+ assert.equal((await mf.dispatchFetch(asset,{headers:{Origin:'https://gravelcycles.github.io','If-None-Match':photo.headers.get('ETag')}})).status,401);
  const resumed=await mf.dispatchFetch('https://photos.example.com/private-photos/auth/session',{method:'POST',headers:{Origin:'https://photos.example.com',Cookie:cookie,'Content-Type':'application/json'},body:JSON.stringify({origin:'https://gravelcycles.github.io',challenge})});
  assert.equal(resumed.status,200);assert.ok((await resumed.json()).code);
  console.log('Runtime PKCE, single-use grant, remembered session, and private R2 checks passed.');

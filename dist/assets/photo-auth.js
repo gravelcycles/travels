@@ -78,13 +78,13 @@
       const timer=setTimeout(abort,REQUEST_TIMEOUT);
       try {
         const started=Date.now();
-        const response=await fetch(local?`/build/private-photo-assets/${src.slice('/private-photos/assets/'.length)}`:`${service}${src}`,{credentials:'omit',headers:local?{}:{Authorization:`Bearer ${token}`},cache:'no-store',signal:controller.signal,priority:entry.priority<2?'high':'low'});
+        const response=await fetch(local?`/build/private-photo-assets/${src.slice('/private-photos/assets/'.length)}`:`${service}${src}`,{credentials:'omit',headers:local?{}:{Authorization:`Bearer ${token}`},cache:local?'no-store':'no-cache',signal:controller.signal,priority:entry.priority<2?'high':'low'});
         if(response.status===401){if(epoch===generation)lock();throw new Error('Photos locked');}
         if(!response.ok){const error=new Error('Photo could not load');error.photoFailure=`HTTP ${response.status}`;error.permanent=response.status<500&&![408,429].includes(response.status);throw error;}
         if(response.headers.get('Content-Type')?.split(';')[0]!=='image/webp'){const error=new Error('Invalid photo response');error.permanent=true;throw error;}
         const blob=await response.blob();
         if(epoch!==generation||entry.controller.signal.aborted||controller.signal.aborted)throw new Error('Photo request cancelled');
-        entry.bytes=blob.size;entry.downloadMs=Date.now()-started;entry.edgeCache=response.headers.get('X-Photo-Cache')||'UNKNOWN';entry.serverTiming=response.headers.get('Server-Timing')||'';entry.url=URL.createObjectURL(blob);return entry;
+        entry.bytes=blob.size;entry.downloadMs=Date.now()-started;entry.edgeCache=response.headers.get('X-Photo-Cache')||'UNKNOWN';entry.revalidated=response.headers.get('X-Photo-Revalidated')==='1';entry.serverTiming=response.headers.get('Server-Timing')||'';entry.url=URL.createObjectURL(blob);return entry;
       } catch(error) {
         if(controller.signal.aborted&&!entry.controller.signal.aborted)error.photoFailure='timeout';
         if(attempt===1||error.permanent||epoch!==generation||entry.controller.signal.aborted)throw error;
@@ -109,7 +109,7 @@
   }
   function display(img,item,entry) {
     item.entry?.refs.delete(img);item.entry=entry;entry.refs.add(img);
-    img.dataset.photoCache=entry.edgeCache;img.dataset.photoDownloadMs=String(entry.downloadMs);img.dataset.photoServerTiming=entry.serverTiming;
+    img.dataset.photoCache=entry.edgeCache;img.dataset.photoBrowserCache=entry.revalidated?'revalidated':'download';img.dataset.photoDownloadMs=String(entry.downloadMs);img.dataset.photoServerTiming=entry.serverTiming;
     img.addEventListener('load',()=>{if(images.get(img)===item){img.classList.add('is-loaded');imageState(img,'ready');}},{once:true});
     img.src=entry.url;img.classList.add('is-loaded');delete img.dataset.photoError;delete img.dataset.photoFailure;imageState(img,'ready');
   }

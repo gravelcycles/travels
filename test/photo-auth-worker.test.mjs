@@ -86,7 +86,7 @@ test('auth window validates return origin/state and blocks framing; valid HEAD s
   assert.equal(restore.status,200);
   const token=await issueToken(f.env,first.id,origin);
   const head=await f.request(`assets/${key}`,{method:'HEAD',headers:{Origin:origin,Authorization:`Bearer ${token.token}`}});
-  assert.equal(head.status,200);assert.equal((await head.arrayBuffer()).byteLength,0);assert.equal(head.headers.get('cache-control'),'no-store');
+  assert.equal(head.status,200);assert.equal((await head.arrayBuffer()).byteLength,0);assert.equal(head.headers.get('cache-control'),'private, no-cache');
 });
 test('remembered access lasts 30 days and rotation invalidates access, cookies, and pending codes', async () => {
   const f=fixture(), now=Math.floor(Date.now()/1000);
@@ -132,7 +132,7 @@ test('internal cache hits remain behind auth; credentials and browser bypass hea
   for(const expected of ['MISS','HIT']) {
     const response=await f.request(`assets/${key}`,{headers});
     assert.equal(response.status,200);assert.equal(response.headers.get('X-Photo-Cache'),expected);
-    assert.equal(response.headers.get('Cache-Control'),'no-store');
+    assert.equal(response.headers.get('Cache-Control'),'private, no-cache');
     assert.equal(response.headers.get('Access-Control-Allow-Origin'),origin);
     assert.equal(response.headers.get('Set-Cookie'),null);
     assert.equal((await response.arrayBuffer()).byteLength,3);
@@ -154,4 +154,31 @@ test('only immutable successful photo bytes are cacheable internally', async () 
     const response=await cachedPhoto(new Request(url),f.env);
     assert.equal(response.status,404);assert.equal(response.headers.get('Cache-Control'),'no-store');
   }
+});
+
+test('browser revalidation reuses bytes only after successful authorization and existence checks', async () => {
+  const f=fixture(), token=await issueToken(f.env,first.id,origin);
+  const headers={Origin:origin,Authorization:`Bearer ${token.token}`};
+  const initial=await f.request(`assets/${key}`,{headers}),etag=initial.headers.get('ETag');
+  assert.equal(initial.status,200);assert.equal(etag,`"${'a'.repeat(64)}"`);
+  assert.equal(initial.headers.get('Cache-Control'),'private, no-cache');
+  for(const tag of [etag,`W/${etag}`,`"different", ${etag}`]) {
+    const response=await f.request(`assets/${key}`,{headers:{...headers,'If-None-Match':tag}});
+    assert.equal(response.status,304);assert.equal((await response.arrayBuffer()).byteLength,0);
+    assert.equal(response.headers.get('X-Photo-Revalidated'),'1');assert.equal(response.headers.get('ETag'),etag);
+    assert.equal(response.headers.get('Content-Length'),null);
+    assert.equal(f.forwarded.at(-1).method,'HEAD');
+  }
+  const changed=await f.request(`assets/${key}`,{headers:{...headers,'If-None-Match':'"different"'}});
+  assert.equal(changed.status,200);assert.equal(changed.headers.get('X-Photo-Revalidated'),'0');
+  const reads=f.reads.length;
+  for(const authorization of ['',`Bearer ${(await issueToken(f.env,first.id,origin,'access',{now:Math.floor(Date.now()/1000)-4000})).token}`]) {
+    const denied=await f.request(`assets/${key}`,{headers:{...headers,Authorization:authorization,'If-None-Match':etag}});
+    assert.equal(denied.status,401);assert.equal(denied.headers.get('Cache-Control'),'no-store');
+  }
+  assert.equal(f.reads.length,reads,'invalid access must not reach the cache despite a matching ETag');
+  f.env.PHOTOS.head=async()=>null;
+  assert.equal((await f.request(`assets/${key}`,{headers:{...headers,'If-None-Match':etag}})).status,404);
+  f.env.PHOTO_CREDENTIALS=JSON.stringify({version:2,credentials:[second]});
+  assert.equal((await f.request(`assets/${key}`,{headers:{...headers,'If-None-Match':etag}})).status,401);
 });

@@ -87,7 +87,8 @@ the GitHub Pages workflow.
   after validated access. Fresh-page restoration still validates its saved token.
 - OPTIONS responses advertise `Access-Control-Max-Age: 86400`. Browsers can reuse
   the CORS preflight permission subject to their own caps; every actual photo
-  GET/HEAD still validates access. Auth and image responses retain `no-store`.
+  GET/HEAD still validates access. Auth and error responses retain `no-store`; successful images use private
+  browser storage with mandatory access revalidation (see below).
 
 The deployed photo Worker uses the newer Workers Cache on workers.dev. The
 public default entrypoint has caching explicitly disabled, so every request
@@ -95,9 +96,13 @@ validates the token and origin before invoking the internal PhotoCache entrypoin
 Only that inner entrypoint caches immutable successful WebP responses for one
 year. It receives a fresh request without browser cache directives, cookies,
 Authorization, Origin, conditional or Range headers. Errors remain no-store.
-The gateway rebuilds the visitor response with no-store and the allowed Origin;
-R2 stays private. X-Photo-Cache and Server-Timing report the inner cache result
-and elapsed time; the frontend records these on the displayed image for QA.
+The gateway rebuilds successful visitor responses with private, no-cache, an
+immutable hash ETag, and the allowed Origin. Matching If-None-Match requests
+validate authorization and existence before returning a bodyless 304, reusing
+the device browser cache across reloads. Auth/errors remain no-store; R2 stays
+private. Disk-cached photos may remain on the device after locking; cached HTTP
+reuse must still pass access checks. X-Photo-Cache, X-Photo-Revalidated and
+Server-Timing report cache behavior, recorded on the displayed image for QA.
 
 Correction to earlier guidance: the older R2 Cache API example needs a custom
 domain or route, but Workers Cache supports workers.dev and internal entrypoints.

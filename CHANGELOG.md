@@ -6,6 +6,16 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Reuse browser photo bytes across reloads
+
+- Store successful images in the private browser cache with immutable hash
+  ETags. Revalidate access before reuse and return 304 without image bytes.
+- Keep auth/errors uncached and the public gateway outside shared caching.
+- Browser copies may persist on the device; locking clears application blobs
+  and access tokens, while subsequent HTTP reuse still requires authorization.
+- All 113 tests and the Worker runtime pass, including conditional-request
+  authorization and bodyless 304 responses. No paid plan changes.
+
 ### Prioritize visible photos above map downloads
 
 Published as `fbbed8a` in successful Pages run `34387210417`. All 112 tests
