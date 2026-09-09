@@ -47,7 +47,7 @@
     cache.clear();updateControls();if(broadcast)channel?.postMessage('lock');
     window.dispatchEvent(new Event('atlas-photos-locked'));
   }
-  function showPrompt(text='') { message.textContent=text;lastFocus=document.activeElement;if(!dialog.open)dialog.showModal(); }
+  function showPrompt(text='') { updateControls();message.textContent=text;lastFocus=document.activeElement;if(!dialog.open)dialog.showModal(); }
   function closePrompt(){dialog.close();lastFocus?.focus?.();}
   async function fetchPhoto(src) {
     if(!protectedPath.test(src))throw new Error('Invalid photo');
@@ -74,9 +74,15 @@
     finally{item.loading=false;prune();}
   }
   function setImage(img,photo,width=1280) {
+    const src=selected(photo,width);
+    if(token&&expiresAt<=Date.now()/1000)lock();
+    const ready=(local||token)&&cache.get(src)?.url?cache.get(src):null;
+    if(ready&&images.get(img)?.entry===ready&&img.src===ready.url){img.classList.add('is-loaded');return;}
     release(img);img.removeAttribute('srcset');delete img.dataset.src;delete img.dataset.srcset;
-    img.dataset.privateSrc=selected(photo,width);img.dataset.privateBlur=photo.blur||placeholder;img.src=photo.blur||placeholder;img.classList.remove('is-loaded');
-    images.set(img,{src:img.dataset.privateSrc,blur:img.dataset.privateBlur,entry:null});hydrate(img);
+    img.dataset.privateSrc=src;img.dataset.privateBlur=photo.blur||placeholder;
+    images.set(img,{src,blur:img.dataset.privateBlur,entry:ready});
+    if(ready){cache.delete(src);cache.set(src,ready);ready.refs.add(img);img.src=ready.url;img.classList.add('is-loaded');img.removeAttribute('data-photo-error');prune();}
+    else {img.src=photo.blur||placeholder;img.classList.remove('is-loaded');hydrate(img);}
   }
   const observer='IntersectionObserver'in window?new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){hydrate(entry.target);observer.unobserve(entry.target);}},{rootMargin:'250px'}):null;
   function prepare(container=document) {
@@ -103,11 +109,12 @@
   }
   async function completeReturn() {
     const params=new URLSearchParams(location.hash.slice(1));
-    if(!params.has('photoAuthCode')&&!params.has('photoAuthLogout')&&!params.has('photoAuthCancel'))return;
+    if(!params.has('photoAuthCode')&&!params.has('photoAuthLogout')&&!params.has('photoAuthCancel')&&!params.has('photoAuthMissing')){await begin('restore');return;}
     let flow;try{flow=JSON.parse(sessionStorage.getItem(FLOW_KEY));sessionStorage.removeItem(FLOW_KEY);}catch{}
     // Remove the short-lived one-use code before loading anything else from this page.
     history.replaceState(null,'',location.pathname+location.search+(flow?.hash||''));
     if(!flow||params.get('state')!==flow.state||Date.now()-flow.created>300000){showPrompt('Login expired. Please unlock again.');return;}
+    if(params.has('photoAuthMissing')){showPrompt();return;}
     if(params.has('photoAuthLogout')||params.has('photoAuthCancel')){lock();if(dialog.open)closePrompt();return;}
     message.textContent='Restoring photo access…';
     const epoch=generation;
@@ -128,5 +135,5 @@
   dialog.addEventListener('close',()=>lastFocus?.focus?.());
   window.JOURNEY_ATLAS_AUTH={isProtected,markup,hydrate,prepare,setImage,clearImage,preload(photo,width){if(local||token)fetchPhoto(selected(photo,width)).catch(()=>{});},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
-  if(realPage&&!local){showPrompt();completeReturn();}
+  if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;status.querySelector('[data-photo-status]').textContent='Restoring photo access…';completeReturn();}
 })();

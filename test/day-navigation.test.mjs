@@ -79,3 +79,23 @@ test('Fit route bounds use routes and journey places, excluding distant photo pi
   vm.runInContext(functionSource('journeyCoordinates'),context);
   assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('journeyCoordinates()',context))),[[8,47],[9,46],[8,47]]);
 });
+
+test('selecting another viewer photo preserves thumbnail elements and updates selection only', () => {
+  let builds=0,prepares=0,buttons=[];
+  const strip={dataset:{},querySelectorAll:()=>buttons,set innerHTML(html){builds++;buttons=[...html.matchAll(/data-viewer-index="(\d+)"/g)].map(m=>({dataset:{viewerIndex:m[1]},selected:false,classList:{toggle(name,value){this.active=value;}},setAttribute(name,value){this[name]=value;},scrollIntoView(){}}));}};
+  const context=vm.createContext({viewerPhotoIndex:0,photoImageMarkup:()=>'<img>',prepareProgressiveImages(){prepares++;},$:selector=>selector==='#viewer-filmstrip'?strip:buttons.find(b=>b.classList.active)});
+  vm.runInContext(functionSource('renderViewerFilmstrip'),context);
+  const photos=[{id:'one'},{id:'two'},{id:'three'}];context.photos=photos;
+  vm.runInContext('renderViewerFilmstrip(photos)',context);const original=[...buttons];
+  context.viewerPhotoIndex=2;vm.runInContext('renderViewerFilmstrip(photos)',context);
+  assert.equal(builds,1);assert.equal(prepares,1);assert.deepEqual(buttons,original);
+  assert.equal(buttons[0]['aria-pressed'],'false');assert.equal(buttons[2]['aria-pressed'],'true');
+  context.photos=[{id:'different-day'}];vm.runInContext('renderViewerFilmstrip(photos)',context);
+  assert.equal(builds,2);assert.equal(prepares,2);assert.equal(buttons.length,1);
+});
+
+test('same-day viewer navigation does not rebuild background photos or redraw the main map', () => {
+  const context=selection(),calls=[];
+  Object.assign(context,{activeDayId:'d2',mapScope:'day',renderDays:()=>calls.push('days'),renderStory:()=>calls.push('photos'),drawMainMap:()=>calls.push('map')});
+  vm.runInContext('updateViewer()',context);assert.deepEqual(calls,[]);
+});

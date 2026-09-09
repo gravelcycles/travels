@@ -81,8 +81,11 @@ portable-library fallback have been removed; no paid plan is needed for login.
 
 A Secure, HttpOnly, host-only, SameSite=Strict cookie on the Worker remembers
 access for 30 days. A same-origin POST from its login page restores that cookie
-without relying on cross-site cookie access. On later page loads, click Unlock
-photos; the brief login-page visit returns without asking for the password.
+without relying on cross-site cookie access. Page loads automatically visit the
+first-party restoration page and return through PKCE. A valid remembered cookie
+restores photos without showing the atlas unlock dialog or password form. A
+missing session returns once to the atlas prompt; cancellation and logout do
+not trigger another automatic restoration on that return.
 
 The return carries a two-minute, single-use authorization code bound to a PKCE
 verifier and the allowed atlas origin. A SQLite Durable Object consumes each

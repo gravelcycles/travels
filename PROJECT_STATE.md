@@ -1,5 +1,18 @@
 # Project state
 
+## Stable photo viewer and automatic access restoration · 9 September 2026
+
+Viewer selection now preserves the filmstrip DOM and background day photos;
+only the active thumbnail, main image and photo map change within the same day.
+Cached private photos display synchronously without a blur reset or duplicate
+fetch. New full-size photos and bounded neighbor preloads still need downloads.
+Reloads and page navigation now automatically check the first-party Cloudflare
+remembered session, using the existing single-use PKCE return. A valid 30-day
+cookie restores photos without an Unlock click or password prompt. Missing
+sessions return to the normal atlas unlock prompt; cancel/logout never loops
+back into automatic login. Credentials remain server-enforced and tokens stay
+in memory. All 91 tests, build and workerd checks pass.
+
 ## Large album loading fix · 9 September 2026
 
 The private image cache treated pending display requests as unused and canceled

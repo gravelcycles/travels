@@ -79,6 +79,8 @@ test('auth window validates return origin/state and blocks framing; valid HEAD s
   assert.equal((await f.request(`auth/window?origin=https://evil.example&state=${random()}`)).status,400);
   const page=await f.request(`auth/window?origin=${encodeURIComponent(origin)}&state=${random()}&challenge=${challenge}&returnTo=${encodeURIComponent(origin+'/travels/')}`);
   assert.equal(page.status,200);assert.match(page.headers.get('content-security-policy'), /frame-ancestors 'none'/);const html=await page.text();assert.match(html,/location.replace/);assert.ok(html.includes(first.salt));assert.ok(!html.includes(first.hash));assert.ok(!html.includes(second.hash));
+  const restore=await f.request(`auth/window?origin=${encodeURIComponent(origin)}&state=${random()}&challenge=${challenge}&returnTo=${encodeURIComponent(origin+'/travels/')}&action=restore`);
+  assert.equal(restore.status,200);
   const token=await issueToken(f.env,first.id,origin);
   const head=await f.request(`assets/${key}`,{method:'HEAD',headers:{Origin:origin,Authorization:`Bearer ${token.token}`}});
   assert.equal(head.status,200);assert.equal((await head.arrayBuffer()).byteLength,0);assert.equal(head.headers.get('cache-control'),'no-store');
