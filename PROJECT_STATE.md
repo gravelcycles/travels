@@ -1,5 +1,16 @@
 # Project state
 
+## Quiet access UI and additional shared passwords · 9 September 2026
+
+Authenticated pages have no photo-access control or status in the header.
+The remaining unauthenticated entry says View photos. Restoration emits no
+loading/status copy. One-hour access tokens now survive reload in this tab's
+session storage and are checked with Cloudflare before images load; passwords,
+password proofs and the 30-day HttpOnly cookie never enter tab storage. First-
+party renewal stays visually empty unless a password or error needs attention.
+The three newly requested credentials are added, preserving the initial test
+credential. Password plaintext is not saved in the repository.
+
 ## Stable photo viewer and automatic access restoration · 9 September 2026
 
 Viewer selection now preserves the filmstrip DOM and background day photos;

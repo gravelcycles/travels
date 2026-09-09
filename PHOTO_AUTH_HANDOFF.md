@@ -89,9 +89,14 @@ not trigger another automatic restoration on that return.
 
 The return carries a two-minute, single-use authorization code bound to a PKCE
 verifier and the allowed atlas origin. A SQLite Durable Object consumes each
-code once and deletes expired grants. Session storage holds only the temporary
-verifier/state, never a password or access token. The atlas removes the return
-fragment and redeems the code for a one-hour signed bearer token held in memory.
+code once and deletes expired grants. Session storage holds the temporary PKCE
+verifier/state and the one-hour access token, never a password, password proof,
+or 30-day remember token. The atlas removes the return fragment immediately.
+Reloads reuse the tab-scoped access token only after Cloudflare validates it;
+this avoids leaving the site during normal reloads and same-tab navigation.
+The long-lived remembered cookie remains HttpOnly on Cloudflare. Tab storage is
+JavaScript-readable, so same-origin script security remains part of the trust
+boundary. Expired/revoked cached tokens never authorize images.
 
 Every image GET/HEAD checks token signature, audience, lifetime and active
 credential before touching R2. Requests use Authorization headers, credentials
@@ -100,9 +105,10 @@ object URLs. No public image fallback or signed image URLs. Production CORS
 allows only https://gravelcycles.github.io; scripts across that origin share
 its security boundary. Return navigation is restricted to /travels/.
 
-Lock photos clears memory, aborts requests, revokes object URLs, tells other
+The viewer no longer exposes a Lock photos button or header status. Internal
+locking clears memory and tab storage, aborts requests, revokes object URLs, tells other
 atlas tabs to lock, and clears the remembered cookie through the first-party
-page. Removing a credential or rotating the signing key invalidates associated
+page when explicit logout is invoked. Removing a credential or rotating the signing key invalidates associated
 sessions and outstanding codes after secret deployment. A copied bearer token
 is not individually revoked by ordinary logout; it expires within an hour.
 Previously saved or screenshotted photographs cannot be recalled.

@@ -6,6 +6,7 @@
   let service = '';
   try { const url = new URL(config.origin); if (url.origin === config.origin && (url.protocol === 'https:' || (['127.0.0.1','localhost'].includes(location.hostname) && ['127.0.0.1','localhost'].includes(url.hostname)))) service = url.origin; } catch { /* Unconfigured always stays locked. */ }
   let token = '', expiresAt = 0, generation = 0, expiryTimer, lastFocus;
+  const ACCESS_KEY='atlas-photo-access';
   const images = new Map(), cache = new Map();
   const MAX_CACHE = 12;
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -17,13 +18,11 @@
   dialog.innerHTML='<h2 id="photo-unlock-title">Private photographs</h2><p>The journey is here to explore. Unlock the photos with a shared password.</p><button type="button" data-unlock>Unlock photos</button><p class="photo-unlock-hint">You’ll visit a secure login page, then return here. Access is remembered for 30 days.</p><p data-auth-message role="status" aria-live="polite"></p><button type="button" class="photo-auth-secondary" data-dismiss>Continue without photos</button>';
   document.body.append(dialog);
   const status = document.createElement('span');status.className='photo-auth-controls';
-  status.innerHTML='<button type="button" data-unlock>Unlock photos</button><button type="button" data-lock hidden>Lock photos</button><span data-photo-status role="status"></span>';
+  status.innerHTML='<button type="button" data-unlock>View photos</button>';
   (document.querySelector('.header-context')||document.querySelector('.site-header')||document.body).append(status);
   const message = dialog.querySelector('[data-auth-message]');
   function updateControls() {
     status.querySelector('[data-unlock]').hidden=Boolean(token)||local;
-    status.querySelector('[data-lock]').hidden=!token||local;
-    status.querySelector('[data-photo-status]').textContent=local?'Local photos':token?'Photos unlocked':'Photos locked';
   }
   function release(img) {
     const previous=images.get(img);if(previous?.entry)previous.entry.refs.delete(img);images.delete(img);
@@ -42,6 +41,7 @@
   }
   function lock(broadcast=true) {
     token='';expiresAt=0;generation++;clearTimeout(expiryTimer);
+    try{sessionStorage.removeItem(ACCESS_KEY);}catch{}
     for(const [img,item] of images){img.removeAttribute('srcset');img.src=item.blur;img.classList.remove('is-loaded');item.entry=null;item.loading=false;}
     for(const entry of cache.values()){entry.controller.abort();if(entry.url)URL.revokeObjectURL(entry.url);}
     cache.clear();updateControls();if(broadcast)channel?.postMessage('lock');
@@ -109,31 +109,49 @@
   }
   async function completeReturn() {
     const params=new URLSearchParams(location.hash.slice(1));
-    if(!params.has('photoAuthCode')&&!params.has('photoAuthLogout')&&!params.has('photoAuthCancel')&&!params.has('photoAuthMissing')){await begin('restore');return;}
+    if(!params.has('photoAuthCode')&&!params.has('photoAuthLogout')&&!params.has('photoAuthCancel')&&!params.has('photoAuthMissing')){if(!await restoreTabAccess())await begin('restore');return;}
     let flow;try{flow=JSON.parse(sessionStorage.getItem(FLOW_KEY));sessionStorage.removeItem(FLOW_KEY);}catch{}
     // Remove the short-lived one-use code before loading anything else from this page.
     history.replaceState(null,'',location.pathname+location.search+(flow?.hash||''));
     if(!flow||params.get('state')!==flow.state||Date.now()-flow.created>300000){showPrompt('Login expired. Please unlock again.');return;}
     if(params.has('photoAuthMissing')){showPrompt();return;}
     if(params.has('photoAuthLogout')||params.has('photoAuthCancel')){lock();if(dialog.open)closePrompt();return;}
-    message.textContent='Restoring photo access…';
     const epoch=generation;
     try{
       const response=await fetch(`${service}/private-photos/auth/redeem`,{method:'POST',credentials:'omit',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:params.get('photoAuthCode'),verifier:flow.verifier})});
       const data=await response.json();
       if(epoch!==generation)return;
-      if(!response.ok||typeof data.token!=='string'||!Number.isInteger(data.expiresAt)||data.expiresAt<=Date.now()/1000||data.expiresAt>Date.now()/1000+3630)throw new Error('Login expired. Please unlock again.');
-      lock(false);token=data.token;expiresAt=data.expiresAt;expiryTimer=setTimeout(()=>lock(),Math.max(0,expiresAt*1000-Date.now()));
-      updateControls();if(dialog.open)closePrompt();for(const [img] of images)if(img.isConnected)hydrate(img);prepare();window.dispatchEvent(new Event('atlas-photos-unlocked'));
+      if(!response.ok||!validAccess(data))throw new Error('Login expired. Please unlock again.');
+      acceptAccess(data);
     }catch{showPrompt('Could not restore photo access. Please unlock again.');}
+  }
+  function validAccess(data){return typeof data?.token==='string'&&data.token.length<=2048&&Number.isInteger(data.expiresAt)&&data.expiresAt>Date.now()/1000&&data.expiresAt<=Date.now()/1000+3630;}
+  function acceptAccess(data){
+    lock(false);token=data.token;expiresAt=data.expiresAt;
+    // Only the one-hour access token is tab-scoped; the 30-day cookie stays HttpOnly.
+    try{sessionStorage.setItem(ACCESS_KEY,JSON.stringify({token,expiresAt}));}catch{}
+    expiryTimer=setTimeout(()=>lock(),Math.max(0,expiresAt*1000-Date.now()));
+    updateControls();if(dialog.open)closePrompt();for(const [img] of images)if(img.isConnected)hydrate(img);prepare();window.dispatchEvent(new Event('atlas-photos-unlocked'));
+  }
+  async function restoreTabAccess(){
+    let saved;try{saved=JSON.parse(sessionStorage.getItem(ACCESS_KEY));}catch{}
+    if(!validAccess(saved))return false;
+    const epoch=generation;
+    try{
+      const response=await fetch(`${service}/private-photos/auth/status`,{headers:{Authorization:`Bearer ${saved.token}`},credentials:'omit',cache:'no-store'});
+      const data=await response.json();
+      if(epoch!==generation)return true;
+      if(!response.ok||data.unlocked!==true||data.expiresAt!==saved.expiresAt)return false;
+      acceptAccess(saved);return true;
+    }catch{return false;}
   }
   async function check(){if(!token||document.hidden)return;try{const response=await fetch(`${service}/private-photos/auth/status`,{headers:{Authorization:`Bearer ${token}`},credentials:'omit',cache:'no-store'});if(response.status===401)lock();}catch{/* A transient network outage does not discard valid access. */}}
   channel?.addEventListener('message',event=>{if(event.data==='lock')lock(false);});
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)check();});window.addEventListener('focus',check);setInterval(check,60000);
   for(const button of document.querySelectorAll('[data-unlock]'))button.addEventListener('click',()=>begin());
-  status.querySelector('[data-lock]').addEventListener('click',()=>begin('logout'));dialog.querySelector('[data-dismiss]').addEventListener('click',closePrompt);
+  dialog.querySelector('[data-dismiss]').addEventListener('click',closePrompt);
   dialog.addEventListener('close',()=>lastFocus?.focus?.());
   window.JOURNEY_ATLAS_AUTH={isProtected,markup,hydrate,prepare,setImage,clearImage,preload(photo,width){if(local||token)fetchPhoto(selected(photo,width)).catch(()=>{});},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
-  if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;status.querySelector('[data-photo-status]').textContent='Restoring photo access…';completeReturn();}
+  if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
 })();
