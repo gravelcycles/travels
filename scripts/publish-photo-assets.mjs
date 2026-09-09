@@ -1,63 +1,40 @@
 #!/usr/bin/env node
-import fs from 'node:fs';
-import path from 'node:path';
-import crypto from 'node:crypto';
-import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
-import { fileURLToPath } from 'node:url';
-import { loadJourneys, readJson } from './journey-content.mjs';
-import { readOverrides, buildSite } from './build-site.mjs';
-import { uploadManifestPath, atomicJson } from './studio-photo-service.mjs';
-const repo = 'gravelcycles/travels';
-const run = async args => (await promisify(execFile)('gh', args, { maxBuffer: 10 * 1024 * 1024 })).stdout;
-
-export async function publishPhotoAssets(root, journeyId, { publish = false, gh = run, verify = async url => {
-  const response = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(30000) });
-  if (!response.ok) throw new Error(`Published asset is not accessible (${response.status}). Retry publishing before deploying the site.`);
-} } = {}) {
-  const journey = loadJourneys(root, { includeDrafts: true }).journeys.find(j => j.id === journeyId);
-  if (!journey) throw new Error('Select a known journey with --journey <id>.');
-  if (!journey.published && publish) throw new Error('Draft journeys stay private. Publish/review the journey before its photo assets.');
-  const manifestPath = uploadManifestPath(root, journey);
-  const photos = readJson(manifestPath, []);
-  const overrides = readOverrides(root);
-  const pending = photos.filter(p => p.assetStatus === 'local' && !overrides.photos[p.id]?.trashed && !overrides.photos[p.id]?.hidden);
-  const tag = `${journey.id}-uploads-v1`;
-  const assets = pending.flatMap(photo => photo.srcset.map(v => {
-    const url = new URL(v.src);
-    const name = path.basename(url.pathname);
-    if (url.origin !== 'https://github.com' || url.pathname !== `/${repo}/releases/download/${tag}/${name}` || !name.startsWith(`${photo.id}-w`) || !/\.webp$/.test(name)) throw new Error('Unexpected photo asset URL.');
-    const filename = path.join(root, 'build', tag, name);
-    const bytes = fs.readFileSync(filename);
-    return { name, filename, url: v.src, size: bytes.length, digest: `sha256:${crypto.createHash('sha256').update(bytes).digest('hex')}` };
-  }));
-  const result = { journeyId, photos: pending.length, assets: assets.length, bytes: assets.reduce((n, a) => n + a.size, 0), releaseTag: tag, published: false };
-  if (!publish || !pending.length) return result;
-  let release;
-  // Listing releases distinguishes a missing tag from authentication/network errors.
-  const releases = JSON.parse(await gh(['release', 'list', '--repo', repo, '--limit', '1000', '--json', 'tagName,isDraft']));
-  const existing = releases.find(r => r.tagName === tag);
-  if (existing?.isDraft) throw new Error('The photo release is a draft; review its visibility before publishing.');
-  if (!existing) await gh(['release', 'create', tag, '--repo', repo, '--title', `${journey.title} photo uploads`, '--notes', 'Optimized, metadata-stripped photo derivatives. Originals remain private.']);
-  release = JSON.parse(await gh(['release', 'view', tag, '--repo', repo, '--json', 'assets']));
-  for (const asset of assets) {
-    const remote = release.assets.find(a => a.name === asset.name);
-    if (remote) {
-      if (remote.size !== asset.size || (remote.digest && remote.digest !== asset.digest)) throw new Error(`Existing asset differs: ${asset.name}. Immutable assets are never overwritten.`);
-    } else await gh(['release', 'upload', tag, asset.filename, '--repo', repo]);
-    await verify(asset.url);
-  }
-  // Do not overwrite an import that completed during the upload.
-  const completed = new Set(pending.map(p => p.id));
-  atomicJson(manifestPath, readJson(manifestPath, []).map(p => completed.has(p.id) ? { ...p, assetStatus: 'published' } : p));
-  buildSite(root);
-  return { ...result, published: true };
+import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';import sharp from 'sharp';import {fileURLToPath} from 'node:url';
+import {loadJourneys,readJson} from './journey-content.mjs';
+import {readOverrides,buildSite} from './build-site.mjs';
+import {atomicJson} from './studio-photo-service.mjs';
+import {privatePhotoFile,isPrivatePhotoUrl,PRIVATE_PREFIX} from './photo-variants.mjs';
+import {cloudflareClient} from './cloudflare-client.mjs';
+export async function publishPhotoAssets(root,journeyId,{publish=false,all=false,remote,progress=()=>{}}={}){
+ const journey=loadJourneys(root,{includeDrafts:true}).journeys.find(j=>j.id===journeyId);
+ if(!journey)throw new Error('Choose a known journey.');if(!journey.published&&publish)throw new Error('Draft journeys stay private.');
+ const files=['','-uploads'].map(suffix=>path.join(root,journey.published?`content/photo-manifests/${journeyId}${suffix}.json`:`build/draft-assets/${journeyId}/${suffix?'uploads':'photos'}.json`)).filter(f=>fs.existsSync(f));
+ const overrides=readOverrides(root),photos=files.flatMap(f=>readJson(f)).filter(p=>(all||p.assetStatus==='local')&&!overrides.photos[p.id]?.hidden&&!overrides.photos[p.id]?.trashed);
+ const assets=new Map();
+ for(const photo of photos){if(!photo.protected||!photo.srcset?.length||photo.srcset.length>2)throw new Error('Migrate this photo to the private two-size format first.');for(const variant of photo.srcset){
+  if(!isPrivatePhotoUrl(variant.src))throw new Error('Only private photo paths may be published.');
+  const filename=privatePhotoFile(root,variant.src),data=fs.readFileSync(filename),key=variant.src.slice(PRIVATE_PREFIX.length),digest=crypto.createHash('sha256').update(data).digest('hex');
+  if(key!==`v1/${digest}.webp`)throw new Error('Photo checksum does not match its storage key.');
+  const metadata=await sharp(data).metadata();if(metadata.format!=='webp'||metadata.exif||metadata.xmp||metadata.iptc)throw new Error('Only metadata-stripped WebP files may be uploaded.');
+  assets.set(key,{key,filename,digest,size:data.length});
+ }}
+ const result={journeyId,photos:photos.length,assets:assets.size,bytes:[...assets.values()].reduce((n,a)=>n+a.size,0),published:false};
+ if(!publish||!photos.length)return result;
+ const api=remote||await cloudflareClient();const bucket='/r2/buckets/travels-private-photos';
+ if(!remote){for(const endpoint of ['/domains/managed','/domains/custom']){const response=await api(bucket+endpoint);if(!response.ok)throw new Error('Cannot verify private bucket access.');const data=await response.json();if(!data.success||data.result?.enabled||data.result?.domains?.length)throw new Error('Disable all public R2 access before publishing.');}}
+ let completed=0;
+ // A small pool keeps upload/checksum verification bounded and retryable.
+ const queue=[...assets.values()];
+ await Promise.all(Array.from({length:Math.min(4,queue.length)},async()=>{while(queue.length){const asset=queue.shift(),resource=`${bucket}/objects/${asset.key}`;let response=await api(resource);
+  if(response.status===404){const uploaded=await api(resource,{method:'PUT',headers:{'Content-Type':'image/webp','Cache-Control':'no-store'},body:fs.readFileSync(asset.filename)});if(!uploaded.ok)throw new Error(`Photo upload failed (${uploaded.status}).`);response=await api(resource);}
+  if(!response.ok)throw new Error(`Photo verification failed (${response.status}).`);
+  const bytes=Buffer.from(await response.arrayBuffer());if(bytes.length!==asset.size||crypto.createHash('sha256').update(bytes).digest('hex')!==asset.digest)throw new Error('Remote photo checksum mismatch; existing objects are never overwritten.');
+  progress(++completed,assets.size);
+ }}));
+ const ids=new Set(photos.map(p=>p.id));for(const file of files)atomicJson(file,readJson(file).map(p=>ids.has(p.id)?{...p,assetStatus:'published'}:p));
+ buildSite(root);return {...result,published:true};
 }
-
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const args = process.argv.slice(2);
-  if (![2, 3].includes(args.length) || args[0] !== '--journey' || (args[2] && args[2] !== '--publish')) throw new Error('Usage: npm run photos:publish -- --journey <id> [--publish]');
-  const root = path.resolve(import.meta.dirname, '..');
-  console.log(await publishPhotoAssets(root, args[1], { publish: args.includes('--publish') }));
-  console.log(args.includes('--publish') ? 'Assets checked; commit and deploy the generated site to publish album changes.' : 'Preview only. Add --publish after reviewing photos in Studio.');
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
+ const args=process.argv.slice(2);if(args[0]!=='--journey'||!args[1]||args.slice(2).some(a=>!['--publish','--all'].includes(a)))throw new Error('Usage: npm run photos:publish -- --journey <id> [--all] [--publish]');
+ try{console.log(await publishPhotoAssets(path.resolve(import.meta.dirname,'..'),args[1],{publish:args.includes('--publish'),all:args.includes('--all'),progress:(done,total)=>{if(done%20===0||done===total)console.log(`Verified ${done}/${total} private objects`);}}));}catch(error){console.error(error.message);process.exitCode=1;}
 }

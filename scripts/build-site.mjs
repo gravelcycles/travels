@@ -36,7 +36,10 @@ export function buildSite(root) {
   const photoIds = new Set([...visiblePhotos.values()].flat().map(p => p.id));
   const select = (obj, ids) => Object.fromEntries(Object.entries(obj).filter(([id]) => ids.has(id)).sort(([a], [b]) => a.localeCompare(b)));
   const publicData = { ...data, journeys: published.map(({ photoImport, timeZone, ...j }) => ({ ...j, photos: [] })) };
+  const photoService = readJson(path.join(root, "content/photo-service.json"), { origin: "" });
+  if (photoService.origin && (new URL(photoService.origin).origin !== photoService.origin || !photoService.origin.startsWith("https://"))) throw new Error("Photo service must use an HTTPS origin");
   const outputs = new Map([
+    ["assets/photo-service.js", script("JOURNEY_ATLAS_PHOTO_SERVICE", photoService)],
     ["assets/journeys.js", script("JOURNEY_ATLAS_DATA", publicData)],
     ["assets/route-geometry.js", script("JOURNEY_ATLAS_ROUTE_GEOMETRY", select(routes, routeIds))],
     ["assets/trip-photos.js", script("JOURNEY_ATLAS_PHOTOS", Object.fromEntries(published.map(j => [j.id, visiblePhotos.get(j.id)])))],
@@ -45,7 +48,7 @@ export function buildSite(root) {
   const versions = new Map();
   const hash = value => crypto.createHash("sha256").update(value).digest("hex").slice(0, 12);
   for (const [file, value] of outputs) versions.set(file, hash(value));
-  for (const file of ["assets/atlas-utils.js", "assets/app.js", "assets/catalog.js", "assets/replay-utils.js", "assets/styles.css"]) versions.set(file, hash(fs.readFileSync(path.join(root, "dist", file))));
+  for (const file of ["assets/photo-auth.js", "assets/atlas-utils.js", "assets/app.js", "assets/catalog.js", "assets/replay-utils.js", "assets/styles.css"]) versions.set(file, hash(fs.readFileSync(path.join(root, "dist", file))));
   const versioned = html => html.replace(/\.\/assets\/([a-z-]+\.(?:js|css))(?:\?v=[^\"]*)?/g, (_, file) => `./assets/${file}?v=${versions.get(`assets/${file}`) || "1"}`);
   for (const j of published.filter(j => j.kind === "real")) outputs.set(j.slug, versioned(renderJourneyPage(root, j)));
   for (const file of ["index.html", "demo.html"]) outputs.set(file, versioned(fs.readFileSync(path.join(root, "dist", file), "utf8")));

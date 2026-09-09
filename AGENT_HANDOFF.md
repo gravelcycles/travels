@@ -1,5 +1,20 @@
 # Next-agent handoff
 
+## Private photo implementation · 9 September 2026 — cutover pending
+
+Read [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md) first for current state.
+Cloudflare account/R2/OAuth are ready. The Worker is deployed and 198 private
+objects for 99 visible photos have been uploaded and checksum verified. The
+local frontend, two-size pipeline, password manager and 30-day login are
+implemented. All 80 tests and the build pass; workerd and in-app browser checks
+passed. Chosen passwords now work on Workers Free: browser PBKDF2 + server verification
+passed production tests with eight temporary credentials. No paid upgrade is
+needed or authorized. The owner-selected initial test credential is configured and verified on
+production, including 30-day remembered access and private photo checksums.
+Temporary probe credentials were removed. Pages has not been updated and both public photo Releases remain; privacy is not complete. Do not
+follow older public Release upload instructions below. Preserve the latest
+photo-1 previews, compact catalog, cover framing and traveler-edited copy.
+
 ## Day previews start at photo 1 · 9 September 2026
 
 Published as `6bc0561` in successful Pages run `34367258218`. Fresh public

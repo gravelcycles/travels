@@ -28,8 +28,8 @@
     const {photo,position} = window.JOURNEY_ATLAS_UTILS.resolveCover(journey, photos);
     return `
     <a class="journey-card" href="./${escapeHtml(journey.slug)}">
-      <div class="journey-card-media">
-        ${photo ? `<img src="${escapeHtml(photo.srcset?.find(v=>v.width>=480)?.src || photo.src)}" srcset="${escapeHtml((photo.srcset||[]).map(v=>`${v.src} ${v.width}w`).join(", "))}" sizes="(max-width: 560px) 112px, 176px" style="object-position:${position};${photo.blur?`background-image:url(${escapeHtml(photo.blur)})`:""}" alt="${escapeHtml(photo.alt || "")}" loading="${index < 5 ? "eager" : "lazy"}" fetchpriority="${index === 0 ? "high" : "auto"}" />` : '<div class="journey-card-placeholder"><span>A JOURNEY TAKING SHAPE</span><strong>Places to go.<br>Days to make your own.</strong></div>'}
+      <div class="journey-card-media" style="--cover-position:${escapeHtml(position)}">
+        ${photo ? (window.JOURNEY_ATLAS_AUTH?.isProtected(photo) ? window.JOURNEY_ATLAS_AUTH.markup(photo,{eager:index<5}) : `<img src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.alt || '')}" loading="lazy" />`) : '<div class="journey-card-placeholder"><span>A JOURNEY TAKING SHAPE</span><strong>Places to go.<br>Days to make your own.</strong></div>'}
       </div>
       <div class="journey-card-copy">
         <small>${escapeHtml(journey.kicker)}</small>
@@ -43,4 +43,5 @@
       </div>
     </a>
   `; }).join("");
+  window.JOURNEY_ATLAS_AUTH?.prepare(catalog);
 })();

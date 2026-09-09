@@ -12,10 +12,20 @@
     "build": "node scripts/build-site.mjs",
     "test": "node --test test/*.test.mjs",
     "journey:new": "node scripts/create-journey.mjs",
-    "photos:publish": "node scripts/publish-photo-assets.mjs"
+    "photos:publish": "node scripts/publish-photo-assets.mjs",
+    "auth:manage": "node scripts/photo-auth-admin.mjs",
+    "auth:credentials": "node scripts/photo-auth-credentials.mjs",
+    "auth:test": "node --test test/photo-auth-worker.test.mjs test/photo-auth-loader.test.mjs",
+    "auth:runtime-test": "wrangler deploy --dry-run --outdir build/photo-worker --config workers/photo-auth/wrangler.jsonc && node test/photo-auth-runtime.mjs",
+    "auth:deploy": "wrangler deploy --config workers/photo-auth/wrangler.jsonc",
+    "photos:migrate": "node scripts/migrate-private-photos.mjs"
   },
   "devDependencies": {
     "exifr": "7.1.3",
-    "sharp": "0.35.4"
+    "sharp": "0.35.4",
+    "wrangler": "4.130.0"
+  },
+  "overrides": {
+    "sharp": "$sharp"
   }
 }

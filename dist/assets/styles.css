@@ -64,7 +64,7 @@ button { color: inherit; }
 .journey-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:12px; }
 .journey-card { min-height:104px; display:grid; grid-template-columns:176px minmax(0,1fr); color:var(--ink); background:var(--panel); border:1px solid var(--line); text-decoration:none; overflow:hidden; }
 .journey-card-media { position:relative; min-height:104px; overflow:hidden; background:#29474c; }
-.journey-card img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform 220ms ease; }
+.journey-card img { object-position:var(--cover-position,50% 50%); position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform 220ms ease; }
 .journey-card:hover img,.journey-card:focus-visible img { transform:scale(1.035); }
 .journey-card-copy { min-width:0; padding:12px 18px; }
 .journey-card-copy small { display:none; }
@@ -545,3 +545,6 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible {
 .replay-photo:not([hidden]) { display:block; }
 
 .photo-location-previous { background:var(--muted); box-shadow:0 0 0 4px #71878a33; opacity:.7; }
+
+/* Shared private-photo access */
+.photo-auth-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.photo-auth-controls button,.photo-unlock-dialog button{font:inherit;border:1px solid #38675f;border-radius:8px;padding:10px 14px;background:#245b53;color:#fff;cursor:pointer}.photo-auth-controls [data-photo-status]{font-size:11px}.photo-unlock-dialog{box-sizing:border-box;width:min(440px,calc(100vw - 32px));border:1px solid #adc0b4;border-radius:16px;padding:28px;background:#f9f5eb;color:#253e3b;box-shadow:0 20px 80px #182b2844}.photo-unlock-dialog::backdrop{background:#172c285c}.photo-unlock-dialog h2{font:32px Georgia,serif;margin:0 0 14px}.photo-unlock-dialog p{line-height:1.6}.photo-unlock-dialog .photo-unlock-hint{font-size:13px;color:#52675f}.photo-unlock-dialog .photo-auth-secondary{background:transparent;color:#245b53;border-color:transparent;padding-left:0}.photo-unlock-dialog [data-auth-message]{font-size:14px}.photo-unlock-dialog button:focus-visible{outline:3px solid #b96628;outline-offset:3px}.photo-auth-controls [hidden]{display:none!important}

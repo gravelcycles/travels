@@ -10,6 +10,15 @@ roughly 4–5 journeys on a laptop and 2–3 on a phone. Only published real tri
 appear; demo journeys remain separate. The family trip is titled
 **Switzerland & Italy · Family trip**.
 
+## Photo privacy migration
+
+The photo-only Cloudflare implementation supports multiple shared passwords and
+30-day remembered access. Two private WebP sizes replace the old variants; tiny
+embedded blurs remain public. The site address stays on GitHub Pages.
+**Live cutover is pending password setup and verification; historical public
+photo copies have not yet been retired.** See [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md)
+for the current deployment state and password maintenance.
+
 ## How we work
 
 The workflow is agent-driven. The user provides trip facts, files, corrections,
@@ -60,7 +69,7 @@ python3 -m http.server 8000
 ```
 
 Then open `http://localhost:8000/dist/`. Add `?photoSource=local` to use the
-ignored local derivatives instead of GitHub Release URLs.
+ignored local derivatives instead of authenticated Cloudflare requests.
 
 - `/dist/` lists all real journeys.
 - `/dist/switzerland-italy.html` opens the real family journey.
@@ -155,7 +164,7 @@ binds only to the loopback interface and is not part of the published site.
 
 Start with `TRIP_CONTENT.md`. Journey source data lives in
 `content/journeys/<journey-id>.json`. Private originals go in ignored `photos/`; the
-checked-in manifest references optimized WebPs hosted as GitHub Release assets.
+checked-in manifest references protected WebPs in private Cloudflare R2.
 
 The agent installs the generator dependencies and builds the current trip with:
 
@@ -166,7 +175,7 @@ npm run photos:build -- --journey switzerland-italy-family-2026
 
 This creates responsive 480/1280/2560/3200 px variants under ignored `build/`
 and updates `dist/assets/trip-photos.js`. See `PHOTO_WORKFLOW.md` for review,
-privacy, and Release publishing steps. Never commit the originals or generated
+privacy, and private R2 publishing steps. Never commit the originals or generated
 photo binaries.
 
 Use `PHOTO_WORKFLOW.md` when transferring iPhone images so capture time and GPS
