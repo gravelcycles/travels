@@ -29,7 +29,7 @@
     status.querySelector('[data-unlock]').hidden=Boolean(token)||local;
   }
   function release(img) {
-    const previous=images.get(img);if(previous?.entry)previous.entry.refs.delete(img);images.delete(img);
+    const previous=images.get(img);previous?.cleanup?.();if(previous?.entry)previous.entry.refs.delete(img);images.delete(img);
     for(const src of [previous?.src,previous?.preview]) {
       const entry=cache.get(src);
       if(entry&&!entry.url&&![...images.values()].some(item=>item.src===src||item.preview===src)) {
@@ -55,7 +55,7 @@
   function lock(broadcast=true) {
     token='';expiresAt=0;generation++;lastCheck=0;checkPending=null;restoreAfterExpiry=false;clearTimeout(expiryTimer);
     try{sessionStorage.removeItem(ACCESS_KEY);}catch{}
-    for(const [img,item] of images){img.removeAttribute('srcset');img.src=item.blur;img.classList.remove('is-loaded');item.entry=null;item.loading=false;imageState(img,'locked');}
+    for(const [img,item] of images){item.cleanup?.();img.removeAttribute('srcset');img.src=item.blur;img.classList.remove('is-loaded');item.entry=null;item.loading=false;imageState(img,'locked');}
     for(const entry of cache.values()){entry.controller.abort();if(entry.url)URL.revokeObjectURL(entry.url);}
     cache.clear();updateControls();if(broadcast)channel?.postMessage('lock');
     window.dispatchEvent(new Event('atlas-photos-locked'));
@@ -112,25 +112,30 @@
     img.dataset.photoState=state;img.dispatchEvent(new Event('atlas-photo-state'));
   }
   function display(img,item,entry) {
+    item.cleanup?.();
     item.entry?.refs.delete(img);item.entry=entry;entry.refs.add(img);
     img.dataset.photoCache=entry.edgeCache;img.dataset.photoBrowserCache=entry.revalidated?'revalidated':'download';img.dataset.photoDownloadMs=String(entry.downloadMs);img.dataset.photoServerTiming=entry.serverTiming;
-    const failed=()=>{if(images.get(img)===item&&img.src===entry.url){entry.decoded=false;imageState(img,'error');}};
-    const ready=(decoded=true)=>{if(images.get(img)===item&&img.src===entry.url){if(decoded)entry.decoded=true;img.removeEventListener('error',failed);img.classList.add('is-loaded');imageState(img,'ready');}};
+    let settled=false;
+    const current=()=>!settled&&images.get(img)===item&&item.entry===entry&&img.src===entry.url;
+    const cleanup=()=>{settled=true;img.removeEventListener('load',loaded);img.removeEventListener('error',failed);};
+    const failed=()=>{if(current()){cleanup();entry.decoded=false;imageState(img,'error');}};
+    const ready=()=>{if(current()){cleanup();entry.decoded=true;img.classList.add('is-loaded');imageState(img,'ready');}};
     // A normal load event is authoritative even if decode() rejects or stalls.
     // Ignore queued load events from the old placeholder while a new source loads.
     const loaded=()=>{
-      if(images.get(img)!==item||img.src!==entry.url){img.removeEventListener('load',loaded);img.removeEventListener('error',failed);return;}
-      if(item.fullOnly&&(!img.complete||!img.naturalWidth||(img.currentSrc&&img.currentSrc!==entry.url)))return;
-      img.removeEventListener('load',loaded);ready();
+      if(!current()){cleanup();return;}
+      if(!img.complete||!img.naturalWidth||(img.currentSrc&&img.currentSrc!==entry.url))return;
+      ready();
     };
+    item.cleanup=cleanup;
     img.addEventListener('load',loaded);
-    if(item.fullOnly)img.addEventListener('error',failed,{once:true});
-    if(item.fullOnly&&!entry.decoded)imageState(img,'loading');
+    img.addEventListener('error',failed);
+    if(!entry.decoded&&(item.fullOnly||img.dataset.photoState!=='ready'))imageState(img,'loading');
     img.src=entry.url;delete img.dataset.photoError;delete img.dataset.photoFailure;
     // A previously displayed blob can be reused without flashing the loading UI.
-    if(item.fullOnly&&entry.decoded){img.classList.add('is-loaded');imageState(img,'ready');}
-    if(item.fullOnly&&img.decode)img.decode().then(ready,()=>{if(img.complete&&img.naturalWidth>0&&(!img.currentSrc||img.currentSrc===entry.url))ready();});
-    else if(!item.fullOnly)ready(false);
+    if(entry.decoded)ready();
+    else if(img.decode)img.decode().then(ready,loaded);
+    else loaded();
   }
   async function hydrate(img) {
     const src=img.dataset.privateSrc;if(!src||(!local&&!token))return;
@@ -155,12 +160,13 @@
     const src=selected(photo,fullOnly?Infinity:width),preview=fullOnly?src:selected(photo,1280),thumbnail=fullOnly?src:selected(photo,480);
     if(token&&expiresAt<=Date.now()/1000)expireAccess();
     const previous=images.get(img);
-    if(previous?.src===src&&previous.loading){for(const key of [src,preview]){const pending=cache.get(key);if(pending)pending.priority=0;}if(previous.entry)img.classList.add('is-loaded');imageState(img,previous.entry?'ready':'loading');pumpDownloads();return;}
+    if(previous?.src===src&&previous.loading){for(const key of [src,preview]){const pending=cache.get(key);if(pending)pending.priority=0;}if(img.dataset.photoState==='ready')img.classList.add('is-loaded');imageState(img,img.dataset.photoState||'loading');pumpDownloads();return;}
     const ready=(local||token)?[src,preview,thumbnail].map(key=>cache.get(key)).find(entry=>entry?.url):null;
     if(ready&&images.get(img)?.entry===ready&&images.get(img)?.src===src&&img.src===ready.url&&img.dataset.photoState==='ready'){img.classList.add('is-loaded');imageState(img,'ready');hydrate(img);return;}
     release(img);img.removeAttribute('srcset');delete img.dataset.src;delete img.dataset.srcset;delete img.dataset.photoError;
     img.dataset.privateSrc=src;img.dataset.privateBlur=fullOnly?placeholder:photo.blur||placeholder;
     const item={src,preview,fullOnly,blur:img.dataset.privateBlur,entry:null,priority:0};images.set(img,item);
+    img.dataset.photoReveal=ready?.decoded?'instant':'soft';
     if(ready){display(img,item,ready);prune();}
     else {img.src=item.blur;img.classList.remove('is-loaded');imageState(img,(local||token)?'loading':'locked');}
     hydrate(img);

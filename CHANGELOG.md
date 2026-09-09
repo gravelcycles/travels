@@ -6,6 +6,17 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Restore a gentle image reveal
+
+- Keep the embedded preview underneath a 480 ms fade into the sharp photograph
+  in the viewer and Replay, with matching photo bounds and no dark flash.
+- Show previously decoded photos immediately. Respect reduced motion and hide
+  private images immediately when access locks.
+- Wait for thumbnail decoding before starting its blur transition, clean up
+  abandoned image listeners, and drive Replay timing from image readiness.
+- Verified delayed loads, the intermediate reveal, portrait fitting, cached
+  revisits, and immediate locking in a local browser fixture.
+
 ### Match the loading blur to the full photograph
 
 - Fit the blur to the photo’s exact aspect ratio and display bounds, including

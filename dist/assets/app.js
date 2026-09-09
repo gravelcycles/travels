@@ -87,6 +87,7 @@
   let hasPlayedOpeningMove = false;
   let pendingMapAction = null;
   const preloadedPhotoUrls = new Set();
+  const decodedPhotoUrls = new Set();
   const lazyImageObserver = "IntersectionObserver" in window
     ? new IntersectionObserver((entries, observer) => {
         entries.filter((entry) => entry.isIntersecting).forEach((entry) => {
@@ -172,13 +173,40 @@
   function hydrateImage(image) {
     if (image?.dataset.privateSrc) return window.JOURNEY_ATLAS_AUTH.hydrate(image);
     if (!image?.dataset.src) return;
-    const markLoaded = () => image.classList.add("is-loaded");
-    image.addEventListener("load", markLoaded, { once: true });
+    const markLoaded = () => {
+      if (!image.complete || !image.naturalWidth || image.currentSrc?.startsWith('data:')) return;
+      image.removeEventListener('load', markLoaded);
+      image.classList.add("is-loaded");
+    };
+    image.addEventListener("load", markLoaded);
     if (image.dataset.srcset) image.srcset = image.dataset.srcset;
     image.src = image.dataset.src;
     image.removeAttribute("data-src");
     image.removeAttribute("data-srcset");
     if (image.complete) markLoaded();
+  }
+
+  function setPublicFullImage(image, photo) {
+    window.JOURNEY_ATLAS_AUTH?.clearImage(image);
+    const src = new URL(preferredPhotoUrl(photo, Infinity), document.baseURI).href;
+    const state = value => { image.dataset.photoState = value; image.dispatchEvent(new Event('atlas-photo-state')); };
+    const ready = () => {
+      if (image.onload !== loaded || image.src !== src || image.dataset.photoState === 'ready') return;
+      decodedPhotoUrls.add(src);
+      image.classList.add('is-loaded');
+      state('ready');
+    };
+    const loaded = () => {
+      if (image.complete && image.naturalWidth && (!image.currentSrc || image.currentSrc === src)) ready();
+    };
+    image.onload = loaded;
+    image.onerror = () => { if (image.src === src) state('error'); };
+    image.dataset.photoReveal = decodedPhotoUrls.has(src) ? 'instant' : 'soft';
+    image.srcset = '';
+    state('loading');
+    image.src = src;
+    if (image.complete && image.naturalWidth) loaded();
+    else if (image.decode) image.decode().then(ready, loaded);
   }
 
   function prepareProgressiveImages(container) {
@@ -1041,7 +1069,8 @@
     emptyStage.hidden = Boolean(photo);
     $('#viewer-photo-feedback').hidden=true;
     if (photo) {
-      if (!window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) window.JOURNEY_ATLAS_AUTH?.clearImage(modalPhoto);
+      modalPhoto.onload = null;
+      modalPhoto.onerror = null;
       modalPhoto.className = photo.blur ? "progressive-image" : "";
       modalPhoto.srcset = "";
       modalPhoto.alt = photo.alt;
@@ -1052,13 +1081,7 @@
       if (window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) {
         window.JOURNEY_ATLAS_AUTH.setImage(modalPhoto, photo, Infinity, {fullOnly:true});
       } else {
-        const src=preferredPhotoUrl(photo,Infinity);
-        modalPhoto.dataset.photoState='loading';
-        photoStage.classList.add('is-photo-loading');
-        modalPhoto.onload=()=>{modalPhoto.dataset.photoState='ready';modalPhoto.classList.add('is-loaded');photoStage.classList.remove('is-photo-loading');};
-        modalPhoto.onerror=()=>{modalPhoto.dataset.photoState='error';photoStage.classList.remove('is-photo-loading');};
-        modalPhoto.src=src;
-        if(modalPhoto.complete&&modalPhoto.naturalWidth)modalPhoto.onload();
+        setPublicFullImage(modalPhoto, photo);
       }
       $("#modal-caption").textContent = window.JOURNEY_ATLAS_UTILS.photoCaption(photo, day);
       $("#modal-time").textContent = photo.takenAt || day.date;
@@ -1067,6 +1090,8 @@
       preloadWithinDay(photos, viewerPhotoIndex, 1, Infinity);
     } else {
       window.JOURNEY_ATLAS_AUTH?.clearImage(modalPhoto);
+      modalPhoto.onload = null;
+      modalPhoto.onerror = null;
       modalPhoto.removeAttribute("src");
       modalPhoto.removeAttribute("srcset");
       modalPhoto.alt = "";
@@ -1348,15 +1373,25 @@
     replayPhotoReady=!photo; frame.hidden=!photo;
     $('#replay-retry-photo').hidden=true;
     $('#replay-photo-status').textContent='';
+    image.removeEventListener('atlas-photo-state', image.replayPhotoState);
     image.onload=null; image.onerror=null;
     if(!photo) {window.JOURNEY_ATLAS_AUTH?.clearImage(image);image.removeAttribute('src');image.removeAttribute('srcset');image.alt='';$('#replay-photo-caption').textContent='';return;}
     image.className=''; image.alt=photo.alt || ''; image.sizes='(max-width: 900px) 100vw, 355px';
-    image.onload=()=>{ if(token!==replayPhotoToken || (window.JOURNEY_ATLAS_AUTH?.isProtected(photo) && !image.src.startsWith('blob:'))) return; if(!window.JOURNEY_ATLAS_AUTH?.isProtected(photo))image.dataset.photoState='ready'; replayPhotoReady=true; replayLastTimestamp=null; $('#replay-photo-status').textContent=''; };
-    image.onerror=()=>{ if(token!==replayPhotoToken) return; replayPhotoReady=false; pauseReplay(); $('#replay-photo-status').textContent='The photograph could not load. Retry or choose the next moment.'; $('#replay-retry-photo').hidden=false; };
-    if(window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) { window.JOURNEY_ATLAS_AUTH.setImage(image,photo,Infinity,{fullOnly:true}); if(!window.JOURNEY_ATLAS_AUTH.unlocked){replayPhotoReady=true;$('#replay-photo-status').textContent='Unlock photos to see this photograph.';} }
-    else { window.JOURNEY_ATLAS_AUTH?.clearImage(image); image.dataset.photoState='loading';image.srcset='';image.src=preferredPhotoUrl(photo,Infinity); }
-    // A retained blob already displayed in this slot does not emit another load event.
-    if(image.complete && image.naturalWidth) image.onload();
+    const backdrop=photo.blur;
+    frame.style.setProperty('--photo-backdrop', /^data:image\/(webp|png|jpeg);base64,/.test(backdrop || '') ? `url("${backdrop}")` : 'none');
+    image.replayPhotoState=()=>{
+      if(token!==replayPhotoToken) return;
+      const state=image.dataset.photoState;
+      replayPhotoReady=state==='ready'||state==='locked';
+      replayLastTimestamp=null;
+      $('#replay-photo-status').textContent=state==='error'?'The photograph could not load. Retry or choose the next moment.':state==='locked'?'Unlock photos to see this photograph.':'';
+      $('#replay-retry-photo').hidden=state!=='error';
+      if(state==='error') pauseReplay();
+    };
+    image.addEventListener('atlas-photo-state',image.replayPhotoState);
+    if(window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) window.JOURNEY_ATLAS_AUTH.setImage(image,photo,Infinity,{fullOnly:true});
+    else setPublicFullImage(image,photo);
+    image.replayPhotoState();
     $('#replay-photo-caption').textContent=photo.caption || '';
     const nextPhoto=replayLeadPhoto(replayMomentDay(replayTimeline[replayMomentIndex+1]),replayTimeline[replayMomentIndex+1]);
     if(nextPhoto) preloadPhoto(nextPhoto,Infinity);
