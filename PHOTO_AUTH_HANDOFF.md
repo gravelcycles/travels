@@ -1,5 +1,22 @@
 # Private photo access — implementation handoff
 
+## Full-size-only viewer and Replay — 9 September 2026
+
+The user requested the full photo or no photo, rather than a low-resolution
+placeholder. Viewer, Retry and Replay now request the largest derivative with
+fullOnly mode. Cached thumbnails/previews are not displayed in these slots,
+which stay hidden until the full-size blob has decoded. There is no blur
+transition. Failures stay blank with Retry; neighbor/Replay preloads request
+the full-size variant. Filmstrip/day-card thumbnails remain appropriately small.
+
+All 115 tests and the build pass. A stalled localhost server verified loading
+and failure both stay hidden; Retry revealed a sharp 3200×2400 photo. A decode
+completing after lock cannot reveal the photo. The browser-cache release
+`bf11464` already deployed successfully in run `34388263770`: five images
+reused browser bytes on a real reload via authenticated 304 responses. An
+anonymous conditional request still returned 401/no-store without an ETag.
+
+
 ## Browser photo reuse — 9 September 2026
 
 Worker version: `d3b798dd-4c07-433c-8a62-063d366a86ee`.

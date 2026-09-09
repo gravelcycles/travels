@@ -1013,11 +1013,6 @@
     }
   }
 
-  function viewerPhotoWidth() {
-    const width = window.innerWidth * (window.innerWidth <= 900 ? 1 : 0.75);
-    return Math.ceil(width * (window.devicePixelRatio || 1));
-  }
-
   function updateViewer() {
     const day = viewerDay();
     const dayChanged = activeDayId !== day.id;
@@ -1036,24 +1031,24 @@
       if (!window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) window.JOURNEY_ATLAS_AUTH?.clearImage(modalPhoto);
       modalPhoto.className = photo.blur ? "progressive-image" : "";
       modalPhoto.srcset = "";
-      if (!window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) modalPhoto.src = photo.blur || photoAssetUrl(photo.src);
       modalPhoto.alt = photo.alt;
       modalPhoto.sizes = "(max-width: 900px) 100vw, 75vw";
       if (photo.width) modalPhoto.width = photo.width;
       if (photo.height) modalPhoto.height = photo.height;
       if (window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) {
-        window.JOURNEY_ATLAS_AUTH.setImage(modalPhoto, photo, viewerPhotoWidth());
-      } else if (photo.srcset?.length) {
-        modalPhoto.dataset.src = photoAssetUrl(photo.src);
-        modalPhoto.dataset.srcset = photoSrcset(photo);
-        modalPhoto.dataset.eager = "true";
-        hydrateImage(modalPhoto);
+        window.JOURNEY_ATLAS_AUTH.setImage(modalPhoto, photo, Infinity, {fullOnly:true});
+      } else {
+        const src=preferredPhotoUrl(photo,Infinity);
+        modalPhoto.dataset.photoState='loading';
+        modalPhoto.onload=()=>{modalPhoto.dataset.photoState='ready';modalPhoto.classList.add('is-loaded');};
+        modalPhoto.src=src;
+        if(modalPhoto.complete&&modalPhoto.naturalWidth)modalPhoto.onload();
       }
       $("#modal-caption").textContent = window.JOURNEY_ATLAS_UTILS.photoCaption(photo, day);
       $("#modal-time").textContent = photo.takenAt || day.date;
       $("#modal-location").textContent = photo.locationLabel ? `⌖ ${photo.locationLabel}` : "";
       $("#modal-description").textContent = photo.description || "";
-      preloadWithinDay(photos, viewerPhotoIndex, 1, 1280);
+      preloadWithinDay(photos, viewerPhotoIndex, 1, Infinity);
     } else {
       window.JOURNEY_ATLAS_AUTH?.clearImage(modalPhoto);
       modalPhoto.removeAttribute("src");
@@ -1340,15 +1335,15 @@
     image.onload=null; image.onerror=null;
     if(!photo) {window.JOURNEY_ATLAS_AUTH?.clearImage(image);image.removeAttribute('src');image.removeAttribute('srcset');image.alt='';$('#replay-photo-caption').textContent='';return;}
     image.className=''; image.alt=photo.alt || ''; image.sizes='(max-width: 900px) 100vw, 355px';
-    image.onload=()=>{ if(token!==replayPhotoToken || (window.JOURNEY_ATLAS_AUTH?.isProtected(photo) && !image.src.startsWith('blob:'))) return; replayPhotoReady=true; replayLastTimestamp=null; $('#replay-photo-status').textContent=''; };
+    image.onload=()=>{ if(token!==replayPhotoToken || (window.JOURNEY_ATLAS_AUTH?.isProtected(photo) && !image.src.startsWith('blob:'))) return; if(!window.JOURNEY_ATLAS_AUTH?.isProtected(photo))image.dataset.photoState='ready'; replayPhotoReady=true; replayLastTimestamp=null; $('#replay-photo-status').textContent=''; };
     image.onerror=()=>{ if(token!==replayPhotoToken) return; replayPhotoReady=false; pauseReplay(); $('#replay-photo-status').textContent='The photograph could not load. Retry or choose the next moment.'; $('#replay-retry-photo').hidden=false; };
-    if(window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) { window.JOURNEY_ATLAS_AUTH.setImage(image,photo,1280); if(!window.JOURNEY_ATLAS_AUTH.unlocked){replayPhotoReady=true;$('#replay-photo-status').textContent='Unlock photos to see this photograph.';} }
-    else { window.JOURNEY_ATLAS_AUTH?.clearImage(image); image.srcset=photoSrcset(photo); image.src=preferredPhotoUrl(photo,1280); }
+    if(window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) { window.JOURNEY_ATLAS_AUTH.setImage(image,photo,Infinity,{fullOnly:true}); if(!window.JOURNEY_ATLAS_AUTH.unlocked){replayPhotoReady=true;$('#replay-photo-status').textContent='Unlock photos to see this photograph.';} }
+    else { window.JOURNEY_ATLAS_AUTH?.clearImage(image); image.dataset.photoState='loading';image.srcset='';image.src=preferredPhotoUrl(photo,Infinity); }
     // A retained blob already displayed in this slot does not emit another load event.
     if(image.complete && image.naturalWidth) image.onload();
     $('#replay-photo-caption').textContent=photo.caption || '';
     const nextPhoto=replayLeadPhoto(replayMomentDay(replayTimeline[replayMomentIndex+1]),replayTimeline[replayMomentIndex+1]);
-    if(nextPhoto) preloadPhoto(nextPhoto,1280);
+    if(nextPhoto) preloadPhoto(nextPhoto,Infinity);
   }
 
   function updateReplayControls(day) {
@@ -1689,7 +1684,7 @@
   });
   $('#viewer-photo-retry').addEventListener('click', () => {
     if(!window.JOURNEY_ATLAS_AUTH?.unlocked)window.JOURNEY_ATLAS_AUTH?.showPrompt();
-    else {const photo=photosForDay(viewerDay().id)[viewerPhotoIndex];if(photo)window.JOURNEY_ATLAS_AUTH.setImage(viewerImage,photo,viewerPhotoWidth());}
+    else {const photo=photosForDay(viewerDay().id)[viewerPhotoIndex];if(photo)window.JOURNEY_ATLAS_AUTH.setImage(viewerImage,photo,Infinity,{fullOnly:true});}
   });
   $(".photo-close").addEventListener("click", () => photoDialog.close());
   photoDialog.addEventListener("close", () => { viewerTransition?.cancel(); viewerCameraPhoto = null; });

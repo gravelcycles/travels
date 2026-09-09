@@ -30,17 +30,12 @@ test('closing or hiding Replay prevents a queued timer from starting playback',(
  }
 });
 test('cached same-photo replay becomes ready immediately; blur load does not advance playback',()=>{
- const image={src:'blob:cached',complete:true,naturalWidth:1280},elements=new Map([['#replay-photo',image]]),photo={protected:true,alt:'Test'};
+ const image={src:'blob:cached',complete:true,naturalWidth:3200},elements=new Map([['#replay-photo',image]]),photo={protected:true,alt:'Test'},requested=[];
  const context=vm.createContext({replayPhotoToken:0,replayPhotoReady:false,replayLastTimestamp:5,replayTimeline:[],replayMomentIndex:0,photo,
   $:selector=>{if(!elements.has(selector))elements.set(selector,{});return elements.get(selector);},
-  window:{JOURNEY_ATLAS_AUTH:{isProtected:()=>true,unlocked:true,setImage(){}}},replayLeadPhoto:()=>null,replayMomentDay(){},pauseReplay(){},preloadPhoto(){}});
+  window:{JOURNEY_ATLAS_AUTH:{isProtected:()=>true,unlocked:true,setImage(...args){requested.push(args);}}},replayLeadPhoto:()=>null,replayMomentDay(){},pauseReplay(){},preloadPhoto(){}});
  vm.runInContext(fn('renderReplayPhoto')+'\nrenderReplayPhoto(photo)',context);assert.equal(context.replayPhotoReady,true);assert.equal(elements.get('#replay-photo-status').textContent,'');
+ assert.equal(requested[0][2],Infinity);assert.equal(requested[0][3].fullOnly,true);
  image.src='data:image/webp;base64,blur';vm.runInContext('renderReplayPhoto(photo)',context);image.onload();assert.equal(context.replayPhotoReady,false);
  image.src='blob:loaded';image.onload();assert.equal(context.replayPhotoReady,true);
-});
-
-test('phone viewers request the smaller photo while retina desktop retains full resolution',()=>{
- const context=vm.createContext({window:{innerWidth:390,devicePixelRatio:3}});vm.runInContext(fn('viewerPhotoWidth'),context);
- assert.equal(vm.runInContext('viewerPhotoWidth()',context),1170);
- context.window.innerWidth=1440;context.window.devicePixelRatio=2;assert.equal(vm.runInContext('viewerPhotoWidth()',context),2160);
 });

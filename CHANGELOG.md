@@ -6,6 +6,15 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Show the full photo or leave the viewer blank
+
+- Viewer and Replay display only the largest image, after it decodes; cached
+  thumbnails/previews never substitute for it. Remove the blur transition.
+- Keep the photo slot blank on slow/failed loads, with retry available. Preload
+  neighboring full-size photos to reduce waits.
+- All 115 tests pass. A fault-server browser check verified blank loading/error
+  states and successful recovery to a sharp 3200×2400 image.
+
 ### Reuse browser photo bytes across reloads
 
 - Store successful images in the private browser cache with immutable hash
