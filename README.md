@@ -82,8 +82,9 @@ for the full agent-operated flow and what Trash does to existing hosted assets.
 
 ## Browse photos
 
-Open a day's album with **View photos** directly below its lead photo, or use
-**All photos** to choose a day. Travel legs are always expanded below the day
+Open a day's album with **View photos** directly below its first photo, or use
+**All photos** to choose a day. Day previews use the first visible photo in
+the saved album order, so clicking them opens photo 1. Travel legs are always expanded below the day
 heading. Daily descriptions can be left blank; no placeholder prose is shown.
 Photo thumbnails and groups are no longer displayed on the journey map.
 Saved photo locations remain available in Studio and the photo viewer. The

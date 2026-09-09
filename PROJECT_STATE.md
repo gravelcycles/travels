@@ -1,5 +1,12 @@
 # Project state
 
+## Day previews start at photo 1 · 9 September 2026
+
+The day story's large photo and each All photos day card now use the first
+visible photo in the saved album order. Clicking the day image therefore opens
+photo 1, matching View photos and day-album navigation. Direct photo selections
+still open the selected image. Replay's curated photo choices remain available.
+
 ## Compact catalog, trip title and photo selection · 9 September 2026
 
 Published as `bcdca9b` in successful Pages run `34366124964`. A fresh public

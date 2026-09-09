@@ -854,14 +854,13 @@
     const day = activeDay();
     $("#focus-day").disabled = !dayCoordinates(day).length;
     const photos = photosForDay(day.id);
-    const selectedLead = day.leadPhotoId ? photoById(day.leadPhotoId) : null;
-    const leadPhoto = selectedLead?.dayId === day.id ? selectedLead : photos[0];
-    if (leadPhoto) {
+    const firstPhoto = photos[0];
+    if (firstPhoto) {
       storyMedia.innerHTML = `
-        <button type="button" data-open-photo="${escapeHtml(leadPhoto.id)}" aria-label="Open ${escapeHtml(leadPhoto.caption || leadPhoto.alt || 'photo')} full screen">
-          ${photoImageMarkup(leadPhoto, { alt: leadPhoto.alt, sizes: "(max-width: 900px) 100vw, 26vw", eager: true })}
+        <button type="button" data-open-photo="${escapeHtml(firstPhoto.id)}" aria-label="Open ${escapeHtml(firstPhoto.caption || firstPhoto.alt || 'photo')} full screen">
+          ${photoImageMarkup(firstPhoto, { alt: firstPhoto.alt, sizes: "(max-width: 900px) 100vw, 26vw", eager: true })}
           <span>DAY ${String(day.number).padStart(2, "0")} · ${photos.length} PHOTO${photos.length === 1 ? "" : "S"}</span>
-          <small>${escapeHtml(leadPhoto.caption)}</small>
+          <small>${escapeHtml(firstPhoto.caption)}</small>
         </button>
       `;
     } else {
@@ -904,7 +903,7 @@
     prepareProgressiveImages(storyMedia);
     prepareProgressiveImages(photoStrip);
     syncInspectionClasses();
-    if (leadPhoto) preloadAround(leadPhoto.id, 2, 1280);
+    if (firstPhoto) preloadAround(firstPhoto.id, 2, 1280);
   }
 
   function renderAll(options) {
@@ -1536,8 +1535,8 @@
   function openAlbum() {
     $('#album-title').textContent = `All photos · ${journey.photos.length}`;
     $('#album-days').innerHTML = journey.days.map(day=>{
-      const photos=photosForDay(day.id); const lead=photos.find(p=>p.id===day.leadPhotoId)||photos[0];
-      return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${lead?photoImageMarkup(lead,{sizes:'280px'}):'<span class="album-text-scene">A page from the journey</span>'}<strong>Day ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?`${photos.length} photo${photos.length===1?'':'s'}`:'Read the story'}</small></button>`;
+      const photos=photosForDay(day.id); const first=photos[0];
+      return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${first?photoImageMarkup(first,{sizes:'280px'}):'<span class="album-text-scene">A page from the journey</span>'}<strong>Day ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?`${photos.length} photo${photos.length===1?'':'s'}`:'Read the story'}</small></button>`;
     }).join('');
     $('#album-dialog').showModal(); prepareProgressiveImages($('#album-days'));
   }
