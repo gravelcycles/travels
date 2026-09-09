@@ -1,5 +1,29 @@
 # Project state
 
+## Studio photo library and traveler-only copy · 9 September 2026
+
+Studio **Photos → Upload photos** accepts multiple stills up to 50 MB each,
+processes sizes/previews/metadata locally, and appends separate upload manifests.
+Pending assets remain outside production until `photos:publish -- --journey <id>
+--publish` uploads and verifies their Release files. Originals and GPS candidates
+stay private. No LLM is needed, and no captions/descriptions are generated.
+Recoverable Trash/Restore uses the `trashed` override; public builds and local
+previews exclude trashed images while preserving references for restoration.
+Revision-checked saves prevent stale tabs from overwriting newer disk edits.
+See `PHOTO_WORKFLOW.md` for the complete workflow, retry behavior, and distinction
+between album deletion and permanent removal of hosted Release assets.
+
+Removed 95 unchanged AI captions and 89 AI descriptions using original review
+commit `4801801`; preserved the traveler's three captions and three descriptions.
+All recent saved photo pins and route edits are retained. Existing accessibility
+alt text remains separate. Do not generate visible photo prose in future.
+
+Validation includes 60 tests, real Sharp resize/metadata checks, mixed upload
+failure handling, duplicate detection, publishing retries (mock GitHub), public
+exclusion/restoration, and isolated local HTTP upload/save-conflict checks.
+Browser verification covers blank copy, Trash/Restore, and local upload status.
+CI now installs locked image dependencies before its tests and build.
+
 ## Selected-day photo fans · 9 September 2026
 
 Published as `013dacd` in successful Pages run `34354476031`. A fresh public

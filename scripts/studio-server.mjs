@@ -3,6 +3,8 @@
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import http from "node:http";
+import crypto from "node:crypto";
+import { importStudioPhoto, MAX_PHOTO_BYTES } from "./studio-photo-service.mjs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { prepareJourneyPlan, journeyRevision } from "./journey-planner.mjs";
@@ -12,7 +14,7 @@ import { renderJourneyPage, studioAsset, readOverrides } from "./build-site.mjs"
 import { proposeGpxRoute } from "./gpx-route-service.mjs";
 import { proposeStudioRoute } from "./studio-route-service.mjs";
 
-const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const repoRoot = process.env.ATLAS_STUDIO_ROOT ? path.resolve(process.env.ATLAS_STUDIO_ROOT) : path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const port = Number(process.env.ATLAS_STUDIO_PORT || 4173);
 const photoPath = path.join(repoRoot, "content/photo-overrides.json");
 const routePath = path.join(repoRoot, "content/route-overrides.json");
@@ -121,6 +123,13 @@ function staticFileFor(pathname) {
   return null;
 }
 
+function stateRevision() {
+  return crypto.createHash('sha256').update(JSON.stringify(readOverrides(repoRoot))).digest('hex');
+}
+function assertStateRevision(revision) {
+  if (!revision || revision !== stateRevision()) throw new Error('Saved edits changed on disk. Reload Studio before saving; your current unsaved form has been kept.');
+}
+let photoImportBusy = false;
 const server = http.createServer((request, response) => {
   const remote = request.socket.remoteAddress;
   if (remote !== "127.0.0.1" && remote !== "::1" && remote !== "::ffff:127.0.0.1") return send(response, 403, "Atlas Studio is local only");
@@ -128,6 +137,29 @@ const server = http.createServer((request, response) => {
   const url = new URL(request.url, `http://127.0.0.1:${port}`);
   // Only same-origin browser writes may reach the loopback editor.
   if (!["GET", "HEAD"].includes(request.method) && request.headers.origin && request.headers.origin !== `http://127.0.0.1:${port}` && request.headers.origin !== `http://localhost:${port}`) return send(response, 403, "Unexpected origin");
+  if (request.method === "POST" && url.pathname === "/api/photos/import") {
+    if (photoImportBusy) return send(response, 409, JSON.stringify({ ok:false, error:'Another photo is processing. Try again shortly.' }), 'application/json');
+    photoImportBusy = true;
+    const chunks = []; let size = 0, tooLarge = false;
+    request.on('data', chunk => {
+      size += chunk.length;
+      if (size > MAX_PHOTO_BYTES) {
+        if (!tooLarge) send(response, 413, JSON.stringify({ ok:false, error:'Photos must be 50 MB or smaller.' }), 'application/json');
+        tooLarge = true; chunks.length = 0;
+      } else if (!tooLarge) chunks.push(chunk);
+    });
+    request.on('aborted', () => { photoImportBusy = false; });
+    request.on('error', () => { photoImportBusy = false; });
+    request.on('end', async () => {
+      try {
+        if (tooLarge) return;
+        const result = await importStudioPhoto(repoRoot, { journeyId:url.searchParams.get('journeyId'), dayId:url.searchParams.get('dayId'), filename:url.searchParams.get('filename'), bytes:Buffer.concat(chunks) });
+        send(response, 201, JSON.stringify({ ok:true, ...result }), 'application/json');
+      } catch(error) { send(response, 400, JSON.stringify({ ok:false, error:error.message }), 'application/json'); }
+      finally { photoImportBusy = false; }
+    });
+    return;
+  }
   if (request.method === "GET" && url.pathname.startsWith("/api/preview-assets/")) {
     try { return send(response, 200, studioAsset(repoRoot, path.basename(url.pathname, ".js")), "text/javascript; charset=utf-8"); }
     catch (error) { return send(response, 400, error.message); }
@@ -166,6 +198,7 @@ const server = http.createServer((request, response) => {
         const state = input.state || readOverrides(repoRoot);
         const result = prepareJourneyPlan(data, base, input.changes || {}, state, input.alignment);
         if (!input.preview) {
+          assertStateRevision(input.stateRevision);
           if (!input.revision) throw new Error("Preview the plan before saving");
           filename = path.join(repoRoot, `content/${base.published ? "journeys" : "drafts"}/${base.id}.json`);
           previous = fs.readFileSync(filename, "utf8");
@@ -175,7 +208,7 @@ const server = http.createServer((request, response) => {
           writeJsonAtomic(filename, { ...result.journey, photos: source.photos });
           saveState(result.state);
         }
-        send(response, 200, JSON.stringify({ ok:true, ...result, revision:input.preview ? revision : journeyRevision(result.journey) }), "application/json; charset=utf-8");
+        send(response, 200, JSON.stringify({ ok:true, ...result, stateRevision:stateRevision(), revision:input.preview ? revision : journeyRevision(result.journey) }), "application/json; charset=utf-8");
       } catch (error) {
         if (filename && previous) fs.writeFileSync(filename, previous);
         send(response, 400, JSON.stringify({ ok:false, error:error.message }), "application/json; charset=utf-8");
@@ -184,7 +217,7 @@ const server = http.createServer((request, response) => {
     return;
   }
   if (request.method === "GET" && url.pathname === "/api/state") {
-    return send(response, 200, JSON.stringify({ ...readOverrides(repoRoot), revisions:Object.fromEntries(loadContent(repoRoot,{includeDrafts:true}).data.journeys.map(j=>[j.id,journeyRevision(j)])) }), "application/json; charset=utf-8");
+    return send(response, 200, JSON.stringify({ ...readOverrides(repoRoot), stateRevision:stateRevision(), revisions:Object.fromEntries(loadContent(repoRoot,{includeDrafts:true}).data.journeys.map(j=>[j.id,journeyRevision(j)])) }), "application/json; charset=utf-8");
   }
   if (request.method === "PUT" && url.pathname === "/api/state") {
     let body = "";
@@ -195,8 +228,10 @@ const server = http.createServer((request, response) => {
     });
     request.on("end", () => {
       try {
-        saveState(JSON.parse(body));
-        send(response, 200, JSON.stringify({ ok: true }), "application/json; charset=utf-8");
+        const input = JSON.parse(body);
+        assertStateRevision(input.stateRevision);
+        saveState(input);
+        send(response, 200, JSON.stringify({ ok: true, stateRevision:stateRevision() }), "application/json; charset=utf-8");
       } catch (error) {
         send(response, 400, JSON.stringify({ ok: false, error: error.message }), "application/json; charset=utf-8");
       }

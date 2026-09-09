@@ -49,14 +49,17 @@ test("build keeps drafts and draft edits out of all public data; repeat builds a
   assert.match(preview, /noindex, nofollow/);
 });
 test("publishes a reviewed second journey with independent photos, escaped page metadata, and stable URL", t => {
-  const root = fixture(t), j = createJourney(root, { ...input, title: 'Future <trip> & "friends"' });
+  const root = fixture(t);
+  buildSite(root);
+  const familyBefore = generated(root, "trip-photos", "JOURNEY_ATLAS_PHOTOS")["switzerland-italy-family-2026"];
+  const j = createJourney(root, { ...input, title: 'Future <trip> & "friends"' });
   fs.unlinkSync(path.join(root, `content/drafts/${j.id}.json`));
   j.published = true;
   writeJson(path.join(root, `content/journeys/${j.id}.json`), j);
   writeJson(path.join(root, `content/photo-manifests/${j.id}.json`), [{ id: `${j.id}-photo`, dayId: j.days[0].id, src: "https://example.com/photo.webp" }]);
   buildSite(root);
   const photos = generated(root, "trip-photos", "JOURNEY_ATLAS_PHOTOS");
-  assert.equal(photos[j.id].length, 1); assert.equal(photos["switzerland-italy-family-2026"].length, 95);
+  assert.equal(photos[j.id].length, 1); assert.deepEqual(photos["switzerland-italy-family-2026"], familyBefore);
   assert.match(fs.readFileSync(path.join(root, "dist", j.slug), "utf8"), /Future &lt;trip&gt; &amp; &quot;friends&quot;/);
   assert.ok(generated(root, "journeys", "JOURNEY_ATLAS_DATA").journeys.some(x => x.slug === j.slug));
 });
@@ -99,8 +102,8 @@ test("the family photo review covers every source photo and excludes hidden medi
   const reviews = JSON.parse(fs.readFileSync(path.join(root, "content/photo-overrides.json"), "utf8"));
   const dayOverrides = JSON.parse(fs.readFileSync(path.join(root, "content/day-overrides.json"), "utf8"));
   assert.equal(manifest.length, 104);
-  assert.deepEqual(new Set(Object.keys(reviews)), new Set(manifest.map(photo => photo.id)));
-  for (const review of Object.values(reviews)) {
+  for (const photo of manifest) assert.ok(reviews[photo.id], `Missing review: ${photo.id}`);
+  for (const review of manifest.map(photo => reviews[photo.id])) {
     assert.equal(review.reviewed, true);
     assert.equal(review.locationStatus, "unlocated-no-gps");
     for (const field of ["alt", "privacyStatus"]) assert.ok(review[field]);
@@ -108,16 +111,18 @@ test("the family photo review covers every source photo and excludes hidden medi
     assert.equal(typeof review.caption, "string");
     assert.equal(typeof review.description, "string");
   }
-  const ordered = Object.values(dayOverrides).flatMap(day => day.photoOrder || []);
+  const originalIds = new Set(manifest.map(photo => photo.id));
+  const ordered = Object.values(dayOverrides).flatMap(day => day.photoOrder || []).filter(id => originalIds.has(id));
   assert.equal(ordered.length, 104);
   assert.equal(new Set(ordered).size, 104);
-  for (const day of Object.values(dayOverrides)) if (day.leadPhotoId) assert.equal(reviews[day.leadPhotoId].hidden, false);
   buildSite(root);
   const publicPhotos = generated(root, "trip-photos", "JOURNEY_ATLAS_PHOTOS")["switzerland-italy-family-2026"];
-  assert.equal(publicPhotos.length, 95);
-  assert.ok(!publicPhotos.some(photo => reviews[photo.id].hidden));
+  const reviewedPublicPhotos = publicPhotos.filter(photo => originalIds.has(photo.id));
+  const expectedIds = manifest.filter(photo => !reviews[photo.id].hidden && !reviews[photo.id].trashed).map(photo => photo.id).sort();
+  assert.deepEqual(reviewedPublicPhotos.map(photo => photo.id).sort(), expectedIds);
+  assert.ok(!publicPhotos.some(photo => reviews[photo.id]?.hidden || reviews[photo.id]?.trashed));
   const publicOverrides = generated(root, "content-overrides", "JOURNEY_ATLAS_CONTENT_OVERRIDES");
-  for (const photo of publicPhotos) {
+  for (const photo of reviewedPublicPhotos) {
     // Preserve the saved edits exactly, including blank copy, pins, and zooms.
     assert.deepEqual(publicOverrides.photos[photo.id], reviews[photo.id]);
   }

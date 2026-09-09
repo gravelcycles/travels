@@ -9,7 +9,7 @@
     return result;
   }
   function visiblePhotos(journey, manifests, overrides) {
-    return (manifests?.[journey.id] || journey.photos || []).map(p => resolvePhoto(p, overrides?.photos?.[p.id])).filter(p => !p.hidden);
+    return (manifests?.[journey.id] || journey.photos || []).map(p => resolvePhoto(p, overrides?.photos?.[p.id])).filter(p => !p.hidden && !p.trashed);
   }
   function resolveCover(journey, photos) {
     const photo = photos.find(p => p.id === journey.coverPhoto?.photoId && !p.hidden) || photos.find(p => !p.hidden);
@@ -37,7 +37,7 @@
     return { invalidate() { revision++; }, capture(context) { return { revision: ++revision, context: JSON.stringify(context) }; }, current(token, context) { return token.revision === revision && token.context === JSON.stringify(context); } };
   }
   function locatedPhoto(photo) {
-    return Boolean(photo && !photo.hidden && Number.isFinite(photo.lng) && Number.isFinite(photo.lat)
+    return Boolean(photo && !photo.hidden && !photo.trashed && Number.isFinite(photo.lng) && Number.isFinite(photo.lat)
       && Math.abs(photo.lng) <= 180 && Math.abs(photo.lat) <= 90);
   }
 

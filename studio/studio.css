@@ -213,3 +213,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   #trip-planner .plan-save-bar button { flex:1 1 120px; font-size:12px; }
   #plan-status { flex-basis:100%; font-size:12px; }
 }
+
+.photo-upload-panel { margin:14px 0; padding:12px; border:1px solid var(--line); border-radius:8px; }
+.photo-upload-panel summary { cursor:pointer; font-weight:700; }
+.photo-upload-panel input[type="file"] { max-width:100%; font-size:12px; }
+#photo-upload-status { white-space:pre-line; font-size:12px; line-height:1.5; margin-top:10px; overflow-wrap:anywhere; }
+button.danger { color:#963d2b; }

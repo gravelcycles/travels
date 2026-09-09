@@ -15,7 +15,7 @@
         <h1>Atlas Studio</h1>
       </div>
       <nav aria-label="Editor mode">
-        <button class="active" data-mode="photos" type="button">Photo locations</button>
+        <button class="active" data-mode="photos" type="button">Photos</button>
         <button data-mode="routes" type="button">Route drawing</button>
         <button data-mode="planner" type="button">Trip plan & cover</button>
         <button data-mode="days" type="button">Day copy</button>
@@ -38,6 +38,17 @@
         <section class="photo-browser" data-panel="photos">
           <label for="photo-day-filter">Photos from</label>
           <select id="photo-day-filter"></select>
+          <label class="checkbox"><input id="show-photo-trash" type="checkbox" /> Show trash</label>
+          <details class="photo-upload-panel">
+            <summary>Upload photos</summary>
+            <label for="upload-photo-day">Add to day</label>
+            <select id="upload-photo-day"></select>
+            <label for="upload-photo-files">Choose photos</label>
+            <input id="upload-photo-files" type="file" accept=".jpg,.jpeg,.png,.webp,.heic,.heif" multiple />
+            <p class="editor-note">JPEG, PNG, WebP or HEIC · Up to 50 MB each. Images are resized automatically and kept local until published. Captions start blank.</p>
+            <button id="upload-photos" type="button">Add photos locally</button>
+            <div id="photo-upload-status" role="status" aria-live="polite"></div>
+          </details>
           <div class="photo-grid" id="studio-photo-grid"></div>
         </section>
         <section class="route-browser" data-panel="routes" hidden>
@@ -79,11 +90,13 @@
           <button class="secondary" id="switch-photo-view" type="button" disabled>Switch to current point’s zoom</button>
           <p class="editor-note">Selecting another point in this day keeps the map position and zoom. Use this button to view the selected point’s saved location and zoom. Placing or dragging its pin saves the current map zoom for Replay.</p>
           <button class="secondary" id="clear-photo-location" type="button">Clear location</button>
-          <label for="photo-caption">Short caption</label>
+          <label for="photo-caption">Your caption (optional)</label>
           <input id="photo-caption" name="caption" />
-          <label for="photo-description">What's happening in this photo?</label>
-          <textarea id="photo-description" name="description" rows="5" placeholder="A few plain-language notes are enough; this appears beside the photo."></textarea>
+          <label for="photo-description">Your notes (optional)</label>
+          <textarea id="photo-description" name="description" rows="5" placeholder="Your words, if you want them. Leave blank for no description."></textarea>
           <label class="checkbox"><input id="photo-hidden" name="hidden" type="checkbox" /> Hide from the public atlas</label>
+          <button class="secondary danger" id="trash-photo" type="button">Move photo to trash</button>
+          <p id="photo-asset-status" class="editor-note"></p>
           <section class="photo-order-panel" aria-labelledby="photo-order-heading">
             <strong id="photo-order-heading">Daily photo placement</strong>
             <p id="photo-order-status" role="status">Choose a photo to set its place in this day's album.</p>
@@ -205,6 +218,6 @@
     <script src="/api/preview-assets/trip-photos.js"></script>
     <script src="/api/preview-assets/content-overrides.js"></script>
     <script src="/dist/assets/atlas-utils.js"></script>
-    <script src="/studio.js?v=20260909-photo-view"></script>
+    <script src="/studio.js?v=20260909-photo-library"></script>
   </body>
 </html>

@@ -11,7 +11,8 @@
     "studio": "node scripts/studio-server.mjs",
     "build": "node scripts/build-site.mjs",
     "test": "node --test test/*.test.mjs",
-    "journey:new": "node scripts/create-journey.mjs"
+    "journey:new": "node scripts/create-journey.mjs",
+    "photos:publish": "node scripts/publish-photo-assets.mjs"
   },
   "devDependencies": {
     "exifr": "7.1.3",

@@ -99,7 +99,8 @@ try {
         width: largest.width,
         height: largest.height,
         alt: `Trip photograph from ${destination?.name || day.title}`,
-        caption: day.title,
+        caption: "",
+        description: "",
         captionSource: "camera-import",
         takenAt: `${day.date} · ${local.time}`,
         sourceFilename: filename

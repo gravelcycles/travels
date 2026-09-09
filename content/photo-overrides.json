@@ -1,7 +1,7 @@
 {
   "family-img-1425": {
     "dayId": "family-d1",
-    "caption": "Together at Zürich Airport",
+    "caption": "",
     "description": "Picking up the 'rents from the airport!",
     "alt": "Four family members smile together inside Zürich Airport.",
     "hidden": false,
@@ -17,7 +17,7 @@
   },
   "family-img-1426": {
     "dayId": "family-d1",
-    "caption": "First evening in Luzern",
+    "caption": "",
     "description": "Made it to Luzern Bahnhof! This is the old Luzern train station entrance.",
     "alt": "Four family members stand beneath the broad stone arch outside Luzern station.",
     "hidden": false,
@@ -33,7 +33,7 @@
   },
   "family-img-1434": {
     "dayId": "family-d1",
-    "caption": "At the Lion Monument",
+    "caption": "",
     "description": "",
     "alt": "Four family members pose in front of Luzern's carved Lion Monument at night.",
     "hidden": false,
@@ -49,7 +49,7 @@
   },
   "family-img-5032": {
     "dayId": "family-d1",
-    "caption": "Reflections on the Reuss",
+    "caption": "",
     "description": "",
     "alt": "Luzern old-town buildings and their evening lights reflect in the Reuss.",
     "hidden": false,
@@ -65,8 +65,8 @@
   },
   "family-img-2793": {
     "dayId": "family-d1",
-    "caption": "Luzern after sunset",
-    "description": "A warmly lit riverside building glows against the blue evening and is mirrored in the river.",
+    "caption": "",
+    "description": "",
     "alt": "A warmly lit riverside building glows against the blue evening and is mirrored in the river.",
     "hidden": false,
     "reviewed": true,
@@ -81,8 +81,8 @@
   },
   "family-img-1463": {
     "dayId": "family-d1",
-    "caption": "Lights along the waterfront",
-    "description": "Waterfront buildings and their lights reflect beneath Luzern's dark mountain skyline.",
+    "caption": "",
+    "description": "",
     "alt": "Waterfront buildings and their lights reflect beneath Luzern's dark mountain skyline.",
     "hidden": false,
     "reviewed": true,
@@ -97,7 +97,7 @@
   },
   "family-snapseed-camera-capture-20260814-122648-102": {
     "dayId": "family-d2",
-    "caption": "Arriving in Engelberg",
+    "caption": "",
     "description": "A very old monastery in Engelberg.",
     "alt": "A white village church stands against the steep green mountains in Engelberg.",
     "hidden": false,
@@ -113,8 +113,8 @@
   },
   "family-img-1469": {
     "dayId": "family-d2",
-    "caption": "Together in Engelberg",
-    "description": "Four family members smile in the sun with the Engelberg valley behind them.",
+    "caption": "",
+    "description": "",
     "alt": "Four family members smile in the sun with the Engelberg valley behind them.",
     "hidden": false,
     "reviewed": true,
@@ -129,8 +129,8 @@
   },
   "family-img-1472": {
     "dayId": "family-d2",
-    "caption": "By the waterfall",
-    "description": "Four family members crowd into a selfie beside a tall mountain waterfall.",
+    "caption": "",
+    "description": "",
     "alt": "Four family members crowd into a selfie beside a tall mountain waterfall.",
     "hidden": false,
     "reviewed": true,
@@ -145,8 +145,8 @@
   },
   "family-snapseed-camera-capture-20260814-142431-686": {
     "dayId": "family-d2",
-    "caption": "Mountains at the end of the street",
-    "description": "A quiet Engelberg street points directly toward rugged peaks beneath summer clouds.",
+    "caption": "",
+    "description": "",
     "alt": "A quiet Engelberg street points directly toward rugged peaks beneath summer clouds.",
     "hidden": false,
     "reviewed": true,
@@ -161,8 +161,8 @@
   },
   "family-img-5036": {
     "dayId": "family-d2",
-    "caption": "Feet up after Engelberg",
-    "description": "Two travelers relax on floor cushions around a low table after the day's outing.",
+    "caption": "",
+    "description": "",
     "alt": "Two travelers relax on floor cushions around a low table after the day's outing.",
     "hidden": false,
     "reviewed": true,
@@ -177,8 +177,8 @@
   },
   "family-snapseed-camera-capture-20260815-075345-241": {
     "dayId": "family-d3",
-    "caption": "Chapel Bridge in the morning",
-    "description": "Pink flowers line Luzern's covered wooden bridge above the river in the early light.",
+    "caption": "",
+    "description": "",
     "alt": "Pink flowers line Luzern's covered wooden bridge above the river in the early light.",
     "hidden": false,
     "reviewed": true,
@@ -193,8 +193,8 @@
   },
   "family-snapseed-camera-capture-20260815-080433-893": {
     "dayId": "family-d3",
-    "caption": "Still water in Luzern",
-    "description": "The calm blue Reuss reflects old-town buildings on the morning before Bern.",
+    "caption": "",
+    "description": "",
     "alt": "The calm blue Reuss reflects old-town buildings on the morning before Bern.",
     "hidden": false,
     "reviewed": true,
@@ -209,8 +209,8 @@
   },
   "family-snapseed-camera-capture-20260815-082220-931": {
     "dayId": "family-d3",
-    "caption": "Rails beneath Pilatus",
-    "description": "Railway tracks and overhead wires fill the foreground with Mount Pilatus beyond.",
+    "caption": "",
+    "description": "",
     "alt": "Railway tracks and overhead wires fill the foreground with Mount Pilatus beyond.",
     "hidden": false,
     "reviewed": true,
@@ -225,8 +225,8 @@
   },
   "family-snapseed-camera-capture-20260815-082238-670": {
     "dayId": "family-d3",
-    "caption": "A Luzern street in bloom",
-    "description": "Flowered balconies and closely spaced facades catch the clear morning light.",
+    "caption": "",
+    "description": "",
     "alt": "Flowered balconies and closely spaced facades catch the clear morning light.",
     "hidden": false,
     "reviewed": true,
@@ -241,8 +241,8 @@
   },
   "family-img-5040": {
     "dayId": "family-d3",
-    "caption": "Ready for the Aare",
-    "description": "Two family members stand together on the grassy riverbank before the afternoon float.",
+    "caption": "",
+    "description": "",
     "alt": "Two family members stand together on the grassy riverbank before the afternoon float.",
     "hidden": false,
     "reviewed": true,
@@ -257,8 +257,8 @@
   },
   "family-img-5044": {
     "dayId": "family-d3",
-    "caption": "Summer on the riverbank",
-    "description": "Swimmers and picnickers spread out across the grass beside the Aare.",
+    "caption": "",
+    "description": "",
     "alt": "Swimmers and picnickers spread out across the grass beside the Aare.",
     "hidden": false,
     "reviewed": true,
@@ -273,8 +273,8 @@
   },
   "family-snapseed-camera-capture-20260815-155638-313": {
     "dayId": "family-d3",
-    "caption": "Floating the Aare",
-    "description": "Small groups of swimmers drift along the green-blue Aare between busy banks.",
+    "caption": "",
+    "description": "",
     "alt": "Small groups of swimmers drift along the green-blue Aare between busy banks.",
     "hidden": false,
     "reviewed": true,
@@ -289,8 +289,8 @@
   },
   "family-img-1488": {
     "dayId": "family-d3",
-    "caption": "A Bern bear",
-    "description": "A brown bear walks through the leafy riverside enclosure in Bern.",
+    "caption": "",
+    "description": "",
     "alt": "A brown bear walks through the leafy riverside enclosure in Bern.",
     "hidden": false,
     "reviewed": true,
@@ -305,8 +305,8 @@
   },
   "family-snapseed-camera-capture-20260815-161546-091": {
     "dayId": "family-d3",
-    "caption": "Bear above the river",
-    "description": "A bear moves along the wooded upper slope of its enclosure beside the Aare.",
+    "caption": "",
+    "description": "",
     "alt": "A bear moves along the wooded upper slope of its enclosure beside the Aare.",
     "hidden": false,
     "reviewed": true,
@@ -321,8 +321,8 @@
   },
   "family-snapseed-camera-capture-20260815-161856-649": {
     "dayId": "family-d3",
-    "caption": "The Aare under stone arches",
-    "description": "The green river curves beneath an old stone bridge framed by trees.",
+    "caption": "",
+    "description": "",
     "alt": "The green river curves beneath an old stone bridge framed by trees.",
     "hidden": false,
     "reviewed": true,
@@ -337,8 +337,8 @@
   },
   "family-snapseed-camera-capture-20260815-162103-557": {
     "dayId": "family-d3",
-    "caption": "Bern above the Aare",
-    "description": "Red roofs and the old-town skyline rise above the river from the opposite bank.",
+    "caption": "",
+    "description": "",
     "alt": "Red roofs and the old-town skyline rise above the river from the opposite bank.",
     "hidden": false,
     "reviewed": true,
@@ -353,8 +353,8 @@
   },
   "family-snapseed-camera-capture-20260815-162408-750": {
     "dayId": "family-d3",
-    "caption": "Climbing back to the old town",
-    "description": "A small riverside lift and stairway lead toward Bern's rooftops.",
+    "caption": "",
+    "description": "",
     "alt": "A small riverside lift and stairway lead toward Bern's rooftops.",
     "hidden": false,
     "reviewed": true,
@@ -369,8 +369,8 @@
   },
   "family-img-1496": {
     "dayId": "family-d3",
-    "caption": "River bend from the bridge",
-    "description": "The Aare sweeps around Bern below a stone parapet and riverside path.",
+    "caption": "",
+    "description": "",
     "alt": "The Aare sweeps around Bern below a stone parapet and riverside path.",
     "hidden": false,
     "reviewed": true,
@@ -385,8 +385,8 @@
   },
   "family-img-5047": {
     "dayId": "family-d3",
-    "caption": "Above Bern together",
-    "description": "Two family members smile at an overlook above Bern and the Aare.",
+    "caption": "",
+    "description": "",
     "alt": "Two family members smile at an overlook above Bern and the Aare.",
     "hidden": false,
     "reviewed": true,
@@ -397,12 +397,13 @@
       "lat": 46.94847,
       "lng": 7.458539
     },
-    "zoom": 14.21
+    "zoom": 14.21,
+    "trashed": true
   },
   "family-img-5048": {
     "dayId": "family-d3",
-    "caption": "Second portrait above Bern",
-    "description": "A near-duplicate portrait shows two family members at the Bern overlook. This frame remains in the private source but is hidden from the public album after review.",
+    "caption": "",
+    "description": "",
     "alt": "A near-duplicate portrait shows two family members at the Bern overlook.",
     "hidden": true,
     "reviewed": true,
@@ -417,8 +418,8 @@
   },
   "family-img-2834": {
     "dayId": "family-d4",
-    "caption": "Lake view before the ride",
-    "description": "Two riders stand in shade above Lake Luzern with distant mountains behind them.",
+    "caption": "",
+    "description": "",
     "alt": "Two riders stand in shade above Lake Luzern with distant mountains behind them.",
     "hidden": false,
     "reviewed": true,
@@ -433,8 +434,8 @@
   },
   "family-img-2836": {
     "dayId": "family-d4",
-    "caption": "Across Lake Luzern",
-    "description": "A wide hillside view looks across the lake toward layered blue mountains.",
+    "caption": "",
+    "description": "",
     "alt": "A wide hillside view looks across the lake toward layered blue mountains.",
     "hidden": false,
     "reviewed": true,
@@ -509,7 +510,8 @@
       "lat": 46.983108,
       "lng": 8.347469
     },
-    "zoom": 13.12
+    "zoom": 13.12,
+    "trashed": true
   },
   "family-img-5056": {
     "dayId": "family-d4",
@@ -545,7 +547,7 @@
   },
   "family-img-5069": {
     "dayId": "family-d4",
-    "caption": "Returning to Luzern by boat",
+    "caption": "",
     "description": "",
     "alt": "Luzern's twin church towers appear across the lake during the ferry ride home.",
     "hidden": false,
@@ -609,378 +611,603 @@
   },
   "family-img-1520": {
     "dayId": "family-d5",
-    "caption": "A rainy-day walk in Luzern",
-    "description": "Two family members pause beneath a covered wooden bridge on a wet Luzern day.",
+    "caption": "",
+    "description": "",
     "alt": "Two family members pause beneath a covered wooden bridge on a wet Luzern day.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.051858,
+      "lng": 8.307725
+    },
+    "zoom": 14.9
   },
   "family-snapseed-camera-capture-20260818-081450-402": {
     "dayId": "family-d6",
-    "caption": "Luzern at the start of a long day",
-    "description": "A church and its reflection sit beside the still river beneath morning clouds.",
+    "caption": "",
+    "description": "",
     "alt": "A church and its reflection sit beside the still river beneath morning clouds.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.050818,
+      "lng": 8.305737
+    },
+    "zoom": 14.17
   },
   "family-img-1525": {
     "dayId": "family-d6",
-    "caption": "Changing trains in Brienz",
-    "description": "A red bench and station platforms frame the mountain backdrop at Brienz.",
+    "caption": "",
+    "description": "",
     "alt": "A red bench and station platforms frame the mountain backdrop at Brienz.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.840019,
+      "lng": 8.189804
+    },
+    "zoom": 10.72
   },
   "family-snapseed-camera-capture-20260818-104535-118": {
     "dayId": "family-d6",
-    "caption": "Clouds over Lake Brienz",
-    "description": "Turquoise water and dark mountain ridges open up from the boat beneath a textured sky.",
+    "caption": "",
+    "description": "",
     "alt": "Turquoise water and dark mountain ridges open up from the boat beneath a textured sky.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.747828,
+      "lng": 8.036993
+    },
+    "zoom": 11.28
   },
   "family-img-5081": {
     "dayId": "family-d6",
-    "caption": "Swiss flag on the lake",
-    "description": "A traveler sits on the boat deck beside a large Swiss flag.",
+    "caption": "",
+    "description": "",
     "alt": "A traveler sits on the boat deck beside a large Swiss flag.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.741829,
+      "lng": 8.028238
+    },
+    "zoom": 11.28
   },
   "family-snapseed-camera-capture-20260818-105419-043": {
     "dayId": "family-d6",
-    "caption": "A castle above the water",
-    "description": "A lakeside castle appears through trees above the turquoise water.",
+    "caption": "",
+    "description": "",
     "alt": "A lakeside castle appears through trees above the turquoise water.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.738345,
+      "lng": 8.022873
+    },
+    "zoom": 11.28
   },
   "family-snapseed-camera-capture-20260818-105455-450": {
     "dayId": "family-d6",
-    "caption": "Watching the wake",
-    "description": "A traveler looks over the foaming boat wake toward the wooded shore.",
+    "caption": "",
+    "description": "",
     "alt": "A traveler looks over the foaming boat wake toward the wooded shore.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.734668,
+      "lng": 8.013271
+    },
+    "zoom": 11.28
   },
   "family-img-2870": {
     "dayId": "family-d6",
-    "caption": "Lake Brienz selfie",
-    "description": "A smiling traveler poses on deck with turquoise water and clouded mountains behind her.",
+    "caption": "",
+    "description": "",
     "alt": "A smiling traveler poses on deck with turquoise water and clouded mountains behind her.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.735055,
+      "lng": 7.979665
+    },
+    "zoom": 11.28
   },
   "family-snapseed-camera-capture-20260818-110323-609": {
     "dayId": "family-d6",
-    "caption": "The lake from the moving boat",
-    "description": "An outstretched hand points into a broad blue-green view of water, slopes, and cloud.",
+    "caption": "",
+    "description": "",
     "alt": "An outstretched hand points into a broad blue-green view of water, slopes, and cloud.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.735055,
+      "lng": 7.969781
+    },
+    "zoom": 11.28
   },
   "family-img-2880": {
     "dayId": "family-d6",
-    "caption": "Together beside Lake Brienz",
-    "description": "The full group smiles on the boat with the turquoise lake and a mountain village behind them.",
+    "caption": "",
+    "description": "",
     "alt": "The full group smiles on the boat with the turquoise lake and a mountain village behind them.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.728667,
+      "lng": 7.962156
+    },
+    "zoom": 11.28
   },
   "family-img-2881": {
     "dayId": "family-d6",
-    "caption": "Low cloud along the shore",
-    "description": "Cloud drapes the wooded mountainside above a village on Lake Brienz.",
+    "caption": "",
+    "description": "",
     "alt": "Cloud drapes the wooded mountainside above a village on Lake Brienz.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.724796,
+      "lng": 7.962156
+    },
+    "zoom": 11.28
   },
   "family-snapseed-camera-capture-20260818-111028-981": {
     "dayId": "family-d6",
-    "caption": "Turquoise water and mountain mist",
-    "description": "Bright lake water, a green settlement, and mountains wrapped in cloud fill the frame.",
+    "caption": "",
+    "description": "",
     "alt": "Bright lake water, a green settlement, and mountains wrapped in cloud fill the frame.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.705894,
+      "lng": 7.923418
+    },
+    "zoom": 11.28
   },
   "family-img-2883": {
     "dayId": "family-d6",
-    "caption": "A midday rest",
-    "description": "Two travelers relax on the grass and smile up at the camera between connections.",
+    "caption": "",
+    "description": "",
     "alt": "Two travelers relax on the grass and smile up at the camera between connections.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.690124,
+      "lng": 7.866336
+    },
+    "zoom": 14.76
   },
   "family-img-1559": {
     "dayId": "family-d6",
-    "caption": "Staubbach Falls above the valley",
-    "description": "A thin waterfall drops from a high cliff above a bright green Lauterbrunnen meadow.",
+    "caption": "",
+    "description": "",
     "alt": "A thin waterfall drops from a high cliff above a bright green Lauterbrunnen meadow.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.590765,
+      "lng": 7.90764
+    },
+    "zoom": 13.48
   },
   "family-img-2886": {
     "dayId": "family-d6",
-    "caption": "All aboard the mountain lift",
-    "description": "Four family members take a playful wide-angle selfie inside a mountain lift cabin.",
+    "caption": "",
+    "description": "",
     "alt": "Four family members take a playful wide-angle selfie inside a mountain lift cabin.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.597583,
+      "lng": 7.904004
+    },
+    "zoom": 13.48
   },
   "family-img-2887": {
     "dayId": "family-d6",
-    "caption": "Climbing above Lauterbrunnen",
-    "description": "The group stands inside the cabin while the green valley falls away through the windows.",
+    "caption": "",
+    "description": "",
     "alt": "The group stands inside the cabin while the green valley falls away through the windows.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.597244,
+      "lng": 7.901724
+    },
+    "zoom": 13.48
   },
   "family-snapseed-camera-capture-20260818-162911-897": {
     "dayId": "family-d6",
-    "caption": "Alpine peaks from the railway",
-    "description": "Clouds break around pale rock peaks seen through the mountain railway window.",
+    "caption": "",
+    "description": "",
     "alt": "Clouds break around pale rock peaks seen through the mountain railway window.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.572085,
+      "lng": 7.899998
+    },
+    "zoom": 13.48
   },
   "family-snapseed-camera-capture-20260818-162931-975": {
     "dayId": "family-d6",
-    "caption": "A second mountain-window frame",
-    "description": "A near-duplicate railway-window view shows cloudy Alpine peaks. This frame remains in the private source but is hidden from the public album after review.",
+    "caption": "",
+    "description": "",
     "alt": "A near-duplicate railway-window view shows cloudy Alpine peaks.",
     "hidden": true,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "hidden-quality"
+    "privacyStatus": "hidden-quality",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.560772,
+      "lng": 7.893774
+    },
+    "zoom": 13.48
   },
   "family-img-5098": {
     "dayId": "family-d6",
-    "caption": "A flowered chalet in Mürren",
-    "description": "A dark timber chalet sits above a colorful garden in the clear afternoon light.",
+    "caption": "",
+    "description": "",
     "alt": "A dark timber chalet sits above a colorful garden in the clear afternoon light.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.559967,
+      "lng": 7.892726
+    },
+    "zoom": 13.48
   },
   "family-img-5099": {
     "dayId": "family-d6",
-    "caption": "Red shutters and balcony flowers",
-    "description": "A red shutter and colorful flower boxes brighten a dark wooden chalet.",
+    "caption": "",
+    "description": "",
     "alt": "A red shutter and colorful flower boxes brighten a dark wooden chalet.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.559543,
+      "lng": 7.894082
+    },
+    "zoom": 13.48
   },
   "family-img-1584": {
     "dayId": "family-d6",
-    "caption": "An evening swim stop",
-    "description": "A swimmer crosses clear turquoise water during a final pause before the return.",
+    "caption": "",
+    "description": "",
     "alt": "A swimmer crosses clear turquoise water during a final pause before the return.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.690337,
+      "lng": 7.865944
+    },
+    "zoom": 15.07
   },
   "family-img-1589": {
     "dayId": "family-d6",
-    "caption": "Out of the water",
-    "description": "Two travelers in swimwear smile at the edge of clear turquoise water.",
+    "caption": "",
+    "description": "",
     "alt": "Two travelers in swimwear smile at the edge of clear turquoise water.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.690014,
+      "lng": 7.865596
+    },
+    "zoom": 15.07
   },
   "family-img-5102": {
     "dayId": "family-d6",
-    "caption": "Asleep on the train home",
-    "description": "A tired traveler sleeps across the seats as the nine-leg day winds down.",
+    "caption": "",
+    "description": "",
     "alt": "A tired traveler sleeps across the seats as the nine-leg day winds down.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.888095,
+      "lng": 8.246754
+    },
+    "zoom": 10.65
   },
   "family-img-1596": {
     "dayId": "family-d7",
-    "caption": "Picnic by the Reuss",
-    "description": "Two family members sit on the grass with snacks beside their bicycles.",
+    "caption": "",
+    "description": "",
     "alt": "Two family members sit on the grass with snacks beside their bicycles.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.065312,
+      "lng": 8.284798
+    },
+    "zoom": 14.35
   },
   "family-img-1598": {
     "dayId": "family-d7",
-    "caption": "A slow afternoon together",
-    "description": "Three family members relax on the grass without a train timetable to follow.",
+    "caption": "",
+    "description": "",
     "alt": "Three family members relax on the grass without a train timetable to follow.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.065335,
+      "lng": 8.284899
+    },
+    "zoom": 14.35
   },
   "family-img-1605": {
     "dayId": "family-d7",
-    "caption": "At the old city tower",
-    "description": "Three family members pose below one of Luzern's round stone fortification towers.",
+    "caption": "",
+    "description": "",
     "alt": "Three family members pose below one of Luzern's round stone fortification towers.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.053714,
+      "lng": 8.303239
+    },
+    "zoom": 14.35
   },
   "family-img-1606": {
     "dayId": "family-d7",
-    "caption": "Luzern and Pilatus at evening",
-    "description": "City roofs, church spires, and Mount Pilatus settle into warm evening light.",
+    "caption": "",
+    "description": "",
     "alt": "City roofs, church spires, and Mount Pilatus settle into warm evening light.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.057671,
+      "lng": 8.313172
+    },
+    "zoom": 14.35
   },
   "family-snapseed-camera-capture-20260819-203544-659": {
     "dayId": "family-d7",
-    "caption": "Blue-hour Luzern",
-    "description": "A blue-hour view stretches from Luzern's church spires to Mount Pilatus.",
+    "caption": "",
+    "description": "",
     "alt": "A blue-hour view stretches from Luzern's church spires to Mount Pilatus.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.058061,
+      "lng": 8.311758
+    },
+    "zoom": 14.35,
+    "trashed": true
   },
   "family-img-1607": {
     "dayId": "family-d7",
-    "caption": "The city from the hillside",
-    "description": "Luzern's roofs lead toward Pilatus as the evening light begins to fade.",
+    "caption": "",
+    "description": "",
     "alt": "Luzern's roofs lead toward Pilatus as the evening light begins to fade.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.058153,
+      "lng": 8.311589
+    },
+    "zoom": 14.35
   },
   "family-img-1611": {
     "dayId": "family-d7",
-    "caption": "Evening together on the waterfront",
-    "description": "Four family members smile beside the lake with boats, Luzern, and Pilatus behind them.",
+    "caption": "",
+    "description": "",
     "alt": "Four family members smile beside the lake with boats, Luzern, and Pilatus behind them.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.051165,
+      "lng": 8.312248
+    },
+    "zoom": 16.03
   },
   "family-snapseed-camera-capture-20260819-201947-521": {
     "dayId": "family-d7",
-    "caption": "Lake boats at sunset",
-    "description": "White passenger boats rest at their piers beneath pink evening cloud.",
+    "caption": "",
+    "description": "",
     "alt": "White passenger boats rest at their piers beneath pink evening cloud.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.051144,
+      "lng": 8.312354
+    },
+    "zoom": 16.03
   },
   "family-snapseed-camera-capture-20260819-202000-680": {
     "dayId": "family-d7",
-    "caption": "Pink light across the lake",
-    "description": "A wide sunset frame catches boats, open water, and pink cloud over the mountains.",
+    "caption": "",
+    "description": "",
     "alt": "A wide sunset frame catches boats, open water, and pink cloud over the mountains.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.051179,
+      "lng": 8.312301
+    },
+    "zoom": 16.03
   },
   "family-snapseed-camera-capture-20260819-203738-977": {
     "dayId": "family-d7",
-    "caption": "A curious waterfront duck",
-    "description": "A duck faces the camera on the quay with a white lake boat behind it.",
+    "caption": "",
+    "description": "",
     "alt": "A duck faces the camera on the quay with a white lake boat behind it.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.051194,
+      "lng": 8.312238
+    },
+    "zoom": 16.03,
+    "trashed": true
   },
   "family-snapseed-camera-capture-20260819-203744-788": {
     "dayId": "family-d7",
-    "caption": "Second duck portrait",
-    "description": "A near-duplicate frame shows the same duck on the Luzern waterfront. This frame remains in the private source but is hidden from the public album after review.",
+    "caption": "",
+    "description": "",
     "alt": "A near-duplicate frame shows the same duck on the Luzern waterfront.",
     "hidden": true,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "hidden-quality"
+    "privacyStatus": "hidden-quality",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.051194,
+      "lng": 8.31229
+    },
+    "zoom": 16.03
   },
   "family-snapseed-camera-capture-20260819-211851-678": {
     "dayId": "family-d7",
-    "caption": "Moon above Pilatus",
-    "description": "The moon hangs over dark Mount Pilatus with lights streaking across the lake.",
+    "caption": "",
+    "description": "",
     "alt": "The moon hangs over dark Mount Pilatus with lights streaking across the lake.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.05458,
+      "lng": 8.314746
+    },
+    "zoom": 14.85,
+    "trashed": true
   },
   "family-snapseed-camera-capture-20260819-211902-057": {
     "dayId": "family-d7",
-    "caption": "Second moonlit lake view",
-    "description": "A near-duplicate view shows the moonlit mountain above Lake Luzern. This frame remains in the private source but is hidden from the public album after review.",
+    "caption": "",
+    "description": "",
     "alt": "A near-duplicate view shows the moonlit mountain above Lake Luzern.",
     "hidden": true,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "hidden-quality"
+    "privacyStatus": "hidden-quality",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.054596,
+      "lng": 8.314698
+    },
+    "zoom": 14.85
   },
   "family-img-1613": {
     "dayId": "family-d8",
-    "caption": "The Luzern home base",
-    "description": "The exterior of the private residence used as the family home base is retained locally. This frame remains in the private source but is hidden from the public album after review.",
+    "caption": "",
+    "description": "",
     "alt": "The exterior of the private residence used as the family home base is retained locally.",
     "hidden": true,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "hidden-private"
+    "privacyStatus": "hidden-private",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.058465,
+      "lng": 8.312842
+    },
+    "zoom": 13.76
   },
   "family-snapseed-camera-capture-20260822-140341-832": {
     "dayId": "family-d10",
-    "caption": "A Varenna lane to the lake",
-    "description": "A narrow yellow-walled lane drops between houses toward a bright strip of Lake Como.",
+    "caption": "",
+    "description": "",
     "alt": "A narrow yellow-walled lane drops between houses toward a bright strip of Lake Como.",
     "hidden": false,
     "reviewed": true,
@@ -989,8 +1216,8 @@
   },
   "family-img-5119": {
     "dayId": "family-d10",
-    "caption": "Garden figures above Lake Como",
-    "description": "Bronze garden figures and a fountain sit above the blue lake.",
+    "caption": "",
+    "description": "",
     "alt": "Bronze garden figures and a fountain sit above the blue lake.",
     "hidden": false,
     "reviewed": true,
@@ -999,18 +1226,19 @@
   },
   "family-img-5123": {
     "dayId": "family-d10",
-    "caption": "Palms and blue water",
-    "description": "Two palms frame Lake Como and the mountains from a hillside garden.",
+    "caption": "",
+    "description": "",
     "alt": "Two palms frame Lake Como and the mountains from a hillside garden.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "trashed": true
   },
   "family-img-5127": {
     "dayId": "family-d10",
-    "caption": "Lake Como from the garden",
-    "description": "A wide view opens across palms, dark mountains, and a boat wake on the lake.",
+    "caption": "",
+    "description": "",
     "alt": "A wide view opens across palms, dark mountains, and a boat wake on the lake.",
     "hidden": false,
     "reviewed": true,
@@ -1019,18 +1247,19 @@
   },
   "family-img-5130": {
     "dayId": "family-d10",
-    "caption": "A lakeside Peroni",
-    "description": "A hand holds a Peroni bottle with a traveler and Lake Como behind it.",
+    "caption": "",
+    "description": "",
     "alt": "A hand holds a Peroni bottle with a traveler and Lake Como behind it.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "trashed": true
   },
   "family-img-5134": {
     "dayId": "family-d10",
-    "caption": "Another take by the lake",
-    "description": "A near-duplicate beer-and-lake frame is retained in source. This frame remains in the private source but is hidden from the public album after review.",
+    "caption": "",
+    "description": "",
     "alt": "A near-duplicate beer-and-lake frame is retained in source.",
     "hidden": true,
     "reviewed": true,
@@ -1039,8 +1268,8 @@
   },
   "family-snapseed-camera-capture-20260822-151053-865": {
     "dayId": "family-d10",
-    "caption": "Beer on the pebble beach",
-    "description": "A Peroni bottle stands among smooth stones beside Lake Como.",
+    "caption": "",
+    "description": "",
     "alt": "A Peroni bottle stands among smooth stones beside Lake Como.",
     "hidden": false,
     "reviewed": true,
@@ -1049,8 +1278,8 @@
   },
   "family-img-5136": {
     "dayId": "family-d10",
-    "caption": "Together on the Lake Como shore",
-    "description": "Four family members smile together on a pebble beach beside Lake Como.",
+    "caption": "",
+    "description": "",
     "alt": "Four family members smile together on a pebble beach beside Lake Como.",
     "hidden": false,
     "reviewed": true,
@@ -1059,8 +1288,8 @@
   },
   "family-snapseed-camera-capture-20260822-154412-930": {
     "dayId": "family-d10",
-    "caption": "Passing Fiumelatte station",
-    "description": "A pink station building and blue Fiumelatte sign mark the next connection.",
+    "caption": "",
+    "description": "",
     "alt": "A pink station building and blue Fiumelatte sign mark the next connection.",
     "hidden": false,
     "reviewed": true,
@@ -1069,8 +1298,8 @@
   },
   "family-snapseed-camera-capture-20260822-174404-292": {
     "dayId": "family-d10",
-    "caption": "Back on the water",
-    "description": "Late-afternoon light reaches the mountain shore during the ferry crossing.",
+    "caption": "",
+    "description": "",
     "alt": "Late-afternoon light reaches the mountain shore during the ferry crossing.",
     "hidden": false,
     "reviewed": true,
@@ -1079,8 +1308,8 @@
   },
   "family-snapseed-camera-capture-20260822-175328-988": {
     "dayId": "family-d10",
-    "caption": "Bellagio from the lake",
-    "description": "A waterfront settlement comes into view across blue Lake Como.",
+    "caption": "",
+    "description": "",
     "alt": "A waterfront settlement comes into view across blue Lake Como.",
     "hidden": false,
     "reviewed": true,
@@ -1089,18 +1318,19 @@
   },
   "family-snapseed-camera-capture-20260824-114638-775": {
     "dayId": "family-d12",
-    "caption": "Pilatus figures on the wall",
-    "description": "A painted mountain scene introduces the Pilatus outing before the climb.",
+    "caption": "",
+    "description": "",
     "alt": "A painted mountain scene introduces the Pilatus outing before the climb.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "trashed": true
   },
   "family-snapseed-camera-capture-20260824-114643-710": {
     "dayId": "family-d12",
-    "caption": "Photographing the mural",
-    "description": "One traveler stops to photograph the large wall painting.",
+    "caption": "",
+    "description": "",
     "alt": "One traveler stops to photograph the large wall painting.",
     "hidden": false,
     "reviewed": true,
@@ -1109,8 +1339,8 @@
   },
   "family-img-5149": {
     "dayId": "family-d12",
-    "caption": "A pause beside the bronze figures",
-    "description": "Two family members sit beside a bronze group sculpture at the base of the mountain route.",
+    "caption": "",
+    "description": "",
     "alt": "Two family members sit beside a bronze group sculpture at the base of the mountain route.",
     "hidden": false,
     "reviewed": true,
@@ -1119,18 +1349,19 @@
   },
   "family-img-5153": {
     "dayId": "family-d12",
-    "caption": "First gondola portrait",
-    "description": "A near-duplicate cabin portrait shows two family members smiling together. This frame remains in the private source but is hidden from the public album after review.",
+    "caption": "",
+    "description": "",
     "alt": "A near-duplicate cabin portrait shows two family members smiling together.",
     "hidden": true,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "hidden-quality"
+    "privacyStatus": "hidden-quality",
+    "trashed": true
   },
   "family-img-5157": {
     "dayId": "family-d12",
-    "caption": "Climbing Pilatus together",
-    "description": "Two family members smile inside the red gondola with mountains through the windows.",
+    "caption": "",
+    "description": "",
     "alt": "Two family members smile inside the red gondola with mountains through the windows.",
     "hidden": false,
     "reviewed": true,
@@ -1139,28 +1370,30 @@
   },
   "family-img-5158": {
     "dayId": "family-d12",
-    "caption": "A wider gondola view",
-    "description": "Two family members sit together as the gondola climbs above green slopes.",
+    "caption": "",
+    "description": "",
     "alt": "Two family members sit together as the gondola climbs above green slopes.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "trashed": true
   },
   "family-img-5159": {
     "dayId": "family-d12",
-    "caption": "Another cabin wave",
-    "description": "A near-duplicate gondola portrait shows the same pair waving. This frame remains in the private source but is hidden from the public album after review.",
+    "caption": "",
+    "description": "",
     "alt": "A near-duplicate gondola portrait shows the same pair waving.",
     "hidden": true,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "hidden-quality"
+    "privacyStatus": "hidden-quality",
+    "trashed": true
   },
   "family-img-2987": {
     "dayId": "family-d12",
-    "caption": "Pilatus ridges from above",
-    "description": "The summit view opens across steep grey ridges, green folds, and distant country.",
+    "caption": "",
+    "description": "",
     "alt": "The summit view opens across steep grey ridges, green folds, and distant country.",
     "hidden": false,
     "reviewed": true,
@@ -1169,8 +1402,8 @@
   },
   "family-img-1750": {
     "dayId": "family-d12",
-    "caption": "Indoor souvenir stop",
-    "description": "Two people pose beside a decorative animal figure in a low-quality, partly obscured frame. This frame remains in the private source but is hidden from the public album after review.",
+    "caption": "",
+    "description": "",
     "alt": "Two people pose beside a decorative animal figure in a low-quality, partly obscured frame.",
     "hidden": true,
     "reviewed": true,
@@ -1179,8 +1412,8 @@
   },
   "family-img-1754": {
     "dayId": "family-d12",
-    "caption": "Together near the Pilatus summit",
-    "description": "Three family members gather on the rocky summit terrace beneath a high blue sky.",
+    "caption": "",
+    "description": "",
     "alt": "Three family members gather on the rocky summit terrace beneath a high blue sky.",
     "hidden": false,
     "reviewed": true,
@@ -1189,8 +1422,8 @@
   },
   "family-img-1756": {
     "dayId": "family-d12",
-    "caption": "Summit smiles",
-    "description": "Two family members pose with the broad lowlands and lakes spread out below Pilatus.",
+    "caption": "",
+    "description": "",
     "alt": "Two family members pose with the broad lowlands and lakes spread out below Pilatus.",
     "hidden": false,
     "reviewed": true,
@@ -1199,18 +1432,19 @@
   },
   "family-img-1759": {
     "dayId": "family-d12",
-    "caption": "Looking across the summit",
-    "description": "A wide summit view takes in rocky foreground, green valleys, and distant peaks.",
+    "caption": "",
+    "description": "",
     "alt": "A wide summit view takes in rocky foreground, green valleys, and distant peaks.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "trashed": true
   },
   "family-snapseed-camera-capture-20260824-150714-906": {
     "dayId": "family-d12",
-    "caption": "Lake Luzern far below",
-    "description": "The lake's branching blue arms appear far below the steep grassy edge of Pilatus.",
+    "caption": "",
+    "description": "",
     "alt": "The lake's branching blue arms appear far below the steep grassy edge of Pilatus.",
     "hidden": false,
     "reviewed": true,
@@ -1219,8 +1453,8 @@
   },
   "family-img-1761": {
     "dayId": "family-d12",
-    "caption": "At the Pilatus viewpoint",
-    "description": "Two travelers stand at the railing with the lake country stretching behind them.",
+    "caption": "",
+    "description": "",
     "alt": "Two travelers stand at the railing with the lake country stretching behind them.",
     "hidden": false,
     "reviewed": true,
@@ -1229,8 +1463,8 @@
   },
   "family-snapseed-camera-capture-20260824-153232-772": {
     "dayId": "family-d12",
-    "caption": "Blue lakes between the mountains",
-    "description": "A high panorama looks across deep-blue lakes and overlapping mountain ridges.",
+    "caption": "",
+    "description": "",
     "alt": "A high panorama looks across deep-blue lakes and overlapping mountain ridges.",
     "hidden": false,
     "reviewed": true,
@@ -1239,8 +1473,8 @@
   },
   "family-img-1768": {
     "dayId": "family-d12",
-    "caption": "Descending by mountain railway",
-    "description": "The steep cog railway winds through pale rock and green slopes toward Alpnachstad.",
+    "caption": "",
+    "description": "",
     "alt": "The steep cog railway winds through pale rock and green slopes toward Alpnachstad.",
     "hidden": false,
     "reviewed": true,
@@ -1249,8 +1483,8 @@
   },
   "family-img-5165": {
     "dayId": "family-d12",
-    "caption": "A note from Pilatus",
-    "description": "An illustrated information panel offers one final detail from the mountain.",
+    "caption": "",
+    "description": "",
     "alt": "An illustrated information panel offers one final detail from the mountain.",
     "hidden": false,
     "reviewed": true,
@@ -1259,8 +1493,8 @@
   },
   "family-snapseed-camera-capture-20260825-111042-909": {
     "dayId": "family-d13",
-    "caption": "Pilatus under morning cloud",
-    "description": "Mount Pilatus rises beyond Luzern rooftops on the trip's unhurried final local day.",
+    "caption": "",
+    "description": "",
     "alt": "Mount Pilatus rises beyond Luzern rooftops on the trip's unhurried final local day.",
     "hidden": false,
     "reviewed": true,

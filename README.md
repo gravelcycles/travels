@@ -61,6 +61,18 @@ ignored local derivatives instead of GitHub Release URLs.
 - `/dist/switzerland-italy.html` opens the real family journey.
 - `/dist/demo.html` shows only the sample journeys and includes a selector.
 
+## Manage photos in Studio
+
+In **Photos**, expand **Upload photos**, choose a day and files, and click
+**Add photos locally**. Resizing and metadata processing are automatic. New
+captions and notes are blank. **Move photo to trash** and **Show trash** provide
+recoverable deletion and restore; save those changes locally.
+
+Photo publishing is automated through `npm run photos:publish -- --journey <id>
+--publish`, followed by the usual site deployment. Pending assets stay out of
+production until uploaded and verified. See [PHOTO_WORKFLOW.md](PHOTO_WORKFLOW.md)
+for the full agent-operated flow and what Trash does to existing hosted assets.
+
 ## Find photos on the map
 
 Photos with saved locations appear as small thumbnail landmarks. Nearby photos

@@ -113,6 +113,7 @@ export function validateJourneys(data) {
 export function journeyAssets(root, journey) {
   const routes = readJson(path.join(root, journey.published ? `content/route-geometry/${journey.id}.json` : `build/draft-assets/${journey.id}/routes.json`), {});
   const photos = readJson(path.join(root, journey.published ? `content/photo-manifests/${journey.id}.json` : `build/draft-assets/${journey.id}/photos.json`), journey.photos || []);
+  photos.push(...readJson(path.join(root, journey.published ? `content/photo-manifests/${journey.id}-uploads.json` : `build/draft-assets/${journey.id}/uploads.json`), []));
   const ids = new Set(journey.segments.map(s => s.id));
   for (const [id, geometry] of Object.entries(routes)) {
     if (!ids.has(id) || !Array.isArray(geometry) || geometry.length < 2 || !geometry.every(validCoordinate)) throw new Error(`Invalid generated route or reference: ${id}`);
@@ -145,7 +146,7 @@ export function validateOverrides(state, data) {
       const owner = owners[kind].get(id);
       if (!owner) throw new Error(`Unknown ${kind} override ID: ${id}`);
       if (!value || Array.isArray(value) || typeof value !== "object") throw new Error(`Invalid override: ${id}`);
-      const allowed = kind === "days" ? ["date", "title", "text", "leadPhotoId", "photoOrder"] : kind === "routes" ? ["controlPoints", "geometry", "smoothed", "smoothing", "routing", "source", "updatedAt"] : ["caption", "description", "alt", "locationLabel", "dayId", "location", "zoom", "hidden", "reviewed", "locationStatus", "privacyStatus"];
+      const allowed = kind === "days" ? ["date", "title", "text", "leadPhotoId", "photoOrder"] : kind === "routes" ? ["controlPoints", "geometry", "smoothed", "smoothing", "routing", "source", "updatedAt"] : ["caption", "description", "alt", "locationLabel", "dayId", "location", "zoom", "hidden", "trashed", "reviewed", "locationStatus", "privacyStatus"];
       for (const key of Object.keys(value)) if (!allowed.includes(key)) throw new Error(`${id}: unsupported override field ${key}`);
       if (kind === "photos" && value.dayId && !owner.days.some(d => d.id === value.dayId)) throw new Error(`${id}: photo day belongs to another journey or does not exist`);
       if (kind === "routes") for (const key of ["geometry", "controlPoints"]) if (!Array.isArray(value[key]) || value[key].length < 2 || !value[key].every(validCoordinate)) throw new Error(`${id}: invalid ${key}`);
@@ -154,6 +155,7 @@ export function validateOverrides(state, data) {
       if (value.location != null && !validCoordinate([value.location.lng, value.location.lat])) throw new Error(`${id}: invalid photo location`);
       if (value.zoom != null && (!Number.isFinite(value.zoom) || value.zoom < 2 || value.zoom > 20)) throw new Error(`${id}: invalid photo zoom`);
       if (value.hidden != null && typeof value.hidden !== "boolean") throw new Error(`${id}: invalid photo visibility`);
+      if (value.trashed != null && typeof value.trashed !== "boolean") throw new Error(`${id}: invalid trash state`);
       if (value.reviewed != null && typeof value.reviewed !== "boolean") throw new Error(`${id}: invalid photo review status`);
       if (value.locationStatus != null && !["unlocated-no-gps", "reviewed-exact"].includes(value.locationStatus)) throw new Error(`${id}: invalid photo location review status`);
       if (value.privacyStatus != null && !["approved-public", "hidden-private", "hidden-quality"].includes(value.privacyStatus)) throw new Error(`${id}: invalid photo privacy review status`);
