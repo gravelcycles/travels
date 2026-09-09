@@ -2,6 +2,11 @@
 
 ## Studio photo library and traveler-only copy · 9 September 2026
 
+Published as `32cf654` in successful Pages run `34356358778`. Fresh public
+checks confirmed blank generated copy, retained personal notes, and the saved
+trash removals (85 visible photos at deployment). Viewer and demo checks passed
+without browser errors. Studio remains running locally on port 4173.
+
 Studio **Photos → Upload photos** accepts multiple stills up to 50 MB each,
 processes sizes/previews/metadata locally, and appends separate upload manifests.
 Pending assets remain outside production until `photos:publish -- --journey <id>
