@@ -8,6 +8,11 @@ commit after it is known.
 
 ### Upload and trash photos; remove generated photo prose
 
+Published as `32cf654` in successful Pages run `34356358778`. Fresh public
+checks confirmed blank generated copy, retained personal notes, and the saved
+trash removals (85 visible photos at deployment). Viewer and demo checks passed
+without browser errors. Studio remains running locally on port 4173.
+
 - Add local Studio multi-file photo upload with day selection, automatic WebP
   sizes/blur previews, private originals/GPS, blank copy, duplicate detection,
   per-file errors, and separate append-only upload manifests.
