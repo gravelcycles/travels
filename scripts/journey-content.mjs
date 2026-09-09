@@ -69,7 +69,7 @@ export function validateJourneys(data) {
         const day = j.days.find(d => d.id === m.dayId);
         if (!validId(m.id) || momentIds.has(m.id) || !day) fail(`${j.id}: invalid replay moment ID/day`);
         momentIds.add(m.id);
-        if (typeof m.caption !== "string" || !m.caption.trim() || !Number.isFinite(m.duration) || m.duration <= 0 || m.duration > 120) fail(`${m.id}: replay needs a caption and duration of 0–120 seconds`);
+        if (typeof m.caption !== "string" || !Number.isFinite(m.duration) || m.duration <= 0 || m.duration > 120) fail(`${m.id}: replay needs caption text (which may be blank) and duration greater than 0 and at most 120 seconds`);
         if (m.segmentIds && (!Array.isArray(m.segmentIds) || new Set(m.segmentIds).size !== m.segmentIds.length || m.segmentIds.some((id, i) => !day.segmentIds.includes(id) || (i && day.segmentIds.indexOf(id) <= day.segmentIds.indexOf(m.segmentIds[i-1]))))) fail(`${m.id}: replay segments must follow their day's travel order`);
         if (m.photoId && !j.photos.some(p => p.id === m.photoId && p.dayId === m.dayId)) fail(`${m.id}: replay photo must belong to its day`);
         if (m.camera && (!validCoordinate(m.camera.center) || !Number.isFinite(m.camera.zoom) || m.camera.zoom < 2 || m.camera.zoom > 20 || m.camera.reviewed !== true)) fail(`${m.id}: replay camera must be reviewed with valid coordinates/zoom`);

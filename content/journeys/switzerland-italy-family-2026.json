@@ -1576,7 +1576,7 @@
       "segmentIds": [
         "family-airport-luzern"
       ],
-      "text": "The family took the train from Zürich Flughafen to Luzern and settled into the home base. A home-cooked dinner made the arrival feel settled, followed by a first nighttime walk through the old center and along the river.",
+      "text": "",
       "calendarDate": "2026-08-13"
     },
     {
@@ -1590,7 +1590,7 @@
         "family-luzern-engelberg",
         "family-engelberg-luzern"
       ],
-      "text": "The train climbed from Luzern into Engelberg for a day that mixed cold water, an easy lunch, and a walk toward the waterfall. Dad also supplied the trip's most unforgettable line—he “blew his nutsack”—which entered the family record exactly as delivered.",
+      "text": "",
       "calendarDate": "2026-08-14"
     },
     {
@@ -1604,7 +1604,7 @@
         "family-luzern-bern",
         "family-bern-luzern"
       ],
-      "text": "With Luzern quiet for the Feast of the Assumption, the family made Bern the day's destination. Free gelato led into lunch, a float on the Aare, a long old-town walk, and a visit to the bears before mussels closed out a very full day.",
+      "text": "",
       "calendarDate": "2026-08-15"
     },
     {
@@ -1618,7 +1618,7 @@
         "family-luzern-kehrsiten-bike",
         "family-kehrsiten-luzern-boat"
       ],
-      "text": "Bicycles turned the lake into the day's route: a picnic and swim broke up the ride before the group followed the coastal road to the Kehrsiten landing. A cliff jump gave the afternoon its edge; the ferry carried everyone directly back to Luzern without intermediate stops, and Abi's dinner was eaten on a bench overlooking the Reuss and the covered bridge.",
+      "text": "",
       "calendarDate": "2026-08-16"
     },
     {
@@ -1629,7 +1629,7 @@
       "placeId": "luzern",
       "destinationId": "luzern",
       "segmentIds": [],
-      "text": "Rain made the decision for everyone and turned the Luzern base into a proper rest day. David and Michelle watched The Odyssey while the weather worked its way across the lake outside.",
+      "text": "",
       "calendarDate": "2026-08-17"
     },
     {
@@ -1650,7 +1650,7 @@
         "family-lauterbrunnen-interlaken",
         "family-interlaken-luzern"
       ],
-      "text": "This was the grand connection day: train to Brienz, boat across the lake to Interlaken, train into Lauterbrunnen, gondola to Grütschalp, and the little mountain railway to Mürren. The return retraced the high section before continuing by rail from Interlaken to Luzern, a full loop made from nine ordered legs.",
+      "text": "",
       "calendarDate": "2026-08-18"
     },
     {
@@ -1661,7 +1661,7 @@
       "placeId": "luzern",
       "destinationId": "luzern",
       "segmentIds": [],
-      "text": "A local Luzern day began with brockies and the pleasure of browsing without a timetable. Later came a float on the Reuss and a castle visit—the kind of day that made the city feel less like a stop and more like home base.",
+      "text": "",
       "calendarDate": "2026-08-19"
     },
     {
@@ -1674,7 +1674,7 @@
       "segmentIds": [
         "family-luzern-como"
       ],
-      "text": "The family packed up the Luzern base for a rainy rail day south to Como. The long line through the Gotthard corridor carried the trip from central Switzerland into Ticino and across the Italian border, with lake weather waiting at the other end.",
+      "text": "",
       "calendarDate": "2026-08-20"
     },
     {
@@ -1685,7 +1685,7 @@
       "placeId": "como-family",
       "destinationId": "como-family",
       "segmentIds": [],
-      "text": "Como stayed rainy, so the pace dropped to cards and rounds of spades indoors. In the evening everyone traded the grey lakefront for the warmth of an Italian trattoria and a dinner worth going out into the weather for.",
+      "text": "",
       "calendarDate": "2026-08-21"
     },
     {
@@ -1702,7 +1702,7 @@
         "family-dervio-bellagio-boat",
         "family-bellagio-como-bus"
       ],
-      "text": "Lake Como finally became the route itself. A ferry reached Varenna, the family walked on to Fiumelatte, caught the train north to Dervio, crossed by boat to Bellagio, and took the bus back to Como—five distinct legs stitched into one close-up map.",
+      "text": "",
       "calendarDate": "2026-08-22"
     },
     {
@@ -1716,7 +1716,7 @@
         "family-como-lugano",
         "family-lugano-luzern"
       ],
-      "text": "The return to Luzern was split by a stop in Lugano, keeping the travel day from becoming only transit. After a pause beside another lake, the train continued north through the Gotthard corridor and back to the familiar Luzern base.",
+      "text": "",
       "calendarDate": "2026-08-23"
     },
     {
@@ -1732,7 +1732,7 @@
         "family-pilatus-alpnachstad",
         "family-alpnachstad-luzern"
       ],
-      "text": "A bus to Kriens opened a classic Pilatus circuit. The gondola climbed toward the summit, the mountain railway descended the opposite face to Alpnachstad, and an ordinary train completed the loop to Luzern—a compact day with four very different legs.",
+      "text": "",
       "calendarDate": "2026-08-24"
     },
     {
@@ -1743,7 +1743,7 @@
       "placeId": "luzern",
       "destinationId": "luzern",
       "segmentIds": [],
-      "text": "After mountain trains, ferries, bicycles, and rainy border crossings, the family left this day deliberately loose. Luzern was enough: familiar streets, the lake nearby, and no connection to catch.",
+      "text": "",
       "calendarDate": "2026-08-25"
     },
     {
@@ -1756,7 +1756,7 @@
       "segmentIds": [
         "family-luzern-airport"
       ],
-      "text": "The final train carried Michelle's parents from Luzern back to Zürich Flughafen for their flight out. The same airport line that had opened the family trip now closed it, with two weeks of lakes, rain, boats, mountains, and shared meals in between.",
+      "text": "",
       "calendarDate": "2026-08-26"
     }
   ],
@@ -1784,7 +1784,7 @@
       "segmentIds": [
         "family-airport-luzern"
       ],
-      "caption": "The train from Zürich Airport brought the family to Luzern for a first evening by the river.",
+      "caption": "",
       "duration": 9.8,
       "photoId": "family-img-1425"
     },
@@ -1795,7 +1795,7 @@
         "family-luzern-engelberg",
         "family-engelberg-luzern"
       ],
-      "caption": "A train ride to Engelberg led to cold water, lunch, and a waterfall walk.",
+      "caption": "",
       "duration": 15,
       "photoId": "family-img-1472"
     },
@@ -1806,7 +1806,7 @@
         "family-luzern-bern",
         "family-bern-luzern"
       ],
-      "caption": "Bern brought gelato, an Aare float, an old-town walk, and a visit to the bears.",
+      "caption": "",
       "duration": 21.5,
       "photoId": "family-img-5047"
     },
@@ -1817,7 +1817,7 @@
         "family-luzern-kehrsiten-bike",
         "family-kehrsiten-luzern-boat"
       ],
-      "caption": "Bikes, a picnic, and a swim led to Kehrsiten, with a boat ride home.",
+      "caption": "",
       "duration": 12.1,
       "photoId": "family-img-5052"
     },
@@ -1825,7 +1825,7 @@
       "id": "family-moment-5",
       "dayId": "family-d5",
       "segmentIds": [],
-      "caption": "Rain made Luzern a day for resting and watching The Odyssey.",
+      "caption": "",
       "duration": 2.4,
       "photoId": "family-img-1520"
     },
@@ -1843,7 +1843,7 @@
         "family-lauterbrunnen-interlaken",
         "family-interlaken-luzern"
       ],
-      "caption": "Train, boat, gondola, and mountain railway carried us from Luzern to Mürren and back.",
+      "caption": "",
       "duration": 50.1,
       "photoId": "family-img-2880"
     },
@@ -1851,7 +1851,7 @@
       "id": "family-moment-7",
       "dayId": "family-d7",
       "segmentIds": [],
-      "caption": "A local day of browsing, floating on the Reuss, and visiting the castle.",
+      "caption": "",
       "duration": 2.4,
       "photoId": "family-img-1611"
     },
@@ -1861,14 +1861,14 @@
       "segmentIds": [
         "family-luzern-como"
       ],
-      "caption": "A rainy train journey through the Gotthard corridor took the family south to Como.",
+      "caption": "",
       "duration": 18.4
     },
     {
       "id": "family-moment-9",
       "dayId": "family-d9",
       "segmentIds": [],
-      "caption": "Rain in Como meant cards and spades, followed by dinner at a trattoria.",
+      "caption": "",
       "duration": 2.4
     },
     {
@@ -1881,7 +1881,7 @@
         "family-dervio-bellagio-boat",
         "family-bellagio-como-bus"
       ],
-      "caption": "Ferry, footpath, train, boat, and bus connected Varenna, Fiumelatte, Dervio, and Bellagio.",
+      "caption": "",
       "duration": 29.1,
       "photoId": "family-img-5136"
     },
@@ -1892,7 +1892,7 @@
         "family-como-lugano",
         "family-lugano-luzern"
       ],
-      "caption": "The journey back to Luzern paused beside the lake in Lugano.",
+      "caption": "",
       "duration": 23.2
     },
     {
@@ -1904,7 +1904,7 @@
         "family-pilatus-alpnachstad",
         "family-alpnachstad-luzern"
       ],
-      "caption": "Pilatus made a circuit of bus, gondola, mountain railway, and train.",
+      "caption": "",
       "duration": 19.8,
       "photoId": "family-img-1754"
     },
@@ -1912,7 +1912,7 @@
       "id": "family-moment-13",
       "dayId": "family-d13",
       "segmentIds": [],
-      "caption": "A loose final day in Luzern, with familiar streets and no connection to catch.",
+      "caption": "",
       "duration": 2.4,
       "photoId": "family-snapseed-camera-capture-20260825-111042-909"
     },
@@ -1922,7 +1922,7 @@
       "segmentIds": [
         "family-luzern-airport"
       ],
-      "caption": "The train back to Zürich Airport closed two weeks of lakes, mountains, rain, and shared meals.",
+      "caption": "",
       "duration": 9.8
     }
   ]

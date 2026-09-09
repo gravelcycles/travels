@@ -236,7 +236,6 @@
     if (!segments.length) return "";
     return `
       <div class="route-legs">
-        <h3>Route legs</h3>
         <ol>
           ${segments.map((segment) => {
             const from = placeById(segment.from);
@@ -875,6 +874,9 @@
       `;
     }
 
+    $('#story-view-photos').hidden = !photos.length;
+    $('#story-view-photos').textContent = `View ${photos.length} photo${photos.length === 1 ? '' : 's'}`;
+
     const distance = dayDistance(day);
     const duration = dayDuration(day);
     const modes = modesForDay(day);
@@ -882,10 +884,9 @@
       <div class="detail-eyebrow">DAY ${String(day.number).padStart(2, "0")} · ${escapeHtml(day.date)}</div>
       <h2>${escapeHtml(day.title)}</h2>
       <p class="place-line">${escapeHtml(routeLabel(day))}</p>
-      <p class="day-story">${escapeHtml(day.text || "A day taking shape.")}</p>
-      <div class="story-actions"><button type="button" data-day-album>${photos.length ? `View ${photos.length} photo${photos.length===1?'':'s'}` : 'Explore this day'}</button><button type="button" data-day-map ${dayCoordinates(day).length?'':'disabled'}>See this day on the map</button></div>
+      ${day.text?.trim() ? `<p class="day-story">${escapeHtml(day.text)}</p>` : ""}
       <p class="travel-summary">${distance ? `${formatDistance(distance)} · ` : ''}${escapeHtml(modeLabel(day))}${duration ? ` · ${escapeHtml(duration)}` : ''}</p>
-      ${day.segmentIds.length ? `<details class="travel-details"><summary>Travel details · ${day.segmentIds.length} leg${day.segmentIds.length===1?'':'s'}</summary>${renderRouteLegs(day)}</details>` : ''}
+      ${day.segmentIds.length ? `<section class="travel-details" aria-label="Travel details"><h3>Travel details · ${day.segmentIds.length} leg${day.segmentIds.length===1?'':'s'}</h3>${renderRouteLegs(day)}</section>` : ''}
       <nav class="journal-day-nav" aria-label="Journal days"><button type="button" data-journal-step="-1" ${day.number===1?'disabled':''}>← Previous day</button><span>Day ${day.number} of ${journey.days.length}</span><button type="button" data-journal-step="1" ${day.number===journey.days.length?'disabled':''}>Next day →</button></nav>
       <button id="resume-replay" type="button" ${replayJourneyId===journey.id?'':'hidden'}>Return to paused Replay</button>
     `;
@@ -1615,8 +1616,6 @@
         window.setTimeout(() => { if(mainMapReady) { mainMap.resize(); mainMap.fitBounds(boundsFromCoordinates(segmentCoordinates(segmentById(card.dataset.routeSegment))), {padding:mapPadding(100),maxZoom:13,duration:prefersReducedMotion()?0:500}); } },100);
       }
     }
-    if(event.target.closest('[data-day-album]')) openDayViewer();
-    if(event.target.closest('[data-day-map]')) { setMobileTab('map'); pendingMapAction='focus'; }
     const step=event.target.closest('[data-journal-step]'); if(step) { moveActiveDay(Number(step.dataset.journalStep)); showJournal(true); }
     if(event.target.closest('#resume-replay')) openReplay();
   });
@@ -1631,6 +1630,7 @@
   $("#open-replay").addEventListener("click", openReplay);
   $("#previous-day").addEventListener("click", () => moveActiveDay(-1));
   $("#next-day").addEventListener("click", () => moveActiveDay(1));
+  $("#story-view-photos").addEventListener("click", () => openDayViewer());
   $("#show-all-photos").addEventListener("click", () => {
     openAlbum();
   });
