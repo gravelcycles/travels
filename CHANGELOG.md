@@ -6,6 +6,11 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Start each day album at its first photo
+
+- Use the first visible photo in saved album order for the large day image and
+  All photos day cards, so clicking a day preview begins at photo 1.
+
 ### Use the traveler's landing-page headline
 
 Published as `0352e29` in successful Pages run `34366574353`; the exact
