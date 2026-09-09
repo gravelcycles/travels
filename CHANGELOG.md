@@ -8,6 +8,11 @@ commit after it is known.
 
 ### Remove map photo landmarks
 
+Published as `147229b` in successful Pages run `34362027798`. Fresh public
+verification confirmed no map photo thumbnails or legend entry, working day
+album/next-photo navigation, and no browser errors. Pending local uploads were
+preserved and excluded from this cleanup commit.
+
 - Retire the map thumbnail feature, including grouping, distance calculations,
   collision placement, leader lines, group chooser, map legend and movement
   handlers. Simplify day-marker placement and remove the retired feature tests.
