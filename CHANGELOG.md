@@ -9,6 +9,9 @@ commit after it is known.
 ### Complete the non-auth backlog: planning, story, and editorial reliability
 
 Implementation commit: `ff0587e`.
+Published with short-screen fix `d822a39` in successful Pages run `34331092072`.
+Fresh public checks confirmed the loaded catalog cover, mobile Replay and Day 6
+exploration, the 95-photo grouped album, four demo choices, and no trip console errors.
 
 - Completed T19: Studio edits trip titles, dates, time zones, named places, and
   ordered travel legs; previews calendar changes; preserves IDs, notes, photo

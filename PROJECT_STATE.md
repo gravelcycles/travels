@@ -37,6 +37,9 @@ revisions, and EXIF day matching is host-zone-independent. See
 `UX_HANDOFF.md`. The pre-existing local route override remains user work and is
 excluded from generated release output.
 
+Published in commits `ff0587e` and `d822a39`; Pages run `34331092072` succeeded.
+Fresh public catalog, mobile Replay/journal/album, and demo checks passed.
+
 ## New-trip foundation (8 September)
 
 T11 is implemented. Studio **+ New trip** creates a local draft from name/dates,

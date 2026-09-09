@@ -36,6 +36,11 @@ Day 6 navigation, no-photo continuation, reduced motion, slow/failed photos,
 and unavailable Replay maps. The compact and spacious story alternatives are
 retained at `studio/story-review.html` (served by local Studio).
 
+Commits `ff0587e` and `d822a39` deployed successfully in Pages run `34331092072`
+after user approval. Fresh public checks verified the catalog cover, mobile
+Replay, Day 6 exploration, the 95-photo grouped album, four demo choices, and
+no trip console errors. Temporary QA drafts remained outside the repository.
+
 ## Replay and media decisions · 8 September 2026
 
 T15–T17 are complete locally. The media decision is to keep the six held MOV
