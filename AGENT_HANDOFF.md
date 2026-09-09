@@ -2,6 +2,11 @@
 
 ## Map photo landmarks removed · 9 September 2026
 
+Published as `147229b` in successful Pages run `34362027798`. Fresh public
+verification confirmed no map photo thumbnails or legend entry, working day
+album/next-photo navigation, and no browser errors. Pending local uploads were
+preserved and excluded from this cleanup commit.
+
 The journey map no longer displays photo thumbnails, groups, count badges, or
 photo leader lines. The renderer, geographic clustering, collision placement,
 group chooser, map legend cue, event handlers and associated styles/tests have
