@@ -8,6 +8,11 @@ commit after it is known.
 
 ### Publish saved photos and simplify day panels
 
+Published as `a3112e3` in successful Pages run `34363408065`. Fresh public
+checks confirmed 99 photos, an uploaded Day 8 image loading in the viewer,
+blank day/Relive descriptions, the album button below the lead image, and
+always-visible travel legs. Replay still defaults to 2×. No browser errors.
+
 - Publish 13 approved uploads as 48 verified WebP derivatives and include saved
   location/visibility edits, bringing the family album to 99 visible photos.
 - Clear all 14 family day descriptions and shortened Relive captions; allow
