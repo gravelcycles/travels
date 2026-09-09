@@ -26,6 +26,23 @@ messaging-app downloads; they may omit or rewrite EXIF metadata.
   provide the intended day/place alongside the filename.
 - Include only images you are comfortable using for the project.
 
+## Camera clock and time-zone rule
+
+The importer reads raw EXIF timestamps (`reviveValues: false`). An explicit
+`OffsetTimeOriginal`, `OffsetTimeDigitized`, or embedded UTC offset defines an
+instant, converted to the selected journey's IANA time zone before day matching.
+Without an offset, the camera's date and clock are treated as already local to
+the journey; the importing computer's time zone never participates. This also
+avoids guessing between repeated DST clock times. If a camera stayed on its
+home time zone while traveling, correct its timestamps before import or review
+and reassign the inferred days in Studio. Invalid raw dates/offsets stop a
+successful import from replacing reviewed output.
+
+**Clear location** writes `location: null`, which explicitly suppresses inherited
+GPS in Studio and the viewer. Entering reviewed coordinates restores a pin;
+deleting the override entirely restores the base metadata. Original media is
+never changed by either action.
+
 ## Current Switzerland–Italy trip import
 
 `npm run photos:build -- --journey switzerland-italy-family-2026` reads `photos/switzerland-italy-trip/` and writes public-ready

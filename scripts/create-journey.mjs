@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { loadJourneys, validateJourneys, calendarDate, validId, writeJson } from "./journey-content.mjs";
+import { loadContent, validateJourneys, calendarDate, validId, writeJson } from "./journey-content.mjs";
 
 export function createJourney(root, { title, slug, startDate, endDate, timeZone = "UTC" }) {
   if (typeof title !== "string" || !title.trim() || title.length > 160) throw new Error("Give the trip a name (up to 160 characters)");
@@ -11,7 +11,7 @@ export function createJourney(root, { title, slug, startDate, endDate, timeZone 
   const start = calendarDate(startDate), end = calendarDate(endDate);
   const count = (end - start) / 86400000 + 1;
   if (count < 1 || count > 366) throw new Error("End date must be on or after the start, with at most 366 days");
-  const data = loadJourneys(root, { includeDrafts: true });
+  const { data } = loadContent(root, { includeDrafts: true });
   const id = base;
   if (data.journeys.some(j => j.id === id || j.slug === `${base}.html`)) throw new Error("A trip already uses this URL name; choose a different name");
   const days = Array.from({ length: count }, (_, i) => {

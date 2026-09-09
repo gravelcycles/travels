@@ -49,3 +49,11 @@ test("reduced motion renders route moments at their completed position", () => {
   assert.equal(initialMomentProgress({ type: "segment" }, true), 1);
   assert.equal(initialMomentProgress({ type: "photo" }, false), 1);
 });
+
+test('curated chapters preserve ordered legs and drop hidden photos safely', () => {
+  const {createTimeline,routePhase}=globalThis.JOURNEY_ATLAS_REPLAY;
+  const j={days:[{id:'day',segmentIds:['out','return']}],photos:[{id:'hidden',dayId:'day',hidden:true}],replayMoments:[{id:'moment',dayId:'day',segmentIds:['out','return'],photoId:'hidden',caption:'A return trip',duration:8}]};
+  const timeline=createTimeline(j); assert.equal(timeline.length,1);assert.equal(timeline[0].photoId,undefined);
+  assert.equal(routePhase(timeline[0],0).segmentId,'out');assert.equal(routePhase(timeline[0],.4).segmentId,'return');
+  assert.equal(routePhase(timeline[0],1).progress,1);assert.equal(routePhase(timeline[0],.1).completed.length,0);
+});

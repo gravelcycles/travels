@@ -9,7 +9,7 @@ import sharp from "sharp";
 
 import { fileURLToPath } from "node:url";
 import { loadJourneys, writeJson } from "./journey-content.mjs";
-import { photoImportConfig, localDateParts } from "./photo-import-config.mjs";
+import { photoImportConfig, captureDateParts } from "./photo-import-config.mjs";
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const options = {};
 const args = process.argv.slice(2);
@@ -48,14 +48,10 @@ try {
     const sourcePath = path.join(sourceDirectory, filename);
     try {
       const metadata = await exifr.parse(sourcePath, {
-        pick: ["DateTimeOriginal", "CreateDate", "latitude", "longitude", "Orientation"]
+        reviveValues: false,
+        pick: ["DateTimeOriginal", "CreateDate", "OffsetTimeOriginal", "OffsetTimeDigitized", "latitude", "longitude", "Orientation"]
       }) || {};
-      const capturedAt = metadata.DateTimeOriginal || metadata.CreateDate;
-      if (!(capturedAt instanceof Date) || Number.isNaN(capturedAt.valueOf())) {
-        excluded.push({ filename, reason: "No capture date" });
-        continue;
-      }
-      const local = localDateParts(capturedAt, timeZone);
+      const local = captureDateParts(metadata, timeZone);
       const day = daysByDate.get(local.date);
       if (!day) {
         excluded.push({ filename, capturedAt: `${local.date} ${local.time}`, reason: "Outside the journey calendar dates" });
@@ -103,7 +99,8 @@ try {
         width: largest.width,
         height: largest.height,
         alt: `Trip photograph from ${destination?.name || day.title}`,
-        caption: `${day.title} · ${local.time}`,
+        caption: day.title,
+        captionSource: "camera-import",
         takenAt: `${day.date} · ${local.time}`,
         sourceFilename: filename
       };

@@ -64,6 +64,10 @@
   }
 
   function createTimeline(journey) {
+    if (journey.replayMoments?.length) return journey.replayMoments.map(moment => {
+      const photo = journey.photos?.find(p => p.id === moment.photoId && !p.hidden && p.dayId === moment.dayId);
+      return { ...moment, curated:true, type:'chapter', photoId:photo?.id, segmentIds:(moment.segmentIds || []).filter(id => journey.days.find(d => d.id === moment.dayId)?.segmentIds.includes(id)) };
+    });
     const segmentIds = new Set((journey.segments || []).map((segment) => segment.id));
     return (journey.days || []).flatMap((day) => {
       const moments = (day.segmentIds || [])
@@ -82,10 +86,20 @@
   }
 
   function initialMomentProgress(moment, reducedMotion) {
-    return moment?.type === "segment" && !reducedMotion ? 0 : 1;
+    return (moment?.type === "segment" || moment?.segmentIds?.length) && !reducedMotion ? 0 : 1;
+  }
+
+  function routePhase(moment, progress) {
+    const ids = moment?.segmentIds || (moment?.segmentId ? [moment.segmentId] : []);
+    if (!ids.length) return {segmentId:null,completed:[],progress:1};
+    // Curated scenes leave the last third for the photograph/text after travel.
+    const travel = clamp(progress / (moment.curated ? 0.65 : 1));
+    const index = Math.min(ids.length-1, Math.floor(travel*ids.length));
+    return { segmentId:ids[index], completed:ids.slice(0,index), progress:travel===1?1:travel*ids.length-index };
   }
 
   root.JOURNEY_ATLAS_REPLAY = {
+    routePhase,
     clamp,
     coordinateDistance,
     createTimeline,

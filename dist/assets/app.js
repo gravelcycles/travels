@@ -14,8 +14,7 @@
     item.photos = basePhotos
       .map((photo) => {
         const override = contentOverrides.photos?.[photo.id] || {};
-        const location = override.location || {};
-        return { ...photo, ...override, ...location };
+        return window.JOURNEY_ATLAS_UTILS.resolvePhoto(photo, override);
       })
       .filter((photo) => !photo.hidden);
   });
@@ -37,7 +36,6 @@
     car: { color: "#a43a2f", width: 5.4, dash: [7, 1.8, 1.2, 1.8], cue: "dash-dot" },
     bike: { color: "#24804f", width: 4.7, dash: [2.4, 1.2], cue: "medium dash" }
   };
-  const attribution = '<a href="https://openfreemap.org/">OpenFreeMap</a> · <a href="https://openmaptiles.org/">© OpenMapTiles</a> · Data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
   const pageScope = document.body.dataset.journeyScope;
   const requestedJourneyId = document.body.dataset.journeyId;
@@ -73,6 +71,11 @@
   let replaySpeed = 1;
   let replayActiveSourceId = null;
   let replayPositionMarker = null;
+  let replayDrawnSegmentId = null;
+  let replayLabeledSegmentId = null;
+  let replayPhotoReady = true;
+  let replayPhotoToken = 0;
+  const modeSymbols = {train:"🚆",boat:"⛴",bus:"🚌",gondola:"🚠",walk:"🚶",car:"🚗",bike:"🚲"};
   let inspectedSegmentId = null;
   let routeInspectionPinned = false;
   let viewerDayId = activeDayId;
@@ -223,7 +226,7 @@
   }
 
   function dayDuration(day) {
-    return segmentsForDay(day).map((segment) => segment.duration).filter(Boolean).join(" + ");
+    return window.JOURNEY_ATLAS_UTILS.travelDuration(segmentsForDay(day));
   }
 
   function renderRouteLegs(day) {
@@ -236,14 +239,13 @@
           ${segments.map((segment) => {
             const from = placeById(segment.from);
             const to = placeById(segment.to);
-            const mappedPoints = segmentCoordinates(segment).length;
             const stopCount = (segment.stops || []).length + 2;
             return `
               <li>
                 <button class="leg-card" type="button" data-route-segment="${escapeHtml(segment.id)}" aria-label="Explore ${escapeHtml(labels[segment.mode] || segment.mode)} route from ${escapeHtml(from.name)} to ${escapeHtml(to.name)}">
                   <span class="leg-mode">${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)}</span>
                   <strong>${escapeHtml(from.name)} → ${escapeHtml(to.name)}</strong>
-                  <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""}${segment.stops ? ` · ${stopCount} stops` : ` · ${mappedPoints} mapped points`}</small>
+                  <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""}${segment.stops ? ` · ${stopCount} stops` : ""}${segment.geometryStatus === "provisional" ? " · Provisional route" : ""}</small>
                 </button>
               </li>
             `;
@@ -406,7 +408,7 @@
     };
     const map = new maplibregl.Map(options);
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
-    map.addControl(new maplibregl.AttributionControl({ compact: compact, customAttribution: attribution }), "bottom-right");
+    map.addControl(new maplibregl.AttributionControl({ compact: compact}), "bottom-right");
     return map;
   }
 
@@ -416,7 +418,8 @@
       mapStatus.textContent = "The live map could not load. The day journal and photos still work.";
       return;
     }
-    mainMap = createMap("map", true);
+    try { mainMap = createMap("map", true); }
+    catch (_error) { mapStatus.hidden=false; mapStatus.textContent="The map is unavailable. The journal and photographs still work."; return; }
     let setupAttempts = 0;
     const finishMainMapSetup = () => {
       if (mainMapReady) return;
@@ -430,7 +433,11 @@
       drawMainMap(false);
       if (!hasPlayedOpeningMove) {
         hasPlayedOpeningMove = true;
-        window.requestAnimationFrame(() => fitJourneyBounds(prefersReducedMotion() ? 0 : 2500));
+        window.requestAnimationFrame(() => {
+          if(mapScope === 'day') {
+            if($('.map-panel').offsetParent !== null) { focusDay(activeDay()); pendingMapAction=null; }
+          } else fitJourneyBounds(prefersReducedMotion() ? 0 : 2500);
+        });
       }
     };
     mainMap.on("styledata", finishMainMapSetup);
@@ -752,8 +759,8 @@
   }
 
   function focusDay(day) {
-    if (!mainMapReady) return;
     mapScope = "day";
+    if (!mainMapReady) { pendingMapAction="focus"; return; }
     drawMainMap(false);
     const coordinates = dayCoordinates(day);
     if (coordinates.length > 1) {
@@ -824,8 +831,7 @@
       `;
     }).join("");
     syncInspectionClasses();
-    const current = dayList.querySelector(".day-row.active");
-    if (current) current.scrollIntoView({ block: "nearest" });
+
   }
 
   function renderStory() {
@@ -844,10 +850,10 @@
       `;
     } else {
       storyMedia.innerHTML = `
-        <div class="story-empty" aria-label="No photos for this day">
+        <div class="story-empty" aria-label="A page from the journey">
           <span>DAY ${String(day.number).padStart(2, "0")}</span>
           <strong>${escapeHtml((destinationForDay(day)?.name || "Destination to plan"))}</strong>
-          <small>No photographs added yet</small>
+          <small>${escapeHtml(day.date)} · A page from the journey</small>
         </div>
       `;
     }
@@ -859,14 +865,12 @@
       <div class="detail-eyebrow">DAY ${String(day.number).padStart(2, "0")} · ${escapeHtml(day.date)}</div>
       <h2>${escapeHtml(day.title)}</h2>
       <p class="place-line">${escapeHtml(routeLabel(day))}</p>
-      <div class="detail-stats">
-        <div><strong>${distance ? formatDistance(distance) : escapeHtml((destinationForDay(day)?.name || "Destination to plan"))}</strong><span>${distance ? "DISTANCE" : "WHERE"}</span></div>
-        <div><strong>${duration ? escapeHtml(duration) : (journey.status === "planned" ? "To plan" : "No travel")}</strong><span>${modes.length ? escapeHtml(modeLabel(day).toUpperCase()) : "DAY TYPE"}</span></div>
-      </div>
-      ${renderRouteLegs(day)}
-      <h3>The day</h3>
-      <p>${escapeHtml(day.text)}</p>
-      <div class="detail-foot">${escapeHtml(journey.note)}</div>
+      <p class="day-story">${escapeHtml(day.text || "A day taking shape.")}</p>
+      <div class="story-actions"><button type="button" data-day-album>${photos.length ? `View ${photos.length} photo${photos.length===1?'':'s'}` : 'Explore this day'}</button><button type="button" data-day-map ${dayCoordinates(day).length?'':'disabled'}>See this day on the map</button></div>
+      <p class="travel-summary">${distance ? `${formatDistance(distance)} · ` : ''}${escapeHtml(modeLabel(day))}${duration ? ` · ${escapeHtml(duration)}` : ''}</p>
+      ${day.segmentIds.length ? `<details class="travel-details"><summary>Travel details · ${day.segmentIds.length} leg${day.segmentIds.length===1?'':'s'}</summary>${renderRouteLegs(day)}</details>` : ''}
+      <nav class="journal-day-nav" aria-label="Journal days"><button type="button" data-journal-step="-1" ${day.number===1?'disabled':''}>← Previous day</button><span>Day ${day.number} of ${journey.days.length}</span><button type="button" data-journal-step="1" ${day.number===journey.days.length?'disabled':''}>Next day →</button></nav>
+      <button id="resume-replay" type="button" ${replayJourneyId===journey.id?'':'hidden'}>Return to paused Replay</button>
     `;
 
     photoStrip.innerHTML = photos.length
@@ -877,7 +881,8 @@
             <small>${escapeHtml(photo.caption)}</small>
           </button>
         `).join("")
-      : '<div class="photo-empty">This day is ready for photos whenever you add them.</div>';
+      : "";
+    $(".photo-section").hidden = !photos.length;
     prepareProgressiveImages(storyMedia);
     prepareProgressiveImages(photoStrip);
     syncInspectionClasses();
@@ -915,7 +920,7 @@
 
   function setMobileTab(tab) {
     $(".atlas-shell").dataset.mobileTab = tab;
-    document.querySelectorAll(".mobile-nav button").forEach((button) => button.classList.toggle("active", button.dataset.tab === tab));
+    document.querySelectorAll(".mobile-nav button").forEach((button) => { button.classList.toggle("active", button.dataset.tab === tab); button.setAttribute("aria-pressed", String(button.dataset.tab === tab)); });
     if (tab === "map" && mainMap) {
       window.setTimeout(() => {
         mainMap.resize();
@@ -953,7 +958,7 @@
             <span>${String(index + 1).padStart(2, "0")}</span>
           </button>
         `).join("")
-      : '<div class="viewer-empty-strip">No photographs for this day.</div>';
+      : "";
     prepareProgressiveImages($("#viewer-filmstrip"));
     const activeThumb = $("#viewer-filmstrip .active");
     if (activeThumb) activeThumb.scrollIntoView({ block: "nearest", inline: "center" });
@@ -994,7 +999,8 @@
         modalPhoto.dataset.eager = "true";
         hydrateImage(modalPhoto);
       }
-      $("#modal-caption").textContent = `${photo.caption} · ${photo.takenAt || `Day ${day.number}`}`;
+      $("#modal-caption").textContent = window.JOURNEY_ATLAS_UTILS.photoCaption(photo, day);
+      $("#modal-time").textContent = photo.takenAt || day.date;
       $("#modal-location").textContent = photo.locationLabel ? `⌖ ${photo.locationLabel}` : "";
       $("#modal-description").textContent = photo.description || "";
       preloadWithinDay(photos, viewerPhotoIndex);
@@ -1004,9 +1010,11 @@
       modalPhoto.alt = "";
       $("#modal-caption").textContent = "";
       $("#modal-location").textContent = "";
-      $("#modal-description").textContent = "This day does not have photographs yet.";
+      $("#modal-description").textContent = "";
+      $("#modal-time").textContent = day.date;
+      emptyStage.innerHTML = `<strong>${escapeHtml(day.title)}</strong><span>${escapeHtml(day.text || routeLabel(day))}</span>`;
     }
-    $("#modal-progress").textContent = photo ? `PHOTO ${viewerPhotoIndex + 1} OF ${photos.length}` : "NO PHOTOS";
+    $("#modal-progress").textContent = photo ? `PHOTO ${viewerPhotoIndex + 1} OF ${photos.length}` : `DAY ${day.number}`;
     $("#modal-day-title").textContent = day.title;
     $("#modal-day-route").textContent = routeLabel(day);
     $("#viewer-day-label").textContent = `Day ${day.number} · ${day.date}`;
@@ -1016,6 +1024,11 @@
     $("#viewer-next-day").disabled = dayIndex >= journey.days.length - 1;
     $(".photo-prev").disabled = !photo || viewerPhotoIndex === 0;
     $(".photo-next").disabled = !photo || viewerPhotoIndex === photos.length - 1;
+    const next = photo ? journey.days[dayIndex+1] : journey.days.slice(dayIndex+1).find(d => photosForDay(d.id).length);
+    const continuation = $("#album-continue");
+    continuation.hidden = Boolean(photo && viewerPhotoIndex < photos.length-1);
+    continuation.dataset.day = next?.id || '';
+    continuation.textContent = next ? `${photo ? 'Continue to' : 'Next day with photos ·'} Day ${next.number} · ${next.title}` : 'Back to journey';
     renderViewerFilmstrip(photos);
     renderDays();
     renderStory();
@@ -1106,6 +1119,7 @@
   }
 
   function replayLeadPhoto(day, moment) {
+    if (moment?.curated) return moment.photoId ? photoById(moment.photoId) : null;
     if (moment?.photoId) return photoById(moment.photoId);
     const photos = photosForDay(day.id);
     const selectedLead = day.leadPhotoId ? photoById(day.leadPhotoId) : null;
@@ -1113,7 +1127,7 @@
   }
 
   function replaySegment(moment = currentReplayMoment()) {
-    return moment?.type === "segment" ? segmentById(moment.segmentId) : null;
+    return segmentById(replayUtils.routePhase(moment, replayProgress).segmentId) || null;
   }
 
   function replayMomentProgress(moment) {
@@ -1121,8 +1135,8 @@
   }
 
   function replayMapPadding() {
-    if (window.matchMedia("(max-width: 700px)").matches) {
-      return { top: Math.min(310, Math.floor(window.innerHeight * 0.42)), right: 34, bottom: 165, left: 34 };
+    if (window.matchMedia("(max-width: 900px)").matches) {
+      return { top: 24, right: 24, bottom: 34, left: 24 };
     }
     return { top: 70, right: 70, bottom: 145, left: 405 };
   }
@@ -1132,6 +1146,7 @@
     const day = replayMomentDay(moment);
     const photo = moment.photoId ? photoById(moment.photoId) : null;
     const duration = prefersReducedMotion() ? 0 : 700;
+    if (moment.camera?.reviewed) { replayMap.easeTo({center:moment.camera.center,zoom:moment.camera.zoom,duration}); return; }
     if (photo && Number.isFinite(photo.lng) && Number.isFinite(photo.lat)) {
       replayMap.easeTo({
         center: [photo.lng, photo.lat],
@@ -1179,8 +1194,8 @@
     });
 
     const completedSegmentIds = new Set(replayTimeline.slice(0, replayMomentIndex)
-      .filter((item) => item.type === "segment")
-      .map((item) => item.segmentId));
+      .flatMap((item) => item.segmentIds || (item.segmentId ? [item.segmentId] : [])));
+    replayUtils.routePhase(moment, progress).completed.forEach(id => completedSegmentIds.add(id));
     journey.segments.filter((segment) => completedSegmentIds.has(segment.id)).forEach((segment) => {
       addSegmentLayer(replayMap, replayDecorations, segment, {
         prefix: "replay-complete",
@@ -1191,13 +1206,14 @@
 
     const segment = replaySegment(moment);
     if (segment) {
-      const coordinates = replayUtils.partialLine(segmentCoordinates(segment), progress);
+      const coordinates = replayUtils.partialLine(segmentCoordinates(segment), replayUtils.routePhase(moment,progress).progress);
       addSegmentLayer(replayMap, replayDecorations, segment, {
         prefix: "replay-active",
         coordinates,
         opacity: 1,
         selected: false
       });
+      replayDrawnSegmentId=segment.id;
       replayActiveSourceId = `replay-active-source-${segment.id}`;
       replayPositionMarker = addReplayMarker(
         coordinates[coordinates.length - 1],
@@ -1205,7 +1221,8 @@
         `Current ${labels[segment.mode] || segment.mode} position`,
         modeStyles[segment.mode]?.color || palette.route
       );
-    } else if (moment.type === "photo") {
+      if(replayPositionMarker) replayPositionMarker.getElement().textContent=modeSymbols[segment.mode] || "";
+    } else if (moment.type === "photo" || moment.photoId) {
       const photo = photoById(moment.photoId);
       if (photo && Number.isFinite(photo.lng) && Number.isFinite(photo.lat)) {
         addReplayMarker([photo.lng, photo.lat], "replay-photo-marker", `Photograph: ${photo.caption}`, palette.selected);
@@ -1221,8 +1238,10 @@
     replayProgress = replayUtils.clamp(progress);
     const moment = currentReplayMoment();
     const segment = replaySegment(moment);
+    if (segment && segment.id !== replayLabeledSegmentId) renderReplayRouteLabel(moment);
+    if (replayMapReady && segment && segment.id !== replayDrawnSegmentId) drawReplayMomentMap(moment,replayProgress,false);
     if (!segment || !replayMapReady || !replayActiveSourceId) return;
-    const coordinates = replayUtils.partialLine(segmentCoordinates(segment), replayProgress);
+    const coordinates = replayUtils.partialLine(segmentCoordinates(segment), replayUtils.routePhase(moment,replayProgress).progress);
     const source = replayMap.getSource(replayActiveSourceId);
     if (source) {
       source.setData({
@@ -1236,40 +1255,31 @@
   }
 
   function renderReplayPhoto(photo) {
-    const frame = $("#replay-photo-frame");
-    const image = $("#replay-photo");
-    frame.hidden = !photo;
-    if (!photo) {
-      image.className = "";
-      image.removeAttribute("src");
-      image.removeAttribute("srcset");
-      image.alt = "";
-      $("#replay-photo-caption").textContent = "";
-      return;
-    }
-    image.className = photo.blur ? "progressive-image" : "";
-    image.srcset = "";
-    image.src = photo.blur || preferredPhotoUrl(photo, 1280);
-    image.sizes = "(max-width: 900px) 70vw, 355px";
-    image.alt = photo.alt || "";
-    if (photo.blur && photo.srcset?.length) {
-      image.dataset.src = photoAssetUrl(photo.src);
-      image.dataset.srcset = photoSrcset(photo);
-      hydrateImage(image);
-    }
-    $("#replay-photo-caption").textContent = photo.caption || "";
-    preloadPhoto(photo, 1280);
+    const frame=$('#replay-photo-frame'), image=$('#replay-photo');
+    const token=++replayPhotoToken;
+    replayPhotoReady=!photo; frame.hidden=!photo;
+    $('#replay-retry-photo').hidden=true;
+    $('#replay-photo-status').textContent=photo?'Loading photograph…':'';
+    image.onload=null; image.onerror=null;
+    if(!photo) {image.removeAttribute('src');image.removeAttribute('srcset');image.alt='';$('#replay-photo-caption').textContent='';return;}
+    image.className=''; image.alt=photo.alt || ''; image.sizes='(max-width: 900px) 100vw, 355px';
+    image.onload=()=>{ if(token!==replayPhotoToken) return; replayPhotoReady=true; replayLastTimestamp=null; $('#replay-photo-status').textContent=''; };
+    image.onerror=()=>{ if(token!==replayPhotoToken) return; replayPhotoReady=false; pauseReplay(); $('#replay-photo-status').textContent='The photograph could not load. Retry or choose the next moment.'; $('#replay-retry-photo').hidden=false; };
+    image.srcset=photoSrcset(photo); image.src=preferredPhotoUrl(photo,1280);
+    $('#replay-photo-caption').textContent=photo.caption || '';
+    const nextPhoto=replayLeadPhoto(replayMomentDay(replayTimeline[replayMomentIndex+1]),replayTimeline[replayMomentIndex+1]);
+    if(nextPhoto) preloadPhoto(nextPhoto,1280);
   }
 
   function updateReplayControls(day) {
     const dayIndex = journey.days.findIndex((item) => item.id === day.id);
     const timeline = $("#replay-timeline");
-    timeline.max = Math.max(0, journey.days.length - 1);
-    timeline.value = Math.max(0, dayIndex);
-    timeline.setAttribute("aria-valuetext", `Day ${dayIndex + 1} of ${journey.days.length}: ${day.title}`);
-    $("#replay-day-label").textContent = `Day ${dayIndex + 1} / ${journey.days.length}`;
-    $("#replay-previous-day").disabled = dayIndex <= 0;
-    $("#replay-next-day").disabled = dayIndex >= journey.days.length - 1;
+    timeline.max = Math.max(0, replayTimeline.length - 1);
+    timeline.value = replayMomentIndex;
+    timeline.setAttribute("aria-valuetext", `Moment ${replayMomentIndex+1} of ${replayTimeline.length}, Day ${day.number}: ${day.title}`);
+    $("#replay-day-label").textContent = `${replayMomentIndex+1} / ${replayTimeline.length} · Day ${day.number}`;
+    $("#replay-previous-day").disabled = replayMomentIndex <= 0;
+    $("#replay-next-day").disabled = replayMomentIndex >= replayTimeline.length - 1;
     $("#replay-toggle").textContent = replayPlaying ? "Pause" : (replayCompleted ? "Replay" : "Play");
     $("#replay-toggle").setAttribute("aria-label", replayPlaying ? "Pause Trip Replay" : "Play Trip Replay");
     $("#replay-status").textContent = replayPlaying
@@ -1286,25 +1296,32 @@
     $("#replay-complete").hidden = true;
     $("#replay-eyebrow").textContent = `DAY ${String(day.number).padStart(2, "0")} · ${day.date}`;
     $("#replay-title").textContent = day.title;
-    $("#replay-copy").textContent = conciseDayStory(day);
+    $("#replay-copy").textContent = moment.caption || conciseDayStory(day);
+    renderReplayRouteLabel(moment);
+    renderReplayPhoto(photo);
+    updateReplayControls(day);
+    drawReplayMomentMap(moment, replayProgress, fit);
+  }
+
+  function renderReplayRouteLabel(moment) {
+    const day=replayMomentDay(moment), segment=replaySegment(moment), photo=replayLeadPhoto(day,moment);
+    replayLabeledSegmentId=segment?.id || null;
     if (segment) {
       const from = placeById(segment.from);
       const to = placeById(segment.to);
       $("#replay-mode").innerHTML = `${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)} · leg ${day.segmentIds.indexOf(segment.id) + 1} of ${day.segmentIds.length}`;
       $("#replay-route").textContent = `${from.name} → ${to.name}`;
     } else if (moment.type === "photo") {
-      $("#replay-mode").textContent = "Located photograph";
+      $("#replay-mode").textContent = "Photograph";
       $("#replay-route").textContent = photo?.locationLabel || routeLabel(day);
     } else {
-      $("#replay-mode").textContent = journey.status === "planned" ? "Planned day" : "A day in one place";
+      $("#replay-mode").textContent = journey.status === "planned" ? "Planned day" : "A chapter of the journey";
       $("#replay-route").textContent = routeLabel(day);
     }
-    renderReplayPhoto(photo);
-    updateReplayControls(day);
-    drawReplayMomentMap(moment, replayProgress, fit);
   }
 
   function replayMomentDuration(moment) {
+    if(moment?.duration) return moment.duration * 1000;
     if (moment?.type === "photo") return 2800;
     if (moment?.type === "day") return 2200;
     const pointCount = replaySegment(moment) ? segmentCoordinates(replaySegment(moment)).length : 2;
@@ -1351,10 +1368,10 @@
     if (replayLastTimestamp === null) replayLastTimestamp = timestamp;
     const elapsed = Math.min(100, timestamp - replayLastTimestamp);
     replayLastTimestamp = timestamp;
-    replayElapsed += elapsed * replaySpeed;
+    if(replayPhotoReady) replayElapsed += elapsed * replaySpeed;
     const moment = currentReplayMoment();
     const duration = replayMomentDuration(moment);
-    if (moment.type === "segment" && !prefersReducedMotion()) setReplayProgress(replayElapsed / duration);
+    if ((moment.type === "segment" || moment.segmentIds?.length) && !prefersReducedMotion()) setReplayProgress(replayElapsed / duration);
     else if (replayProgress < 1) setReplayProgress(1);
     if (replayElapsed >= duration && !advanceReplayMoment()) return;
     replayFrame = window.requestAnimationFrame(replayTick);
@@ -1381,21 +1398,14 @@
     else startReplay();
   }
 
-  function jumpReplayToDay(dayIndex) {
-    const day = journey.days[Math.max(0, Math.min(journey.days.length - 1, dayIndex))];
-    if (!day) return;
-    pauseReplay();
-    replayMomentIndex = replayUtils.firstMomentIndexForDay(replayTimeline, day.id);
-    replayCompleted = false;
-    replayElapsed = 0;
-    replayProgress = replayMomentProgress(currentReplayMoment());
+  function jumpReplayToMoment(index) {
+    if(!replayTimeline.length) return;
+    pauseReplay(); replayMomentIndex=Math.max(0,Math.min(replayTimeline.length-1,index));
+    replayCompleted=false; replayElapsed=0; replayProgress=replayMomentProgress(currentReplayMoment());
     renderReplayMoment();
   }
-
-  function stepReplayDay(delta) {
-    const currentDayIndex = journey.days.findIndex((day) => day.id === replayMomentDay().id);
-    jumpReplayToDay(currentDayIndex + delta);
-  }
+  function jumpReplayToDay(dayIndex) { jumpReplayToMoment(replayUtils.firstMomentIndexForDay(replayTimeline, journey.days[dayIndex]?.id)); }
+  function stepReplayDay(delta) { jumpReplayToMoment(replayMomentIndex+delta); }
 
   function initReplayMap() {
     if (replayMap || !window.maplibregl) {
@@ -1403,17 +1413,19 @@
         replayMap.resize();
         if (replayMapReady) drawReplayMomentMap(currentReplayMoment(), replayProgress, true);
       } else {
-        $("#replay-status").textContent = "The replay map could not load; the timeline and story controls still work.";
+        $("#replay-map-error").hidden=false;
       }
       return;
     }
-    replayMap = createMap("replay-map", true);
+    try { replayMap = createMap("replay-map", true); }
+    catch(_error) { $('#replay-map-error').hidden=false; return; }
     let setupAttempts = 0;
     const finishReplayMapSetup = () => {
       if (replayMapReady) return;
       try {
         applyBasemapTreatment(replayMap);
         replayMapReady = true;
+        $("#replay-map-error").hidden=true;
         window.requestAnimationFrame(() => {
           replayMap.resize();
           drawReplayMomentMap(currentReplayMoment(), replayProgress, true);
@@ -1421,13 +1433,13 @@
       } catch (_error) {
         replayMapReady = false;
         setupAttempts += 1;
-        if (setupAttempts < 24) window.setTimeout(finishReplayMapSetup, 500);
+        $("#replay-map-error").hidden=false;
       }
     };
     replayMap.on("load", finishReplayMapSetup);
     replayMap.on("style.load", finishReplayMapSetup);
     replayMap.on("error", () => {
-      if (!replayMapReady) $("#replay-status").textContent = "The replay map is temporarily unavailable; the timeline and story controls still work.";
+      if (!replayMapReady) $("#replay-map-error").hidden=false;
     });
   }
 
@@ -1444,8 +1456,9 @@
     if (!replayDialog.open) replayDialog.showModal();
     renderReplayMoment({ fit: false });
     window.requestAnimationFrame(() => {
+      if(!replayDialog.open) return;
       initReplayMap();
-      $("#replay-toggle").focus();
+      $("#replay-toggle").focus({preventScroll:true});
     });
   }
 
@@ -1463,6 +1476,41 @@
     fitRoute();
     if (window.matchMedia("(max-width: 900px)").matches) setMobileTab("map");
   }
+
+  function showJournal(atHeading = false) {
+    if (window.matchMedia('(max-width: 900px)').matches) setMobileTab('story');
+    if (atHeading) { $('.story-panel').scrollTop=0; detailPanel.querySelector('h2')?.setAttribute('tabindex','-1'); detailPanel.querySelector('h2')?.focus({preventScroll:true}); }
+  }
+  function openAlbum() {
+    $('#album-title').textContent = `All photos · ${journey.photos.length}`;
+    $('#album-days').innerHTML = journey.days.map(day=>{
+      const photos=photosForDay(day.id); const lead=photos.find(p=>p.id===day.leadPhotoId)||photos[0];
+      return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${lead?photoImageMarkup(lead,{sizes:'280px'}):'<span class="album-text-scene">A page from the journey</span>'}<strong>Day ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?`${photos.length} photo${photos.length===1?'':'s'}`:'Read the story'}</small></button>`;
+    }).join('');
+    $('#album-dialog').showModal(); prepareProgressiveImages($('#album-days'));
+  }
+  function renderIntroduction() {
+    const intro=$('#trip-intro');
+    if(isDemoPage || location.hash || new URLSearchParams(location.search).has('day') || new URLSearchParams(location.search).has('photo')) { intro.hidden=true; return; }
+    const {photo,position}=window.JOURNEY_ATLAS_UTILS.resolveCover(journey,journey.photos);
+    intro.innerHTML=`<div class="intro-photo" style="--cover-position:${position}">${photo?photoImageMarkup(photo,{eager:true,sizes:'(max-width: 900px) 100vw, 60vw'}):'<div class="intro-text-art">A journey taking shape</div>'}</div><div class="intro-copy"><span>${escapeHtml(journey.dates)} · ${journey.days.length} days</span><h1>${escapeHtml(journey.title)}</h1><p>${escapeHtml(journey.subtitle)}</p><div><button id="intro-relive" type="button">Relive the trip</button><button id="intro-map" type="button">Explore the map</button></div></div>`;
+    intro.hidden=false; document.body.classList.add('intro-open'); $('.atlas-shell').inert=true; $('.mobile-nav').inert=true;
+    prepareProgressiveImages(intro);
+    $('#intro-map').onclick=()=>{dismissIntroduction();setMobileTab('map');fitRoute();};
+    $('#intro-relive').onclick=()=>{dismissIntroduction();openReplay();if(!prefersReducedMotion()) startReplay();};
+  }
+  function dismissIntroduction() { document.body.classList.remove('intro-open'); $('#trip-intro').hidden=true; $('.atlas-shell').inert=false; $('.mobile-nav').inert=false; }
+  function handleDeepLink() {
+    const params=new URLSearchParams(location.hash.replace(/^#/,'')); const search=new URLSearchParams(location.search);
+    const photo=params.get('photo')||search.get('photo'), day=params.get('day')||search.get('day');
+    if(photoById(photo)) {if(replayDialog.open)replayDialog.close(); $('#album-dialog').close(); dismissIntroduction();openPhoto(photo);}
+    else if(dayById(day)) {if(replayDialog.open)replayDialog.close(); photoDialog.close(); $('#album-dialog').close(); dismissIntroduction();setActiveDay(day,true);showJournal(true);}
+  }
+  window.addEventListener('hashchange',handleDeepLink);
+  $('#close-album').addEventListener('click',()=>$('#album-dialog').close());
+  $('#album-days').addEventListener('click',event=>{const button=event.target.closest('[data-album-day]');if(button){$('#album-dialog').close();openDayViewer(button.dataset.albumDay);}});
+  $('#album-continue').addEventListener('click',()=>{const id=$('#album-continue').dataset.day;if(id)openDayViewer(id);else {photoDialog.close();showJournal();}});
+  $('#return-to-journal').addEventListener('click',()=>showJournal());
 
   $("#journey-select").addEventListener("change", (event) => {
     const nextJourney = availableJourneys.find((item) => item.id === event.target.value);
@@ -1482,7 +1530,7 @@
 
   dayList.addEventListener("click", (event) => {
     const button = event.target.closest("[data-day-id]");
-    if (button) setActiveDay(button.dataset.dayId, true);
+    if (button) { setActiveDay(button.dataset.dayId, true); showJournal(true); }
   });
 
   detailPanel.addEventListener("mouseover", (event) => {
@@ -1505,7 +1553,17 @@
   });
   detailPanel.addEventListener("click", (event) => {
     const card = event.target.closest("[data-route-segment]");
-    if (card) inspectSegment(card.dataset.routeSegment, true);
+    if (card) {
+      inspectSegment(card.dataset.routeSegment, true);
+      if (window.matchMedia("(max-width: 900px)").matches) {
+        setMobileTab("map"); pendingMapAction = null;
+        window.setTimeout(() => { if(mainMapReady) { mainMap.resize(); mainMap.fitBounds(boundsFromCoordinates(segmentCoordinates(segmentById(card.dataset.routeSegment))), {padding:mapPadding(100),maxZoom:13,duration:prefersReducedMotion()?0:500}); } },100);
+      }
+    }
+    if(event.target.closest('[data-day-album]')) openDayViewer();
+    if(event.target.closest('[data-day-map]')) { setMobileTab('map'); pendingMapAction='focus'; }
+    const step=event.target.closest('[data-journal-step]'); if(step) { moveActiveDay(Number(step.dataset.journalStep)); showJournal(true); }
+    if(event.target.closest('#resume-replay')) openReplay();
   });
 
   [storyMedia, photoStrip].forEach((container) => container.addEventListener("click", (event) => {
@@ -1519,7 +1577,7 @@
   $("#previous-day").addEventListener("click", () => moveActiveDay(-1));
   $("#next-day").addEventListener("click", () => moveActiveDay(1));
   $("#show-all-photos").addEventListener("click", () => {
-    openDayViewer(activeDayId);
+    openAlbum();
   });
   $("#open-notes").addEventListener("click", () => $("#notes-dialog").showModal());
   $("#close-route-inspector").addEventListener("click", () => clearSegmentInspection(true));
@@ -1536,11 +1594,14 @@
     replaySpeed = Number(event.target.value) || 1;
     updateReplayControls(replayMomentDay());
   });
-  $("#replay-timeline").addEventListener("input", (event) => jumpReplayToDay(Number(event.target.value)));
+  $("#replay-timeline").addEventListener("input", (event) => jumpReplayToMoment(Number(event.target.value)));
   $("#replay-explore-day").addEventListener("click", exploreReplayDay);
   $("#replay-again").addEventListener("click", startReplay);
   $("#replay-explore-journey").addEventListener("click", exploreReplayJourney);
-  replayDialog.addEventListener("close", pauseReplay);
+  replayDialog.addEventListener("close", ()=>{ pauseReplay(); replayPhotoToken++; const img=$('#replay-photo'); img.onload=null;img.onerror=null; if(replayMap) replayMap.stop(); });
+  document.addEventListener('visibilitychange',()=>{if(document.hidden) pauseReplay();});
+  $('#replay-retry-photo').addEventListener('click',()=>renderReplayPhoto(replayLeadPhoto(replayMomentDay(),currentReplayMoment())));
+  $('#replay-retry-map').addEventListener('click',()=>{if(replayMap)replayMap.remove();replayMap=null;replayMapReady=false;replayDecorations={layerIds:[],sourceIds:[],markers:[],hitLayerIds:[]};initReplayMap();});
   $("#viewer-filmstrip").addEventListener("click", (event) => {
     const button = event.target.closest("[data-viewer-index]");
     if (!button) return;
@@ -1574,7 +1635,7 @@
         jumpReplayToDay(0);
       } else if (event.key === "End" && !["INPUT", "SELECT"].includes(tag)) {
         event.preventDefault();
-        jumpReplayToDay(journey.days.length - 1);
+        jumpReplayToMoment(replayTimeline.length - 1);
       }
       return;
     }
@@ -1598,4 +1659,7 @@
 
   renderAll({ fit: false });
   initMainMap();
+  setMobileTab('map');
+  handleDeepLink();
+  renderIntroduction();
 })();

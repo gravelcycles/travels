@@ -178,3 +178,38 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
   .studio-shell[data-mode="days"] .editor-panel { grid-row: 2; }
   .studio-shell[data-mode="days"] .map-workspace { grid-row: 3; }
 }
+
+.studio-shell[data-mode="planner"] { grid-template-columns: 240px minmax(0,1fr); grid-template-rows: 1fr; }
+.studio-shell[data-mode="planner"] .map-workspace,.studio-shell[data-mode="planner"] .editor-panel { display:none; }
+#trip-planner { grid-column:2; grid-row:1; overflow:auto; padding:28px; max-width:1100px; }
+#trip-planner h2 { font:32px Georgia,serif; }
+#trip-planner label { display:grid; gap:6px; margin:10px 0; font-size:13px; }
+#trip-planner input:not([type="checkbox"]),#trip-planner select,#trip-planner textarea { width:100%; min-height:40px; padding:8px; border:1px solid var(--line); background:white; color:var(--ink); }
+#trip-planner input[type="checkbox"] { width:auto; }
+#trip-planner .checkbox { display:flex; align-items:center; }
+#trip-planner button { min-height:40px; padding:8px 14px; border:1px solid var(--line); background:var(--panel); color:var(--ink); }
+#trip-planner details { border-top:1px solid var(--line); padding:18px 0; }
+#trip-planner summary { font:22px Georgia,serif; cursor:pointer; }
+.plan-row,.plan-place,.plan-leg { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+.plan-row label,.plan-place label,.plan-leg label { flex:1; min-width:120px; }
+.plan-day,.plan-moment { margin:18px 0; padding:18px; background:#fffdf5; border:1px solid var(--line); }
+.plan-day li { margin-bottom:18px; }
+.plan-day small { display:block; margin:8px 0; }
+#cover-thumbnails { display:flex; overflow:auto; gap:8px; max-height:100px; }
+#cover-thumbnails button { flex:none; padding:3px; }
+#cover-thumbnails button[aria-pressed="true"] { border:3px solid #d4512c; }
+#cover-thumbnails img { width:82px; height:62px; object-fit:cover; }
+#cover-previews { display:flex; align-items:start; gap:18px; }
+.cover-preview { margin:12px 0; flex:2; min-width:0; }
+.cover-preview.phone { flex:1; }
+.cover-preview img { width:100%; aspect-ratio:16/9; object-fit:cover; }
+.cover-preview.phone img { aspect-ratio:4/5; }
+.plan-save-bar { position:sticky; bottom:-28px; background:var(--panel); padding:14px 0; border-top:1px solid var(--line); }
+#plan-status { margin-bottom:0; }
+@media(max-width:700px) { .studio-shell[data-mode="planner"] { display:block; height:auto; } .studio-shell[data-mode="planner"] .browser-panel { height:auto; } #trip-planner { padding:16px; overflow:visible; } .plan-save-bar { bottom:0; } .plan-place { display:block; } }
+@media(max-width:700px) {
+  .studio-header { gap:10px; }
+  .plan-save-bar { display:flex; flex-wrap:wrap; gap:8px; }
+  #trip-planner .plan-save-bar button { flex:1 1 120px; font-size:12px; }
+  #plan-status { flex-basis:100%; font-size:12px; }
+}

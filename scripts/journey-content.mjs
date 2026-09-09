@@ -59,11 +59,30 @@ export function validateJourneys(data) {
       }
     }
     if (!j.days.length) fail(`${j.id}: at least one calendar day is required`);
+    if (j.coverPhoto != null) {
+      if (typeof j.coverPhoto.photoId !== "string" || !Array.isArray(j.coverPhoto.focal) || j.coverPhoto.focal.length !== 2 || !j.coverPhoto.focal.every(n => Number.isFinite(n) && n >= 0 && n <= 100)) fail(`${j.id}: invalid cover photo/focal point`);
+    }
+    if (j.replayMoments != null) {
+      if (!Array.isArray(j.replayMoments)) fail(`${j.id}: replay moments must be an ordered list`);
+      const momentIds = new Set();
+      for (const m of j.replayMoments) {
+        const day = j.days.find(d => d.id === m.dayId);
+        if (!validId(m.id) || momentIds.has(m.id) || !day) fail(`${j.id}: invalid replay moment ID/day`);
+        momentIds.add(m.id);
+        if (typeof m.caption !== "string" || !m.caption.trim() || !Number.isFinite(m.duration) || m.duration <= 0 || m.duration > 120) fail(`${m.id}: replay needs a caption and duration of 0–120 seconds`);
+        if (m.segmentIds && (!Array.isArray(m.segmentIds) || new Set(m.segmentIds).size !== m.segmentIds.length || m.segmentIds.some((id, i) => !day.segmentIds.includes(id) || (i && day.segmentIds.indexOf(id) <= day.segmentIds.indexOf(m.segmentIds[i-1]))))) fail(`${m.id}: replay segments must follow their day's travel order`);
+        if (m.photoId && !j.photos.some(p => p.id === m.photoId && p.dayId === m.dayId)) fail(`${m.id}: replay photo must belong to its day`);
+        if (m.camera && (!validCoordinate(m.camera.center) || !Number.isFinite(m.camera.zoom) || m.camera.zoom < 2 || m.camera.zoom > 20 || m.camera.reviewed !== true)) fail(`${m.id}: replay camera must be reviewed with valid coordinates/zoom`);
+      }
+    }
+
     const places = new Set(j.places.map(p => p.id)), segments = new Set(j.segments.map(s => s.id)), days = new Set(j.days.map(d => d.id));
     for (const p of j.places) if (!p.name || !validCoordinate([p.lng, p.lat])) fail(`${p.id}: invalid place coordinates or name`);
     for (const s of j.segments) {
       if (!places.has(s.from) || !places.has(s.to)) fail(`${s.id}: unknown route endpoint`);
       if (!["train", "boat", "bus", "gondola", "walk", "car", "bike"].includes(s.mode)) fail(`${s.id}: unsupported mode`);
+      if (s.durationMinutes != null && (!Number.isFinite(s.durationMinutes) || s.durationMinutes < 0)) fail(`${s.id}: invalid duration minutes`);
+      if (s.durationMaxMinutes != null && (!Number.isFinite(s.durationMaxMinutes) || !Number.isFinite(s.durationMinutes) || s.durationMaxMinutes < s.durationMinutes)) fail(`${s.id}: invalid duration range`);
       if (s.distanceKm != null && (!Number.isFinite(s.distanceKm) || s.distanceKm < 0)) fail(`${s.id}: invalid distance`);
       if (s.geometry && (s.geometry.length < 2 || !s.geometry.every(validCoordinate))) fail(`${s.id}: invalid geometry`);
     }
@@ -156,4 +175,8 @@ export function validateOverrides(state, data) {
       }
     }
   }
+  for (const journey of data.journeys) for (const moment of journey.replayMoments || []) {
+    if (moment.photoId && state.photos[moment.photoId]?.dayId && state.photos[moment.photoId].dayId !== moment.dayId) throw new Error(`${moment.id}: replay photo was moved to another day; update the moment before saving`);
+  }
+
 }

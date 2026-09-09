@@ -17,6 +17,7 @@
       <nav aria-label="Editor mode">
         <button class="active" data-mode="photos" type="button">Photo locations</button>
         <button data-mode="routes" type="button">Route drawing</button>
+        <button data-mode="planner" type="button">Trip plan & cover</button>
         <button data-mode="days" type="button">Day copy</button>
       </nav>
       <div class="studio-actions">
@@ -158,6 +159,20 @@
           <p class="editor-note">The title appears in the day list and journal. The description is also used as concise route-story context.</p>
         </form>
       </aside>
+
+      <section id="trip-planner" data-panel="planner" hidden aria-label="Trip structure, cover and Replay editor">
+        <h2>Shape the journey</h2>
+        <p>Preview changes, then save locally. The trip address and existing IDs stay stable.</p>
+        <label>Trip title<input id="plan-title" maxlength="160"></label>
+        <label>Introduction<textarea id="plan-subtitle" rows="2"></textarea></label>
+        <div class="plan-row"><label>Start date<input id="plan-start" type="date"></label><label>End date<input id="plan-end" type="date"></label><label>Photo time zone<input id="plan-timezone" placeholder="Europe/Berlin"></label></div>
+        <label>When dates change<select id="plan-alignment"><option value="dates">Keep existing content on its calendar date</option><option value="itinerary">Move the itinerary to the new start date</option></select></label>
+        <details><summary>Named places</summary><p>Enter reviewed longitude/latitude. Existing route geometry is preserved when a place changes.</p><div id="plan-places"></div><button id="plan-add-place" type="button">+ Named place</button></details>
+        <details><summary>Days & ordered travel legs</summary><p>Moving a day moves its story, routes and photos to the adjacent date. Photo capture timestamps remain unchanged.</p><div id="plan-days"></div></details>
+        <details open><summary>Journey cover</summary><p>One photograph for the catalog and trip opening. Daily lead photos remain independent.</p><label>Cover photo<select id="cover-picker"></select></label><div id="cover-thumbnails" aria-label="Cover photo choices"></div><div class="plan-row"><label>Horizontal focal point<input id="cover-x" type="range" min="0" max="100"></label><label>Vertical focal point<input id="cover-y" type="range" min="0" max="100"></label></div><div id="cover-previews"></div></details>
+        <details><summary>Curated Replay moments</summary><p>Use short, factual captions. A moment's duration is editorial pacing. Only reviewed photo pins supply exact locations.</p><div id="plan-moments"></div><button type="button" id="plan-add-moment">+ Replay moment</button></details>
+        <div class="plan-save-bar"><button type="button" id="plan-preview">Preview changes</button><button type="button" id="plan-save" disabled>Save trip plan locally</button><p id="plan-status" role="status"></p></div>
+      </section>
     </main>
 
     <dialog id="new-trip-dialog" aria-labelledby="new-trip-heading">
@@ -186,6 +201,7 @@
     <script src="/api/preview-assets/route-geometry.js"></script>
     <script src="/api/preview-assets/trip-photos.js"></script>
     <script src="/api/preview-assets/content-overrides.js"></script>
+    <script src="/dist/assets/atlas-utils.js"></script>
     <script src="/studio.js?v=20260908-1"></script>
   </body>
 </html>

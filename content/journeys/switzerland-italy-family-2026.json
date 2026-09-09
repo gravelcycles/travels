@@ -5,7 +5,7 @@
   "badge": "FAMILY JOURNEY",
   "label": "Switzerland & Italy · Family trip",
   "title": "Lakes, Rails & Rain",
-  "subtitle": "Two family weeks based in Luzern, with mountain days and a rainy turn through Como",
+  "subtitle": "Two weeks with family, from our Luzern base to the Italian lakes: mountain railways, boat rides, rainy rest days, and shared meals.",
   "kicker": "FAMILY JOURNEY · SWITZERLAND + ITALY",
   "dates": "13–26 August 2026",
   "note": "David and Michelle traveled with her parents, using Luzern as home base except for three nights around Como.",
@@ -179,7 +179,8 @@
           "lat": 47.141754,
           "lng": 8.430488
         }
-      ]
+      ],
+      "durationMinutes": 70
     },
     {
       "id": "family-luzern-engelberg",
@@ -214,7 +215,8 @@
           "lat": 46.870587,
           "lng": 8.372417
         }
-      ]
+      ],
+      "durationMinutes": 43
     },
     {
       "id": "family-engelberg-luzern",
@@ -249,7 +251,8 @@
           "lat": 46.95839,
           "lng": 8.366572
         }
-      ]
+      ],
+      "durationMinutes": 43
     },
     {
       "id": "family-luzern-bern",
@@ -269,7 +272,8 @@
           "lat": 47.288042,
           "lng": 7.943115
         }
-      ]
+      ],
+      "durationMinutes": 65
     },
     {
       "id": "family-bern-luzern",
@@ -289,7 +293,8 @@
           "lat": 47.170785,
           "lng": 8.097894
         }
-      ]
+      ],
+      "durationMinutes": 65
     },
     {
       "id": "family-luzern-kehrsiten-bike",
@@ -363,7 +368,10 @@
           46.980636,
           8.360055
         ]
-      ]
+      ],
+      "durationMinutes": 120,
+      "durationMaxMinutes": 180,
+      "durationQualifier": "with stops"
     },
     {
       "id": "family-kehrsiten-luzern-boat",
@@ -385,7 +393,8 @@
           47.037,
           8.323
         ]
-      ]
+      ],
+      "durationMinutes": 55
     },
     {
       "id": "family-luzern-brienz",
@@ -430,7 +439,8 @@
           "lat": 46.727324,
           "lng": 8.184247
         }
-      ]
+      ],
+      "durationMinutes": 90
     },
     {
       "id": "family-brienz-interlaken-boat",
@@ -452,7 +462,8 @@
           46.704,
           7.902
         ]
-      ]
+      ],
+      "durationMinutes": 75
     },
     {
       "id": "family-interlaken-lauterbrunnen",
@@ -477,7 +488,8 @@
           "lat": 46.632692,
           "lng": 7.89969
         }
-      ]
+      ],
+      "durationMinutes": 20
     },
     {
       "id": "family-lauterbrunnen-grutschalp",
@@ -491,7 +503,8 @@
           46.597,
           7.9
         ]
-      ]
+      ],
+      "durationMinutes": 4
     },
     {
       "id": "family-grutschalp-murren",
@@ -506,7 +519,8 @@
           "lat": 46.5727,
           "lng": 7.8966
         }
-      ]
+      ],
+      "durationMinutes": 14
     },
     {
       "id": "family-murren-grutschalp",
@@ -521,7 +535,8 @@
           "lat": 46.5727,
           "lng": 7.8966
         }
-      ]
+      ],
+      "durationMinutes": 14
     },
     {
       "id": "family-grutschalp-lauterbrunnen",
@@ -535,7 +550,8 @@
           46.597,
           7.9
         ]
-      ]
+      ],
+      "durationMinutes": 4
     },
     {
       "id": "family-lauterbrunnen-interlaken",
@@ -560,7 +576,8 @@
           "lat": 46.674123,
           "lng": 7.872847
         }
-      ]
+      ],
+      "durationMinutes": 20
     },
     {
       "id": "family-interlaken-luzern",
@@ -610,7 +627,8 @@
           "lat": 46.894594,
           "lng": 8.247495
         }
-      ]
+      ],
+      "durationMinutes": 110
     },
     {
       "id": "family-luzern-como",
@@ -650,7 +668,8 @@
           "lat": 45.832162,
           "lng": 9.031446
         }
-      ]
+      ],
+      "durationMinutes": 170
     },
     {
       "id": "family-como-varenna-boat",
@@ -690,7 +709,8 @@
           "lat": 46.0173254,
           "lng": 9.2372538
         }
-      ]
+      ],
+      "durationMinutes": 60
     },
     {
       "id": "family-varenna-fiumelatte",
@@ -708,7 +728,8 @@
           46.003,
           9.289
         ]
-      ]
+      ],
+      "durationMinutes": 45
     },
     {
       "id": "family-fiumelatte-dervio",
@@ -728,7 +749,8 @@
           "lat": 46.0435,
           "lng": 9.3054
         }
-      ]
+      ],
+      "durationMinutes": 20
     },
     {
       "id": "family-dervio-bellagio-boat",
@@ -736,7 +758,8 @@
       "to": "bellagio-family",
       "mode": "boat",
       "distanceKm": 10,
-      "duration": "33 min"
+      "duration": "33 min",
+      "durationMinutes": 33
     },
     {
       "id": "family-bellagio-como-bus",
@@ -1310,7 +1333,8 @@
           9.08516,
           45.80807
         ]
-      ]
+      ],
+      "durationMinutes": 70
     },
     {
       "id": "family-como-lugano",
@@ -1360,7 +1384,8 @@
           "lat": 45.989364,
           "lng": 8.946883
         }
-      ]
+      ],
+      "durationMinutes": 45
     },
     {
       "id": "family-lugano-luzern",
@@ -1380,7 +1405,8 @@
           "lat": 47.049035,
           "lng": 8.549436
         }
-      ]
+      ],
+      "durationMinutes": 120
     },
     {
       "id": "family-luzern-kriens",
@@ -1398,7 +1424,8 @@
           47.039,
           8.286
         ]
-      ]
+      ],
+      "durationMinutes": 20
     },
     {
       "id": "family-kriens-pilatus",
@@ -1420,7 +1447,8 @@
           46.985,
           8.253
         ]
-      ]
+      ],
+      "durationMinutes": 35
     },
     {
       "id": "family-pilatus-alpnachstad",
@@ -1435,7 +1463,8 @@
           "lat": 46.9703982,
           "lng": 8.2713759
         }
-      ]
+      ],
+      "durationMinutes": 30
     },
     {
       "id": "family-alpnachstad-luzern",
@@ -1470,7 +1499,8 @@
           "lat": 47.03506,
           "lng": 8.303229
         }
-      ]
+      ],
+      "durationMinutes": 20
     },
     {
       "id": "family-luzern-airport",
@@ -1490,7 +1520,8 @@
           "lat": 47.377847,
           "lng": 8.540502
         }
-      ]
+      ],
+      "durationMinutes": 70
     }
   ],
   "days": [
@@ -1697,5 +1728,161 @@
     "sourceDirectory": "photos/switzerland-italy-trip",
     "releaseTag": "trip-photos-v1",
     "idPrefix": "family"
-  }
+  },
+  "coverPhoto": {
+    "photoId": "family-img-2880",
+    "focal": [
+      0,
+      45
+    ]
+  },
+  "replayMoments": [
+    {
+      "id": "family-moment-1",
+      "dayId": "family-d1",
+      "segmentIds": [
+        "family-airport-luzern"
+      ],
+      "caption": "The train from Zürich Airport brought the family to Luzern for a first evening by the river.",
+      "duration": 8,
+      "photoId": "family-img-1425"
+    },
+    {
+      "id": "family-moment-2",
+      "dayId": "family-d2",
+      "segmentIds": [
+        "family-luzern-engelberg",
+        "family-engelberg-luzern"
+      ],
+      "caption": "A train ride to Engelberg led to cold water, lunch, and a waterfall walk.",
+      "duration": 8,
+      "photoId": "family-img-1472"
+    },
+    {
+      "id": "family-moment-3",
+      "dayId": "family-d3",
+      "segmentIds": [
+        "family-luzern-bern",
+        "family-bern-luzern"
+      ],
+      "caption": "Bern brought gelato, an Aare float, an old-town walk, and a visit to the bears.",
+      "duration": 8,
+      "photoId": "family-img-5047"
+    },
+    {
+      "id": "family-moment-4",
+      "dayId": "family-d4",
+      "segmentIds": [
+        "family-luzern-kehrsiten-bike",
+        "family-kehrsiten-luzern-boat"
+      ],
+      "caption": "Bikes, a picnic, and a swim led to Kehrsiten, with a boat ride home.",
+      "duration": 8,
+      "photoId": "family-img-5052"
+    },
+    {
+      "id": "family-moment-5",
+      "dayId": "family-d5",
+      "segmentIds": [],
+      "caption": "Rain made Luzern a day for resting and watching The Odyssey.",
+      "duration": 8,
+      "photoId": "family-img-1520"
+    },
+    {
+      "id": "family-moment-6",
+      "dayId": "family-d6",
+      "segmentIds": [
+        "family-luzern-brienz",
+        "family-brienz-interlaken-boat",
+        "family-interlaken-lauterbrunnen",
+        "family-lauterbrunnen-grutschalp",
+        "family-grutschalp-murren",
+        "family-murren-grutschalp",
+        "family-grutschalp-lauterbrunnen",
+        "family-lauterbrunnen-interlaken",
+        "family-interlaken-luzern"
+      ],
+      "caption": "Train, boat, gondola, and mountain railway carried us from Luzern to Mürren and back.",
+      "duration": 10,
+      "photoId": "family-img-2880"
+    },
+    {
+      "id": "family-moment-7",
+      "dayId": "family-d7",
+      "segmentIds": [],
+      "caption": "A local day of browsing, floating on the Reuss, and visiting the castle.",
+      "duration": 8,
+      "photoId": "family-img-1611"
+    },
+    {
+      "id": "family-moment-8",
+      "dayId": "family-d8",
+      "segmentIds": [
+        "family-luzern-como"
+      ],
+      "caption": "A rainy train journey through the Gotthard corridor took the family south to Como.",
+      "duration": 8
+    },
+    {
+      "id": "family-moment-9",
+      "dayId": "family-d9",
+      "segmentIds": [],
+      "caption": "Rain in Como meant cards and spades, followed by dinner at a trattoria.",
+      "duration": 8
+    },
+    {
+      "id": "family-moment-10",
+      "dayId": "family-d10",
+      "segmentIds": [
+        "family-como-varenna-boat",
+        "family-varenna-fiumelatte",
+        "family-fiumelatte-dervio",
+        "family-dervio-bellagio-boat",
+        "family-bellagio-como-bus"
+      ],
+      "caption": "Ferry, footpath, train, boat, and bus connected Varenna, Fiumelatte, Dervio, and Bellagio.",
+      "duration": 10,
+      "photoId": "family-img-5136"
+    },
+    {
+      "id": "family-moment-11",
+      "dayId": "family-d11",
+      "segmentIds": [
+        "family-como-lugano",
+        "family-lugano-luzern"
+      ],
+      "caption": "The journey back to Luzern paused beside the lake in Lugano.",
+      "duration": 8
+    },
+    {
+      "id": "family-moment-12",
+      "dayId": "family-d12",
+      "segmentIds": [
+        "family-luzern-kriens",
+        "family-kriens-pilatus",
+        "family-pilatus-alpnachstad",
+        "family-alpnachstad-luzern"
+      ],
+      "caption": "Pilatus made a circuit of bus, gondola, mountain railway, and train.",
+      "duration": 8,
+      "photoId": "family-img-1754"
+    },
+    {
+      "id": "family-moment-13",
+      "dayId": "family-d13",
+      "segmentIds": [],
+      "caption": "A loose final day in Luzern, with familiar streets and no connection to catch.",
+      "duration": 8,
+      "photoId": "family-snapseed-camera-capture-20260825-111042-909"
+    },
+    {
+      "id": "family-moment-14",
+      "dayId": "family-d14",
+      "segmentIds": [
+        "family-luzern-airport"
+      ],
+      "caption": "The train back to Zürich Airport closed two weeks of lakes, mountains, rain, and shared meals.",
+      "duration": 8
+    }
+  ]
 }
