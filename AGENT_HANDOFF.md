@@ -1,19 +1,27 @@
 # Next-agent handoff
 
-## Private photo implementation · 9 September 2026 — cutover pending
+## Private photo access live · 9 September 2026
 
-Read [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md) first for current state.
-Cloudflare account/R2/OAuth are ready. The Worker is deployed and 198 private
-objects for 99 visible photos have been uploaded and checksum verified. The
-local frontend, two-size pipeline, password manager and 30-day login are
-implemented. All 80 tests and the build pass; workerd and in-app browser checks
-passed. Chosen passwords now work on Workers Free: browser PBKDF2 + server verification
-passed production tests with eight temporary credentials. No paid upgrade is
-needed or authorized. The owner-selected initial test credential is configured and verified on
-production, including 30-day remembered access and private photo checksums.
-Temporary probe credentials were removed. Pages has not been updated and both public photo Releases remain; privacy is not complete. Do not
-follow older public Release upload instructions below. Preserve the latest
-photo-1 previews, compact catalog, cover framing and traveler-edited copy.
+Published as `55eeb2b` in successful Pages run `34377620269`.
+Worker version: `125d91b6-75cf-4ff1-b5f8-17e27428b14d` on Workers Free.
+The owner-selected `initial-test` credential is active; its plaintext is not
+stored in the repository. Cloudflare serves 99 visible photographs as 198
+private WebP objects (135,849,682 bytes), with small and large sizes and public
+32 px blur placeholders. The GitHub Pages address remains unchanged.
+
+Production acceptance passed in the in-app browser: initial password login,
+remembered access without re-entering the password on the journey, 1280 px
+previews/Replay, 3200 px viewer, and logout requiring the password again.
+All 80 tests, build, actual workerd checks and secret/diff checks passed.
+Both old public photo Releases were deleted after confirming local backups
+of all 404 assets (199,772,706 bytes). All 404 historical image URLs and both
+Release endpoints return 404; all 198 private image URLs return 401 without
+authentication. Existing third-party caches or downloaded copies cannot be
+recalled. The tiny embedded blurs, captions, locations and routes remain public.
+
+See [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md) for password maintenance,
+private publishing, free-plan limits and recovery. Keep originals and the local
+migration backups. Do not follow older public Release upload instructions below.
 
 ## Day previews start at photo 1 · 9 September 2026
 

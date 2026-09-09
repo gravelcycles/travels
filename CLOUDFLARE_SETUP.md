@@ -2,7 +2,7 @@
 
 Updated 9 September 2026. Account, R2 subscription, and Wrangler authorization
 are complete. The private bucket and Worker are deployed. The owner-selected initial test credential is configured and verified.
-The Pages cutover remains; existing public photos are still accessible.
+The protected Pages site is live and both old public photo Releases are removed.
 Implementation state: [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md).
 
 ## Password maintenance
@@ -15,10 +15,9 @@ To add another credential, enter the shared password(s) in the local in-app brow
 as `family`, enter your chosen password twice, and choose **Add password**.
 The password must have at least 12 characters; a memorable passphrase works.
 These are separate from your Cloudflare account password. The agent deploys
-verifiers when passwords are added or removed, verifies access, deploys Pages,
-and retires both old public photo Releases. Visitors retain access for 30 days.
+verifiers when passwords are added or removed and verifies access. Visitors retain access for 30 days.
 
-## What the traveler needs to do
+## Completed account setup (reference)
 
 1. Create a [Cloudflare account](https://dash.cloudflare.com/sign-up), verify
    the email, and enable two-factor authentication. Save recovery codes privately.
@@ -38,14 +37,14 @@ and retires both old public photo Releases. Visitors retain access for 30 days.
    storage. See [Wrangler login](https://developers.cloudflare.com/workers/wrangler/commands/general/#login).
 
 There is no need to buy Cloudflare Images, register visitor accounts, or set up
-an email-login service. The Worker will support multiple shared passwords. The
-agent will provide private local password entry and add/revoke operations.
+an email-login service. The Worker supports multiple shared passwords. Private local password entry
+and add/revoke operations are implemented.
 
-## What the agent handles
+## Completed implementation
 
 - Private R2 bucket, photo/auth Worker, rate limiting, CORS, and secrets.
 - Multiple-password login, authenticated image loading, two sizes, and local originals.
-- Browser verification of both passwords, revocation, direct URLs, and caches.
+- Browser and runtime verification of login, revocation, direct URLs, and caches.
 - Updating the Pages photo manifest/frontend and retiring both public photo
   Releases after verification. Pages and the source repository stay in place.
 - Repeatable publishing, password management, and recovery documentation.
@@ -53,7 +52,7 @@ agent will provide private local password entry and add/revoke operations.
 ## Expected cost
 
 R2 Standard includes 10 GB-month storage, 1 million Class A operations and
-10 million Class B operations monthly, with free egress. The current proposed
+10 million Class B operations monthly, with free egress. The current
 99-photo set is about 136 MB, within the storage allowance. Actual charges
 include all account usage. See [R2 pricing](https://developers.cloudflare.com/r2/pricing/).
 
@@ -68,4 +67,4 @@ See [Workers pricing](https://developers.cloudflare.com/workers/platform/pricing
 Local Worker development/security tests, the two-size image pipeline, and
 frontend preparation need no Cloudflare account or payment information. Account
 activation and browser authorization are needed only for remote upload and
-deployment. Existing public images remain accessible until cutover is complete.
+deployment. This account setup and the private-photo cutover are complete.
