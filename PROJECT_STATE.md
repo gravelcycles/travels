@@ -2,6 +2,10 @@
 
 ## Selected-day photo fans · 9 September 2026
 
+Published as `013dacd` in successful Pages run `34354476031`. A fresh public
+Day 2 load showed exactly its five landmarks; individual viewer opening passed
+with no browser errors.
+
 Day selections now filter photo landmarks immediately, including while map tiles
 or route layers load and when the mobile map is hidden. Viewer day navigation
 updates the atlas scope too; only **Fit route** explicitly shows all days.
