@@ -2,42 +2,66 @@
   "family-img-1425": {
     "dayId": "family-d1",
     "caption": "Together at Zürich Airport",
-    "description": "Four family members smile together inside Zürich Airport.",
+    "description": "Picking up the 'rents from the airport!",
     "alt": "Four family members smile together inside Zürich Airport.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.460987,
+      "lng": 8.554782
+    },
+    "zoom": 14.26
   },
   "family-img-1426": {
     "dayId": "family-d1",
     "caption": "First evening in Luzern",
-    "description": "Four family members stand beneath the broad stone arch outside Luzern station.",
+    "description": "Made it to Luzern Bahnhof! This is the old Luzern train station entrance.",
     "alt": "Four family members stand beneath the broad stone arch outside Luzern station.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.050693,
+      "lng": 8.310221
+    },
+    "zoom": 14.18
   },
   "family-img-1434": {
     "dayId": "family-d1",
     "caption": "At the Lion Monument",
-    "description": "Four family members pose in front of Luzern's carved Lion Monument at night.",
+    "description": "",
     "alt": "Four family members pose in front of Luzern's carved Lion Monument at night.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.058195,
+      "lng": 8.310714
+    },
+    "zoom": 14.38
   },
   "family-img-5032": {
     "dayId": "family-d1",
     "caption": "Reflections on the Reuss",
-    "description": "Luzern old-town buildings and their evening lights reflect in the Reuss.",
+    "description": "",
     "alt": "Luzern old-town buildings and their evening lights reflect in the Reuss.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.050805,
+      "lng": 8.305291
+    },
+    "zoom": 14.38
   },
   "family-img-2793": {
     "dayId": "family-d1",
@@ -47,7 +71,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.050828,
+      "lng": 8.305883
+    },
+    "zoom": 14.38
   },
   "family-img-1463": {
     "dayId": "family-d1",
@@ -57,17 +87,29 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.051163,
+      "lng": 8.309597
+    },
+    "zoom": 14.38
   },
   "family-snapseed-camera-capture-20260814-122648-102": {
     "dayId": "family-d2",
     "caption": "Arriving in Engelberg",
-    "description": "A white village church stands against the steep green mountains in Engelberg.",
+    "description": "A very old monastery in Engelberg.",
     "alt": "A white village church stands against the steep green mountains in Engelberg.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.820834,
+      "lng": 8.408257
+    },
+    "zoom": 15.59
   },
   "family-img-1469": {
     "dayId": "family-d2",
@@ -77,7 +119,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.819174,
+      "lng": 8.40742
+    },
+    "zoom": 16.11
   },
   "family-img-1472": {
     "dayId": "family-d2",
@@ -87,7 +135,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.80539,
+      "lng": 8.447184
+    },
+    "zoom": 15.83
   },
   "family-snapseed-camera-capture-20260814-142431-686": {
     "dayId": "family-d2",
@@ -97,7 +151,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.809309,
+      "lng": 8.425036
+    },
+    "zoom": 13.32
   },
   "family-img-5036": {
     "dayId": "family-d2",
@@ -107,7 +167,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.063302,
+      "lng": 8.314646
+    },
+    "zoom": 13.6
   },
   "family-snapseed-camera-capture-20260815-075345-241": {
     "dayId": "family-d3",
@@ -117,7 +183,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.052419,
+      "lng": 8.308104
+    },
+    "zoom": 15.09
   },
   "family-snapseed-camera-capture-20260815-080433-893": {
     "dayId": "family-d3",
@@ -127,7 +199,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.050874,
+      "lng": 8.305647
+    },
+    "zoom": 13.59
   },
   "family-snapseed-camera-capture-20260815-082220-931": {
     "dayId": "family-d3",
@@ -137,7 +215,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.044691,
+      "lng": 8.310369
+    },
+    "zoom": 14.08
   },
   "family-snapseed-camera-capture-20260815-082238-670": {
     "dayId": "family-d3",
@@ -147,7 +231,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.040292,
+      "lng": 8.310652
+    },
+    "zoom": 14.38
   },
   "family-img-5040": {
     "dayId": "family-d3",
@@ -157,7 +247,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.943227,
+      "lng": 7.44418
+    },
+    "zoom": 14.21
   },
   "family-img-5044": {
     "dayId": "family-d3",

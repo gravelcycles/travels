@@ -6,6 +6,39 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Publish saved Studio edits and editing improvements
+
+- Include the traveler's saved photo captions, descriptions, map locations and
+  Replay zooms, plus the Varenna–Fiumelatte walking-route override.
+- Include the endpoint-preserving route editor, steady same-day photo map,
+  explicit saved-view button, and the train-route and photo-auth handoff docs.
+- Allow deliberately blank photo descriptions in the review test while checking
+  that published overrides preserve every saved edit and still exclude hidden
+  media. All 42 tests and the production build pass.
+
+
+### Keep the photo-editing map steady within a day
+
+- Selecting another photo in the same day preserves the current map position
+  and zoom, including unlocated photos. Clearing a pin also keeps the view.
+- **Switch to current point’s zoom** explicitly restores the selected photo's
+  saved location and zoom; it is disabled until a location is available.
+- Placing or dragging a pin still records the working map zoom for Replay.
+  Switching days retains the existing automatic framing behavior.
+- Validation: three photo-view regression tests and browser checks pass,
+  including retained framing, explicit saved-view navigation, and pin zoom.
+
+
+### Preserve detailed routes when moving an endpoint
+
+- Studio endpoint dragging and coordinate entry now change only the selected
+  terminal vertex and its adjoining line section. All other detailed coordinates
+  remain exact, including existing overrides. Save locally applies directly.
+- Undo/redo restores the full route edit, including geometry and smoothing;
+  intermediate anchors still require an accepted proposal or manual fallback.
+- Validation: endpoint regression tests and browser coordinate/undo checks pass.
+  The photo-review test now allows intentionally cleared descriptions.
+
 ### Document how to reproduce rail-aligned routes
 
 - Added `TRAIN_ROUTE_WORKFLOW.md` with the current OSM rail-geometry pipeline,

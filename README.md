@@ -17,6 +17,10 @@ For a repeatable new-trip process, read [JOURNEY_WORKFLOW.md](JOURNEY_WORKFLOW.m
 It covers the journey schema, exact rail/ferry routing, manual edits, GPX bike
 imports, photos, QA, publishing, and what must be recorded for the next agent.
 
+For the rail-aligned map lines specifically, follow
+[TRAIN_ROUTE_WORKFLOW.md](TRAIN_ROUTE_WORKFLOW.md): service research, Overpass
+exports, manifest setup, generation, overrides, and close-zoom review.
+
 ## Start a future trip
 
 The agent opens Atlas Studio. Choose **+ New trip**, give it a name and start/end
@@ -83,9 +87,14 @@ npm run studio
 The agent then opens `http://127.0.0.1:4173/studio/`. Choose any journey first.
 In **Photo locations**, select a day and photo, click the map (or drag its pin)
 to set the exact location, and add the precise place, caption, scene description,
-and preferred map zoom. In **Route drawing**, select a day and any of its travel
+and preferred map zoom. Selecting another photo in the same day keeps the map's
+current position and zoom. **Switch to current point’s zoom** restores the
+selected photo's saved view; placing its pin records the current zoom for Replay.
+In **Route drawing**, select a day and any of its travel
 legs, click the orange line to add control points, drag any point—including the
-start and end—or type exact endpoint coordinates. Undo, redo, reset, and
+start and end—or type exact endpoint coordinates. Moving an endpoint updates
+only that end of the detailed route; choose **Save locally** directly, without
+accepting the simplified anchor guide. Undo, redo, reset, and
 intermediate-point deletion are available. A mode-aware proposal routes through
 those durable anchors using the journey's local rail, ferry, road, walking, or
 bicycle network. Original, saved, anchor-guide, and proposed lines stay separate
