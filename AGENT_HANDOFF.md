@@ -1,5 +1,20 @@
 # Next-agent handoff
 
+## Selected-day photo fans · 9 September 2026
+
+Day selections now filter photo landmarks immediately, including while map tiles
+or route layers load and when the mobile map is hidden. Viewer day navigation
+updates the atlas scope too; only **Fit route** explicitly shows all days.
+Overlapping photos fan into separate clickable thumbnails with thin leader lines
+to their exact saved pins. Placement avoids other thumbnails and the map key.
+Returning to the mobile map refreshes day controls and fits the selected day.
+Latest saved Studio photo pins and optional blank captions are preserved.
+
+Validation: all 55 tests and production build pass. Phone checks cover Day 1's
+six separate targets, Day 2's five photos, individual viewer opening, and viewer
+navigation to Day 3. The shared demo was checked as well. This supersedes the
+counted-stack behavior described below.
+
 ## Photo landmarks and viewer camera · 9 September 2026
 
 Published as `f77cfb7` in successful Pages run `34352663568`; public landmark

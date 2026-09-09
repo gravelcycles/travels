@@ -64,9 +64,9 @@ ignored local derivatives instead of GitHub Release URLs.
 ## Find photos on the map
 
 Photos with saved locations appear as small thumbnail landmarks. Nearby photos
-share a numbered stack; select the stack to choose a photo, or select an
-individual landmark to open its viewer. Zooming in separates nearby pins.
-Day close-ups show that day's photos, and map fitting includes their locations.
+spread apart with thin lines pointing to their exact saved locations. Select
+any thumbnail to open its viewer. Selecting a day shows only that day's photos;
+**Fit route** restores all days. Map fitting includes photo locations.
 
 When moving between two located photos, the viewer map first frames both pins,
 then settles on the next photo's saved location and zoom. The move takes about

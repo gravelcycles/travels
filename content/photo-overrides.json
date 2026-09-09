@@ -263,7 +263,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.943088,
+      "lng": 7.444291
+    },
+    "zoom": 14.21
   },
   "family-snapseed-camera-capture-20260815-155638-313": {
     "dayId": "family-d3",
@@ -273,7 +279,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.944481,
+      "lng": 7.44585
+    },
+    "zoom": 14.21
   },
   "family-img-1488": {
     "dayId": "family-d3",
@@ -283,7 +295,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.948217,
+      "lng": 7.459021
+    },
+    "zoom": 14.21
   },
   "family-snapseed-camera-capture-20260815-161546-091": {
     "dayId": "family-d3",
@@ -293,7 +311,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.948065,
+      "lng": 7.459132
+    },
+    "zoom": 14.21
   },
   "family-snapseed-camera-capture-20260815-161856-649": {
     "dayId": "family-d3",
@@ -303,7 +327,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.948141,
+      "lng": 7.459132
+    },
+    "zoom": 14.21
   },
   "family-snapseed-camera-capture-20260815-162103-557": {
     "dayId": "family-d3",
@@ -313,7 +343,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.948141,
+      "lng": 7.459132
+    },
+    "zoom": 14.21
   },
   "family-snapseed-camera-capture-20260815-162408-750": {
     "dayId": "family-d3",
@@ -323,7 +359,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.948217,
+      "lng": 7.459095
+    },
+    "zoom": 14.21
   },
   "family-img-1496": {
     "dayId": "family-d3",
@@ -333,7 +375,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.948217,
+      "lng": 7.459095
+    },
+    "zoom": 14.21
   },
   "family-img-5047": {
     "dayId": "family-d3",
@@ -343,7 +391,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.94847,
+      "lng": 7.458539
+    },
+    "zoom": 14.21
   },
   "family-img-5048": {
     "dayId": "family-d3",
@@ -353,7 +407,13 @@
     "hidden": true,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "hidden-quality"
+    "privacyStatus": "hidden-quality",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.948496,
+      "lng": 7.458539
+    },
+    "zoom": 14.21
   },
   "family-img-2834": {
     "dayId": "family-d4",
@@ -363,7 +423,13 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.058749,
+      "lng": 8.32327
+    },
+    "zoom": 14.35
   },
   "family-img-2836": {
     "dayId": "family-d4",
@@ -373,107 +439,173 @@
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.058612,
+      "lng": 8.32327
+    },
+    "zoom": 14.35
   },
   "family-img-1504": {
     "dayId": "family-d4",
-    "caption": "Bikes by the water",
-    "description": "Three helmeted family members smile beside Lake Luzern at the start of the ride.",
+    "caption": "",
+    "description": "",
     "alt": "Three helmeted family members smile beside Lake Luzern at the start of the ride.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.004688,
+      "lng": 8.306632
+    },
+    "zoom": 13.12
   },
   "family-img-5050": {
     "dayId": "family-d4",
-    "caption": "A pause on the lakeside path",
-    "description": "Two riders stop close to the water with the lake and low hills behind them.",
+    "caption": "",
+    "description": "",
     "alt": "Two riders stop close to the water with the lake and low hills behind them.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.979166,
+      "lng": 8.318187
+    },
+    "zoom": 13.12
   },
   "family-img-5052": {
     "dayId": "family-d4",
-    "caption": "Picnic stop with the bikes",
-    "description": "Three riders sit together beside their bicycles at a lakeside picnic stop.",
+    "caption": "",
+    "description": "",
     "alt": "Three riders sit together beside their bicycles at a lakeside picnic stop.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.982892,
+      "lng": 8.347311
+    },
+    "zoom": 13.12
   },
   "family-img-5055": {
     "dayId": "family-d4",
-    "caption": "Resting beside the lake",
-    "description": "Two riders sit on the shore wall with loaded bicycles and open water behind them.",
+    "caption": "",
+    "description": "",
     "alt": "Two riders sit on the shore wall with loaded bicycles and open water behind them.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.983108,
+      "lng": 8.347469
+    },
+    "zoom": 13.12
   },
   "family-img-5056": {
     "dayId": "family-d4",
-    "caption": "Lakeside riding companions",
-    "description": "Two smiling cyclists pause together beside Lake Luzern.",
+    "caption": "",
+    "description": "",
     "alt": "Two smiling cyclists pause together beside Lake Luzern.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.983054,
+      "lng": 8.347232
+    },
+    "zoom": 13.12
   },
   "family-img-5063": {
     "dayId": "family-d4",
-    "caption": "The cliff jump",
-    "description": "One traveler leaps from the rocky shore into Lake Luzern.",
+    "caption": "weeeee",
+    "description": "",
     "alt": "One traveler leaps from the rocky shore into Lake Luzern.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.983054,
+      "lng": 8.347311
+    },
+    "zoom": 13.12
   },
   "family-img-5069": {
     "dayId": "family-d4",
     "caption": "Returning to Luzern by boat",
-    "description": "Luzern's twin church towers appear across the lake during the ferry ride home.",
+    "description": "",
     "alt": "Luzern's twin church towers appear across the lake during the ferry ride home.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.051965,
+      "lng": 8.318978
+    },
+    "zoom": 13.12
   },
   "family-img-5071": {
     "dayId": "family-d4",
-    "caption": "A bicycle in clear water",
-    "description": "A blue bicycle is visible beneath remarkably clear green water.",
+    "caption": "bye bye nextbike!",
+    "description": "",
     "alt": "A blue bicycle is visible beneath remarkably clear green water.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.051048,
+      "lng": 8.308373
+    },
+    "zoom": 13.12
   },
   "family-img-5075": {
     "dayId": "family-d4",
-    "caption": "Cake after the lake",
-    "description": "A generous slice of chocolate cake arrives after the bicycle and ferry outing.",
+    "caption": "whose birthday was it??",
+    "description": "",
     "alt": "A generous slice of chocolate cake arrives after the bicycle and ferry outing.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.063112,
+      "lng": 8.314415
+    },
+    "zoom": 14.31
   },
   "family-img-5076": {
     "dayId": "family-d4",
-    "caption": "Ice cream by the Reuss",
-    "description": "A smiling traveler enjoys an ice cream during the evening meal beside the river.",
+    "caption": "",
+    "description": "",
     "alt": "A smiling traveler enjoys an ice cream during the evening meal beside the river.",
     "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "privacyStatus": "approved-public"
+    "privacyStatus": "approved-public",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.063253,
+      "lng": 8.314657
+    },
+    "zoom": 14.31
   },
   "family-img-1520": {
     "dayId": "family-d5",

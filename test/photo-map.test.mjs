@@ -95,3 +95,32 @@ test('reduced motion, first photos and coincident points avoid the two-stage tou
   h.controller.move(photo('a', 8), { id: 'unlocated' });
   assert.equal(h.calls.filter(c => c.type !== 'stop').length, 0);
 });
+
+test('overlapping photos fan out as individual non-overlapping targets with exact pin connections', () => {
+  const photos = Array.from({ length: 6 }, (_, index) => photo(`p${index}`, 8 + index * 0.00001, 47));
+  const project = ([lng, lat]) => ({ x: 250 + (lng - 8) * 100, y: 220 + (lat - 47) * 100 });
+  const layout = globalThis.JOURNEY_ATLAS_UTILS.photoLandmarkLayout(photos, project, { width: 650, height: 500 });
+  assert.deepEqual(layout.map(item => item.photo.id), photos.map(item => item.id));
+  for (const item of layout) {
+    assert.deepEqual(item.anchor, project([item.photo.lng, item.photo.lat]));
+    assert.equal(item.anchor.x + item.offset[0], item.point.x);
+    assert.equal(item.anchor.y + item.offset[1], item.point.y);
+    assert.ok(Math.hypot(...item.offset) > 5);
+    for (const other of layout.filter(other => other !== item)) {
+      assert.ok(Math.abs(item.point.x - other.point.x) >= 56 || Math.abs(item.point.y - other.point.y) >= 56);
+    }
+  }
+});
+
+test('fans stay inside a phone map even when all pins share an edge location', () => {
+  const photos = Array.from({ length: 12 }, (_, index) => photo(`p${index}`, 8, 47));
+  const layout = globalThis.JOURNEY_ATLAS_UTILS.photoLandmarkLayout(photos, () => ({ x: 5, y: 540 }), { width: 390, height: 560 });
+  assert.equal(layout.length, photos.length);
+  for (const item of layout) {
+    assert.ok(item.point.x >= 28 && item.point.x <= 362);
+    assert.ok(item.point.y >= 82 && item.point.y <= 456);
+    for (const other of layout.filter(other => other !== item)) {
+      assert.ok(Math.abs(item.point.x - other.point.x) >= 56 || Math.abs(item.point.y - other.point.y) >= 56);
+    }
+  }
+});
