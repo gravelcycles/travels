@@ -75,16 +75,11 @@ Photo publishing is automated through `npm run photos:publish -- --journey <id>
 production until uploaded and verified. See [PHOTO_WORKFLOW.md](PHOTO_WORKFLOW.md)
 for the full agent-operated flow and what Trash does to existing hosted assets.
 
-## Find photos on the map
+## Browse photos
 
-Photos with saved locations appear only when a day is selected. Photos within
-500 metres of one another share a counted thumbnail; click it to choose a
-photo. Every pair in a group must meet that distance limit, regardless of zoom.
-Distant groups remain separate, with thin lines to their saved pins if needed.
-Thumbnails and count badges stay clear of every route line. They hide during
-map movement and reappear in clear positions afterward. If a packed map has no
-clear space, the day album still contains every photo.
-**Fit route** and the initial journey overview show no photo landmarks and fit only the route and journey places.
+Open a day's photos from its story panel, or use **All photos** to choose a day.
+Photo thumbnails and groups are no longer displayed on the journey map.
+Saved photo locations remain available in Studio and the photo viewer.
 
 When moving between two located photos, the viewer map first frames both pins,
 then settles on the next photo's saved location and zoom. The move takes about

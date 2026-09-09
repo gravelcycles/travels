@@ -1,56 +1,36 @@
 # Project state
 
-## Route clearance and automatic batch photo days · 9 September 2026
+## Map photo landmarks removed · 9 September 2026
 
-Published as `f350a06` in successful Pages run `34359916696`. A fresh public
-load verified Day 1 thumbnails clear the Zürich–Luzern route and the four-photo
-chooser opens correctly, with no browser errors. Studio remains available on
-port 4173. The isolated upload test server has been stopped.
+The journey map no longer displays photo thumbnails, groups, count badges, or
+photo leader lines. The renderer, geographic clustering, collision placement,
+group chooser, map legend cue, event handlers and associated styles/tests have
+been removed. Day-marker placement now considers only other day markers and
+map labels. Earlier landmark experiments remain recorded in the changelog.
 
-Photo thumbnails and count badges now avoid every journey route, including
-muted context routes. Placement checks whole projected line segments, then
-moves thumbnails to clear positions with exact-pin leader lines. Thumbnails
-hide during camera movement and reflow afterward. A fully obstructed view omits
-a landmark instead of covering the route; all photos remain in the day album.
-Day-only scope and the 500 m all-pairs grouping limit remain unchanged.
+Photos are accessed from day stories and **All photos**. The viewer retains its
+saved-location map and approximately two-second transition between photos.
+Studio batch uploads still assign each photo by capture date in the journey
+time zone, with individual day selection for unmatched dates. Existing local
+uploads and traveler edits are preserved. Upload tests isolate their manifests
+from local intake so pending traveler assets are never used as test fixtures.
 
-Studio multi-file upload defaults to capture-date assignment per photo, using
-the journey time zone. Missing/invalid/out-of-trip dates retain the file in an
-individual day picker for retry. Explicit batch-day assignment remains available.
-A batch spanning multiple days opens All days. Import processing, blank copy,
-private originals and reviewed asset publishing remain as documented in
-`PHOTO_WORKFLOW.md`. No traveler photos were imported during QA.
+Validation: all 62 remaining tests and the production build pass. Local browser
+checks confirmed zero map images in the family and demo day views, working day
+albums and next-photo navigation, Fit route, and no browser errors.
 
-Validation: 70 tests pass, including complete route-edge clearance, obstructed
-maps, timezone-aware batch assignments, mixed-success uploads and individual
-retry. An isolated HTTP server assigned dated JPEGs to Days 1 and 3, rejected an
-undated photo for review, then imported it on the explicitly selected Day 2.
-Browser checks confirmed automatic/multiple selection defaults and route clearance.
+## Studio counts, uploads, and Replay camera · 9 September 2026
 
-## Day-only photo groups, Studio counts, and Replay camera · 9 September 2026
+Studio **Photos from** counts match the current grid, including hidden photos
+or the selected Trash view. Counts refresh after trash/restore. Replay travel
+frames its current route leg; a chapter photo does not override that camera.
+Explicit photo-only moments retain their saved zoom.
 
-Published as `aca28dc` in successful Pages run `34358287577`. Fresh public
-checks verified Day 1’s geographic groups, zero photo landmarks after Fit route,
-and Replay framing the Zürich–Luzern leg. No browser errors were reported.
-
-Map photo landmarks appear only in day scope. Initial overview and **Fit route**
-show none. Group membership uses geographic distance, with every pair at most
-500 metres apart; it is independent of zoom and cannot chain distant photos.
-A counted thumbnail opens a chooser, and each photo opens the viewer. Separate
-groups retain collision avoidance and exact-pin leader lines when displaced.
-This supersedes the all-days overview and individual fan behavior below.
-
-Studio **Photos from** now counts the current grid, including hidden photos
-marked HIDDEN. Show trash counts only trashed photos, and counts refresh after
-trash/restore. Day 8's hidden photo now correctly counts as 1 in the editor.
-Replay's active route leg takes camera priority over a chapter photo or saved
-camera. Explicit photo-only moments retain their saved photo zoom.
-
-Validation: 65 tests pass, covering the 500 m boundary, zoom independence,
-non-chaining groups, overview clearing, Studio count/grid agreement, route-leg
-camera changes, and photo-only zoom. Browser checks verified group chooser,
-photo opening, Fit route clearing, Day 8 counts, and animated Zürich–Luzern
-travel with the entire leg in view. Latest saved traveler edits are preserved.
+Multi-file uploads default to automatic date assignment. Missing, invalid or
+out-of-trip dates retain each file for individual day selection and retry.
+An explicit batch-day override is available; batches spanning days open All days.
+Processing, private originals, blank copy and asset publishing are described in
+`PHOTO_WORKFLOW.md`.
 
 ## Studio photo library and traveler-only copy · 9 September 2026
 
@@ -81,39 +61,13 @@ exclusion/restoration, and isolated local HTTP upload/save-conflict checks.
 Browser verification covers blank copy, Trash/Restore, and local upload status.
 CI now installs locked image dependencies before its tests and build.
 
-## Selected-day photo fans · 9 September 2026
+## Photo viewer camera
 
-Published as `013dacd` in successful Pages run `34354476031`. A fresh public
-Day 2 load showed exactly its five landmarks; individual viewer opening passed
-with no browser errors.
-
-Day selections now filter photo landmarks immediately, including while map tiles
-or route layers load and when the mobile map is hidden. Viewer day navigation
-updates the atlas scope too; only **Fit route** explicitly shows all days.
-Overlapping photos fan into separate clickable thumbnails with thin leader lines
-to their exact saved pins. Placement avoids other thumbnails and the map key.
-Returning to the mobile map refreshes day controls and fits the selected day.
-Latest saved Studio photo pins and optional blank captions are preserved.
-
-Validation: all 55 tests and production build pass. Phone checks cover Day 1's
-six separate targets, Day 2's five photos, individual viewer opening, and viewer
-navigation to Day 3. The shared demo was checked as well. This supersedes the
-counted-stack behavior described below.
-
-## Photo landmarks and viewer camera · 9 September 2026
-
-Published as `f77cfb7` in successful Pages run `34352663568`; public landmark
-selection and viewer navigation passed without browser errors.
-
-Located visible photos now form compact map thumbnails, grouped at 60 px screen
-spacing with a counted photo chooser. Day scope filters pins; overview includes
-all located photos. Day-marker placement avoids thumbnails, and map bounds
-include photo coordinates. Shared helpers live in `dist/assets/atlas-utils.js`.
-The viewer's 1.95-second camera sequence frames previous/current locations then
-settles at saved zoom; pending movement cancels on new selection, close, manual
-camera movement, and hidden tabs. Reduced motion is immediate. Tests cover
-clustering, filtering, timing and stale cancellation; all 48 tests pass.
-
+Located photos in the viewer use their saved coordinate and zoom. Moving
+between two photos frames both locations, then settles on the next in about
+1.95 seconds. New selections, closing the viewer, manual camera movement and
+hidden tabs cancel pending movement; reduced motion is immediate. Returning
+to the mobile map refreshes day controls and frames the selected day.
 
 ## Studio editing and saved traveler edits · 9 September 2026
 

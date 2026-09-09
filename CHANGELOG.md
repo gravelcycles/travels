@@ -6,6 +6,18 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Remove map photo landmarks
+
+- Retire the map thumbnail feature, including grouping, distance calculations,
+  collision placement, leader lines, group chooser, map legend and movement
+  handlers. Simplify day-marker placement and remove the retired feature tests.
+- Keep day albums, the photo viewer and its location transitions, Studio photo
+  editing, automatic batch uploads and route-led Replay cameras.
+- Update current documentation; the landmark entries below are historical and
+  describe a feature that is now removed. Isolate upload tests from local intake.
+- All 62 remaining tests and the production build pass. Family/demo browser
+  checks confirm clear maps, working photo browsing and no console errors.
+
 ### Keep photo thumbnails off routes and automatically sort batch uploads
 
 Published as `f350a06` in successful Pages run `34359916696`. A fresh public

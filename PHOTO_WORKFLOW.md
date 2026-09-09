@@ -1,7 +1,8 @@
 # iPhone photo workflow
 
 The atlas can use an iPhone photo's capture time and GPS position to associate
-it with a day and place it on the map. Preserve the original metadata during
+it with a day and show its location in the photo viewer. The journey map has
+no photo thumbnails. Preserve the original metadata during
 transfer, then publish a separate web-sized copy.
 
 ## Upload and delete in Studio

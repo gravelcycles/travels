@@ -41,83 +41,6 @@
       && Math.abs(photo.lng) <= 180 && Math.abs(photo.lat) <= 90);
   }
 
-  function photoDistanceMeters(a, b) {
-    const radians = Math.PI / 180;
-    const dLat = (b.lat - a.lat) * radians, dLng = (b.lng - a.lng) * radians;
-    const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * radians) * Math.cos(b.lat * radians) * Math.sin(dLng / 2) ** 2;
-    return 6371000 * 2 * Math.asin(Math.sqrt(Math.min(1, h)));
-  }
-
-  function photoLandmarkGroups(photos, project, { width, height, maxDistance = 500 }) {
-    const groups = [];
-    for (const photo of photos.filter(locatedPhoto)) {
-      // Every pair must satisfy the distance limit: nearby chains must not join
-      // photos more than 500 metres apart. Grouping never depends on zoom.
-      const group = groups.find(group => group.photos.every(member => member.dayId === photo.dayId && photoDistanceMeters(member, photo) <= maxDistance));
-      if (group) group.photos.push(photo);
-      else groups.push({ photos: [photo] });
-    }
-    const visible = point => Number.isFinite(point.x) && Number.isFinite(point.y)
-      && point.x >= -24 && point.y >= -24 && point.x <= width + 24 && point.y <= height + 24;
-    return groups.flatMap(group => {
-      const photo = group.photos.find(photo => visible(project([photo.lng, photo.lat])));
-      return photo ? [{ ...group, photo, point: project([photo.lng, photo.lat]) }] : [];
-    });
-  }
-
-  function routeIntersectsPhotoBox(point, routes, radius = 36) {
-    const left = point.x - radius, right = point.x + radius;
-    const top = point.y - radius, bottom = point.y + radius;
-    return routes.some(route => route.some((end, index) => {
-      if (!index) return false;
-      const start = route[index - 1];
-      if (Math.max(start.x, end.x) < left || Math.min(start.x, end.x) > right
-        || Math.max(start.y, end.y) < top || Math.min(start.y, end.y) > bottom) return false;
-      // Clip the entire segment to the padded thumbnail box; checking vertices
-      // alone misses long route edges crossing between two off-box endpoints.
-      let enter = 0, exit = 1;
-      for (const [origin, delta, min, max] of [[start.x, end.x - start.x, left, right], [start.y, end.y - start.y, top, bottom]]) {
-        if (!delta) { if (origin < min || origin > max) return false; }
-        else {
-          const a = (min - origin) / delta, b = (max - origin) / delta;
-          enter = Math.max(enter, Math.min(a, b)); exit = Math.min(exit, Math.max(a, b));
-          if (enter > exit) return false;
-        }
-      }
-      return true;
-    }));
-  }
-
-  function photoLandmarkLayout(photos, project, { width, height, spacing = 64, top = 54, bottom = 76, routes = [] }) {
-    const inset = 28;
-    const bounds = { left: inset, right: Math.max(inset, width - inset),
-      top: Math.min(top + inset, height / 3), bottom: Math.max(height / 3, height - bottom - inset) };
-    const clampPoint = point => ({ x: Math.max(bounds.left, Math.min(bounds.right, point.x)),
-      y: Math.max(bounds.top, Math.min(bounds.bottom, point.y)) });
-    const grid = [];
-    for (let y = bounds.top; y <= bounds.bottom; y += 20) {
-      for (let x = bounds.left; x <= bounds.right; x += 20) {
-        const point = { x, y };
-        if (!routeIntersectsPhotoBox(point, routes)) grid.push(point);
-      }
-    }
-    const placements = [];
-    for (const group of photoLandmarkGroups(photos, project, { width, height })) {
-      const anchor = group.point;
-      const desired = clampPoint(anchor);
-      const candidates = routeIntersectsPhotoBox(desired, routes) ? grid : [desired, ...grid];
-      const free = candidates.filter(point => placements.every(placed =>
-        Math.abs(point.x - placed.point.x) >= spacing || Math.abs(point.y - placed.point.y) >= spacing));
-      // Never fall back to placing a thumbnail over the route. At a completely
-      // packed view the day's album still provides access to every photograph.
-      if (!free.length) continue;
-      const point = free.reduce((best, candidate) =>
-        Math.hypot(candidate.x - desired.x, candidate.y - desired.y) < Math.hypot(best.x - desired.x, best.y - desired.y) ? candidate : best);
-      placements.push({ photo: group.photo, photos: group.photos, anchor, point, offset: [point.x - anchor.x, point.y - anchor.y] });
-    }
-    return placements;
-  }
-
   function photoMapTransition(map, { schedule = setTimeout, unschedule = clearTimeout } = {}) {
     let generation = 0, timer = null, listener = null, cleanup = null;
     function cancel() {
@@ -167,5 +90,5 @@
     return { move, cancel };
   }
 
-  root.JOURNEY_ATLAS_UTILS = { resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoDistanceMeters, routeIntersectsPhotoBox, photoLandmarkGroups, photoLandmarkLayout, photoMapTransition };
+  root.JOURNEY_ATLAS_UTILS = { resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);
