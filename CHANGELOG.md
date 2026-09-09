@@ -8,6 +8,10 @@ commit after it is known.
 
 ### Start each day album at its first photo
 
+Published as `6bc0561` in successful Pages run `34367258218`. Fresh public
+verification confirmed Day 3’s preview opens photo 1 of 13, with no browser
+errors. The demo starts at photo 1 too. All 64 tests and the build pass.
+
 - Use the first visible photo in saved album order for the large day image and
   All photos day cards, so clicking a day preview begins at photo 1.
 
