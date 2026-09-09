@@ -94,8 +94,9 @@ actions; it uses the same data-driven viewer on real and demo pages.
   labels and terrain, preventing the atlas from keeping place labels above its
   route layers. Liberty preserves that layer control, Italy coverage, and the
   existing no-key static deployment.
-- Journey routes use a saturated blue with a wide near-white casing; selected
-  routes use a brighter orange and a still-wider casing. The slightly softened
+- Journey routes keep their transport colors with a wide near-white casing;
+  selected routes use thicker lines and a still-wider casing. The map key
+  follows the focused day's modes, with grey context for other days. The slightly softened
   terrain treatment keeps routes visually dominant without losing map detail.
 - Selected routes are drawn above other routes.
 - Routes have generous invisible hit lines. Hover and tap reveal a compact card
