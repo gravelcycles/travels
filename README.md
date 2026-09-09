@@ -5,6 +5,11 @@ David and Michelle's Switzerland–Italy family journey has its own stable page
 at `switzerland-italy.html`. Fictional viewer examples live separately at
 `demo.html`.
 
+The catalog uses compact photo rows under **Where we went.**, sized to show
+roughly 4–5 journeys on a laptop and 2–3 on a phone. Only published real trips
+appear; demo journeys remain separate. The family trip is titled
+**Switzerland & Italy · Family trip**.
+
 ## How we work
 
 The workflow is agent-driven. The user provides trip facts, files, corrections,
@@ -81,7 +86,8 @@ Open a day's album with **View photos** directly below its lead photo, or use
 **All photos** to choose a day. Travel legs are always expanded below the day
 heading. Daily descriptions can be left blank; no placeholder prose is shown.
 Photo thumbnails and groups are no longer displayed on the journey map.
-Saved photo locations remain available in Studio and the photo viewer.
+Saved photo locations remain available in Studio and the photo viewer. The
+current viewer thumbnail has an orange outline, with no Selected text badge.
 
 When moving between two located photos, the viewer map first frames both pins,
 then settles on the next photo's saved location and zoom. The move takes about

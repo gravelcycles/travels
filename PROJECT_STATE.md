@@ -1,5 +1,24 @@
 # Project state
 
+## Compact catalog, trip title and photo selection · 9 September 2026
+
+The catalog now uses compact horizontal cover-and-text rows and a short
+introduction: “Where we went.” / “The routes we took and the photos we brought
+home, one trip at a time.” It has one real journey; no placeholder journeys
+were published. Covers use image sizes matching their displayed widths and
+later entries load lazily. On phones, cards prioritize title, dates and facts.
+
+The family journey title is now “Switzerland & Italy · Family trip” throughout
+the catalog, introduction, map heading, Replay and page title. Selected viewer
+thumbnails retain an orange outline and aria-pressed state; both the visible
+Selected badge and redundant selected wording in their accessible names are gone.
+
+Validation: all 64 tests and the build pass. A five-entry local fixture fits
+four complete journeys at 1280×720, five at 1440×900, three at 390×844 and two
+at 375×667. iPhone and larger Mac sizes were verified with fixed-size browser
+frames because the browser-wide viewport override did not change page size.
+Phone rows have no horizontal overflow. The viewer outline follows navigation.
+
 ## Published photos and simpler day panels · 9 September 2026
 
 Published as `a3112e3` in successful Pages run `34363408065`. Fresh public

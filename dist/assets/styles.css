@@ -55,29 +55,25 @@ button { color: inherit; }
 .plain-button:hover, .header-link:hover { color: #f0c388; }
 .header-link { color: #d6e1df; font-size: 0.8rem; font-weight: 750; text-decoration: none; padding: 9px 3px; }
 
-.catalog-main { min-height: calc(100dvh - 72px); }
-.catalog-hero { padding: clamp(54px, 9vw, 116px) max(24px, calc((100vw - 1180px) / 2)); background: radial-gradient(circle at 83% 22%, rgba(255,255,255,.13) 0 2px, transparent 2.5px) 0 0/18px 18px, linear-gradient(135deg, #17383e, #315d62); color: #fbfaf6; }
-.catalog-eyebrow { display: block; color: #e7bd84; font-size: .72rem; font-weight: 850; letter-spacing: .16em; }
-.catalog-hero h1 { max-width: 830px; margin: 13px 0 18px; font: 700 clamp(3rem, 7vw, 6.7rem)/.9 Georgia, "Times New Roman", serif; letter-spacing: -.065em; }
-.catalog-hero p { max-width: 650px; margin: 0; color: #d5e1df; font-size: clamp(1rem, 1.8vw, 1.25rem); line-height: 1.6; }
-.catalog-section { max-width: 1180px; margin: 0 auto; padding: clamp(40px, 6vw, 76px) 24px 90px; }
-.catalog-heading { display: flex; justify-content: space-between; align-items: end; gap: 22px; margin-bottom: 24px; }
-.catalog-heading h2 { margin: 0; font: 700 clamp(2rem, 4vw, 3.4rem)/1 Georgia, "Times New Roman", serif; letter-spacing: -.045em; }
-.catalog-heading p { max-width: 420px; margin: 0; color: var(--muted); line-height: 1.55; }
-.journey-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 22px; }
-.journey-card { min-height: 430px; display: grid; grid-template-rows: minmax(240px, 1fr) auto; color: #fff; background: var(--ink); text-decoration: none; box-shadow: var(--shadow); overflow: hidden; }
-.journey-card-media { position: relative; min-height: 240px; overflow: hidden; background: #29474c; }
-.journey-card-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,28,32,.05), rgba(8,28,32,.73)); }
-.journey-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 300ms ease; }
-.journey-card:hover img, .journey-card:focus-visible img { transform: scale(1.035); }
-.journey-card-copy { padding: 24px; }
-.journey-card-copy small { color: #e7bd84; font-size: .68rem; font-weight: 850; letter-spacing: .13em; }
-.journey-card-copy h3 { margin: 8px 0 9px; font: 700 clamp(1.8rem, 3vw, 2.5rem)/1 Georgia, "Times New Roman", serif; letter-spacing: -.04em; }
-.journey-card-copy p { margin: 0; color: #c6d7d5; line-height: 1.5; }
-.journey-card-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 18px; color: #fff; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-.catalog-empty { border: 1px solid var(--line); padding: 28px; color: var(--muted); }
-.catalog-footer { display: flex; justify-content: space-between; gap: 20px; padding: 26px max(24px, calc((100vw - 1180px) / 2)); background: #dfe5e1; color: var(--ink-soft); font-size: .78rem; }
-.catalog-footer a { color: var(--ink); font-weight: 800; }
+.catalog-page .site-header { height:64px; }
+.catalog-main { min-height:calc(100dvh - 64px); }
+.catalog-hero { padding:20px max(24px, calc((100vw - 1080px) / 2)); background:linear-gradient(135deg,#17383e,#315d62); color:#fbfaf6; }
+.catalog-hero h1 { margin:0 0 8px; font:700 clamp(1.8rem,3vw,2.5rem)/1.08 Georgia,"Times New Roman",serif; letter-spacing:-.04em; }
+.catalog-hero p { margin:0; color:#d5e1df; font-size:.9rem; line-height:1.4; }
+.catalog-section { max-width:1128px; margin:0 auto; padding:20px 24px 28px; }
+.journey-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:12px; }
+.journey-card { min-height:104px; display:grid; grid-template-columns:176px minmax(0,1fr); color:var(--ink); background:var(--panel); border:1px solid var(--line); text-decoration:none; overflow:hidden; }
+.journey-card-media { position:relative; min-height:104px; overflow:hidden; background:#29474c; }
+.journey-card img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform 220ms ease; }
+.journey-card:hover img,.journey-card:focus-visible img { transform:scale(1.035); }
+.journey-card-copy { min-width:0; padding:12px 18px; }
+.journey-card-copy small { display:none; }
+.journey-card-copy h2 { margin:0 0 5px; font:700 1.4rem/1.15 Georgia,"Times New Roman",serif; letter-spacing:-.02em; overflow-wrap:anywhere; }
+.journey-card-copy p { overflow:hidden; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; margin:0; color:var(--ink-soft); font-size:.82rem; line-height:1.4; }
+.journey-card-meta { display:flex; flex-wrap:wrap; gap:4px 16px; margin-top:8px; color:var(--muted); font-size:.7rem; line-height:1.3; font-weight:700; }
+.catalog-empty { border:1px solid var(--line); padding:28px; color:var(--muted); }
+.catalog-footer { display:flex; justify-content:space-between; gap:12px; padding:16px max(24px,calc((100vw - 1080px) / 2)); background:#dfe5e1; color:var(--ink-soft); font-size:.75rem; }
+.catalog-footer a { color:var(--ink); font-weight:800; }
 
 .atlas-shell {
   height: calc(100vh - 72px);
@@ -268,7 +264,6 @@ code { background: #dfe6e2; padding: 2px 4px; font-size: 0.8rem; }
 .viewer-filmstrip button { min-width: 0; border: 0; padding: 0; position: relative; overflow: hidden; background: #29474c; cursor: pointer; }
 .viewer-filmstrip button.active { outline: 4px solid var(--selected); outline-offset: -4px; box-shadow: 0 0 0 2px #fff; }
 .viewer-filmstrip button.active::after { content:""; position:absolute; inset:0; border:4px solid var(--selected); pointer-events:none; }
-.photo-selected-label { position:absolute; bottom:0; left:0; right:0; padding:5px 4px; background:var(--selected); color:#fff; font-size:.7rem; text-align:center; }
 .viewer-filmstrip img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.78; }
 .viewer-filmstrip button.active img, .viewer-filmstrip button:hover img { opacity: 1; }
 .viewer-filmstrip span { position: absolute; top: 7px; left: 7px; padding: 3px 5px; background: rgba(13,34,38,.8); color: #fff; font-size: 0.65rem; font-weight: 850; }
@@ -374,9 +369,19 @@ button:focus-visible, select:focus-visible, .maplibregl-map:focus-visible { outl
 }
 
 @media (max-width: 560px) {
-  .catalog-heading, .catalog-footer { align-items: flex-start; flex-direction: column; }
-  .catalog-hero { padding-top: 58px; padding-bottom: 62px; }
-  .catalog-hero h1 { font-size: clamp(3rem, 17vw, 4.4rem); }
+  .catalog-footer { align-items:flex-start; flex-direction:column; }
+  .catalog-hero { padding:20px 16px; }
+  .catalog-hero h1 { max-width:350px; font-size:2rem; }
+  .catalog-hero p { font-size:.85rem; }
+  .catalog-section { padding:16px; }
+  .journey-grid { gap:10px; }
+  .journey-card { grid-template-columns:112px minmax(0,1fr); min-height:168px; }
+  .journey-card-media { min-height:168px; }
+  .journey-card-copy { padding:12px; }
+  .journey-card-copy h2 { font-size:1.2rem; line-height:1.15; }
+  .journey-card-copy p { display:none; }
+  .journey-card-meta { gap:4px 10px; font-size:.7rem; }
+  .journey-card-meta span:first-child { flex-basis:100%; }
   .journey-summary { grid-template-columns: 1.3fr 1fr 0.5fr; }
   .map-header { min-height: 142px; grid-template-columns: 1fr; align-content: center; gap: 10px; }
   .map-title-card h1 { font-size: 1.85rem; }
@@ -422,9 +427,9 @@ button:focus-visible, select:focus-visible, .maplibregl-map:focus-visible { outl
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
 
-.journey-card-placeholder { min-height: 240px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 30px; background: #e7ecdf; color: #254e4a; }
-.journey-card-placeholder span { font-size: 11px; letter-spacing: .16em; }
-.journey-card-placeholder strong { font: 30px/1.2 Georgia, serif; }
+.journey-card-placeholder { height:100%; min-height:104px; display:flex; align-items:center; padding:16px; background:#e7ecdf; color:#254e4a; }
+.journey-card-placeholder span { display:none; }
+.journey-card-placeholder strong { font:20px/1.2 Georgia,serif; }
 
 /* Story-first atlas: one journal scroll surface, with travel legs always visible. */
 [hidden] { display:none !important; }
