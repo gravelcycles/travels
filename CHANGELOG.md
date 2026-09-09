@@ -8,6 +8,9 @@ commit after it is known.
 
 ### Keep the map key in sync with highlighted routes
 
+Commit `6754575` deployed successfully in Pages run `34348023018`. A fresh
+public Day 6 check confirmed transport colors match the key, with no console errors.
+
 - Selected days keep each transport mode's color, with thicker lines and full
   opacity against muted trip context. Inspection increases width without
   replacing the mode color. The key follows the focused day's modes and marks

@@ -18,6 +18,12 @@ workflow change before committing. Keep the newest entry first.
 
 ## Non-auth backlog completion · 9 September 2026
 
+Latest map correction: selected and inspected routes retain their transport
+colors, using line width for emphasis. Day focus keeps other routes grey, and
+the key follows the day's modes. This supersedes the historical orange-route
+notes below. Commit `6754575` deployed in successful Pages run `34348023018`;
+fresh public Day 6 verification passed.
+
 W02, T19, and T23–T25 are complete. Only W01 remains unchecked in TODO. Auth
 sources and the existing local route edit were preserved separately. Read the
 new top section of `PROJECT_STATE.md` and the W02 reconciliation in
