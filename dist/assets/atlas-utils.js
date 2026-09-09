@@ -43,14 +43,16 @@
 
   function photoMapTransition(map, { schedule = setTimeout, unschedule = clearTimeout } = {}) {
     let generation = 0, timer = null, listener = null, cleanup = null;
-    function cancel() {
+    function cancel({ stopMap = true } = {}) {
       generation++;
       if (timer !== null) unschedule(timer);
       timer = null;
       if (listener) map.off("moveend", listener);
       listener = null;
       const finish = cleanup; cleanup = null; finish?.();
-      map.stop();
+      // User gestures already interrupt the camera animation. Stopping the map
+      // from their movestart event would also reset the active drag/zoom handler.
+      if (stopMap) map.stop();
     }
     function move(from, to, { reducedMotion = false, padding = 36, onFinish } = {}) {
       cancel();
