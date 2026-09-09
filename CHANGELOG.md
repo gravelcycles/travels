@@ -6,6 +6,14 @@ commit after it is known.
 
 ## 9 September 2026
 
+### Prioritize visible photos above map downloads
+
+- Give visible previews and thumbnails high browser network priority; only
+  speculative neighbor preloads remain low priority. Keep selected viewer
+  upgrades in the foreground queue even when a preview is already displayed.
+- Record server timing and fixed failure categories on image DOM attributes
+  for live diagnostics, without storing credentials or changing the visible UI.
+
 ### Cache private photos after authentication and restore small thumbnails
 
 - Enable internal Workers Cache on workers.dev while keeping the public gateway

@@ -40,6 +40,13 @@ test('filmstrips request a thumbnail and the viewer reuses it while the full pho
  assert.equal(f.calls.filter(([url])=>url.endsWith(thumb.src)).length,1);
  assert.equal(f.calls.filter(([url])=>url.endsWith(photo.srcset[0].src)).length,0,'A cached thumbnail avoids downloading an extra preview on the way to full size');
 });
+test('visible photos receive high browser priority while speculative preloads stay low',async()=>{
+ const f=fixture();await f.unlock();const img=new Element();
+ img.dataset.privateSrc=photo.src;await f.auth.hydrate(img);
+ assert.equal(f.calls[0][1].priority,'high');
+ f.auth.preload(albumPhoto(9),1280);await settle();
+ assert.equal(f.calls[1][1].priority,'low');
+});
 test('authorized consumers share one request, and logout revokes blobs and restores placeholders',async()=>{
  const f=fixture(),a=new Element(),b=new Element();f.auth.setImage(a,photo);f.auth.setImage(b,photo);await f.unlock();await settle();await settle();
  assert.equal(f.calls.length,1);assert.equal(f.calls[0][1].headers.Authorization,'Bearer fixture-access-token');assert.equal(f.calls[0][1].credentials,'omit');assert.match(a.src,/^blob:/);assert.equal(a.src,b.src);
