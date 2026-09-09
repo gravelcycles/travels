@@ -2,6 +2,11 @@
 
 ## Published photos and simpler day panels · 9 September 2026
 
+Published as `a3112e3` in successful Pages run `34363408065`. Fresh public
+checks confirmed 99 photos, an uploaded Day 8 image loading in the viewer,
+blank day/Relive descriptions, the album button below the lead image, and
+always-visible travel legs. Replay still defaults to 2×. No browser errors.
+
 The traveler explicitly approved publishing the 13 new photos and saved
 location/visibility edits to the public site and GitHub Release. All 48 WebP
 derivatives (22,921,326 bytes) were uploaded and their URLs verified; all 13
