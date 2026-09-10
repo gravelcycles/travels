@@ -27,8 +27,8 @@ test('Replay frames each travel leg even when its chapter has a pinned photo and
   assert.deepEqual(calls[1].bounds,[[8.5,47.2],[8,47]]);
   assert.ok(calls.every(c=>c.type==='fit'));
 });
-test('photo-only Replay moments still use their own saved zoom; reduced motion skips the move',()=>{
-  const {context,calls}=harness();context.moment={type:'photo',photoId:'photo'};
+test('rest-day Replay uses the reviewed map camera; reduced motion skips the move',()=>{
+  const {context,calls}=harness();context.moment={type:'chapter',camera:{reviewed:true,center:[10,45],zoom:19}};
   vm.runInContext('fitReplayMoment(moment)',context);
   assert.deepEqual(JSON.parse(JSON.stringify(calls[0])),{type:'ease',options:{center:[10,45],zoom:19,duration:700}});
   context.prefersReducedMotion=()=>true;
