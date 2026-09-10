@@ -43,6 +43,8 @@ test('one template supplies every control and asset to real trips, all samples, 
   const { data } = loadContent(root, { includeDrafts: true });
   buildSite(root);
   const reference = read(root, 'dist/switzerland-italy.html');
+  assert.match(reference, /<script src="\.\/assets\/input-mode\.js\?v=[a-f0-9]{12}"><\/script>/);
+  assert.match(read(root, 'dist/index.html'), /<script src="\.\/assets\/input-mode\.js\?v=[a-f0-9]{12}"><\/script>/);
   assert.equal(ids(reference).length, new Set(ids(reference)).size, 'No duplicate control IDs');
   const replay = reference.match(/<dialog class="replay-dialog"[\s\S]*?<\/dialog>/)[0];
   assert.doesNotMatch(replay, /<img|replay-photo|replay-view-(?:map|photos)/, 'Replay has no photo surface or media switch');
@@ -164,13 +166,36 @@ test('the same introduction opens for real trips, samples and empty drafts; deep
 
 test('shared browser code and HTML templates contain no concrete trip IDs or URLs', () => {
   const { data } = loadContent(repo);
-  for (const filename of ['dist/assets/app.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'studio/studio.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
+  for (const filename of ['dist/assets/app.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'studio/studio.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
     const source = read(repo, filename);
     for (const journey of data.journeys) {
       assert.ok(!source.includes(journey.id), `${filename} must express ${journey.id} behavior through data`);
       if (journey.slug) assert.ok(!source.includes(journey.slug), `${filename} must not link to a specific trip`);
     }
   }
+});
+
+test('focus presentation follows keyboard and pointer input without moving or clearing focus', () => {
+  const handlers = new Map(), root = { dataset: {} }, focused = { id: 'restored-dialog-button' };
+  const document = { documentElement: root, activeElement: focused,
+    addEventListener(type, handler, capture) { assert.equal(capture, true); handlers.set(type, handler); }
+  };
+  vm.runInNewContext(read(repo, 'dist/assets/input-mode.js'), { document });
+  assert.equal(root.dataset.inputMode, 'pointer', 'Auto-focused controls do not begin with a keyboard ring');
+  for (const pointerType of ['touch', 'mouse', 'pen']) {
+    for (const key of ['Tab', 'ArrowRight', 'Enter', ' ']) {
+      handlers.get('keydown')({ key });
+      assert.equal(root.dataset.inputMode, 'keyboard');
+      handlers.get('pointerdown')({ pointerType });
+      assert.equal(root.dataset.inputMode, 'pointer', `${pointerType} clears a preceding keyboard ring`);
+      assert.equal(document.activeElement, focused, 'Dialog/history focus remains intact');
+    }
+  }
+  handlers.get('keydown')({ key: 'Shift' });
+  handlers.get('keydown')({ key: 'r', metaKey: true });
+  assert.equal(root.dataset.inputMode, 'pointer', 'Modifier and browser shortcuts do not create rings');
+  handlers.get('keydown')({ key: 'Tab', shiftKey: true });
+  assert.equal(root.dataset.inputMode, 'keyboard', 'Reverse keyboard navigation retains a visible cue');
 });
 
 test('a newly generated draft inherits large endpoints for every train leg as route data is added', t => {
