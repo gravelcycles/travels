@@ -1,5 +1,9 @@
 # Project principles
 
+- Build each feature once in the shared framework; trips are data instances.
+  The guiding target is 99% shared behavior. Switzerland–Italy, samples, and
+  fresh drafts use the same page template and runtime. See
+  [the framework contract](docs/FRAMEWORK.md) for extension rules.
 - A trip is a standalone story; real and demo content use separate pages.
 - The root is an atlas of real journeys; each real journey has a stable,
   shareable detail URL.

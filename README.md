@@ -5,6 +5,22 @@ David and Michelle's Switzerland–Italy family journey has its own stable page
 at `switzerland-italy.html`. Fictional viewer examples live separately at
 `demo.html`.
 
+## Project guide
+
+Trips are instances of one shared framework. New features belong in its shared
+template or runtime and carry into existing trips, samples, and new drafts.
+Switzerland–Italy is the reference experience; starting another trip adds data,
+not another copy of the application.
+
+- [Framework, audit, and remaining work](docs/FRAMEWORK.md)
+- [Feature inventory and required trip data](docs/FEATURES.md)
+- [New-trip and shared-feature prompts for agents](docs/AGENT_PROMPTS.md)
+- [Step-by-step trip creation and publishing](JOURNEY_WORKFLOW.md)
+- [Standing agent rules](AGENTS.md)
+
+These guides describe current contracts. Dated handoffs, audits, and changelog
+entries record history and may describe behavior that has since changed.
+
 The catalog uses compact photo rows under **We wander but aren't lost...yet**, sized to show
 roughly 4–5 journeys on a laptop and 2–3 on a phone. Only published real trips
 appear; demo journeys remain separate. The family trip is titled

@@ -840,6 +840,8 @@
 
   function renderJourneyIdentity() {
     $("#journey-name").textContent = journey.label;
+    $("#notes-journey-title").textContent = journey.title;
+    $("#notes-journey-note").textContent = journey.note || "";
     document.title = `${journey.title} · ${isDemoPage ? "Journey samples" : "Journey Atlas"}`;
   }
 
@@ -1658,7 +1660,7 @@
   }
   function renderIntroduction() {
     const intro=$('#trip-intro');
-    if(isDemoPage || location.hash || new URLSearchParams(location.search).has('day') || new URLSearchParams(location.search).has('photo')) { intro.hidden=true; return; }
+    if(location.hash || new URLSearchParams(location.search).has('day') || new URLSearchParams(location.search).has('photo')) { intro.hidden=true; return; }
     const {photo,position}=window.JOURNEY_ATLAS_UTILS.resolveCover(journey,journey.photos);
     intro.innerHTML=`<div class="intro-photo" style="--cover-position:${position}">${photo?photoImageMarkup(photo,{eager:true,sizes:'(max-width: 900px) 100vw, 60vw'}):'<div class="intro-text-art">A journey taking shape</div>'}</div><div class="intro-copy"><span>${escapeHtml(journey.dates)} · ${journey.days.length} days</span><h1>${escapeHtml(journey.title)}</h1><p>${escapeHtml(journey.subtitle)}</p><div><button id="intro-relive" type="button">Relive the trip</button><button id="intro-map" type="button">Explore the map</button></div></div>`;
     intro.hidden=false; document.body.classList.add('intro-open'); $('.atlas-shell').inert=true; $('.mobile-nav').inert=true;

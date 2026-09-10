@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Generated from content/templates/journey.html. Change shared features here, never in a trip's output page. -->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -110,13 +111,13 @@
     <dialog class="notes-dialog" id="notes-dialog">
       <form method="dialog" class="dialog-card">
         <div class="dialog-top">
-          <div><span>ABOUT THE ATLAS</span><h2>Switzerland &amp; Italy · Family trip</h2></div>
+          <div><span>ABOUT THE ATLAS</span><h2 id="notes-journey-title">Switzerland &amp; Italy · Family trip</h2></div>
           <button value="cancel" aria-label="Close atlas notes">×</button>
         </div>
         <div class="notes-grid">
           <section>
             <strong>1 · The journey</strong>
-            <p>David and Michelle traveled with her parents, using Luzern as home base except for three nights around Como.</p>
+            <p id="notes-journey-note">David and Michelle traveled with her parents, using Luzern as home base except for three nights around Como.</p>
           </section>
           <section>
             <strong>2 · Every leg matters</strong>
@@ -222,7 +223,7 @@
     </dialog>
 
     <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
-    <script src="./assets/journeys.js?v=5e65be63d2ee"></script>
+    <script src="./assets/journeys.js?v=bf401772c0c5"></script>
     <script src="./assets/route-geometry.js?v=36b5f3ca96f8"></script>
     <script src="./assets/trip-photos.js?v=d6328a6324bf"></script>
     <script src="./assets/content-overrides.js?v=147c9dd162bc"></script>
@@ -230,6 +231,6 @@
     <script src="./assets/photo-service.js?v=7cf17f81b44e"></script>
     <script src="./assets/photo-auth.js?v=c749e0fb4883"></script>
     <script src="./assets/atlas-utils.js?v=f5875fb09b6d"></script>
-    <script src="./assets/app.js?v=90ef70c3f607"></script>
+    <script src="./assets/app.js?v=f6ffab410e4d"></script>
   </body>
 </html>

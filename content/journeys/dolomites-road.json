@@ -6,7 +6,7 @@
   "subtitle": "Moving bases, one loop day, and room for the detours",
   "kicker": "CAR JOURNEY · ALPINE ROADS",
   "dates": "A four-day sample",
-  "note": "This sample includes a day trip that starts and ends at the same base.",
+  "note": "Fictional sample journey; dates and locations illustrate the shared atlas. This sample includes a day trip that starts and ends at the same base.",
   "cover": "./assets/photos/alpine-route.webp",
   "places": [
     {
@@ -134,7 +134,8 @@
       "segmentIds": [
         "innsbruck-cortina"
       ],
-      "text": "The keys, the first mountain horizon, and a road that kept finding higher ground on the way to Cortina."
+      "text": "The keys, the first mountain horizon, and a road that kept finding higher ground on the way to Cortina.",
+      "calendarDate": "2026-09-01"
     },
     {
       "id": "road-d2",
@@ -145,7 +146,8 @@
       "segmentIds": [
         "cortina-loop"
       ],
-      "text": "We left most of the bags at the same base and made a loop over the passes. A day trip can start and finish at one marker without breaking the day model."
+      "text": "We left most of the bags at the same base and made a loop over the passes. A day trip can start and finish at one marker without breaking the day model.",
+      "calendarDate": "2026-09-02"
     },
     {
       "id": "road-d3",
@@ -157,7 +159,8 @@
         "cortina-ortisei",
         "ortisei-seceda-loop"
       ],
-      "text": "Small roads and frequent stops stretched a short distance into most of the day, followed by a gondola ride above Ortisei."
+      "text": "Small roads and frequent stops stretched a short distance into most of the day, followed by a gondola ride above Ortisei.",
+      "calendarDate": "2026-09-03"
     },
     {
       "id": "road-d4",
@@ -168,7 +171,8 @@
       "segmentIds": [
         "ortisei-bolzano"
       ],
-      "text": "The road dropped out of the mountains and the journey finished in the warmer valley."
+      "text": "The road dropped out of the mountains and the journey finished in the warmer valley.",
+      "calendarDate": "2026-09-04"
     }
   ],
   "photos": [
@@ -188,5 +192,16 @@
       ]
     }
   ],
-  "published": true
+  "published": true,
+  "startDate": "2026-09-01",
+  "timeZone": "Europe/Rome",
+  "badge": "FICTIONAL SAMPLE",
+  "endDate": "2026-09-04",
+  "coverPhoto": {
+    "photoId": "road-overlook-demo",
+    "focal": [
+      50,
+      50
+    ]
+  }
 }

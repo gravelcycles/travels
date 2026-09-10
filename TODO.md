@@ -12,6 +12,23 @@ These larger projects have their own source briefs and sit outside the P0–P3
 backlog. Keep the detailed plans in those files and use this list only for
 project-level status.
 
+- [x] **W03 — Shared journey framework and documentation.** Real journeys,
+      demos, and Studio previews use one detail template. Catalog HTML also
+      has a source template. Demos use complete calendars and the shared
+      opening/Replay features. Automated template, draft-inheritance, and
+      generated-output checks enforce the contract in `AGENTS.md`. See
+      [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md), the feature inventory, and agent prompts.
+- [ ] **W04 — Extract focused shared runtime modules.** Follow phase 2 in
+      [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md). Separate photo/day selectors,
+      transport styles, map camera, albums, and Replay incrementally while
+      retaining URLs, content, and behavior. Add behavioral checks at module
+      boundaries; keep all trips on the same implementations.
+- [ ] **W05 — Make source/output ownership and schema evolution explicit.**
+      Follow phases 3–4 in [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md): move authored
+      browser assets out of `dist/` in a dedicated migration, then consolidate
+      schema/defaults and draft-promotion tooling. Preserve ignored drafts,
+      reviewed assets, photo protection, and reproducible Pages delivery.
+
 - [x] **W01 — Private photo access.** Deliver the architecture, migration,
       security testing, deployment, and operations plan in
       [`PHOTO_AUTH_HANDOFF.md`](PHOTO_AUTH_HANDOFF.md). One successful unlock

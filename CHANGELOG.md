@@ -1,5 +1,20 @@
 # Changelog
 
+## 10 September 2026 — one shared framework for every trip
+
+- Generate real journeys, demos and draft previews from one detail template;
+  generate catalog HTML from its own source template. Remove manual asset
+  versions from template sources.
+- Enable the shared introduction for demos and keep notes in sync when the
+  sample selector changes. Give demos complete calendars/time zones, cover
+  choices and an example of curated Replay using existing data fields.
+- Add regression coverage for common controls/assets, template propagation,
+  data-only fresh-trip inheritance, sample planning and generic browser code.
+  Pages CI rejects uncommitted generated-output differences.
+- Document the architecture audit, feature inventory, new-trip/promotion flow,
+  staged cleanup and reusable agent prompts. Make the 99% shared-behavior
+  principle a standing AGENTS.md rule.
+
 ## 10 September 2026 — center photos in the full viewer area
 
 - Give the image and its blurred preview the full available height, with equal
