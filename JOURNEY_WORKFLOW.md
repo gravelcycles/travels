@@ -224,6 +224,22 @@ saved; the uploaded filename and original GPX are not persisted.
 GPX elevation can be retained for a future elevation profile, but it should not
 be mixed into the two-dimensional map coordinate array.
 
+## Mobile review
+
+The shared day map keeps a compact date/title, Day details and Photos, plus the
+bottom Day N of M picker and previous/next arrows. The picker is the single
+entry to all days and journey-wide actions (whole map, all photos, Replay,
+unlock and about). Its Day button also returns to the current map. Transport
+and stop keys live in Day details; pinch/drag operate the uncluttered map.
+
+Photo and grid headers use the Day N button to return to the day map. The
+photo header keeps its count and grid button; pinch and double-tap provide
+zoom. Tap Photo location or drag its handle to reveal the map. Photo swipes
+must never reveal a closed location, including after a grid round trip.
+Location and grid changes update one viewer history entry synchronously;
+browser Back returns to the day map, while Escape dismisses a nested layer.
+Check these flows on the reference trip, a demo and a fresh empty draft.
+
 ## Editing and regeneration
 
 The local Atlas Studio is the review surface. The agent runs `npm run studio`,

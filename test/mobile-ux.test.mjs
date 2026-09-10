@@ -87,7 +87,7 @@ function viewerFixture({deferredHistory=false} = {}) {
 
 test('swiping, opening location and returning from it keep the same selected photo',()=>{
   const f=viewerFixture();f.api.openDay();f.drag('.photo-stage',-150,4);f.flush();assert.equal(f.index,1);
-  f.drag('.photo-stage',3,-150);assert.equal(f.locations,1);assert.equal(f.history.state.mobileAtlas.layer,'location');
+  f.drag('#mobile-photo-location',3,-150);assert.equal(f.locations,1);assert.equal(f.history.state.mobileAtlas.layer,'location');
   assert.equal(f.node('#photo-map').handlers.size,0,'photo gestures must not intercept the map');
   f.drag('.photo-location-heading',3,150);assert.equal(f.history.state.mobileAtlas.layer,'photo');assert.equal(f.index,1);
   assert.equal(f.node('#photo-location-panel').inert,true);
@@ -97,7 +97,7 @@ test('cancelled and ambiguous drags settle without navigating or opening locatio
   const f=viewerFixture();f.api.openDay();
   f.drag('.photo-stage',-150,4,500,'pointercancel');f.flush();assert.equal(f.index,0);
   f.drag('.photo-stage',-80,-80);f.flush();assert.equal(f.index,0);assert.equal(f.locations,0);
-  f.drag('.photo-stage',2,-160,500,'pointercancel');assert.equal(f.locations,0);assert.equal(f.node('#photo-location-panel').inert,true);
+  f.drag('#mobile-photo-location',2,-160,500,'pointercancel');assert.equal(f.locations,0);assert.equal(f.node('#photo-location-panel').inert,true);
 });
 
 test('visual swipe settling cannot advance a newly opened album after the old viewer closes',()=>{
@@ -109,12 +109,12 @@ test('closing the grid returns to its selected image and closing nested layers e
   const f=viewerFixture();f.api.openDay();f.node('#mobile-photo-grid').onclick();
   f.api.selectPhoto(2);f.controller.gridSelected();assert.equal(f.index,2);assert.equal(f.node('.photo-viewer').dataset.grid,'false');
   f.node('#mobile-photo-location').onclick();f.node('#mobile-photo-grid').onclick();
-  f.node('#mobile-grid-close').onclick();assert.equal(f.node('#photo-dialog').open,false);
+  f.node('#mobile-grid-back').onclick();assert.equal(f.node('#photo-dialog').open,false);
 });
 
 
 test('a quick location-close tap after dragging is accepted, and the next swipe leaves it closed',()=>{
-  const f=viewerFixture();f.api.openDay();f.drag('.photo-stage',0,-180);
+  const f=viewerFixture();f.api.openDay();f.drag('#mobile-photo-location',0,-180);
   const close=f.click('#mobile-location-close','.photo-location-heading');
   assert.equal(close.prevented,undefined);assert.equal(f.controller.locationVisible(),false);
   f.drag('.photo-stage',-140,2);assert.equal(f.index,1,'selection changes when the swipe ends');
@@ -137,7 +137,7 @@ test('single taps never hide controls; double taps still zoom',()=>{
 });
 
 test('a delayed history response to closing location cannot restart it or animate the next drag',()=>{
-  const f=viewerFixture({deferredHistory:true});f.api.openDay();f.drag('.photo-stage',0,-180);
+  const f=viewerFixture({deferredHistory:true});f.api.openDay();f.drag('#mobile-photo-location',0,-180);
   f.click('#mobile-location-close','.photo-location-heading');f.drag('.photo-stage',-140,0);
   f.flushHistory();assert.equal(f.index,1);assert.equal(f.controller.locationVisible(),false);
   assert.equal(f.node('.photo-viewer').classList.contains('is-location-settling'),false);
@@ -149,8 +149,8 @@ test('consecutive swipes advance immediately instead of dropping input during a 
   f.drag('.photo-stage',-150,0);assert.equal(f.index,2);f.flush();assert.equal(f.index,2);
 });
 
-test('Photos opens the day grid, while Back and Close leave every photo layer for the day',()=>{
-  for(const control of ['#mobile-photo-back','#mobile-photo-close','#mobile-grid-back','#mobile-grid-close']){
+test('Photos opens the day grid, while the Day button leaves every photo layer for the day',()=>{
+  for(const control of ['#mobile-photo-back','#mobile-grid-back']){
     const f=viewerFixture();f.controller.openGrid('one');assert.equal(f.node('.photo-viewer').dataset.grid,'true');
     if(control.startsWith('#mobile-photo-')){f.api.selectPhoto(1);f.controller.gridSelected();f.click('#mobile-photo-location');}
     f.node(control).onclick();assert.equal(f.node('#photo-dialog').open,false,control);
@@ -174,4 +174,45 @@ test('Replay shows one mobile media view and falls back to the map when a moment
   assert.equal(f.node('#replay-view-map')['aria-pressed'],'true');
   f.node('#replay-view-photos').onclick();
   assert.equal(f.controller.replayMapVisible(),true,'empty photo moments cannot expose a blank photo stage');
+});
+
+
+test('a closed location stays closed through upward photo drags, photo changes and grid round trips',()=>{
+  const f=viewerFixture({deferredHistory:true});f.controller.openGrid('one');
+  f.api.selectPhoto(1);f.controller.gridSelected();f.click('#mobile-photo-location');
+  assert.equal(f.controller.locationVisible(),true);
+  f.click('#mobile-location-close','.photo-location-heading');
+  f.drag('.photo-stage',0,-150);
+  assert.equal(f.controller.locationVisible(),false,'only the explicit location handle reveals the panel');
+  assert.equal(f.node('.photo-viewer').dataset.locationVisible,'false');
+  f.drag('.photo-stage',-150,-35);f.click('#mobile-photo-grid');
+  f.api.selectPhoto(0);f.controller.gridSelected();f.flushHistory();
+  assert.equal(f.node('#photo-dialog').open,true);
+  assert.equal(f.index,0);
+  assert.equal(f.controller.locationVisible(),false);
+  assert.equal(f.node('#photo-location-panel')['aria-hidden'],'true');
+  assert.equal(f.node('#mobile-photo-location')['aria-expanded'],'false');
+  assert.equal(f.history.state.mobileAtlas.layer,'photo');
+  assert.equal(f.history.state.mobileAtlas.depth,1);
+  assert.equal(f.locations,1,'no delayed navigation restarts the location map');
+});
+
+test('browser Back exits the viewer from grid or location without restoring older photo layers',()=>{
+  for(const layer of ['grid','location']) {
+    const f=viewerFixture({deferredHistory:true});f.api.tab('story');f.api.openDay();
+    f.click(layer==='grid'?'#mobile-photo-grid':'#mobile-photo-location');
+    f.history.back();f.flushHistory();
+    assert.equal(f.node('#photo-dialog').open,false,layer);
+    assert.equal(f.node('.atlas-shell').dataset.mobileTab,'map',layer);
+  }
+});
+
+test('the bottom Day button opens and dismisses the day picker',()=>{
+  const f=viewerFixture();f.controller.renderDay();
+  f.click('#mobile-day-picker');f.controller.tabChanged();
+  assert.equal(f.node('.atlas-shell').dataset.mobileTab,'route');
+  assert.equal(f.node('#mobile-day-picker')['aria-expanded'],'true');
+  f.click('#mobile-day-picker');f.controller.tabChanged();
+  assert.equal(f.node('.atlas-shell').dataset.mobileTab,'map');
+  assert.equal(f.node('#mobile-day-picker')['aria-expanded'],'false');
 });
