@@ -43,6 +43,10 @@ test('one template supplies every control and asset to real trips, all samples, 
   buildSite(root);
   const reference = read(root, 'dist/switzerland-italy.html');
   assert.equal(ids(reference).length, new Set(ids(reference)).size, 'No duplicate control IDs');
+  for (const id of ['mobile-photo-back', 'mobile-photo-close', 'mobile-photo-location', 'mobile-grid-back', 'mobile-grid-close', 'mobile-replay-back', 'replay-view-map', 'replay-view-photos']) {
+    assert.ok(ids(reference).includes(id), `Shared mobile control ${id} exists`);
+    assert.match(reference, new RegExp(`<button[^>]*id="${id}"[^>]*>\\s*<svg[^>]*aria-hidden="true"`), `${id} uses a drawn icon with an accessible button label`);
+  }
   for (const journey of data.journeys) {
     const preview = renderJourneyPage(root, journey, { preview: true });
     assert.deepEqual(ids(preview), ids(reference), journey.id);
