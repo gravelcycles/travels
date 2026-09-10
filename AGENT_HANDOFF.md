@@ -9,7 +9,9 @@ link, photo zoom icon and photo/grid close icons are removed. Day N returns to
 the map; pinch/double-tap still zoom photos. Location opens only from its
 button/handle, and location/grid changes share one viewer history entry so
 photo changes cannot restore a closed panel. Browser Back exits to the day map.
-See JOURNEY_WORKFLOW.md for the current mobile review contract.
+Day selection clears route details, and mobile hover events cannot open the
+route tooltip; deliberate route taps still work. Tap Day N of M at the bottom
+to return to all days. See JOURNEY_WORKFLOW.md for the mobile review contract.
 
 ## Shared framework contract — 10 September 2026
 

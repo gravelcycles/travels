@@ -238,6 +238,11 @@ and Photos, plus the bottom Day N of M picker and previous/next arrows. The
 picker is the single entry to all days and the other journey-wide actions
 (whole map, all photos, unlock and about). Its Day button also returns to the current map. Transport
 and stop keys live in Day details; pinch/drag operate the uncluttered map.
+Tap **Day N of M** at the bottom to return to the all-days list. Selecting any
+day, including the current one, clears an open route tooltip. Mobile maps and
+travel cards do not preview routes on hover; deliberately tap a route or a
+travel leg to open its detail. Desktop mouse hover and keyboard focus previews
+remain available.
 
 Photo and grid headers use the Day N button to return to the day map. The
 photo header keeps its count and grid button; pinch and double-tap provide
