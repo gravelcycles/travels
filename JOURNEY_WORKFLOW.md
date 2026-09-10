@@ -240,19 +240,23 @@ The shared day map keeps a persistent compact header with the Journey Atlas
 link and a labeled Replay button. Replay opens directly from the map, day
 picker or details header. Below the map are the compact date/title, Day details
 and Photos, plus the bottom Day N of M picker and previous/next arrows. The
-picker is the single entry to all days and the other journey-wide actions
+picker lists all days and the other journey-wide actions
 (whole map, all photos, unlock and about). Its Day button also returns to the current map. Transport
 and stop keys live in Day details; pinch/drag operate the uncluttered map.
-Tap **Day N of M** at the bottom to return to the all-days list. Selecting any
-day, including the current one, clears an open route tooltip. Mobile maps and
-travel cards do not preview routes on hover; deliberately tap a route or a
-travel leg to open its detail. Desktop mouse hover and keyboard focus previews
-remain available.
+Tap **All days** at the top of a focused day map to show the whole journey again.
+Tap **Day N of M** at the bottom to return to the all-days list. Mobile route
+taps select the day without opening a tooltip; mobile travel cards also omit
+tooltips. Desktop mouse hover, clicks and keyboard focus previews remain available.
+Desktop headers omit Sample journeys, the trip badge and About this atlas.
 
 Photo and grid headers use the Day N button to return to the day map. The
-photo header keeps its count and grid button; pinch and double-tap provide
-zoom. Tap Photo location or drag its handle to reveal the map. Photo swipes
-must never reveal a closed location, including after a grid round trip.
+photo header keeps its count and grid button. Double-tap smoothly zooms around
+the tapped point and back out; pinch and drag remain immediate and interrupt
+an in-progress zoom. Reduced motion uses immediate double-tap zoom. Pull up
+on an unzoomed photo, tap Photo location, or drag its handle to reveal the map.
+Pull down on the photo or panel heading to dismiss it. When zoomed, dragging
+the photo pans it instead. Sideways swipes and grid round trips must not reopen
+a closed location; a new deliberate upward drag must reopen it.
 Location and grid changes update one viewer history entry synchronously;
 browser Back returns to the day map, while Escape dismisses a nested layer.
 Check these flows on the reference trip, a demo and a fresh empty draft.
