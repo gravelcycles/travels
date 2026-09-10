@@ -55,6 +55,13 @@
       if (push) { save(); history.pushState({...history.state}, '', location.href); }
       api.tab(tab); save();
     }
+    function placeReplayPhoto() {
+      // Keep the mobile image out of the scrolling story's clipping and
+      // compositing layers. Move the same image back into the desktop card.
+      const host = $(enabled() ? '#replay-photo-stage' : '#replay-photo-slot');
+      const frame = $('#replay-photo-frame');
+      if (frame.parentElement !== host) host.append(frame);
+    }
     function measureReplay() {
       const player = $('.replay-player');
       if (!enabled() || !$('#replay-dialog').open) return;
@@ -88,6 +95,7 @@
     const replayLayoutObserver = new ResizeObserver(measureReplay);
     replayLayoutObserver.observe($('.replay-controls')); replayLayoutObserver.observe($('.replay-story'));
     new ResizeObserver(() => { if (enabled() && replayView === 'map' && $('#replay-dialog').open) api.replayMap?.(); }).observe($('#replay-map'));
+    placeReplayPhoto();
     function renderDay() {
       const day = api.day(), info = api.dayInfo(day), index = api.days().findIndex(d => d.id === day.id);
       for (const prefix of ['mobile-day', 'mobile-story']) {
@@ -355,7 +363,7 @@
         }
         update(current);
       }
-      setReplayView(replayView);if(replayState)replayControlsChanged(replayState);
+      placeReplayPhoto();setReplayView(replayView);if(replayState)replayControlsChanged(replayState);
       renderDay();save();
     });
     window.addEventListener('resize',()=>{measure();measureReplay();});

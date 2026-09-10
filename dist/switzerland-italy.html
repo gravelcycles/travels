@@ -22,7 +22,7 @@
       href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
     />
     <link rel="stylesheet" href="./assets/styles.css?v=d83c0d906ca0" />
-    <link rel="stylesheet" href="./assets/mobile.css?v=549f5b31b072" />
+    <link rel="stylesheet" href="./assets/mobile.css?v=0b46e4614590" />
   </head>
   <body data-journey-id="switzerland-italy-family-2026">
     <header class="site-header">
@@ -209,6 +209,7 @@
         <header class="mobile-replay-header"><button id="mobile-replay-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span>Journey</span></button><strong>Trip Replay</strong></header>
         <div class="mobile-replay-views" role="group" aria-label="Replay view"><button id="replay-view-map" type="button" aria-pressed="true"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3Zm6-3v15m6-12v15"/></svg>Map</button><button id="replay-view-photos" type="button" aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 6-6 5 5 3-3 4 4"/></svg>Photos</button></div>
         <div id="replay-map" aria-label="Animated map replaying the journey day by day"></div>
+        <div id="replay-photo-stage" class="replay-photo-stage"></div>
         <button class="replay-close" type="button" aria-label="Close Trip Replay"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
         <div class="replay-map-error" id="replay-map-error" hidden><span>The map is unavailable. Photos and stories still work.</span><button id="replay-retry-map" type="button">Retry map</button></div>
         <aside class="replay-story" aria-live="polite">
@@ -217,10 +218,10 @@
           <h2 id="replay-title"></h2>
           <p class="replay-route" id="replay-route"></p>
           <p class="replay-copy" id="replay-copy"></p>
-          <figure class="replay-photo" id="replay-photo-frame" hidden>
+          <div id="replay-photo-slot"><figure class="replay-photo" id="replay-photo-frame" hidden>
             <div class="replay-image-frame"><img id="replay-photo" alt="" /></div>
             <figcaption id="replay-photo-caption"></figcaption>
-          </figure>
+          </figure></div>
           <div id="replay-photo-status" role="status"></div><button id="replay-retry-photo" type="button" hidden>Retry photograph</button>
           <button class="replay-explore" id="replay-explore-day" type="button">Explore this day</button>
         </aside>
@@ -265,7 +266,7 @@
     <script src="./assets/photo-service.js?v=7cf17f81b44e"></script>
     <script src="./assets/photo-auth.js?v=43f650853672"></script>
     <script src="./assets/atlas-utils.js?v=f5875fb09b6d"></script>
-    <script src="./assets/mobile-ux.js?v=e417d8f2e1ee"></script>
+    <script src="./assets/mobile-ux.js?v=d40e765cc0bf"></script>
     <script src="./assets/app.js?v=5f55254fc394"></script>
   </body>
 </html>
