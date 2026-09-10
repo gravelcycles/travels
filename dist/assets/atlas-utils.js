@@ -1,5 +1,19 @@
 (function (root) {
   "use strict";
+  function addMapAttribution(map, maplibre) {
+    class CollapsedAttributionControl extends maplibre.AttributionControl {
+      onAdd(map) {
+        const container = super.onAdd(map);
+        // MapLibre opens compact attribution initially. Set compact even before
+        // source credits arrive so loading tiles cannot expand it again.
+        container.classList.add("maplibregl-compact");
+        container.classList.remove("maplibregl-compact-show");
+        container.removeAttribute("open");
+        return container;
+      }
+    }
+    map.addControl(new CollapsedAttributionControl({ compact: true }), "bottom-right");
+  }
   function resolvePhoto(photo, override = {}) {
     const result = { ...photo, ...override, ...(override.location || {}) };
     if (override.location === null) {
@@ -142,5 +156,5 @@
     return requests;
   }
 
-  root.JOURNEY_ATLAS_UTILS = { photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoMapTransition };
+  root.JOURNEY_ATLAS_UTILS = { addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

@@ -453,7 +453,7 @@
     paint("road_secondary_tertiary_casing", "line-color", "#d8ad82");
   }
 
-  function createMap(container, compact) {
+  function createMap(container) {
     const options = {
       container,
       style: OPENFREEMAP_STYLE,
@@ -464,7 +464,7 @@
     };
     const map = new maplibregl.Map(options);
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
-    map.addControl(new maplibregl.AttributionControl({ compact: compact}), "bottom-right");
+    window.JOURNEY_ATLAS_UTILS.addMapAttribution(map, maplibregl);
     return map;
   }
 
@@ -474,7 +474,7 @@
       mapStatus.textContent = "The live map could not load. The day journal and photos still work.";
       return;
     }
-    try { mainMap = createMap("map", true); }
+    try { mainMap = createMap("map"); }
     catch (_error) { mapStatus.hidden=false; mapStatus.textContent="The map is unavailable. The journal and photographs still work."; return; }
     let setupAttempts = 0;
     const finishMainMapSetup = () => {
@@ -963,7 +963,7 @@
     if (!window.maplibregl || !window.matchMedia('(max-width: 900px)').matches || $('.atlas-shell').dataset.mobileTab !== 'story') return;
     if (!storyMap) {
       storyMap = new maplibregl.Map({container:'story-map-preview',style:OPENFREEMAP_STYLE,center:[9.2,47.4],zoom:4,interactive:false,attributionControl:false});
-      storyMap.addControl(new maplibregl.AttributionControl({compact:true}),'bottom-right');
+      window.JOURNEY_ATLAS_UTILS.addMapAttribution(storyMap, maplibregl);
       storyMap.on('load',()=>{storyMapReady=true;renderStoryMap();});
       return;
     }
@@ -988,7 +988,7 @@
       }
       return;
     }
-    viewerMap = createMap("photo-map", true);
+    viewerMap = createMap("photo-map");
     viewerTransition = window.JOURNEY_ATLAS_UTILS.photoMapTransition(viewerMap);
     const stopPhotoTransition = event => { if (event.originalEvent) viewerTransition.cancel({ stopMap: false }); };
     viewerMap.on("movestart", stopPhotoTransition);
@@ -1510,7 +1510,7 @@
       }
       return;
     }
-    try { replayMap = createMap("replay-map", true); }
+    try { replayMap = createMap("replay-map"); }
     catch(_error) { $('#replay-map-error').hidden=false; return; }
     let setupAttempts = 0;
     const finishReplayMapSetup = () => {
