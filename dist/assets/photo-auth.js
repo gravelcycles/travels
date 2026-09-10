@@ -6,7 +6,7 @@
   let service = '';
   try { const url = new URL(config.origin); if (url.origin === config.origin && (url.protocol === 'https:' || (['127.0.0.1','localhost'].includes(location.hostname) && ['127.0.0.1','localhost'].includes(url.hostname)))) service = url.origin; } catch { /* Unconfigured always stays locked. */ }
   let token = '', expiresAt = 0, generation = 0, expiryTimer, lastFocus, restoreAfterExpiry=false;
-  const ACCESS_KEY='atlas-photo-access', RECOVERY_KEY='atlas-photo-recovery';
+  const ACCESS_KEY='atlas-photo-access', RECOVERY_KEY='atlas-photo-recovery', GUEST_KEY='atlas-photo-guest';
   const images = new Map(), cache = new Map();
   const MAX_CACHE = 96, MAX_CACHE_BYTES = 64 * 1024 * 1024;
   const STATUS_INTERVAL = 60000;
@@ -25,7 +25,7 @@
   dialog.innerHTML='<h2 id="photo-unlock-title">Private photographs</h2><p>The journey is here to explore. Unlock the photos with a shared password.</p><button type="button" data-unlock>Unlock photos</button><p class="photo-unlock-hint">You’ll visit a secure login page, then return here. Access is remembered for 30 days.</p><p data-auth-message role="status" aria-live="polite"></p><button type="button" class="photo-auth-secondary" data-dismiss>Continue without photos</button>';
   document.body.append(dialog);
   const status = document.createElement('span');status.className='photo-auth-controls';
-  status.innerHTML='<button type="button" data-unlock>View photos</button>';
+  status.innerHTML='<button type="button" data-unlock hidden>View photos</button>';
   (document.querySelector('.header-context')||document.querySelector('.site-header')||document.body).append(status);
   const message = dialog.querySelector('[data-auth-message]');
   function updateControls() {
@@ -59,6 +59,7 @@
     token='';expiresAt=0;generation++;lastCheck=0;checkPending=null;restoreAfterExpiry=false;navigationPending=false;clearTimeout(expiryTimer);
     preloadTargets.clear();preloadCompleted.clear();preloadFailures.clear();
     try{sessionStorage.removeItem(ACCESS_KEY);}catch{}
+    if(broadcast)rememberGuest();
     for(const [img,item] of images){item.cleanup?.();img.removeAttribute('srcset');img.src=item.blur;img.classList.remove('is-loaded');item.entry=null;item.loading=false;imageState(img,'locked');}
     for(const entry of cache.values()){entry.controller.abort();if(entry.url)URL.revokeObjectURL(entry.url);}
     cache.clear();updateControls();if(broadcast)channel?.postMessage('lock');
@@ -92,6 +93,7 @@
     } finally { clearTimeout(timer); }
   }
   function showPrompt(text='') { updateControls();message.textContent=text;lastFocus=document.activeElement;if(!dialog.open)dialog.showModal(); }
+  function rememberGuest(){try{sessionStorage.setItem(GUEST_KEY,'1');}catch{}}
   function closePrompt(){dialog.close();lastFocus?.focus?.();}
   function abortEntry(src, entry) {
     if (cache.get(src) === entry) cache.delete(src);
@@ -325,13 +327,19 @@
   }
   async function completeReturn() {
     const params=new URLSearchParams(location.hash.slice(1));
-    if(!params.has('photoAuthCode')&&!params.has('photoAuthLogout')&&!params.has('photoAuthCancel')&&!params.has('photoAuthMissing')){if(!await restoreTabAccess())await begin('restore');return;}
+    if(!params.has('photoAuthCode')&&!params.has('photoAuthLogout')&&!params.has('photoAuthCancel')&&!params.has('photoAuthMissing')){
+      // A known guest must not take another login round trip on every page load.
+      // This preference never grants access; a new tab still checks the HttpOnly cookie.
+      let guest=false;try{guest=sessionStorage.getItem(GUEST_KEY)==='1';}catch{}
+      if(guest){updateControls();return;}
+      if(!await restoreTabAccess())await begin('restore');return;
+    }
     let flow;try{flow=JSON.parse(sessionStorage.getItem(FLOW_KEY));sessionStorage.removeItem(FLOW_KEY);}catch{}
     // Remove the short-lived one-use code before loading anything else from this page.
     history.replaceState(null,'',location.pathname+location.search+(flow?.hash||''));
     window.dispatchEvent(new Event('hashchange'));
     if(!flow||params.get('state')!==flow.state||Date.now()-flow.created>300000){showPrompt('Login expired. Please unlock again.');return;}
-    if(params.has('photoAuthMissing')){showPrompt();return;}
+    if(params.has('photoAuthMissing')){rememberGuest();showPrompt();return;}
     if(params.has('photoAuthLogout')||params.has('photoAuthCancel')){lock();if(dialog.open)closePrompt();return;}
     const epoch=generation;
     try{
@@ -345,7 +353,7 @@
   function acceptAccess(data){
     lock(false);token=data.token;expiresAt=data.expiresAt;lastCheck=Date.now();
     // Only the one-hour access token is tab-scoped; the 30-day cookie stays HttpOnly.
-    try{sessionStorage.setItem(ACCESS_KEY,JSON.stringify({token,expiresAt}));}catch{}
+    try{sessionStorage.removeItem(GUEST_KEY);sessionStorage.setItem(ACCESS_KEY,JSON.stringify({token,expiresAt}));}catch{}
     expiryTimer=setTimeout(expireAccess,Math.max(0,expiresAt*1000-Date.now()));
     updateControls();if(dialog.open)closePrompt();for(const [img,item] of images)if(img.isConnected&&item.priority===0)hydrate(img);prepare();window.dispatchEvent(new Event('atlas-photos-unlocked'));
   }
@@ -375,11 +383,11 @@
     checkPending=pending;
     try{await pending;}finally{if(checkPending===pending)checkPending=null;}
   }
-  channel?.addEventListener('message',event=>{if(event.data==='lock')lock(false);});
+  channel?.addEventListener('message',event=>{if(event.data==='lock'){rememberGuest();lock(false);}});
   document.addEventListener('visibilitychange',()=>{pumpDownloads();if(!document.hidden)check();});window.navigator?.connection?.addEventListener('change',pumpDownloads);window.addEventListener('focus',check);setInterval(check,STATUS_INTERVAL);
   for(const button of document.querySelectorAll('[data-unlock]'))button.addEventListener('click',()=>begin());
   dialog.querySelector('[data-dismiss]').addEventListener('click',closePrompt);
-  dialog.addEventListener('close',()=>lastFocus?.focus?.());
+  dialog.addEventListener('close',()=>{if(!token)rememberGuest();lastFocus?.focus?.();});
   window.JOURNEY_ATLAS_AUTH={isProtected,markup,hydrate,prepare,setImage,clearImage,setPreloads,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets,selected(photo,width)].slice(-MAX_PREFETCH));},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
