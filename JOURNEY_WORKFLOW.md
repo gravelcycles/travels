@@ -62,21 +62,22 @@ zoom visibility and label collision rules; do not enable overlapping labels.
 Check route/label intersections at overview and close-up zooms on desktop and
 phone after changing this shared treatment.
 
-Labels inherit automatically from each day's `destinationId` (or `placeId`),
+Map pins inherit automatically from each day's `destinationId` (or `placeId`),
 plus group destinations when viewing everyone. Keep place names factual and
-concise; do not author positions or trip-specific label offsets. Travel labels
-anchor to the last reviewed arrival vertex for that destination, then a
-reviewed departure or the named place for a rest day. Unknown locations stay
-unlabelled. Repeated stays share one overview label with explicit day choices.
+concise; do not author positions or trip-specific offsets. Pins anchor to the
+last reviewed arrival vertex for that destination, then a reviewed departure
+or the named place for a rest day. Unknown locations stay unmarked.
 
-The overview shows place names/day numbers where they fit, collapses to day
-numbers near dense routes, and hides labels that cannot clear the route and
-other controls. Zoom reveals more; all days remain available in navigation.
-Day focus shows only that day's destinations. Labels settle after camera
-movement to avoid jitter; transit dots and route lines retain their own styles.
-Desktop labels include native full-name/date tooltips; phone targets are 44 px
-and single-day taps navigate directly. Review overview, repeat stays, day
-focus, zoom and resize at desktop and 390 px, including an empty fresh draft.
+One-day stops use a small numbered balloon; repeated stays and nearby places
+share a quiet dot with explicit day choices. Zoom separates nearby places.
+Pin bodies prefer space beside the route, with tips/dots on the actual point;
+controls and other hit targets stay clear. Pins remain attached while moving
+and settle their grouping/orientation afterward. Nearby journey stops remain
+available in day focus. Desktop hover or keyboard focus links the pin, route
+and day row, with one small place preview and no camera movement. Single-day
+taps navigate directly; repeated stops open a day picker. Phone targets are
+44 px. Review linked previews, pointer handoff, Escape, repeat-day selection,
+zoom and resize at desktop and 390 px, including an empty fresh draft.
 See [the design decision and sources](docs/LOCATION_LABELS.md).
 
 ## Start small, as a local draft
@@ -183,9 +184,10 @@ including photo, Replay, day preview and Studio maps. During desktop/phone QA,
 check that credits stay closed after tiles load and can still be opened and
 closed with the info button; route framing needs no extra attribution margin.
 
-Destination/day labels use neutral 2 px connectors to their mapped locations;
-select a label or use the journal/day navigation. Check label placement and
-rail stops at desktop and phone sizes after changing routes. Intermediate rail
+Destination pins point directly at their mapped locations. Select a numbered
+pin or choose a visit from a repeat-stop dot; journal/day navigation remains
+available. Check pin placement and rail stops at desktop and phone sizes after
+changing routes. Intermediate rail
 stops have small 5 px orange centers and 2 px white rims (9 px total). The orange
 sits inside the selected blue line; the white rims overlap the route's white
 casing and remain visible over the blue line. Both endpoints of every train

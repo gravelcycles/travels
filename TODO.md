@@ -80,12 +80,14 @@ project-level status.
       distinguishable at overview and close-up scales. Use redundant color plus
       dash/width/casing/symbol cues, retain selected-route emphasis, place lines
       below labels, and test color-vision/low-contrast conditions.
-- [x] **T05 — Stop day dots covering labels.** Destination/day labels restored
-      after the owner's subsequent request, using measured route/control
-      collision avoidance, compact/culling fallback and explicit repeat-stay
-      choices. Ivory/teal chips keep transit colors distinct; mobile targets
-      are 44 px. Basemap text avoidance remains best effort (glyph bounds are
-      unavailable to DOM controls); see `docs/LOCATION_LABELS.md`. Train-leg
+- [x] **T05 — Stop day dots covering labels.** Small numbered balloons replace
+      destination chips/connectors; repeat/nearby stops share quiet dots with
+      explicit day choices. Pin tips stay on location, bodies prefer space
+      beside routes, and clustering/control collision checks protect targets.
+      Hover/focus links pins, routes and day rows; one compact preview reveals
+      details. Phone targets are 44 px. Exact basemap glyph collision remains
+      unavailable to DOM pins; dense/edge views can still omit a pin while day
+      navigation remains available. See `docs/LOCATION_LABELS.md`. Train-leg
       endpoints and intermediate stop styling remain intact.
 - [x] **T06 — Evaluate a terrain-readable basemap.** Prototype OpenTopoMap first,
       then compare a restrained vector/topographic option if necessary. Water,

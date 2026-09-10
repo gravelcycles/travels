@@ -95,6 +95,7 @@
   const storyDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
   let hasPlayedOpeningMove = false;
   let locationLabels;
+  let previewDayIds = [], previewSource = null, previewShowCard = false, previewClearTimer = null;
   let pendingMapAction = null;
   const preloadedPhotoUrls = new Set();
   const decodedPhotoUrls = new Set();
@@ -396,8 +397,34 @@
 
   function syncInspectionClasses() {
     const inspectedDay = inspectedSegmentId ? dayForSegment(inspectedSegmentId) : null;
-    document.querySelectorAll(".day-row").forEach((row) => row.classList.toggle("route-preview", row.dataset.dayId === inspectedDay?.id));
-    document.querySelectorAll(".leg-card").forEach((card) => card.classList.toggle("route-preview", card.dataset.routeSegment === inspectedSegmentId));
+    const dayIds = previewDayIds.length ? previewDayIds : inspectedDay ? [inspectedDay.id] : [];
+    const segmentIds = new Set(dayIds.flatMap(id => dayById(id)?.segmentIds || []));
+    document.querySelectorAll(".day-row").forEach(row => row.classList.toggle("route-preview", dayIds.includes(row.dataset.dayId)));
+    document.querySelectorAll(".leg-card").forEach(card => card.classList.toggle("route-preview", segmentIds.has(card.dataset.routeSegment)));
+    locationLabels?.setPreview(dayIds, { show: previewShowCard, preserveCard: previewSource === 'pin' });
+  }
+
+  function setDayPreview(ids, source, showCard = true) {
+    window.clearTimeout(previewClearTimer); previewClearTimer = null;
+    const next = [...new Set(ids)].filter(id => dayById(id));
+    if (previewSource === source && next.join('|') === previewDayIds.join('|') && previewShowCard === showCard) return;
+    previewDayIds = next; previewSource = next.length ? source : null; previewShowCard = Boolean(next.length && showCard);
+    const segments = new Set(next.flatMap(id => dayById(id).segmentIds));
+    if (mainMapReady) journey.segments.forEach(segment => {
+      const sourceId = `main-source-${segment.id}`;
+      if (mainMap.getSource(sourceId)) mainMap.setFeatureState({source:sourceId,id:segment.id}, {previewed:segments.has(segment.id), previewMuted:Boolean(next.length) && !segments.has(segment.id)});
+    });
+    syncInspectionClasses();
+  }
+
+  function deferDayPreviewClear(source) {
+    if (source !== previewSource || previewClearTimer !== null) return;
+    previewClearTimer = window.setTimeout(() => { previewClearTimer = null; clearDayPreview(source); }, 240);
+  }
+
+  function clearDayPreview(source) {
+    if (source && source !== previewSource) return;
+    setDayPreview([], null, false);
   }
 
   function setInspectedFeatureState(segmentId, inspected) {
@@ -423,10 +450,10 @@
     inspectedSegmentId = segmentId;
     routeInspectionPinned = pinned || routeInspectionPinned;
     setInspectedFeatureState(segmentId, true);
-    syncInspectionClasses();
+    setDayPreview([day.id], 'route', !routeInspectionPinned);
     const from = placeById(segment.from);
     const to = placeById(segment.to);
-    $("#route-inspector").hidden = false;
+    $("#route-inspector").hidden = !routeInspectionPinned;
     $("#route-inspector-meta").textContent = `Day ${day.number} · ${labels[segment.mode] || segment.mode}`;
     $("#route-inspector-title").textContent = `${from.name} → ${to.name}`;
     $("#route-inspector-story").textContent = conciseDayStory(day);
@@ -437,6 +464,7 @@
     setInspectedFeatureState(inspectedSegmentId, false);
     inspectedSegmentId = null;
     routeInspectionPinned = false;
+    if (force) clearDayPreview('route'); else deferDayPreviewClear('route');
     $("#route-inspector").hidden = true;
     syncInspectionClasses();
   }
@@ -490,6 +518,10 @@
       applyBasemapTreatment(mainMap);
       locationLabels = window.JOURNEY_ATLAS_LOCATION_LABELS.create({
         map: mainMap, maplibregl, onSelectDay: id => setActiveDay(id, true),
+        onPreviewDays: ids => {
+          if (ids.length) { setDayPreview(ids, 'pin', false); clearSegmentInspection(true); }
+          else clearDayPreview('pin');
+        },
         obstacles: () => {
           const mapRect = mainMap.getContainer().getBoundingClientRect();
           return ['#day-navigator', '#map-legend', '#route-inspector', '.maplibregl-ctrl-top-right', '.maplibregl-ctrl-bottom-right']
@@ -568,6 +600,7 @@
     const modeStyle = modeStyles[segment.mode] || { color: palette.route, width: 4.7, dash: null };
     map.addSource(sourceId, {
       type: "geojson",
+      promoteId: "segmentId",
       data: {
         type: "Feature",
         id: segment.id,
@@ -583,16 +616,16 @@
       layout: { "line-cap": "round", "line-join": "round" },
       paint: {
         "line-color": palette.casing,
-        "line-width": ["case", ["boolean", ["feature-state", "inspected"], false], modeStyle.width + (options.selected ? 8.2 : 6.8), modeStyle.width + (options.selected ? 5.2 : 3.8)],
-        "line-opacity": options.opacity * (options.selected ? 0.96 : 0.82)
+        "line-width": ["case", ["any", ["boolean", ["feature-state", "inspected"], false], ["boolean", ["feature-state", "previewed"], false]], modeStyle.width + (options.selected ? 8.2 : 6.8), modeStyle.width + (options.selected ? 5.2 : 3.8)],
+        "line-opacity": ["case", ["boolean", ["feature-state", "previewed"], false], 0.96, ["boolean", ["feature-state", "previewMuted"], false], 0.2, options.opacity * (options.selected ? 0.96 : 0.82)]
       }
     }, beforeLabelId);
     const baseColor = options.color || modeStyle.color;
     const baseWidth = modeStyle.width + (options.selected ? 1.4 : 0);
     const paint = {
-      "line-color": baseColor,
-      "line-width": ["case", ["boolean", ["feature-state", "inspected"], false], baseWidth + 3, baseWidth],
-      "line-opacity": options.opacity
+      "line-color": ["case", ["boolean", ["feature-state", "previewed"], false], modeStyle.color, baseColor],
+      "line-width": ["case", ["any", ["boolean", ["feature-state", "inspected"], false], ["boolean", ["feature-state", "previewed"], false]], baseWidth + 3, baseWidth],
+      "line-opacity": ["case", ["boolean", ["feature-state", "previewed"], false], 1, ["boolean", ["feature-state", "previewMuted"], false], 0.24, options.opacity]
     };
     if (modeStyle.dash) paint["line-dasharray"] = modeStyle.dash;
     map.addLayer({
@@ -715,6 +748,7 @@
       if (attempt < 24) window.setTimeout(() => drawMainMap(fit, attempt + 1), 500);
       return;
     }
+    clearDayPreview();
     clearDecorations(mainMap, mainDecorations);
     const selectedSegments = new Set(activeDay().segmentIds);
     [...journey.segments]
@@ -733,8 +767,8 @@
     if (inspectedSegmentId) setInspectedFeatureState(inspectedSegmentId, true);
     renderDayNavigator();
     locationLabels?.update(
-      window.JOURNEY_ATLAS_LOCATION_LABELS.groupsForJourney(journey, { destinationForDay, segmentsForDay, segmentCoordinates, includeGroupPlaces: !activeGroupId }, activeDayId, mapScope),
-      journey.segments.map(segment => ({ coordinates: segmentCoordinates(segment), padding: (modeStyles[segment.mode]?.width || 4.7) / 2 + 6 }))
+      window.JOURNEY_ATLAS_LOCATION_LABELS.groupsForJourney(journey, { destinationForDay, segmentsForDay, segmentCoordinates, includeGroupPlaces: !activeGroupId }, activeDayId, 'journey'),
+      journey.segments.map(segment => ({ dayIds: journey.days.filter(day => day.segmentIds.includes(segment.id)).map(day => day.id), coordinates: segmentCoordinates(segment), padding: (modeStyles[segment.mode]?.width || 4.7) / 2 + 6 }))
     );
     if (fit) fitJourneyBounds();
   }
@@ -775,7 +809,7 @@
   function fitJourneyBounds(duration = 650) {
     if (!mainMapReady) return;
     const bounds = boundsFromCoordinates(journeyCoordinates());
-    if (bounds) mainMap.fitBounds(bounds, { padding: mapPadding(76), maxZoom: 8, duration });
+    if (bounds) mainMap.fitBounds(bounds, { padding: mapPadding(112), maxZoom: 8, duration });
     else mainMap.easeTo({ center: [0, 20], zoom: 1.5, duration: 0 });
   }
 
@@ -1724,6 +1758,24 @@
   dayList.addEventListener("click", (event) => {
     const button = event.target.closest("[data-day-id]");
     if (button) { setActiveDay(button.dataset.dayId, true); if(window.JOURNEY_ATLAS_MOBILE_UI?.enabled())window.JOURNEY_ATLAS_MOBILE_UI.selectedDay();else showJournal(true); }
+  });
+
+  dayList.addEventListener('mouseover', event => {
+    if (!routeHoverEnabled()) return;
+    const row = event.target.closest('[data-day-id]');
+    if (row && !row.contains(event.relatedTarget)) { clearSegmentInspection(true); setDayPreview([row.dataset.dayId], 'list'); }
+  });
+  dayList.addEventListener('mouseout', event => {
+    const row = event.target.closest('[data-day-id]');
+    if (row && !row.contains(event.relatedTarget)) deferDayPreviewClear('list');
+  });
+  dayList.addEventListener('focusin', event => {
+    const row = event.target.closest('[data-day-id]');
+    if (row && document.documentElement.dataset.inputMode === 'keyboard') { clearSegmentInspection(true); setDayPreview([row.dataset.dayId], 'list'); }
+  });
+  dayList.addEventListener('focusout', event => {
+    const row = event.target.closest('[data-day-id]');
+    if (row && !row.contains(event.relatedTarget)) deferDayPreviewClear('list');
   });
 
   detailPanel.addEventListener("mouseover", (event) => {
