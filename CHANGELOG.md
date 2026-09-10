@@ -15,6 +15,17 @@
   staged cleanup and reusable agent prompts. Make the 99% shared-behavior
   principle a standing AGENTS.md rule.
 
+## 10 September 2026 — quiet photo access on fresh loads
+
+- Keep the session restoration panel hidden for fast checks in both signed-in
+  and signed-out browsers. Slow checks reveal neutral progress after half a
+  second; automatic failures offer recovery without exposing a password form.
+- Remember a tab's guest, cancelled, or locked state so subsequent page loads
+  stay on the atlas. Explicit View photos still works and successful login
+  clears the guest preference. Photo authorization remains server-validated.
+- Validation: all 157 tests and the production build pass, including regression
+  coverage for pending checks, both session outcomes, guest reloads, and retry.
+
 ## 10 September 2026 — center photos in the full viewer area
 
 - Give the image and its blurred preview the full available height, with equal

@@ -1,5 +1,21 @@
 # Private photo access — implementation handoff
 
+## Quiet restoration — 10 September 2026
+
+The first-party restoration page starts with its main panel hidden in HTML.
+Successful and missing sessions return without revealing it. Checks taking
+longer than 500 ms show neutral, cancellable progress; failures reveal retry
+controls but never a password form during automatic restoration. Explicit login
+still reveals the password form when needed. Return navigation cancels the
+reveal timer and hides any progress panel.
+
+The tab-scoped `atlas-photo-guest` preference records missing sessions, explicit
+locks, cancellation, and dismissal. Subsequent same-tab page loads remain on the
+atlas without another restoration redirect or automatic prompt. View photos
+always starts an explicit login; accepted access clears the preference. Fresh
+tabs without this preference still check the first-party remembered cookie.
+The preference never authorizes photos or changes credential storage.
+
 ## Expanded day preloading — 9 September 2026
 
 Deployed frontend `1a7fc31ce86f24e149b8691ec521995d372b16ed` successfully in
