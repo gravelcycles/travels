@@ -22,7 +22,7 @@
       href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
     />
     <link rel="stylesheet" href="./assets/styles.css?v=d83c0d906ca0" />
-    <link rel="stylesheet" href="./assets/mobile.css?v=e4d20460541e" />
+    <link rel="stylesheet" href="./assets/mobile.css?v=f3c5bc99648d" />
   </head>
   <body data-journey-scope="demo" data-journey-id="alpine-crossing">
     <header class="site-header">
@@ -41,6 +41,7 @@
     <header class="mobile-header" aria-label="Mobile journey navigation">
       <button id="mobile-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Day map</span></button>
       <a href="./" class="mobile-brand">Journey Atlas</a>
+      <button id="mobile-open-replay" type="button" aria-controls="replay-dialog" aria-haspopup="dialog"><svg class="ui-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="m8 5 11 7-11 7Z"/></svg><span>Replay</span></button>
     </header>
 
     <section id="trip-intro" class="trip-intro" aria-label="Journey introduction" hidden></section>
@@ -64,7 +65,6 @@
         <nav id="mobile-journey-actions" class="mobile-journey-actions" aria-label="Explore the journey">
           <button data-journey-action="overview" type="button">Whole trip map</button>
           <button data-journey-action="photos" type="button">All photos</button>
-          <button data-journey-action="replay" type="button">Relive the trip</button>
           <button data-journey-action="unlock" type="button">Unlock photos</button>
           <button data-journey-action="about" type="button">About this atlas</button>
           <a href="./">All journeys</a>
@@ -264,7 +264,7 @@
     <script src="./assets/photo-service.js?v=7cf17f81b44e"></script>
     <script src="./assets/photo-auth.js?v=43f650853672"></script>
     <script src="./assets/atlas-utils.js?v=f5875fb09b6d"></script>
-    <script src="./assets/mobile-ux.js?v=f54cd6b67428"></script>
+    <script src="./assets/mobile-ux.js?v=f9cbafabdbee"></script>
     <script src="./assets/app.js?v=403b3555d396"></script>
   </body>
 </html>

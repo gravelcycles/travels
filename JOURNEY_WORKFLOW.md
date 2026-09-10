@@ -230,10 +230,12 @@ be mixed into the two-dimensional map coordinate array.
 
 ## Mobile review
 
-The shared day map keeps a compact date/title, Day details and Photos, plus the
-bottom Day N of M picker and previous/next arrows. The picker is the single
-entry to all days and journey-wide actions (whole map, all photos, Replay,
-unlock and about). Its Day button also returns to the current map. Transport
+The shared day map keeps a persistent compact header with the Journey Atlas
+link and a labeled Replay button. Replay opens directly from the map, day
+picker or details header. Below the map are the compact date/title, Day details
+and Photos, plus the bottom Day N of M picker and previous/next arrows. The
+picker is the single entry to all days and the other journey-wide actions
+(whole map, all photos, unlock and about). Its Day button also returns to the current map. Transport
 and stop keys live in Day details; pinch/drag operate the uncluttered map.
 
 Photo and grid headers use the Day N button to return to the day map. The

@@ -46,7 +46,7 @@ test('one template supplies every control and asset to real trips, all samples, 
   assert.equal(ids(reference).length, new Set(ids(reference)).size, 'No duplicate control IDs');
   assert.ok(reference.indexOf('id="replay-photo-stage"') < reference.indexOf('<aside class="replay-story"'), 'Mobile Replay media is outside the scrolling story');
   assert.match(reference, /<div id="replay-photo-slot"><figure class="replay-photo" id="replay-photo-frame"/, 'One photo frame has a desktop home and a separate mobile stage');
-  for (const id of ['mobile-photo-back', 'mobile-photo-location', 'mobile-grid-back', 'mobile-replay-back', 'replay-view-map', 'replay-view-photos']) {
+  for (const id of ['mobile-open-replay', 'mobile-photo-back', 'mobile-photo-location', 'mobile-grid-back', 'mobile-replay-back', 'replay-view-map', 'replay-view-photos']) {
     assert.ok(ids(reference).includes(id), `Shared mobile control ${id} exists`);
     assert.match(reference, new RegExp(`<button[^>]*id="${id}"[^>]*>\\s*<svg[^>]*aria-hidden="true"`), `${id} uses a drawn icon with an accessible button label`);
   }
@@ -54,8 +54,11 @@ test('one template supplies every control and asset to real trips, all samples, 
     assert.ok(!ids(reference).includes(removed), `Redundant mobile control ${removed} stays absent`);
   }
   assert.match(reference, /id="mobile-day-picker"[^>]*aria-controls="mobile-journey-panel"[^>]*aria-expanded="false"/);
+  const header = reference.match(/<header class="mobile-header"[\s\S]*?<\/header>/)?.[0];
+  assert.match(header, /id="mobile-open-replay"[^>]*aria-controls="replay-dialog"[^>]*aria-haspopup="dialog"/);
+  assert.match(header, /<span>Replay<\/span>/, 'Replay is a direct, labeled header action');
   const actions = reference.match(/<nav id="mobile-journey-actions"[\s\S]*?<\/nav>/)?.[0];
-  for (const action of ['overview', 'photos', 'replay', 'unlock', 'about']) assert.ok(actions?.includes(`data-journey-action="${action}"`), `${action} remains accessible in the day picker`);
+  for (const action of ['overview', 'photos', 'unlock', 'about']) assert.ok(actions?.includes(`data-journey-action="${action}"`), `${action} remains accessible in the day picker`);
   assert.ok(ids(reference).includes('mobile-story-legend'), 'Route key remains available in day details');
   for (const journey of data.journeys) {
     const preview = renderJourneyPage(root, journey, { preview: true });
