@@ -40,6 +40,12 @@ graph excludes motorways, steps, bicycle bans and private/no-access ways without
 explicit bicycle permission; footways and pedestrian ways require bicycle
 permission. This undirected reconstruction is for the historical map, not turn-by-turn navigation.
 
+On 10 September 2026, the traveler revised five bike control points in Studio.
+The local bicycle network was used to regenerate and accept the route through
+all 29 current points. The reviewed override is 21.6 km (maximum snap 35 m),
+with the Luzern start and Kehrsiten-Bürgenstock landing retained. The route
+source and updated displayed distance were published together.
+
 ## Italy
 
 - Fiumelatte–Varenna-Esino–Bellano Tartavalle Terme–Dervio station order: [Trenord R13 line](https://www.trenord.it/linee-e-orari/circolazione/le-nostre-linee/lecco-colico-sondrio/?code=R13).
