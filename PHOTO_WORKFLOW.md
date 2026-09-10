@@ -77,6 +77,15 @@ or caption changes in Studio:
 4. Wait for Pages, then open a fresh public journey and verify day assignment,
    photo viewer, and any deleted-photo absence. Record the deployment receipt.
 
+On phones, Photos and View photos open the selected day’s grid. Selecting a
+thumbnail opens the full photograph; both Back and Close return to that day’s
+map. Controls stay visible when the photo is tapped. Swipe sideways for the
+next/previous photo, double-tap or pinch to zoom, and drag upward or tap Photo
+location to reveal its map. Hide location collapses it without leaving the
+photo. Verify a quick hide-then-swipe keeps location closed. Replay has separate
+Map/Photos views with fixed playback controls; moments without a photo use Map.
+Check the affected flow on a demo and a fresh draft as well as the real trip.
+
 `--publish` uses Wrangler's owner authorization to upload to private R2. It
 refuses public bucket settings, checks WebP metadata and content hashes, uploads
 missing objects, then downloads and verifies every selected object before marking

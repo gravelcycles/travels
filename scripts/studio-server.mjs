@@ -12,7 +12,7 @@ import { createJourney } from "./create-journey.mjs";
 import { loadContent, validateOverrides } from "./journey-content.mjs";
 import { renderJourneyPage, studioAsset, readOverrides } from "./build-site.mjs";
 import { proposeGpxRoute } from "./gpx-route-service.mjs";
-import { proposeStudioRoute } from "./studio-route-service.mjs";
+import { proposeStudioRoute, studioRouteAvailability } from "./studio-route-service.mjs";
 
 const repoRoot = process.env.ATLAS_STUDIO_ROOT ? path.resolve(process.env.ATLAS_STUDIO_ROOT) : path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const port = Number(process.env.ATLAS_STUDIO_PORT || 4173);
@@ -236,6 +236,11 @@ const server = http.createServer((request, response) => {
         send(response, 400, JSON.stringify({ ok: false, error: error.message }), "application/json; charset=utf-8");
       }
     });
+    return;
+  }
+  if (request.method === "GET" && url.pathname === "/api/route-availability") {
+    const availability = studioRouteAvailability({ repoRoot, journeyId: url.searchParams.get("journeyId"), segmentId: url.searchParams.get("segmentId") });
+    send(response, 200, JSON.stringify(availability), "application/json; charset=utf-8");
     return;
   }
   if (request.method === "POST" && url.pathname === "/api/route-proposal") {
