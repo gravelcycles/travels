@@ -33,6 +33,9 @@ be checked against tickets or photo timestamps when those become available.
 The Day 4 OSM export was retrieved from `https://overpass-api.de/api/interpreter`
 on 9 September 2026. Query: `[out:json][timeout:60];(way[highway](46.973,8.298,47.055,8.389);nwr[amenity=ferry_terminal](46.98,8.30,47.06,8.40);way[route=ferry](46.98,8.30,47.06,8.40););out body;>;out skel qt;`.
 Raw input is ignored in `build/route-inputs/luzern-shore-overpass.json`. The bike
+filtered input is `build/route-inputs/luzern-bicycle-filtered.json`, now mapped
+to the manifest’s bicycle network for explicit Studio replacement proposals.
+The reviewed base route remains preserved during unattended builds. The bike
 graph excludes motorways, steps, bicycle bans and private/no-access ways without
 explicit bicycle permission; footways and pedestrian ways require bicycle
 permission. This undirected reconstruction is for the historical map, not turn-by-turn navigation.

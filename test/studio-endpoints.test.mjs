@@ -10,7 +10,7 @@ const copy = value => JSON.parse(JSON.stringify(value));
 
 // Run the actual Studio handlers with a tiny DOM/map adapter. No trip files or
 // browser save endpoint are touched by these regression fixtures.
-function editor(override = null) {
+function editor(override = null, fetch = async () => ({ ok: true, json: async () => ({ available: true, message: "Ready" }) })) {
   const nodes = new Map(), markers = [];
   const node = () => ({ _value: '', get value() { return this._value; }, set value(value) { this._value = String(value); }, disabled: false, handlers: {}, dataset: {},
     addEventListener(type, fn) { this.handlers[type] = fn; }, setAttribute() {} });
@@ -18,7 +18,7 @@ function editor(override = null) {
     if (!nodes.has(selector)) nodes.set(selector, node());
     return nodes.get(selector);
   };
-  const context = vm.createContext({ structuredClone,
+  const context = vm.createContext({ structuredClone, fetch, URLSearchParams,
     document: { querySelector: getNode, querySelectorAll: () => [], createElement: node },
     window: { addEventListener() {}, JOURNEY_ATLAS_UTILS: globalThis.JOURNEY_ATLAS_UTILS,
       JOURNEY_ATLAS_DATA: { journeys: [{ id: 'trip', places: [], days: [{ id: 'day', segmentIds: ['train'] }],
@@ -46,7 +46,8 @@ function editor(override = null) {
         drawRouteEditor();
       },
       snapshot: () => routeEditSnapshot(),
-      readEndpointFields, commitRoutePoints, restoreRouteHistory
+      readEndpointFields, commitRoutePoints, restoreRouteHistory, refreshRouteAvailability, proposeNetworkRoute, acceptNetworkProposal,
+      proposal: () => routeProposal, selectPoint: index => { selectedRoutePoint = index; updateUndoButtons(); }
     };
   })();`), context);
   const api = context.window.editor;
@@ -122,4 +123,49 @@ test('intermediate anchor drags still require acceptance and do not replace the 
   start.point = [7.999,47.001];
   start.handlers.dragend();
   assert.equal(ed.nodes.get('#redo-route').disabled, true);
+});
+
+
+test('delete, regenerate and accept updates geometry only after explicit acceptance', async () => {
+  let requestBody;
+  const ed = editor({ geometry: detailed, controlPoints: anchors }, async (url, options) => {
+    if (url.startsWith('/api/route-availability')) return { ok: true, json: async () => ({ available: true, message: 'Ready' }) };
+    requestBody = JSON.parse(options.body);
+    return { ok: true, json: async () => ({ ok: true, proposal: { geometry: [detailed[0], detailed[1], detailed.at(-1)], mode: 'train', network: 'rail', pointCount: 3, maxSnapKm: 0 } }) };
+  });
+  await ed.api.refreshRouteAvailability();
+  ed.api.selectPoint(1);
+  assert.equal(ed.nodes.get('#delete-route-point').textContent, 'Delete point 2');
+  ed.nodes.get('#delete-route-point').handlers.click();
+  assert.deepEqual(ed.snapshot().points, [anchors[0], anchors.at(-1)]);
+  assert.deepEqual(ed.snapshot().override.geometry, detailed);
+  await ed.api.proposeNetworkRoute();
+  assert.deepEqual(requestBody.controlPoints, [anchors[0], anchors.at(-1)]);
+  assert.deepEqual(ed.snapshot().override.geometry, detailed, 'Generation only previews');
+  assert.equal(ed.nodes.get('#accept-route-proposal').disabled, false);
+  ed.api.acceptNetworkProposal();
+  assert.deepEqual(ed.snapshot().override.geometry, [detailed[0], detailed[1], detailed.at(-1)]);
+});
+
+test('editing points while generation is in flight invalidates the pending proposal', async () => {
+  let finish;
+  const ed = editor(null, async url => {
+    if (url.startsWith('/api/route-availability')) return { ok: true, json: async () => ({ available: true, message: 'Ready' }) };
+    return await new Promise(resolve => { finish = resolve; });
+  });
+  await ed.api.refreshRouteAvailability();
+  const request = ed.api.proposeNetworkRoute();
+  ed.api.commitRoutePoints([anchors[0], anchors.at(-1)]);
+  finish({ ok: true, json: async () => ({ ok: true, proposal: { geometry: detailed, pointCount: detailed.length, maxSnapKm: 0 } }) });
+  await request;
+  assert.equal(ed.api.proposal(), null);
+  assert.equal(ed.nodes.get('#accept-route-proposal').disabled, true);
+  assert.deepEqual(ed.snapshot().override.geometry, detailed);
+});
+
+test('routing availability disables generation with a visible next step', async () => {
+  const ed = editor(null, async () => ({ ok: true, json: async () => ({ available: false, message: 'Ask the agent to prepare local routing data.' }) }));
+  await ed.api.refreshRouteAvailability();
+  assert.equal(ed.nodes.get('#propose-route').disabled, true);
+  assert.match(ed.nodes.get('#route-network-status').textContent, /Ask the agent/);
 });
