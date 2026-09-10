@@ -18,7 +18,7 @@ function selection() {
   };
   const days = [{ id: 'd1', number: 1, segmentIds: [] }, { id: 'd2', number: 2, segmentIds: [] }];
   const context = vm.createContext({
-    window: {}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
+    window: {}, clearDayPreview(){}, deferDayPreviewClear(){}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
     activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null,
     viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null,
     journey: { days, segments: [] }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],
@@ -182,7 +182,7 @@ test('route inspection is suppressed on phones while desktop retains its tooltip
     const context=vm.createContext({$,window:{matchMedia:()=>({matches:mobile})},
       segmentById:()=>({from:'a',to:'b',mode:'train'}),dayForSegment:()=>({number:1}),
       placeById:id=>({name:id}),labels:{train:'Train'},conciseDayStory:()=> 'Day story',
-      routeInspectionPinned:false,inspectedSegmentId:null,setInspectedFeatureState(){},syncInspectionClasses(){},
+      routeInspectionPinned:false,inspectedSegmentId:null,setInspectedFeatureState(){},syncInspectionClasses(){},setDayPreview(){},
       clearSegmentInspection(){ $('#route-inspector').hidden=true; }
     });
     vm.runInContext(functionSource('inspectSegment'),context);context.inspectSegment('leg',true);

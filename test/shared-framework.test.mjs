@@ -438,6 +438,9 @@ test('location labels are inherited by real trips, samples, and a fresh data-onl
   const groups = labels.groupsForJourney(draft,hooks(draft),draft.days[1].id,'journey');
   assert.equal(groups.length,1); assert.equal(groups[0].days.length,2); assert.equal(groups[0].name,'New place');
   assert.equal(groups[0].selected,true);
+  const pins = labels.clusterGroups(groups, ([x,y]) => ({x,y}), 44);
+  assert.equal(pins.length,1); assert.equal(pins[0].days.length,2, 'Repeat stays become one unnumbered pin with every day retained');
+  assert.deepEqual(Array.from(pins[0].members,member=>member.name),['New place']);
   const {data} = loadContent(root);
   for (const journey of [data.journeys.find(j=>j.kind!=='demo'), data.journeys.find(j=>j.kind==='demo'),draft]) {
     assert.ok(assets(renderJourneyPage(root,journey,{preview:true})).includes('location-labels.js'));
