@@ -79,7 +79,7 @@ an unknown destination.
 
 The agent can do the same with `npm run journey:new -- --title "Trip name"
 --slug stable-url --start YYYY-MM-DD --end YYYY-MM-DD --timezone Area/City`.
-Studio **Trip plan & cover** now handles later title/date/time-zone changes,
+Studio **Trip plan & media** now handles later title/date/time-zone changes,
 named places, day insertion/reordering, and ordered leg creation. Choose whether
 a date change keeps content on its calendar date or shifts the full itinerary.
 Preview shows added/removed dates before saving; a shortened range cannot
@@ -402,15 +402,42 @@ plans stay visible; **Show this route** selects its map/legs/media. Rest days
 show where each group stays. These details derive from the same itinerary and
 roster, with no duplicate editorial fields.
 
-The agent currently authors rosters, group assignments and meetup data in JSON
-or through the validated planner API. Studio preserves these fields while
-editing ordinary trip details, but does not yet offer roster/assignment forms.
+Studio **Trip plan & media → Travelers & route groups** adds, renames and removes
+travelers/groups and assigns each traveler to one group. Create the groups,
+then use **Days & ordered travel legs** to choose which groups took each leg
+and set group overnight places. No groups checked means everyone shares the
+leg. **Photo route groups** assigns existing photos through the same rule;
+**Shared meetup** edits the day, place and description. Membership is stable
+throughout the trip. Referenced groups must be reassigned before removal, so
+removing a group cannot silently turn a group-specific photo or leg into a shared one.
+
+Choose **Check changes**, fix any roster/route/arrival errors, and **Save trip
+plan locally**. Preview atlas then opens the saved data through the shared
+viewer. The validated JSON/planner API remains available to the agent. Photo
+assignments change only `groupIds` in their original inline/reviewed/upload
+manifest; photo files, metadata, IDs and reviewed route geometry stay intact.
+The planner's `photoGroups` request field is an operation on existing photos,
+not a new field stored in journey content. Checks never write files. Saves
+require matching journey and editorial-state revisions, back up changed
+sources, and reject stale checks made before later form edits.
 Run the normal build/tests and inspect every group's arrival before publishing.
 `demo.html?journey=nine-to-como#day=nine-to-como-d1` opens the fictional
 nine-person example. `journey` selects a sample; optional `group` preserves a
 route selection in a shared link. No per-trip page or application is copied.
 
 ## Day videos
+
+Studio **Trip plan & media → Videos** adds, edits, reorders and removes hosted
+clips. Fill in the title, public MP4/WebM link, day and optional opening-frame
+image/caption. **Preview video** opens the shared native player and fills an
+empty duration from the clip's metadata; duration can also be entered manually.
+Use the group checkboxes to scope a clip. **Credit and publication** records
+attribution, confirms the link is intended for public viewing, hides a clip,
+marks sample footage, or keeps it local until a later published build. A local
+preview flag is not private video storage. Check changes and save locally to
+include the clip in Preview atlas; publication still uses the normal deployment
+workflow. File uploads and authenticated private video delivery remain future
+work; Studio currently accepts hosted public links.
 
 An optional journey `videos` list adds videos alongside photos in day previews,
 albums, the phone grid and the existing full-screen photo viewer. There is no

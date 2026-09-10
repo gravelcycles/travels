@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import '../dist/assets/atlas-utils.js';
+import '../dist/assets/media-utils.js';
+import '../studio/plan-extras.js';
 
 const detailed = [[8, 47], [8.01, 47.004], [8.02, 47.002], [8.03, 47.01], [8.04, 47.015]];
 const anchors = [detailed[0], detailed[2], detailed.at(-1)];
@@ -19,8 +21,8 @@ function editor(override = null, fetch = async () => ({ ok: true, json: async ()
     return nodes.get(selector);
   };
   const context = vm.createContext({ structuredClone, fetch, URLSearchParams,
-    document: { querySelector: getNode, querySelectorAll: () => [], createElement: node },
-    window: { addEventListener() {}, JOURNEY_ATLAS_UTILS: globalThis.JOURNEY_ATLAS_UTILS,
+    document: { addEventListener() {}, querySelector: getNode, querySelectorAll: () => [], createElement: node },
+    window: { addEventListener() {}, JOURNEY_ATLAS_UTILS: globalThis.JOURNEY_ATLAS_UTILS, JOURNEY_ATLAS_MEDIA:globalThis.JOURNEY_ATLAS_MEDIA, JOURNEY_ATLAS_PLAN_EXTRAS:globalThis.JOURNEY_ATLAS_PLAN_EXTRAS,
       JOURNEY_ATLAS_DATA: { journeys: [{ id: 'trip', places: [], days: [{ id: 'day', segmentIds: ['train'] }],
         segments: [{ id: 'train', mode: 'train', geometry: detailed }] }] } },
     maplibregl: { Marker: class {

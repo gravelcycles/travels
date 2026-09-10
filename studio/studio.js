@@ -9,7 +9,7 @@
   const styleUrl = "https://tiles.openfreemap.org/styles/liberty";
   const photoZoomLimits = { min: 2, max: 20 };
   let state = { photos: {}, routes: {}, days: {} };
-  let mode = "photos";
+  let mode = journey.published === false ? "days" : "photos";
   let selectedPhotoId = basePhotos[0]?.id || null;
   let selectedSegmentId = journey.days.flatMap((day) => day.segmentIds)[0] || null;
   let selectedDayId = journey.days[0]?.id || null;
@@ -1049,6 +1049,7 @@
   }
 
   function setJourney(id) {
+    studioVideoPlayer.stop(); $('#studio-video-dialog').close();
     const nextJourney = data.journeys.find((item) => item.id === id);
     if (!nextJourney) return;
     journey = nextJourney;
@@ -1078,6 +1079,7 @@
   }
 
   function setMode(nextMode) {
+    studioVideoPlayer.stop(); $('#studio-video-dialog').close();
     mode = nextMode;
     $(".studio-shell").dataset.mode = mode;
     document.querySelectorAll(".studio-header [data-mode]").forEach((button) => button.classList.toggle("active", button.dataset.mode === mode));
@@ -1102,16 +1104,45 @@
 
   const modeLabels = {train:"Train",boat:"Ferry",bus:"Bus",gondola:"Gondola",walk:"Walk",car:"Car",bike:"Bike"};
   const plans = new Map();
+  let renderedPlanId=null;
+  const planExtras = window.JOURNEY_ATLAS_PLAN_EXTRAS;
   function planForJourney() {
     if (!plans.has(journey.id)) plans.set(journey.id, { draft:structuredClone(journey), dirty:false, revision:savedRevisions[journey.id] || null });
     return plans.get(journey.id);
   }
-  const planFields = ['title','startDate','endDate','timeZone','places','segments','days','coverPhoto','replayMoments','subtitle'];
-  function planChanges(draft) { return Object.fromEntries(planFields.filter(k => draft[k] !== undefined).map(k => [k, draft[k]])); }
-  function dirtyPlan() { const plan = planForJourney(); plan.dirty = true; plan.previewed = false; markDirty('Trip plan changed · preview before saving'); $('#plan-save').disabled = true; }
+  function planChanges(draft) { return planExtras.changes(draft); }
+  function dirtyPlan() { const plan = planForJourney(); plan.dirty = true; plan.version = (plan.version || 0) + 1; plan.previewed = false; markDirty('Trip plan changed · check before saving'); $('#plan-status').textContent='Unsaved trip plan · check changes before saving.'; $('#plan-save').disabled = true; }
+  const studioPosters = window.JOURNEY_ATLAS_MEDIA.createPosterLoader(document);
+  const studioVideoPlayer = window.JOURNEY_ATLAS_MEDIA.createVideoPlayer({video:$('#studio-video'),shell:$('#studio-video-shell'),play:$('#studio-video-play'),status:$('#studio-video-status'),retry:$('#studio-video-retry'),sourceLink:$('#studio-video-credit'),posters:studioPosters});
+  let previewingVideo = null;
+  function previewStudioVideo(video) {
+    if (!planExtras.publicUrl(video.src) || [video.poster,video.creditUrl].filter(Boolean).some(url=>!planExtras.publicUrl(url))) { $('#plan-status').textContent='Use public HTTPS links for the video, opening-frame image and credit.'; return; }
+    previewingVideo = {journeyId:journey.id,id:video.id,src:video.src};
+    $('#studio-video-title').textContent = video.title || 'Video preview';
+    $('#studio-video-caption').textContent = video.caption;
+    studioVideoPlayer.show(window.JOURNEY_ATLAS_MEDIA.videoItem(video));
+    $('#studio-video-dialog').showModal();
+  }
+  $('#studio-video').addEventListener('loadedmetadata',()=>{
+    const selection=previewingVideo, duration=$('#studio-video').duration;
+    if (!selection || selection.journeyId!==journey.id || !Number.isFinite(duration) || duration<=0 || $('#studio-video').currentSrc!==new URL(selection.src).href) return;
+    const video=planForJourney().draft.videos?.find(video=>video.id===selection.id && video.src===selection.src);
+    if (video && !video.durationSeconds) {
+      video.durationSeconds=Math.round(duration*1000)/1000; dirtyPlan();
+      const card=[...document.querySelectorAll('[data-video]')].find(card=>card.dataset.video===video.id);
+      if (card) card.querySelector('[data-video-field="durationSeconds"]').value=video.durationSeconds;
+    }
+  });
+  $('#studio-video-close').addEventListener('click',()=>$('#studio-video-dialog').close());
+  $('#studio-video-dialog').addEventListener('close',()=>{previewingVideo=null;studioVideoPlayer.stop();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)studioVideoPlayer.pause();});
+  const extrasEditor = planExtras.create({container:$('#trip-planner'),getDraft:()=>planForJourney().draft,getPhotos:()=>planForJourney().draft.photos.map(photoWithOverride),
+    onPhotoGroups:(id,groupIds)=>{planExtras.setAudience(planForJourney().draft.photos.find(photo=>photo.id===id),groupIds || []);},
+    onChange:refresh=>{dirtyPlan();if(refresh)renderPlanner();},onStatus:message=>{$('#plan-status').textContent=message;},previewVideo:previewStudioVideo});
   function uniquePlanId(kind, items) { let n=1; while (items.some(item => item.id === `${journey.id}-${kind}${n}`)) n++; return `${journey.id}-${kind}${n}`; }
   function renderPlanner() {
     const plan = planForJourney(), draft = plan.draft;
+    if(renderedPlanId!==journey.id) {renderedPlanId=journey.id;$('#plan-status').textContent=plan.dirty?'Unsaved trip plan · check changes before saving.':'Edit the plan, check changes, then save locally.';}
     $('#plan-title').value = draft.title;
     $('#plan-subtitle').value = draft.subtitle || '';
     $('#plan-start').value = draft.startDate || draft.days[0]?.calendarDate || '';
@@ -1119,14 +1150,14 @@
     $('#plan-timezone').value = draft.timeZone || 'UTC';
     const placeOptions = '<option value="">Choose a place</option>'+draft.places.map(p => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)}</option>`).join('');
     $('#plan-places').innerHTML = draft.places.map(p => `<div class="plan-place" data-place="${escapeHtml(p.id)}"><label>Name<input data-place-field="name" value="${escapeHtml(p.name)}"></label><label>Longitude<input type="number" step="any" min="-180" max="180" data-place-field="lng" value="${p.lng??''}"></label><label>Latitude<input type="number" step="any" min="-90" max="90" data-place-field="lat" value="${p.lat??''}"></label></div>`).join('');
-    $('#plan-days').innerHTML = draft.days.map((day,index) => `<section class="plan-day" data-plan-day="${escapeHtml(day.id)}"><div class="plan-row"><strong>Day ${index+1} · ${escapeHtml(day.calendarDate || day.date)} · ${escapeHtml(state.days[day.id]?.title || day.title)}</strong><button type="button" data-move-day="-1" ${index===0?'disabled':''}>Earlier</button><button type="button" data-move-day="1" ${index===draft.days.length-1?'disabled':''}>Later</button></div><label>Destination<select data-day-destination>${placeOptions}</select></label><ol>${day.segmentIds.map((id, i) => { const s=draft.segments.find(s=>s.id===id); return `<li data-plan-leg="${escapeHtml(id)}"><div class="plan-leg"><label>Mode<select data-leg-field="mode">${Object.entries(modeLabels).map(([key,label])=>`<option value="${key}" ${s.mode===key?'selected':''}>${label}</option>`).join('')}</select></label><label>From<select data-leg-field="from">${draft.places.map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===s.from?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label><label>To<select data-leg-field="to">${draft.places.map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===s.to?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label><label>Travel minutes<input data-leg-field="durationMinutes" type="number" min="0" value="${s.durationMinutes??''}"></label></div><button type="button" data-move-leg="-1" ${i===0?'disabled':''}>Earlier leg</button><button type="button" data-move-leg="1" ${i===day.segmentIds.length-1?'disabled':''}>Later leg</button>${s.geometry || routeGeometry[id] || state.routes[id] ? '<small>Reviewed route: endpoint/mode edits require a new route review.</small>' : '<small>Provisional endpoint guide; review geometry in Route drawing.</small>'}</li>`; }).join('')}</ol><button type="button" data-add-leg ${draft.places.length<1?'disabled':''}>+ Travel leg</button></section>`).join('');
+    $('#plan-days').innerHTML = draft.days.map((day,index) => `<section class="plan-day" data-plan-day="${escapeHtml(day.id)}"><div class="plan-row"><strong>Day ${index+1} · ${escapeHtml(day.calendarDate || day.date)} · ${escapeHtml(state.days[day.id]?.title || day.title)}</strong><button type="button" data-move-day="-1" ${index===0?'disabled':''}>Earlier</button><button type="button" data-move-day="1" ${index===draft.days.length-1?'disabled':''}>Later</button></div><label>Destination<select data-day-destination>${placeOptions}</select></label>${planExtras.overnights(draft,day)}<ol>${day.segmentIds.map((id, i) => { const s=draft.segments.find(s=>s.id===id); return `<li data-plan-leg="${escapeHtml(id)}"><div class="plan-leg"><label>Mode<select data-leg-field="mode">${Object.entries(modeLabels).map(([key,label])=>`<option value="${key}" ${s.mode===key?'selected':''}>${label}</option>`).join('')}</select></label><label>From<select data-leg-field="from">${draft.places.map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===s.from?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label><label>To<select data-leg-field="to">${draft.places.map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===s.to?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label><label>Travel minutes<input data-leg-field="durationMinutes" type="number" min="0" value="${s.durationMinutes??''}"></label></div>${planExtras.audience(draft,s,"leg","Who took this leg?")}<button type="button" data-move-leg="-1" ${i===0?'disabled':''}>Earlier leg</button><button type="button" data-move-leg="1" ${i===day.segmentIds.length-1?'disabled':''}>Later leg</button>${s.geometry || routeGeometry[id] || state.routes[id] ? '<small>Reviewed route: endpoint/mode edits require a new route review.</small>' : '<small>Provisional endpoint guide; review geometry in Route drawing.</small>'}</li>`; }).join('')}</ol><button type="button" data-add-leg ${draft.places.length<1?'disabled':''}>+ Travel leg</button></section>`).join('');
     draft.days.forEach(day => { const select = [...document.querySelectorAll('[data-plan-day]')].find(e=>e.dataset.planDay===day.id)?.querySelector('[data-day-destination]'); if (select) select.value=day.destinationId || day.placeId || ''; });
     const visible = basePhotos.map(photoWithOverride).filter(p=>!p.hidden && !p.trashed);
     $('#cover-picker').innerHTML = '<option value="">First visible photo</option>'+visible.map(p=>`<option value="${escapeHtml(p.id)}">${escapeHtml(p.caption || p.id)}</option>`).join('');
     $('#cover-picker').value = draft.coverPhoto?.photoId || '';
     $('#cover-x').value = draft.coverPhoto?.focal?.[0] ?? 50; $('#cover-y').value = draft.coverPhoto?.focal?.[1] ?? 50;
     $('#cover-thumbnails').innerHTML = visible.map(p=>`<button type="button" data-pick-cover="${escapeHtml(p.id)}" aria-label="Use ${escapeHtml(p.caption || p.id)} as trip cover" aria-pressed="${draft.coverPhoto?.photoId===p.id}"><img loading="lazy" src="${escapeHtml(photoUrl(p.srcset?.[0]?.src || p.src))}" alt="${escapeHtml(p.caption || '')}"></button>`).join('');
-    renderCoverPreviews(); renderMomentEditor();
+    renderCoverPreviews(); renderMomentEditor(); extrasEditor.render();
     $('#plan-save').disabled = !plan.previewed;
   }
   function renderCoverPreviews() {
@@ -1137,30 +1168,42 @@
     const draft=planForJourney().draft;
     $('#plan-moments').innerHTML=(draft.replayMoments||[]).map((m,i)=>`<section class="plan-moment" data-moment="${escapeHtml(m.id)}"><div class="plan-row"><strong>Moment ${i+1}</strong><button type="button" data-move-moment="-1" ${!i?'disabled':''}>Earlier</button><button type="button" data-move-moment="1" ${i===draft.replayMoments.length-1?'disabled':''}>Later</button><button type="button" data-remove-moment>Remove moment</button></div><label>Day<select data-moment-field="dayId">${draft.days.map(d=>`<option value="${escapeHtml(d.id)}" ${d.id===m.dayId?'selected':''}>Day ${d.number} · ${escapeHtml(d.title)}</option>`).join('')}</select></label><label>Photograph<select data-moment-field="photoId"><option value="">Route / text chapter</option>${basePhotos.map(photoWithOverride).filter(p=>!p.hidden && !p.trashed && p.dayId===m.dayId).map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===m.photoId?'selected':''}>${escapeHtml(p.caption)}</option>`).join('')}</select></label><label>One sentence (optional)<input data-moment-field="caption" value="${escapeHtml(m.caption)}"></label><label>Duration (seconds)<input type="number" min="1" max="120" data-moment-field="duration" value="${m.duration}"></label><fieldset><legend>Travel legs (in day order)</legend>${(draft.days.find(d=>d.id===m.dayId)?.segmentIds||[]).map(id=>{ const s=draft.segments.find(s=>s.id===id); return `<label class="checkbox"><input type="checkbox" data-moment-segment="${escapeHtml(id)}" ${m.segmentIds?.includes(id)?'checked':''}>${escapeHtml(modeLabels[s.mode])} · ${escapeHtml(draft.places.find(p=>p.id===s.from)?.name)} → ${escapeHtml(draft.places.find(p=>p.id===s.to)?.name)}</label>`; }).join('')}</fieldset></section>`).join('') || '<p>Add a few moments to curate Replay. With none selected it follows the existing day/route sequence.</p>';
   }
+  function planError(message) {
+    const draft=planForJourney().draft;
+    message=String(message).replaceAll(`${draft.id}: `,'');
+    for(const day of draft.days)message=message.replaceAll(`${day.id}: `,`Day ${day.number}: `);
+    return message;
+  }
   async function previewPlan() {
     const plan=planForJourney();
     const changes={...planChanges(plan.draft),title:$('#plan-title').value,subtitle:$('#plan-subtitle').value,startDate:$('#plan-start').value,endDate:$('#plan-end').value,timeZone:$('#plan-timezone').value};
     if (!changes.startDate && !changes.endDate) { delete changes.startDate; delete changes.endDate; }
+    const owner=journey, version=plan.version, stateSnapshot=JSON.stringify(state);
+    plan.previewed=false; $('#plan-save').disabled=true; $('#plan-status').textContent='Checking trip plan…';
     const input={journeyId:journey.id,changes,state,alignment:$('#plan-alignment').value,preview:true,revision:plan.revision};
     try {
       const result=await (await fetch('/api/journey-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)})).json();
+      if (journey!==owner || plan.version!==version || JSON.stringify(state)!==stateSnapshot) { if(journey===owner)$('#plan-status').textContent='The plan changed while checking. Check changes again before saving.'; return; }
       if (!result.ok) throw new Error(result.error);
       state=result.state; plan.draft=result.journey; plan.revision=result.revision; plan.previewed=true;
-      $('#plan-status').textContent=`Ready to save: ${result.journey.days.length} days. Added: ${result.added.join(', ') || 'none'}. Removed empty dates: ${result.removed.join(', ') || 'none'}. Existing IDs, notes and overrides are preserved.`;
+      $('#plan-status').textContent=`Ready to save: ${result.journey.days.length} days · ${result.journey.travelers?.length || 0} travelers · ${result.journey.routeGroups?.length || 0} routes · ${result.journey.videos?.length || 0} video${result.journey.videos?.length === 1 ? '' : 's'}. Added: ${result.added.join(', ') || 'none'}. Removed empty dates: ${result.removed.join(', ') || 'none'}. Existing IDs, notes and overrides are preserved.`;
       renderPlanner();
-    } catch(error) { $('#plan-status').textContent=error.message; }
+    } catch(error) { if(journey===owner)$('#plan-status').textContent=planError(error.message); }
   }
   async function savePlan() {
     const plan=planForJourney();
-    if (!plan.previewed) { setStatus('Preview the trip plan before saving','error'); return false; }
+    if (!plan.previewed || plan.saving) { setStatus('Check the trip plan before saving','error'); return false; }
+    plan.saving=true; $('.studio-shell').inert=true; $('.studio-header nav').inert=true; $('#save-all').disabled=true;
     try {
       const result=await (await fetch('/api/journey-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({journeyId:journey.id,changes:planChanges(plan.draft),revision:plan.revision,state,stateRevision:savedStateRevision,preview:false})})).json();
       if (!result.ok) throw new Error(result.error);
       savedStateRevision=result.stateRevision;
-      state=result.state; Object.assign(journey,result.journey); plan.revision=result.revision; plan.dirty=false; plan.previewed=false;
+      state=result.state; Object.assign(journey,result.journey); plan.draft=structuredClone(result.journey); plan.revision=result.revision; savedRevisions[journey.id]=result.revision; plan.dirty=false; plan.previewed=false;
+      basePhotos=result.journey.photos; photosByJourney[journey.id]=basePhotos; renderPhotoGrid();
       renderJourneySelector(); renderDaySelectors(); renderDayList(); renderRouteList(); renderPlanner(); markSaved('Trip plan and edits saved locally');
       $('#plan-status').textContent='Saved. The selected trip preview now includes these changes.'; return true;
-    } catch(error) { $('#plan-status').textContent=error.message; return false; }
+    } catch(error) { $('#plan-status').textContent=planError(error.message); return false; }
+    finally {plan.saving=false;$('.studio-shell').inert=false;$('.studio-header nav').inert=false;$('#save-all').disabled=false;}
   }
   $('#trip-planner').addEventListener('input',event=>{
     const e=event.target, draft=planForJourney().draft;
@@ -1222,7 +1265,7 @@
     map.on("load", () => {
       mapReady = true;
       applyBasemapTreatment();
-      setMode(journey.published === false ? "days" : mode);
+      setMode(mode);
     });
     map.on("click", (event) => {
       if (mode === "routes") return insertRoutePoint(event);

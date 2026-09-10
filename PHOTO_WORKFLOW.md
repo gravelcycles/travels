@@ -287,4 +287,9 @@ The photo importer, private image derivative builder, image cache and photo
 auth Worker remain image-specific. Do not upload videos through the photo
 intake, or place a private video URL into a public manifest. Video transcoding,
 private byte-range delivery under the existing access policy, captions and
-Studio video intake remain follow-up work before using private trip clips.
+Studio file-based video intake remain follow-up work before using private trip
+clips. Hosted public video links are now editable in **Trip plan & media →
+Videos**, including preview, duration, day/group assignment, title/caption,
+poster, credit and publication controls. **Photo route groups** edits existing
+photos' group assignments in their original manifests without changing image
+files, other metadata, order or visibility. See `JOURNEY_WORKFLOW.md`.

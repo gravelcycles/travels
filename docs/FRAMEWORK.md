@@ -81,6 +81,7 @@ password system.
 | `dist/assets/mobile-ux.js`, `dist/assets/mobile.css` | Shared mobile day navigation, immersive photo gestures, location panel, grid and Back behavior |
 | `dist/assets/input-mode.js` | Shared pointer/keyboard focus presentation for catalog, journeys and draft previews |
 | `studio/` | Local authoring UI for any selected journey |
+| `studio/plan-extras.js`, `scripts/studio-plan-sources.mjs` | Studio roster/group/overnight/meetup and hosted-video forms; source-preserving persistence of photo group assignments |
 | `scripts/journey-content.mjs`, `journey-planner.mjs`, `create-journey.mjs` | Loading, validation, planner rules, fresh-trip creation |
 | `scripts/build-site.mjs` | Public builds and local preview page/data generation |
 | `content/journeys/<id>.json` | Reviewed trip identity, calendar, places, legs, cover and Replay choices |
@@ -200,8 +201,11 @@ Videos now use the existing photo viewer and all album/grid entry points.
 
 Remaining work before private trip video intake: transcode reviewed derivatives
 and posters, deliver authenticated byte ranges under the existing photo access
-policy, add timed captions/transcripts and Studio video intake. Public sample
+policy, add timed captions/transcripts and Studio file-based video intake. Public sample
 playback does not make the current image-only Worker a private video service.
-Roster/assignment forms and per-day changes to individual group membership are
-also future work; the present groups have stable membership and are authored
-by the agent through content JSON/the planner API. See W07 in TODO.md.
+Studio now edits rosters, membership, leg/photo/video assignments, group
+overnights, meetup and hosted public video entries through the validated
+planner. Photo assignments retain their canonical manifest layout; checks are
+read-only and saves use source/state revisions and backups. Per-day changes to
+individual group membership are still future work; groups have stable
+membership. See W07 in TODO.md.

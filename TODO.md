@@ -49,8 +49,9 @@ project-level status.
       in each day are demonstrated by Nine to Como. Before private
       clips, add reviewed video/poster derivatives, authenticated byte-range
       delivery with the existing photo access policy, timed captions/transcripts
-      and Studio video intake. Add roster/leg-assignment forms and model changes
-      of group membership only when the real itinerary needs them. Contracts:
+      and Studio video file intake. Roster/leg/photo/video assignment forms,
+      meetup/overnight editing and hosted-video forms are delivered. Model
+      per-day changes of group membership when the real itinerary needs them. Contracts:
       `JOURNEY_WORKFLOW.md`, `PHOTO_WORKFLOW.md`, `docs/FRAMEWORK.md`.
 
 ## P0 · Content corrections

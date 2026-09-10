@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import '../dist/assets/atlas-utils.js';
+import '../dist/assets/media-utils.js';
+import '../studio/plan-extras.js';
 
 function editor() {
   const nodes = new Map(), markers = [], moves = [];
@@ -19,8 +21,8 @@ function editor() {
     { id: 'tomorrow', dayId: 'day2', lat: 49, lng: 10, zoom: 12 }
   ];
   const context = vm.createContext({ structuredClone, testMap: map,
-    document: { querySelector: getNode, querySelectorAll: () => [], createElement: node },
-    window: { addEventListener() {}, JOURNEY_ATLAS_UTILS: globalThis.JOURNEY_ATLAS_UTILS,
+    document: { addEventListener() {}, querySelector: getNode, querySelectorAll: () => [], createElement: node },
+    window: { addEventListener() {}, JOURNEY_ATLAS_UTILS: globalThis.JOURNEY_ATLAS_UTILS, JOURNEY_ATLAS_MEDIA:globalThis.JOURNEY_ATLAS_MEDIA, JOURNEY_ATLAS_PLAN_EXTRAS:globalThis.JOURNEY_ATLAS_PLAN_EXTRAS,
       JOURNEY_ATLAS_DATA: { journeys: [{ id: 'trip', photos, places: [], segments: [],
         days: [{ id: 'day', segmentIds: [] }, { id: 'day2', segmentIds: [] }] }] } },
     maplibregl: { Marker: class {
