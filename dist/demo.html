@@ -7,9 +7,9 @@
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
     <meta
       name="description"
-      content="Ten days of lake mornings, high passes and the long road north"
+      content="Three routes. Nine friends. One dinner by the lake."
     />
-    <title>Across the Alps · Journey Atlas</title>
+    <title>Nine to Como · Journey Atlas</title>
     <script src="./assets/input-mode.js?v=a29da7d71afc"></script>
     <script>
       // Keep the atlas out of the first paint until the entry view is chosen.
@@ -24,8 +24,9 @@
     />
     <link rel="stylesheet" href="./assets/styles.css?v=3b3fb3058d21" />
     <link rel="stylesheet" href="./assets/mobile.css?v=488e3b73f723" />
+    <link rel="stylesheet" href="./assets/group-travel.css?v=5826b8e05cdb" />
   </head>
-  <body data-journey-scope="demo" data-journey-id="alpine-crossing">
+  <body data-journey-scope="demo" data-journey-id="nine-to-como">
     <header class="site-header">
       <a class="brand" href="./" aria-label="Back to Journey Atlas catalog">
         <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -57,6 +58,8 @@
             <select id="journey-select"></select>
           </div>
         </div>
+
+        <section id="travel-party" class="travel-party" aria-label="Travelers and routes" hidden></section>
 
         <div class="route-heading">
           <span>THE DAYS</span>
@@ -102,8 +105,9 @@
         </aside>
         <div class="map-status" id="map-status" hidden></div>
         <section class="mobile-day-summary" aria-label="Selected day">
+          <button id="mobile-routes-action" type="button" hidden>Routes · Everyone</button>
           <span id="mobile-day-date"></span><h2 id="mobile-day-title"></h2><p id="mobile-day-meta"></p>
-          <div><button id="mobile-day-details" type="button">Day details</button><button id="mobile-day-photos" type="button">Photos</button></div>
+          <div><button id="mobile-day-details" type="button">Day details</button><button id="mobile-day-photos" type="button">Photos</button><button id="mobile-day-videos" type="button" hidden>Videos</button></div>
         </section>
 
       </section>
@@ -115,6 +119,7 @@
         <div class="story-album-entry">
         <div class="story-media" id="story-media"></div>
         <button type="button" class="story-photo-action" id="story-view-photos" hidden></button>
+        <button type="button" class="story-photo-action" id="story-view-videos" hidden></button>
         </div>
         <div class="story-detail" id="story-detail"></div>
         <div class="photo-section">
@@ -136,13 +141,13 @@
     <dialog class="notes-dialog" id="notes-dialog">
       <form method="dialog" class="dialog-card">
         <div class="dialog-top">
-          <div><span>ABOUT THE ATLAS</span><h2 id="notes-journey-title">Across the Alps</h2></div>
+          <div><span>ABOUT THE ATLAS</span><h2 id="notes-journey-title">Nine to Como</h2></div>
           <button value="cancel" aria-label="Close atlas notes"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
         </div>
         <div class="notes-grid">
           <section>
             <strong>1 · The journey</strong>
-            <p id="notes-journey-note">Fictional sample journey; dates and locations illustrate the shared atlas. A mixed journey showing travel days, quiet days in one place, and several photographs attached to a single day.</p>
+            <p id="notes-journey-note">Fictional sample with nine invented travelers, three route groups and a shared Como meetup. Dates are illustrative. All lines are provisional endpoint guides, not reviewed routes. The video is MDN’s flower playback test, not footage from Como. The photographs are existing illustrative atlas sample artwork.</p>
           </section>
           <section>
             <strong>2 · Every leg matters</strong>
@@ -249,16 +254,26 @@
       </div>
     </dialog>
 
+    <dialog id="video-dialog" class="video-dialog" aria-labelledby="video-title">
+      <header><h2 id="video-title"></h2><button id="close-video" type="button" aria-label="Close video">Close</button></header>
+      <video id="journey-video" controls playsinline preload="none"></video>
+      <p id="video-caption"></p>
+      <a id="video-credit" target="_blank" rel="noopener noreferrer" hidden></a>
+      <p id="video-status" role="status"></p>
+      <button id="retry-video" type="button" hidden>Retry video</button>
+    </dialog>
+
     <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
-    <script src="./assets/journeys.js?v=8ad111815365"></script>
+    <script src="./assets/journeys.js?v=8d42a4d38264"></script>
     <script src="./assets/route-geometry.js?v=36b5f3ca96f8"></script>
-    <script src="./assets/trip-photos.js?v=d6328a6324bf"></script>
+    <script src="./assets/trip-photos.js?v=6c3e5f753764"></script>
     <script src="./assets/content-overrides.js?v=0ba847958637"></script>
     <script src="./assets/replay-utils.js?v=3affec64ef97"></script>
     <script src="./assets/photo-service.js?v=7cf17f81b44e"></script>
     <script src="./assets/photo-auth.js?v=43f650853672"></script>
     <script src="./assets/atlas-utils.js?v=31f184e54faf"></script>
     <script src="./assets/mobile-ux.js?v=104bafdea667"></script>
-    <script src="./assets/app.js?v=1e3f9096b095"></script>
+    <script src="./assets/group-travel.js?v=b80ab7e78d12"></script>
+    <script src="./assets/app.js?v=8c2c8758a7bd"></script>
   </body>
 </html>

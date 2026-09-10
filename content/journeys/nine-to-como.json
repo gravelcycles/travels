@@ -1,0 +1,286 @@
+{
+  "id": "nine-to-como",
+  "kind": "demo",
+  "published": true,
+  "label": "Nine to Como · Groups + video",
+  "title": "Nine to Como",
+  "subtitle": "Three routes. Nine friends. One dinner by the lake.",
+  "kicker": "GROUP JOURNEY · FICTIONAL SAMPLE",
+  "dates": "18–20 September 2026",
+  "badge": "FICTIONAL SAMPLE",
+  "note": "Fictional sample with nine invented travelers, three route groups and a shared Como meetup. Dates are illustrative. All lines are provisional endpoint guides, not reviewed routes. The video is MDN’s flower playback test, not footage from Como. The photographs are existing illustrative atlas sample artwork.",
+  "startDate": "2026-09-18",
+  "endDate": "2026-09-20",
+  "timeZone": "Europe/Rome",
+  "places": [
+    {
+      "id": "lucerne",
+      "name": "Lucerne",
+      "lng": 8.3093,
+      "lat": 47.0502
+    },
+    {
+      "id": "lugano",
+      "name": "Lugano",
+      "lng": 8.9511,
+      "lat": 46.0037
+    },
+    {
+      "id": "tirano",
+      "name": "Tirano",
+      "lng": 10.1689,
+      "lat": 46.2167
+    },
+    {
+      "id": "varenna",
+      "name": "Varenna",
+      "lng": 9.2846,
+      "lat": 46.0107
+    },
+    {
+      "id": "milan",
+      "name": "Milan",
+      "lng": 9.19,
+      "lat": 45.4642
+    },
+    {
+      "id": "menaggio",
+      "name": "Menaggio",
+      "lng": 9.2367,
+      "lat": 46.0203
+    },
+    {
+      "id": "como",
+      "name": "Como",
+      "lng": 9.0852,
+      "lat": 45.8081
+    }
+  ],
+  "travelers": [
+    {
+      "id": "alex",
+      "name": "Alex"
+    },
+    {
+      "id": "bea",
+      "name": "Bea"
+    },
+    {
+      "id": "charlie",
+      "name": "Charlie"
+    },
+    {
+      "id": "dev",
+      "name": "Dev"
+    },
+    {
+      "id": "emi",
+      "name": "Emi"
+    },
+    {
+      "id": "finn",
+      "name": "Finn"
+    },
+    {
+      "id": "gia",
+      "name": "Gia"
+    },
+    {
+      "id": "harper",
+      "name": "Harper"
+    },
+    {
+      "id": "ira",
+      "name": "Ira"
+    }
+  ],
+  "routeGroups": [
+    {
+      "id": "mountain-rail",
+      "label": "Mountain rail",
+      "travelerIds": [
+        "alex",
+        "bea",
+        "charlie"
+      ]
+    },
+    {
+      "id": "lake-ferry",
+      "label": "Lake route",
+      "travelerIds": [
+        "dev",
+        "emi",
+        "finn"
+      ]
+    },
+    {
+      "id": "road-detour",
+      "label": "Road detour",
+      "travelerIds": [
+        "gia",
+        "harper",
+        "ira"
+      ]
+    }
+  ],
+  "meetup": {
+    "dayId": "nine-to-como-d2",
+    "placeId": "como",
+    "label": "Dinner together by the lake"
+  },
+  "segments": [
+    {
+      "id": "nine-to-como-rail-south",
+      "mode": "train",
+      "from": "lucerne",
+      "to": "lugano",
+      "groupIds": [
+        "mountain-rail"
+      ],
+      "geometryStatus": "provisional",
+      "source": "Fictional endpoint guide for a feature demonstration; not a reviewed travel route."
+    },
+    {
+      "id": "nine-to-como-to-the-lake",
+      "mode": "train",
+      "from": "tirano",
+      "to": "varenna",
+      "groupIds": [
+        "lake-ferry"
+      ],
+      "geometryStatus": "provisional",
+      "source": "Fictional endpoint guide for a feature demonstration; not a reviewed travel route."
+    },
+    {
+      "id": "nine-to-como-road-north",
+      "mode": "car",
+      "from": "milan",
+      "to": "menaggio",
+      "groupIds": [
+        "road-detour"
+      ],
+      "geometryStatus": "provisional",
+      "source": "Fictional endpoint guide for a feature demonstration; not a reviewed travel route."
+    },
+    {
+      "id": "nine-to-como-rail-arrival",
+      "mode": "train",
+      "from": "lugano",
+      "to": "como",
+      "groupIds": [
+        "mountain-rail"
+      ],
+      "geometryStatus": "provisional",
+      "source": "Fictional endpoint guide for a feature demonstration; not a reviewed travel route."
+    },
+    {
+      "id": "nine-to-como-lake-arrival",
+      "mode": "boat",
+      "from": "varenna",
+      "to": "como",
+      "groupIds": [
+        "lake-ferry"
+      ],
+      "geometryStatus": "provisional",
+      "source": "Fictional endpoint guide for a feature demonstration; not a reviewed travel route."
+    },
+    {
+      "id": "nine-to-como-road-arrival",
+      "mode": "car",
+      "from": "menaggio",
+      "to": "como",
+      "groupIds": [
+        "road-detour"
+      ],
+      "geometryStatus": "provisional",
+      "source": "Fictional endpoint guide for a feature demonstration; not a reviewed travel route."
+    }
+  ],
+  "days": [
+    {
+      "id": "nine-to-como-d1",
+      "number": 1,
+      "date": "18 Sep",
+      "calendarDate": "2026-09-18",
+      "title": "Three ways to the lake",
+      "text": "Alex, Bea and Charlie take the mountain rail route to Lugano. Dev, Emi and Finn reach Varenna by train. Gia, Harper and Ira take a road detour to Menaggio. Choose a route to follow its three travelers. All names, dates and plans are fictional; map lines are provisional endpoint guides.",
+      "segmentIds": [
+        "nine-to-como-rail-south",
+        "nine-to-como-to-the-lake",
+        "nine-to-como-road-north"
+      ],
+      "groupPlaces": {
+        "mountain-rail": "lugano",
+        "lake-ferry": "varenna",
+        "road-detour": "menaggio"
+      }
+    },
+    {
+      "id": "nine-to-como-d2",
+      "number": 2,
+      "date": "19 Sep",
+      "calendarDate": "2026-09-19",
+      "title": "Nine people, one table",
+      "text": "The rail group comes south from Lugano, the lake group arrives by ferry, and the road group follows the western shore. All nine meet in Como for dinner. These illustrative lines show the branches meeting; they are not service or navigation advice.",
+      "segmentIds": [
+        "nine-to-como-rail-arrival",
+        "nine-to-como-lake-arrival",
+        "nine-to-como-road-arrival"
+      ],
+      "placeId": "como",
+      "destinationId": "como"
+    },
+    {
+      "id": "nine-to-como-d3",
+      "number": 3,
+      "date": "20 Sep",
+      "calendarDate": "2026-09-20",
+      "title": "A morning together",
+      "text": "No separate plans today: one slow morning by the water before heading home. A day without assigned route groups belongs to everyone.",
+      "segmentIds": [],
+      "placeId": "como",
+      "destinationId": "como"
+    }
+  ],
+  "photos": [
+    {
+      "id": "nine-to-como-window",
+      "dayId": "nine-to-como-d1",
+      "src": "./assets/photos/train-window.webp",
+      "alt": "Illustrative mountain view through a train window",
+      "caption": "A window-seat day · sample illustration",
+      "groupIds": [
+        "mountain-rail"
+      ]
+    },
+    {
+      "id": "nine-to-como-together",
+      "dayId": "nine-to-como-d2",
+      "src": "./assets/photos/alpine-route.webp",
+      "alt": "Illustration of travelers sharing an alpine valley",
+      "caption": "Different ways to the same place · sample illustration"
+    }
+  ],
+  "coverPhoto": {
+    "photoId": "nine-to-como-together",
+    "focal": [
+      50,
+      50
+    ]
+  },
+  "videos": [
+    {
+      "id": "nine-to-como-test-clip",
+      "dayId": "nine-to-como-d1",
+      "title": "A moment along the way",
+      "caption": "Playback sample: a bee visits flowers. This is MDN’s public test clip, not footage from the fictional trip. No speech; natural background sound. Use the player controls to play, seek or enter fullscreen.",
+      "src": "https://developer.mozilla.org/shared-assets/videos/flower.mp4",
+      "mimeType": "video/mp4",
+      "durationSeconds": 5,
+      "visibility": "public",
+      "sample": true,
+      "credit": "MDN video example",
+      "creditUrl": "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video"
+    }
+  ]
+}

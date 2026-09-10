@@ -38,7 +38,7 @@
   };
 
   const pageScope = document.body.dataset.journeyScope;
-  const requestedJourneyId = document.body.dataset.journeyId;
+  const requestedJourneyId = new URLSearchParams(location.search).get("journey") || document.body.dataset.journeyId;
   const isDemoPage = pageScope === "demo";
   const availableJourneys = isDemoPage
     ? data.journeys.filter((item) => item.kind === "demo")
@@ -47,6 +47,11 @@
     || availableJourneys.find((item) => item.id === data.defaultJourneyId)
     || availableJourneys[0]
     || data.journeys[0];
+  const groupTravel = window.JOURNEY_ATLAS_GROUPS;
+  let sourceJourney = journey;
+  let activeGroupId = new URLSearchParams(location.search).get('group') || '';
+  if (!sourceJourney.routeGroups?.some(group => group.id === activeGroupId)) activeGroupId = '';
+  journey = groupTravel.projectJourney(sourceJourney, activeGroupId);
   let activeDayId = journey.days[0].id;
   let mapScope = "journey";
   let mainMap;
@@ -295,6 +300,7 @@
               <li>
                 <button class="leg-card" type="button" data-route-segment="${escapeHtml(segment.id)}" aria-label="Explore ${escapeHtml(labels[segment.mode] || segment.mode)} route from ${escapeHtml(from.name)} to ${escapeHtml(to.name)}">
                   <span class="leg-mode">${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)}</span>
+                  ${journey.routeGroups?.length ? `<span class="leg-audience">${escapeHtml(groupTravel.audience(journey, segment))}</span>` : ""}
                   <strong>${escapeHtml(from.name)} → ${escapeHtml(to.name)}</strong>
                   <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""}${segment.stops ? ` · ${stopCount} stops` : ""}${segment.geometryStatus === "provisional" ? " · Provisional route" : ""}</small>
                 </button>
@@ -354,6 +360,10 @@
     const segments = segmentsForDay(day);
     const place = destinationForDay(day);
     if (!segments.length) return place ? `${place.name} · ${journey.status === "planned" ? "planned stay" : "stayed here"}` : "Destination to plan";
+    if (!activeGroupId && journey.routeGroups?.length > 1 && segments.some(segment => segment.groupIds?.length)) {
+      const destinations = [...new Set(segments.map(segment => placeById(segment.to).name))];
+      return `${journey.routeGroups.length} group routes · ${destinations.join(' / ')}`;
+    }
     const from = placeById(segments[0].from);
     const to = placeById(segments[segments.length - 1].to);
     if (from.id === to.id) return `${place.name} · day trip`;
@@ -803,7 +813,7 @@
     $("#fit-route").disabled = !journeyCoordinates().length;
     $("#journey-summary").innerHTML = `
       <div><strong>${escapeHtml(journey.dates)}</strong><span>TRAVEL DATES</span></div>
-      <div><strong>${journey.status === "planned" && !journey.segments.length ? "To plan" : formatDistance(totalDistance())}</strong><span>ROUTE LENGTH</span></div>
+      <div><strong>${journey.status === "planned" && !journey.segments.length ? "To plan" : (journey.segments.some(segment => Number.isFinite(segment.distanceKm)) ? formatDistance(totalDistance()) : "Distance pending")}</strong><span>${!activeGroupId && journey.routeGroups?.length > 1 ? "ALL ROUTES COMBINED" : "ROUTE LENGTH"}</span></div>
       <div><strong>${journey.days.length}</strong><span>DAYS</span></div>
     `;
   }
@@ -883,6 +893,11 @@
     $('#story-view-photos').hidden = !photos.length;
     $('#story-view-photos').textContent = `View ${photos.length} photo${photos.length === 1 ? '' : 's'}`;
 
+    const videos = (journey.videos || []).filter(video => video.dayId === day.id && !video.hidden);
+    for (const id of ['story-view-videos', 'mobile-day-videos']) {
+      $(`#${id}`).hidden = !videos.length;
+      $(`#${id}`).textContent = `Video${videos.length === 1 ? '' : 's'} · ${videos.length}`;
+    }
     const distance = dayDistance(day);
     const duration = dayDuration(day);
     const modes = modesForDay(day);
@@ -893,6 +908,7 @@
       ${day.text?.trim() ? `<p class="day-story">${escapeHtml(day.text)}</p>` : ""}
       <p class="travel-summary">${distance ? `${formatDistance(distance)} · ` : ''}${escapeHtml(modeLabel(day))}${duration ? ` · ${escapeHtml(duration)}` : ''}</p>
       ${day.segmentIds.length ? `<section class="travel-details" aria-label="Travel details"><h3>Travel details · ${day.segmentIds.length} leg${day.segmentIds.length===1?'':'s'}</h3>${renderRouteLegs(day)}</section>` : ''}
+      ${groupTravel.videoCards(journey, day.id)}
       <nav class="journal-day-nav" aria-label="Journal days"><button type="button" data-journal-step="-1" ${day.number===1?'disabled':''}>← Previous day</button><span>Day ${day.number} of ${journey.days.length}</span><button type="button" data-journal-step="1" ${day.number===journey.days.length?'disabled':''}>Next day →</button></nav>
       <button id="resume-replay" type="button" ${replayJourneyId===journey.id?'':'hidden'}>Return to paused Replay</button>
     `;
@@ -915,7 +931,42 @@
 
   }
 
+  function renderParty() {
+    const panel = $('#travel-party'), groups = sourceJourney.routeGroups || [];
+    panel.hidden = !sourceJourney.travelers?.length;
+    $('#mobile-routes-action').hidden = !groups.length;
+    if (panel.hidden) return;
+    const selected = groups.find(group => group.id === activeGroupId);
+    $('#mobile-routes-action').textContent = `Routes · ${selected?.label || 'Everyone'}`;
+    const meetup = sourceJourney.meetup;
+    const destination = sourceJourney.places.find(place => place.id === meetup?.placeId);
+    const day = sourceJourney.days.find(day => day.id === meetup?.dayId);
+    panel.innerHTML = `<h3>${sourceJourney.travelers.length} travelers${groups.length ? ` · ${groups.length} routes` : ''}</h3>
+      ${meetup ? `<p class="party-meetup"><strong>Meet in ${escapeHtml(destination.name)}</strong><span>Day ${day.number} · ${escapeHtml(meetup.label)}</span></p>` : ''}
+      ${groups.length ? `<button type="button" class="party-all" data-route-group="" aria-pressed="${!activeGroupId}">Everyone · all routes</button>` : ''}
+      <div class="party-groups">${groups.map(group => `<button type="button" data-route-group="${escapeHtml(group.id)}" aria-pressed="${activeGroupId === group.id}"><strong>${escapeHtml(group.label)} <span>${group.travelerIds.length}</span></strong><small>${group.travelerIds.map(id => escapeHtml(sourceJourney.travelers.find(person => person.id === id).name)).join(' · ')}</small></button>`).join('')}</div>
+      ${groups.length ? `<p class="party-view" role="status">Viewing ${escapeHtml(selected?.label || 'everyone')} · map, journal & Replay</p>` : `<p>${sourceJourney.travelers.map(person => escapeHtml(person.name)).join(' · ')}</p>`}`;
+  }
+
+  function selectRouteGroup(id) {
+    if (id && !sourceJourney.routeGroups?.some(group => group.id === id)) return;
+    clearSegmentInspection(true); pauseReplay(); replayJourneyId = null;
+    videoPlayer.stop(); $('#video-dialog').close();
+    activeGroupId = id;
+    journey = groupTravel.projectJourney(sourceJourney, id);
+    storyMapDay = null; viewerRouteKey = null;
+    const url = new URL(location.href);
+    if (id) url.searchParams.set('group', id); else url.searchParams.delete('group');
+    history.replaceState(history.state, '', url);
+    renderAll({ fit: false });
+    if ($('.map-panel').offsetParent === null) pendingMapAction = mapScope === 'day' ? 'focus' : 'fit';
+    else if (mapScope === 'day') focusDay(activeDay()); else fitJourneyBounds();
+    const button = Array.from($('#travel-party').querySelectorAll('[data-route-group]')).find(button => button.dataset.routeGroup === id);
+    button?.focus({ preventScroll: true });
+  }
+
   function renderAll(options) {
+    renderParty();
     renderJourneyIdentity();
     renderOverview();
     renderJourneyPicker();
@@ -1378,7 +1429,7 @@
     $("#replay-complete").hidden = true;
     $("#replay-eyebrow").textContent = `DAY ${String(day.number).padStart(2, "0")} · ${day.date}`;
     $("#replay-title").textContent = day.title;
-    $("#replay-copy").textContent = moment.caption || conciseDayStory(day);
+    $("#replay-copy").textContent = moment.caption || (activeGroupId ? `${sourceJourney.routeGroups.find(group => group.id === activeGroupId).label} · ${routeLabel(day)}` : conciseDayStory(day));
     renderReplayRouteLabel(moment);
     updateReplayControls(day);
     drawReplayMomentMap(moment, replayProgress, fit);
@@ -1391,7 +1442,7 @@
       const from = placeById(segment.from);
       const to = placeById(segment.to);
       $("#replay-mode").innerHTML = `${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)} · leg ${day.segmentIds.indexOf(segment.id) + 1} of ${day.segmentIds.length}`;
-      $("#replay-route").textContent = `${from.name} → ${to.name}`;
+      $("#replay-route").textContent = `${from.name} → ${to.name}${journey.routeGroups?.length ? ` · ${groupTravel.audience(journey, segment)}` : ""}`;
     } else {
       $("#replay-mode").textContent = journey.status === "planned" ? "Planned day" : "A chapter of the journey";
       $("#replay-route").textContent = routeLabel(day);
@@ -1616,11 +1667,38 @@
   $('#album-continue').addEventListener('click',()=>{const id=$('#album-continue').dataset.day;if(id)openDayViewer(id);else {photoDialog.close();showJournal();}});
   $('#return-to-journal').addEventListener('click',()=>showJournal());
 
+  const videoPlayer = groupTravel.createVideoPlayer({ dialog: $('#video-dialog'), video: $('#journey-video'), title: $('#video-title'), caption: $('#video-caption'), status: $('#video-status'), retry: $('#retry-video'), close: $('#close-video'), sourceLink: $('#video-credit') });
+  document.addEventListener('click', event => {
+    const group = event.target.closest('[data-route-group]');
+    if (group) selectRouteGroup(group.dataset.routeGroup);
+    const button = event.target.closest('[data-open-video]');
+    if (button) {
+      const item = journey.videos?.find(video => video.id === button.dataset.openVideo && !video.hidden);
+      if (item) { pauseReplay(); videoPlayer.open(item); }
+    }
+  });
+  $('#mobile-routes-action').addEventListener('click', () => { setMobileTab('route'); $('#travel-party button')?.focus(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) $('#journey-video').pause(); });
+
+  for (const id of ['story-view-videos', 'mobile-day-videos']) $(`#${id}`).addEventListener('click', () => {
+    showJournal();
+    const section = detailPanel.querySelector('.day-videos');
+    section?.scrollIntoView({ block: 'start' });
+    section?.querySelector('button')?.focus({ preventScroll: true });
+  });
+
   $("#journey-select").addEventListener("change", (event) => {
     const nextJourney = availableJourneys.find((item) => item.id === event.target.value);
     if (!nextJourney) return;
     clearSegmentInspection(true);
+    pauseReplay(); replayJourneyId = null; storyMapDay = null; viewerRouteKey = null;
+    videoPlayer.stop(); $('#video-dialog').close();
+    sourceJourney = nextJourney; activeGroupId = '';
     journey = nextJourney;
+    const url = new URL(location.href);
+    url.searchParams.set('journey', journey.id); url.searchParams.delete('group');
+    url.searchParams.delete('day'); url.searchParams.delete('photo'); url.hash = '';
+    history.replaceState(history.state, '', url);
     activeDayId = journey.days[0].id;
     viewerDayId = activeDayId;
     mapScope = "journey";
@@ -1743,6 +1821,7 @@
     swipeStartX = null;
   });
   document.addEventListener("keydown", (event) => {
+    if ($("#video-dialog").open) return;
     if (replayDialog.open) {
       const tag = event.target.tagName;
       if (event.key === " " && !["BUTTON", "INPUT", "SELECT"].includes(tag)) {

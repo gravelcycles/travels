@@ -10,6 +10,8 @@ actual content, reviewed geometry and photographs must be supplied per trip.
 | Opening | Cover image/focal point, title, dates, Relive/Explore actions | Optional `coverPhoto`; first visible photo or text scene fallback | journey.html, app.js, atlas-utils |
 | Calendar and journal | Every day, ordered travel legs, optional prose, previous/next, return to journal | `days`, `calendarDate`, optional destinations; no fake place for unknown plans | app.js, journey-content |
 | Route overview and focus | Whole-trip/day bounds, quiet context, route inspection and named stops; map credits start collapsed behind a working info button in every map; small orange intermediate rail stops with white rims spanning the line, larger dots at both ends of every train leg. Stop dots appear only once their train lines render, with pending reveals cancelled on day changes. Day selection stays in the journal/navigation; no map day-number bubbles or connectors | Places, ordered `segmentIds`, segments/geometry; map actions disable when no coordinates exist | app.js |
+| Travelers and separate routes | Roster, group filter, validated meetup, shared legs/media; map/journal/photos/videos/Replay follow the selection | Optional `travelers`, `routeGroups`, leg/media `groupIds`, day `groupPlaces`, `meetup`; absent fields preserve single-party behavior; agent-authored through JSON/planner API | group-travel, journey-extras, app.js |
+| Day videos | Native play/pause/seek/fullscreen, inline phone playback, day actions, retry and release on close | Optional `videos` with explicit public HTTPS MP4/WebM sources; absent/hidden videos produce no cards; private upload/delivery is pending | group-travel, journey-extras, journey.html |
 | Transport modes | Train, ferry (`boat`), bus, gondola, walk, car, bike; redundant color/line patterns and matching legend | `segment.mode`; a new mode requires a shared schema/style/routing change | viewer, Studio, validators |
 | Day photo preview and albums | First photo follows album order, View photos, all-day album overview, empty-day story | Photo manifest, `photoOrder`; independent `leadPhotoId` for editorial uses | app.js |
 | Full photo viewer | Per-day photo arrows, day changes synced to the journal/map, keyboard navigation, retry/unlock, filmstrip; clean full-photo edges with loading-only placeholders and phone-only swipe neighbors; next-day action has no pulsing halo | Visible photos with usable derivatives; no small-photo substitute for fullscreen | app.js, photo-auth, mobile-ux.js, styles.css, mobile.css |
@@ -34,6 +36,8 @@ reviewed Swiss/Italian routes are content instances. New trips start with empty
 photos/routes and automatic Replay. The agent adds the equivalent inputs as
 facts arrive; no feature porting is required.
 
+Nine to Como demonstrates nine travelers, three group routes, a validated Como
+meetup, and a public MDN test video. Its lines are provisional endpoint guides.
 Alpine Crossing demonstrates an explicit cover and curated Replay. The other
 samples demonstrate automatic Replay and different transport combinations.
 Their sparse illustrative media is intentional. They are not source templates
