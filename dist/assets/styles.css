@@ -145,8 +145,8 @@ button { color: inherit; }
 .map-legend { position: absolute; left: 16px; bottom: 16px; z-index: 3; display: flex; flex-wrap: wrap; gap: 9px 15px; background: rgba(251, 250, 246, 0.94); padding: 11px 13px; box-shadow: var(--shadow); }
 .map-legend span { display: inline-flex; gap: 7px; align-items: center; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; }
 .legend-heading { flex-basis: 100%; font-size: .7rem; }
-.rail-stop-swatch { width: 22px; height: 6px; border-radius: 3px; background: #0072b2; position: relative; }
-.rail-stop-swatch::after { content: ""; position: absolute; width: 4px; height: 4px; left: 9px; top: 1px; border-radius: 50%; background: var(--selected); }
+.rail-stop-swatch { width: 22px; height: 7.2px; border-radius: 3px; background: #0072b2; position: relative; }
+.rail-stop-swatch::after { content: ""; position: absolute; box-sizing: border-box; width: 7.2px; height: 7.2px; left: 7.4px; top: 0; border: 1.6px solid #fff; border-radius: 50%; background: var(--selected); }
 .map-status { position: absolute; z-index: 5; left: 50%; bottom: 68px; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 13px; font-size: 0.8rem; box-shadow: var(--shadow); }
 .route-inspector { position: absolute; z-index: 5; top: 206px; right: 14px; width: min(270px, calc(100% - 28px)); padding: 14px 38px 14px 15px; border-left: 4px solid #f0a235; background: rgba(251,250,246,.97); box-shadow: var(--shadow); pointer-events: none; }
 .route-inspector[hidden] { display: none; }
@@ -165,7 +165,8 @@ button { color: inherit; }
 .day-marker { min-width: 32px; height: 32px; padding: 0 6px; position: absolute; z-index: 1; left: 0; top: 0; transform: translate(-50%, -50%); display: grid; place-items: center; border-radius: 16px; background: #fbfaf6; border: 2px solid var(--ink); color: var(--ink); font-size: 0.62rem; font-weight: 900; box-shadow: 0 4px 13px rgba(20, 48, 53, 0.27); cursor: pointer; pointer-events: auto; white-space: nowrap; }
 .day-marker-anchor.compact .day-marker { min-width: 28px; height: 28px; padding-inline: 5px; border-radius: 14px; font-size: .57rem; }
 .day-marker.selected { background: var(--selected); border-color: #fff; color: #fff; box-shadow: 0 0 0 4px rgba(179, 95, 63, 0.22), 0 5px 15px rgba(20, 48, 53, 0.3); }
-.rail-stop-marker { width: 4px; height: 4px; border-radius: 50%; background: var(--selected); border: 0; box-shadow: none; cursor: help; }
+.rail-stop-marker { width: 7.2px; height: 7.2px; border-radius: 50%; background: var(--selected); border: 1.6px solid #fff; box-shadow: none; cursor: help; }
+.rail-stop-marker.route-endpoint-marker { width: 10px; height: 10px; border-width: 2px; box-shadow: 0 0 0 1px var(--selected), 0 2px 5px rgba(20, 48, 53, 0.28); }
 
 .story-media { flex: 0 1 31%; height: 31%; min-height: 150px; position: relative; overflow: hidden; background: #203f45; }
 .story-media > button { width: 100%; height: 100%; border: 0; padding: 0; display: block; position: relative; text-align: left; background: #203f45; color: #fff; cursor: zoom-in; }

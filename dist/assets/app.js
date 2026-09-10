@@ -792,9 +792,11 @@
     return nearest ? map.unproject(nearest).toArray() : [stop.lng, stop.lat];
   }
 
-  function addRailStopMarkers(map, decorations, day) {
-    const seen = new Set();
-    segmentsForDay(day).filter((segment) => segment.mode === "train").forEach((segment) => {
+  function dayMapStops(map, day) {
+    const segments = segmentsForDay(day);
+    const byLocation = new Map();
+    const keyFor = coordinate => coordinate.map(value => value.toFixed(7)).join(',');
+    segments.filter((segment) => segment.mode === "train").forEach((segment) => {
       const from = placeById(segment.from);
       const to = placeById(segment.to);
       const coordinates = segmentCoordinates(segment);
@@ -804,19 +806,37 @@
         { name: to.name, coordinate: coordinates.at(-1) }
       ];
       stops.forEach((stop) => {
-        const key = `${stop.name}-${stop.coordinate.join(',')}`;
-        if (seen.has(key)) return;
-        seen.add(key);
-        const element = document.createElement("div");
-        element.className = "rail-stop-marker";
-        element.title = stop.name;
-        element.setAttribute("role", "img");
-        element.setAttribute("aria-label", `Rail stop: ${stop.name}`);
-        const marker = new maplibregl.Marker({ element, anchor: "center" })
-          .setLngLat(stop.coordinate)
-          .addTo(map);
-        decorations.markers.push(marker);
+        byLocation.set(keyFor(stop.coordinate), stop);
       });
+    });
+    if (segments.length) {
+      // Start/end belong to the whole day, including mixed-mode days. A transfer
+      // between legs remains a small stop; a round trip has one combined marker.
+      const first = segments[0], last = segments.at(-1);
+      const endpoints = [
+        { name: placeById(first.from).name, coordinate: segmentCoordinates(first)[0], endpoint: "Start" },
+        { name: placeById(last.to).name, coordinate: segmentCoordinates(last).at(-1), endpoint: "End" }
+      ];
+      endpoints.forEach(stop => {
+        const key = keyFor(stop.coordinate), previous = byLocation.get(key);
+        byLocation.set(key, { ...stop, endpoint: previous?.endpoint ? "Start and end" : stop.endpoint });
+      });
+    }
+    return [...byLocation.values()];
+  }
+
+  function addDayStopMarkers(map, decorations, day) {
+    dayMapStops(map, day).forEach(stop => {
+      const element = document.createElement("div");
+      element.className = `rail-stop-marker${stop.endpoint ? " route-endpoint-marker" : ""}`;
+      const label = `${stop.endpoint || "Rail stop"}: ${stop.name}`;
+      element.title = label;
+      element.setAttribute("role", "img");
+      element.setAttribute("aria-label", label);
+      const marker = new maplibregl.Marker({ element, anchor: "center" })
+        .setLngLat(stop.coordinate)
+        .addTo(map);
+      decorations.markers.push(marker);
     });
   }
 
@@ -843,7 +863,7 @@
         });
       });
     addDayMarkers();
-    if (mapScope === "day") addRailStopMarkers(mainMap, mainDecorations, activeDay());
+    if (mapScope === "day") addDayStopMarkers(mainMap, mainDecorations, activeDay());
     if (inspectedSegmentId) setInspectedFeatureState(inspectedSegmentId, true);
     renderDayNavigator();
     if (fit) fitJourneyBounds();
@@ -1265,7 +1285,7 @@
           opacity: selectedSegments.has(segment.id) ? 1 : 0.24
         });
       });
-      addRailStopMarkers(viewerMap, viewerDecorations, day);
+      addDayStopMarkers(viewerMap, viewerDecorations, day);
       viewerRouteKey = routeKey;
     }
     if (photo && Number.isFinite(photo.lng) && Number.isFinite(photo.lat)) {
