@@ -26,7 +26,7 @@
     let replayView = 'map', replayState = null;
     let restoring = false, previousState = null, lastTap = null, viewerDepth = 0, fromAlbum = false, exitingToDay = false;
     const neighbors = [-1, 1].map(delta => {
-      const node = document.createElement('img'); node.className = 'mobile-photo-neighbor'; node.alt = ''; node.setAttribute('aria-hidden', 'true'); node.draggable = false;
+      const node = document.createElement('img'); node.className = 'mobile-photo-neighbor'; node.hidden = true; node.alt = ''; node.setAttribute('aria-hidden', 'true'); node.draggable = false;
       $('#viewer-photo-frame').append(node); return {node, delta};
     });
     const enabled = () => media.matches;
@@ -234,7 +234,7 @@
       }
     }
     function closed() {
-      neighbors.forEach(({node}) => {api.clearImage(node);node.removeAttribute('src');});
+      neighbors.forEach(({node}) => {node.hidden=true;api.clearImage(node);node.removeAttribute('src');});
       stopSwipe(); pointers.clear(); gesture = pinch = null; lastTap = null;
       if (enabled() && !restoring && history.state?.mobileAtlas?.viewer) history.go(-Math.max(1,viewerDepth));
     }

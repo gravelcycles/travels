@@ -174,12 +174,12 @@ button { color: inherit; }
 #replay-photo[data-photo-state]:not([data-photo-state="ready"]) { visibility:hidden; }
 @keyframes photo-resolve {
   from { opacity: 0; filter: blur(16px); }
-  to { opacity: 1; filter: blur(0); }
+  to { opacity: 1; filter: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
   #modal-photo[data-photo-state="ready"]:not([data-photo-reveal="instant"]),
   #replay-photo[data-photo-state="ready"]:not([data-photo-reveal="instant"]) {
-    animation: photo-resolve 650ms ease both;
+    animation: photo-resolve 650ms ease backwards;
   }
 }
 .story-media button:hover img { transform: scale(1.025); }
@@ -248,8 +248,8 @@ code { background: #dfe6e2; padding: 2px 4px; font-size: 0.8rem; }
 .viewer-photo-frame { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
 .viewer-photo-frame::before { content: ""; position: absolute; inset: 0; background-image: var(--photo-backdrop, none); background-size: var(--photo-backdrop-width, 0px) var(--photo-backdrop-height, 0px); background-repeat: no-repeat; background-position: center; opacity: 0; pointer-events: none; }
 .viewer-photo-frame::before { filter: blur(24px); clip-path: inset(calc((100% - var(--photo-backdrop-height, 0px)) / 2) calc((100% - var(--photo-backdrop-width, 0px)) / 2)); }
-.photo-stage.is-photo-loading .viewer-photo-frame::before,
-.viewer-photo-frame:has(> img[data-photo-state="ready"])::before { opacity: 1; }
+/* The preview belongs only to loading; it must not frame a loaded or zoomed photo. */
+.photo-stage.is-photo-loading .viewer-photo-frame::before { opacity: 1; }
 .photo-stage figure { min-width: 0; min-height: 0; margin: 0; display: grid; grid-template-rows: minmax(0, 1fr); position: relative; }
 .viewer-photo-frame #modal-photo { position: absolute; inset: 0; }
 .photo-stage img { width: 100%; height: 100%; min-height: 0; display: block; object-fit: contain; }
@@ -282,7 +282,7 @@ code { background: #dfe6e2; padding: 2px 4px; font-size: 0.8rem; }
 .photo-context .modal-description:empty { display: none; }
 .viewer-filmstrip { min-height: 0; overflow-y: auto; display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 104px; gap: 7px; padding: 10px; align-content: start; scrollbar-width: thin; }
 .viewer-filmstrip button { min-width: 0; border: 0; padding: 0; position: relative; overflow: hidden; background: #29474c; cursor: pointer; }
-.viewer-filmstrip button.active { outline: 4px solid var(--selected); outline-offset: -4px; box-shadow: 0 0 0 2px #fff; }
+.viewer-filmstrip button.active { box-shadow: 0 0 0 2px #fff; }
 .viewer-filmstrip button.active::after { content:""; position:absolute; inset:0; border:4px solid var(--selected); pointer-events:none; }
 .viewer-filmstrip img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.78; }
 .viewer-filmstrip button.active img, .viewer-filmstrip button:hover img { opacity: 1; }
@@ -339,7 +339,11 @@ code { background: #dfe6e2; padding: 2px 4px; font-size: 0.8rem; }
 .replay-complete button:first-child { background: var(--selected); border-color: var(--selected); }
 
 .mobile-nav { display: none; }
-button:focus-visible, select:focus-visible, .maplibregl-map:focus-visible { outline: 3px solid #d4935f; outline-offset: 2px; }
+button:focus-visible, select:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline: 3px solid #d4935f; outline-offset: 3px; }
+/* Safari can retain keyboard focus through touch-triggered dialogs and history.
+   Keep focus itself (and text-entry cues); hide only the pointer-mode ring. */
+:focus:not(:focus-visible),
+html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable]:not([contenteditable="false"]))) { outline: none; }
 
 .day-list::-webkit-scrollbar, .story-detail::-webkit-scrollbar { width: 11px; }
 .day-list::-webkit-scrollbar-track, .story-detail::-webkit-scrollbar-track { background: #e3e8e4; }
@@ -517,7 +521,6 @@ button:focus-visible, select:focus-visible, .maplibregl-map:focus-visible { outl
 #modal-time:empty { display:none; }
 .viewer-empty { padding:20px; gap:16px; }
 .viewer-empty span { max-width:55ch; line-height:1.7; font-size:1rem; }
-button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible { outline:3px solid #d4935f; outline-offset:3px; }
 @media(max-width:1050px) and (min-width:901px) { .atlas-shell { grid-template-columns:240px minmax(250px,1fr) 300px; } }
 @media(max-width:900px) {
   .atlas-shell { height:calc(100dvh - 118px); }

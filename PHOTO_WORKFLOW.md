@@ -88,6 +88,13 @@ Replay's mobile photo lives outside the scrolling story panel. Check that the
 image remains visible when switching media, stepping chapters, reopening Replay,
 scrolling the story, and rotating in Safari/WebKit as well as Chromium.
 Check the affected flow on a demo and a fresh draft as well as the real trip.
+Loaded full-screen photos must have clean edges: the blurred placeholder is
+visible only while loading and must disappear before zooming or swiping.
+Mobile swipe-neighbor images stay hidden on desktop, before initialization and
+after closing; also check resizing an open viewer from phone to desktop width.
+Check taps/clicks through the grid, location panel and Back without lingering
+orange focus rings; Tab/Shift-Tab must still visibly identify the focused control.
+The selected thumbnail keeps its separate album-selection border.
 
 `--publish` uses Wrangler's owner authorization to upload to private R2. It
 refuses public bucket settings, checks WebP metadata and content hashes, uploads
