@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import '../dist/assets/map-style.js';
 import { loadContent } from '../scripts/journey-content.mjs';
 import { readOverrides } from '../scripts/build-site.mjs';
 
@@ -24,7 +25,7 @@ function harness(journey) {
   ];
   const place = id => journey.places.find(p => p.id === id);
   const segments = d => d.segmentIds.map(id => journey.segments.find(s => s.id === id));
-  const context = vm.createContext({ journey, modeStyles,
+  const context = vm.createContext({ journey, modeStyles, window: { JOURNEY_ATLAS_MAP_STYLE: globalThis.JOURNEY_ATLAS_MAP_STYLE },
     segmentsForDay: segments, segmentCoordinates: coordinates, placeById: place
   });
   vm.runInContext(functions, context);
@@ -174,7 +175,7 @@ test('reopening the photo map or returning to a cancelled day cannot leave cache
   const f = renderFixture(journey,'viewer');
   let currentDay = day;
   Object.assign(f.context,{viewerMap:f.map,viewerDecorations:f.decorations,viewerMapReady:true,viewerRouteKey:null,
-    viewerPhotoIndex:0,viewerCameraPhoto:null,viewerPhotoMarkers:[],viewerTransition:null,window:{},photoDialog:{open:true},
+    viewerPhotoIndex:0,viewerCameraPhoto:null,viewerPhotoMarkers:[],viewerTransition:null,window:{JOURNEY_ATLAS_MAP_STYLE:globalThis.JOURNEY_ATLAS_MAP_STYLE},photoDialog:{open:true},
     viewerDay:()=>currentDay,photosForDay:()=>[],dayCoordinates:()=>[],mapIsReady:()=>true});
   f.context.syncViewerMap();
   f.context.photoDialog.open=false;
