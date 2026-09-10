@@ -1,7 +1,8 @@
 /* Mobile day and photo screens. The desktop atlas retains its three-panel layout. */
 .mobile-journey-actions,.mobile-story-legend,.mobile-header,.mobile-day-summary,.mobile-story-heading,.mobile-story-map,.mobile-photo-header,.photo-location-heading,.mobile-grid-heading,.mobile-photo-footer,.mobile-replay-header,.mobile-replay-views { display:none; }
 .story-album-entry,.photo-location-panel { display:contents; }
-.mobile-photo-neighbor { display:none; }
+/* Outrank the shared .photo-stage img rule, including after a phone resize. */
+.photo-stage .mobile-photo-neighbor { display:none; }
 @media(max-width:900px) {
  button { touch-action:manipulation; }
  body:not(.catalog-page) { --mobile-top:calc(54px + env(safe-area-inset-top)); --mobile-bottom:calc(58px + env(safe-area-inset-bottom)); }
@@ -75,8 +76,7 @@
  .photo-stage figure,.viewer-photo-frame { width:100%; height:100%; }
  .viewer-photo-frame { overflow:visible; }
  .photo-stage #modal-photo { position:relative; z-index:1; object-fit:contain; will-change:transform; -webkit-user-drag:none; }
- .mobile-photo-neighbor { position:absolute; inset:0; display:block; pointer-events:none; object-fit:contain; }
- .mobile-photo-neighbor[hidden] { display:none; }
+ .photo-stage .mobile-photo-neighbor:not([hidden]) { position:absolute; inset:0; display:block; pointer-events:none; object-fit:contain; }
  .photo-context { display:contents; border:0; }
  .photo-location-panel { position:absolute; display:grid; grid-template-rows:auto minmax(0,1fr) auto; height:var(--location-height,320px); bottom:calc(var(--photo-foot) - var(--location-height,320px) + var(--reveal)); left:0; right:0; background:var(--panel); color:var(--ink); border-radius:18px 18px 0 0; overflow:hidden; visibility:hidden; }
  .photo-viewer[data-location-visible="true"] .photo-location-panel { visibility:visible; }

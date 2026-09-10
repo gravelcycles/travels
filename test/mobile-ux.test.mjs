@@ -43,7 +43,7 @@ function viewerFixture({deferredHistory=false} = {}) {
     if (!nodes.has(selector)) nodes.set(selector, {
       dataset:{},style:{setProperty(name,value){this[name]=value;}},classList:{names:new Set(),add(name){this.names.add(name);},remove(name){this.names.delete(name);},contains(name){return this.names.has(name);}},getBoundingClientRect(){return {width:390,height:706};},clientWidth:390,clientHeight:706,offsetHeight:160,
       open:false,hidden:false,handlers:new Map(),captures:new Map(),textContent:'',inert:false,
-      setAttribute(name,value){this[name]=value;},removeAttribute(name){delete this[name];},append(child){child.parentElement=this;},focus(){},setPointerCapture(){},
+      setAttribute(name,value){this[name]=value;},removeAttribute(name){delete this[name];},children:[],append(child){child.parentElement=this;this.children.push(child);},focus(){},setPointerCapture(){},
       querySelectorAll(){return [];},closest(query){return selector.startsWith('#mobile-') && (query==='button' || query==='button:not(#mobile-photo-location)' && selector!=='#mobile-photo-location')?this:null;},
       addEventListener(name,fn,capture){(capture?this.captures:this.handlers).set(name,fn);},
       showModal(){this.open=true;},close(){this.open=false;controller?.closed();}
@@ -127,6 +127,20 @@ test('discard the synthetic drag click without blocking a fresh location-toggle 
   assert.equal(f.controller.locationVisible(),true);
   assert.equal(f.click('#mobile-photo-location').prevented,undefined);
   assert.equal(f.controller.locationVisible(),false);
+});
+
+test('swipe-neighbor placeholders stay hidden until mobile photos exist and when closing or resizing to desktop', () => {
+  const f = viewerFixture(), neighbors = f.node('#viewer-photo-frame').children;
+  assert.equal(neighbors.length, 2);
+  assert.ok(neighbors.every(node => node.hidden), 'Empty images cannot paint a broken-image frame on first desktop open');
+  f.resize(false); f.api.openDay();
+  assert.ok(neighbors.every(node => node.hidden));
+  f.resize(true); f.api.selectPhoto(1);
+  assert.ok(neighbors.every(node => !node.hidden), 'Both neighbors remain available for mobile swipes');
+  f.resize(false);
+  assert.ok(neighbors.every(node => node.hidden));
+  f.resize(true); f.api.selectPhoto(1); f.node('#photo-dialog').close();
+  assert.ok(neighbors.every(node => node.hidden), 'Cleared sources stay hidden after closing');
 });
 
 test('single taps never hide controls; double taps still zoom',()=>{
