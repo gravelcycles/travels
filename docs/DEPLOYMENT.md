@@ -25,8 +25,9 @@ recovery and retry. `scripts/recover-pages.mjs` inspects this workflow's latest
 100 runs on the same branch, considers only older completed failed/cancelled/
 timed-out runs plus the current failed attempt, and excludes SHAs belonging to
 other live runs. Failures preceding a later successful release are ignored.
-Missing Pages deployments and successful or permanent-error
-statuses are skipped. Orphaned or cancelled Pages jobs receive a cancellation
+Missing Pages deployments (including HTTP 200 with an empty status), unknown
+states, and successful or permanent-error statuses are skipped. Only an explicit
+recoverable state permits cancellation. Orphaned or cancelled Pages jobs receive a cancellation
 request, up to six status checks, and a 30-second settling delay. Cancellation
 acknowledgement alone does not prove GitHub has released its backend lock.
 
