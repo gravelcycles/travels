@@ -44,9 +44,11 @@ test('one template supplies every control and asset to real trips, all samples, 
   buildSite(root);
   const reference = read(root, 'dist/switzerland-italy.html');
   assert.equal(ids(reference).length, new Set(ids(reference)).size, 'No duplicate control IDs');
-  assert.ok(reference.indexOf('id="replay-photo-stage"') < reference.indexOf('<aside class="replay-story"'), 'Mobile Replay media is outside the scrolling story');
-  assert.match(reference, /<div id="replay-photo-slot"><figure class="replay-photo" id="replay-photo-frame"/, 'One photo frame has a desktop home and a separate mobile stage');
-  for (const id of ['mobile-photo-back', 'mobile-photo-location', 'mobile-grid-back', 'mobile-replay-back', 'replay-view-map', 'replay-view-photos']) {
+  const replay = reference.match(/<dialog class="replay-dialog"[\s\S]*?<\/dialog>/)[0];
+  assert.doesNotMatch(replay, /<img|replay-photo|replay-view-(?:map|photos)/, 'Replay has no photo surface or media switch');
+  assert.match(replay, /id="replay-map"/);
+  assert.match(replay, /id="replay-toggle"/);
+  for (const id of ['mobile-photo-back', 'mobile-photo-location', 'mobile-grid-back', 'mobile-replay-back']) {
     assert.ok(ids(reference).includes(id), `Shared mobile control ${id} exists`);
     assert.match(reference, new RegExp(`<button[^>]*id="${id}"[^>]*>\\s*<svg[^>]*aria-hidden="true"`), `${id} uses a drawn icon with an accessible button label`);
   }
@@ -115,11 +117,12 @@ test('a fresh trip inherits ordered travel, albums, cover selection and automati
   assert.equal(cover.photo.id, photos[1].id); assert.equal(cover.position, '30% 60%');
   const automatic = globalThis.JOURNEY_ATLAS_REPLAY.createTimeline(preview);
   assert.deepEqual(automatic.filter(m => m.type === 'segment').map(m => m.segmentId), segments.map(s => s.id));
-  assert.deepEqual(automatic.filter(m => m.type === 'photo').map(m => m.photoId), photos.map(p => p.id).reverse());
+  assert.ok(automatic.every(m => m.type !== 'photo' && !m.photoId), 'Replay uses only routes and days');
   assert.equal(automatic.filter(m => m.type === 'day').length, 2, 'Rest days remain in Replay');
   journey.replayMoments = [{ id: `${prefix}-chapter`, dayId: days[0].id, segmentIds: days[0].segmentIds, photoId: photos[1].id, caption: 'An editorial choice', duration: 12 }];
   const curated = globalThis.JOURNEY_ATLAS_REPLAY.createTimeline(journey);
   assert.equal(curated[0].curated, true);
+  assert.equal(curated[0].photoId, undefined);
   assert.deepEqual(curated[0].segmentIds, segments.map(s => s.id));
   // Promote only this synthetic fixture; never publish a test trip to the repository.
   fs.unlinkSync(path.join(root, `content/drafts/${prefix}.json`));

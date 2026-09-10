@@ -56,14 +56,16 @@ function appPlan(mode){
  const context=vm.createContext({journey:{days:journalDays},activeDayId:'day-0',preloadSelection:null,preloadDirection:1,
   photoDialog:{open:mode==='viewer'},replayDialog:{open:mode==='replay'},viewerPhotoIndex:2,viewerDay:()=>journalDays[0],
   photosForDay:id=>journalDays.find(day=>day.id===id).photos,orderedPhotos:()=>days.flatMap(day=>day.photos),
-  replayMomentIndex:0,replayTimeline:[{photo:photo('c')},{photo:photo('d')},{photo:photo('d')},{photo:photo('e')}],
-  replayMomentDay:()=>journalDays[0],currentReplayMoment:()=>({photo:photo('c')}),replayLeadPhoto:(_day,moment)=>moment.photo,
   window:{JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS},applyPreloads:requests=>{result=requests;}});
  vm.runInContext(refreshSource+'\nrefreshPreloads()',context);return result;
 }
-for(const mode of ['journal','viewer','replay'])test(`${mode} keeps immediate full photos ahead of day covers and upcoming strips`,()=>{
+for(const mode of ['journal','viewer'])test(`${mode} keeps immediate full photos ahead of day covers and upcoming strips`,()=>{
  const plan=appPlan(mode);
  assert.deepEqual(Array.from(full(plan).slice(0,mode==='journal'?1:2)),mode==='journal'?['a']:['d','e']);
  for(const id of ['a','d','f'])for(const width of [480,1280])assert.ok(has(plan,id,width));
  assert.ok(has(plan,'e',480));assert.ok(plan.length<=80);
+});
+
+test('Replay cancels photo preloads instead of downloading chapter images or album covers',()=>{
+ assert.deepEqual(Array.from(appPlan('replay')),[]);
 });

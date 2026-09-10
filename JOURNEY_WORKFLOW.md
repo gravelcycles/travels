@@ -72,15 +72,16 @@ new legs start as explicitly provisional endpoint guides and need route review.
 The same editor stores `coverPhoto: { photoId, focal: [xPercent, yPercent] }` and
 an ordered `replayMoments` list in the journey source. Cover choices apply to the
 catalog and opening, with visible-photo/text fallback. Replay moments contain
-stable IDs, day IDs, ordered segment IDs, optional photo IDs, captions, durations
-in seconds, and optional reviewed camera targets. Hidden photos are omitted;
-Travel scenes enforce a distance-based minimum per leg, including a brief
+stable IDs, day IDs, ordered segment IDs, captions, durations in seconds, and
+optional reviewed camera targets. Replay is map-only: existing optional photo
+IDs remain compatible with saved sources but are ignored by the player. Travel
+scenes enforce a distance-based minimum per leg, including a brief
 camera-settling pause; longer editorial durations slow the travel proportionally.
 Changing geometry point density does not change the pacing. The family journey
 uses 2.4-second rest-day scenes and approximately 50 seconds for the nine-leg
 Mürren day. Replay frames each active leg and preserves reduced-motion controls.
-invalid editorial references fail validation. Only reviewed exact coordinates
-support photo-location zooms. Empty moment lists retain automatic Replay for
+Invalid editorial references fail validation. Reviewed camera targets can frame
+rest-day locations. Empty moment lists retain automatic route/day Replay for
 other journeys. Save the plan after preview; the editor checks the source
 revision to avoid overwriting a trip changed in another session.
 

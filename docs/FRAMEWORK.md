@@ -110,8 +110,9 @@ strings. Studio serves live assets with no-store caching.
 6. Update [FEATURES.md](FEATURES.md), the relevant workflow and tests in the same
    change. Use [AGENT_PROMPTS.md](AGENT_PROMPTS.md) to brief the next agent.
 
-A custom fourteen-chapter Replay is trip data. Replay playback, camera movement,
-controls and photo loading are shared behavior. The same distinction applies
+A custom fourteen-chapter Replay is trip data. Replay playback, camera movement
+and controls are shared behavior; Replay presents maps and stories without photos.
+The same distinction applies
 to a chosen cover versus the introduction component, and a drawn ferry route
 versus map rendering.
 
