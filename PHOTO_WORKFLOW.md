@@ -91,7 +91,10 @@ visible only while loading and must disappear before zooming or swiping.
 Mobile swipe-neighbor images stay hidden on desktop, before initialization and
 after closing; also check resizing an open viewer from phone to desktop width.
 Check taps/clicks through the grid, location panel and Back without lingering
-orange focus rings; Tab/Shift-Tab must still visibly identify the focused control.
+focus rings; Tab/Shift-Tab must still visibly identify the focused control with
+the shared slim slate outline, including in dialogs. Focus indicators are never
+orange; that color remains reserved for journey/album selections.
+The next-day button has no pulsing halo at the end of an album.
 The selected thumbnail keeps its separate album-selection border.
 
 `--publish` uses Wrangler's owner authorization to upload to private R2. It

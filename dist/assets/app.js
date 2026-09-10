@@ -1108,7 +1108,6 @@
     continuation.hidden = Boolean(photo && viewerPhotoIndex < photos.length-1);
     continuation.dataset.day = next?.id || '';
     continuation.innerHTML = next ? `<strong>${photo ? 'Next day' : 'Next day with photos'} <span aria-hidden="true">→</span></strong><small>Day ${next.number} · ${escapeHtml(next.title)}</small>` : '<strong>Back to journey →</strong>';
-    continuation.classList.toggle('ready-to-continue', Boolean(photo && next && !continuation.hidden));
     renderViewerFilmstrip(photos);
     window.JOURNEY_ATLAS_MOBILE_UI?.update({day, photos, index: viewerPhotoIndex});
     if (dayChanged) setActiveDay(day.id, true);
