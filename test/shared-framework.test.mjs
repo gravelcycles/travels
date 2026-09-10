@@ -8,6 +8,7 @@ import { buildSite, renderJourneyPage, studioAsset, readOverrides } from '../scr
 import { createJourney } from '../scripts/create-journey.mjs';
 import { loadContent, writeJson } from '../scripts/journey-content.mjs';
 import { prepareJourneyPlan } from '../scripts/journey-planner.mjs';
+import { studioRouteAvailability, proposeStudioRoute } from '../scripts/studio-route-service.mjs';
 import { photoImportConfig } from '../scripts/photo-import-config.mjs';
 import '../dist/assets/replay-utils.js';
 import '../dist/assets/atlas-utils.js';
@@ -169,4 +170,29 @@ test('a newly generated draft inherits map anchors as route data is added', t =>
   const anchor = vm.runInContext('groupedDayMarkers()[0].place', context);
   assert.equal(anchor.lng,139.801); assert.equal(anchor.lat,35.701);
   assert.deepEqual(assets(renderJourneyPage(root,draft,{preview:true})),assets(read(root,'dist/switzerland-italy.html')));
+});
+
+
+test('real, demo and fresh draft share routing readiness and explicit replacement of preserved routes', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const prefix = draft.id;
+  const places = [{ id: `${prefix}-start`, name: 'Start', lng: 0, lat: 0 }, { id: `${prefix}-end`, name: 'End', lng: 0.02, lat: 0 }];
+  const segment = { id: `${prefix}-bike`, from: places[0].id, to: places[1].id, mode: 'bike' };
+  draft.places = places; draft.segments = [segment]; draft.days[0].segmentIds = [segment.id];
+  writeJson(path.join(root, `content/drafts/${draft.id}.json`), draft);
+  const { data } = loadContent(root, { includeDrafts: true });
+  const journeys = [data.journeys.find(j => j.kind !== 'demo' && j.published), data.journeys.find(j => j.kind === 'demo'), data.journeys.find(j => j.id === draft.id)];
+  fs.copyFileSync(path.join(repo, 'test/fixtures/routes/ordered-stops.json'), path.join(root, 'network.json'));
+  for (const journey of journeys) {
+    const leg = journey.segments.find(s => s.mode !== 'gondola');
+    const manifestPath = path.join(root, journey.published === false ? `build/draft-assets/${journey.id}/route-sources.json` : `content/route-sources/${journey.id}.json`);
+    fs.rmSync(manifestPath, { force: true });
+    const options = { repoRoot: root, journeyId: journey.id, segmentId: leg.id };
+    assert.equal(studioRouteAvailability(options).available, false, journey.id);
+    assert.match(studioRouteAvailability(options).message, /Ask the agent/);
+    writeJson(manifestPath, { modeNetworks: { [leg.mode]: 'local' }, networks: { local: { input: 'network.json' } }, segments: { [leg.id]: { strategy: 'preserve' } } });
+    assert.equal(studioRouteAvailability(options).available, true, journey.id);
+    const anchors = [[0,0], [0.01,0.01], [0.02,0]];
+    assert.deepEqual(proposeStudioRoute({ ...options, controlPoints: anchors }).geometry, anchors, journey.id);
+  }
 });

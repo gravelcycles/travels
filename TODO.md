@@ -202,3 +202,5 @@ project-level status.
       manual route control-point editing with smoothing and undo/redo.
 - [x] Build a day-scoped full-screen photo viewer synchronized with the main
       map/story, including exact located-photo zoom and empty days.
+
+- [ ] W06: Guided per-journey routing-data preparation with provenance, bounded local extracts and access/direction-aware profiles. Studio now checks readiness and explains missing setup; preserve policies no longer block explicit replacement previews. Do not enable generation for a new trip by copying another trip's routes.

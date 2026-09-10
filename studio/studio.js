@@ -26,6 +26,8 @@
   let routeProposal = null;
   let routeProposalMeta = null;
   let networkRequestId=0, gpxRequestId=0;
+  let availabilityRequestId = 0;
+  let networkAvailable = false;
   let dirty = false;
   let savedRevisions = {};
   let savedStateRevision = null;
@@ -535,7 +537,7 @@
     status.className = className;
   }
 
-  function clearRouteProposal(message = "Anchors changed. Request a new network proposal; the saved route remains active.") {
+  function clearRouteProposal(message = "Points changed. Generate a new route to see the updated green line. The saved route remains active.") {
     proposalGate.invalidate();
     routeProposal = null;
     routeProposalMeta = null;
@@ -666,10 +668,14 @@
     $("#undo-route").disabled = routeHistoryIndex <= 0;
     $("#redo-route").disabled = routeHistoryIndex >= routeHistory.length - 1;
     $("#delete-route-point").disabled = selectedRoutePoint <= 0 || selectedRoutePoint >= routePoints.length - 1;
+    $("#delete-route-point").textContent = $("#delete-route-point").disabled ? "Select a point to delete" : `Delete point ${selectedRoutePoint + 1}`;
   }
 
   function clearSelectedRoute() {
     selectedSegmentId = null;
+    availabilityRequestId += 1;
+    networkAvailable = false;
+    $("#propose-route").disabled = true;
     routePoints = []; routeHistory = []; routeHistoryIndex = -1;
     proposalGate.invalidate();
     routeProposal = null; routeProposalMeta = null;
@@ -682,6 +688,28 @@
     $("#route-saved-state").textContent = "—";
     $("#route-gpx-file").value = "";
     clearRouteProposal("No route selected.");
+  }
+
+  async function refreshRouteAvailability() {
+    const requestId = ++availabilityRequestId;
+    const requestedJourneyId = journey.id;
+    const requestedSegmentId = selectedSegmentId;
+    networkAvailable = false;
+    $("#propose-route").disabled = true;
+    $("#route-network-status").textContent = "Checking routing data…";
+    try {
+      const query = new URLSearchParams({ journeyId: requestedJourneyId, segmentId: requestedSegmentId });
+      const response = await fetch(`/api/route-availability?${query}`);
+      if (!response.ok) throw new Error("Routing check failed. Restart Studio and reselect this leg to try again.");
+      const result = await response.json();
+      if (requestId !== availabilityRequestId || journey.id !== requestedJourneyId || selectedSegmentId !== requestedSegmentId) return;
+      networkAvailable = result.available === true;
+      $("#route-network-status").textContent = result.message;
+      $("#propose-route").disabled = !networkAvailable;
+    } catch (error) {
+      if (requestId !== availabilityRequestId || journey.id !== requestedJourneyId || selectedSegmentId !== requestedSegmentId) return;
+      $("#route-network-status").textContent = "Cannot check routing data. Make sure Studio is running, then reselect this leg.";
+    }
   }
 
   function selectRoute(id, center = true) {
@@ -704,8 +732,8 @@
     $("#route-summary").textContent = `${segment.mode.toUpperCase()} · ${segment.distanceKm || "—"} km · ${segment.duration || "duration not set"}`;
     $("#route-saved-state").textContent = override ? "Yes" : "No";
     $("#smooth-route").textContent = routeSmoothed ? "Use straight anchor guide" : "Smooth anchor guide";
-    $("#propose-route").textContent = `Propose ${segment.mode === "boat" ? "ferry" : segment.mode} network route`;
-    $("#propose-route").disabled = segment.mode === "gondola";
+    $("#propose-route").textContent = `Generate ${segment.mode === "boat" ? "ferry" : segment.mode} route`;
+    refreshRouteAvailability();
     $("#accept-route-proposal").disabled = true;
     $("#accept-route-gpx").disabled = true;
     const acceptsGpx = ["bike", "walk"].includes(segment.mode);
@@ -785,6 +813,7 @@
   }
 
   async function proposeNetworkRoute() {
+    if (!networkAvailable) return;
     const requestId=++networkRequestId;
     $("#accept-route-gpx").disabled=true;
     const token = proposalGate.capture(proposalContext());
@@ -794,7 +823,10 @@
     const button = $("#propose-route");
     button.disabled = true;
     $("#accept-route-proposal").disabled = true;
-    setProposalStatus("Routing through the local mode network…");
+    routeProposal = null;
+    routeProposalMeta = null;
+    drawRouteEditor(false);
+    setProposalStatus("Generating a route from your points…");
     try {
       const response = await fetch("/api/route-proposal", {
         method: "POST",
@@ -815,13 +847,13 @@
     } catch (error) {
       if (!proposalGate.current(token, proposalContext())) return;
       proposalGate.invalidate();
-    routeProposal = null;
+      routeProposal = null;
       routeProposalMeta = null;
       setProposalStatus(error.message, "error");
       drawRouteEditor(false);
     } finally {
       const segment = segmentById(selectedSegmentId);
-      if(requestId===networkRequestId) button.disabled = !segment || segment.mode === "gondola";
+      if (requestId === networkRequestId && journey.id === requestedJourneyId && selectedSegmentId === requestedSegmentId) button.disabled = !segment || !networkAvailable;
     }
   }
 
@@ -873,7 +905,7 @@
     } catch (error) {
       if (!proposalGate.current(token, proposalContext())) return;
       proposalGate.invalidate();
-    routeProposal = null;
+      routeProposal = null;
       routeProposalMeta = null;
       setProposalStatus(error.message, "error");
       drawRouteEditor(false);
