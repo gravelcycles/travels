@@ -148,6 +148,11 @@ ferries stay on navigable water, and roads/trails stay on land. More points are
 not automatically more accurate; the important thing is using the correct
 network and enough meaningful anchors to disambiguate it.
 
+Map credits start collapsed behind the info button in every shared map,
+including photo, Replay, day preview and Studio maps. During desktop/phone QA,
+check that credits stay closed after tiles load and can still be opened and
+closed with the info button; route framing needs no extra attribution margin.
+
 The map has no day-number bubbles or connector lines; select days through the
 journal and day navigation. Check rail stops at desktop and phone sizes after
 changing routes. Intermediate rail stops have 4 px orange centers and white rims

@@ -1218,7 +1218,7 @@
     markSaved("Ready");
     map = new maplibregl.Map({ container: "studio-map", style: styleUrl, center: [8.45, 46.7], zoom: 7.5, attributionControl: false });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
-    map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+    window.JOURNEY_ATLAS_UTILS.addMapAttribution(map, maplibregl);
     map.on("load", () => {
       mapReady = true;
       applyBasemapTreatment();
