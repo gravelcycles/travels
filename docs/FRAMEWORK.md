@@ -71,6 +71,7 @@ password system.
 | `content/templates/journey.html` | All journey DOM, dialogs, control IDs, scripts and styles; real, demo, preview |
 | `content/templates/catalog.html` | Public catalog shell |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction, Replay UI |
+| `dist/assets/location-labels.js` | Shared destination grouping, measured placement, collision avoidance and accessible day selection |
 | `dist/assets/atlas-utils.js` | Shared photo resolution, cover choice, camera helpers, preloading and other pure helpers |
 | `dist/assets/group-travel.js`, `group-travel.css`, `scripts/journey-extras.mjs` | Shared group projection, roster/video UI, media cleanup and optional data validation |
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |
@@ -136,6 +137,8 @@ The concurrent mobile release was integrated before delivery; its controls and
 assets are inherited through this same template, with mobile gesture/page
 contract tests included in the release checks.
 
+Location-label checks also exercise complete route strokes at desktop/phone sizes, repeated destinations, compact/culling behavior, source-derived anchors, and an empty then populated fresh draft. Browser map QA can omit photos/private auth while retaining the identical shared map code and route data.
+
 Existing tests cover routing/GPX, planner preservation, photo auth/load/cache,
 viewer camera, Replay camera/timing, mobile day navigation and Studio editing.
 These are focused automated checks, not proof that every browser interaction
@@ -167,6 +170,8 @@ surface. Extract those with focused behavior tests as the next related work
 arrives; a framework rewrite is not a prerequisite. No time estimate is a
 commitment: each stage should be a separate reviewable change with its own
 checks and deployment.
+
+Map-label basemap text avoidance remains best effort until exact glyph bounds can be shared with DOM placement. Current hard collision checks protect route strokes, map controls and other destination labels; dense views use culling with day navigation retained (T05, `docs/LOCATION_LABELS.md`).
 
 Per-journey public bundle splitting and larger collection performance remain
 future scale decisions. Today all published journey data is loaded together;

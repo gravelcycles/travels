@@ -559,3 +559,21 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 .viewer-photo-feedback { position:absolute; z-index:2; left:50%; top:50%; transform:translate(-50%,-50%); max-width:90%; padding:12px 18px; background:#0a1b1fee; color:#fff; text-align:center; border-radius:6px; font-size:.85rem; }
 .viewer-photo-feedback[hidden], .viewer-photo-feedback button[hidden] { display:none; }
 .viewer-photo-feedback button { display:block; margin:10px auto 0; padding:9px 16px; background:#fff; color:var(--ink); border:0; border-radius:3px; font:inherit; cursor:pointer; }
+
+/* Destination labels use a neutral palette so transport keeps its own colors. */
+.location-label-anchor { width:1px; height:1px; pointer-events:none; }
+.location-label-anchor::before { content:""; position:absolute; left:0; top:0; width:var(--location-leader-length,0); height:1px; background:#58757999; box-shadow:0 0 0 1px #fbfaf699; transform:rotate(var(--location-leader-angle,0rad)); transform-origin:0 50%; pointer-events:none; }
+.location-label { position:absolute; left:0; top:0; transform:translate(-50%,-50%); display:flex; align-items:center; gap:7px; width:max-content; max-width:200px; min-width:44px; height:32px; padding:0 10px; border:1px solid #587579; border-radius:7px; background:#fbfaf6; color:#153238; box-shadow:0 2px 5px #15323820; font-size:12px; line-height:1; font-weight:650; cursor:pointer; pointer-events:auto; }
+.location-label-days { flex:none; font-size:10px; font-weight:600; color:#39575c; }
+.location-label-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.location-label.is-selected { background:#153238; border-color:#fbfaf6; color:#fbfaf6; }
+.location-label.is-selected .location-label-days { color:#fbfaf6; }
+.location-label-anchor.is-compact .location-label-name { display:none; }
+.location-label-anchor:focus-within { z-index:3; }
+@media(hover:hover) { .location-label:hover { border-color:#153238; box-shadow:0 2px 7px #15323840; } }
+@media(max-width:900px),(pointer:coarse) { .location-label { height:44px; max-width:164px; padding-inline:9px; } }
+.location-day-chooser { position:absolute; z-index:6; width:264px; max-width:calc(100% - 16px); max-height:calc(100% - 16px); overflow:auto; padding:14px; border:1px solid #587579; border-radius:10px; background:#fbfaf6; color:#153238; box-shadow:0 8px 24px #15323830; font-size:13px; }
+.location-day-chooser > strong { display:block; padding-right:36px; margin-bottom:12px; }
+.location-chooser-close { position:absolute; right:5px; top:3px; width:44px; height:44px; border:0; background:transparent; font-size:24px; cursor:pointer; }
+.location-day-choice { display:block; width:100%; min-height:44px; padding:10px 8px; border:0; border-top:1px solid #cbd2ce; background:transparent; color:#153238; font-size:12px; text-align:left; cursor:pointer; }
+.location-day-choice:hover { background:#ecefeb; }

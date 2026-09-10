@@ -173,7 +173,7 @@ test('the same introduction opens for real trips, samples and empty drafts; deep
 
 test('shared browser code and HTML templates contain no concrete trip IDs or URLs', () => {
   const { data } = loadContent(repo);
-  for (const filename of ['dist/assets/app.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'dist/assets/group-travel.js', 'studio/studio.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
+  for (const filename of ['dist/assets/app.js', 'dist/assets/location-labels.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'dist/assets/group-travel.js', 'studio/studio.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
     const source = read(repo, filename);
     for (const journey of data.journeys) {
       assert.ok(!source.includes(journey.id), `${filename} must express ${journey.id} behavior through data`);
@@ -362,4 +362,25 @@ test('video cards escape captions and the player releases media on close, retrie
   video.listeners.loadeddata(); assert.equal(options.retry.hidden, true);
   options.close.listeners.click(); assert.equal(video.src, undefined); assert.ok(video.pauseCount >= 3);
   video.listeners.error(); assert.equal(options.status.textContent, '', 'Late media events cannot resurrect a closed player');
+});
+
+test('location labels are inherited by real trips, samples, and a fresh data-only draft', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const code = read(repo, 'dist/assets/location-labels.js');
+  const context = vm.createContext({}); vm.runInContext(code,context);
+  const labels = context.JOURNEY_ATLAS_LOCATION_LABELS;
+  const hooks = journey => ({ destinationForDay: day => journey.places.find(p=>p.id===(day.destinationId||day.placeId)),
+    segmentsForDay: day => day.segmentIds.map(id=>journey.segments.find(s=>s.id===id)),segmentCoordinates:segment=>segment.geometry });
+  assert.equal(labels.groupsForJourney(draft,hooks(draft),draft.days[0].id,'journey').length,0,'Blank days invent no destinations');
+  draft.places.push({id:'new-place',name:'New place',lng:139.7,lat:35.6});
+  draft.days[0].placeId='new-place'; draft.days[1].placeId='new-place';
+  const groups = labels.groupsForJourney(draft,hooks(draft),draft.days[1].id,'journey');
+  assert.equal(groups.length,1); assert.equal(groups[0].days.length,2); assert.equal(groups[0].name,'New place');
+  assert.equal(groups[0].selected,true);
+  const {data} = loadContent(root);
+  for (const journey of [data.journeys.find(j=>j.kind!=='demo'), data.journeys.find(j=>j.kind==='demo'),draft]) {
+    assert.ok(assets(renderJourneyPage(root,journey,{preview:true})).includes('location-labels.js'));
+  }
+  buildSite(root);
+  assert.match(read(root,'dist/switzerland-italy.html'),/location-labels\.js\?v=[a-f0-9]+/);
 });
