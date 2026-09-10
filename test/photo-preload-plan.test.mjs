@@ -54,8 +54,8 @@ const refreshSource=appSource.slice(refreshStart,appSource.indexOf('\n  function
 function appPlan(mode){
  let result;
  const context=vm.createContext({journey:{days:journalDays},activeDayId:'day-0',preloadSelection:null,preloadDirection:1,
-  photoDialog:{open:mode==='viewer'},replayDialog:{open:mode==='replay'},viewerPhotoIndex:2,viewerDay:()=>journalDays[0],
-  photosForDay:id=>journalDays.find(day=>day.id===id).photos,orderedPhotos:()=>days.flatMap(day=>day.photos),
+  photoDialog:{open:mode==='viewer'||mode==='video'},replayDialog:{open:mode==='replay'},viewerPhotoIndex:2,viewerDay:()=>journalDays[0],
+  photosForDay:id=>journalDays.find(day=>day.id===id).photos.map((photo,index)=>mode==='video'&&index===2?{...photo,mediaType:'video'}:photo),orderedPhotos:()=>days.flatMap(day=>day.photos),
   window:{JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS},applyPreloads:requests=>{result=requests;}});
  vm.runInContext(refreshSource+'\nrefreshPreloads()',context);return result;
 }
@@ -68,4 +68,8 @@ for(const mode of ['journal','viewer'])test(`${mode} keeps immediate full photos
 
 test('Replay cancels photo preloads instead of downloading chapter images or album covers',()=>{
  assert.deepEqual(Array.from(appPlan('replay')),[]);
+});
+
+test('video viewing cancels image preloads so they do not compete with playback',()=>{
+ assert.deepEqual(Array.from(appPlan('video')),[]);
 });

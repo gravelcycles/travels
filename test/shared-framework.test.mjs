@@ -6,13 +6,14 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { buildSite, renderJourneyPage, studioAsset, readOverrides } from '../scripts/build-site.mjs';
 import { createJourney } from '../scripts/create-journey.mjs';
-import { loadContent, writeJson } from '../scripts/journey-content.mjs';
+import { loadContent, writeJson, validateJourneys } from '../scripts/journey-content.mjs';
 import { prepareJourneyPlan } from '../scripts/journey-planner.mjs';
 import { studioRouteAvailability, proposeStudioRoute } from '../scripts/studio-route-service.mjs';
 import { photoImportConfig } from '../scripts/photo-import-config.mjs';
 import '../dist/assets/replay-utils.js';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/group-travel.js';
+import '../dist/assets/media-utils.js';
 import { validateJourneyExtras } from '../scripts/journey-extras.mjs';
 
 const repo = path.resolve(import.meta.dirname, '..');
@@ -173,7 +174,7 @@ test('the same introduction opens for real trips, samples and empty drafts; deep
 
 test('shared browser code and HTML templates contain no concrete trip IDs or URLs', () => {
   const { data } = loadContent(repo);
-  for (const filename of ['dist/assets/app.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'dist/assets/group-travel.js', 'studio/studio.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
+  for (const filename of ['dist/assets/app.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'dist/assets/group-travel.js', 'dist/assets/media-utils.js', 'studio/studio.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
     const source = read(repo, filename);
     for (const journey of data.journeys) {
       assert.ok(!source.includes(journey.id), `${filename} must express ${journey.id} behavior through data`);
@@ -272,8 +273,11 @@ test('group routes and day videos are shared by the reference, sample and a fres
   const utils = globalThis.JOURNEY_ATLAS_GROUPS;
   for (const journey of [data.journeys.find(j => j.kind === 'real' && j.published), sample, draft]) {
     const html = renderJourneyPage(root, journey, { preview: true });
-    for (const id of ['travel-party', 'video-dialog', 'journey-video', 'mobile-routes-action', 'mobile-day-videos', 'story-view-videos']) assert.ok(ids(html).includes(id));
+    for (const id of ['travel-party', 'viewer-video', 'journey-video', 'mobile-routes-action', 'viewer-video-play']) assert.ok(ids(html).includes(id));
     assert.match(html, /<video id="journey-video" controls playsinline preload="none"/);
+    assert.ok(html.indexOf('id="journey-video"') > html.indexOf('id="photo-dialog"'));
+    assert.ok(html.indexOf('id="journey-video"') < html.indexOf('id="replay-dialog"'));
+    assert.doesNotMatch(html, /id="video-dialog"|id="mobile-day-videos"/);
     assert.equal(utils.projectJourney(journey, 'missing-group'), journey, 'Absent groups preserve existing behavior');
   }
   for (const group of sample.routeGroups) {
@@ -309,7 +313,19 @@ test('group routes and day videos are shared by the reference, sample and a fres
   const changes = Object.fromEntries(['travelers','routeGroups','places','segments','days','videos'].map(key => [key, planned[key]]));
   const edited = prepareJourneyPlan(data, draft, changes, { days:{}, photos:{}, routes:{} });
   writeJson(path.join(root, `content/drafts/${draft.id}.json`), edited.journey);
-  assert.equal(loadContent(root, { includeDrafts:true }).data.journeys.find(j => j.id === draft.id).videos.length, 1);
+  const saved = loadContent(root, { includeDrafts:true }).data.journeys.find(j => j.id === draft.id);
+  assert.equal(saved.videos.length, 1);
+  const media = globalThis.JOURNEY_ATLAS_MEDIA.items(saved);
+  assert.equal(media.length,1); assert.equal(media[0].dayId,saved.days[0].id);
+  assert.equal(media[0].mediaType,'video', 'A video-only fresh draft uses the shared gallery');
+});
+
+test('photo and video IDs cannot collide in the shared viewer or across journeys', () => {
+  const {data} = loadContent(repo), sample = data.journeys.find(j=>j.videos?.length);
+  sample.videos[0].id = sample.photos[0].id;
+  assert.throws(() => validateJourneys(data), /duplicate.*ID/i);
+  sample.videos[0].id = data.journeys.find(j=>j!==sample && j.photos.length).photos[0].id;
+  assert.throws(() => validateJourneys(data), /duplicate.*ID/i);
 });
 
 test('group and media validation reject broken references, false meetups and unsafe/publication-ambiguous video sources', () => {
@@ -344,22 +360,52 @@ test('build omits hidden/local videos and planner protects days containing only 
   assert.throws(() => prepareJourneyPlan(data, draft, { endDate:draft.days[1].calendarDate }, { days:{}, photos:{}, routes:{} }), /has content/);
 });
 
-test('video cards escape captions and the player releases media on close, retries failures and never autoplays', () => {
-  const utils = globalThis.JOURNEY_ATLAS_GROUPS;
-  const item = { id:'clip', dayId:'day', title:'<unsafe>', caption:'A caption', src:'https://example.com/clip.mp4', durationSeconds:5 };
-  assert.match(utils.videoCards({ videos:[item] }, 'day'), /&lt;unsafe&gt;/);
-  assert.equal(utils.videoCards({ videos:[{ ...item, hidden:true }] }, 'day'), '');
+test('unified media items keep photo order and include day-linked video thumbnails', () => {
+  const media = globalThis.JOURNEY_ATLAS_MEDIA;
+  const photo = {id:'photo', dayId:'d1', src:'https://example.com/photo.webp'};
+  const clip = {id:'clip', dayId:'d1', src:'https://example.com/video.mp4', title:'A <scene>', caption:'Description', durationSeconds:5};
+  const source = {photos:[photo], videos:[clip, {...clip,id:'hidden',hidden:true}]};
+  const all = media.items(source);
+  assert.equal(all.length,2); assert.equal(all[0],photo);
+  assert.equal(all[1].mediaType,'video'); assert.equal(all[1].videoSrc,clip.src);
+  assert.equal(all[1].src,'', 'Video bytes never enter an image loader');
+  assert.equal(media.label(all),'1 photo · 1 video');
+  const thumbnail = media.thumbnail(all[1]);
+  assert.match(thumbnail, /data-video-poster="clip"/); assert.match(thumbnail, /A &lt;scene&gt;/);
+  assert.match(thumbnail, /0:05/); assert.doesNotMatch(thumbnail, /video.mp4/);
+  assert.equal(clip.mediaType,undefined, 'Normalization does not mutate source content');
+});
+
+test('video playback uses the existing viewer and stops, releases and retries media safely', async () => {
+  const media = globalThis.JOURNEY_ATLAS_MEDIA;
   const node = () => ({ listeners:{}, hidden:false, textContent:'', addEventListener(name, fn) { this.listeners[name] = fn; }, setAttribute(key, value) { this[key] = value; }, removeAttribute(key) { delete this[key]; } });
-  const dialog = { ...node(), open:false, showModal() { this.open = true; }, close() { this.open = false; this.listeners.close(); } };
-  const video = { ...node(), pauseCount:0, loadCount:0, pause() { this.pauseCount++; }, load() { this.loadCount++; }, replaceChildren() {} };
-  const options = { dialog, video, title:node(), caption:node(), status:node(), retry:node(), close:node(), sourceLink:node() };
-  const player = utils.createVideoPlayer(options);
-  player.open(item);
-  assert.equal(dialog.open, true); assert.equal(video.src, item.src);
-  assert.equal(options.title.textContent, '<unsafe>'); assert.equal(video.autoplay, undefined);
-  video.listeners.error(); assert.equal(options.retry.hidden, false);
-  options.retry.listeners.click(); assert.equal(video.src, item.src);
-  video.listeners.loadeddata(); assert.equal(options.retry.hidden, true);
-  options.close.listeners.click(); assert.equal(video.src, undefined); assert.ok(video.pauseCount >= 3);
-  video.listeners.error(); assert.equal(options.status.textContent, '', 'Late media events cannot resurrect a closed player');
+  const video = { ...node(), pauseCount:0, playCount:0, loadCount:0, pause() { this.pauseCount++; }, play() { this.playCount++; return Promise.resolve(); }, load() { this.loadCount++; } };
+  let resolvePoster;
+  const options = { video, shell:node(), play:node(), status:node(), retry:node(), sourceLink:node(), posters:{get:()=>new Promise(resolve=>{resolvePoster=resolve;})} };
+  const player = media.createVideoPlayer(options);
+  const item = { id:'clip', title:'Title', videoSrc:'https://example.com/clip.mp4' };
+  player.show(item); assert.equal(options.shell.hidden,false); assert.equal(video.src,item.videoSrc);
+  assert.equal(video.playCount,0, 'Opening a thumbnail does not autoplay');
+  await options.play.listeners.click(); assert.equal(video.playCount,1);
+  video.listeners.error(); assert.equal(options.retry.hidden,false);
+  options.retry.listeners.click(); assert.equal(video.src,item.videoSrc);
+  player.pause(); assert.ok(video.pauseCount>0);
+  player.stop(); assert.equal(video.src,undefined); assert.equal(options.shell.hidden,true);
+  resolvePoster('https://example.com/old-frame.webp'); await Promise.resolve();
+  assert.equal(video.poster,undefined, 'A late thumbnail cannot appear over a new photo');
+  video.listeners.error(); assert.equal(options.status.textContent,'');
+});
+
+test('Day details include the full roster, route and overnight for each group, including shared rest days', () => {
+  const groups = globalThis.JOURNEY_ATLAS_GROUPS;
+  const sample = loadContent(repo).data.journeys.find(j => j.routeGroups?.length);
+  const first = groups.dayDetails(sample, sample.days[0], 'lake-ferry');
+  for (const traveler of sample.travelers) assert.ok(first.includes(traveler.name));
+  for (const place of ['Lugano','Varenna','Menaggio']) assert.ok(first.includes(`Overnight: ${place}`));
+  assert.match(first, /Who went which way/); assert.match(first, /Showing this route/);
+  const arrival = groups.dayDetails(sample, sample.days[1]);
+  assert.match(arrival, /Everyone meets in Como/); assert.match(arrival, /Dinner together/);
+  const rest = groups.dayGroups(sample,sample.days[2]);
+  assert.ok(rest.every(group => group.segments.length===0 && group.to.name==='Como'));
+  assert.equal(groups.dayDetails({routeGroups:[]},{}),'');
 });

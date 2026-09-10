@@ -1,5 +1,29 @@
 # Next-agent handoff
 
+## Integrated video viewer and day route details — 10 September 2026
+
+Videos now use the existing photo viewer and appear in day previews, album
+overviews and phone grids. The new shared `media-utils.js` normalizes gallery
+items, generates/caches an opening-frame thumbnail when no poster is supplied,
+and owns native video playback/cleanup. Tiles have play/duration badges; the
+large player keeps its title/caption outside native controls. Selecting a photo
+or closing releases the video, while opening the phone grid/backgrounding
+pauses it. Native video controls do not trigger photo gestures. Supplied HTTPS
+posters avoid thumbnail video requests; fallback extraction needs a CORS-capable
+host and is serialized/bounded. Private video intake remains W07.
+
+Day details list all groups' travelers, route endpoints, transport, leg count
+and overnight place, including the shared meetup. “Show this route” updates the
+shared filter while preserving those details for every group. No sample-only
+page, styling branch or duplicate itinerary data was introduced.
+
+Validation includes the full test suite/build, mixed photo/video selection,
+poster extraction/cache/failure cleanup, video-only drafts, native mobile
+control guards, and reference/demo/draft template parity. Browser checks cover
+successful sample playback, desktop/390px layouts, route selection and the Como
+meetup, a video-only fresh draft, and the reference photo grid in local-media
+preview mode. Existing tests cover protected photo delivery.
+
 ## Nine-person group routes and public video sample — 10 September 2026
 
 Nine to Como is a new fictional data instance in the shared sample selector.

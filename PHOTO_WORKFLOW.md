@@ -272,8 +272,13 @@ Hiding or trashing alone is not permanent media erasure.
 
 ## Video sample boundary — 10 September 2026
 
-The shared journal now renders day-linked public MP4/WebM clips from a journey's
-optional `videos` list. See `JOURNEY_WORKFLOW.md` for the contract. The fictional
+Day-linked public MP4/WebM clips from a journey's optional `videos` list now
+share the photo viewer, journal previews, album overview and phone grid. Tiles
+show an opening-frame poster and play/duration badge. Supply a reviewed HTTPS
+poster to avoid thumbnail video requests; absent posters are extracted once
+per cached source in the browser when the host permits CORS. Opening a video
+does not autoplay; switching media or closing releases it, and opening the
+phone grid/backgrounding pauses it. See `JOURNEY_WORKFLOW.md` for the contract. The fictional
 Nine to Como example uses the public [MDN video test](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video),
 with attribution and explicit test labeling; it is not actual trip footage.
 No video binary or new photo binary is committed or republished.
