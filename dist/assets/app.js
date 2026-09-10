@@ -94,6 +94,7 @@
   let storyMapDay = null;
   const storyDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
   let hasPlayedOpeningMove = false;
+  let locationLabels;
   let pendingMapAction = null;
   const preloadedPhotoUrls = new Set();
   const decodedPhotoUrls = new Set();
@@ -507,6 +508,16 @@
       }
       mainMapReady = true;
       applyBasemapTreatment(mainMap);
+      locationLabels = window.JOURNEY_ATLAS_LOCATION_LABELS.create({
+        map: mainMap, maplibregl, onSelectDay: id => setActiveDay(id, true),
+        obstacles: () => {
+          const mapRect = mainMap.getContainer().getBoundingClientRect();
+          return ['#day-navigator', '#map-legend', '#route-inspector', '.maplibregl-ctrl-top-right', '.maplibregl-ctrl-bottom-right']
+            .map(selector => mainMap.getContainer().querySelector(selector) || $(selector))
+            .filter(element => element && !element.hidden && element.getClientRects().length)
+            .map(element => { const r = element.getBoundingClientRect(); return { left: r.left - mapRect.left, right: r.right - mapRect.left, top: r.top - mapRect.top, bottom: r.bottom - mapRect.top }; });
+        }
+      });
       drawMainMap(false);
       if (!hasPlayedOpeningMove) {
         hasPlayedOpeningMove = true;
@@ -742,6 +753,10 @@
     if (mapScope === "day") addDayStopMarkers(mainMap, mainDecorations, activeDay(), day => mapScope === "day" && activeDayId === day.id);
     if (inspectedSegmentId) setInspectedFeatureState(inspectedSegmentId, true);
     renderDayNavigator();
+    locationLabels?.update(
+      window.JOURNEY_ATLAS_LOCATION_LABELS.groupsForJourney(journey, { destinationForDay, segmentsForDay, segmentCoordinates, includeGroupPlaces: !activeGroupId }, activeDayId, mapScope),
+      journey.segments.map(segment => ({ coordinates: segmentCoordinates(segment), padding: (modeStyles[segment.mode]?.width || 4.7) / 2 + 6 }))
+    );
     if (fit) fitJourneyBounds();
   }
 
