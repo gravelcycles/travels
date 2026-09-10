@@ -84,6 +84,9 @@ next/previous photo, double-tap or pinch to zoom, and drag upward or tap Photo
 location to reveal its map. Hide location collapses it without leaving the
 photo. Verify a quick hide-then-swipe keeps location closed. Replay has separate
 Map/Photos views with fixed playback controls; moments without a photo use Map.
+Replay's mobile photo lives outside the scrolling story panel. Check that the
+image remains visible when switching media, stepping chapters, reopening Replay,
+scrolling the story, and rotating in Safari/WebKit as well as Chromium.
 Check the affected flow on a demo and a fresh draft as well as the real trip.
 
 `--publish` uses Wrangler's owner authorization to upload to private R2. It

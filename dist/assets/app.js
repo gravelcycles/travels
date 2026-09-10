@@ -537,6 +537,7 @@
   }
 
   function clearDecorations(map, decorations) {
+    decorations.cancelStopReveal?.();
     decorations.markers.forEach((marker) => marker.remove());
     decorations.layerIds.slice().reverse().forEach((id) => {
       if (map.getLayer(id)) map.removeLayer(id);
@@ -548,6 +549,7 @@
     decorations.sourceIds = [];
     decorations.markers = [];
     decorations.hitLayerIds = [];
+    decorations.routeLayers = [];
   }
 
   function addSegmentLayer(map, decorations, segment, options) {
@@ -607,6 +609,7 @@
     }
     decorations.sourceIds.push(sourceId);
     decorations.layerIds.push(casingId, lineId);
+    (decorations.routeLayers ||= []).push({ segmentId: segment.id, sourceId, lineId });
   }
 
   function railStopCoordinate(map, stop, coordinates) {
@@ -649,9 +652,42 @@
     return [...byLocation.values()];
   }
 
-  function addDayStopMarkers(map, decorations, day) {
+  function revealStopsWithRoutes(map, decorations, day, elements, isCurrent = () => true) {
+    decorations.cancelStopReveal?.();
+    if (!elements.length) return;
+    const trainIds = new Set(segmentsForDay(day).filter(segment => segment.mode === "train").map(segment => segment.id));
+    const routes = (decorations.routeLayers || []).filter(route => trainIds.has(route.segmentId))
+      .map(route => ({ ...route, source: map.getSource(route.sourceId) }));
+    if (!routes.length) return;
+    let cancelled = false;
+    const cancel = () => {
+      cancelled = true;
+      map.off("render", reveal);
+      map.off("remove", cancel);
+      if (decorations.cancelStopReveal === cancel) decorations.cancelStopReveal = null;
+    };
+    const reveal = () => {
+      if (cancelled) return;
+      if (!isCurrent(day)) { cancel(); return; }
+      if (!routes.every(route => route.source && map.getSource(route.sourceId) === route.source
+        && map.getLayer(route.lineId) && map.isSourceLoaded(route.sourceId))) return;
+      // Source readiness alone is too early: wait for a frame containing the
+      // train lines. Offscreen routes wait until the camera brings them into view.
+      if (!map.queryRenderedFeatures({ layers: routes.map(route => route.lineId) }).length) return;
+      elements.forEach(element => { element.style.visibility = ""; });
+      cancel();
+    };
+    decorations.cancelStopReveal = cancel;
+    map.on("render", reveal);
+    map.on("remove", cancel);
+    map.triggerRepaint();
+  }
+
+  function addDayStopMarkers(map, decorations, day, isCurrent) {
+    const elements = [];
     dayMapStops(map, day).forEach(stop => {
       const element = document.createElement("div");
+      element.style.visibility = "hidden";
       element.className = `rail-stop-marker${stop.endpoint ? " route-endpoint-marker" : ""}`;
       const label = `${stop.endpoint || "Rail stop"}: ${stop.name}`;
       element.title = label;
@@ -661,7 +697,9 @@
         .setLngLat(stop.coordinate)
         .addTo(map);
       decorations.markers.push(marker);
+      elements.push(element);
     });
+    revealStopsWithRoutes(map, decorations, day, elements, isCurrent);
   }
 
   function drawMainMap(fit, attempt = 0) {
@@ -685,7 +723,7 @@
           opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.78)
         });
       });
-    if (mapScope === "day") addDayStopMarkers(mainMap, mainDecorations, activeDay());
+    if (mapScope === "day") addDayStopMarkers(mainMap, mainDecorations, activeDay(), day => mapScope === "day" && activeDayId === day.id);
     if (inspectedSegmentId) setInspectedFeatureState(inspectedSegmentId, true);
     renderDayNavigator();
     if (fit) fitJourneyBounds();
@@ -1109,7 +1147,13 @@
           opacity: selectedSegments.has(segment.id) ? 1 : 0.24
         });
       });
-      addDayStopMarkers(viewerMap, viewerDecorations, day);
+      addDayStopMarkers(viewerMap, viewerDecorations, day, candidate => {
+        if (viewerDay().id === candidate.id) return true;
+        // A cancelled reveal must be rebuilt even if navigation returns to this
+        // cached day before the next route redraw. Closing alone keeps it valid.
+        viewerRouteKey = null;
+        return false;
+      });
       viewerRouteKey = routeKey;
     }
     if (photo && Number.isFinite(photo.lng) && Number.isFinite(photo.lat)) {

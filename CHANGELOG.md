@@ -1,5 +1,12 @@
 # Changelog
 
+## 10 September 2026 — isolate Replay photos from the scrolling story
+
+- Give mobile Replay a dedicated photo stage instead of positioning its image
+  outside a scrolling ancestor. Keep the same image and loader when returning
+  to the desktop card, with explicit stage dimensions in both orientations.
+- Add regression coverage for the shared stage and responsive image placement.
+
 ## 10 September 2026 — responsive photo controls and mobile Replay
 
 - Accept immediate location-close taps after a drag, commit photo swipes on
