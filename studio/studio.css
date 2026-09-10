@@ -222,3 +222,30 @@ button.danger { color:#963d2b; }
 
 .upload-day-review { padding:10px; border:1px solid var(--line); border-radius:6px; margin-top:10px; font-size:12px; overflow-wrap:anywhere; }
 .upload-day-review p { margin:6px 0; }
+
+.plan-person { display:grid; grid-template-columns:minmax(150px,1fr) minmax(150px,1fr) auto; gap:12px; align-items:end; margin-bottom:10px; }
+.plan-person > button { margin-bottom:10px; }
+.plan-group { padding:14px; border:1px solid var(--line); margin:12px 0; background:#f0f4f0; }
+.plan-group small { display:block; margin:8px 0; }
+.plan-audience { margin:12px 0; padding:12px; border:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px 18px; }
+.plan-audience legend { padding:0 5px; font-size:13px; font-weight:750; }
+#trip-planner .plan-audience small { flex-basis:100%; margin:0; color:var(--muted); }
+#trip-planner .plan-audience label { margin:4px 0; }
+.plan-overnights { padding:12px; margin:12px 0; background:#edf2ef; }
+.plan-overnights p { font-size:13px; }
+.plan-video { padding:18px; border:1px solid var(--line); margin:18px 0; background:#fffdf5; }
+.plan-video h3 { flex:1; min-width:140px; margin:4px 0; }
+#trip-planner .plan-video details summary { font:16px sans-serif; }
+#plan-photo-groups summary { font:14px/1.5 sans-serif; }
+#studio-video-dialog { width:min(1000px,calc(100vw - 32px)); max-height:calc(100dvh - 32px); overflow:auto; padding:20px; border:1px solid var(--line); color:var(--ink); background:var(--panel); }
+#studio-video-dialog::backdrop { background:#102528d9; }
+#studio-video-dialog header { display:flex; align-items:center; justify-content:space-between; gap:15px; margin-bottom:16px; }
+#studio-video-title { margin:0; font:26px Georgia,serif; }
+#studio-video-dialog button { min-height:44px; padding:10px 16px; border:1px solid var(--line); background:white; color:var(--ink); }
+#studio-video-shell { position:relative; aspect-ratio:16/9; max-height:65dvh; background:#061113; }
+#studio-video { width:100%; height:100%; display:block; object-fit:contain; }
+#studio-video-play { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); border-radius:30px; }
+.studio-video-feedback { position:absolute; top:12px; left:12px; right:12px; color:white; text-align:center; }
+#studio-video-status:not(:empty) { padding:8px; background:#142e30e0; }
+#studio-video-caption { line-height:1.5; }
+@media(max-width:700px) { .plan-person { grid-template-columns:1fr; padding:12px 0; border-bottom:1px solid var(--line); gap:0; } .plan-person > button { justify-self:start; } .plan-video { padding:12px; } }

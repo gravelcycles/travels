@@ -18,9 +18,20 @@ export function resizeCalendar(journey, startDate, endDate, alignment = 'dates')
   return { days, removed:journey.days.filter(d => !retained.has(d.id)), added:days.filter(d => !journey.days.some(old => old.id === d.id)) };
 }
 export function prepareJourneyPlan(data, base, changes, state, alignment = 'dates') {
-  const allowed = ['title','startDate','endDate','timeZone','places','segments','days','coverPhoto','replayMoments','subtitle','travelers','routeGroups','meetup','videos'];
+  const allowed = ['title','startDate','endDate','timeZone','places','segments','days','coverPhoto','replayMoments','subtitle','travelers','routeGroups','meetup','videos','photoGroups'];
   for (const key of Object.keys(changes)) if (!allowed.includes(key)) throw new Error(`Cannot change ${key} in the planner`);
-  let journey = { ...structuredClone(base), ...structuredClone(changes) };
+  const {photoGroups, ...fields} = structuredClone(changes);
+  let journey = { ...structuredClone(base), ...fields };
+  // The planner may assign existing photos to groups, but cannot replace photo
+  // files, metadata, IDs or day ownership through this narrowly scoped input.
+  if (photoGroups !== undefined) {
+    if (!photoGroups || Array.isArray(photoGroups) || typeof photoGroups !== 'object' || Object.keys(photoGroups).some(id => !base.photos.some(photo => photo.id === id))) throw new Error('Photo groups must refer to existing photos in this journey');
+    journey.photos = journey.photos.map(photo => {
+      if (!Object.hasOwn(photoGroups, photo.id)) return photo;
+      if (photoGroups[photo.id] === null) { delete photo.groupIds; return photo; }
+      photo.groupIds = photoGroups[photo.id]; return photo;
+    });
+  }
   if (typeof journey.title !== 'string' || !journey.title.trim() || journey.title.length > 160) throw new Error('Trip title must contain 1–160 characters');
   journey.title = journey.title.trim(); if(journey.title !== base.title) journey.label = journey.title;
   new Intl.DateTimeFormat('en', {timeZone:journey.timeZone || 'UTC'});

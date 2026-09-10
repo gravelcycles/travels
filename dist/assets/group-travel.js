@@ -44,10 +44,10 @@
     return `<section class="day-route-groups" aria-label="Who took each route"><h3>Who went which way</h3>
       ${meetup ? `<p class="day-meetup"><strong>Everyone meets in ${escape(place.name)}</strong><span>${escape(meetup.label)}</span></p>` : ''}
       <div class="day-group-list">${groups.map(group => `<article class="day-group${selected === group.id ? ' is-selected' : ''}">
-        <h4>${escape(group.label)} <span>${group.travelers.length} travelers</span></h4>
+        <h4>${escape(group.label)} <span>${group.travelers.length} traveler${group.travelers.length === 1 ? '' : 's'}</span></h4>
         <p class="day-group-people">${group.travelers.map(person => escape(person.name)).join(' · ')}</p>
         <p class="day-group-route">${group.from ? `${escape(group.from.name)} → ` : ''}${escape(group.to?.name || 'Destination to plan')}</p>
-        <p class="day-group-meta">${group.segments.length ? [...new Set(group.segments.map(segment => modes[segment.mode] || segment.mode))].join(' + ') + ` · ${group.segments.length} leg${group.segments.length === 1 ? '' : 's'}` : 'No travel legs · staying here'}${group.to ? ` · Overnight: ${escape(group.to.name)}` : ''}</p>
+        <p class="day-group-meta">${group.segments.length ? [...new Set(group.segments.map(segment => modes[segment.mode] || segment.mode))].join(' + ') + ` · ${group.segments.length} leg${group.segments.length === 1 ? '' : 's'}` : group.to ? 'No travel legs · staying here' : 'No travel legs planned'}${group.to ? ` · Overnight: ${escape(group.to.name)}` : ''}</p>
         <button type="button" data-route-group="${escape(group.id)}" data-day-route-group="true" aria-pressed="${selected === group.id}">${selected === group.id ? 'Showing this route' : 'Show this route'}</button>
       </article>`).join('')}</div></section>`;
   }

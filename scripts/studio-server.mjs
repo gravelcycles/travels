@@ -8,6 +8,7 @@ import { importStudioPhoto, MAX_PHOTO_BYTES } from "./studio-photo-service.mjs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { prepareJourneyPlan, journeyRevision } from "./journey-planner.mjs";
+import { writePlanSources } from "./studio-plan-sources.mjs";
 import { createJourney } from "./create-journey.mjs";
 import { loadContent, validateOverrides } from "./journey-content.mjs";
 import { renderJourneyPage, studioAsset, readOverrides } from "./build-site.mjs";
@@ -108,7 +109,7 @@ function serveFile(response, filename) {
 function staticFileFor(pathname) {
   if (pathname === "/" || pathname === "/studio" || pathname === "/studio/") return path.join(repoRoot, "studio/index.html");
   if (pathname === "/studio/story-review.html") return path.join(repoRoot, "studio/story-review.html");
-  if (pathname === "/studio.css" || pathname === "/studio.js") return path.join(repoRoot, "studio", pathname.slice(1));
+  if (["/studio.css", "/studio.js", "/plan-extras.js"].includes(pathname)) return path.join(repoRoot, "studio", pathname.slice(1));
   if (pathname.startsWith("/dist/")) {
     const relative = pathname.slice(6);
     const resolved = path.resolve(repoRoot, "dist", relative || "index.html");
@@ -187,7 +188,7 @@ const server = http.createServer((request, response) => {
     request.setEncoding("utf8");
     request.on("data", chunk => { body += chunk; if (body.length > 3_000_000) request.destroy(); });
     request.on("end", () => {
-      let filename, previous;
+      let sourceWrite;
       try {
         const input = JSON.parse(body);
         const { data } = loadContent(repoRoot, { includeDrafts: true });
@@ -200,17 +201,12 @@ const server = http.createServer((request, response) => {
         if (!input.preview) {
           assertStateRevision(input.stateRevision);
           if (!input.revision) throw new Error("Preview the plan before saving");
-          filename = path.join(repoRoot, `content/${base.published ? "journeys" : "drafts"}/${base.id}.json`);
-          previous = fs.readFileSync(filename, "utf8");
-          const source = JSON.parse(previous);
-          fs.mkdirSync(backupDirectory, { recursive: true });
-          fs.writeFileSync(path.join(backupDirectory, `${Date.now()}-${base.id}.json`), previous);
-          writeJsonAtomic(filename, { ...result.journey, photos: source.photos });
+          sourceWrite = writePlanSources(repoRoot, base, result.journey);
           saveState(result.state);
         }
         send(response, 200, JSON.stringify({ ok:true, ...result, stateRevision:stateRevision(), revision:input.preview ? revision : journeyRevision(result.journey) }), "application/json; charset=utf-8");
       } catch (error) {
-        if (filename && previous) fs.writeFileSync(filename, previous);
+        sourceWrite?.restore();
         send(response, 400, JSON.stringify({ ok:false, error:error.message }), "application/json; charset=utf-8");
       }
     });

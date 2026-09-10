@@ -14,6 +14,7 @@ import '../dist/assets/replay-utils.js';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/group-travel.js';
 import '../dist/assets/media-utils.js';
+import '../studio/plan-extras.js';
 import { validateJourneyExtras } from '../scripts/journey-extras.mjs';
 
 const repo = path.resolve(import.meta.dirname, '..');
@@ -97,6 +98,18 @@ test('a shared template edit propagates on rebuild, replacing edited generated H
   assert.doesNotMatch(read(root, 'dist/index.html'), /obsolete page fork/);
 });
 
+test('Studio planner requests preserve the shared group/video contract for the reference, a demo and a fresh draft', t => {
+  const root=fixture(t), draft=createJourney(root,input), {data}=loadContent(root,{includeDrafts:true}), state=readOverrides(root);
+  const targets=[data.journeys.find(j=>j.kind==='real' && j.published),data.journeys.find(j=>j.routeGroups?.length),data.journeys.find(j=>j.id===draft.id)];
+  for(const journey of targets) {
+    const changes=globalThis.JOURNEY_ATLAS_PLAN_EXTRAS.changes(journey);
+    assert.deepEqual(Object.keys(changes.photoGroups),journey.photos.map(photo=>photo.id));
+    const result=prepareJourneyPlan(data,journey,changes,state).journey;
+    for(const key of ['travelers','routeGroups','meetup','videos','photos','segments','days']) assert.deepEqual(result[key],journey[key],`${journey.id}: ${key}`);
+    assert.equal(result.photoGroups,undefined,'Photo assignments are an edit operation, not a second stored model');
+  }
+});
+
 test('every sample supports calendar editing and the same photo intake configuration as real trips', () => {
   const { data } = loadContent(repo);
   for (const journey of data.journeys.filter(j => j.kind === 'demo')) {
@@ -174,7 +187,7 @@ test('the same introduction opens for real trips, samples and empty drafts; deep
 
 test('shared browser code and HTML templates contain no concrete trip IDs or URLs', () => {
   const { data } = loadContent(repo);
-  for (const filename of ['dist/assets/app.js', 'dist/assets/location-labels.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'dist/assets/group-travel.js', 'dist/assets/media-utils.js', 'studio/studio.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
+  for (const filename of ['dist/assets/app.js', 'dist/assets/location-labels.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'dist/assets/group-travel.js', 'dist/assets/media-utils.js', 'studio/studio.js', 'studio/plan-extras.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
     const source = read(repo, filename);
     for (const journey of data.journeys) {
       assert.ok(!source.includes(journey.id), `${filename} must express ${journey.id} behavior through data`);

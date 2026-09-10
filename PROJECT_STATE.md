@@ -1,5 +1,33 @@
 # Project state
 
+## Studio group and video authoring — 10 September 2026
+
+Use **Trip plan & media** to add/edit/remove travelers and route groups, assign
+membership, assign ordered legs/photos/videos to groups, set group overnight
+places and edit the shared meetup. The group forms use stable IDs; deleting a
+referenced group requires reassignment. Group membership is currently stable
+throughout a trip.
+
+The Videos section edits hosted public MP4/WebM links, day, title, duration,
+caption, poster, credit, group audience, order, visibility and publication
+status. The shared native player supplies preview and opening-frame fallback;
+metadata fills a missing duration. Hosted links are supported; video file
+upload/transcoding and private byte-range delivery remain W07.
+
+Check changes validates the full itinerary before Save trip plan locally.
+Checks discard stale replies after later edits; saves guard source/state
+revisions and retain local backups. The narrow `photoGroups` planner operation
+updates only assignments in the original inline/reviewed/upload manifest,
+preserving derivative URLs, metadata, IDs and source layout. Public trip pages
+continue to inherit the shared viewer and require no special Studio flags.
+
+Validation includes the full test suite/build, canonical-source round trips,
+rollback, geometry/photo metadata preservation, shared reference/demo/draft
+contracts and stale-check handling. Browser QA covers the nine-person sample,
+invalid leg/overnight assignments, native video preview, and adding, editing,
+saving and reloading a fresh draft with groups and a scoped video. Unrelated
+changes in the original checkout remain untouched.
+
 ## Integrated video viewer and day route details — 10 September 2026
 
 Videos now use the existing photo viewer and appear in day previews, album
