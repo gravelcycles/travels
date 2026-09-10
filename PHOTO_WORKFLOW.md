@@ -86,7 +86,12 @@ photo. Verify a quick hide-then-swipe keeps location closed. Replay shows the
 route map and day story with fixed playback controls. It has no photo viewer,
 image preloads or photo pauses; browse photographs through the day albums.
 Check the affected flow on a demo and a fresh draft as well as the real trip.
-Loaded full-screen photos must have clean edges: the blurred placeholder is
+Desktop covers, journal images, thumbnails (including video posters), and full-screen
+photos play a 650 ms blur-to-focus reveal whenever they appear, including cached
+revisits. The reveal waits for image readiness and visibility without re-fetching
+bytes; rapid selections cancel the previous animation. Phone behavior is unchanged,
+and reduced-motion preferences disable the desktop reveal.
+Loaded full-screen photos must have clean edges after the reveal: the blurred placeholder is
 visible only while loading and must disappear before zooming or swiping.
 Mobile swipe-neighbor images stay hidden on desktop, before initialization and
 after closing; also check resizing an open viewer from phone to desktop width.

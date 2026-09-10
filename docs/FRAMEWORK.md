@@ -72,7 +72,7 @@ password system.
 | `content/templates/catalog.html` | Public catalog shell |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction, Replay UI |
 | `dist/assets/location-labels.js` | Shared destination grouping, measured placement, collision avoidance and accessible day selection |
-| `dist/assets/atlas-utils.js` | Shared photo resolution, cover choice, camera helpers, preloading and other pure helpers |
+| `dist/assets/atlas-utils.js` | Shared photo resolution, cover choice, camera helpers, preloading, desktop image reveals and other helpers |
 | `dist/assets/group-travel.js`, `group-travel.css`, `scripts/journey-extras.mjs` | Shared group projection, roster/day route details, group/media presentation and optional data validation |
 | `dist/assets/media-utils.js` | Mixed gallery items, opening-frame thumbnail extraction/cache, native video playback and cleanup inside the shared photo viewer |
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |

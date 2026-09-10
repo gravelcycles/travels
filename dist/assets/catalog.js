@@ -44,4 +44,5 @@
     </a>
   `; }).join("");
   window.JOURNEY_ATLAS_AUTH?.prepare(catalog);
+  window.JOURNEY_ATLAS_UTILS.prepareImageReveals(catalog);
 })();

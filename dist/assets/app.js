@@ -230,6 +230,7 @@
       if (image.dataset.eager === "true" || !lazyImageObserver) hydrateImage(image);
       else lazyImageObserver.observe(image);
     });
+    window.JOURNEY_ATLAS_UTILS?.prepareImageReveals?.(container);
   }
 
   function preferredPhotoUrl(photo, targetWidth) {
@@ -1123,6 +1124,7 @@
     activeDayId = day.id;
     mapScope = "day";
     const modalPhoto = $("#modal-photo");
+    window.JOURNEY_ATLAS_UTILS?.resetImageReveal?.(modalPhoto);
     const photoStage = modalPhoto.closest('.photo-stage');
     // The embedded blur is decoration only; the foreground still waits for the full photo.
     const backdrop = photo?.blur;
