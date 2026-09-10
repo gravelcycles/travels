@@ -22,7 +22,7 @@
     let current = { photos: [], index: 0, day: null }, locationOpen = false, grid = false, chrome = true;
     let reveal = 0, locationHeight = 300, scale = 1, panX = 0, panY = 0;
     let gesture = null, pointers = new Map(), pinch = null, suppressClick = false;
-    let locationTimer, swipeTimer, swipeFrame;
+    let locationTimer, swipeTimer, swipeFrame, zoomFrame;
     let replayState = null;
     let restoring = false, previousState = null, lastTap = null, viewerDepth = 0, fromAlbum = false, exitingToDay = false;
     const neighbors = [-1, 1].map(delta => {
@@ -52,6 +52,10 @@
     function navigate(tab, push = true) {
       if (push) { save(); history.pushState({...history.state}, '', location.href); }
       api.tab(tab); save();
+    }
+    function overview() {
+      save(); history.pushState({...history.state}, '', location.href);
+      api.overview(); api.tab('map'); renderDay(); save();
     }
     function measureReplay() {
       const player = $('.replay-player');
@@ -96,6 +100,8 @@
     }
     function tabChanged() {
       const tab = $('.atlas-shell').dataset.mobileTab;
+      $('.atlas-shell').dataset.mapScope = api.scope();
+      $('#mobile-back .button-label').textContent = tab === 'map' ? 'All days' : 'Day map';
       $('#mobile-day-picker').setAttribute('aria-expanded', String(tab === 'route'));
       $('#mobile-day-picker').setAttribute('aria-label', `${tab === 'route' ? 'Return to' : 'Choose a day, current'} Day ${api.day().number} of ${api.days().length}`);
       $('[data-journey-action=unlock]').hidden = Boolean(window.JOURNEY_ATLAS_AUTH?.unlocked);
@@ -113,12 +119,34 @@
       panY = clamp(panY, -panLimit(height,scale,stage.clientHeight), panLimit(height,scale,stage.clientHeight));
       transform();
     }
+    function stopZoom() { cancelAnimationFrame(zoomFrame); zoomFrame = null; }
+    function toggleZoom(event) {
+      stopZoom();
+      const from = {scale, x:panX, y:panY}, next = scale > 1 ? 1 : 2;
+      const rect = stage.getBoundingClientRect(), factor = next / scale;
+      // Keep the tapped part of the image under the finger, within its edges.
+      panX = (event.clientX - rect.left - rect.width / 2) * (1 - factor) + panX * factor;
+      panY = (event.clientY - rect.top - rect.height / 2) * (1 - factor) + panY * factor;
+      zoom(next);
+      if (reduced.matches) return;
+      const target = {scale, x:panX, y:panY}, start = performance.now();
+      scale = from.scale; panX = from.x; panY = from.y; transform();
+      const frame = now => {
+        const progress = clamp((now - start) / 300, 0, 1), eased = 1 - (1 - progress) ** 3;
+        panX = from.x + (target.x - from.x) * eased;
+        panY = from.y + (target.y - from.y) * eased;
+        zoom(from.scale + (target.scale - from.scale) * eased);
+        zoomFrame = progress < 1 ? requestAnimationFrame(frame) : null;
+      };
+      zoomFrame = requestAnimationFrame(frame);
+    }
     function setChrome(value) {
       chrome = value; viewer.dataset.chrome = String(chrome);
       $('.mobile-photo-header').inert = !chrome; $('.mobile-photo-footer').inert = !chrome;
       $('#album-continue').inert = !chrome;
     }
     function measure() {
+      stopZoom();
       locationHeight = Math.min(360, Math.max(150, (viewer.clientHeight - 138) * .52));
       viewer.style.setProperty('--location-height', `${locationHeight}px`);
       reveal = locationOpen ? locationHeight : 0;
@@ -155,7 +183,7 @@
       const changed = value !== locationOpen;
       const target = value ? locationHeight : 0;
       if (!changed && reveal === target) return;
-      locationOpen = value; setChrome(true); zoom(1); animateLocation(); revealTo(target);
+      locationOpen = value; stopZoom(); setChrome(true); zoom(1); animateLocation(); revealTo(target);
       panel.inert = !value; panel.setAttribute('aria-hidden', String(!value));
       $('#mobile-photo-location').setAttribute('aria-expanded', String(value));
       $('#mobile-photo-location .location-hint').textContent = value ? 'Hide location' : 'Photo location';
@@ -177,7 +205,7 @@
       if (record && changed) save();
     }
     function update(data) {
-      current = data; stopSwipe();
+      current = data; stopSwipe(); stopZoom(); lastTap = null;
       if (!enabled()) return;
       pointers.clear(); gesture = pinch = null; zoom(1);
       panel.inert=!locationOpen||grid;panel.setAttribute('aria-hidden',String(!locationOpen||grid));strip.inert=!grid;
@@ -213,7 +241,7 @@
     }
     function closed() {
       neighbors.forEach(({node}) => {node.hidden=true;api.clearImage(node);node.removeAttribute('src');});
-      stopSwipe(); pointers.clear(); gesture = pinch = null; lastTap = null;
+      stopSwipe(); stopZoom(); pointers.clear(); gesture = pinch = null; lastTap = null;
       if (enabled() && !restoring && history.state?.mobileAtlas?.viewer) history.go(-Math.max(1,viewerDepth));
     }
     window.addEventListener('popstate', event => {
@@ -222,7 +250,7 @@
       const old = previousState; restoring = true;
       viewerDepth = state.depth || 0;
       const targetDay = old?.viewer && !state.viewer ? current.day?.id || state.dayId : state.dayId;
-      if(api.day().id !== targetDay) api.selectDay(targetDay);
+      if(api.day().id !== targetDay || state.scope === 'day' && api.scope() !== 'day') api.selectDay(targetDay);
       const targetTab = !state.viewer && (exitingToDay || old?.viewer) ? 'map' : state.tab;
       if ($('.atlas-shell').dataset.mobileTab !== targetTab) api.tab(targetTab);
       if(!state.viewer && state.scope === 'journey' && !old?.viewer)api.overview();
@@ -234,6 +262,7 @@
       if(state.viewer && old?.layer === 'grid' && state.layer !== 'grid')$('#mobile-photo-grid').focus();
       else if(state.viewer && old?.layer === 'location' && state.layer !== 'location')$('#mobile-photo-location').focus();
       if(!state.viewer)exitingToDay=false;
+      renderDay();
       restoring = false; previousState = state;
     });
     function pointerDown(event) {
@@ -242,12 +271,12 @@
       // a tap on Close immediately after dragging) must always be accepted.
       suppressClick = false;
       if (event.target.closest('button:not(#mobile-photo-location)')) return;
-      stopSwipe(); clearTimeout(locationTimer); viewer.classList.remove('is-location-settling');
+      stopSwipe(); stopZoom(); clearTimeout(locationTimer); viewer.classList.remove('is-location-settling');
       pointers.set(event.pointerId, {x:event.clientX,y:event.clientY});
       event.currentTarget.setPointerCapture(event.pointerId);
       if (pointers.size === 2) {
         const [a,b] = [...pointers.values()]; pinch = {distance:Math.hypot(a.x-b.x,a.y-b.y),scale};
-        gesture = null; suppressClick = true; return;
+        gesture = null; lastTap = null; suppressClick = true; return;
       }
       gesture = {x:event.clientX,y:event.clientY,time:performance.now(),axis:null,dx:0,dy:0,startReveal:reveal,panX,panY,handle:event.currentTarget !== stage};
     }
@@ -262,12 +291,13 @@
       gesture.dx = event.clientX-gesture.x; gesture.dy = event.clientY-gesture.y;
       gesture.axis ||= gestureAxis(gesture.dx, gesture.dy);
       if (!gesture.axis) return;
+      lastTap = null;
       suppressClick = true;
       if (scale > 1 && !gesture.handle) {panX=gesture.panX+gesture.dx;panY=gesture.panY+gesture.dy;zoom(scale);return;}
       if (gesture.axis === 'x' && !gesture.handle) {
         const edge = gesture.dx > 0 ? current.index === 0 : current.index === current.photos.length-1;
         transform(gesture.dx * (edge ? .2 : 1));
-      } else if (gesture.axis === 'y' && gesture.handle && current.photos.length) {
+      } else if (gesture.axis === 'y' && current.photos.length) {
         setChrome(true); revealTo(gesture.startReveal - gesture.dy);
       }
     }
@@ -278,13 +308,13 @@
       const action = gesture; gesture = null;
       if (!action) return;
       const cancelled = event.type === 'pointercancel';
-      if (scale > 1) return;
+      if (scale > 1 && !action.handle) return;
       if (action.axis === 'x' && !action.handle) {
         const delta = cancelled ? 0 : swipeStep(action.dx, performance.now()-action.time, stage.clientWidth, current.index, current.photos.length);
         const offset = action.dx + delta * (stage.clientWidth + 16);
         if (delta) api.move(delta);
         settleSwipe(delta ? offset : action.dx * (current.index === 0 && action.dx > 0 || current.index === current.photos.length - 1 && action.dx < 0 ? .2 : 1));
-      } else if (action.axis === 'y' && action.handle) {
+      } else if (action.axis === 'y') {
         const target = cancelled ? locationOpen : action.dy < -35 ? true : action.dy > 35 ? false : reveal > locationHeight*.45;
         setLocation(target);
       }
@@ -302,8 +332,8 @@
     stage.addEventListener('click', event => {
       if (!enabled() || event.target.closest('button') || grid) return;
       const now = performance.now();
-      if (lastTap !== null && now-lastTap < 280) { zoom(scale > 1 ? 1 : 2); lastTap=null; }
-      else lastTap=now;
+      if (lastTap && now-lastTap.time < 280 && Math.hypot(event.clientX-lastTap.x,event.clientY-lastTap.y) < 40) { toggleZoom(event); lastTap=null; }
+      else lastTap={time:now,x:event.clientX,y:event.clientY};
     });
     $('#mobile-photo-location').onclick=()=>setLocation(!locationOpen);
     $('#mobile-location-close').onclick=()=>setLocation(false);
@@ -312,7 +342,7 @@
     $('#mobile-photo-back').onclick=exitToDay;
     $('#mobile-photo-prev').onclick=()=>api.move(-1);$('#mobile-photo-next').onclick=()=>api.move(1);
     dialog.addEventListener('cancel',event=>{if(!enabled())return;event.preventDefault();if(grid)setGrid(false);else if(locationOpen)setLocation(false);else back();});
-    $('#mobile-back').onclick=()=>navigate('map');
+    $('#mobile-back').onclick=()=>$('.atlas-shell').dataset.mobileTab==='map'?overview():navigate('map');
     $('#mobile-open-replay').onclick=()=>api.replay();
     $('#mobile-day-picker').onclick=()=>navigate($('.atlas-shell').dataset.mobileTab==='route'?'map':'route');
     $('#mobile-previous-day').onclick=()=>{api.stepDay(-1);save();};$('#mobile-next-day').onclick=()=>{api.stepDay(1);save();};
@@ -321,12 +351,13 @@
     $('#mobile-story-expand').onclick=()=>navigate('map');
     $('#mobile-journey-actions').onclick=event=>{
       const action=event.target.closest('[data-journey-action]')?.dataset.journeyAction;if(!action)return;
-      if(action==='overview'){navigate('map');api.overview();}
+      if(action==='overview')overview();
       else if(action==='photos')api.album();
       else if(action==='unlock')window.JOURNEY_ATLAS_AUTH?.showPrompt();
       else if(action==='about')$('#notes-dialog').showModal();
     };
     media.addEventListener('change',()=>{
+      stopZoom();
       if (!enabled()) {setGrid(false,false);setLocation(false,false);setChrome(true);panel.inert=false;panel.removeAttribute('aria-hidden');strip.inert=false;img.style.transform='';neighbors.forEach(({node})=>node.hidden=true);if(dialog.open)api.location();}
       else if(dialog.open) {
         if(!history.state?.mobileAtlas?.viewer || !history.state.mobileAtlas.depth) {

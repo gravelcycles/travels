@@ -11,7 +11,7 @@
 .party-groups strong { display: flex; justify-content: space-between; font-size: .9375rem; }
 .party-groups small { display: block; margin-top: 5px; font-size: .875rem; line-height: 1.45; }
 .party-view { margin: 12px 0 0; color: #41625b; }
-.leg-audience { display: block; font-size: .875rem; font-weight: 600; color: #185c60; margin-bottom: 6px; }
+.leg-audience { display: block; font-family: sans-serif; font-size: .875rem; font-weight: 600; color: #185c60; margin-bottom: 6px; }
 .day-videos { margin: 24px 0; }
 .day-videos h3 { font-size: 1rem; }
 .video-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; }
@@ -35,4 +35,9 @@
   .travel-party { padding: 18px; }
   #mobile-routes-action:not([hidden]) { display: inline-block; width: auto; margin: 0 0 6px; min-height: 36px; font-size: .875rem; }
   .video-dialog { padding: 14px; }
+}
+
+@media(min-width: 901px) {
+  .route-panel.has-travel-party { display: block; overflow-y: auto; }
+  .route-panel.has-travel-party .day-list { overflow: visible; }
 }
