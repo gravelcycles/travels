@@ -49,6 +49,25 @@ Journey sources live in `content/journeys/<journey-id>.json`. The root catalog
 and stable trip-detail URLs are generated from each journey's `kind`, `published`,
 and `slug`. `dist/assets/journeys.js` is generated; do not edit it by hand.
 
+## Map location labels
+
+Labels inherit automatically from each day's `destinationId` (or `placeId`),
+plus group destinations when viewing everyone. Keep place names factual and
+concise; do not author positions or trip-specific label offsets. Travel labels
+anchor to the last reviewed arrival vertex for that destination, then a
+reviewed departure or the named place for a rest day. Unknown locations stay
+unlabelled. Repeated stays share one overview label with explicit day choices.
+
+The overview shows place names/day numbers where they fit, collapses to day
+numbers near dense routes, and hides labels that cannot clear the route and
+other controls. Zoom reveals more; all days remain available in navigation.
+Day focus shows only that day's destinations. Labels settle after camera
+movement to avoid jitter; transit dots and route lines retain their own styles.
+Desktop labels include native full-name/date tooltips; phone targets are 44 px
+and single-day taps navigate directly. Review overview, repeat stays, day
+focus, zoom and resize at desktop and 390 px, including an empty fresh draft.
+See [the design decision and sources](docs/LOCATION_LABELS.md).
+
 ## Start small, as a local draft
 
 Studio's **+ New trip** needs only a title and start/end dates. It creates every

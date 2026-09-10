@@ -78,10 +78,13 @@ project-level status.
       distinguishable at overview and close-up scales. Use redundant color plus
       dash/width/casing/symbol cues, retain selected-route emphasis, place lines
       below labels, and test color-vision/low-contrast conditions.
-- [x] **T05 — Stop day dots covering labels.** Removed map day-number bubbles
-      and their connector lines at the owner's request. Day selection stays in
-      the journal and day navigation. Train-leg endpoints remain large orange
-      dots; intermediate stops have small orange centers with white rims.
+- [x] **T05 — Stop day dots covering labels.** Destination/day labels restored
+      after the owner's subsequent request, using measured route/control
+      collision avoidance, compact/culling fallback and explicit repeat-stay
+      choices. Ivory/teal chips keep transit colors distinct; mobile targets
+      are 44 px. Basemap text avoidance remains best effort (glyph bounds are
+      unavailable to DOM controls); see `docs/LOCATION_LABELS.md`. Train-leg
+      endpoints and intermediate stop styling remain intact.
 - [x] **T06 — Evaluate a terrain-readable basemap.** Prototype OpenTopoMap first,
       then compare a restrained vector/topographic option if necessary. Water,
       land, forest, and mountain terrain should be visually legible with better
