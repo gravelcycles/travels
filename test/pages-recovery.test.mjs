@@ -73,6 +73,12 @@ test('missing deployments and permanent content errors do not trigger a retry', 
   assert.deepEqual(f.cancelled, []); assert.deepEqual(f.waits, []);
 });
 
+test('an empty HTTP 200 status is not evidence of a deployment to cancel', async () => {
+  const f = fixture({ runs: [run(9, 'missing')], statuses: { current: '', missing: '' } });
+  assert.equal(await recoverPages(f.options), false);
+  assert.deepEqual(f.cancelled, []); assert.deepEqual(f.waits, []);
+});
+
 test('API permission and cancellation failures stay visible', async () => {
   const denied = Object.assign(new Error('forbidden'), { status: 403 });
   const read = fixture({ statuses: { current: denied } });

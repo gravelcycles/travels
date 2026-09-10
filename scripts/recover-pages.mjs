@@ -1,7 +1,7 @@
 // Used only after deploy-pages fails, while the workflow holds the pages lock.
 // Actions completion and Pages cancellation are separate asynchronous states.
 const recoverable = new Set([
-  '', 'unknown_status', 'deployment_queued', 'deployment_in_progress',
+  'deployment_queued', 'deployment_in_progress',
   'updating_pages', 'deployment_attempt_error', 'deployment_cancelled', 'deployment_lost'
 ]);
 const terminal = new Set([
@@ -45,8 +45,10 @@ export async function recoverPages({ github, context, log = console.log, sleep =
       continue;
     }
     const status = await getStatus(sha);
-    if (!recoverable.has(status)) continue; // Includes successful releases and invalid artifacts.
-    log(`Clearing Pages deployment ${sha} left by a failed attempt (${status || 'empty status'}).`);
+    // Pages also returns an empty status with HTTP 200 for a nonexistent SHA.
+    // Only explicit deployment states prove there is something safe to cancel.
+    if (!recoverable.has(status)) continue; // Includes absent, successful and invalid-artifact releases.
+    log(`Clearing Pages deployment ${sha} left by a failed attempt (${status}).`);
     // Reissue cancellation even if Pages says cancelled: the backend lock can lag behind that status.
     await github.request('POST /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel', {
       ...repo, pages_deployment_id: sha
@@ -54,7 +56,7 @@ export async function recoverPages({ github, context, log = console.log, sleep =
     let settled = false;
     for (let attempt = 0; attempt < 6; attempt++) {
       const next = await getStatus(sha);
-      if (next === null || terminal.has(next)) { settled = true; break; }
+      if (next === null || next === '' || terminal.has(next)) { settled = true; break; }
       await sleep(5000);
     }
     if (!settled) throw new Error(`Pages deployment ${sha} did not settle after cancellation; retry later when GitHub releases it.`);
