@@ -178,7 +178,7 @@ rail stops at desktop and phone sizes after changing routes. Intermediate rail
 stops have small 5 px orange centers and 2 px white rims (9 px total). The orange
 sits inside the selected blue line; the white rims overlap the route's white
 casing and remain visible over the blue line. Both endpoints of every train
-leg retain their 10 px dots, 2 px white borders and orange outer rings, including
+leg use larger 12 px dots, 2 px white borders and orange outer rings, including
 transfer stations and turnaround points. Shared endpoints combine at the same
 location and retain their endpoint style if another leg
 also lists that station as an intermediate stop. Intermediate display dots snap
