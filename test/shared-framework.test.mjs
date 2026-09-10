@@ -44,10 +44,17 @@ test('one template supplies every control and asset to real trips, all samples, 
   buildSite(root);
   const reference = read(root, 'dist/switzerland-italy.html');
   assert.equal(ids(reference).length, new Set(ids(reference)).size, 'No duplicate control IDs');
-  for (const id of ['mobile-photo-back', 'mobile-photo-close', 'mobile-photo-location', 'mobile-grid-back', 'mobile-grid-close', 'mobile-replay-back', 'replay-view-map', 'replay-view-photos']) {
+  for (const id of ['mobile-photo-back', 'mobile-photo-location', 'mobile-grid-back', 'mobile-replay-back', 'replay-view-map', 'replay-view-photos']) {
     assert.ok(ids(reference).includes(id), `Shared mobile control ${id} exists`);
     assert.match(reference, new RegExp(`<button[^>]*id="${id}"[^>]*>\\s*<svg[^>]*aria-hidden="true"`), `${id} uses a drawn icon with an accessible button label`);
   }
+  for (const removed of ['mobile-menu', 'mobile-menu-open', 'mobile-photo-close', 'mobile-photo-zoom', 'mobile-grid-close']) {
+    assert.ok(!ids(reference).includes(removed), `Redundant mobile control ${removed} stays absent`);
+  }
+  assert.match(reference, /id="mobile-day-picker"[^>]*aria-controls="mobile-journey-panel"[^>]*aria-expanded="false"/);
+  const actions = reference.match(/<nav id="mobile-journey-actions"[\s\S]*?<\/nav>/)?.[0];
+  for (const action of ['overview', 'photos', 'replay', 'unlock', 'about']) assert.ok(actions?.includes(`data-journey-action="${action}"`), `${action} remains accessible in the day picker`);
+  assert.ok(ids(reference).includes('mobile-story-legend'), 'Route key remains available in day details');
   for (const journey of data.journeys) {
     const preview = renderJourneyPage(root, journey, { preview: true });
     assert.deepEqual(ids(preview), ids(reference), journey.id);

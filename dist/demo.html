@@ -22,7 +22,7 @@
       href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
     />
     <link rel="stylesheet" href="./assets/styles.css?v=d83c0d906ca0" />
-    <link rel="stylesheet" href="./assets/mobile.css?v=549f5b31b072" />
+    <link rel="stylesheet" href="./assets/mobile.css?v=f478f43f37f5" />
   </head>
   <body data-journey-scope="demo" data-journey-id="alpine-crossing">
     <header class="site-header">
@@ -39,14 +39,13 @@
     </header>
 
     <header class="mobile-header" aria-label="Mobile journey navigation">
-      <button id="mobile-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">All days</span></button>
+      <button id="mobile-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Day map</span></button>
       <a href="./" class="mobile-brand">Journey Atlas</a>
-      <button id="mobile-menu-open" type="button" aria-label="Journey menu"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></button>
     </header>
 
     <section id="trip-intro" class="trip-intro" aria-label="Journey introduction" hidden></section>
     <main class="atlas-shell" data-mobile-tab="map">
-      <aside class="route-panel" aria-label="Journey days">
+      <aside class="route-panel" id="mobile-journey-panel" aria-label="Journey days">
         <div class="panel-intro">
           <span class="panel-label">THE JOURNEY</span>
           <h2 class="journey-name" id="journey-name"></h2>
@@ -62,6 +61,14 @@
           <small id="day-count"></small>
         </div>
         <div class="day-list" id="day-list"></div>
+        <nav id="mobile-journey-actions" class="mobile-journey-actions" aria-label="Explore the journey">
+          <button data-journey-action="overview" type="button">Whole trip map</button>
+          <button data-journey-action="photos" type="button">All photos</button>
+          <button data-journey-action="replay" type="button">Relive the trip</button>
+          <button data-journey-action="unlock" type="button">Unlock photos</button>
+          <button data-journey-action="about" type="button">About this atlas</button>
+          <a href="./">All journeys</a>
+        </nav>
       </aside>
 
       <section class="map-panel" aria-label="Interactive journey map">
@@ -102,6 +109,7 @@
 
       <aside class="story-panel" aria-label="Journey details">
         <div class="mobile-story-heading"><span id="mobile-story-date"></span><h2 id="mobile-story-title"></h2><p id="mobile-story-meta"></p></div>
+        <div id="mobile-story-legend" class="mobile-story-legend" aria-label="Route key"></div>
         <div class="mobile-story-map"><div id="story-map-preview" aria-label="Preview of this day's route"></div><button id="mobile-story-expand" type="button">Expand map ↗</button></div>
         <div class="story-album-entry">
         <div class="story-media" id="story-media"></div>
@@ -120,19 +128,9 @@
 
     <nav class="mobile-nav" aria-label="Change journey day">
       <button id="mobile-previous-day" type="button" aria-label="Previous day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg></button>
-      <button id="mobile-day-picker" type="button"><span class="button-label">Choose a day</span><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
+      <button id="mobile-day-picker" type="button" aria-controls="mobile-journey-panel" aria-expanded="false"><span class="button-label">Choose a day</span><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
       <button id="mobile-next-day" type="button" aria-label="Next day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button>
     </nav>
-    <dialog id="mobile-menu" class="mobile-menu" aria-labelledby="mobile-menu-title">
-      <div><h2 id="mobile-menu-title">The journey</h2><button data-mobile-menu="close" type="button" aria-label="Close journey menu"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
-      <button data-mobile-menu="days" type="button">Choose a day</button>
-      <button data-mobile-menu="overview" type="button">Whole trip map</button>
-      <button data-mobile-menu="photos" type="button">All photos</button>
-      <button data-mobile-menu="unlock" type="button">Unlock photos</button>
-      <button data-mobile-menu="replay" type="button">Relive the trip</button>
-      <button data-mobile-menu="about" type="button">About this atlas</button>
-      <a href="./">All journeys</a>
-    </dialog>
 
     <dialog class="notes-dialog" id="notes-dialog">
       <form method="dialog" class="dialog-card">
@@ -168,7 +166,7 @@
     <dialog id="album-dialog" class="album-dialog" aria-labelledby="album-title"><div class="album-heading"><h2 id="album-title">All photographs</h2><button id="close-album" type="button" aria-label="Close album overview"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div id="album-days"></div></dialog>
     <dialog class="photo-dialog" id="photo-dialog" aria-label="Journey photos by day">
       <div class="photo-viewer">
-        <header class="mobile-photo-header"><button id="mobile-photo-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Day</span></button><span id="mobile-photo-count" aria-live="polite"></span><button id="mobile-photo-zoom" type="button" aria-label="Zoom into photo"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5M7.5 10.5h6m-3-3v6"/></svg></button><button id="mobile-photo-grid" type="button" aria-label="Show this day's photo grid"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6" height="6" rx="1.3"/><rect x="14" y="4" width="6" height="6" rx="1.3"/><rect x="4" y="14" width="6" height="6" rx="1.3"/><rect x="14" y="14" width="6" height="6" rx="1.3"/></svg></button><button id="mobile-photo-close" type="button" aria-label="Close photos and return to day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header>
+        <header class="mobile-photo-header"><button id="mobile-photo-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Day</span></button><span id="mobile-photo-count" aria-live="polite"></span><button id="mobile-photo-grid" type="button" aria-label="Show this day's photo grid"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6" height="6" rx="1.3"/><rect x="14" y="4" width="6" height="6" rx="1.3"/><rect x="4" y="14" width="6" height="6" rx="1.3"/><rect x="14" y="14" width="6" height="6" rx="1.3"/></svg></button></header>
 
         <button class="photo-close" aria-label="Close photo viewer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
         <section class="photo-stage" aria-live="polite">
@@ -197,7 +195,7 @@
           </div>
           </div>
           <button id="album-continue" class="album-continue" type="button" hidden></button>
-          <header class="mobile-grid-heading"><button id="mobile-grid-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Day</span></button><strong id="mobile-grid-title"></strong><button id="mobile-grid-close" type="button" aria-label="Close photos and return to day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header>
+          <header class="mobile-grid-heading"><button id="mobile-grid-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Day</span></button><strong id="mobile-grid-title"></strong></header>
           <div class="viewer-filmstrip" id="viewer-filmstrip" aria-label="Photos from this day"></div>
         </aside>
         <footer class="mobile-photo-footer"><time id="mobile-photo-time"></time><div><button id="mobile-photo-prev" type="button" aria-label="Previous photo"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg></button><button id="mobile-photo-location" type="button" aria-controls="photo-location-panel" aria-expanded="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 10c0 5-6 10-6 10S6 15 6 10a6 6 0 1 1 12 0Z"/><circle cx="12" cy="10" r="2"/></svg><span class="location-hint">Photo location</span><svg class="ui-icon location-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button><button id="mobile-photo-next" type="button" aria-label="Next photo"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button></div></footer>
@@ -265,7 +263,7 @@
     <script src="./assets/photo-service.js?v=7cf17f81b44e"></script>
     <script src="./assets/photo-auth.js?v=43f650853672"></script>
     <script src="./assets/atlas-utils.js?v=f5875fb09b6d"></script>
-    <script src="./assets/mobile-ux.js?v=e417d8f2e1ee"></script>
+    <script src="./assets/mobile-ux.js?v=b4c7e4aa408d"></script>
     <script src="./assets/app.js?v=5f55254fc394"></script>
   </body>
 </html>

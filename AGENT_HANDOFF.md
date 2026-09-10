@@ -1,5 +1,15 @@
 # Next-agent handoff
 
+## Mobile cleanup — 10 September 2026
+
+Day maps use a compact summary and bottom Day picker, with journey actions in
+that picker and the route key in Day details. The top menu, duplicate All days
+link, photo zoom icon and photo/grid close icons are removed. Day N returns to
+the map; pinch/double-tap still zoom photos. Location opens only from its
+button/handle, and location/grid changes share one viewer history entry so
+photo changes cannot restore a closed panel. Browser Back exits to the day map.
+See JOURNEY_WORKFLOW.md for the current mobile review contract.
+
 ## Shared framework contract — 10 September 2026
 
 Start with [docs/FRAMEWORK.md](docs/FRAMEWORK.md),
