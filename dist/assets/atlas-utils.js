@@ -156,5 +156,76 @@
     return requests;
   }
 
-  root.JOURNEY_ATLAS_UTILS = { addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoMapTransition };
+  // Presentation is independent of fetching/decoding, so cached photos reveal too.
+  function createImageReveals(env = root) {
+    const media = env.matchMedia('(min-width: 901px) and (prefers-reduced-motion: no-preference)');
+    const records = new Map();
+    const observer = env.IntersectionObserver ? new env.IntersectionObserver(entries => {
+      for (const entry of entries) {
+        const record = records.get(entry.target);
+        if (!record) continue;
+        record.visible = entry.isIntersecting;
+        if (record.visible) reveal(record);
+        else resetRecord(record);
+      }
+    }) : null;
+    function resetRecord(record) {
+      record.animation?.cancel();
+      record.animation = null;
+      record.source = '';
+    }
+    function reveal(record) {
+      const image = record.image;
+      const ready = image.complete && image.naturalWidth > 0 && image.getAttribute('src')
+        && !image.dataset.src
+        && (!image.dataset.privateSrc || image.dataset.photoState === 'ready')
+        && (!image.dataset.photoState || image.dataset.photoState === 'ready')
+        && (!image.classList.contains('progressive-image') || image.classList.contains('is-loaded'));
+      if (!ready) { resetRecord(record); return; }
+      if (!media.matches || !record.visible || !image.isConnected || !image.getClientRects().length || !image.animate) return;
+      const source = image.currentSrc || image.src;
+      if (record.source === source) return;
+      resetRecord(record);
+      record.source = source;
+      // A new animation always starts, even when ready/loading changes share a paint.
+      const animation = image.animate([
+        { opacity: 0, filter: 'blur(16px)' },
+        { opacity: 1, filter: 'blur(0px)' }
+      ], { duration: 650, easing: 'ease' });
+      record.animation = animation;
+      animation.onfinish = () => { if (record.animation === animation) record.animation = null; };
+    }
+    function watch(image) {
+      if (records.has(image)) return records.get(image);
+      const record = { image, visible: !observer, source: '', animation: null };
+      // Wait for the loader's other load handlers to mark progressive images ready.
+      record.loaded = () => env.queueMicrotask(() => { if (records.get(image) === record) reveal(record); });
+      for (const event of ['load', 'error', 'atlas-photo-state']) image.addEventListener(event, record.loaded);
+      records.set(image, record);
+      observer?.observe(image);
+      return record;
+    }
+    function prepare(container) {
+      for (const [image, record] of records) if (!image.isConnected) {
+        resetRecord(record);
+        observer?.unobserve(image);
+        for (const event of ['load', 'error', 'atlas-photo-state']) image.removeEventListener(event, record.loaded);
+        records.delete(image);
+      }
+      for (const image of container.querySelectorAll('img')) reveal(watch(image));
+    }
+    function reset(image) { resetRecord(watch(image)); }
+    media.addEventListener('change', () => {
+      for (const record of records.values()) {
+        if (media.matches) reveal(record);
+        else resetRecord(record);
+      }
+    });
+    return { prepare, reset };
+  }
+  let imageReveals;
+  function prepareImageReveals(container) { (imageReveals ||= createImageReveals()).prepare(container); }
+  function resetImageReveal(image) { (imageReveals ||= createImageReveals()).reset(image); }
+
+  root.JOURNEY_ATLAS_UTILS = { createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

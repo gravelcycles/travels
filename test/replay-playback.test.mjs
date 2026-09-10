@@ -36,7 +36,7 @@ test('Replay time advances independently of photo readiness',()=>{
  vm.runInContext(fn('replayTick')+'\nreplayTick(150)',context);
  assert.equal(context.replayElapsed,100);assert.equal(context.replayFrame,1);
 });
-test('public photo decoding cannot reveal an abandoned selection and cached revisits skip animation',async()=>{
+test('public photo decoding cannot reveal an abandoned selection and cached revisits stay immediately ready',async()=>{
  const image=Object.assign(new EventTarget(),{dataset:{},src:'',complete:false,naturalWidth:0,classList:{add(){}}}),decodes=[];
  image.decode=()=>new Promise(resolve=>decodes.push(resolve));
  const context=vm.createContext({image,URL,Event,decodedPhotoUrls:new Set(),document:{baseURI:'https://example.com/'},window:{},preferredPhotoUrl:photo=>photo.src});
