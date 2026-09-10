@@ -1,5 +1,13 @@
 # Changelog
 
+## 10 September 2026 — center photos in the full viewer area
+
+- Give the image and its blurred preview the full available height, with equal
+  space above and below and the whole photograph fitted without cropping.
+- Float the caption and date at the bottom so metadata and empty captions no
+  longer shift the image upward, including on small screens.
+- Verified equal vertical spacing in the browser and built the production site.
+
 ## 9 September 2026 — warm day thumbnails and album covers
 
 - Prepare the next two nonempty days’ thumbnail strips, interleaved in reviewed
