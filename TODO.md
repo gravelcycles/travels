@@ -70,11 +70,10 @@ project-level status.
       distinguishable at overview and close-up scales. Use redundant color plus
       dash/width/casing/symbol cues, retain selected-route emphasis, place lines
       below labels, and test color-vision/low-contrast conditions.
-- [x] **T05 — Stop day dots covering labels.** Treat day markers and basemap
-      place labels as a collision problem. Test smaller/offset/leader-line or
-      zoom-dependent markers and avoid pinning DOM markers directly over named
-      places. Acceptance: Zürich, Luzern, Como, Lugano, Bellagio, and other key
-      labels remain readable in journey and day views on desktop/mobile.
+- [x] **T05 — Stop day dots covering labels.** Removed map day-number bubbles
+      and their connector lines at the owner's request. Day selection stays in
+      the journal and day navigation. Train-leg endpoints remain large orange
+      dots; intermediate stops have small orange centers with white rims.
 - [x] **T06 — Evaluate a terrain-readable basemap.** Prototype OpenTopoMap first,
       then compare a restrained vector/topographic option if necessary. Water,
       land, forest, and mountain terrain should be visually legible with better

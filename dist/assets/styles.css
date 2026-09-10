@@ -160,11 +160,6 @@ button { color: inherit; }
 .day-navigator button { border: 0; background: transparent; font-size: 1.15rem; font-weight: 850; cursor: pointer; }
 .day-navigator button:hover:not(:disabled) { background: var(--ink); color: #fff; }
 .day-navigator button:disabled { color: #a8b2af; cursor: not-allowed; }
-.day-marker-anchor { width: 1px; height: 1px; position: relative; pointer-events: none; }
-.day-marker-anchor::before { content: ""; position: absolute; z-index: 0; left: 0; top: -1px; width: var(--leader-length, 22px); height: 2px; background: rgba(21, 50, 56, .72); box-shadow: 0 0 0 1px rgba(255,255,255,.75); transform: rotate(var(--leader-angle, 90deg)); transform-origin: 0 50%; }
-.day-marker { min-width: 32px; height: 32px; padding: 0 6px; position: absolute; z-index: 1; left: 0; top: 0; transform: translate(-50%, -50%); display: grid; place-items: center; border-radius: 16px; background: #fbfaf6; border: 2px solid var(--ink); color: var(--ink); font-size: 0.62rem; font-weight: 900; box-shadow: 0 4px 13px rgba(20, 48, 53, 0.27); cursor: pointer; pointer-events: auto; white-space: nowrap; }
-.day-marker-anchor.compact .day-marker { min-width: 28px; height: 28px; padding-inline: 5px; border-radius: 14px; font-size: .57rem; }
-.day-marker.selected { background: var(--selected); border-color: #fff; color: #fff; box-shadow: 0 0 0 4px rgba(179, 95, 63, 0.22), 0 5px 15px rgba(20, 48, 53, 0.3); }
 .rail-stop-marker { width: 7.2px; height: 7.2px; border-radius: 50%; background: var(--selected); border: 1.6px solid #fff; box-shadow: none; cursor: help; }
 .rail-stop-marker.route-endpoint-marker { width: 10px; height: 10px; border-width: 2px; box-shadow: 0 0 0 1px var(--selected), 0 2px 5px rgba(20, 48, 53, 0.28); }
 
