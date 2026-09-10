@@ -7,7 +7,7 @@ import {renderJourneyPage} from '../scripts/build-site.mjs';
 import {loadContent} from '../scripts/journey-content.mjs';
 import {createJourney} from '../scripts/create-journey.mjs';
 const repo=path.resolve(import.meta.dirname,'..');
-const controls=['mobile-day-details','mobile-day-photos','mobile-day-picker','story-map-preview','mobile-photo-location','mobile-photo-grid','mobile-journey-actions','mobile-story-legend','photo-location-panel'];
+const controls=['mobile-open-replay','mobile-day-details','mobile-day-photos','mobile-day-picker','story-map-preview','mobile-photo-location','mobile-photo-grid','mobile-journey-actions','mobile-story-legend','photo-location-panel'];
 test('mobile controls and assets are shared by the real trip, demos and a newly created empty draft',t=>{
   const root=fs.mkdtempSync(path.join(os.tmpdir(),'atlas-mobile-contract-'));
   t.after(()=>fs.rmSync(root,{recursive:true,force:true}));
