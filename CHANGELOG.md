@@ -15,6 +15,23 @@
   staged cleanup and reusable agent prompts. Make the 99% shared-behavior
   principle a standing AGENTS.md rule.
 
+## 10 September 2026 — mobile day maps and immersive photos
+
+- Make each mobile day a map-led screen with a compact summary, Day details,
+  Photos, and persistent previous/day-picker/next navigation. Keep the whole
+  trip map, all photographs, Replay, and photo access in the journey menu.
+- Give Day details its own scrolling screen with a route preview, album entry,
+  and every travel leg. The desktop atlas keeps its existing layout.
+- Show one uncropped, full-width photo with sideways dragging, pinch and
+  double-tap zoom, bounded panning, and a day photo grid. Pull upward or tap
+  “Photo location” to reveal its map; pull down to return to the photograph.
+- Preserve the selected photo through grid/location navigation and browser
+  Back. Keep map gestures independent, offer an explicit next-day handoff,
+  respect reduced motion, and retain the private-photo loader for neighbors.
+- Validation: gesture direction, thresholds, album boundaries, cancelled and
+  stale swipes, nested navigation, zoom bounds, existing regression suite,
+  production build, and browser checks at phone and desktop sizes.
+
 ## 10 September 2026 — quiet photo access on fresh loads
 
 - Keep the session restoration panel hidden for fast checks in both signed-in
