@@ -387,6 +387,10 @@
     if (mainMap.getSource(sourceId)) mainMap.setFeatureState({ source: sourceId, id: segmentId }, { inspected });
   }
 
+  function routeHoverEnabled() {
+    return !window.matchMedia('(max-width: 900px)').matches && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  }
+
   function inspectSegment(segmentId, pinned = false) {
     const segment = segmentById(segmentId);
     const day = dayForSegment(segmentId);
@@ -507,6 +511,9 @@
       inspectSegment(segmentId, true);
     });
     mainMap.on("mousemove", (event) => {
+      // Revealing the map beneath a day-list tap can emit compatibility mouse
+      // events. Mobile route details require an intentional route tap.
+      if (!routeHoverEnabled()) return;
       const feature = routeFeatureAtPoint(event.point);
       mainMap.getCanvas().style.cursor = feature ? "pointer" : "";
       if (feature) inspectSegment(feature.properties.segmentId);
@@ -920,7 +927,7 @@
 
   function setActiveDay(id, focus) {
     if (!dayById(id)) return;
-    if (inspectedSegmentId && !dayById(id).segmentIds.includes(inspectedSegmentId)) clearSegmentInspection(true);
+    clearSegmentInspection(true);
     activeDayId = id;
     mapScope = "day";
     renderDays();
@@ -1632,6 +1639,7 @@
   });
 
   detailPanel.addEventListener("mouseover", (event) => {
+    if (!routeHoverEnabled()) return;
     const card = event.target.closest("[data-route-segment]");
     if (card && !routeInspectionPinned) inspectSegment(card.dataset.routeSegment);
   });
