@@ -202,7 +202,28 @@ test('reload validates tab access before loading photos and avoids the restorati
  authorize(Response.json({unlocked:true,expiresAt:saved.expiresAt}));await next.ready;await settle();
  assert.equal(next.auth.unlocked,true);assert.equal(next.navigations.length,0);assert.equal(next.dialog.open,false);assert.match(img.src,/^blob:/);
  assert.ok(!/lock/i.test(next.header.innerHTML.replace(/<[^>]*>/g,'')));
- next.auth.lock();assert.equal(next.tabStorage.size,0);
+ next.auth.lock();assert.equal(next.tabStorage.has('atlas-photo-access'),false);assert.equal(next.tabStorage.get('atlas-photo-guest'),'1');
+});
+test('known guests stay on the atlas on reload and same-tab navigation, with photos still gated',async()=>{
+ for(const kind of ['photoAuthMissing','photoAuthLogout','photoAuthCancel']){
+  const first=fixture(undefined,{startup:true});await first.ready;await first.returnFrom(kind);
+  const next=fixture(undefined,{startup:true,tabStorage:first.tabStorage});await next.ready;
+  const img=new Element();next.auth.setImage(img,photo);next.auth.preload(photo,1280);await settle();
+  assert.equal(next.navigations.length,0);assert.equal(next.dialog.open,false);assert.equal(next.auth.unlocked,false);
+  assert.equal(next.header.querySelector('[data-unlock]').hidden,false);assert.equal(next.calls.length,0);assert.equal(img.src,photo.blur);
+  // The guest preference never prevents the visitor from explicitly unlocking.
+  next.header.querySelector('[data-unlock]').dispatchEvent(new Event('click'));await waitForNavigation(next);
+  assert.equal(new URL(next.navigations[0]).searchParams.get('action'),'login');
+  await next.returnFrom('photoAuthCode');assert.equal(next.auth.unlocked,true);assert.equal(next.tabStorage.has('atlas-photo-guest'),false);
+ }
+});
+test('pending tab validation keeps the unlock control and password prompt hidden',async()=>{
+ let complete;const expiresAt=Math.floor(Date.now()/1000)+3600;
+ const tabStorage=new Map([['atlas-photo-access',JSON.stringify({token:'fixture-token',expiresAt})]]);
+ const f=fixture(()=>new Promise(resolve=>complete=resolve),{startup:true,tabStorage});await settle();
+ assert.equal(f.header.querySelector('[data-unlock]').hidden,true);assert.equal(f.dialog.open,false);
+ complete(Response.json({unlocked:true,expiresAt}));await f.ready;
+ assert.equal(f.header.querySelector('[data-unlock]').hidden,true);assert.equal(f.dialog.open,false);assert.equal(f.auth.unlocked,true);
 });
 test('revoked or invalid cached access cannot display private photos',async()=>{
  for(const expiresAt of [Math.floor(Date.now()/1000)+3600,Math.floor(Date.now()/1000)-1,Math.floor(Date.now()/1000)+30*86400]){
