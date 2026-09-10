@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
     <meta
       name="description"
@@ -22,6 +22,7 @@
       href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
     />
     <link rel="stylesheet" href="./assets/styles.css" />
+    <link rel="stylesheet" href="./assets/mobile.css" />
   </head>
   <body data-journey-id="{{id}}">
     <header class="site-header">
@@ -35,6 +36,12 @@
         <a class="header-link" href="./demo.html">Sample journeys</a>
         <button class="plain-button" id="open-notes" type="button">About this atlas</button>
       </div>
+    </header>
+
+    <header class="mobile-header" aria-label="Mobile journey navigation">
+      <button id="mobile-back" type="button">‹ <span>All days</span></button>
+      <a href="./" class="mobile-brand">Journey Atlas</a>
+      <button id="mobile-menu-open" type="button" aria-label="Journey menu">•••</button>
     </header>
 
     <section id="trip-intro" class="trip-intro" aria-label="Journey introduction" hidden></section>
@@ -86,11 +93,20 @@
           <button id="return-to-journal" class="return-to-journal" type="button">Back to Journal</button>
         </aside>
         <div class="map-status" id="map-status" hidden></div>
+        <section class="mobile-day-summary" aria-label="Selected day">
+          <span id="mobile-day-date"></span><h2 id="mobile-day-title"></h2><p id="mobile-day-meta"></p>
+          <div><button id="mobile-day-details" type="button">Day details</button><button id="mobile-day-photos" type="button">Photos</button></div>
+        </section>
+
       </section>
 
       <aside class="story-panel" aria-label="Journey details">
+        <div class="mobile-story-heading"><span id="mobile-story-date"></span><h2 id="mobile-story-title"></h2><p id="mobile-story-meta"></p></div>
+        <div class="mobile-story-map"><div id="story-map-preview" aria-label="Preview of this day's route"></div><button id="mobile-story-expand" type="button">Expand map ↗</button></div>
+        <div class="story-album-entry">
         <div class="story-media" id="story-media"></div>
         <button type="button" class="story-photo-action" id="story-view-photos" hidden></button>
+        </div>
         <div class="story-detail" id="story-detail"></div>
         <div class="photo-section">
           <div class="photo-heading">
@@ -102,11 +118,21 @@
       </aside>
     </main>
 
-    <nav class="mobile-nav" aria-label="Journey views">
-      <button data-tab="route" type="button">Days</button>
-      <button data-tab="map" class="active" type="button">Map</button>
-      <button data-tab="story" type="button">Journal</button>
+    <nav class="mobile-nav" aria-label="Change journey day">
+      <button id="mobile-previous-day" type="button" aria-label="Previous day">←</button>
+      <button id="mobile-day-picker" type="button">Choose a day ⌄</button>
+      <button id="mobile-next-day" type="button" aria-label="Next day">→</button>
     </nav>
+    <dialog id="mobile-menu" class="mobile-menu" aria-labelledby="mobile-menu-title">
+      <div><h2 id="mobile-menu-title">The journey</h2><button data-mobile-menu="close" type="button" aria-label="Close journey menu">×</button></div>
+      <button data-mobile-menu="days" type="button">Choose a day</button>
+      <button data-mobile-menu="overview" type="button">Whole trip map</button>
+      <button data-mobile-menu="photos" type="button">All photos</button>
+      <button data-mobile-menu="unlock" type="button">Unlock photos</button>
+      <button data-mobile-menu="replay" type="button">Relive the trip</button>
+      <button data-mobile-menu="about" type="button">About this atlas</button>
+      <a href="./">All journeys</a>
+    </dialog>
 
     <dialog class="notes-dialog" id="notes-dialog">
       <form method="dialog" class="dialog-card">
@@ -142,6 +168,8 @@
     <dialog id="album-dialog" class="album-dialog" aria-labelledby="album-title"><div class="album-heading"><h2 id="album-title">All photographs</h2><button id="close-album" type="button" aria-label="Close album overview">×</button></div><div id="album-days"></div></dialog>
     <dialog class="photo-dialog" id="photo-dialog" aria-label="Journey photos by day">
       <div class="photo-viewer">
+        <header class="mobile-photo-header"><button id="mobile-photo-back" type="button">‹ <span>Day</span></button><span id="mobile-photo-count" aria-live="polite"></span><button id="mobile-photo-zoom" type="button" aria-label="Zoom into photo">＋</button><button id="mobile-photo-grid" type="button" aria-label="Show this day's photo grid">▦</button></header>
+
         <button class="photo-close" aria-label="Close photo viewer">×</button>
         <section class="photo-stage" aria-live="polite">
           <button class="photo-nav photo-prev" type="button" aria-label="Previous photo">‹</button>
@@ -153,6 +181,7 @@
           <button class="photo-nav photo-next" type="button" aria-label="Next photo">›</button>
         </section>
         <aside class="photo-context">
+          <div id="photo-location-panel" class="photo-location-panel"><header class="photo-location-heading"><div><strong id="photo-location-title">Photo location</strong><small id="photo-location-subtitle"></small></div><button id="mobile-location-close" type="button" aria-label="Close photo location">×</button></header>
           <div id="photo-map" aria-label="Map following the current photo"></div>
           <div class="photo-context-copy">
             <div class="viewer-day-nav">
@@ -166,9 +195,13 @@
             <p class="modal-location" id="modal-location"></p>
             <p class="modal-description" id="modal-description"></p>
           </div>
+          </div>
           <button id="album-continue" class="album-continue" type="button" hidden></button>
+          <header class="mobile-grid-heading"><button id="mobile-grid-back" type="button">‹ Photo</button><strong id="mobile-grid-title"></strong><button id="mobile-grid-close" type="button" aria-label="Close photo album">×</button></header>
           <div class="viewer-filmstrip" id="viewer-filmstrip" aria-label="Photos from this day"></div>
         </aside>
+        <footer class="mobile-photo-footer"><time id="mobile-photo-time"></time><div><button id="mobile-photo-prev" type="button" aria-label="Previous photo">←</button><button id="mobile-photo-location" type="button" aria-controls="photo-location-panel" aria-expanded="false"><span aria-hidden="true">⌄</span> <span class="location-hint">Photo location</span> <span aria-hidden="true">⌄</span></button><button id="mobile-photo-next" type="button" aria-label="Next photo">→</button></div></footer>
+        <button id="mobile-photo-restore" type="button" aria-label="Show photo controls">⌃</button>
       </div>
     </dialog>
 
@@ -231,6 +264,7 @@
     <script src="./assets/photo-service.js"></script>
     <script src="./assets/photo-auth.js"></script>
     <script src="./assets/atlas-utils.js"></script>
+    <script src="./assets/mobile-ux.js"></script>
     <script src="./assets/app.js"></script>
   </body>
 </html>

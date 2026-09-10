@@ -71,6 +71,7 @@ password system.
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |
 | `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching |
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |
+| `dist/assets/mobile-ux.js`, `dist/assets/mobile.css` | Shared mobile day navigation, immersive photo gestures, location panel, grid and Back behavior |
 | `studio/` | Local authoring UI for any selected journey |
 | `scripts/journey-content.mjs`, `journey-planner.mjs`, `create-journey.mjs` | Loading, validation, planner rules, fresh-trip creation |
 | `scripts/build-site.mjs` | Public builds and local preview page/data generation |
@@ -123,6 +124,10 @@ versus map rendering.
   choices and automatic/curated Replay through data, then build a public page.
 - Shared introduction behavior with/without photos and direct day/photo entry.
 - No literal known trip IDs/URLs in shared browser code or page templates.
+
+The concurrent mobile release was integrated before delivery; its controls and
+assets are inherited through this same template, with mobile gesture/page
+contract tests included in the release checks.
 
 Existing tests cover routing/GPX, planner preservation, photo auth/load/cache,
 viewer camera, Replay camera/timing, mobile day navigation and Studio editing.

@@ -144,7 +144,7 @@ test('the same introduction opens for real trips, samples and empty drafts; deep
 
 test('shared browser code and HTML templates contain no concrete trip IDs or URLs', () => {
   const { data } = loadContent(repo);
-  for (const filename of ['dist/assets/app.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'studio/studio.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
+  for (const filename of ['dist/assets/app.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'studio/studio.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
     const source = read(repo, filename);
     for (const journey of data.journeys) {
       assert.ok(!source.includes(journey.id), `${filename} must express ${journey.id} behavior through data`);
