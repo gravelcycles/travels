@@ -82,11 +82,9 @@ thumbnail opens the full photograph; both Back and Close return to that day’s
 map. Controls stay visible when the photo is tapped. Swipe sideways for the
 next/previous photo, double-tap or pinch to zoom, and drag upward or tap Photo
 location to reveal its map. Hide location collapses it without leaving the
-photo. Verify a quick hide-then-swipe keeps location closed. Replay has separate
-Map/Photos views with fixed playback controls; moments without a photo use Map.
-Replay's mobile photo lives outside the scrolling story panel. Check that the
-image remains visible when switching media, stepping chapters, reopening Replay,
-scrolling the story, and rotating in Safari/WebKit as well as Chromium.
+photo. Verify a quick hide-then-swipe keeps location closed. Replay shows the
+route map and day story with fixed playback controls. It has no photo viewer,
+image preloads or photo pauses; browse photographs through the day albums.
 Check the affected flow on a demo and a fresh draft as well as the real trip.
 
 `--publish` uses Wrangler's owner authorization to upload to private R2. It

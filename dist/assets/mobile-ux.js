@@ -23,7 +23,7 @@
     let reveal = 0, locationHeight = 300, scale = 1, panX = 0, panY = 0;
     let gesture = null, pointers = new Map(), pinch = null, suppressClick = false;
     let locationTimer, swipeTimer, swipeFrame;
-    let replayView = 'map', replayState = null;
+    let replayState = null;
     let restoring = false, previousState = null, lastTap = null, viewerDepth = 0, fromAlbum = false, exitingToDay = false;
     const neighbors = [-1, 1].map(delta => {
       const node = document.createElement('img'); node.className = 'mobile-photo-neighbor'; node.alt = ''; node.setAttribute('aria-hidden', 'true'); node.draggable = false;
@@ -53,47 +53,25 @@
       if (push) { save(); history.pushState({...history.state}, '', location.href); }
       api.tab(tab); save();
     }
-    function placeReplayPhoto() {
-      // Keep the mobile image out of the scrolling story's clipping and
-      // compositing layers. Move the same image back into the desktop card.
-      const host = $(enabled() ? '#replay-photo-stage' : '#replay-photo-slot');
-      const frame = $('#replay-photo-frame');
-      if (frame.parentElement !== host) host.append(frame);
-    }
     function measureReplay() {
       const player = $('.replay-player');
       if (!enabled() || !$('#replay-dialog').open) return;
       player.style.setProperty('--replay-controls-height', `${$('.replay-controls').offsetHeight}px`);
       player.style.setProperty('--replay-story-height', `${$('.replay-story').offsetHeight}px`);
     }
-    function setReplayView(value) {
-      replayView = value === 'photos' && !$('#replay-photo-frame').hidden ? 'photos' : 'map';
-      $('.replay-player').dataset.replayView = replayView;
-      $('#replay-view-map').setAttribute('aria-pressed', String(replayView === 'map'));
-      $('#replay-view-photos').setAttribute('aria-pressed', String(replayView === 'photos'));
-      $('#replay-map').inert = enabled() && replayView === 'photos';
-      $('#replay-map').setAttribute('aria-hidden', String(enabled() && replayView === 'photos'));
-      measureReplay();
-      if (replayView === 'map') requestAnimationFrame(() => api.replayMap?.());
-    }
     function replayControlsChanged({playing, completed, day}) {
       replayState = {playing, completed, day};
-      $('#replay-view-photos').disabled = $('#replay-photo-frame').hidden;
       $('#replay-explore-day').textContent = `Explore Day ${day.number}`;
-      if (replayView === 'photos' && $('#replay-photo-frame').hidden) setReplayView('map');
       if (enabled()) {
         const symbol = playing ? '<path d="M8 5v14M16 5v14" stroke-width="4"/>' : completed ? '<path d="M5 8a8 8 0 1 1-1 8M5 3v5h5"/>' : '<path d="m9 5 11 7-11 7Z" fill="currentColor" stroke="none"/>';
         $('#replay-toggle').innerHTML = `<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false">${symbol}</svg>`;
       } else $('#replay-toggle').textContent = playing ? 'Pause' : completed ? 'Replay' : 'Play';
       measureReplay();
     }
-    $('#replay-view-map').onclick = () => setReplayView('map');
-    $('#replay-view-photos').onclick = () => setReplayView('photos');
     $('#mobile-replay-back').onclick = () => $('#replay-dialog').close();
     const replayLayoutObserver = new ResizeObserver(measureReplay);
     replayLayoutObserver.observe($('.replay-controls')); replayLayoutObserver.observe($('.replay-story'));
-    new ResizeObserver(() => { if (enabled() && replayView === 'map' && $('#replay-dialog').open) api.replayMap?.(); }).observe($('#replay-map'));
-    placeReplayPhoto();
+    new ResizeObserver(() => { if (enabled() && $('#replay-dialog').open) api.replayMap?.(); }).observe($('#replay-map'));
     function renderDay() {
       const day = api.day(), info = api.dayInfo(day), index = api.days().findIndex(d => d.id === day.id);
       for (const prefix of ['mobile-day', 'mobile-story']) {
@@ -357,13 +335,12 @@
         }
         update(current);
       }
-      placeReplayPhoto();setReplayView(replayView);if(replayState)replayControlsChanged(replayState);
       renderDay();save();
     });
     window.addEventListener('resize',()=>{measure();measureReplay();});
     new ResizeObserver(()=>{ $('.map-panel').style.setProperty('--day-summary-height',`${$('.mobile-day-summary').offsetHeight}px`); }).observe($('.mobile-day-summary'));
     save();
-    return {enabled,renderDay,tabChanged,update,open,closed,openGrid,exitToDay,replayControlsChanged,replayMapVisible:()=>!enabled()||replayView==='map',locationVisible:()=>locationOpen,
+    return {enabled,renderDay,tabChanged,update,open,closed,openGrid,exitToDay,replayControlsChanged,locationVisible:()=>locationOpen,
       fromAlbum:()=>{fromAlbum=true;},selectedDay:()=>navigate('map'),gridSelected:()=>{if(grid)setGrid(false);}, keyTarget:event=>enabled()&&(grid||event.target.closest('#photo-map'))};
   }
   const exported = {gestureAxis,swipeStep,panLimit,create};
