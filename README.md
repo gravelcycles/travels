@@ -235,6 +235,14 @@ The workflow in `.github/workflows/journey-atlas-pages.yml` deploys `dist/`
 whenever `main` changes. In GitHub, set **Settings → Pages → Build and
 deployment → Source** to **GitHub Actions**.
 
+The workflow serializes releases without interrupting an active deployment.
+If Pages fails, it checks this workflow's latest 100 runs for older failed
+attempts and checks the current failed attempt. It cancels orphaned Pages jobs,
+waits for cancellation and a 30-second lock-release delay, then retries once
+using the same validated artifact. Successful and other live releases are
+preserved. Permission/content errors remain failures; a failed retry is cleaned
+up and the workflow stays red. See [the recovery runbook](docs/DEPLOYMENT.md).
+
 The project uses only relative browser paths, so its expected URL is:
 
 `https://gravelcycles.github.io/travels/`

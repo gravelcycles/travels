@@ -40,12 +40,56 @@ jobs:
           path: ./dist
 
   deploy:
+    timeout-minutes: 25
+    permissions:
+      actions: read
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.retry.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Check out deployment recovery helper
+        uses: actions/checkout@v4
+
       - name: Deploy to GitHub Pages
         id: deployment
+        continue-on-error: true
         uses: actions/deploy-pages@v4
+
+      - name: Clear orphaned Pages deployments after failure
+        id: recovery
+        if: ${{ !cancelled() && steps.deployment.outcome == 'failure' }}
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { recoverPages } = await import(`${process.env.GITHUB_WORKSPACE}/scripts/recover-pages.mjs`);
+            return await recoverPages({ github, context, log: core.info });
+
+      - name: Retry GitHub Pages once after recovery
+        id: retry
+        if: ${{ !cancelled() && steps.recovery.outputs.result == 'true' }}
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Clean up a failed retry
+        if: ${{ !cancelled() && steps.retry.outcome == 'failure' }}
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { recoverPages } = await import(`${process.env.GITHUB_WORKSPACE}/scripts/recover-pages.mjs`);
+            await recoverPages({ github, context, log: core.info, currentOnly: true });
+
+      - name: Require a successful Pages deployment
+        if: ${{ always() }}
+        env:
+          FIRST_OUTCOME: ${{ steps.deployment.outcome }}
+          RETRY_OUTCOME: ${{ steps.retry.outcome }}
+        run: |
+          if [[ "$FIRST_OUTCOME" != success && "$RETRY_OUTCOME" != success ]]; then
+            echo "::error::Pages did not deploy successfully. Inspect deployment/recovery logs and GitHub Pages service status before rerunning failed jobs."
+            exit 1
+          fi

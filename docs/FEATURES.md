@@ -25,7 +25,7 @@ actual content, reviewed geometry and photographs must be supplied per trip.
 | Photo authoring | Multi-upload, capture-date assignment, unmatched-day review, order/lead/cover selection, pins/copy, recoverable trash | Private originals and trip time zone/calendar; blank captions are valid | Studio, studio-photo-service |
 | Route authoring | Endpoint/control-point editing, undo/redo, routing readiness with actionable setup messages, point cleanup and mode-aware replacement proposals, reviewed geometry preservation until acceptance, GPX import | Per-journey network extracts/manifest or private GPX; missing inputs disable generation with a visible next step; preserve applies to unattended builds and permits explicit Studio previews | Studio, routing scripts |
 | Editorial safety | Readable overrides, ownership/reference validation, local backups and revision checks | Stable namespaced IDs; originals and local draft assets remain ignored | journey-content, Studio server |
-| Reproducible delivery | Validated generation, cache-busted assets, Pages CI and public verification | Reviewed published sources; no private originals/network fetch needed for site build | build-site, Pages workflow |
+| Reproducible delivery | Validated generation, cache-busted assets, Pages CI, bounded orphan-deployment recovery/retry and public verification | Reviewed published sources; no private originals/network fetch needed for site build; GitHub service failures remain visible | build-site, Pages workflow, recover-pages |
 
 ## Features versus editorial content
 
