@@ -51,9 +51,8 @@ test('rail stop dots sit on route centerlines and retain names, including duplic
   const css = fs.readFileSync(new URL('../dist/assets/styles.css',import.meta.url),'utf8');
   const style = css.match(/\.rail-stop-marker \{([^}]+)\}/)[1];
   const diameter = Number(style.match(/width: ([\d.]+)px/)[1]);
-  const rim = Number(style.match(/border: ([\d.]+)px solid #fff/)[1]);
-  assert.ok(Math.abs(diameter - (modeStyles.train.width + 1.4)) < 1e-9, 'White rim spans the selected rail line');
-  assert.equal(diameter - 2 * rim,4, 'Orange center stays small');
+  assert.match(style,/box-sizing: content-box;/, 'White rim sits outside the orange center');
+  assert.ok(Math.abs(diameter - (modeStyles.train.width + 1.4)) < 1e-9, 'Orange center spans the selected rail line');
   assert.match(style,/box-shadow: none;/);
 });
 
