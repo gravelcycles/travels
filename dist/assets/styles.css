@@ -1,6 +1,7 @@
 :root {
   --ink: #153238;
   --ink-soft: #39575c;
+  --focus-ring: #587579;
   --paper: #ecefeb;
   --panel: #fbfaf6;
   --panel-cool: #f1f3ef;
@@ -328,7 +329,7 @@ code { background: #dfe6e2; padding: 2px 4px; font-size: 0.8rem; }
 .replay-complete button:first-child { background: var(--selected); border-color: var(--selected); }
 
 .mobile-nav { display: none; }
-button:focus-visible, select:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline: 3px solid #d4935f; outline-offset: 3px; }
+button:focus-visible, select:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
 /* Safari can retain keyboard focus through touch-triggered dialogs and history.
    Keep focus itself (and text-entry cues); hide only the pointer-mode ring. */
 :focus:not(:focus-visible),
@@ -500,9 +501,6 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 .album-continue strong { display:flex; justify-content:space-between; gap:8px; font-size:.92rem; }
 .album-continue small { display:block; margin-top:4px; font-size:.72rem; line-height:1.35; }
 .album-continue:hover { background:#ae3c1f; }
-.album-continue:focus-visible { outline:3px solid var(--ink); outline-offset:3px; }
-@keyframes continue-glow { 0%, 100% { box-shadow:0 0 0 0 rgba(212,81,44,.05); } 50% { box-shadow:0 0 0 5px rgba(212,81,44,.22); } }
-@media (prefers-reduced-motion: no-preference) { .album-continue.ready-to-continue { animation:continue-glow 2.6s ease-in-out 3; } }
 @media (max-width:900px) { .album-continue { grid-column:2; grid-row:2; width:calc(100% - 24px); margin:8px 12px; padding:9px 12px; border-radius:18px; } }
 #modal-time { position:absolute; z-index:1; bottom:8px; left:50%; transform:translateX(-50%); display:block; width:max-content; max-width:100%; margin:0; padding:4px 8px; border-radius:4px; background:#0a1b1fcc; font-size:.75rem; color:#c5d5d3; text-align:center; }
 #modal-time:empty { display:none; }
@@ -556,7 +554,7 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 .photo-location-previous { background:var(--muted); box-shadow:0 0 0 4px #71878a33; opacity:.7; }
 
 /* Shared private-photo access */
-.photo-auth-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.photo-auth-controls button,.photo-unlock-dialog button{font:inherit;border:1px solid #38675f;border-radius:8px;padding:10px 14px;background:#245b53;color:#fff;cursor:pointer}.photo-auth-controls [data-photo-status]{font-size:11px}.photo-unlock-dialog{box-sizing:border-box;width:min(440px,calc(100vw - 32px));border:1px solid #adc0b4;border-radius:16px;padding:28px;background:#f9f5eb;color:#253e3b;box-shadow:0 20px 80px #182b2844}.photo-unlock-dialog::backdrop{background:#172c285c}.photo-unlock-dialog h2{font:32px Georgia,serif;margin:0 0 14px}.photo-unlock-dialog p{line-height:1.6}.photo-unlock-dialog .photo-unlock-hint{font-size:13px;color:#52675f}.photo-unlock-dialog .photo-auth-secondary{background:transparent;color:#245b53;border-color:transparent;padding-left:0}.photo-unlock-dialog [data-auth-message]{font-size:14px}.photo-unlock-dialog button:focus-visible{outline:3px solid #b96628;outline-offset:3px}.photo-auth-controls [hidden]{display:none!important}
+.photo-auth-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.photo-auth-controls button,.photo-unlock-dialog button{font:inherit;border:1px solid #38675f;border-radius:8px;padding:10px 14px;background:#245b53;color:#fff;cursor:pointer}.photo-auth-controls [data-photo-status]{font-size:11px}.photo-unlock-dialog{box-sizing:border-box;width:min(440px,calc(100vw - 32px));border:1px solid #adc0b4;border-radius:16px;padding:28px;background:#f9f5eb;color:#253e3b;box-shadow:0 20px 80px #182b2844}.photo-unlock-dialog::backdrop{background:#172c285c}.photo-unlock-dialog h2{font:32px Georgia,serif;margin:0 0 14px}.photo-unlock-dialog p{line-height:1.6}.photo-unlock-dialog .photo-unlock-hint{font-size:13px;color:#52675f}.photo-unlock-dialog .photo-auth-secondary{background:transparent;color:#245b53;border-color:transparent;padding-left:0}.photo-unlock-dialog [data-auth-message]{font-size:14px}.photo-auth-controls [hidden]{display:none!important}
 
 .viewer-photo-feedback { position:absolute; z-index:2; left:50%; top:50%; transform:translate(-50%,-50%); max-width:90%; padding:12px 18px; background:#0a1b1fee; color:#fff; text-align:center; border-radius:6px; font-size:.85rem; }
 .viewer-photo-feedback[hidden], .viewer-photo-feedback button[hidden] { display:none; }
