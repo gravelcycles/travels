@@ -44,6 +44,8 @@ test('one template supplies every control and asset to real trips, all samples, 
   buildSite(root);
   const reference = read(root, 'dist/switzerland-italy.html');
   assert.equal(ids(reference).length, new Set(ids(reference)).size, 'No duplicate control IDs');
+  assert.ok(reference.indexOf('id="replay-photo-stage"') < reference.indexOf('<aside class="replay-story"'), 'Mobile Replay media is outside the scrolling story');
+  assert.match(reference, /<div id="replay-photo-slot"><figure class="replay-photo" id="replay-photo-frame"/, 'One photo frame has a desktop home and a separate mobile stage');
   for (const id of ['mobile-photo-back', 'mobile-photo-location', 'mobile-grid-back', 'mobile-replay-back', 'replay-view-map', 'replay-view-photos']) {
     assert.ok(ids(reference).includes(id), `Shared mobile control ${id} exists`);
     assert.match(reference, new RegExp(`<button[^>]*id="${id}"[^>]*>\\s*<svg[^>]*aria-hidden="true"`), `${id} uses a drawn icon with an accessible button label`);
@@ -184,6 +186,17 @@ test('a newly generated draft inherits large endpoints for every train leg as ro
   draft.segments.push({id:'new-connection',mode:'train',from:'new-arrival',to:'new-finish',geometry:[[139.801,35.701],[139.9,35.8]]});
   draft.days[0].segmentIds.push('new-connection');
   assert.deepEqual(Array.from(context.dayMapStops(null,draft.days[0]),stop=>stop.endpoint),['Start','Start and end','End']);
+  vm.runInContext(appFunction('revealStopsWithRoutes'),context);
+  const sources = new Map(draft.segments.map(segment=>[segment.id,{}])), listeners = new Map();
+  const elements = [{style:{visibility:'hidden'}}];
+  const decorations = {routeLayers:draft.segments.map(segment=>({segmentId:segment.id,sourceId:segment.id,lineId:segment.id}))};
+  let loaded = false, rendered = false;
+  const map = {getSource:id=>sources.get(id),getLayer:()=>true,isSourceLoaded:()=>loaded,
+    queryRenderedFeatures:()=>rendered?[{}]:[],on:(name,fn)=>listeners.set(name,fn),off:name=>listeners.delete(name),triggerRepaint(){}};
+  context.revealStopsWithRoutes(map,decorations,draft.days[0],elements);
+  loaded=true; listeners.get('render')(); assert.equal(elements[0].style.visibility,'hidden');
+  rendered=true; listeners.get('render')(); assert.equal(elements[0].style.visibility,'');
+  assert.equal(listeners.size,0);
   assert.deepEqual(assets(renderJourneyPage(root,draft,{preview:true})),assets(read(root,'dist/switzerland-italy.html')));
 });
 

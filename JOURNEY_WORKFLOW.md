@@ -156,6 +156,10 @@ Shared endpoints combine at the same location and stay large if another leg
 also lists that station as an intermediate stop. Intermediate display dots snap
 to that leg's line without changing source stop coordinates or reviewed
 geometry. Stop names and endpoint roles remain available on hover.
+Stop dots remain hidden until the selected train lines have rendered, including
+in the photo map. Switch days quickly during review: an abandoned day's pending
+markers must never appear over the next day's routes. Slow basemap tiles do not
+delay stops once their train lines are visible.
 
 ### Train routes
 
