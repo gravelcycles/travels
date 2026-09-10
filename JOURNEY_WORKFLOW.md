@@ -150,9 +150,12 @@ network and enough meaningful anchors to disambiguate it.
 Check day bubbles at desktop and phone sizes after changing routes. The shared
 viewer keeps their full outline clear of transit strokes and joins each leader
 to the mapped arrival vertex for the day's destination (the place coordinate
-for a rest day). Rail stops render as 4 px orange dots centered on the route;
-intermediate display dots snap to that leg's line without changing source stop
-coordinates or reviewed geometry. Their names remain available on hover.
+for a rest day). Intermediate rail stops have 4 px orange centers and white rims
+spanning the selected rail line's 7.2 px width. The day's overall start and end
+use larger 10 px dots, including on mixed-mode days; a round trip combines them
+at the shared location. Transfers remain small. Intermediate display dots snap
+to that leg's line without changing source stop coordinates or reviewed
+geometry. Stop names and endpoint roles remain available on hover.
 
 ### Train routes
 

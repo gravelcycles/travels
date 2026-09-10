@@ -104,7 +104,7 @@ test('viewer route layers are reused within a day and rebuilt when the day chang
  const context=vm.createContext({viewerMapReady:true,photoDialog:{open:true},viewerMap:{},mapIsReady:()=>true,viewerDay:()=>day,
   viewerPhotoIndex:0,photosForDay:()=>[{id:'one'},{id:'two'}],viewerCameraPhoto:null,viewerTransition:{cancel(){}},viewerPhotoMarkers:[],viewerRouteKey:null,viewerDecorations:{},
   journey:{id:'trip',segments:[{id:'a'},{id:'b'}]},dayCoordinates:()=>[],
-  clearDecorations:()=>calls.push('clear'),addSegmentLayer:()=>calls.push('route'),addRailStopMarkers:()=>calls.push('stops')});
+  clearDecorations:()=>calls.push('clear'),addSegmentLayer:()=>calls.push('route'),addDayStopMarkers:()=>calls.push('stops')});
  vm.runInContext(functionSource('syncViewerMap'),context);vm.runInContext('syncViewerMap()',context);
  assert.deepEqual(calls,['clear','route','route','stops']);context.viewerPhotoIndex=1;vm.runInContext('syncViewerMap()',context);assert.equal(calls.length,4);
  day={id:'d2',segmentIds:['b']};vm.runInContext('syncViewerMap()',context);assert.deepEqual(calls.slice(4),['clear','route','route','stops']);

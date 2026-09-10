@@ -7,7 +7,7 @@ import { readOverrides } from '../scripts/build-site.mjs';
 
 const root = new URL('../', import.meta.url).pathname;
 const source = fs.readFileSync(new URL('../dist/assets/app.js', import.meta.url), 'utf8');
-const names = ['dayMarkerPlace', 'groupedDayMarkers', 'markerLabel', 'markerBox', 'boxesOverlap', 'markerRouteObstacles', 'routeCrossesMarkerBox', 'markerOffsetFor', 'applyDayMarkerOffset', 'railStopCoordinate', 'addRailStopMarkers'];
+const names = ['dayMarkerPlace', 'groupedDayMarkers', 'markerLabel', 'markerBox', 'boxesOverlap', 'markerRouteObstacles', 'routeCrossesMarkerBox', 'markerOffsetFor', 'applyDayMarkerOffset', 'railStopCoordinate', 'dayMapStops', 'addDayStopMarkers'];
 const functions = names.map(name => {
   const start = source.indexOf(`  function ${name}(`);
   assert.ok(start >= 0, name);
@@ -95,12 +95,33 @@ test('rail stop dots sit on route centerlines and retain names, including duplic
   const markers = [], context = harness(journey);
   context.document = {createElement:()=>({setAttribute(k,v){this[k]=v;}})};
   context.maplibregl = {Marker:class {constructor({element}){this.element=element;}setLngLat(p){this.coordinate=p;return this;}addTo(){markers.push(this);return this;}}};
-  context.addRailStopMarkers(map,{markers:[]},journey.days[0]);
+  context.addDayStopMarkers(map,{markers:[]},journey.days[0]);
   assert.deepEqual(markers.map(m=>[...m.coordinate]),[[0,0],[5,0],[10,0]]);
   assert.equal(markers[1].element['aria-label'],'Rail stop: Middle');
+  assert.equal(markers[0].element['aria-label'],'Start: Start');
+  assert.equal(markers[2].element['aria-label'],'End: Finish');
+  assert.match(markers[0].element.className,/route-endpoint-marker/);
+  assert.doesNotMatch(markers[1].element.className,/route-endpoint-marker/);
+  assert.match(markers[2].element.className,/route-endpoint-marker/);
   const css = fs.readFileSync(new URL('../dist/assets/styles.css',import.meta.url),'utf8');
   const style = css.match(/\.rail-stop-marker \{([^}]+)\}/)[1];
-  const diameter = Number(style.match(/width: (\d+)px/)[1]);
-  assert.ok(diameter < modeStyles.train.width);
-  assert.match(style,/border: 0;/);assert.match(style,/box-shadow: none;/);
+  const diameter = Number(style.match(/width: ([\d.]+)px/)[1]);
+  const rim = Number(style.match(/border: ([\d.]+)px solid #fff/)[1]);
+  assert.ok(Math.abs(diameter - (modeStyles.train.width + 1.4)) < 1e-9, 'White rim spans the selected rail line');
+  assert.equal(diameter - 2 * rim,4, 'Orange center stays small');
+  assert.match(style,/box-shadow: none;/);
+});
+
+test('real and sample days mark only their overall start and end, with transfers kept small', () => {
+  const map = {project: ([x,y])=>({x,y}),unproject: p=>({toArray:()=>p})};
+  for (const journey of data.journeys) for (const day of journey.days) {
+    const h = harness(journey,day), stops = h.dayMapStops(map,day);
+    const segments = h.segmentsForDay(day), endpoints = stops.filter(stop=>stop.endpoint);
+    if (!segments.length) { assert.equal(stops.length,0); continue; }
+    const first = h.segmentCoordinates(segments[0])[0], last = h.segmentCoordinates(segments.at(-1)).at(-1);
+    const same = first.every((v,i)=>v.toFixed(7)===last[i].toFixed(7));
+    assert.equal(endpoints.length,same?1:2,day.id);
+    for (const coordinate of [first,last]) assert.ok(endpoints.some(stop=>stop.coordinate.every((v,i)=>v.toFixed(7)===coordinate[i].toFixed(7))),day.id);
+    if (same) assert.equal(endpoints[0].endpoint,'Start and end');
+  }
 });
