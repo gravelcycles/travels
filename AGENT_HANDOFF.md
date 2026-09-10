@@ -15,6 +15,13 @@ Studio preserves the fields. Private video intake/delivery and timed captions
 remain W07. Read the updated workflow and feature inventory before real video
 intake. No private video is published by this sample.
 
+Validation: 220 tests and a deterministic build after integrating the concurrent
+mobile release. Browser checks cover group selection, scoped Replay, successful
+5-second video playback/source release, 390px mobile actions, desktop layout,
+the reference page and a fresh empty draft. Local reference/draft UI checks use
+local-media preview mode; photo authentication itself is covered by the existing
+automated suite.
+
 
 ## Mobile cleanup — 10 September 2026
 

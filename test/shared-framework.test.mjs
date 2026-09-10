@@ -48,6 +48,11 @@ test('one template supplies every control and asset to real trips, all samples, 
   assert.match(reference, /<script src="\.\/assets\/input-mode\.js\?v=[a-f0-9]{12}"><\/script>/);
   assert.match(read(root, 'dist/index.html'), /<script src="\.\/assets\/input-mode\.js\?v=[a-f0-9]{12}"><\/script>/);
   assert.equal(ids(reference).length, new Set(ids(reference)).size, 'No duplicate control IDs');
+  for (const page of [reference, read(root, 'dist/demo.html'), read(root, 'dist/index.html'), ...data.journeys.map(journey => renderJourneyPage(root, journey, {preview:true}))]) {
+    const desktopHeader = page.match(/<header class="site-header"[\s\S]*?<\/header>/)[0];
+    assert.doesNotMatch(desktopHeader, /Sample journeys|Family journey|About this atlas|site-badge|open-notes/);
+  }
+  assert.ok(ids(reference).includes('mobile-back'), 'The shared header provides the return to all days');
   const replay = reference.match(/<dialog class="replay-dialog"[\s\S]*?<\/dialog>/)[0];
   assert.doesNotMatch(replay, /<img|replay-photo|replay-view-(?:map|photos)/, 'Replay has no photo surface or media switch');
   assert.match(replay, /id="replay-map"/);

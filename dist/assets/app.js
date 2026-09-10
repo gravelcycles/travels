@@ -300,8 +300,7 @@
               <li>
                 <button class="leg-card" type="button" data-route-segment="${escapeHtml(segment.id)}" aria-label="Explore ${escapeHtml(labels[segment.mode] || segment.mode)} route from ${escapeHtml(from.name)} to ${escapeHtml(to.name)}">
                   <span class="leg-mode">${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)}</span>
-                  ${journey.routeGroups?.length ? `<span class="leg-audience">${escapeHtml(groupTravel.audience(journey, segment))}</span>` : ""}
-                  <strong>${escapeHtml(from.name)} → ${escapeHtml(to.name)}</strong>
+                  <strong>${journey.routeGroups?.length ? `<span class="leg-audience">${escapeHtml(groupTravel.audience(journey, segment))}</span>` : ""}${escapeHtml(from.name)} → ${escapeHtml(to.name)}</strong>
                   <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""}${segment.stops ? ` · ${stopCount} stops` : ""}${segment.geometryStatus === "provisional" ? " · Provisional route" : ""}</small>
                 </button>
               </li>
@@ -402,6 +401,10 @@
   }
 
   function inspectSegment(segmentId, pinned = false) {
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      clearSegmentInspection(true);
+      return;
+    }
     const segment = segmentById(segmentId);
     const day = dayForSegment(segmentId);
     if (!segment || !day) return;
@@ -522,7 +525,7 @@
     });
     mainMap.on("mousemove", (event) => {
       // Revealing the map beneath a day-list tap can emit compatibility mouse
-      // events. Mobile route details require an intentional route tap.
+      // events. Mobile route taps select the day without a tooltip.
       if (!routeHoverEnabled()) return;
       const feature = routeFeatureAtPoint(event.point);
       mainMap.getCanvas().style.cursor = feature ? "pointer" : "";
@@ -801,7 +804,6 @@
   }
 
   function renderOverview() {
-    $("#site-badge").textContent = journey.badge || "ATLAS DEMO";
     $("#journey-kicker").textContent = journey.kicker;
     $("#journey-title").textContent = journey.title;
     $("#journey-subtitle").textContent = journey.subtitle;
@@ -934,6 +936,7 @@
   function renderParty() {
     const panel = $('#travel-party'), groups = sourceJourney.routeGroups || [];
     panel.hidden = !sourceJourney.travelers?.length;
+    $(".route-panel").classList.toggle("has-travel-party", !panel.hidden);
     $('#mobile-routes-action').hidden = !groups.length;
     if (panel.hidden) return;
     const selected = groups.find(group => group.id === activeGroupId);
@@ -1761,7 +1764,6 @@
   $("#show-all-photos").addEventListener("click", () => {
     openAlbum();
   });
-  $("#open-notes").addEventListener("click", () => $("#notes-dialog").showModal());
   $("#close-route-inspector").addEventListener("click", () => clearSegmentInspection(true));
   const viewerImage = $('#modal-photo');
   new ResizeObserver(sizeViewerBackdrop).observe($('#viewer-photo-frame'));

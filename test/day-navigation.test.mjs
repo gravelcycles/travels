@@ -132,7 +132,7 @@ test('choosing a day clears an existing route detail, including when choosing th
   }
 });
 
-test('mobile and touch map hover cannot open route details; intentional route clicks still can', () => {
+test('mobile and touch map hover cannot open route details; route taps select their day', () => {
   for (const [mobile, hover, shouldPreview] of [[true, true, false], [true, false, false], [false, false, false], [false, true, true]]) {
     const context = selection(), events = new Map(), calls = [], canvas = {style:{}};
     Object.assign(context, {
@@ -150,5 +150,21 @@ test('mobile and touch map hover cannot open route details; intentional route cl
     calls.length = 0;
     events.get('click')({point:{x:10,y:20}});
     assert.deepEqual(calls, [{id:'leg',pinned:true}]);
+  }
+});
+
+
+test('route inspection is suppressed on phones while desktop retains its tooltip',()=>{
+  for(const mobile of [true,false]) {
+    const nodes=new Map(), $=id=>{if(!nodes.has(id))nodes.set(id,{hidden:true});return nodes.get(id);};
+    const context=vm.createContext({$,window:{matchMedia:()=>({matches:mobile})},
+      segmentById:()=>({from:'a',to:'b',mode:'train'}),dayForSegment:()=>({number:1}),
+      placeById:id=>({name:id}),labels:{train:'Train'},conciseDayStory:()=> 'Day story',
+      routeInspectionPinned:false,inspectedSegmentId:null,setInspectedFeatureState(){},syncInspectionClasses(){},
+      clearSegmentInspection(){ $('#route-inspector').hidden=true; }
+    });
+    vm.runInContext(functionSource('inspectSegment'),context);context.inspectSegment('leg',true);
+    assert.equal($('#route-inspector').hidden,mobile);
+    assert.equal(context.routeInspectionPinned,!mobile);
   }
 });
