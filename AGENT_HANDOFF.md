@@ -2,7 +2,8 @@
 
 ## Mobile cleanup — 10 September 2026
 
-Day maps use a compact summary and bottom Day picker, with journey actions in
+Day maps retain a compact header with Journey Atlas and a direct Replay
+button, plus a compact summary and bottom Day picker, with other journey actions in
 that picker and the route key in Day details. The top menu, duplicate All days
 link, photo zoom icon and photo/grid close icons are removed. Day N returns to
 the map; pinch/double-tap still zoom photos. Location opens only from its
