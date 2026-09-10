@@ -37,13 +37,13 @@ test('zoom panning stays inside the photograph and does not move letterboxed axe
 import vm from 'node:vm';
 import fs from 'node:fs';
 function viewerFixture({deferredHistory=false} = {}) {
-  const nodes = new Map(), events = new Map(), timers = new Map(), frames = new Map(), traversals = [];
+  const nodes = new Map(), events = new Map(), timers = new Map(), frames = new Map(), traversals = [], queries = new Map();
   let clock = 0, timer = 0, controller;
   function node(selector) {
     if (!nodes.has(selector)) nodes.set(selector, {
       dataset:{},style:{setProperty(name,value){this[name]=value;}},classList:{names:new Set(),add(name){this.names.add(name);},remove(name){this.names.delete(name);},contains(name){return this.names.has(name);}},getBoundingClientRect(){return {width:390,height:706};},clientWidth:390,clientHeight:706,offsetHeight:160,
       open:false,hidden:false,handlers:new Map(),captures:new Map(),textContent:'',inert:false,
-      setAttribute(name,value){this[name]=value;},removeAttribute(name){delete this[name];},append(){},focus(){},setPointerCapture(){},
+      setAttribute(name,value){this[name]=value;},removeAttribute(name){delete this[name];},append(child){child.parentElement=this;},focus(){},setPointerCapture(){},
       querySelectorAll(){return [];},closest(query){return selector.startsWith('#mobile-') && (query==='button' || query==='button:not(#mobile-photo-location)' && selector!=='#mobile-photo-location')?this:null;},
       addEventListener(name,fn,capture){(capture?this.captures:this.handlers).set(name,fn);},
       showModal(){this.open=true;},close(){this.open=false;controller?.closed();}
@@ -61,7 +61,7 @@ function viewerFixture({deferredHistory=false} = {}) {
     move(delta){index+=delta;update();},selectPhoto(value){index=value;update();},
     openDay(id=day.id){controller.open();day=days.find(d=>d.id===id);index=0;node('#photo-dialog').open=true;update();}};
   const context=vm.createContext({window:{addEventListener:(name,fn)=>events.set(name,fn)},document:{querySelector:node,createElement:()=>node(`image${nodes.size}`)},
-    matchMedia:query=>({matches:query.includes('900px'),addEventListener(){}}),ResizeObserver:class{observe(){}},
+    matchMedia:query=>{if(!queries.has(query))queries.set(query,{matches:query.includes('900px'),addEventListener(_name,fn){this.changed=fn;}});return queries.get(query);},ResizeObserver:class{observe(){}},
     history,location:{href:'https://example.test/day'},performance:{now:()=>clock},requestAnimationFrame:fn=>{frames.set(++timer,fn);return timer;},cancelAnimationFrame:id=>frames.delete(id),
     setTimeout:fn=>{timers.set(++timer,fn);return timer;},clearTimeout:id=>timers.delete(id)});
   vm.runInContext(fs.readFileSync(new URL('../dist/assets/mobile-ux.js',import.meta.url),'utf8'),context);
@@ -82,7 +82,7 @@ function viewerFixture({deferredHistory=false} = {}) {
     if(!event.stopped){currentTarget.handlers.get('click')?.(event);target.onclick?.(event);}
     return event;
   }
-  return {api,node,controller,history,drag,click,get tabs(){return tabs;},get pauses(){return pauses;},flushHistory(){while(traversals.length)traversals.shift()();},get index(){return index;},get locations(){return locations;},flush(){const raf=[...frames.values()];frames.clear();raf.forEach(fn=>fn());const work=[...timers.values()];timers.clear();work.forEach(fn=>fn());}};
+  return {api,node,controller,history,drag,click,resize(mobile){const query=queries.get('(max-width: 900px)');query.matches=mobile;query.changed();},get tabs(){return tabs;},get pauses(){return pauses;},flushHistory(){while(traversals.length)traversals.shift()();},get index(){return index;},get locations(){return locations;},flush(){const raf=[...frames.values()];frames.clear();raf.forEach(fn=>fn());const work=[...timers.values()];timers.clear();work.forEach(fn=>fn());}};
 }
 
 test('swiping, opening location and returning from it keep the same selected photo',()=>{
@@ -174,4 +174,17 @@ test('Replay shows one mobile media view and falls back to the map when a moment
   assert.equal(f.node('#replay-view-map')['aria-pressed'],'true');
   f.node('#replay-view-photos').onclick();
   assert.equal(f.controller.replayMapVisible(),true,'empty photo moments cannot expose a blank photo stage');
+});
+
+test('Replay keeps the same photo outside the scrolling story on mobile and restores it on desktop',()=>{
+  const f=viewerFixture(),frame=f.node('#replay-photo-frame');
+  assert.equal(frame.parentElement,f.node('#replay-photo-stage'));
+  f.node('#replay-view-photos').onclick();
+  f.resize(false);
+  assert.equal(frame.parentElement,f.node('#replay-photo-slot'));
+  assert.equal(f.node('#replay-map').inert,false);
+  f.resize(true);
+  assert.equal(frame.parentElement,f.node('#replay-photo-stage'));
+  assert.equal(f.node('.replay-player').dataset.replayView,'photos');
+  assert.equal(f.node('#replay-photo-frame'),frame,'rotation must preserve the loaded image element');
 });

@@ -44,6 +44,8 @@ test('one template supplies every control and asset to real trips, all samples, 
   buildSite(root);
   const reference = read(root, 'dist/switzerland-italy.html');
   assert.equal(ids(reference).length, new Set(ids(reference)).size, 'No duplicate control IDs');
+  assert.ok(reference.indexOf('id="replay-photo-stage"') < reference.indexOf('<aside class="replay-story"'), 'Mobile Replay media is outside the scrolling story');
+  assert.match(reference, /<div id="replay-photo-slot"><figure class="replay-photo" id="replay-photo-frame"/, 'One photo frame has a desktop home and a separate mobile stage');
   for (const id of ['mobile-photo-back', 'mobile-photo-close', 'mobile-photo-location', 'mobile-grid-back', 'mobile-grid-close', 'mobile-replay-back', 'replay-view-map', 'replay-view-photos']) {
     assert.ok(ids(reference).includes(id), `Shared mobile control ${id} exists`);
     assert.match(reference, new RegExp(`<button[^>]*id="${id}"[^>]*>\\s*<svg[^>]*aria-hidden="true"`), `${id} uses a drawn icon with an accessible button label`);
