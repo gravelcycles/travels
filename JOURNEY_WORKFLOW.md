@@ -174,10 +174,13 @@ closed with the info button; route framing needs no extra attribution margin.
 
 Destination/day labels use neutral 2 px connectors to their mapped locations;
 select a label or use the journal/day navigation. Check label placement and
-rail stops at desktop and phone sizes after changing routes. Intermediate rail stops have 4 px orange centers and white rims
-spanning the selected rail line's 7.2 px width. Both endpoints of every train
-leg use larger 10 px dots, including transfer stations and turnaround points.
-Shared endpoints combine at the same location and stay large if another leg
+rail stops at desktop and phone sizes after changing routes. Intermediate rail
+stops have 7.2 px orange centers spanning the selected blue line, with 1.6 px
+white rims outside the orange (10.4 px total). The rims overlap the route's white
+casing and remain visible over the blue line. Both endpoints of every train
+leg retain their 10 px dots, 2 px white borders and orange outer rings, including
+transfer stations and turnaround points. Shared endpoints combine at the same
+location and retain their endpoint style if another leg
 also lists that station as an intermediate stop. Intermediate display dots snap
 to that leg's line without changing source stop coordinates or reviewed
 geometry. Stop names and endpoint roles remain available on hover.
