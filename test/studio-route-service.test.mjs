@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { proposeStudioRoute, RouteProposalError } from "../scripts/studio-route-service.mjs";
+import { proposeStudioRoute, studioRouteAvailability, RouteProposalError } from "../scripts/studio-route-service.mjs";
 
 const fixtureDirectory = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures/routes");
 
@@ -56,6 +56,33 @@ test("surfaces an unavailable mode network without fabricating geometry", (conte
   fs.unlinkSync(path.join(repoRoot, "ordered-stops.json"));
   assert.throws(
     () => proposeStudioRoute({ repoRoot, journeyId: "fixture-journey", segmentId: "fixture-walk", controlPoints: [[0, 0], [0.02, 0]] }),
-    /Mode network is unavailable locally.*saved route was kept/
+    /routing data is missing.*saved route was kept/
   );
+});
+
+test("reviewed preserve routes allow explicit proposals while retaining source files", context => {
+  const repoRoot = makeRepository(context, "ordered-stops.json");
+  const file = path.join(repoRoot, 'content/route-sources/fixture-journey.json');
+  const manifest = JSON.parse(fs.readFileSync(file));
+  manifest.segments['fixture-walk'] = { strategy: 'preserve' };
+  fs.writeFileSync(file, JSON.stringify(manifest));
+  const inputPath = path.join(repoRoot, 'ordered-stops.json');
+  const input = JSON.parse(fs.readFileSync(inputPath));
+  input.elements.push({ type: 'way', id: 102, nodes: [1,3] });
+  fs.writeFileSync(inputPath, JSON.stringify(input));
+  const before = fs.readFileSync(file, 'utf8');
+  const options = { repoRoot, journeyId: 'fixture-journey', segmentId: 'fixture-walk' };
+  assert.equal(studioRouteAvailability(options).available, true);
+  const via = proposeStudioRoute({ ...options, controlPoints: [[0,0],[0.01,0.01],[0.02,0]] });
+  const direct = proposeStudioRoute({ ...options, controlPoints: [[0,0],[0.02,0]] });
+  assert.notDeepEqual(via.geometry, direct.geometry, 'Removing a detour point regenerates the route');
+  assert.equal(fs.readFileSync(file, 'utf8'), before, 'A proposal must never rewrite the preserve policy');
+});
+
+test('availability explains missing inputs before generation', context => {
+  const repoRoot = makeRepository(context, 'ordered-stops.json');
+  const options = { repoRoot, journeyId: 'fixture-journey', segmentId: 'fixture-walk' };
+  fs.unlinkSync(path.join(repoRoot, 'ordered-stops.json'));
+  assert.equal(studioRouteAvailability(options).available, false);
+  assert.match(studioRouteAvailability(options).message, /Ask the agent to prepare/);
 });

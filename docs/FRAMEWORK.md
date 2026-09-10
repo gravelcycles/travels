@@ -55,6 +55,10 @@ Trip facts + routes + photos + editorial overrides
           map / journal / albums / Replay
 ```
 
+Studio checks local routing readiness for every selected leg. Reviewed-preserve
+policies guard unattended builds; explicit, read-only replacement proposals
+remain available when local mode data exists and require acceptance before saving.
+
 Studio edits the same sources; it is an authoring application, not a separate
 trip implementation. The catalog is a separate view of the same real-journey
 records. Photo protection is a shared service and namespace, not a per-page
@@ -166,3 +170,8 @@ future scale decisions. Today all published journey data is loaded together;
 that is separate from whether feature code is shared. Existing documents on
 performance/auth are historical evidence or focused operational references;
 this file and the feature inventory define the present framework contract.
+
+Routing-data intake remains agent-operated: empty journeys show an actionable
+setup state until their own mode network has been prepared. A guided retrieval
+flow with access/direction-aware routing is future work (W06); the present local
+graph reconstructs historical routes and is not turn-by-turn navigation.

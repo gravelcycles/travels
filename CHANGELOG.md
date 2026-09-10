@@ -1,5 +1,17 @@
 # Changelog
 
+## 10 September 2026 — responsive photo controls and mobile Replay
+
+- Accept immediate location-close taps after a drag, commit photo swipes on
+  release, and allow another swipe during the short visual settling animation.
+  Avoid hidden location-map work and background day-map refits during photo navigation.
+- Keep photo controls visible. Use drawn icons and rounded buttons; Day Photos
+  opens its grid, and visible Back/Close controls return directly to the day map.
+- Give mobile Replay separate Map/Photos views, a stable media area, anchored
+  playback controls and a landscape split. Empty-photo moments fall back to Map.
+- Cover rapid input, delayed browser history, day exits, hidden-map work,
+  Replay availability and shared real/demo/draft markup with regression checks.
+
 ## 10 September 2026 — one shared framework for every trip
 
 - Generate real journeys, demos and draft previews from one detail template;
