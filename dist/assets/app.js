@@ -2,6 +2,8 @@
   "use strict";
 
   const data = window.JOURNEY_ATLAS_DATA;
+  const mediaUtils = window.JOURNEY_ATLAS_MEDIA;
+  const videoPosters = mediaUtils.createPosterLoader(document);
   const replayUtils = window.JOURNEY_ATLAS_REPLAY;
   const contentOverrides = window.JOURNEY_ATLAS_CONTENT_OVERRIDES || { photos: {}, routes: {}, days: {} };
   data.journeys.forEach((item) => {
@@ -126,7 +128,7 @@
   }
 
   function photoById(id) {
-    return journey.photos.find((photo) => photo.id === id);
+    return mediaUtils.items(journey).find((photo) => photo.id === id);
   }
 
   function activeDay() {
@@ -142,7 +144,7 @@
   }
 
   function photosForDay(dayId) {
-    const photos = journey.photos.filter((photo) => photo.dayId === dayId);
+    const photos = mediaUtils.items(journey).filter((photo) => photo.dayId === dayId);
     const order = dayById(dayId)?.photoOrder || [];
     const positions = new Map(order.map((id, index) => [id, index]));
     return photos.map((photo, index) => ({ photo, index })).sort((a, b) => {
@@ -169,6 +171,7 @@
   }
 
   function photoImageMarkup(photo, options = {}) {
+    if (mediaUtils.isVideo(photo)) return mediaUtils.thumbnail(photo, options);
     if (window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) return window.JOURNEY_ATLAS_AUTH.markup(photo, options);
     const alt = options.alt ?? photo.alt ?? "";
     if (!photo.blur || !photo.srcset?.length) {
@@ -217,6 +220,10 @@
   }
 
   function prepareProgressiveImages(container) {
+    container.querySelectorAll('img[data-video-poster]').forEach(image => {
+      const item = photoById(image.dataset.videoPoster);
+      if (item) videoPosters.set(image, item);
+    });
     window.JOURNEY_ATLAS_AUTH?.prepare(container);
     container.querySelectorAll("img.progressive-image:not([data-private-src])").forEach((image) => {
       if (image.dataset.eager === "true" || !lazyImageObserver) hydrateImage(image);
@@ -242,6 +249,7 @@
   }
 
   function applyPreloads(requests) {
+    requests = requests.filter(request => request.photo.mediaType !== "video");
     window.JOURNEY_ATLAS_AUTH?.setPreloads(requests);
     // Demo photos keep their existing public-image path.
     for (const {photo, width} of requests) if (!window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) preloadPhoto(photo, width);
@@ -249,11 +257,11 @@
 
   function refreshPreloads() {
     if (replayDialog.open) { applyPreloads([]);return; }
-    const days = journey.days.map(day => ({id:day.id, photos:photosForDay(day.id)}));
+    const days = journey.days.map(day => ({id:day.id, photos:photosForDay(day.id).filter(photo => photo.mediaType !== "video")}));
     if (photoDialog.open) {
       const photo = photosForDay(viewerDay().id)[viewerPhotoIndex];
-      if (!photo) { applyPreloads([]);return; }
-      const all = orderedPhotos(), previous = all.findIndex(item => item.id === preloadSelection), current = all.findIndex(item => item.id === photo.id);
+      if (!photo || photo.mediaType === 'video') { applyPreloads([]);return; }
+      const all = orderedPhotos().filter(photo => photo.mediaType !== "video"), previous = all.findIndex(item => item.id === preloadSelection), current = all.findIndex(item => item.id === photo.id);
       if (previous >= 0 && previous !== current) preloadDirection = current > previous ? 1 : -1;
       preloadSelection = photo.id;
       applyPreloads([
@@ -808,8 +816,10 @@
     $("#journey-title").textContent = journey.title;
     $("#journey-subtitle").textContent = journey.subtitle;
     $("#day-count").textContent = `${journey.days.length} days`;
-    $("#photo-count").textContent = journey.photos.length;
-    $("#show-all-photos").disabled = journey.photos.length === 0;
+    const album = orderedPhotos(), hasVideos = album.some(mediaUtils.isVideo);
+    $('#show-all-photos').innerHTML = `${hasVideos ? 'Photos & videos' : 'All photos'} · <span id="photo-count">${album.length}</span>`;
+    $('#show-all-photos').disabled = !album.length;
+    $('[data-journey-action="photos"]').textContent = hasVideos ? 'Photos & videos' : 'All photos';
     $("#open-replay").disabled = !replayUtils || journey.days.length === 0;
     $("#focus-day").disabled = !dayCoordinates(activeDay()).length;
     $("#fit-route").disabled = !journeyCoordinates().length;
@@ -861,7 +871,7 @@
             <strong>${escapeHtml(day.title)}</strong>
             <em>${escapeHtml(routeLabel(day))}</em>
           </span>
-          <span class="day-meta">${photos.length ? `${photos.length} photo${photos.length === 1 ? "" : "s"}` : ""}${pattern !== "stay" ? lineSwatch(pattern) : ""}</span>
+          <span class="day-meta">${photos.length ? `${mediaUtils.label(photos)}` : ""}${pattern !== "stay" ? lineSwatch(pattern) : ""}</span>
         </button>
       `;
     }).join("");
@@ -878,7 +888,7 @@
       storyMedia.innerHTML = `
         <button type="button" data-open-photo="${escapeHtml(firstPhoto.id)}" aria-label="Open ${escapeHtml(firstPhoto.caption || firstPhoto.alt || 'photo')} full screen">
           ${photoImageMarkup(firstPhoto, { alt: firstPhoto.alt, sizes: "(max-width: 900px) 100vw, 26vw", eager: true })}
-          <span>DAY ${String(day.number).padStart(2, "0")} · ${photos.length} PHOTO${photos.length === 1 ? "" : "S"}</span>
+          <span>DAY ${String(day.number).padStart(2, "0")} · ${mediaUtils.label(photos).toUpperCase()}</span>
           <small>${escapeHtml(firstPhoto.caption)}</small>
         </button>
       `;
@@ -893,13 +903,8 @@
     }
 
     $('#story-view-photos').hidden = !photos.length;
-    $('#story-view-photos').textContent = `View ${photos.length} photo${photos.length === 1 ? '' : 's'}`;
+    $('#story-view-photos').textContent = `View ${mediaUtils.label(photos)}`;
 
-    const videos = (journey.videos || []).filter(video => video.dayId === day.id && !video.hidden);
-    for (const id of ['story-view-videos', 'mobile-day-videos']) {
-      $(`#${id}`).hidden = !videos.length;
-      $(`#${id}`).textContent = `Video${videos.length === 1 ? '' : 's'} · ${videos.length}`;
-    }
     const distance = dayDistance(day);
     const duration = dayDuration(day);
     const modes = modesForDay(day);
@@ -910,7 +915,7 @@
       ${day.text?.trim() ? `<p class="day-story">${escapeHtml(day.text)}</p>` : ""}
       <p class="travel-summary">${distance ? `${formatDistance(distance)} · ` : ''}${escapeHtml(modeLabel(day))}${duration ? ` · ${escapeHtml(duration)}` : ''}</p>
       ${day.segmentIds.length ? `<section class="travel-details" aria-label="Travel details"><h3>Travel details · ${day.segmentIds.length} leg${day.segmentIds.length===1?'':'s'}</h3>${renderRouteLegs(day)}</section>` : ''}
-      ${groupTravel.videoCards(journey, day.id)}
+      ${groupTravel.dayDetails(sourceJourney, sourceJourney.days.find(item => item.id === day.id), activeGroupId)}
       <nav class="journal-day-nav" aria-label="Journal days"><button type="button" data-journal-step="-1" ${day.number===1?'disabled':''}>← Previous day</button><span>Day ${day.number} of ${journey.days.length}</span><button type="button" data-journal-step="1" ${day.number===journey.days.length?'disabled':''}>Next day →</button></nav>
       <button id="resume-replay" type="button" ${replayJourneyId===journey.id?'':'hidden'}>Return to paused Replay</button>
     `;
@@ -954,7 +959,7 @@
   function selectRouteGroup(id) {
     if (id && !sourceJourney.routeGroups?.some(group => group.id === id)) return;
     clearSegmentInspection(true); pauseReplay(); replayJourneyId = null;
-    videoPlayer.stop(); $('#video-dialog').close();
+    videoPlayer.stop(); if (photoDialog.open) photoDialog.close();
     activeGroupId = id;
     journey = groupTravel.projectJourney(sourceJourney, id);
     storyMapDay = null; viewerRouteKey = null;
@@ -1064,7 +1069,7 @@
       strip.dataset.album = album;
       strip.innerHTML = photos.length
       ? photos.map((photo, index) => `
-          <button type="button" data-viewer-index="${index}" class="${index === viewerPhotoIndex ? "active" : ""}" aria-pressed="${index === viewerPhotoIndex}" aria-label="Show photo ${index + 1} of ${photos.length}">
+          <button type="button" data-viewer-index="${index}" class="${index === viewerPhotoIndex ? "active" : ""}" aria-pressed="${index === viewerPhotoIndex}" aria-label="Show ${mediaUtils.isVideo(photo) ? 'video' : 'photo'} ${index + 1} of ${photos.length}: ${escapeHtml(photo.caption || photo.alt || '')}">
             ${photoImageMarkup(photo, { alt: "", sizes: "180px", targetWidth: 480 })}
             <span>${String(index + 1).padStart(2, "0")}</span>
           </button>
@@ -1109,23 +1114,35 @@
     photoStage.style.setProperty('--photo-backdrop', /^data:image\/(webp|png|jpeg);base64,/.test(backdrop || '') ? `url("${backdrop}")` : 'none');
     photoStage.classList.remove('is-photo-loading');
     const emptyStage = $("#viewer-empty");
-    modalPhoto.hidden = !photo;
+    const isVideo = mediaUtils.isVideo(photo);
+    $('.photo-viewer').dataset.mediaType = isVideo ? 'video' : 'photo';
+    $('#viewer-media-title').hidden = !isVideo;
+    $('#viewer-media-title').textContent = isVideo ? photo.title : '';
+    modalPhoto.hidden = !photo || isVideo;
+    if (!isVideo) videoPlayer.stop();
     emptyStage.hidden = Boolean(photo);
     $('#viewer-photo-feedback').hidden=true;
     if (photo) {
-      modalPhoto.onload = null;
-      modalPhoto.onerror = null;
-      modalPhoto.className = photo.blur ? "progressive-image" : "";
-      modalPhoto.srcset = "";
-      modalPhoto.alt = photo.alt;
-      modalPhoto.sizes = "(max-width: 900px) 100vw, 75vw";
-      if (photo.width) modalPhoto.width = photo.width;
-      if (photo.height) modalPhoto.height = photo.height;
-      sizeViewerBackdrop();
-      if (window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) {
-        window.JOURNEY_ATLAS_AUTH.setImage(modalPhoto, photo, Infinity, {fullOnly:true});
+      if (isVideo) {
+        window.JOURNEY_ATLAS_AUTH?.clearImage(modalPhoto);
+        modalPhoto.onload = modalPhoto.onerror = null;
+        modalPhoto.removeAttribute('src'); modalPhoto.removeAttribute('srcset');
+        videoPlayer.show(photo);
       } else {
-        setPublicFullImage(modalPhoto, photo);
+        modalPhoto.onload = null;
+        modalPhoto.onerror = null;
+        modalPhoto.className = photo.blur ? "progressive-image" : "";
+        modalPhoto.srcset = "";
+        modalPhoto.alt = photo.alt;
+        modalPhoto.sizes = "(max-width: 900px) 100vw, 75vw";
+        if (photo.width) modalPhoto.width = photo.width;
+        if (photo.height) modalPhoto.height = photo.height;
+        sizeViewerBackdrop();
+        if (window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) {
+          window.JOURNEY_ATLAS_AUTH.setImage(modalPhoto, photo, Infinity, {fullOnly:true});
+        } else {
+          setPublicFullImage(modalPhoto, photo);
+        }
       }
       $("#modal-caption").textContent = window.JOURNEY_ATLAS_UTILS.photoCaption(photo, day);
       $("#modal-time").textContent = photo.takenAt || day.date;
@@ -1144,7 +1161,7 @@
       $("#modal-time").textContent = day.date;
       emptyStage.innerHTML = `<strong>${escapeHtml(day.title)}</strong><span>${escapeHtml(day.text || routeLabel(day))}</span>`;
     }
-    $("#modal-progress").textContent = photo ? `PHOTO ${viewerPhotoIndex + 1} OF ${photos.length}` : `DAY ${day.number}`;
+    $("#modal-progress").textContent = photo ? `${isVideo ? "VIDEO" : "PHOTO"} ${viewerPhotoIndex + 1} OF ${photos.length}` : `DAY ${day.number}`;
     $("#modal-day-title").textContent = day.title;
     $("#modal-day-route").textContent = routeLabel(day);
     $("#viewer-day-label").textContent = `Day ${day.number} · ${day.date}`;
@@ -1158,7 +1175,7 @@
     const continuation = $("#album-continue");
     continuation.hidden = Boolean(photo && viewerPhotoIndex < photos.length-1);
     continuation.dataset.day = next?.id || '';
-    continuation.innerHTML = next ? `<strong>${photo ? 'Next day' : 'Next day with photos'} <span aria-hidden="true">→</span></strong><small>Day ${next.number} · ${escapeHtml(next.title)}</small>` : '<strong>Back to journey →</strong>';
+    continuation.innerHTML = next ? `<strong>${photo ? 'Next day' : 'Next day with photos or videos'} <span aria-hidden="true">→</span></strong><small>Day ${next.number} · ${escapeHtml(next.title)}</small>` : '<strong>Back to journey →</strong>';
     renderViewerFilmstrip(photos);
     window.JOURNEY_ATLAS_MOBILE_UI?.update({day, photos, index: viewerPhotoIndex});
     if (dayChanged) setActiveDay(day.id, true);
@@ -1631,10 +1648,10 @@
     if (atHeading) { $('.story-panel').scrollTop=0; detailPanel.querySelector('h2')?.setAttribute('tabindex','-1'); detailPanel.querySelector('h2')?.focus({preventScroll:true}); }
   }
   function openAlbum() {
-    $('#album-title').textContent = `All photos · ${journey.photos.length}`;
+    $('#album-title').textContent = `${journey.videos?.length ? 'Photos & videos' : 'All photos'} · ${orderedPhotos().length}`;
     $('#album-days').innerHTML = journey.days.map(day=>{
       const photos=photosForDay(day.id); const first=photos[0];
-      return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${first?photoImageMarkup(first,{sizes:'280px',targetWidth:480}):'<span class="album-text-scene">A page from the journey</span>'}<strong>Day ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?`${photos.length} photo${photos.length===1?'':'s'}`:'Read the story'}</small></button>`;
+      return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${first?photoImageMarkup(first,{sizes:'280px',targetWidth:480}):'<span class="album-text-scene">A page from the journey</span>'}<strong>Day ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?mediaUtils.label(photos):'Read the story'}</small></button>`;
     }).join('');
     $('#album-dialog').showModal(); prepareProgressiveImages($('#album-days'));
   }
@@ -1670,32 +1687,28 @@
   $('#album-continue').addEventListener('click',()=>{const id=$('#album-continue').dataset.day;if(id)openDayViewer(id);else {photoDialog.close();showJournal();}});
   $('#return-to-journal').addEventListener('click',()=>showJournal());
 
-  const videoPlayer = groupTravel.createVideoPlayer({ dialog: $('#video-dialog'), video: $('#journey-video'), title: $('#video-title'), caption: $('#video-caption'), status: $('#video-status'), retry: $('#retry-video'), close: $('#close-video'), sourceLink: $('#video-credit') });
+  const videoPlayer = mediaUtils.createVideoPlayer({ video: $('#journey-video'), shell: $('#viewer-video'), play: $('#viewer-video-play'), status: $('#video-status'), retry: $('#retry-video'), sourceLink: $('#video-credit'), posters: videoPosters });
   document.addEventListener('click', event => {
     const group = event.target.closest('[data-route-group]');
-    if (group) selectRouteGroup(group.dataset.routeGroup);
-    const button = event.target.closest('[data-open-video]');
-    if (button) {
-      const item = journey.videos?.find(video => video.id === button.dataset.openVideo && !video.hidden);
-      if (item) { pauseReplay(); videoPlayer.open(item); }
+    if (group) {
+      const fromDay = group.hasAttribute('data-day-route-group');
+      selectRouteGroup(group.dataset.routeGroup);
+      if (fromDay) {
+        showJournal();
+        const selected = detailPanel.querySelector('.day-group.is-selected');
+        selected?.scrollIntoView({ block: 'nearest' }); selected?.querySelector('button')?.focus({ preventScroll: true });
+      }
     }
   });
   $('#mobile-routes-action').addEventListener('click', () => { setMobileTab('route'); $('#travel-party button')?.focus(); });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) $('#journey-video').pause(); });
-
-  for (const id of ['story-view-videos', 'mobile-day-videos']) $(`#${id}`).addEventListener('click', () => {
-    showJournal();
-    const section = detailPanel.querySelector('.day-videos');
-    section?.scrollIntoView({ block: 'start' });
-    section?.querySelector('button')?.focus({ preventScroll: true });
-  });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) videoPlayer.pause(); });
 
   $("#journey-select").addEventListener("change", (event) => {
     const nextJourney = availableJourneys.find((item) => item.id === event.target.value);
     if (!nextJourney) return;
     clearSegmentInspection(true);
     pauseReplay(); replayJourneyId = null; storyMapDay = null; viewerRouteKey = null;
-    videoPlayer.stop(); $('#video-dialog').close();
+    videoPlayer.stop(); if (photoDialog.open) photoDialog.close();
     sourceJourney = nextJourney; activeGroupId = '';
     journey = nextJourney;
     const url = new URL(location.href);
@@ -1781,6 +1794,7 @@
   });
   $(".photo-close").addEventListener("click", () => photoDialog.close());
   photoDialog.addEventListener("close", () => {
+    videoPlayer.stop();
     window.JOURNEY_ATLAS_MOBILE_UI?.closed();
     viewerTransition?.cancel();viewerCameraPhoto = null;preloadSelection = null;preloadDirection = 1;
     window.JOURNEY_ATLAS_AUTH?.clearImage(viewerImage);viewerImage.removeAttribute('src');
@@ -1815,7 +1829,7 @@
   photoDialog.addEventListener("click", (event) => {
     if (event.target === photoDialog) photoDialog.close();
   });
-  $(".photo-stage").addEventListener("pointerdown", (event) => { if (!window.JOURNEY_ATLAS_MOBILE_UI?.enabled()) swipeStartX = event.clientX; });
+  $(".photo-stage").addEventListener("pointerdown", (event) => { if (!window.JOURNEY_ATLAS_MOBILE_UI?.enabled() && !event.target.closest('#viewer-video')) swipeStartX = event.clientX; });
   $(".photo-stage").addEventListener("pointerup", (event) => {
     if (swipeStartX === null) return;
     const distance = event.clientX - swipeStartX;
@@ -1823,7 +1837,7 @@
     swipeStartX = null;
   });
   document.addEventListener("keydown", (event) => {
-    if ($("#video-dialog").open) return;
+    if (event.target.closest('#viewer-video')) return;
     if (replayDialog.open) {
       const tag = event.target.tagName;
       if (event.key === " " && !["BUTTON", "INPUT", "SELECT"].includes(tag)) {
@@ -1856,15 +1870,16 @@
   });
   window.JOURNEY_ATLAS_MOBILE_UI = window.JOURNEY_ATLAS_MOBILE.create({
     day:activeDay, days:()=>journey.days, scope:()=>mapScope, title:()=>journey.title,
-    dayInfo:day=>({route:routeLabel(day),meta:[dayDistance(day)?formatDistance(dayDistance(day)):'',modeLabel(day),dayDuration(day)].filter(Boolean).join(' · '),count:photosForDay(day.id).length}),
+    dayInfo:day=>({route:routeLabel(day),meta:[dayDistance(day)?formatDistance(dayDistance(day)):'',modeLabel(day),dayDuration(day)].filter(Boolean).join(' · '),count:photosForDay(day.id).length,hasVideos:photosForDay(day.id).some(mediaUtils.isVideo),albumHasVideos:orderedPhotos().some(mediaUtils.isVideo)}),
     selectDay:id=>setActiveDay(id,true), stepDay:moveActiveDay, tab:setMobileTab, preview:renderStoryMap,
     openDay:openDayViewer, move:moveViewer, selectPhoto:index=>{viewerPhotoIndex=index;updateViewer();},
     overview:fitRoute, album:openAlbum, replay:openReplay,
     location:()=>{viewerCameraPhoto=null;initViewerMap();},
     pauseLocation:()=>viewerTransition?.cancel(),
     replayMap:()=>{if(replayMapReady && replayDialog.open){replayMap.resize();drawReplayMomentMap(currentReplayMoment(),replayProgress,true);}},
-    clearImage:node=>window.JOURNEY_ATLAS_AUTH?.clearImage(node),
-    loadImage:(node,photo)=>{if(window.JOURNEY_ATLAS_AUTH?.isProtected(photo))window.JOURNEY_ATLAS_AUTH.setImage(node,photo,Infinity,{fullOnly:true});else setPublicFullImage(node,photo);}
+    pauseMedia:()=>videoPlayer.pause(),
+    clearImage:node=>{delete node.dataset.videoPoster;window.JOURNEY_ATLAS_AUTH?.clearImage(node);},
+    loadImage:(node,photo)=>{if(mediaUtils.isVideo(photo)){videoPosters.set(node,photo);return;}if(window.JOURNEY_ATLAS_AUTH?.isProtected(photo))window.JOURNEY_ATLAS_AUTH.setImage(node,photo,Infinity,{fullOnly:true});else setPublicFullImage(node,photo);}
   });
   window.addEventListener("resize", () => {
     if (mainMap) mainMap.resize();

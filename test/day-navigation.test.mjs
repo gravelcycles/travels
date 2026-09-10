@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import '../dist/assets/media-utils.js';
 
 const source = fs.readFileSync(new URL('../dist/assets/app.js', import.meta.url), 'utf8');
 function functionSource(name) {
@@ -17,7 +18,7 @@ function selection() {
   };
   const days = [{ id: 'd1', number: 1, segmentIds: [] }, { id: 'd2', number: 2, segmentIds: [] }];
   const context = vm.createContext({
-    window: {},
+    window: {}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
     activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null,
     viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null,
     journey: { days, segments: [] }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],
@@ -46,6 +47,27 @@ test('opening or changing a viewer day updates the atlas day and route scope', (
   vm.runInContext('updateViewer()', context);
   assert.equal(context.activeDayId, 'd2');
   assert.equal(context.mapScope, 'day');
+});
+
+test('the same day viewer switches photo to video and back without sending video bytes to the image loader', () => {
+  const context = selection(), calls = [];
+  const media = globalThis.JOURNEY_ATLAS_MEDIA.items({photos:[{id:'photo',alt:'A photograph'}],videos:[{id:'clip',title:'A clip',src:'https://example.com/clip.mp4'}]});
+  context.photosForDay = () => media;
+  context.window.JOURNEY_ATLAS_UTILS = {photoCaption:item => item.caption || item.alt};
+  context.sizeViewerBackdrop = () => {};
+  context.setPublicFullImage = (_image,item) => calls.push(['image',item.id]);
+  context.videoPlayer = {stop:()=>calls.push(['stop']),show:item=>calls.push(['video',item.id])};
+  context.updateViewer();
+  assert.equal(context.$('#modal-photo').hidden,false);
+  context.viewerPhotoIndex = 1; context.updateViewer();
+  assert.equal(context.$('#modal-photo').hidden,true);
+  assert.equal(context.$('.photo-viewer').dataset.mediaType,'video');
+  assert.equal(context.$('#modal-progress').textContent,'VIDEO 2 OF 2');
+  assert.equal(context.$('#viewer-media-title').textContent,'A clip');
+  context.viewerPhotoIndex = 0; context.updateViewer();
+  assert.equal(context.$('#modal-photo').hidden,false);
+  assert.equal(context.$('#viewer-media-title').hidden,true);
+  assert.deepEqual(calls,[['stop'],['image','photo'],['video','clip'],['stop'],['image','photo']]);
 });
 
 test('returning to the mobile map positions day controls and frames the selected day after resize', () => {
@@ -83,7 +105,7 @@ test('Fit route bounds use routes and journey places, excluding distant photo pi
 test('selecting another viewer photo preserves thumbnail elements and updates selection only', () => {
   let builds=0,prepares=0,buttons=[];
   const strip={dataset:{},querySelectorAll:()=>buttons,set innerHTML(html){builds++;buttons=[...html.matchAll(/data-viewer-index="(\d+)"/g)].map(m=>({dataset:{viewerIndex:m[1]},selected:false,classList:{toggle(name,value){this.active=value;}},setAttribute(name,value){this[name]=value;},scrollIntoView(){}}));}};
-  const context=vm.createContext({viewerPhotoIndex:0,photoImageMarkup:()=>'<img>',prepareProgressiveImages(){prepares++;},$:selector=>selector==='#viewer-filmstrip'?strip:buttons.find(b=>b.classList.active)});
+  const context=vm.createContext({viewerPhotoIndex:0,mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,escapeHtml:value=>value,photoImageMarkup:()=>'<img>',prepareProgressiveImages(){prepares++;},$:selector=>selector==='#viewer-filmstrip'?strip:buttons.find(b=>b.classList.active)});
   vm.runInContext(functionSource('renderViewerFilmstrip'),context);
   const photos=[{id:'one'},{id:'two'},{id:'three'}];context.photos=photos;
   vm.runInContext('renderViewerFilmstrip(photos)',context);const original=[...buttons];
@@ -101,7 +123,7 @@ test('same-day viewer navigation does not rebuild background photos or redraw th
 });
 test('viewer route layers are reused within a day and rebuilt when the day changes',()=>{
  const calls=[];let day={id:'d1',segmentIds:['a']};
- const context=vm.createContext({window:{},viewerMapReady:true,photoDialog:{open:true},viewerMap:{},mapIsReady:()=>true,viewerDay:()=>day,
+ const context=vm.createContext({window:{},mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,viewerMapReady:true,photoDialog:{open:true},viewerMap:{},mapIsReady:()=>true,viewerDay:()=>day,
   viewerPhotoIndex:0,photosForDay:()=>[{id:'one'},{id:'two'}],viewerCameraPhoto:null,viewerTransition:{cancel(){}},viewerPhotoMarkers:[],viewerRouteKey:null,viewerDecorations:{},
   journey:{id:'trip',segments:[{id:'a'},{id:'b'}]},dayCoordinates:()=>[],
   clearDecorations:()=>calls.push('clear'),addSegmentLayer:()=>calls.push('route'),addDayStopMarkers:()=>calls.push('stops')});

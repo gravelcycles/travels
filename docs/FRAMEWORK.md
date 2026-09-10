@@ -72,7 +72,8 @@ password system.
 | `content/templates/catalog.html` | Public catalog shell |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction, Replay UI |
 | `dist/assets/atlas-utils.js` | Shared photo resolution, cover choice, camera helpers, preloading and other pure helpers |
-| `dist/assets/group-travel.js`, `group-travel.css`, `scripts/journey-extras.mjs` | Shared group projection, roster/video UI, media cleanup and optional data validation |
+| `dist/assets/group-travel.js`, `group-travel.css`, `scripts/journey-extras.mjs` | Shared group projection, roster/day route details, group/media presentation and optional data validation |
+| `dist/assets/media-utils.js` | Mixed gallery items, opening-frame thumbnail extraction/cache, native video playback and cleanup inside the shared photo viewer |
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |
 | `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching |
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |
@@ -186,8 +187,11 @@ Nine to Como adds a sixth journey data instance and demonstrates nine invented
 travelers taking three routes to one meetup. Filtering derives a view without
 mutating the source; empty drafts and existing trips retain absent defaults.
 Regression checks cover scoped/shared legs and media, overnight places, meetup
-references, native player cleanup, hidden/local video exclusion, planner
-preservation and template inheritance.
+references, mixed photo/video selection, first-frame caching and cleanup,
+native mobile gesture ownership, hidden/local video exclusion, planner
+preservation and template inheritance. Day details derive each group's roster,
+route and overnight from the source itinerary, even while a group is selected.
+Videos now use the existing photo viewer and all album/grid entry points.
 
 Remaining work before private trip video intake: transcode reviewed derivatives
 and posters, deliver authenticated byte ranges under the existing photo access

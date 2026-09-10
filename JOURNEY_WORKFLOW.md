@@ -376,6 +376,13 @@ remain visible in every group. Unfiltered distance totals mean all routes
 combined, not distance traveled by each person. Transport colors still indicate
 transport mode; cards and Replay identify the route group in text.
 
+Day details also show every group's members, route endpoints, transport modes,
+leg count and overnight place. The meetup day names the shared arrival. These
+cards remain available while one group is selected, so the other travelers'
+plans stay visible; **Show this route** selects its map/legs/media. Rest days
+show where each group stays. These details derive from the same itinerary and
+roster, with no duplicate editorial fields.
+
 The agent currently authors rosters, group assignments and meetup data in JSON
 or through the validated planner API. Studio preserves these fields while
 editing ordinary trip details, but does not yet offer roster/assignment forms.
@@ -386,20 +393,34 @@ route selection in a shared link. No per-trip page or application is copied.
 
 ## Day videos
 
-An optional journey `videos` list adds videos to the shared journal and exposes
-a direct Videos action in the day view on phones. Each item has stable `id`,
+An optional journey `videos` list adds videos alongside photos in day previews,
+albums, the phone grid and the existing full-screen photo viewer. There is no
+separate video dialog. Each item has a stable `id` unique across photos and
+videos in all journeys,
 `dayId`, `title`, `caption`, an HTTPS `src`, `mimeType` (`video/mp4` or
 `video/webm`), positive `durationSeconds`, and explicit `visibility: "public"`.
 Optional `poster` and `creditUrl` use HTTPS; `credit` supplies attribution text.
 Optional `groupIds` use the same audience rule as legs/photos. `hidden: true`
 and `assetStatus: "local"` entries are omitted from public bundles. Omitted
-videos yield no empty cards or disabled player buttons.
+videos preserve the ordinary photo-only experience. A day containing only
+video still has a working gallery. Existing photo order is preserved, followed
+by videos in source order; Replay remains the route-only player.
 
 Use a reviewed MP4 (H.264/AAC is the intended intake format), a poster, and a
-useful caption/transcript where needed. Playback uses native controls,
-`playsinline` and `preload="none"`; video bytes are requested on play, not while
-browsing the journal. Closing releases the source, backgrounding pauses it,
-and failures offer retry. Replay remains the route-only player.
+useful caption/transcript where needed. Thumbnail tiles show the opening frame,
+a play badge and duration. A supplied poster avoids loading video for thumbnails.
+Without one, the browser requests metadata/an opening frame from a public clip,
+then releases its source and caches the result for the journal, filmstrip and
+player. Extraction is serialized and the cache is bounded. The video host must
+permit cross-origin frame extraction; supply a reviewed HTTPS poster when it
+does not. A thumbnail failure leaves the video playable with a fallback label.
+
+Playback uses an explicit large play control, native play/pause/seek/volume/
+fullscreen controls, `playsinline` and `preload="none"`. Opening a video does not
+autoplay. Captions sit outside the player controls. Switching to a photo,
+changing groups/trips or closing the viewer releases the source; opening the
+phone grid or backgrounding pauses it. Failures offer retry. Native video taps
+and scrubbing are not intercepted by photo swipe/zoom gestures.
 
 This first sample supports public hosted clips, not private video intake or
 upload. Never add private original URLs to public journey JSON. Private video

@@ -60,6 +60,10 @@ export function validateJourneys(data) {
       }
     }
     validateJourneyExtras(j);
+    for (const video of j.videos || []) {
+      if (globalIds.photos.has(video.id)) fail(`Duplicate photo/video ID: ${video.id}`);
+      globalIds.photos.add(video.id);
+    }
     if (!j.days.length) fail(`${j.id}: at least one calendar day is required`);
     if (j.coverPhoto != null) {
       if (typeof j.coverPhoto.photoId !== "string" || !Array.isArray(j.coverPhoto.focal) || j.coverPhoto.focal.length !== 2 || !j.coverPhoto.focal.every(n => Number.isFinite(n) && n >= 0 && n <= 100)) fail(`${j.id}: invalid cover photo/focal point`);

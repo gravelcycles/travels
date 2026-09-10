@@ -26,38 +26,30 @@
       replayMoments: source.replayMoments?.map(moment => ({ ...moment, segmentIds: (moment.segmentIds || []).filter(id => ids.has(id)) })) };
   }
   const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' }[char]));
-  const duration = seconds => `${Math.floor(seconds / 60)}:${String(Math.round(seconds % 60)).padStart(2, '0')}`;
-  function videoCards(journey, dayId) {
-    const videos = (journey.videos || []).filter(video => video.dayId === dayId && !video.hidden);
-    if (!videos.length) return '';
-    return `<section class="day-videos" aria-label="Day videos"><h3>Videos · ${videos.length}</h3><div class="video-cards">${videos.map(video => `<button type="button" class="video-card" data-open-video="${escape(video.id)}" aria-label="Play ${escape(video.title)}"><span class="video-poster">${video.poster ? `<img src="${escape(video.poster)}" alt="" loading="lazy" />` : ''}<span class="video-play" aria-hidden="true">▶</span><span class="video-duration">${duration(video.durationSeconds)}</span></span><strong>${escape(video.title)}</strong><small>${escape(audience(journey, video) || 'Video')}${video.sample ? ' · Test clip' : ''}</small></button>`).join('')}</div></section>`;
+  function dayGroups(journey, day) {
+    const groups = journey.routeGroups || [];
+    return groups.map(group => {
+      const segments = day.segmentIds.map(id => journey.segments.find(segment => segment.id === id)).filter(segment => segment && belongsTo(segment, group.id));
+      const from = journey.places.find(place => place.id === segments[0]?.from);
+      const to = journey.places.find(place => place.id === (day.groupPlaces?.[group.id] || segments.at(-1)?.to || day.destinationId || day.placeId));
+      return { ...group, travelers: (journey.travelers || []).filter(person => group.travelerIds.includes(person.id)), segments, from, to };
+    });
   }
-  function createVideoPlayer({ dialog, video, title, caption, status, retry, close, sourceLink }) {
-    let current = null;
-    function stop() {
-      current = null;
-      video.pause(); video.removeAttribute('src'); video.removeAttribute('poster');
-      video.replaceChildren(); video.load();
-      status.textContent = ''; retry.hidden = true;
-    }
-    function open(item) {
-      stop(); current = item;
-      title.textContent = item.title; caption.textContent = item.caption || '';
-      sourceLink.hidden = !item.creditUrl;
-      if (item.creditUrl) { sourceLink.href = item.creditUrl; sourceLink.textContent = item.credit || 'Video source'; }
-      video.setAttribute('aria-label', item.title);
-      if (item.poster) video.poster = item.poster;
-      video.src = item.src;
-      status.textContent = 'Ready to play';
-      if (!dialog.open) dialog.showModal();
-      // Playback requires an explicit press of the native play control.
-    }
-    video.addEventListener('error', () => { if (current) { status.textContent = 'This video could not load. Try again.'; retry.hidden = false; } });
-    video.addEventListener('loadeddata', () => { if (current) { status.textContent = ''; retry.hidden = true; } });
-    retry.addEventListener('click', () => { if (current) open(current); });
-    close.addEventListener('click', () => dialog.close());
-    dialog.addEventListener('close', stop);
-    return { open, stop };
+  function dayDetails(journey, day, selected = '') {
+    const groups = dayGroups(journey, day);
+    if (!groups.length) return '';
+    const modes = {train:'Train', boat:'Ferry', car:'Car', bus:'Bus', walk:'Walk', bike:'Bike', gondola:'Gondola'};
+    const meetup = journey.meetup?.dayId === day.id ? journey.meetup : null;
+    const place = journey.places.find(place => place.id === meetup?.placeId);
+    return `<section class="day-route-groups" aria-label="Who took each route"><h3>Who went which way</h3>
+      ${meetup ? `<p class="day-meetup"><strong>Everyone meets in ${escape(place.name)}</strong><span>${escape(meetup.label)}</span></p>` : ''}
+      <div class="day-group-list">${groups.map(group => `<article class="day-group${selected === group.id ? ' is-selected' : ''}">
+        <h4>${escape(group.label)} <span>${group.travelers.length} travelers</span></h4>
+        <p class="day-group-people">${group.travelers.map(person => escape(person.name)).join(' · ')}</p>
+        <p class="day-group-route">${group.from ? `${escape(group.from.name)} → ` : ''}${escape(group.to?.name || 'Destination to plan')}</p>
+        <p class="day-group-meta">${group.segments.length ? [...new Set(group.segments.map(segment => modes[segment.mode] || segment.mode))].join(' + ') + ` · ${group.segments.length} leg${group.segments.length === 1 ? '' : 's'}` : 'No travel legs · staying here'}${group.to ? ` · Overnight: ${escape(group.to.name)}` : ''}</p>
+        <button type="button" data-route-group="${escape(group.id)}" data-day-route-group="true" aria-pressed="${selected === group.id}">${selected === group.id ? 'Showing this route' : 'Show this route'}</button>
+      </article>`).join('')}</div></section>`;
   }
-  root.JOURNEY_ATLAS_GROUPS = { belongsTo, audience, projectJourney, videoCards, createVideoPlayer };
+  root.JOURNEY_ATLAS_GROUPS = { belongsTo, audience, projectJourney, dayGroups, dayDetails };
 })(typeof window !== 'undefined' ? window : globalThis);
