@@ -611,13 +611,25 @@
     decorations.layerIds.push(casingId, lineId);
   }
 
+  function dayMarkerPlace(day) {
+    const place = destinationForDay(day);
+    if (!place) return null;
+    const segments = segmentsForDay(day);
+    const arrival = segments.find(segment => segment.to === place.id);
+    const departure = segments.find(segment => segment.from === place.id);
+    const coordinate = arrival ? segmentCoordinates(arrival).at(-1)
+      : departure ? segmentCoordinates(departure)[0] : [place.lng, place.lat];
+    return { ...place, lng: coordinate[0], lat: coordinate[1] };
+  }
+
   function groupedDayMarkers() {
     const groups = new Map();
     journey.days.forEach((day) => {
-      const place = destinationForDay(day);
+      const place = dayMarkerPlace(day);
       if (!place) return;
       const key = place.id;
       if (!groups.has(key)) groups.set(key, { place, days: [] });
+      if (day.id === activeDay().id) groups.get(key).place = place;
       groups.get(key).days.push(day);
     });
     return [...groups.values()];
@@ -632,15 +644,43 @@
   }
 
   function markerBox(center, label) {
-    const width = Math.max(30, 15 + label.length * 6.5);
-    return { left: center.x - width / 2, right: center.x + width / 2, top: center.y - 17, bottom: center.y + 17 };
+    // Include the selected bubble's outer ring, as well as multi-day labels.
+    const width = Math.max(32, 16 + label.length * 6.5) + 10;
+    return { left: center.x - width / 2, right: center.x + width / 2, top: center.y - 21, bottom: center.y + 21 };
   }
 
   function boxesOverlap(first, second, gap = 6) {
     return first.left < second.right + gap && first.right > second.left - gap && first.top < second.bottom + gap && first.bottom > second.top - gap;
   }
 
-  function markerOffsetFor(place, label, occupiedBoxes) {
+  function markerRouteObstacles() {
+    const selectedSegments = new Set(activeDay().segmentIds);
+    return journey.segments.flatMap(segment => {
+      const width = (modeStyles[segment.mode]?.width || 4.7) + (selectedSegments.has(segment.id) ? 5.2 : 3.8);
+      const points = segmentCoordinates(segment).map(coordinate => mainMap.project(coordinate));
+      return points.slice(1).map((end, index) => ({ start: points[index], end, padding: width / 2 + 3 }));
+    });
+  }
+
+  function routeCrossesMarkerBox(route, box) {
+    // Clip a line segment against the padded bubble rectangle. Checking vertices
+    // alone misses long straight legs that pass right through a bubble.
+    let near = 0, far = 1;
+    for (const [axis, low, high] of [['x', box.left, box.right], ['y', box.top, box.bottom]]) {
+      const start = route.start[axis], delta = route.end[axis] - start;
+      const min = low - route.padding, max = high + route.padding;
+      if (delta === 0) { if (start < min || start > max) return false; }
+      else {
+        const first = (min - start) / delta, last = (max - start) / delta;
+        near = Math.max(near, Math.min(first, last));
+        far = Math.min(far, Math.max(first, last));
+        if (near > far) return false;
+      }
+    }
+    return true;
+  }
+
+  function markerOffsetFor(place, label, occupiedBoxes, routeObstacles) {
     const point = mainMap.project([place.lng, place.lat]);
     const canvas = mainMap.getCanvas();
     const compact = mainMap.getZoom() < 7;
@@ -652,19 +692,27 @@
       [radius * 2, 0], [-radius * 2, 0], [0, -radius * 2], [0, radius * 2],
       [radius * 2, -radius], [-radius * 2, -radius]
     ];
+    // Dense junctions need more than the nearest few positions.
+    for (const distance of [radius * 2, radius * 3, radius * 4]) {
+      for (let step = 0; step < 16; step++) {
+        const angle = step * Math.PI / 8;
+        candidates.push([Math.round(Math.sin(angle) * distance), -Math.round(Math.cos(angle) * distance)]);
+      }
+    }
     let best = { offset: candidates[0], score: Number.POSITIVE_INFINITY, box: null };
+    const legendRoom = Math.max(76, canvas.getBoundingClientRect().bottom - $("#map-legend").getBoundingClientRect().top + 12);
+    const labelLayerIds = (mainMap.getStyle().layers || [])
+      .filter((layer) => layer.type === "symbol" && layer.layout?.["text-field"] && layer.layout.visibility !== "none")
+      .map((layer) => layer.id);
 
     candidates.forEach((offset, index) => {
       const center = { x: point.x + offset[0], y: point.y + offset[1] };
       const box = markerBox(center, label);
       let score = index * 0.05;
-      const legendRoom = Math.max(76, canvas.getBoundingClientRect().bottom - $("#map-legend").getBoundingClientRect().top + 12);
-      if (box.left < 8 || box.top < 60 || box.right > canvas.clientWidth - 8 || box.bottom > canvas.clientHeight - legendRoom) score += 100;
+      if (box.left < 8 || box.top < 60 || box.right > canvas.clientWidth - 8 || box.bottom > canvas.clientHeight - legendRoom) score += 100000;
+      if (routeObstacles.some(route => routeCrossesMarkerBox(route, box))) score += 10000;
       occupiedBoxes.forEach((occupied) => { if (boxesOverlap(box, occupied)) score += 40; });
       try {
-        const labelLayerIds = (mainMap.getStyle().layers || [])
-          .filter((layer) => layer.type === "symbol" && layer.layout?.["text-field"] && layer.layout.visibility !== "none")
-          .map((layer) => layer.id);
         if (labelLayerIds.length) {
           score += mainMap.queryRenderedFeatures([[box.left, box.top], [box.right, box.bottom]], { layers: labelLayerIds }).length * 12;
         }
@@ -683,18 +731,20 @@
     const angle = Math.atan2(-y, -x) * 180 / Math.PI;
     entry.marker.setOffset(placement.offset);
     entry.element.classList.toggle("compact", placement.compact);
-    entry.element.style.setProperty("--leader-length", `${Math.max(0, length - 13)}px`);
+    entry.element.style.setProperty("--leader-length", `${length}px`);
     entry.element.style.setProperty("--leader-angle", `${angle}deg`);
   }
 
   function refreshDayMarkerOffsets() {
     if (!mainMapReady || !mainDayMarkers.length) return;
     const occupiedBoxes = [];
-    mainDayMarkers.forEach((entry) => applyDayMarkerOffset(entry, markerOffsetFor(entry.place, entry.label, occupiedBoxes)));
+    const routeObstacles = markerRouteObstacles();
+    mainDayMarkers.forEach((entry) => applyDayMarkerOffset(entry, markerOffsetFor(entry.place, entry.label, occupiedBoxes, routeObstacles)));
   }
 
   function addDayMarkers() {
     const occupiedBoxes = [];
+    const routeObstacles = markerRouteObstacles();
     groupedDayMarkers()
       .map(group => ({ ...group, days: mapScope === "day" ? group.days.filter(day => day.id === activeDayId) : group.days }))
       .filter(group => group.days.length)
@@ -716,7 +766,7 @@
         setActiveDay(next.id, true);
       });
       element.append(button);
-      const placement = markerOffsetFor(group.place, label, occupiedBoxes);
+      const placement = markerOffsetFor(group.place, label, occupiedBoxes, routeObstacles);
       const marker = new maplibregl.Marker({ element, anchor: "center", offset: placement.offset })
         .setLngLat([group.place.lng, group.place.lat])
         .addTo(mainMap);
@@ -727,18 +777,34 @@
     });
   }
 
+  function railStopCoordinate(map, stop, coordinates) {
+    const point = map.project([stop.lng, stop.lat]);
+    let nearest = null, distance = Infinity;
+    for (let index = 1; index < coordinates.length; index++) {
+      const start = map.project(coordinates[index - 1]), end = map.project(coordinates[index]);
+      const dx = end.x - start.x, dy = end.y - start.y;
+      const lengthSquared = dx * dx + dy * dy;
+      const fraction = lengthSquared ? Math.max(0, Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / lengthSquared)) : 0;
+      const candidate = [start.x + fraction * dx, start.y + fraction * dy];
+      const candidateDistance = (point.x - candidate[0]) ** 2 + (point.y - candidate[1]) ** 2;
+      if (candidateDistance < distance) { nearest = candidate; distance = candidateDistance; }
+    }
+    return nearest ? map.unproject(nearest).toArray() : [stop.lng, stop.lat];
+  }
+
   function addRailStopMarkers(map, decorations, day) {
     const seen = new Set();
     segmentsForDay(day).filter((segment) => segment.mode === "train").forEach((segment) => {
       const from = placeById(segment.from);
       const to = placeById(segment.to);
+      const coordinates = segmentCoordinates(segment);
       const stops = [
-        { name: from.name, lat: from.lat, lng: from.lng },
-        ...(segment.stops || []),
-        { name: to.name, lat: to.lat, lng: to.lng }
+        { name: from.name, coordinate: coordinates[0] },
+        ...(segment.stops || []).map(stop => ({ ...stop, coordinate: railStopCoordinate(map, stop, coordinates) })),
+        { name: to.name, coordinate: coordinates.at(-1) }
       ];
       stops.forEach((stop) => {
-        const key = `${stop.name}-${stop.lat}-${stop.lng}`;
+        const key = `${stop.name}-${stop.coordinate.join(',')}`;
         if (seen.has(key)) return;
         seen.add(key);
         const element = document.createElement("div");
@@ -747,7 +813,7 @@
         element.setAttribute("role", "img");
         element.setAttribute("aria-label", `Rail stop: ${stop.name}`);
         const marker = new maplibregl.Marker({ element, anchor: "center" })
-          .setLngLat([stop.lng, stop.lat])
+          .setLngLat(stop.coordinate)
           .addTo(map);
         decorations.markers.push(marker);
       });

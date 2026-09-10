@@ -72,7 +72,7 @@
           <button id="undo-route" type="button">Undo</button>
           <button id="redo-route" type="button">Redo</button>
           <button id="smooth-route" type="button">Smooth anchor guide</button>
-          <button id="reset-route" type="button">Reset</button>
+          <button id="reset-route" type="button">Restore original route</button>
           <button id="delete-route-point" type="button">Delete selected point</button>
         </div>
       </section>
@@ -116,13 +116,20 @@
           <h2 id="route-title">Choose a route</h2>
           <p id="route-summary"></p>
           <section class="route-network-panel" aria-labelledby="route-network-heading">
-            <strong id="route-network-heading">Mode-aware route proposal</strong>
-            <p>Human control points remain fixed anchors. A proposal follows the selected transport network and does not replace the saved line until you accept it.</p>
+            <strong id="route-network-heading">Generate a route from your points</strong>
+            <ol>
+              <li>Click a numbered point and delete it, or drag it to a place you want to pass through.</li>
+              <li>Generate a route using the remaining points.</li>
+              <li>Review the green line, choose <strong>Use proposed route</strong>, then <strong>Save locally</strong>.</li>
+            </ol>
+            <p>Keep only meaningful stops or turns. Extra points can force detours. Deleting an intermediate point changes the orange guide; generate again to update the route.</p>
+            <p id="route-network-status" role="status">Checking routing data…</p>
             <div>
-              <button class="secondary" id="propose-route" type="button">Propose network route</button>
+              <button class="secondary" id="propose-route" type="button">Generate network route</button>
               <button class="secondary" id="accept-route-proposal" type="button" disabled>Use proposed route</button>
               <button class="secondary" id="accept-manual-route" type="button">Use anchor guide as fallback</button>
             </div>
+            <p id="route-proposal-status" role="status">No proposal yet. The saved route remains active.</p>
           </section>
           <section class="route-gpx-panel" aria-labelledby="route-gpx-heading">
             <strong id="route-gpx-heading">Traveler GPX track</strong>
@@ -134,7 +141,6 @@
               <button class="secondary" id="accept-route-gpx" type="button" disabled>Use GPX track</button>
             </div>
           </section>
-          <p id="route-proposal-status" role="status">No proposal yet. The saved route remains active.</p>
           <div class="route-comparison" aria-label="Route comparison legend">
             <span><i class="original"></i>Original</span>
             <span><i class="saved"></i>Saved</span>
@@ -158,6 +164,7 @@
             <strong>Drawing controls</strong>
             <p>Click the orange guide to insert an intermediate anchor, then drag it to guide a new route proposal. Intermediate anchors need an accepted proposal or manual fallback; endpoint edits apply directly. Select an intermediate point to delete it.</p>
             <p><strong>Smooth anchor guide</strong> rounds only the manual guide. Network proposals and the last reviewed saved line remain separate until explicitly accepted.</p>
+            <p><strong>Restore original route</strong> removes every local route edit for this leg, including endpoint changes. It is not needed to clean up individual points.</p>
           </div>
           <dl class="route-stats">
             <div><dt>Control points</dt><dd id="route-point-count">—</dd></div>

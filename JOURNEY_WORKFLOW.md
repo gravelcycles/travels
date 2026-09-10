@@ -147,6 +147,13 @@ ferries stay on navigable water, and roads/trails stay on land. More points are
 not automatically more accurate; the important thing is using the correct
 network and enough meaningful anchors to disambiguate it.
 
+Check day bubbles at desktop and phone sizes after changing routes. The shared
+viewer keeps their full outline clear of transit strokes and joins each leader
+to the mapped arrival vertex for the day's destination (the place coordinate
+for a rest day). Rail stops render as 4 px orange dots centered on the route;
+intermediate display dots snap to that leg's line without changing source stop
+coordinates or reviewed geometry. Their names remain available on hover.
+
 ### Train routes
 
 For the complete recipe, query and manifest templates, coordinate conventions,
@@ -229,13 +236,35 @@ current detailed geometry. The adjoining line section changes; every other
 coordinate stays exact. **Save locally** persists that edit without accepting a
 network proposal or simplified manual guide. Undo/redo restores both anchors
 and the complete geometry, including pre-existing overrides.
-**Propose network route** sends the anchors only to the loopback
+**Generate route** sends the anchors only to the loopback
 Studio service, which uses the journey manifest's local mode network. Original,
 saved, anchor-guide, and proposed lines stay separate until the editor accepts
 the network result or deliberately chooses the manual guide as a fallback.
 Missing, distant, disconnected, or ambiguous networks retain the reviewed
 geometry. These overrides take precedence over base route geometry and survive
 regeneration of `dist/assets/route-geometry.js`.
+
+### Clean up an inferred route
+
+1. Choose the leg in **Route drawing**. Studio checks its local routing data before enabling **Generate [mode] route**.
+2. Select an unwanted numbered intermediate point and use **Delete point N**, or drag it to the intended road or stop. Keep meaningful destinations and turns, not every bend in the old inferred line.
+3. Generate again and inspect the green proposal. Generation uses the current points; it does not save or publish a replacement.
+4. Choose **Use proposed route**, then **Save locally**. Point edits invalidate earlier proposals, so an outdated result cannot be accepted.
+
+`strategy: "preserve"` protects base geometry during unattended route builds;
+it does not prohibit a deliberate Studio proposal from a configured network.
+Existing geometry is retained until explicit acceptance. **Restore original
+route** removes all local edits for the selected leg (including endpoints); it
+is not the point-cleanup workflow. **Smooth anchor guide** only rounds manual
+lines and does not follow roads.
+
+If routing data is missing, Studio disables generation and explains what the
+agent must prepare. The agent retrieves or reuses a mode-appropriate local
+extract, records its provenance and bounds, maps it in the journey manifest,
+and verifies a proposal from the current points. Reselect the leg to refresh
+readiness. New trips and demos use this same process; no per-trip code change
+or copied family route is needed. The current service reconstructs historical
+routes on an undirected local graph; it is not a live navigation service.
 
 Studio day-copy edits live in `content/day-overrides.json`. Studio can switch
 between journey IDs, while override keys remain stable day, route, and photo IDs.
