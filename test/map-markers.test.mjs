@@ -52,7 +52,10 @@ test('rail stop dots sit on route centerlines and retain names, including duplic
   const style = css.match(/\.rail-stop-marker \{([^}]+)\}/)[1];
   const diameter = Number(style.match(/width: ([\d.]+)px/)[1]);
   assert.match(style,/box-sizing: content-box;/, 'White rim sits outside the orange center');
-  assert.ok(Math.abs(diameter - (modeStyles.train.width + 1.4)) < 1e-9, 'Orange center spans the selected rail line');
+  const rim = Number(style.match(/border: ([\d.]+)px solid #fff/)[1]);
+  const lineWidth = modeStyles.train.width + 1.4;
+  assert.ok(diameter < lineWidth, 'Orange center stays inside the selected rail line');
+  assert.ok(diameter + 2 * rim > lineWidth, 'White rim spans the selected rail line');
   assert.match(style,/box-shadow: none;/);
 });
 
