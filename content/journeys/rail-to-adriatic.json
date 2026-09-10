@@ -6,7 +6,7 @@
   "subtitle": "A handful of Eurail days, with the pauses between them left intact",
   "kicker": "TRAIN + BUS JOURNEY · CENTRAL EUROPE",
   "dates": "September 2026",
-  "note": "A route made from individual rail days rather than one continuous itinerary.",
+  "note": "Fictional sample journey; dates and locations illustrate the shared atlas. A route made from individual rail days rather than one continuous itinerary.",
   "cover": "./assets/photos/train-window.webp",
   "places": [
     {
@@ -113,7 +113,8 @@
       "title": "Berlin before departure",
       "placeId": "berlin",
       "segmentIds": [],
-      "text": "A city day before the pass began. The route exists on the map, but the journal still has room for the places where nothing moved."
+      "text": "A city day before the pass began. The route exists on the map, but the journal still has room for the places where nothing moved.",
+      "calendarDate": "2026-09-03"
     },
     {
       "id": "adriatic-d2",
@@ -124,40 +125,89 @@
       "segmentIds": [
         "berlin-prague"
       ],
-      "text": "The first Eurail day carried us south beside the river and into Prague by afternoon."
+      "text": "The first Eurail day carried us south beside the river and into Prague by afternoon.",
+      "calendarDate": "2026-09-04"
+    },
+    {
+      "id": "rail-to-adriatic-calendar-5",
+      "date": "5 Sep",
+      "title": "Day to plan",
+      "segmentIds": [],
+      "text": "",
+      "number": 3,
+      "calendarDate": "2026-09-05"
     },
     {
       "id": "adriatic-d3",
-      "number": 3,
+      "number": 4,
       "date": "6 Sep",
       "title": "Prague to Vienna",
       "placeId": "vienna",
       "segmentIds": [
         "prague-vienna"
       ],
-      "text": "Platforms, a border crossed without ceremony, and enough daylight left for a long walk in Vienna."
+      "text": "Platforms, a border crossed without ceremony, and enough daylight left for a long walk in Vienna.",
+      "calendarDate": "2026-09-06"
+    },
+    {
+      "id": "rail-to-adriatic-calendar-7",
+      "date": "7 Sep",
+      "title": "Day to plan",
+      "segmentIds": [],
+      "text": "",
+      "number": 5,
+      "calendarDate": "2026-09-07"
+    },
+    {
+      "id": "rail-to-adriatic-calendar-8",
+      "date": "8 Sep",
+      "title": "Day to plan",
+      "segmentIds": [],
+      "text": "",
+      "number": 6,
+      "calendarDate": "2026-09-08"
     },
     {
       "id": "adriatic-d4",
-      "number": 4,
+      "number": 7,
       "date": "9 Sep",
       "title": "Across Austria",
       "placeId": "ljubljana",
       "segmentIds": [
         "vienna-ljubljana"
       ],
-      "text": "The rail day arced through Austria and over the southern edge of the Alps."
+      "text": "The rail day arced through Austria and over the southern edge of the Alps.",
+      "calendarDate": "2026-09-09"
+    },
+    {
+      "id": "rail-to-adriatic-calendar-10",
+      "date": "10 Sep",
+      "title": "Day to plan",
+      "segmentIds": [],
+      "text": "",
+      "number": 8,
+      "calendarDate": "2026-09-10"
+    },
+    {
+      "id": "rail-to-adriatic-calendar-11",
+      "date": "11 Sep",
+      "title": "Day to plan",
+      "segmentIds": [],
+      "text": "",
+      "number": 9,
+      "calendarDate": "2026-09-11"
     },
     {
       "id": "adriatic-d5",
-      "number": 5,
+      "number": 10,
       "date": "12 Sep",
       "title": "The final road south",
       "placeId": "split",
       "segmentIds": [
         "ljubljana-split"
       ],
-      "text": "The last leg traded rails for a bus and ended where the streets opened onto the Adriatic."
+      "text": "The last leg traded rails for a bus and ended where the streets opened onto the Adriatic.",
+      "calendarDate": "2026-09-12"
     }
   ],
   "photos": [
@@ -176,5 +226,16 @@
       ]
     }
   ],
-  "published": true
+  "published": true,
+  "startDate": "2026-09-03",
+  "timeZone": "Europe/Rome",
+  "badge": "FICTIONAL SAMPLE",
+  "endDate": "2026-09-12",
+  "coverPhoto": {
+    "photoId": "rail-window-demo",
+    "focal": [
+      50,
+      50
+    ]
+  }
 }

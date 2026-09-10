@@ -6,7 +6,7 @@
   "subtitle": "A linear ride told one day at a time",
   "kicker": "BIKE JOURNEY · PASSAU TO VIENNA",
   "dates": "A three-day sample",
-  "note": "Bike days use the same journal and photo system while emphasizing daily distance and saddle time.",
+  "note": "Fictional sample journey; dates and locations illustrate the shared atlas. Bike days use the same journal and photo system while emphasizing daily distance and saddle time.",
   "cover": "./assets/photos/bike-pass.webp",
   "places": [
     {
@@ -102,7 +102,8 @@
       "title": "Bags packed in Passau",
       "placeId": "passau",
       "segmentIds": [],
-      "text": "An evening beside three rivers, with the bicycle packed and the first day waiting downstream."
+      "text": "An evening beside three rivers, with the bicycle packed and the first day waiting downstream.",
+      "calendarDate": "2026-09-04"
     },
     {
       "id": "bike-d2",
@@ -113,7 +114,8 @@
       "segmentIds": [
         "passau-linz"
       ],
-      "text": "The river kept the route honest. We rode east all day and arrived in Linz ready to leave the bicycles untouched until morning."
+      "text": "The river kept the route honest. We rode east all day and arrived in Linz ready to leave the bicycles untouched until morning.",
+      "calendarDate": "2026-09-05"
     },
     {
       "id": "bike-d3",
@@ -125,7 +127,8 @@
         "linz-melk",
         "melk-vienna-bike"
       ],
-      "text": "One day can contain more than one mapped segment. Melk became the midday hinge before the final roll into Vienna."
+      "text": "One day can contain more than one mapped segment. Melk became the midday hinge before the final roll into Vienna.",
+      "calendarDate": "2026-09-06"
     }
   ],
   "photos": [
@@ -144,5 +147,16 @@
       ]
     }
   ],
-  "published": true
+  "published": true,
+  "startDate": "2026-09-04",
+  "timeZone": "Europe/Vienna",
+  "badge": "FICTIONAL SAMPLE",
+  "endDate": "2026-09-06",
+  "coverPhoto": {
+    "photoId": "bike-break-demo",
+    "focal": [
+      50,
+      50
+    ]
+  }
 }

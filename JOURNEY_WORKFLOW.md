@@ -1,5 +1,11 @@
 # Building a journey atlas
 
+Start with [the framework contract](docs/FRAMEWORK.md) and
+[feature inventory](docs/FEATURES.md). Use [the new-trip prompt](docs/AGENT_PROMPTS.md)
+for a fresh agent. Create a data instance with Studio or `journey:new`; never
+copy Switzerland–Italy's page, itinerary, scripts, or photo manifests. The same
+template, runtime, and Studio provide every trip's available features.
+
 This is the reusable handoff for adding another real trip. The user supplies
 the trip facts, photos, corrections, and visual judgment. The agent owns the
 terminal, local servers, asset generation, research, implementation, QA,
@@ -84,6 +90,8 @@ Source/output structure:
 - `content/journeys/<id>.json`: reviewed journeys; IDs and page slugs stay stable.
 - `content/drafts/<id>.json`: ignored local drafts (`published: false`).
 - `content/templates/journey.html`: shared detail-page template.
+- `content/templates/catalog.html`: catalog template. Both the catalog and
+  demo HTML are generated; no public HTML is an alternate journey template.
 - `content/route-geometry/<id>.json`: reviewed generated network geometry.
 - `content/photo-manifests/<id>.json`: reviewed derivative metadata per journey.
 - `build/draft-assets/<id>/`: ignored draft routes, photos, and route sources.
@@ -94,14 +102,33 @@ Source/output structure:
 calendar ranges, and overrides before generating public pages and bundles.
 Published photos are keyed by journey ID in `JOURNEY_ATLAS_PHOTOS`; changing the
 default journey cannot transfer an album. Builds are deterministic and asset
-URLs use content hashes. Pages CI runs `npm test` and `npm run build`.
+URLs use content hashes. Pages CI runs `npm test` and `npm run build`, then
+rejects uncommitted changes to generated `dist/` output.
 
-To publish a reviewed draft, the agent moves its source to `content/journeys/`
-and sets `published: true`. Move any `build/draft-assets/<id>/routes.json`,
-`photos.json`, and `route-sources.json` into the matching public source folders;
-move that journey's overrides from the ignored draft file to the public override
-JSON sources. Review photo Release availability, then run the build/tests and
-normal publish checks. Merely creating or editing a draft never publishes it.
+To publish a reviewed draft, the agent first inventories its source, assets,
+overrides and outstanding route/photo review. Promotion is currently an
+agent-operated source migration, not a Studio Publish button:
+
+| Local source | Reviewed source destination |
+| --- | --- |
+| `content/drafts/<id>.json` | `content/journeys/<id>.json`, retaining IDs/slug and setting `published: true` |
+| `build/draft-assets/<id>/routes.json` | `content/route-geometry/<id>.json` |
+| `build/draft-assets/<id>/route-sources.json` | `content/route-sources/<id>.json` |
+| `build/draft-assets/<id>/photos.json` | `content/photo-manifests/<id>.json` |
+| `build/draft-assets/<id>/uploads.json` | `content/photo-manifests/<id>-uploads.json` |
+| This trip's entries in `build/studio-draft-overrides.json` | Merge into the corresponding `content/day-overrides.json`, `photo-overrides.json`, `route-overrides.json` |
+
+Only move files that exist; preserve other trips' overrides and drafts. Keep a
+local backup, remove the promoted draft source so there is only one record for
+its ID, and add its ID to `content/atlas.json` if an explicit catalog position
+is wanted. Do not change the default trip just to publish another journey.
+
+Run the private photo publisher from [PHOTO_WORKFLOW.md](PHOTO_WORKFLOW.md) for
+pending derivatives and verify protected asset availability before the Pages
+delivery. A local-only photo must not be treated as published; the site build
+omits it. Never revive the retired public photo Releases for a new trip.
+Run the build/tests, include generated pages/bundles in the commit, and follow
+normal deployment checks. Merely creating or editing a draft never publishes it.
 Drafts are local files, so they need a private backup if they must survive loss
 of the workspace.
 

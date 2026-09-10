@@ -12,7 +12,7 @@ export function readOverrides(root) {
 }
 export function renderJourneyPage(root, journey, { preview = false } = {}) {
   let html = fs.readFileSync(path.join(root, "content/templates/journey.html"), "utf8");
-  const fields = { ...journey, description: journey.subtitle || journey.title };
+  const fields = { ...journey, badge: journey.badge || (journey.kind === "demo" ? "FICTIONAL SAMPLE" : "JOURNEY"), description: journey.subtitle || journey.title };
   html = html.replace(/\{\{(\w+)\}\}/g, (_, key) => escapeHtml(fields[key]));
   if (journey.kind === "demo") html = html.replace(`<body data-journey-id=`, `<body data-journey-scope="demo" data-journey-id=`);
   if (preview) html = html.replaceAll('./assets/', '/dist/assets/').replace(/src="\/dist\/assets\/(journeys|route-geometry|trip-photos|content-overrides)\.js[^\"]*"/g, (_, asset) => `src="/api/preview-assets/${asset}.js"`).replaceAll('href="./"', 'href="/dist/"').replaceAll('href="./demo.html"', 'href="/dist/demo.html"');
@@ -51,7 +51,10 @@ export function buildSite(root) {
   for (const file of ["assets/photo-auth.js", "assets/atlas-utils.js", "assets/app.js", "assets/catalog.js", "assets/replay-utils.js", "assets/styles.css"]) versions.set(file, hash(fs.readFileSync(path.join(root, "dist", file))));
   const versioned = html => html.replace(/\.\/assets\/([a-z-]+\.(?:js|css))(?:\?v=[^\"]*)?/g, (_, file) => `./assets/${file}?v=${versions.get(`assets/${file}`) || "1"}`);
   for (const j of published.filter(j => j.kind === "real")) outputs.set(j.slug, versioned(renderJourneyPage(root, j)));
-  for (const file of ["index.html", "demo.html"]) outputs.set(file, versioned(fs.readFileSync(path.join(root, "dist", file), "utf8")));
+  const demo = published.find(j => j.kind === "demo");
+  if (demo) outputs.set("demo.html", versioned(renderJourneyPage(root, demo)));
+  else outputs.set("demo.html", versioned(fs.readFileSync(path.join(root, "content/templates/catalog.html"), "utf8")));
+  outputs.set("index.html", versioned(fs.readFileSync(path.join(root, "content/templates/catalog.html"), "utf8")));
   // Track only generated detail pages; never remove hand-authored public files.
   const manifestFile = path.join(root, "dist/generated-pages.json");
   const oldPages = readJson(manifestFile, []);

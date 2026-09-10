@@ -6,7 +6,7 @@
   "subtitle": "Ten days of lake mornings, high passes and the long road north",
   "kicker": "MIXED JOURNEY · SWITZERLAND TO GERMANY",
   "dates": "18–27 August 2026",
-  "note": "A mixed journey showing travel days, quiet days in one place, and several photographs attached to a single day.",
+  "note": "Fictional sample journey; dates and locations illustrate the shared atlas. A mixed journey showing travel days, quiet days in one place, and several photographs attached to a single day.",
   "cover": "./assets/photos/alpine-route.webp",
   "places": [
     {
@@ -261,7 +261,8 @@
       "title": "Arrival beside the lake",
       "placeId": "lucerne",
       "segmentIds": [],
-      "text": "We reached Lucerne late enough for the old city to feel quiet. The first evening was mostly a walk along the water and the relief of putting the bags down."
+      "text": "We reached Lucerne late enough for the old city to feel quiet. The first evening was mostly a walk along the water and the relief of putting the bags down.",
+      "calendarDate": "2026-08-18"
     },
     {
       "id": "alps-d2",
@@ -270,7 +271,8 @@
       "title": "A slow Lucerne day",
       "placeId": "lucerne",
       "segmentIds": [],
-      "text": "No travel today. We crossed the river several times, stopped whenever the light changed, and left the timetable folded in a pocket."
+      "text": "No travel today. We crossed the river several times, stopped whenever the light changed, and left the timetable folded in a pocket.",
+      "calendarDate": "2026-08-19"
     },
     {
       "id": "alps-d3",
@@ -281,7 +283,8 @@
       "segmentIds": [
         "lucerne-andermatt"
       ],
-      "text": "The train climbed into a tighter valley with every stop. By Andermatt, the route ahead finally looked as steep as it had on the map."
+      "text": "The train climbed into a tighter valley with every stop. By Andermatt, the route ahead finally looked as steep as it had on the map.",
+      "calendarDate": "2026-08-20"
     },
     {
       "id": "alps-d4",
@@ -292,7 +295,8 @@
       "segmentIds": [
         "andermatt-disentis"
       ],
-      "text": "The slowest day of the trip earned the widest views. We climbed in cool air, stopped for coffee near the top, and rolled down toward Disentis with the valley opening below us."
+      "text": "The slowest day of the trip earned the widest views. We climbed in cool air, stopped for coffee near the top, and rolled down toward Disentis with the valley opening below us.",
+      "calendarDate": "2026-08-21"
     },
     {
       "id": "alps-d5",
@@ -303,7 +307,8 @@
       "segmentIds": [
         "disentis-st-moritz"
       ],
-      "text": "A day measured in tunnels, sudden lakes and the few seconds when a village appeared perfectly framed in the window. This is the sample day with more than one photograph."
+      "text": "A day measured in tunnels, sudden lakes and the few seconds when a village appeared perfectly framed in the window. This is the sample day with more than one photograph.",
+      "calendarDate": "2026-08-22"
     },
     {
       "id": "alps-d6",
@@ -312,7 +317,8 @@
       "title": "High-valley pause",
       "placeId": "st-moritz",
       "segmentIds": [],
-      "text": "We stayed in the high valley and let the route rest. The day was for short walks, weather moving over the ridges, and nowhere we had to be."
+      "text": "We stayed in the high valley and let the route rest. The day was for short walks, weather moving over the ridges, and nowhere we had to be.",
+      "calendarDate": "2026-08-23"
     },
     {
       "id": "alps-d7",
@@ -326,7 +332,8 @@
         "varenna-bellagio",
         "bellagio-como"
       ],
-      "text": "Four ordered legs made one travel day: the Bernina railway crossed into Italy, a second train reached Varenna, the boat cut across the lake to Bellagio, and the final bus followed the shore into Como. The day close-up follows the shaping points of every leg rather than connecting only St. Moritz and Como."
+      "text": "Four ordered legs made one travel day: the Bernina railway crossed into Italy, a second train reached Varenna, the boat cut across the lake to Bellagio, and the final bus followed the shore into Como. The day close-up follows the shaping points of every leg rather than connecting only St. Moritz and Como.",
+      "calendarDate": "2026-08-24"
     },
     {
       "id": "alps-d8",
@@ -337,7 +344,8 @@
       "segmentIds": [
         "como-waterfront-walk"
       ],
-      "text": "A same-place day can still hold a full story. We followed the shoreline, waited out a shower under an arcade, and watched the ferries redraw the lake."
+      "text": "A same-place day can still hold a full story. We followed the shoreline, waited out a shower under an arcade, and watched the ferries redraw the lake.",
+      "calendarDate": "2026-08-25"
     },
     {
       "id": "alps-d9",
@@ -346,7 +354,8 @@
       "title": "One last Como morning",
       "placeId": "como",
       "segmentIds": [],
-      "text": "Breakfast stretched into late morning. We packed slowly and returned to the waterfront once more before the long drive north."
+      "text": "Breakfast stretched into late morning. We packed slowly and returned to the waterfront once more before the long drive north.",
+      "calendarDate": "2026-08-26"
     },
     {
       "id": "alps-d10",
@@ -357,7 +366,8 @@
       "segmentIds": [
         "como-freiburg"
       ],
-      "text": "The final day crossed the Alps once more, this time in a single long line. Freiburg arrived with evening light and the Black Forest just beyond the city."
+      "text": "The final day crossed the Alps once more, this time in a single long line. Freiburg arrived with evening light and the Black Forest just beyond the city.",
+      "calendarDate": "2026-08-27"
     }
   ],
   "photos": [
@@ -408,5 +418,105 @@
       "ocrText": ""
     }
   ],
-  "published": true
+  "published": true,
+  "startDate": "2026-08-18",
+  "timeZone": "Europe/Zurich",
+  "badge": "FICTIONAL SAMPLE",
+  "endDate": "2026-08-27",
+  "coverPhoto": {
+    "photoId": "alpine-overlook",
+    "focal": [
+      50,
+      50
+    ]
+  },
+  "replayMoments": [
+    {
+      "id": "alps-d1-chapter",
+      "dayId": "alps-d1",
+      "segmentIds": [],
+      "caption": "Arrival beside the lake",
+      "duration": 2.4
+    },
+    {
+      "id": "alps-d2-chapter",
+      "dayId": "alps-d2",
+      "segmentIds": [],
+      "caption": "A slow Lucerne day",
+      "duration": 2.4
+    },
+    {
+      "id": "alps-d3-chapter",
+      "dayId": "alps-d3",
+      "segmentIds": [
+        "lucerne-andermatt"
+      ],
+      "caption": "Up the Reuss valley",
+      "duration": 2.4
+    },
+    {
+      "id": "alps-d4-chapter",
+      "dayId": "alps-d4",
+      "segmentIds": [
+        "andermatt-disentis"
+      ],
+      "caption": "Over the pass",
+      "duration": 2.4,
+      "photoId": "pass-break"
+    },
+    {
+      "id": "alps-d5-chapter",
+      "dayId": "alps-d5",
+      "segmentIds": [
+        "disentis-st-moritz"
+      ],
+      "caption": "A full window-seat day",
+      "duration": 2.4,
+      "photoId": "alpine-overlook"
+    },
+    {
+      "id": "alps-d6-chapter",
+      "dayId": "alps-d6",
+      "segmentIds": [],
+      "caption": "High-valley pause",
+      "duration": 2.4
+    },
+    {
+      "id": "alps-d7-chapter",
+      "dayId": "alps-d7",
+      "segmentIds": [
+        "st-moritz-tirano",
+        "tirano-varenna",
+        "varenna-bellagio",
+        "bellagio-como"
+      ],
+      "caption": "Rails, water and the lake road",
+      "duration": 2.4
+    },
+    {
+      "id": "alps-d8-chapter",
+      "dayId": "alps-d8",
+      "segmentIds": [
+        "como-waterfront-walk"
+      ],
+      "caption": "Ferries and rain clouds",
+      "duration": 2.4
+    },
+    {
+      "id": "alps-d9-chapter",
+      "dayId": "alps-d9",
+      "segmentIds": [],
+      "caption": "One last Como morning",
+      "duration": 2.4
+    },
+    {
+      "id": "alps-d10-chapter",
+      "dayId": "alps-d10",
+      "segmentIds": [
+        "como-freiburg"
+      ],
+      "caption": "The long road north",
+      "duration": 2.4
+    }
+  ]
 }

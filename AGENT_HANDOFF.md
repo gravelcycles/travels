@@ -1,5 +1,20 @@
 # Next-agent handoff
 
+## Shared framework contract — 10 September 2026
+
+Start with [docs/FRAMEWORK.md](docs/FRAMEWORK.md),
+[docs/FEATURES.md](docs/FEATURES.md) and [docs/AGENT_PROMPTS.md](docs/AGENT_PROMPTS.md).
+These current contracts supersede dated implementation advice below.
+
+Real journeys, demos and Studio previews now share one journey HTML template.
+The catalog also has a source template. Demos inherit the introduction and
+have complete calendars/time zones; Alpine Crossing demonstrates curated
+Replay. New trips remain data-only instances. AGENTS.md enforces shared-first
+changes, documented optional exceptions and family/demo/new-draft regression
+coverage. CI rejects generated-output drift. See W04/W05 for the remaining
+module extraction, source-directory and schema/promotion work; none blocks
+starting a new trip.
+
 ## Restore expired photo access and tolerate decode interruption — 9 September 2026
 
 A live tab reproduced the all-photos-locked state after its one-hour access

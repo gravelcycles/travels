@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Generated from content/templates/journey.html. Change shared features here, never in a trip's output page. -->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -20,7 +21,7 @@
       rel="stylesheet"
       href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
     />
-    <link rel="stylesheet" href="./assets/styles.css?v=20260907-8" />
+    <link rel="stylesheet" href="./assets/styles.css" />
   </head>
   <body data-journey-id="{{id}}">
     <header class="site-header">
@@ -110,13 +111,13 @@
     <dialog class="notes-dialog" id="notes-dialog">
       <form method="dialog" class="dialog-card">
         <div class="dialog-top">
-          <div><span>ABOUT THE ATLAS</span><h2>{{title}}</h2></div>
+          <div><span>ABOUT THE ATLAS</span><h2 id="notes-journey-title">{{title}}</h2></div>
           <button value="cancel" aria-label="Close atlas notes">×</button>
         </div>
         <div class="notes-grid">
           <section>
             <strong>1 · The journey</strong>
-            <p>{{note}}</p>
+            <p id="notes-journey-note">{{note}}</p>
           </section>
           <section>
             <strong>2 · Every leg matters</strong>
@@ -222,14 +223,14 @@
     </dialog>
 
     <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
-    <script src="./assets/journeys.js?v=20260907-6"></script>
-    <script src="./assets/route-geometry.js?v=20260907-5"></script>
-    <script src="./assets/trip-photos.js?v=20260906-9"></script>
-    <script src="./assets/content-overrides.js?v=20260907-1"></script>
-    <script src="./assets/replay-utils.js?v=20260908-1"></script>
+    <script src="./assets/journeys.js"></script>
+    <script src="./assets/route-geometry.js"></script>
+    <script src="./assets/trip-photos.js"></script>
+    <script src="./assets/content-overrides.js"></script>
+    <script src="./assets/replay-utils.js"></script>
     <script src="./assets/photo-service.js"></script>
     <script src="./assets/photo-auth.js"></script>
     <script src="./assets/atlas-utils.js"></script>
-    <script src="./assets/app.js?v=20260907-10"></script>
+    <script src="./assets/app.js"></script>
   </body>
 </html>
