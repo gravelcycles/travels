@@ -52,20 +52,9 @@
     return result;
   }
 
-  function orderedDayPhotos(journey, day) {
-    const photos = (journey.photos || []).filter((photo) => photo.dayId === day.id && !photo.hidden);
-    const order = day.photoOrder || [];
-    const positions = new Map(order.map((id, index) => [id, index]));
-    return photos.map((photo, index) => ({ photo, index })).sort((first, second) => {
-      const firstPosition = positions.has(first.photo.id) ? positions.get(first.photo.id) : order.length + first.index;
-      const secondPosition = positions.has(second.photo.id) ? positions.get(second.photo.id) : order.length + second.index;
-      return firstPosition - secondPosition || first.index - second.index;
-    }).map(({ photo }) => photo);
-  }
-
   function pacedMoment(moment, journey) {
     const ids = moment.segmentIds || (moment.segmentId ? [moment.segmentId] : []);
-    if (!ids.length) return { ...moment, duration: moment.duration || (moment.type === "photo" ? 2.8 : 2.4) };
+    if (!ids.length) return { ...moment, duration: moment.duration || 2.4 };
     const legs = ids.map(id => {
       const segment = journey.segments?.find(item => item.id === id);
       const coordinates = segment?.geometry || root.JOURNEY_ATLAS_ROUTE_GEOMETRY?.[id] || [];
@@ -84,17 +73,14 @@
 
   function createTimeline(journey) {
     if (journey.replayMoments?.length) return journey.replayMoments.map(moment => {
-      const photo = journey.photos?.find(p => p.id === moment.photoId && !p.hidden && p.dayId === moment.dayId);
-      return pacedMoment({ ...moment, curated:true, type:'chapter', photoId:photo?.id, segmentIds:(moment.segmentIds || []).filter(id => journey.days.find(d => d.id === moment.dayId)?.segmentIds.includes(id)) }, journey);
+      const { photoId, ...chapter } = moment;
+      return pacedMoment({ ...chapter, curated:true, type:'chapter', segmentIds:(moment.segmentIds || []).filter(id => journey.days.find(d => d.id === moment.dayId)?.segmentIds.includes(id)) }, journey);
     });
     const segmentIds = new Set((journey.segments || []).map((segment) => segment.id));
     return (journey.days || []).flatMap((day) => {
       const moments = (day.segmentIds || [])
         .filter((segmentId) => segmentIds.has(segmentId))
         .map((segmentId) => ({ id: `${day.id}:segment:${segmentId}`, type: "segment", dayId: day.id, segmentId }));
-      orderedDayPhotos(journey, day)
-        .filter((photo) => Number.isFinite(photo.lng) && Number.isFinite(photo.lat))
-        .forEach((photo) => moments.push({ id: `${day.id}:photo:${photo.id}`, type: "photo", dayId: day.id, photoId: photo.id }));
       if (!moments.length) moments.push({ id: `${day.id}:day`, type: "day", dayId: day.id });
       return moments;
     }).map(moment => pacedMoment(moment, journey));
@@ -125,7 +111,7 @@
         elapsed -= duration;
       }
     }
-    // Curated scenes leave the last third for the photograph/text after travel.
+    // Curated scenes leave the last third for the day story after travel.
     const travel = clamp(progress / (moment.curated ? 0.65 : 1));
     const index = Math.min(ids.length-1, Math.floor(travel*ids.length));
     return { segmentId:ids[index], completed:ids.slice(0,index), progress:travel===1?1:travel*ids.length-index };

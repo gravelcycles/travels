@@ -1,5 +1,14 @@
 # Changelog
 
+## 10 September 2026 — map-only Replay
+
+- Remove Replay images, the Map/Photos switch, photo feedback and related
+  preloading on phones and desktop. Give the map the vacated mobile space.
+- Keep route travel, rest days, stories, reviewed cameras and playback controls.
+  Automatic timelines omit photo pauses; existing curated photo choices are
+  ignored. Playback no longer waits for image readiness.
+- Day photo grids and the full photo viewer remain available outside Replay.
+
 ## 10 September 2026 — isolate Replay photos from the scrolling story
 
 - Give mobile Replay a dedicated photo stage instead of positioning its image

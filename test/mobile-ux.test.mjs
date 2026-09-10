@@ -172,23 +172,6 @@ test('Photos opens the day grid, while the Day button leaves every photo layer f
   }
 });
 
-test('Replay shows one mobile media view and falls back to the map when a moment has no photo',()=>{
-  const f=viewerFixture();f.node('#replay-dialog').open=true;
-  f.controller.replayControlsChanged({playing:true,completed:false,day:f.api.day()});
-  f.node('#replay-view-photos').onclick();
-  assert.equal(f.controller.replayMapVisible(),false);
-  assert.equal(f.node('#replay-map').inert,true);
-  assert.equal(f.node('#replay-map')['aria-hidden'],'true');
-  assert.equal(f.node('#replay-view-photos')['aria-pressed'],'true');
-  f.node('#replay-photo-frame').hidden=true;
-  f.controller.replayControlsChanged({playing:false,completed:false,day:f.api.day()});
-  assert.equal(f.node('#replay-view-photos').disabled,true);
-  assert.equal(f.controller.replayMapVisible(),true);
-  assert.equal(f.node('#replay-map').inert,false);
-  assert.equal(f.node('#replay-view-map')['aria-pressed'],'true');
-  f.node('#replay-view-photos').onclick();
-  assert.equal(f.controller.replayMapVisible(),true,'empty photo moments cannot expose a blank photo stage');
-});
 
 
 test('a closed location stays closed through upward photo drags, photo changes and grid round trips',()=>{
@@ -229,17 +212,4 @@ test('the bottom Day button opens and dismisses the day picker',()=>{
   f.click('#mobile-day-picker');f.controller.tabChanged();
   assert.equal(f.node('.atlas-shell').dataset.mobileTab,'map');
   assert.equal(f.node('#mobile-day-picker')['aria-expanded'],'false');
-});
-
-test('Replay keeps the same photo outside the scrolling story on mobile and restores it on desktop',()=>{
-  const f=viewerFixture(),frame=f.node('#replay-photo-frame');
-  assert.equal(frame.parentElement,f.node('#replay-photo-stage'));
-  f.node('#replay-view-photos').onclick();
-  f.resize(false);
-  assert.equal(frame.parentElement,f.node('#replay-photo-slot'));
-  assert.equal(f.node('#replay-map').inert,false);
-  f.resize(true);
-  assert.equal(frame.parentElement,f.node('#replay-photo-stage'));
-  assert.equal(f.node('.replay-player').dataset.replayView,'photos');
-  assert.equal(f.node('#replay-photo-frame'),frame,'rotation must preserve the loaded image element');
 });

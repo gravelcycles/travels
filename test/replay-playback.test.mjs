@@ -8,7 +8,7 @@ function fixture(){
  const timers=new Map(),elements=new Map();let id=0,frames=0;
  const context=vm.createContext({replayAutoplayTimer:null,replayPlaying:false,replayFrame:null,replayLastTimestamp:null,replayCompleted:false,
   replayTimeline:[{id:'d'}],replayJourneyId:'trip',journey:{id:'trip'},replayUtils:{},document:{hidden:false},
-  replayDialog:{open:false,showModal(){this.open=true;}},replayMomentDay:()=>({id:'d'}),updateReplayControls(){},renderReplayMoment(){},initReplayMap(){},replayTick(){},
+  replayDialog:{open:false,showModal(){this.open=true;}},replayMomentDay:()=>({id:'d'}),updateReplayControls(){},renderReplayMoment(){},initReplayMap(){},replayTick(){},refreshPreloads(){},
   $:selector=>{if(!elements.has(selector))elements.set(selector,{focus(){}});return elements.get(selector);},
   window:{setTimeout(callback,delay){timers.set(++id,{callback,delay});return id;},clearTimeout:id=>timers.delete(id),requestAnimationFrame:()=>++frames,cancelAnimationFrame(){}}});
  vm.runInContext(['cancelReplayAutoplay','scheduleReplayAutoplay','pauseReplay','startReplay','toggleReplay','openReplay'].map(fn).join('\n'),context);
@@ -29,16 +29,12 @@ test('closing or hiding Replay prevents a queued timer from starting playback',(
   const f=fixture();f.run('openReplay()');const timer=[...f.timers.values()][0];f.run(change);timer.callback();assert.equal(f.context.replayPlaying,false);
  }
 });
-test('Replay waits for image readiness, ignores placeholder loads and reuses a ready photo',()=>{
- const image=Object.assign(new EventTarget(),{src:'blob:cached',complete:true,naturalWidth:3200,dataset:{photoState:'ready'}}),elements=new Map([['#replay-photo',image]]),photo={protected:true,alt:'Test'},requested=[];
- const context=vm.createContext({replayPhotoToken:0,replayPhotoReady:false,replayLastTimestamp:5,replayTimeline:[],replayMomentIndex:0,photo,
-  $:selector=>{if(!elements.has(selector))elements.set(selector,{style:{setProperty(){}}});return elements.get(selector);},
-  window:{JOURNEY_ATLAS_AUTH:{isProtected:()=>true,unlocked:true,setImage(...args){requested.push(args);}}},replayLeadPhoto:()=>null,replayMomentDay(){},pauseReplay(){},preloadPhoto(){},refreshPreloads(){}});
- vm.runInContext(fn('renderReplayPhoto')+'\nrenderReplayPhoto(photo)',context);assert.equal(context.replayPhotoReady,true);assert.equal(elements.get('#replay-photo-status').textContent,'');
- assert.equal(requested[0][2],Infinity);assert.equal(requested[0][3].fullOnly,true);
- image.src='data:image/webp;base64,blur';image.dataset.photoState='loading';vm.runInContext('renderReplayPhoto(photo)',context);image.dispatchEvent(new Event('load'));assert.equal(context.replayPhotoReady,false);
- image.src='blob:loaded';image.dispatchEvent(new Event('load'));assert.equal(context.replayPhotoReady,false,'A source load alone must not start playback');
- image.dataset.photoState='ready';image.dispatchEvent(new Event('atlas-photo-state'));assert.equal(context.replayPhotoReady,true);
+test('Replay time advances independently of photo readiness',()=>{
+ const context=vm.createContext({replayPlaying:true,replayDialog:{open:true},replayLastTimestamp:100,replayElapsed:0,replaySpeed:2,replayProgress:0,
+  currentReplayMoment:()=>({type:'segment'}),replayMomentDuration:()=>1000,prefersReducedMotion:()=>false,setReplayProgress(){},
+  window:{requestAnimationFrame:()=>1},replayFrame:null});
+ vm.runInContext(fn('replayTick')+'\nreplayTick(150)',context);
+ assert.equal(context.replayElapsed,100);assert.equal(context.replayFrame,1);
 });
 test('public photo decoding cannot reveal an abandoned selection and cached revisits skip animation',async()=>{
  const image=Object.assign(new EventTarget(),{dataset:{},src:'',complete:false,naturalWidth:0,classList:{add(){}}}),decodes=[];

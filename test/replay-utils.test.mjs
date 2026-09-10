@@ -14,7 +14,7 @@ test("partialLine follows the full geometry instead of cutting to the endpoint",
   assert.deepEqual(partialLine(route, 1), route);
 });
 
-test("createTimeline preserves day and leg order and adds only located photo pauses", () => {
+test("createTimeline preserves day and leg order without adding photo pauses", () => {
   const journey = {
     days: [
       { id: "d1", segmentIds: ["s2", "s1"], photoOrder: ["p2", "p1"] },
@@ -32,11 +32,10 @@ test("createTimeline preserves day and leg order and adds only located photo pau
   assert.deepEqual(timeline.map((moment) => moment.id), [
     "d1:segment:s2",
     "d1:segment:s1",
-    "d1:photo:p1",
     "d2:day",
     "d3:day"
   ]);
-  assert.equal(firstMomentIndexForDay(timeline, "d2"), 3);
+  assert.equal(firstMomentIndexForDay(timeline, "d2"), 2);
 });
 
 test("partialLine always returns valid two-point geometry at the start", () => {
@@ -47,12 +46,12 @@ test("partialLine always returns valid two-point geometry at the start", () => {
 test("reduced motion renders route moments at their completed position", () => {
   assert.equal(initialMomentProgress({ type: "segment" }, false), 0);
   assert.equal(initialMomentProgress({ type: "segment" }, true), 1);
-  assert.equal(initialMomentProgress({ type: "photo" }, false), 1);
+  assert.equal(initialMomentProgress({ type: "day" }, false), 1);
 });
 
-test('curated chapters preserve ordered legs and drop hidden photos safely', () => {
+test('curated chapters preserve ordered legs and ignore photo choices', () => {
   const {createTimeline,routePhase}=globalThis.JOURNEY_ATLAS_REPLAY;
-  const j={days:[{id:'day',segmentIds:['out','return']}],photos:[{id:'hidden',dayId:'day',hidden:true}],replayMoments:[{id:'moment',dayId:'day',segmentIds:['out','return'],photoId:'hidden',caption:'A return trip',duration:8}]};
+  const j={days:[{id:'day',segmentIds:['out','return']}],photos:[{id:'photo',dayId:'day',lng:9,lat:47}],replayMoments:[{id:'moment',dayId:'day',segmentIds:['out','return'],photoId:'photo',caption:'A return trip',duration:8}]};
   const timeline=createTimeline(j); assert.equal(timeline.length,1);assert.equal(timeline[0].photoId,undefined);
   assert.equal(routePhase(timeline[0],0).segmentId,'out');assert.equal(routePhase(timeline[0],.6).segmentId,'return');
   assert.equal(routePhase(timeline[0],1).progress,1);assert.equal(routePhase(timeline[0],.1).completed.length,0);
