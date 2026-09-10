@@ -36,7 +36,7 @@ legal candidates by distance, name visibility and a softer basemap-text cost.
 Place the selected destination first. Prefer nearby compact labels over long
 name callouts; when no position fits, omit that label until zoom provides space.
 The complete day list remains available. Offscreen places are not pulled onto
-the viewport. Fine, neutral association lines connect displaced labels to their
+the viewport. Neutral 2 px association lines connect displaced labels to their
 actual points; they are not transport lines and do not intercept clicks.
 
 While panning/zooming, labels hide and reappear at settled placements. This

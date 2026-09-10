@@ -172,9 +172,9 @@ including photo, Replay, day preview and Studio maps. During desktop/phone QA,
 check that credits stay closed after tiles load and can still be opened and
 closed with the info button; route framing needs no extra attribution margin.
 
-The map has no day-number bubbles or connector lines; select days through the
-journal and day navigation. Check rail stops at desktop and phone sizes after
-changing routes. Intermediate rail stops have 4 px orange centers and white rims
+Destination/day labels use neutral 2 px connectors to their mapped locations;
+select a label or use the journal/day navigation. Check label placement and
+rail stops at desktop and phone sizes after changing routes. Intermediate rail stops have 4 px orange centers and white rims
 spanning the selected rail line's 7.2 px width. Both endpoints of every train
 leg use larger 10 px dots, including transfer stations and turnaround points.
 Shared endpoints combine at the same location and stay large if another leg

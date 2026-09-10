@@ -562,7 +562,7 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 
 /* Destination labels use a neutral palette so transport keeps its own colors. */
 .location-label-anchor { width:1px; height:1px; pointer-events:none; }
-.location-label-anchor::before { content:""; position:absolute; left:0; top:0; width:var(--location-leader-length,0); height:1px; background:#58757999; box-shadow:0 0 0 1px #fbfaf699; transform:rotate(var(--location-leader-angle,0rad)); transform-origin:0 50%; pointer-events:none; }
+.location-label-anchor::before { content:""; position:absolute; left:0; top:-.5px; width:var(--location-leader-length,0); height:2px; background:#58757999; box-shadow:0 0 0 1px #fbfaf699; transform:rotate(var(--location-leader-angle,0rad)); transform-origin:0 50%; pointer-events:none; }
 .location-label { position:absolute; left:0; top:0; transform:translate(-50%,-50%); display:flex; align-items:center; gap:7px; width:max-content; max-width:200px; min-width:44px; height:32px; padding:0 10px; border:1px solid #587579; border-radius:7px; background:#fbfaf6; color:#153238; box-shadow:0 2px 5px #15323820; font-size:12px; line-height:1; font-weight:650; cursor:pointer; pointer-events:auto; }
 .location-label-days { flex:none; font-size:10px; font-weight:600; color:#39575c; }
 .location-label-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
