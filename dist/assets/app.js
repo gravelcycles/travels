@@ -392,6 +392,10 @@
   }
 
   function inspectSegment(segmentId, pinned = false) {
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      clearSegmentInspection(true);
+      return;
+    }
     const segment = segmentById(segmentId);
     const day = dayForSegment(segmentId);
     if (!segment || !day) return;
@@ -512,7 +516,7 @@
     });
     mainMap.on("mousemove", (event) => {
       // Revealing the map beneath a day-list tap can emit compatibility mouse
-      // events. Mobile route details require an intentional route tap.
+      // events. Mobile route taps select the day without a tooltip.
       if (!routeHoverEnabled()) return;
       const feature = routeFeatureAtPoint(event.point);
       mainMap.getCanvas().style.cursor = feature ? "pointer" : "";
@@ -791,7 +795,6 @@
   }
 
   function renderOverview() {
-    $("#site-badge").textContent = journey.badge || "ATLAS DEMO";
     $("#journey-kicker").textContent = journey.kicker;
     $("#journey-title").textContent = journey.title;
     $("#journey-subtitle").textContent = journey.subtitle;
@@ -1684,7 +1687,6 @@
   $("#show-all-photos").addEventListener("click", () => {
     openAlbum();
   });
-  $("#open-notes").addEventListener("click", () => $("#notes-dialog").showModal());
   $("#close-route-inspector").addEventListener("click", () => clearSegmentInspection(true));
   const viewerImage = $('#modal-photo');
   new ResizeObserver(sizeViewerBackdrop).observe($('#viewer-photo-frame'));

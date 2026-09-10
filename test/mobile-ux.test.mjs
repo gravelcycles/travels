@@ -36,12 +36,12 @@ test('zoom panning stays inside the photograph and does not move letterboxed axe
 
 import vm from 'node:vm';
 import fs from 'node:fs';
-function viewerFixture({deferredHistory=false} = {}) {
+function viewerFixture({deferredHistory=false, reducedMotion=false} = {}) {
   const nodes = new Map(), events = new Map(), timers = new Map(), frames = new Map(), traversals = [], queries = new Map();
   let clock = 0, timer = 0, controller;
   function node(selector) {
     if (!nodes.has(selector)) nodes.set(selector, {
-      dataset:{},style:{setProperty(name,value){this[name]=value;}},classList:{names:new Set(),add(name){this.names.add(name);},remove(name){this.names.delete(name);},contains(name){return this.names.has(name);}},getBoundingClientRect(){return {width:390,height:706};},clientWidth:390,clientHeight:706,offsetHeight:160,
+      dataset:{},style:{setProperty(name,value){this[name]=value;}},classList:{names:new Set(),add(name){this.names.add(name);},remove(name){this.names.delete(name);},contains(name){return this.names.has(name);}},getBoundingClientRect(){return {left:0,top:0,width:390,height:706};},clientWidth:390,clientHeight:706,offsetHeight:160,naturalWidth:1200,naturalHeight:800,
       open:false,hidden:false,handlers:new Map(),captures:new Map(),textContent:'',inert:false,
       setAttribute(name,value){this[name]=value;},removeAttribute(name){delete this[name];},children:[],append(child){child.parentElement=this;this.children.push(child);},focus(){},setPointerCapture(){},
       querySelectorAll(){return [];},closest(query){return selector.startsWith('#mobile-') && (query==='button' || query==='button:not(#mobile-photo-location)' && selector!=='#mobile-photo-location')?this:null;},
@@ -52,16 +52,16 @@ function viewerFixture({deferredHistory=false} = {}) {
   }
   const days=[{id:'one',number:1,date:'Today',title:'One'},{id:'two',number:2,date:'Tomorrow',title:'Two'}];
   const photos=[0,1,2].map(i=>({id:`p${i}`,lng:8+i,lat:47}));
-  let day=days[0], index=0, locations=0, pauses=0, tabs=0;
+  let day=days[0], index=0, locations=0, pauses=0, tabs=0, scope='day';
   const stack=[{}]; let cursor=0;
   const history={get state(){return stack[cursor];},replaceState(state){stack[cursor]=structuredClone(state);},pushState(state){stack.splice(++cursor);stack[cursor]=structuredClone(state);},back(){this.go(-1);},go(delta){const traverse=()=>{cursor=Math.max(0,Math.min(stack.length-1,cursor+delta));events.get('popstate')?.({state:this.state});};if(deferredHistory)traversals.push(traverse);else traverse();}};
-  const api={day:()=>day,days:()=>days,scope:()=> 'day',title:()=> 'Journey',dayInfo:()=>({route:'Route',meta:'Train',count:3}),
-    tab:value=>{tabs++;node('.atlas-shell').dataset.mobileTab=value;},selectDay:id=>{day=days.find(d=>d.id===id);},preview(){},stepDay(){},album(){},overview(){},replay(){},
+  const api={day:()=>day,days:()=>days,scope:()=>scope,title:()=> 'Journey',dayInfo:()=>({route:'Route',meta:'Train',count:3}),
+    tab:value=>{tabs++;node('.atlas-shell').dataset.mobileTab=value;},selectDay:id=>{day=days.find(d=>d.id===id);scope='day';},preview(){},stepDay(){},album(){},overview(){scope='journey';controller.renderDay();},replay(){},
     location(){locations++;},pauseLocation(){pauses++;},clearImage(){},loadImage(){},
     move(delta){index+=delta;update();},selectPhoto(value){index=value;update();},
     openDay(id=day.id){controller.open();day=days.find(d=>d.id===id);index=0;node('#photo-dialog').open=true;update();}};
   const context=vm.createContext({window:{addEventListener:(name,fn)=>events.set(name,fn)},document:{querySelector:node,createElement:()=>node(`image${nodes.size}`)},
-    matchMedia:query=>{if(!queries.has(query))queries.set(query,{matches:query.includes('900px'),addEventListener(_name,fn){this.changed=fn;}});return queries.get(query);},ResizeObserver:class{observe(){}},
+    matchMedia:query=>{if(!queries.has(query))queries.set(query,{matches:query.includes('900px') || reducedMotion && query.includes('reduced-motion'),addEventListener(_name,fn){this.changed=fn;}});return queries.get(query);},ResizeObserver:class{observe(){}},
     history,location:{href:'https://example.test/day'},performance:{now:()=>clock},requestAnimationFrame:fn=>{frames.set(++timer,fn);return timer;},cancelAnimationFrame:id=>frames.delete(id),
     setTimeout:fn=>{timers.set(++timer,fn);return timer;},clearTimeout:id=>timers.delete(id)});
   vm.runInContext(fs.readFileSync(new URL('../dist/assets/mobile-ux.js',import.meta.url),'utf8'),context);
@@ -82,12 +82,12 @@ function viewerFixture({deferredHistory=false} = {}) {
     if(!event.stopped){currentTarget.handlers.get('click')?.(event);target.onclick?.(event);}
     return event;
   }
-  return {api,node,controller,history,drag,click,resize(mobile){const query=queries.get('(max-width: 900px)');query.matches=mobile;query.changed();},get tabs(){return tabs;},get pauses(){return pauses;},flushHistory(){while(traversals.length)traversals.shift()();},get index(){return index;},get locations(){return locations;},flush(){const raf=[...frames.values()];frames.clear();raf.forEach(fn=>fn());const work=[...timers.values()];timers.clear();work.forEach(fn=>fn());}};
+  return {api,node,controller,history,drag,click,resize(mobile){const query=queries.get('(max-width: 900px)');query.matches=mobile;query.changed();},get tabs(){return tabs;},get pauses(){return pauses;},flushHistory(){while(traversals.length)traversals.shift()();},get index(){return index;},get locations(){return locations;},flush(elapsed=300){clock+=elapsed;const raf=[...frames.values()];frames.clear();raf.forEach(fn=>fn(clock));const work=[...timers.values()];timers.clear();work.forEach(fn=>fn());}};
 }
 
 test('swiping, opening location and returning from it keep the same selected photo',()=>{
   const f=viewerFixture();f.api.openDay();f.drag('.photo-stage',-150,4);f.flush();assert.equal(f.index,1);
-  f.drag('#mobile-photo-location',3,-150);assert.equal(f.locations,1);assert.equal(f.history.state.mobileAtlas.layer,'location');
+  f.drag('.photo-stage',3,-150);assert.equal(f.locations,1);assert.equal(f.history.state.mobileAtlas.layer,'location');
   assert.equal(f.node('#photo-map').handlers.size,0,'photo gestures must not intercept the map');
   f.drag('.photo-location-heading',3,150);assert.equal(f.history.state.mobileAtlas.layer,'photo');assert.equal(f.index,1);
   assert.equal(f.node('#photo-location-panel').inert,true);
@@ -146,7 +146,13 @@ test('swipe-neighbor placeholders stay hidden until mobile photos exist and when
 test('single taps never hide controls; double taps still zoom',()=>{
   const f=viewerFixture();f.api.openDay();f.click('.photo-stage');
   assert.equal(f.node('.photo-viewer').dataset.chrome,'true');
-  f.click('.photo-stage');assert.match(f.node('#modal-photo').style.transform,/scale\(2\)/);
+  f.click('.photo-stage');
+  assert.match(f.node('#modal-photo').style.transform,/scale\(1\)/,'zoom starts at the existing size');
+  f.flush(150);
+  const midway=f.node('#modal-photo').style.transform;
+  assert.ok(Number(midway.match(/scale\(([^)]+)\)/)[1]) > 1);
+  assert.ok(Number(midway.match(/scale\(([^)]+)\)/)[1]) < 2);
+  f.flush(150);assert.match(f.node('#modal-photo').style.transform,/translate3d\(15px,0px,0\) scale\(2\)/);
   assert.equal(f.node('.photo-viewer').dataset.chrome,'true');
 });
 
@@ -174,13 +180,13 @@ test('Photos opens the day grid, while the Day button leaves every photo layer f
 
 
 
-test('a closed location stays closed through upward photo drags, photo changes and grid round trips',()=>{
+test('a closed location stays closed through sideways photo swipes and grid round trips',()=>{
   const f=viewerFixture({deferredHistory:true});f.controller.openGrid('one');
   f.api.selectPhoto(1);f.controller.gridSelected();f.click('#mobile-photo-location');
   assert.equal(f.controller.locationVisible(),true);
   f.click('#mobile-location-close','.photo-location-heading');
-  f.drag('.photo-stage',0,-150);
-  assert.equal(f.controller.locationVisible(),false,'only the explicit location handle reveals the panel');
+  f.drag('.photo-stage',-100,-20);
+  assert.equal(f.controller.locationVisible(),false,'sideways swipes do not reveal location');
   assert.equal(f.node('.photo-viewer').dataset.locationVisible,'false');
   f.drag('.photo-stage',-150,-35);f.click('#mobile-photo-grid');
   f.api.selectPhoto(0);f.controller.gridSelected();f.flushHistory();
@@ -212,4 +218,44 @@ test('the bottom Day button opens and dismisses the day picker',()=>{
   f.click('#mobile-day-picker');f.controller.tabChanged();
   assert.equal(f.node('.atlas-shell').dataset.mobileTab,'map');
   assert.equal(f.node('#mobile-day-picker')['aria-expanded'],'false');
+});
+
+
+test('double-tap zoom respects reduced motion and zooms back to the whole photo',()=>{
+  const f=viewerFixture({reducedMotion:true});f.api.openDay();
+  f.click('.photo-stage');f.click('.photo-stage');
+  assert.match(f.node('#modal-photo').style.transform,/scale\(2\)/);
+  f.click('.photo-stage');f.click('.photo-stage');
+  assert.match(f.node('#modal-photo').style.transform,/translate3d\(0px,0px,0\) scale\(1\)/);
+});
+
+test('a pan interrupts zoom at its current size, and changing photos cancels the animation',()=>{
+  const f=viewerFixture();f.api.openDay();f.click('.photo-stage');f.click('.photo-stage');f.flush(100);
+  const size=f.node('#modal-photo').style.transform.match(/scale\(([^)]+)\)/)[1];
+  f.drag('.photo-stage',30,-100);f.flush();
+  assert.equal(f.node('#modal-photo').style.transform.match(/scale\(([^)]+)\)/)[1],size);
+  assert.equal(f.controller.locationVisible(),false,'a zoomed photo pans instead of opening location');
+  f.api.selectPhoto(1);f.flush();assert.match(f.node('#modal-photo').style.transform,/scale\(1\)/);
+});
+
+test('upward photo drags reopen location after dismissal without stale history changing the photo',()=>{
+  const f=viewerFixture({deferredHistory:true});f.api.openDay();
+  f.drag('.photo-stage',0,-150);assert.equal(f.controller.locationVisible(),true);
+  f.click('#mobile-location-close','.photo-location-heading');
+  f.drag('.photo-stage',0,-150);f.flushHistory();
+  assert.equal(f.controller.locationVisible(),true);assert.equal(f.index,0);
+  assert.equal(f.node('#photo-location-panel').inert,false);
+  f.drag('.photo-stage',0,150);assert.equal(f.controller.locationVisible(),false);
+});
+
+test('All days restores the whole map, saves its scope and supports Back to the selected day',()=>{
+  const f=viewerFixture();f.controller.renderDay();
+  assert.equal(f.node('#mobile-back .button-label').textContent,'All days');
+  f.click('#mobile-back');
+  assert.equal(f.api.scope(),'journey');assert.equal(f.node('.atlas-shell').dataset.mobileTab,'map');
+  assert.equal(f.node('.atlas-shell').dataset.mapScope,'journey');
+  assert.equal(f.history.state.mobileAtlas.scope,'journey');
+  assert.equal(f.node('#mobile-day-title').textContent,'Journey');
+  f.history.back();assert.equal(f.api.scope(),'day');
+  assert.equal(f.node('.atlas-shell').dataset.mapScope,'day');
 });
