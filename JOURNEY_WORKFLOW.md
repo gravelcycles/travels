@@ -147,13 +147,13 @@ ferries stay on navigable water, and roads/trails stay on land. More points are
 not automatically more accurate; the important thing is using the correct
 network and enough meaningful anchors to disambiguate it.
 
-Check day bubbles at desktop and phone sizes after changing routes. The shared
-viewer keeps their full outline clear of transit strokes and joins each leader
-to the mapped arrival vertex for the day's destination (the place coordinate
-for a rest day). Intermediate rail stops have 4 px orange centers and white rims
-spanning the selected rail line's 7.2 px width. The day's overall start and end
-use larger 10 px dots, including on mixed-mode days; a round trip combines them
-at the shared location. Transfers remain small. Intermediate display dots snap
+The map has no day-number bubbles or connector lines; select days through the
+journal and day navigation. Check rail stops at desktop and phone sizes after
+changing routes. Intermediate rail stops have 4 px orange centers and white rims
+spanning the selected rail line's 7.2 px width. Both endpoints of every train
+leg use larger 10 px dots, including transfer stations and turnaround points.
+Shared endpoints combine at the same location and stay large if another leg
+also lists that station as an intermediate stop. Intermediate display dots snap
 to that leg's line without changing source stop coordinates or reviewed
 geometry. Stop names and endpoint roles remain available on hover.
 

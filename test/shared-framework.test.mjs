@@ -158,25 +158,25 @@ test('shared browser code and HTML templates contain no concrete trip IDs or URL
   }
 });
 
-test('a newly generated draft inherits map anchors as route data is added', t => {
+test('a newly generated draft inherits large endpoints for every train leg as route data is added', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const context = vm.createContext({ journey: draft,
-    activeDay: () => draft.days[0],
-    destinationForDay: day => draft.places.find(place => place.id === (day.destinationId || day.placeId)),
     placeById: id => draft.places.find(place => place.id === id),
     segmentsForDay: day => day.segmentIds.map(id => draft.segments.find(segment => segment.id === id)),
     segmentCoordinates: segment => segment.geometry
   });
-  vm.runInContext(appFunction('dayMarkerPlace') + appFunction('groupedDayMarkers') + appFunction('dayMapStops') + appFunction('railStopCoordinate'), context);
-  assert.equal(vm.runInContext('groupedDayMarkers().length', context), 0, 'Empty drafts invent no map location');
+  vm.runInContext(appFunction('dayMapStops') + appFunction('railStopCoordinate'), context);
   assert.equal(context.dayMapStops(null,draft.days[0]).length,0, 'Empty drafts invent no endpoints');
   draft.places.push({id:'new-start',name:'New start',lng:139.7,lat:35.6},{id:'new-arrival',name:'New arrival',lng:139.8,lat:35.7});
   draft.segments.push({id:'new-leg',mode:'train',from:'new-start',to:'new-arrival',geometry:[[139.7,35.6],[139.801,35.701]]});
   draft.days[0].placeId = 'new-arrival'; draft.days[0].segmentIds = ['new-leg'];
-  const anchor = vm.runInContext('groupedDayMarkers()[0].place', context);
-  assert.equal(anchor.lng,139.801); assert.equal(anchor.lat,35.701);
   const stops = context.dayMapStops(null,draft.days[0]);
+  assert.equal(stops[1].coordinate[0],139.801); assert.equal(stops[1].coordinate[1],35.701);
   assert.deepEqual(Array.from(stops,stop=>stop.endpoint),['Start','End']);
+  draft.places.push({id:'new-finish',name:'New finish',lng:139.9,lat:35.8});
+  draft.segments.push({id:'new-connection',mode:'train',from:'new-arrival',to:'new-finish',geometry:[[139.801,35.701],[139.9,35.8]]});
+  draft.days[0].segmentIds.push('new-connection');
+  assert.deepEqual(Array.from(context.dayMapStops(null,draft.days[0]),stop=>stop.endpoint),['Start','Start and end','End']);
   assert.deepEqual(assets(renderJourneyPage(root,draft,{preview:true})),assets(read(root,'dist/switzerland-italy.html')));
 });
 

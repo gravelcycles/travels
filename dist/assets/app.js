@@ -56,7 +56,6 @@
   let viewerMapReady = false;
   let replayMapReady = false;
   let mainDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
-  let mainDayMarkers = [];
   let viewerCameraPhoto = null;
   let viewerRouteKey = null, viewerPhotoMarkers = [];
   let preloadSelection = null, preloadDirection = 1;
@@ -507,7 +506,6 @@
     };
     mainMap.on("styledata", finishMainMapSetup);
     mainMap.on("load", finishMainMapSetup);
-    mainMap.on("moveend", refreshDayMarkerOffsets);
     finishMainMapSetup();
     mainMap.on("click", (event) => {
       const feature = routeFeatureAtPoint(event.point);
@@ -611,172 +609,6 @@
     decorations.layerIds.push(casingId, lineId);
   }
 
-  function dayMarkerPlace(day) {
-    const place = destinationForDay(day);
-    if (!place) return null;
-    const segments = segmentsForDay(day);
-    const arrival = segments.find(segment => segment.to === place.id);
-    const departure = segments.find(segment => segment.from === place.id);
-    const coordinate = arrival ? segmentCoordinates(arrival).at(-1)
-      : departure ? segmentCoordinates(departure)[0] : [place.lng, place.lat];
-    return { ...place, lng: coordinate[0], lat: coordinate[1] };
-  }
-
-  function groupedDayMarkers() {
-    const groups = new Map();
-    journey.days.forEach((day) => {
-      const place = dayMarkerPlace(day);
-      if (!place) return;
-      const key = place.id;
-      if (!groups.has(key)) groups.set(key, { place, days: [] });
-      if (day.id === activeDay().id) groups.get(key).place = place;
-      groups.get(key).days.push(day);
-    });
-    return [...groups.values()];
-  }
-
-  function markerLabel(days) {
-    const numbers = days.map((day) => day.number);
-    const consecutive = numbers.every((number, index) => index === 0 || number === numbers[index - 1] + 1);
-    if (numbers.length === 1) return String(numbers[0]).padStart(2, "0");
-    if (consecutive) return `${String(numbers[0]).padStart(2, "0")}–${String(numbers[numbers.length - 1]).padStart(2, "0")}`;
-    return `${String(numbers[0]).padStart(2, "0")} +${numbers.length - 1}`;
-  }
-
-  function markerBox(center, label) {
-    // Include the selected bubble's outer ring, as well as multi-day labels.
-    const width = Math.max(32, 16 + label.length * 6.5) + 10;
-    return { left: center.x - width / 2, right: center.x + width / 2, top: center.y - 21, bottom: center.y + 21 };
-  }
-
-  function boxesOverlap(first, second, gap = 6) {
-    return first.left < second.right + gap && first.right > second.left - gap && first.top < second.bottom + gap && first.bottom > second.top - gap;
-  }
-
-  function markerRouteObstacles() {
-    const selectedSegments = new Set(activeDay().segmentIds);
-    return journey.segments.flatMap(segment => {
-      const width = (modeStyles[segment.mode]?.width || 4.7) + (selectedSegments.has(segment.id) ? 5.2 : 3.8);
-      const points = segmentCoordinates(segment).map(coordinate => mainMap.project(coordinate));
-      return points.slice(1).map((end, index) => ({ start: points[index], end, padding: width / 2 + 3 }));
-    });
-  }
-
-  function routeCrossesMarkerBox(route, box) {
-    // Clip a line segment against the padded bubble rectangle. Checking vertices
-    // alone misses long straight legs that pass right through a bubble.
-    let near = 0, far = 1;
-    for (const [axis, low, high] of [['x', box.left, box.right], ['y', box.top, box.bottom]]) {
-      const start = route.start[axis], delta = route.end[axis] - start;
-      const min = low - route.padding, max = high + route.padding;
-      if (delta === 0) { if (start < min || start > max) return false; }
-      else {
-        const first = (min - start) / delta, last = (max - start) / delta;
-        near = Math.max(near, Math.min(first, last));
-        far = Math.min(far, Math.max(first, last));
-        if (near > far) return false;
-      }
-    }
-    return true;
-  }
-
-  function markerOffsetFor(place, label, occupiedBoxes, routeObstacles) {
-    const point = mainMap.project([place.lng, place.lat]);
-    const canvas = mainMap.getCanvas();
-    const compact = mainMap.getZoom() < 7;
-    const radius = compact ? 34 : 42;
-    const candidates = [
-      [0, -radius], [radius, -Math.round(radius * 0.7)], [-radius, -Math.round(radius * 0.7)],
-      [radius, Math.round(radius * 0.7)], [-radius, Math.round(radius * 0.7)], [0, radius],
-      [radius + 12, 0], [-(radius + 12), 0],
-      [radius * 2, 0], [-radius * 2, 0], [0, -radius * 2], [0, radius * 2],
-      [radius * 2, -radius], [-radius * 2, -radius]
-    ];
-    // Dense junctions need more than the nearest few positions.
-    for (const distance of [radius * 2, radius * 3, radius * 4]) {
-      for (let step = 0; step < 16; step++) {
-        const angle = step * Math.PI / 8;
-        candidates.push([Math.round(Math.sin(angle) * distance), -Math.round(Math.cos(angle) * distance)]);
-      }
-    }
-    let best = { offset: candidates[0], score: Number.POSITIVE_INFINITY, box: null };
-    const legendRoom = Math.max(76, canvas.getBoundingClientRect().bottom - $("#map-legend").getBoundingClientRect().top + 12);
-    const labelLayerIds = (mainMap.getStyle().layers || [])
-      .filter((layer) => layer.type === "symbol" && layer.layout?.["text-field"] && layer.layout.visibility !== "none")
-      .map((layer) => layer.id);
-
-    candidates.forEach((offset, index) => {
-      const center = { x: point.x + offset[0], y: point.y + offset[1] };
-      const box = markerBox(center, label);
-      let score = index * 0.05;
-      if (box.left < 8 || box.top < 60 || box.right > canvas.clientWidth - 8 || box.bottom > canvas.clientHeight - legendRoom) score += 100000;
-      if (routeObstacles.some(route => routeCrossesMarkerBox(route, box))) score += 10000;
-      occupiedBoxes.forEach((occupied) => { if (boxesOverlap(box, occupied)) score += 40; });
-      try {
-        if (labelLayerIds.length) {
-          score += mainMap.queryRenderedFeatures([[box.left, box.top], [box.right, box.bottom]], { layers: labelLayerIds }).length * 12;
-        }
-      } catch (_error) {
-        // The next map move retries after all style layers are available.
-      }
-      if (score < best.score) best = { offset, score, box };
-    });
-    occupiedBoxes.push(best.box);
-    return { offset: best.offset, compact };
-  }
-
-  function applyDayMarkerOffset(entry, placement) {
-    const [x, y] = placement.offset;
-    const length = Math.hypot(x, y);
-    const angle = Math.atan2(-y, -x) * 180 / Math.PI;
-    entry.marker.setOffset(placement.offset);
-    entry.element.classList.toggle("compact", placement.compact);
-    entry.element.style.setProperty("--leader-length", `${length}px`);
-    entry.element.style.setProperty("--leader-angle", `${angle}deg`);
-  }
-
-  function refreshDayMarkerOffsets() {
-    if (!mainMapReady || !mainDayMarkers.length) return;
-    const occupiedBoxes = [];
-    const routeObstacles = markerRouteObstacles();
-    mainDayMarkers.forEach((entry) => applyDayMarkerOffset(entry, markerOffsetFor(entry.place, entry.label, occupiedBoxes, routeObstacles)));
-  }
-
-  function addDayMarkers() {
-    const occupiedBoxes = [];
-    const routeObstacles = markerRouteObstacles();
-    groupedDayMarkers()
-      .map(group => ({ ...group, days: mapScope === "day" ? group.days.filter(day => day.id === activeDayId) : group.days }))
-      .filter(group => group.days.length)
-      .forEach((group) => {
-      const containsActive = group.days.some((day) => day.id === activeDayId);
-      const label = markerLabel(group.days);
-      const element = document.createElement("div");
-      element.className = "day-marker-anchor";
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = `day-marker ${containsActive ? "selected" : ""}`;
-      button.textContent = label;
-      button.title = group.days.map((day) => `Day ${day.number}: ${day.title}`).join("\n");
-      button.setAttribute("aria-label", `${group.place.name}: ${group.days.map((day) => `day ${day.number}`).join(", ")}`);
-      button.addEventListener("click", (event) => {
-        event.stopPropagation();
-        const activeIndex = group.days.findIndex((day) => day.id === activeDayId);
-        const next = group.days[activeIndex >= 0 ? (activeIndex + 1) % group.days.length : 0];
-        setActiveDay(next.id, true);
-      });
-      element.append(button);
-      const placement = markerOffsetFor(group.place, label, occupiedBoxes, routeObstacles);
-      const marker = new maplibregl.Marker({ element, anchor: "center", offset: placement.offset })
-        .setLngLat([group.place.lng, group.place.lat])
-        .addTo(mainMap);
-      const entry = { marker, element, place: group.place, label };
-      applyDayMarkerOffset(entry, placement);
-      mainDayMarkers.push(entry);
-      mainDecorations.markers.push(marker);
-    });
-  }
-
   function railStopCoordinate(map, stop, coordinates) {
     const point = map.project([stop.lng, stop.lat]);
     let nearest = null, distance = Infinity;
@@ -801,27 +633,19 @@
       const to = placeById(segment.to);
       const coordinates = segmentCoordinates(segment);
       const stops = [
-        { name: from.name, coordinate: coordinates[0] },
+        { name: from.name, coordinate: coordinates[0], endpoint: "Start" },
         ...(segment.stops || []).map(stop => ({ ...stop, coordinate: railStopCoordinate(map, stop, coordinates) })),
-        { name: to.name, coordinate: coordinates.at(-1) }
+        { name: to.name, coordinate: coordinates.at(-1), endpoint: "End" }
       ];
       stops.forEach((stop) => {
-        byLocation.set(keyFor(stop.coordinate), stop);
+        const key = keyFor(stop.coordinate), previous = byLocation.get(key);
+        // Every train leg gets large endpoints. Shared transfer/return points
+        // stay large even if another leg also lists them as an intermediate stop.
+        const endpoint = previous?.endpoint && stop.endpoint && previous.endpoint !== stop.endpoint
+          ? "Start and end" : previous?.endpoint || stop.endpoint;
+        byLocation.set(key, { ...stop, endpoint });
       });
     });
-    if (segments.length) {
-      // Start/end belong to the whole day, including mixed-mode days. A transfer
-      // between legs remains a small stop; a round trip has one combined marker.
-      const first = segments[0], last = segments.at(-1);
-      const endpoints = [
-        { name: placeById(first.from).name, coordinate: segmentCoordinates(first)[0], endpoint: "Start" },
-        { name: placeById(last.to).name, coordinate: segmentCoordinates(last).at(-1), endpoint: "End" }
-      ];
-      endpoints.forEach(stop => {
-        const key = keyFor(stop.coordinate), previous = byLocation.get(key);
-        byLocation.set(key, { ...stop, endpoint: previous?.endpoint ? "Start and end" : stop.endpoint });
-      });
-    }
     return [...byLocation.values()];
   }
 
@@ -848,7 +672,6 @@
       return;
     }
     clearDecorations(mainMap, mainDecorations);
-    mainDayMarkers = [];
     const selectedSegments = new Set(activeDay().segmentIds);
     [...journey.segments]
       .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id)))
@@ -862,7 +685,6 @@
           opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.78)
         });
       });
-    addDayMarkers();
     if (mapScope === "day") addDayStopMarkers(mainMap, mainDecorations, activeDay());
     if (inspectedSegmentId) setInspectedFeatureState(inspectedSegmentId, true);
     renderDayNavigator();
