@@ -115,3 +115,40 @@ test('a collapsed mobile location panel does not schedule hidden viewer map work
   vm.runInContext(functionSource('syncViewerMap'),context);
   assert.doesNotThrow(()=>vm.runInContext('syncViewerMap()',context),'hidden maps must return before checking readiness or scheduling retries');
 });
+
+test('choosing a day clears an existing route detail, including when choosing the same day again', () => {
+  for (const selected of ['d1', 'd2']) {
+    const context = selection();
+    context.journey.days[0].segmentIds = ['leg'];
+    context.inspectedSegmentId = 'leg';
+    context.routeInspectionPinned = true;
+    context.setInspectedFeatureState = () => {};
+    context.syncInspectionClasses = () => {};
+    vm.runInContext(functionSource('clearSegmentInspection'), context);
+    context.setActiveDay(selected, true);
+    assert.equal(context.inspectedSegmentId, null, selected);
+    assert.equal(context.routeInspectionPinned, false, selected);
+    assert.equal(context.$('#route-inspector').hidden, true, selected);
+  }
+});
+
+test('mobile and touch map hover cannot open route details; intentional route clicks still can', () => {
+  for (const [mobile, hover, shouldPreview] of [[true, true, false], [true, false, false], [false, false, false], [false, true, true]]) {
+    const context = selection(), events = new Map(), calls = [], canvas = {style:{}};
+    Object.assign(context, {
+      mainMapReady: true,
+      window: {maplibregl: {}, matchMedia: query => ({matches: query.includes('900px') ? mobile : hover})},
+      createMap: () => ({on: (name, handler) => events.set(name, handler), getCanvas: () => canvas}),
+      routeFeatureAtPoint: () => ({properties:{segmentId:'leg'}}),
+      dayForSegment: () => context.journey.days[0],
+      inspectSegment: (id, pinned = false) => calls.push({id, pinned})
+    });
+    vm.runInContext(functionSource('routeHoverEnabled') + '\n' + functionSource('initMainMap'), context);
+    context.initMainMap();
+    events.get('mousemove')({point:{x:10,y:20}});
+    assert.equal(calls.length, Number(shouldPreview), `mobile=${mobile}, hover=${hover}`);
+    calls.length = 0;
+    events.get('click')({point:{x:10,y:20}});
+    assert.deepEqual(calls, [{id:'leg',pinned:true}]);
+  }
+});
