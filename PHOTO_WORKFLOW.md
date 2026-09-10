@@ -269,3 +269,17 @@ Hiding or trashing alone is not permanent media erasure.
 - [Share photos and videos on iPhone](https://support.apple.com/guide/iphone/iphf28f17237/ios)
 - [Export unmodified originals from Photos on Mac](https://support.apple.com/guide/photos/pht6e157c5f/mac)
 - [Review or adjust photo information on iPhone](https://support.apple.com/guide/iphone/iph0edb9c18f/ios)
+
+## Video sample boundary — 10 September 2026
+
+The shared journal now renders day-linked public MP4/WebM clips from a journey's
+optional `videos` list. See `JOURNEY_WORKFLOW.md` for the contract. The fictional
+Nine to Como example uses the public [MDN video test](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video),
+with attribution and explicit test labeling; it is not actual trip footage.
+No video binary or new photo binary is committed or republished.
+
+The photo importer, private image derivative builder, image cache and photo
+auth Worker remain image-specific. Do not upload videos through the photo
+intake, or place a private video URL into a public manifest. Video transcoding,
+private byte-range delivery under the existing access policy, captions and
+Studio video intake remain follow-up work before using private trip clips.

@@ -1,0 +1,38 @@
+/* Shared party planning and day videos. Transport colors continue to mean mode. */
+.travel-party { padding: 18px 20px; border-block: 1px solid var(--line, #c7cfcb); background: #f1f5f3; }
+.travel-party[hidden], #mobile-routes-action[hidden] { display: none; }
+.travel-party h3 { margin: 0 0 14px; font-size: 1rem; }
+.party-meetup { margin: 0 0 14px; display: grid; gap: 4px; }
+.party-meetup strong { color: #145d63; }
+.party-meetup span, .party-view { font-size: .875rem; line-height: 1.45; }
+.party-groups { display: grid; gap: 7px; margin-top: 7px; }
+.travel-party button { width: 100%; text-align: left; border: 1px solid #afc0bc; border-radius: 8px; background: #fff; color: #223d3b; padding: 11px 12px; cursor: pointer; font: inherit; }
+.travel-party button[aria-pressed="true"] { border-color: #155e64; background: #155e64; color: #fff; }
+.party-groups strong { display: flex; justify-content: space-between; font-size: .9375rem; }
+.party-groups small { display: block; margin-top: 5px; font-size: .875rem; line-height: 1.45; }
+.party-view { margin: 12px 0 0; color: #41625b; }
+.leg-audience { display: block; font-size: .875rem; font-weight: 600; color: #185c60; margin-bottom: 6px; }
+.day-videos { margin: 24px 0; }
+.day-videos h3 { font-size: 1rem; }
+.video-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; }
+.video-card { display: grid; gap: 8px; padding: 0 0 12px; border: 1px solid #b5c5c2; border-radius: 10px; overflow: hidden; background: #fff; color: #203d3a; cursor: pointer; text-align: left; }
+.video-poster { display: grid; position: relative; place-items: center; aspect-ratio: 16/9; background: #19484e; color: #fff; }
+.video-poster img { position: absolute; width: 100%; height: 100%; object-fit: cover; }
+.video-play { z-index: 1; display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid #fff9; border-radius: 50%; background: #163237bd; font-size: 1.25rem; }
+.video-duration { position: absolute; bottom: 10px; right: 10px; padding: 3px 6px; border-radius: 4px; background: #13282cd9; font-size: .875rem; }
+.video-card strong, .video-card small { padding-inline: 12px; font-size: 1rem; }
+.video-card small { font-size: .875rem; }
+.video-dialog { box-sizing: border-box; width: min(960px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 20px; border: 0; border-radius: 12px; background: #142729; color: #fff; }
+.video-dialog::backdrop { background: #07191de8; }
+.video-dialog header { display: flex; gap: 16px; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.video-dialog h2 { margin: 0; font-size: 1.2rem; }
+.video-dialog video { display: block; width: 100%; max-height: 66dvh; aspect-ratio: 16/9; background: #000; }
+.video-dialog p { font-size: 1rem; line-height: 1.5; }
+.video-dialog a { color: #a8e3ea; font-size: .875rem; }
+.video-dialog button { background: #edf3f2; color: #183c3c; padding: 10px 14px; border: 0; border-radius: 6px; font: inherit; cursor: pointer; }
+#mobile-routes-action { display: none; }
+@media(max-width: 900px) {
+  .travel-party { padding: 18px; }
+  #mobile-routes-action:not([hidden]) { display: inline-block; width: auto; margin: 0 0 6px; min-height: 36px; font-size: .875rem; }
+  .video-dialog { padding: 14px; }
+}

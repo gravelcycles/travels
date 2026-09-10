@@ -1,5 +1,21 @@
 # Next-agent handoff
 
+## Nine-person group routes and public video sample — 10 September 2026
+
+Nine to Como is a new fictional data instance in the shared sample selector.
+It has nine travelers, three route groups, a validated Day 2 meetup in Como,
+and a shared rest day. Group filtering projects the map, day legs, media and
+route-only Replay without mutating source data. Day videos use native playback
+with explicit play, retry and source release on close; the public MDN flower
+clip is labeled as a test, not travel footage. Routes are provisional endpoint
+guides. Existing trips and fresh drafts inherit these optional capabilities.
+
+Rosters/assignments are agent-authored using journey JSON or the planner API;
+Studio preserves the fields. Private video intake/delivery and timed captions
+remain W07. Read the updated workflow and feature inventory before real video
+intake. No private video is published by this sample.
+
+
 ## Mobile cleanup — 10 September 2026
 
 Day maps retain a compact header with Journey Atlas and a direct Replay

@@ -44,6 +44,14 @@ project-level status.
       Replay shipped after parts of the brief were written; then stage the
       remaining approved cover, story, mobile, album, Replay, and polish work.
 
+- [ ] **W07 — Private video intake and group authoring.** Public day-video playback
+      and stable route groups are demonstrated by Nine to Como. Before private
+      clips, add reviewed video/poster derivatives, authenticated byte-range
+      delivery with the existing photo access policy, timed captions/transcripts
+      and Studio video intake. Add roster/leg-assignment forms and model changes
+      of group membership only when the real itinerary needs them. Contracts:
+      `JOURNEY_WORKFLOW.md`, `PHOTO_WORKFLOW.md`, `docs/FRAMEWORK.md`.
+
 ## P0 · Content corrections
 
 - [x] **T01 — Correct Day 1 legs and story.** In `family-d1`, keep only

@@ -35,7 +35,7 @@ export function buildSite(root) {
   const visiblePhotos = new Map(published.map(j => [j.id, j.photos.filter(photo => !overrides.photos[photo.id]?.hidden && !overrides.photos[photo.id]?.trashed && photo.assetStatus !== "local")]));
   const photoIds = new Set([...visiblePhotos.values()].flat().map(p => p.id));
   const select = (obj, ids) => Object.fromEntries(Object.entries(obj).filter(([id]) => ids.has(id)).sort(([a], [b]) => a.localeCompare(b)));
-  const publicData = { ...data, journeys: published.map(({ photoImport, timeZone, ...j }) => ({ ...j, photos: [] })) };
+  const publicData = { ...data, journeys: published.map(({ photoImport, timeZone, ...j }) => ({ ...j, photos: [], ...(j.videos ? { videos: j.videos.filter(video => !video.hidden && video.assetStatus !== "local") } : {}) })) };
   const photoService = readJson(path.join(root, "content/photo-service.json"), { origin: "" });
   if (photoService.origin && (new URL(photoService.origin).origin !== photoService.origin || !photoService.origin.startsWith("https://"))) throw new Error("Photo service must use an HTTPS origin");
   const outputs = new Map([
@@ -48,7 +48,7 @@ export function buildSite(root) {
   const versions = new Map();
   const hash = value => crypto.createHash("sha256").update(value).digest("hex").slice(0, 12);
   for (const [file, value] of outputs) versions.set(file, hash(value));
-  for (const file of ["assets/photo-auth.js", "assets/atlas-utils.js", "assets/app.js", "assets/catalog.js", "assets/replay-utils.js", "assets/styles.css", "assets/mobile.css", "assets/mobile-ux.js", "assets/input-mode.js"]) versions.set(file, hash(fs.readFileSync(path.join(root, "dist", file))));
+  for (const file of ["assets/photo-auth.js", "assets/atlas-utils.js", "assets/group-travel.js", "assets/group-travel.css", "assets/app.js", "assets/catalog.js", "assets/replay-utils.js", "assets/styles.css", "assets/mobile.css", "assets/mobile-ux.js", "assets/input-mode.js"]) versions.set(file, hash(fs.readFileSync(path.join(root, "dist", file))));
   const versioned = html => html.replace(/\.\/assets\/([a-z-]+\.(?:js|css))(?:\?v=[^\"]*)?/g, (_, file) => `./assets/${file}?v=${versions.get(`assets/${file}`) || "1"}`);
   for (const j of published.filter(j => j.kind === "real")) outputs.set(j.slug, versioned(renderJourneyPage(root, j)));
   const demo = published.find(j => j.kind === "demo");

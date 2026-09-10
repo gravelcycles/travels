@@ -72,6 +72,7 @@ password system.
 | `content/templates/catalog.html` | Public catalog shell |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction, Replay UI |
 | `dist/assets/atlas-utils.js` | Shared photo resolution, cover choice, camera helpers, preloading and other pure helpers |
+| `dist/assets/group-travel.js`, `group-travel.css`, `scripts/journey-extras.mjs` | Shared group projection, roster/video UI, media cleanup and optional data validation |
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |
 | `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching |
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |
@@ -177,3 +178,21 @@ Routing-data intake remains agent-operated: empty journeys show an actionable
 setup state until their own mode network has been prepared. A guided retrieval
 flow with access/direction-aware routing is future work (W06); the present local
 graph reconstructs historical routes and is not turn-by-turn navigation.
+
+## Group routes and video follow-up — 10 September 2026
+
+The shared optional group/video contract is documented in JOURNEY_WORKFLOW.md.
+Nine to Como adds a sixth journey data instance and demonstrates nine invented
+travelers taking three routes to one meetup. Filtering derives a view without
+mutating the source; empty drafts and existing trips retain absent defaults.
+Regression checks cover scoped/shared legs and media, overnight places, meetup
+references, native player cleanup, hidden/local video exclusion, planner
+preservation and template inheritance.
+
+Remaining work before private trip video intake: transcode reviewed derivatives
+and posters, deliver authenticated byte ranges under the existing photo access
+policy, add timed captions/transcripts and Studio video intake. Public sample
+playback does not make the current image-only Worker a private video service.
+Roster/assignment forms and per-day changes to individual group membership are
+also future work; the present groups have stable membership and are authored
+by the agent through content JSON/the planner API. See W07 in TODO.md.

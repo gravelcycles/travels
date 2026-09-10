@@ -12,6 +12,8 @@ import { studioRouteAvailability, proposeStudioRoute } from '../scripts/studio-r
 import { photoImportConfig } from '../scripts/photo-import-config.mjs';
 import '../dist/assets/replay-utils.js';
 import '../dist/assets/atlas-utils.js';
+import '../dist/assets/group-travel.js';
+import { validateJourneyExtras } from '../scripts/journey-extras.mjs';
 
 const repo = path.resolve(import.meta.dirname, '..');
 const input = { title: 'A completely new trip', slug: 'framework-test-trip', startDate: '2028-02-28', endDate: '2028-03-01', timeZone: 'Asia/Tokyo' };
@@ -166,7 +168,7 @@ test('the same introduction opens for real trips, samples and empty drafts; deep
 
 test('shared browser code and HTML templates contain no concrete trip IDs or URLs', () => {
   const { data } = loadContent(repo);
-  for (const filename of ['dist/assets/app.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'studio/studio.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
+  for (const filename of ['dist/assets/app.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'dist/assets/group-travel.js', 'studio/studio.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
     const source = read(repo, filename);
     for (const journey of data.journeys) {
       assert.ok(!source.includes(journey.id), `${filename} must express ${journey.id} behavior through data`);
@@ -254,4 +256,105 @@ test('real, demo and fresh draft share routing readiness and explicit replacemen
     const anchors = [[0,0], [0.01,0.01], [0.02,0]];
     assert.deepEqual(proposeStudioRoute({ ...options, controlPoints: anchors }).geometry, anchors, journey.id);
   }
+});
+
+test('group routes and day videos are shared by the reference, sample and a fresh draft', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const { data } = loadContent(root, { includeDrafts: true });
+  const sample = data.journeys.find(j => j.routeGroups?.length);
+  assert.equal(sample.travelers.length, 9);
+  assert.equal(sample.routeGroups.length, 3);
+  const utils = globalThis.JOURNEY_ATLAS_GROUPS;
+  for (const journey of [data.journeys.find(j => j.kind === 'real' && j.published), sample, draft]) {
+    const html = renderJourneyPage(root, journey, { preview: true });
+    for (const id of ['travel-party', 'video-dialog', 'journey-video', 'mobile-routes-action', 'mobile-day-videos', 'story-view-videos']) assert.ok(ids(html).includes(id));
+    assert.match(html, /<video id="journey-video" controls playsinline preload="none"/);
+    assert.equal(utils.projectJourney(journey, 'missing-group'), journey, 'Absent groups preserve existing behavior');
+  }
+  for (const group of sample.routeGroups) {
+    const selected = utils.projectJourney(sample, group.id);
+    assert.equal(selected.segments.length, 2);
+    assert.equal(selected.days[1].destinationId, sample.meetup.placeId);
+    assert.equal(selected.days[2].segmentIds.length, 0, 'Shared rest day remains');
+    const replay = globalThis.JOURNEY_ATLAS_REPLAY.createTimeline(selected);
+    assert.deepEqual(replay.filter(m => m.segmentId).map(m => m.segmentId), selected.segments.map(s => s.id));
+  }
+  const before = JSON.stringify(draft);
+  // New dates/places/people are fixture data, never copied from a family itinerary.
+  const p = draft.id;
+  const planned = { ...draft,
+    travelers: [{ id: 'one', name: 'One' }, { id: 'two', name: 'Two' }],
+    routeGroups: [{ id: 'first', label: 'First route', travelerIds: ['one'] }, { id: 'second', label: 'Second route', travelerIds: ['two'] }],
+    places: [{ id:'a', name:'A', lng:139.7, lat:35.6 }, { id:'b', name:'B', lng:139.8, lat:35.7 }, { id:'c', name:'C', lng:139.9, lat:35.8 }],
+    segments: [{ id:`${p}-first`, mode:'train', from:'a', to:'b', groupIds:['first'] }, { id:`${p}-second`, mode:'bike', from:'a', to:'b', groupIds:['second'] }, { id:`${p}-shared`, mode:'walk', from:'b', to:'c' }],
+    videos: [{ ...sample.videos[0], id:`${p}-video`, dayId:draft.days[0].id, groupIds:['second'] }]
+  };
+  planned.days = structuredClone(draft.days);
+  planned.days[0].segmentIds = planned.segments.map(s => s.id);
+  planned.days[1].groupPlaces = { first:'c', second:'b' };
+  validateJourneyExtras(planned);
+  for (const group of planned.routeGroups) {
+    const selected = utils.projectJourney(planned, group.id);
+    assert.equal(selected.segments.length, 2);
+    assert.equal(selected.segments.at(-1).id, `${p}-shared`);
+    assert.equal(selected.days[1].placeId, planned.days[1].groupPlaces[group.id], 'Separate overnight places also work on rest days');
+    assert.equal(selected.videos.length, group.id === 'second' ? 1 : 0);
+  }
+  assert.equal(JSON.stringify(draft), before, 'Filtering never mutates the original draft');
+  const changes = Object.fromEntries(['travelers','routeGroups','places','segments','days','videos'].map(key => [key, planned[key]]));
+  const edited = prepareJourneyPlan(data, draft, changes, { days:{}, photos:{}, routes:{} });
+  writeJson(path.join(root, `content/drafts/${draft.id}.json`), edited.journey);
+  assert.equal(loadContent(root, { includeDrafts:true }).data.journeys.find(j => j.id === draft.id).videos.length, 1);
+});
+
+test('group and media validation reject broken references, false meetups and unsafe/publication-ambiguous video sources', () => {
+  const source = loadContent(repo).data.journeys.find(j => j.routeGroups?.length);
+  const invalid = [
+    [j => j.travelers.push({ id:j.travelers[0].id, name:'Duplicate' }), /duplicate travelers/],
+    [j => j.routeGroups[1].travelerIds.push(j.travelers[0].id), /only one route group/],
+    [j => j.segments[0].groupIds = ['missing'], /groupIds/],
+    [j => j.meetup.placeId = j.segments[0].from, /does not end at the meetup/],
+    [j => j.days[0].groupPlaces['mountain-rail'] = 'missing', /overnight place/],
+    [j => j.videos[0].dayId = 'missing', /unknown day/],
+    [j => j.videos[0].src = 'javascript:alert(1)', /HTTPS/],
+    [j => j.videos[0].poster = 'http://example.com/poster.jpg', /poster URL/],
+    [j => delete j.videos[0].visibility, /explicitly public/],
+    [j => j.videos[0].visibility = 'private', /explicitly public/],
+    [j => j.videos[0].durationSeconds = -1, /duration/]
+  ];
+  for (const [mutate, message] of invalid) { const copy = structuredClone(source); mutate(copy); assert.throws(() => validateJourneyExtras(copy), message); }
+});
+
+test('build omits hidden/local videos and planner protects days containing only video', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const { data } = loadContent(root, { includeDrafts:true });
+  const sample = data.journeys.find(j => j.videos?.length);
+  sample.videos.push({ ...sample.videos[0], id:'hidden-clip', hidden:true, src:'https://example.com/HIDDEN-CLIP.mp4' });
+  sample.videos.push({ ...sample.videos[0], id:'local-clip', assetStatus:'local', src:'https://example.com/LOCAL-CLIP.mp4' });
+  writeJson(path.join(root, `content/journeys/${sample.id}.json`), sample);
+  buildSite(root);
+  const publicBundle = read(root, 'dist/assets/journeys.js');
+  assert.doesNotMatch(publicBundle, /HIDDEN-CLIP|LOCAL-CLIP/);
+  draft.videos = [{ ...sample.videos[0], dayId:draft.days.at(-1).id }];
+  assert.throws(() => prepareJourneyPlan(data, draft, { endDate:draft.days[1].calendarDate }, { days:{}, photos:{}, routes:{} }), /has content/);
+});
+
+test('video cards escape captions and the player releases media on close, retries failures and never autoplays', () => {
+  const utils = globalThis.JOURNEY_ATLAS_GROUPS;
+  const item = { id:'clip', dayId:'day', title:'<unsafe>', caption:'A caption', src:'https://example.com/clip.mp4', durationSeconds:5 };
+  assert.match(utils.videoCards({ videos:[item] }, 'day'), /&lt;unsafe&gt;/);
+  assert.equal(utils.videoCards({ videos:[{ ...item, hidden:true }] }, 'day'), '');
+  const node = () => ({ listeners:{}, hidden:false, textContent:'', addEventListener(name, fn) { this.listeners[name] = fn; }, setAttribute(key, value) { this[key] = value; }, removeAttribute(key) { delete this[key]; } });
+  const dialog = { ...node(), open:false, showModal() { this.open = true; }, close() { this.open = false; this.listeners.close(); } };
+  const video = { ...node(), pauseCount:0, loadCount:0, pause() { this.pauseCount++; }, load() { this.loadCount++; }, replaceChildren() {} };
+  const options = { dialog, video, title:node(), caption:node(), status:node(), retry:node(), close:node(), sourceLink:node() };
+  const player = utils.createVideoPlayer(options);
+  player.open(item);
+  assert.equal(dialog.open, true); assert.equal(video.src, item.src);
+  assert.equal(options.title.textContent, '<unsafe>'); assert.equal(video.autoplay, undefined);
+  video.listeners.error(); assert.equal(options.retry.hidden, false);
+  options.retry.listeners.click(); assert.equal(video.src, item.src);
+  video.listeners.loadeddata(); assert.equal(options.retry.hidden, true);
+  options.close.listeners.click(); assert.equal(video.src, undefined); assert.ok(video.pauseCount >= 3);
+  video.listeners.error(); assert.equal(options.status.textContent, '', 'Late media events cannot resurrect a closed player');
 });

@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { validateJourneyExtras } from "./journey-extras.mjs";
 import path from "node:path";
 
 export const readJson = (filename, fallback) => fs.existsSync(filename) ? JSON.parse(fs.readFileSync(filename, "utf8")) : fallback;
@@ -58,6 +59,7 @@ export function validateJourneys(data) {
         localIds.add(item.id); globalIds[collection]?.add(item.id);
       }
     }
+    validateJourneyExtras(j);
     if (!j.days.length) fail(`${j.id}: at least one calendar day is required`);
     if (j.coverPhoto != null) {
       if (typeof j.coverPhoto.photoId !== "string" || !Array.isArray(j.coverPhoto.focal) || j.coverPhoto.focal.length !== 2 || !j.coverPhoto.focal.every(n => Number.isFinite(n) && n >= 0 && n <= 100)) fail(`${j.id}: invalid cover photo/focal point`);

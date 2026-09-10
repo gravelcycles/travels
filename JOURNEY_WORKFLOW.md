@@ -348,3 +348,57 @@ For each new journey, the agent should:
 - Photos are responsive, progressively loaded, day-linked, and privacy-reviewed.
 - Desktop/mobile and deployed-page checks pass without browser errors.
 - All sources, limitations, and remaining review items are in Markdown.
+
+## Travelers taking different routes
+
+Use optional `travelers: [{ id, name }]` and `routeGroups: [{ id, label,
+travelerIds }]` in the journey source. A traveler belongs to one named group;
+there is no nine-person limit. Assign a leg to one or more groups with
+`segment.groupIds`; omit the field for a leg everyone shares. Keep each day's
+`segmentIds` in each group's travel order, including shared legs only once.
+The validator checks connected, ordered legs within each group. This supports
+stable groups that split and rejoin; changing a person's group during a trip
+is not modeled yet.
+
+A day may use `groupPlaces: { "group-id": "place-id" }` for different overnight
+places, including rest days. A `meetup: { dayId, placeId, label }` announces the
+shared arrival; each group's last leg on that day (or overnight place on a
+rest day) must end there. Omit all of these fields for a single-party trip.
+No existing trip needs migration or a feature flag.
+
+The group selector shows the roster and meetup and projects the map, ordered
+legs, photos, day videos and Replay from the original data. Shared legs/media
+remain visible in every group. Unfiltered distance totals mean all routes
+combined, not distance traveled by each person. Transport colors still indicate
+transport mode; cards and Replay identify the route group in text.
+
+The agent currently authors rosters, group assignments and meetup data in JSON
+or through the validated planner API. Studio preserves these fields while
+editing ordinary trip details, but does not yet offer roster/assignment forms.
+Run the normal build/tests and inspect every group's arrival before publishing.
+`demo.html?journey=nine-to-como#day=nine-to-como-d1` opens the fictional
+nine-person example. `journey` selects a sample; optional `group` preserves a
+route selection in a shared link. No per-trip page or application is copied.
+
+## Day videos
+
+An optional journey `videos` list adds videos to the shared journal and exposes
+a direct Videos action in the day view on phones. Each item has stable `id`,
+`dayId`, `title`, `caption`, an HTTPS `src`, `mimeType` (`video/mp4` or
+`video/webm`), positive `durationSeconds`, and explicit `visibility: "public"`.
+Optional `poster` and `creditUrl` use HTTPS; `credit` supplies attribution text.
+Optional `groupIds` use the same audience rule as legs/photos. `hidden: true`
+and `assetStatus: "local"` entries are omitted from public bundles. Omitted
+videos yield no empty cards or disabled player buttons.
+
+Use a reviewed MP4 (H.264/AAC is the intended intake format), a poster, and a
+useful caption/transcript where needed. Playback uses native controls,
+`playsinline` and `preload="none"`; video bytes are requested on play, not while
+browsing the journal. Closing releases the source, backgrounding pauses it,
+and failures offer retry. Replay remains the route-only player.
+
+This first sample supports public hosted clips, not private video intake or
+upload. Never add private original URLs to public journey JSON. Private video
+publishing needs a separate authenticated, range-aware media delivery path,
+reviewed derivatives/posters, and timed caption support before personal clips
+are added. See the remaining work in `docs/FRAMEWORK.md` and `TODO.md`.
