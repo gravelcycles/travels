@@ -313,6 +313,7 @@
     $('#mobile-photo-prev').onclick=()=>api.move(-1);$('#mobile-photo-next').onclick=()=>api.move(1);
     dialog.addEventListener('cancel',event=>{if(!enabled())return;event.preventDefault();if(grid)setGrid(false);else if(locationOpen)setLocation(false);else back();});
     $('#mobile-back').onclick=()=>navigate('map');
+    $('#mobile-open-replay').onclick=()=>api.replay();
     $('#mobile-day-picker').onclick=()=>navigate($('.atlas-shell').dataset.mobileTab==='route'?'map':'route');
     $('#mobile-previous-day').onclick=()=>{api.stepDay(-1);save();};$('#mobile-next-day').onclick=()=>{api.stepDay(1);save();};
     $('#mobile-day-details').onclick=()=>{navigate(api.scope()==='journey'?'route':'story');$('.story-panel').scrollTop=0;};
@@ -323,7 +324,6 @@
       if(action==='overview'){navigate('map');api.overview();}
       else if(action==='photos')api.album();
       else if(action==='unlock')window.JOURNEY_ATLAS_AUTH?.showPrompt();
-      else if(action==='replay')api.replay();
       else if(action==='about')$('#notes-dialog').showModal();
     };
     media.addEventListener('change',()=>{
@@ -335,6 +335,7 @@
         }
         update(current);
       }
+      if(replayState)replayControlsChanged(replayState);
       renderDay();save();
     });
     window.addEventListener('resize',()=>{measure();measureReplay();});
