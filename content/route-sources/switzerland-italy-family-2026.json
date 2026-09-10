@@ -15,7 +15,7 @@
       "weldGapsKm": 0.065,
       "maxSnapKm": 4,
       "ambiguityKm": 0.05,
-      "simplifyTolerance": 0.00008,
+      "simplifyTolerance": 8e-05,
       "provenance": {
         "provider": "OpenStreetMap via Overpass API",
         "retrievedAt": "2026-09-06",
@@ -28,7 +28,7 @@
       "input": "build/route-inputs/ferry-overpass.json",
       "maxSnapKm": 4,
       "ambiguityKm": 0.05,
-      "simplifyTolerance": 0.00008,
+      "simplifyTolerance": 8e-05,
       "provenance": {
         "provider": "OpenStreetMap via Overpass API",
         "retrievedAt": "2026-09-06",
@@ -42,7 +42,7 @@
       "maxSnapKm": 0.75,
       "safeSnapKm": 0.25,
       "ambiguityKm": 0.03,
-      "simplifyTolerance": 0.00004,
+      "simplifyTolerance": 4e-05,
       "provenance": {
         "provider": "Local OpenStreetMap road-network extract",
         "retrievedAt": "not-yet-retrieved",
@@ -56,7 +56,7 @@
       "maxSnapKm": 0.5,
       "safeSnapKm": 0.15,
       "ambiguityKm": 0.02,
-      "simplifyTolerance": 0.000025,
+      "simplifyTolerance": 2.5e-05,
       "provenance": {
         "provider": "Local OpenStreetMap pedestrian-network extract",
         "retrievedAt": "not-yet-retrieved",
@@ -66,17 +66,17 @@
       }
     },
     "bicycle": {
-      "input": "build/route-inputs/bicycle-overpass.json",
+      "input": "build/route-inputs/luzern-bicycle-filtered.json",
       "maxSnapKm": 0.75,
       "safeSnapKm": 0.2,
       "ambiguityKm": 0.03,
-      "simplifyTolerance": 0.000035,
+      "simplifyTolerance": 3.5e-05,
       "provenance": {
         "provider": "Local OpenStreetMap bicycle-network extract",
-        "retrievedAt": "not-yet-retrieved",
-        "query": "Bicycle-accessible highway ways and child nodes with restricted ways excluded.",
-        "bounds": "Journey-specific corridor",
-        "notes": "Used for bicycle proposals only after a reviewed local extract is installed."
+        "retrievedAt": "2026-09-09",
+        "query": "[out:json][timeout:60];(way[highway](46.973,8.298,47.055,8.389);nwr[amenity=ferry_terminal](46.98,8.30,47.06,8.40);way[route=ferry](46.98,8.30,47.06,8.40););out body;>;out skel qt;",
+        "bounds": "Luzern–Horw–Hergiswil–Stansstad–Kehrsiten shoreline",
+        "notes": "Filtered bicycle-accessible ways: see ROUTE_SOURCES.md. Undirected historical route reconstruction, not turn-by-turn navigation. Local Studio proposals require review and acceptance."
       }
     }
   },
@@ -163,7 +163,8 @@
         "provider": "OpenStreetMap bicycle-accessible shoreline roads through Stansstad and Kehrsitenstrasse",
         "retrievedAt": "2026-09-09",
         "notes": "Reviewed shoreline/landing correction. Static geometry and accepted anchors are retained; see ROUTE_SOURCES.md for query and way IDs."
-      }
+      },
+      "network": "bicycle"
     }
   }
 }

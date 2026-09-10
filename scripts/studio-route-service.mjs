@@ -40,25 +40,42 @@ function networkGraph(repoRoot, network) {
   return graphCache.get(cacheKey);
 }
 
-export function proposeStudioRoute({ repoRoot, journeyId, segmentId, controlPoints }) {
-  if (!Array.isArray(controlPoints) || controlPoints.length < 2 || !controlPoints.every(validCoordinate)) {
-    throw new RouteProposalError("At least two valid control-point anchors are required.");
-  }
+function routeNetwork({ repoRoot, journeyId, segmentId }) {
   const data = journeyData(repoRoot);
   const journey = data.journeys.find((item) => item.id === journeyId);
   if (!journey) throw new RouteProposalError(`Unknown journey: ${journeyId}`);
   const segment = journey.segments.find((item) => item.id === segmentId);
   if (!segment) throw new RouteProposalError(`Unknown route: ${segmentId}`);
+  if (segment.mode === "gondola") throw new RouteProposalError("Gondola routes use manual points. You can edit the guide or keep the saved route.");
   const manifestPath = path.join(repoRoot, journey.published === false ? `build/draft-assets/${journeyId}/route-sources.json` : `content/route-sources/${journeyId}.json`);
-  if (!fs.existsSync(manifestPath)) throw new RouteProposalError(`No local route-source manifest exists for ${journey.label}. The saved route was kept.`);
+  if (!fs.existsSync(manifestPath)) throw new RouteProposalError(`Routing data is not set up for ${journey.label}. Ask the agent to prepare local ${segment.mode} routing data, then reselect this leg. The saved route was kept.`);
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
   const segmentSource = manifest.segments?.[segmentId];
-  if (segmentSource?.strategy === "preserve") {
-    throw new RouteProposalError(`${segmentId} is marked as a reviewed preserve exception; its saved route was kept.`, { unsafe: true });
-  }
+  // Preserve protects unattended builds. An explicit Studio proposal is read-only
+  // and still requires acceptance, so it may use the configured network.
   const networkId = segmentSource?.network || manifest.modeNetworks?.[segment.mode];
   const network = manifest.networks?.[networkId];
-  if (!networkId || !network) throw new RouteProposalError(`No ${segment.mode} network is configured for this journey. The saved route was kept.`);
+  if (!networkId || !network) throw new RouteProposalError(`Routing data is not set up for this ${segment.mode} leg. Ask the agent to prepare its local network, then reselect this leg. The saved route was kept.`);
+  if (!network.input || !fs.existsSync(path.resolve(repoRoot, network.input))) {
+    throw new RouteProposalError(`Local ${segment.mode} routing data is missing. Ask the agent to prepare it, then reselect this leg. The saved route was kept.`);
+  }
+  return { segment, segmentSource, networkId, network };
+}
+
+export function studioRouteAvailability(options) {
+  try {
+    const { segment } = routeNetwork(options);
+    return { available: true, message: `Local ${segment.mode} routing data is ready. Edit points, generate a route, then review the green line.` };
+  } catch (error) {
+    return { available: false, message: error.message };
+  }
+}
+
+export function proposeStudioRoute({ repoRoot, journeyId, segmentId, controlPoints }) {
+  if (!Array.isArray(controlPoints) || controlPoints.length < 2 || !controlPoints.every(validCoordinate)) {
+    throw new RouteProposalError("At least two valid control-point anchors are required.");
+  }
+  const { segment, segmentSource, networkId, network } = routeNetwork({ repoRoot, journeyId, segmentId });
   const result = routeSegment(networkGraph(repoRoot, network), controlPoints, segmentId, {
     maxSnapKm: segmentSource?.maxSnapKm ?? network.maxSnapKm ?? 1,
     ambiguityKm: segmentSource?.ambiguityKm ?? network.ambiguityKm ?? 0.05,
