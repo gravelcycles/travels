@@ -51,6 +51,17 @@ and `slug`. `dist/assets/journeys.js` is generated; do not edit it by hand.
 
 ## Map location labels
 
+Basemap typography and layer order live in `dist/assets/map-style.js` and apply
+to all journeys, photo maps, Replay, mobile previews and Studio. City, town and
+village names use regular charcoal text and a compact opaque warm-white halo;
+city names cap at 15 px, towns at 13 px and villages at 11.5 px, with a small
+upward offset to clear nearby stop dots. Only these settlement labels sit above
+journey routes. Highway shields, road names and
+other basemap features remain beneath the routes. Preserve the provider's
+zoom visibility and label collision rules; do not enable overlapping labels.
+Check route/label intersections at overview and close-up zooms on desktop and
+phone after changing this shared treatment.
+
 Labels inherit automatically from each day's `destinationId` (or `placeId`),
 plus group destinations when viewing everyone. Keep place names factual and
 concise; do not author positions or trip-specific label offsets. Travel labels

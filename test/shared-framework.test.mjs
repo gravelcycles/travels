@@ -12,6 +12,8 @@ import { studioRouteAvailability, proposeStudioRoute } from '../scripts/studio-r
 import { photoImportConfig } from '../scripts/photo-import-config.mjs';
 import '../dist/assets/replay-utils.js';
 import '../dist/assets/atlas-utils.js';
+import '../dist/assets/map-style.js';
+import { mapStyleHarness } from './map-style-harness.mjs';
 import '../dist/assets/group-travel.js';
 import '../dist/assets/media-utils.js';
 import '../studio/plan-extras.js';
@@ -187,7 +189,7 @@ test('the same introduction opens for real trips, samples and empty drafts; deep
 
 test('shared browser code and HTML templates contain no concrete trip IDs or URLs', () => {
   const { data } = loadContent(repo);
-  for (const filename of ['dist/assets/app.js', 'dist/assets/location-labels.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'dist/assets/group-travel.js', 'dist/assets/media-utils.js', 'studio/studio.js', 'studio/plan-extras.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
+  for (const filename of ['dist/assets/app.js', 'dist/assets/map-style.js', 'dist/assets/location-labels.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'dist/assets/group-travel.js', 'dist/assets/media-utils.js', 'studio/studio.js', 'studio/plan-extras.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
     const source = read(repo, filename);
     for (const journey of data.journeys) {
       assert.ok(!source.includes(journey.id), `${filename} must express ${journey.id} behavior through data`);
@@ -442,4 +444,35 @@ test('location labels are inherited by real trips, samples, and a fresh data-onl
   }
   buildSite(root);
   assert.match(read(root,'dist/switzerland-italy.html'),/location-labels\.js\?v=[a-f0-9]+/);
+});
+
+
+test('real, demo and a fresh draft inherit settlement contrast and route stacking', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const { data } = loadContent(root, { includeDrafts: true });
+  const journeys = [data.journeys.find(j => j.kind === 'real'), data.journeys.find(j => j.kind === 'demo'), draft];
+  const mapStyle = globalThis.JOURNEY_ATLAS_MAP_STYLE;
+  for (const journey of journeys) {
+    const html = renderJourneyPage(root, journey, { preview: true });
+    assert.ok(assets(html).includes('map-style.js'), journey.id);
+    assert.ok(assets(html).indexOf('map-style.js') < assets(html).indexOf('app.js'));
+    const map = mapStyleHarness();
+    mapStyle.applyBasemapTreatment(map);
+    const context = vm.createContext({ window: { JOURNEY_ATLAS_MAP_STYLE: mapStyle },
+      modeStyles: { train: { width: 5.8, color: '#0072b2' } }, palette: { casing: '#fffef8' },
+      segmentCoordinates: segment => segment.geometry || [[0, 0], [0.1, 0.1]]
+    });
+    vm.runInContext(appFunction('addSegmentLayer'), context);
+    const segment = journey.segments.find(s => s.mode === 'train') || { id: 'fresh-draft-leg', mode: 'train' };
+    const decorations = { layerIds: [], sourceIds: [], hitLayerIds: [] };
+    context.addSegmentLayer(map, decorations, segment, { prefix: 'test', selected: true, interactive: true, opacity: 1 });
+    const layerIds = map.getStyle().layers.map(l => l.id);
+    for (const id of decorations.layerIds) {
+      assert.ok(layerIds.indexOf(id) > layerIds.indexOf('highway-shield-non-us'), journey.id);
+      assert.ok(layerIds.indexOf(id) < layerIds.indexOf('label_village'), journey.id);
+    }
+    assert.equal(map.getLayer('label_city').paint['text-halo-width'], 2);
+  }
+  const studio = read(repo, 'studio/index.html');
+  assert.ok(studio.indexOf('/dist/assets/map-style.js') < studio.indexOf('/studio.js'));
 });

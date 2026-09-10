@@ -452,28 +452,7 @@
   }
 
   function applyBasemapTreatment(map) {
-    const layers = map.getStyle().layers || [];
-    layers.forEach((layer) => {
-      if (/poi/i.test(layer.id || "")) map.setLayoutProperty(layer.id, "visibility", "none");
-    });
-    const paint = (id, property, value) => {
-      if (map.getLayer(id)) map.setPaintProperty(id, property, value);
-    };
-    paint("background", "background-color", "#f1eee5");
-    paint("natural_earth", "raster-opacity", ["interpolate", ["linear"], ["zoom"], 0, 0.62, 5.5, 0.34, 8, 0.06]);
-    paint("natural_earth", "raster-contrast", 0.12);
-    paint("water", "fill-color", "#a5cadb");
-    paint("waterway_river", "line-color", "#82b5cc");
-    paint("waterway_other", "line-color", "#82b5cc");
-    paint("park", "fill-color", "#c2d9b5");
-    paint("park", "fill-opacity", 0.7);
-    paint("landcover_wood", "fill-color", "#a3c393");
-    paint("landcover_wood", "fill-opacity", 0.5);
-    paint("landcover_grass", "fill-color", "#cbdcbe");
-    paint("landcover_grass", "fill-opacity", 0.38);
-    paint("road_motorway_casing", "line-color", "#cf8960");
-    paint("road_trunk_primary_casing", "line-color", "#d19b70");
-    paint("road_secondary_tertiary_casing", "line-color", "#d8ad82");
+    window.JOURNEY_ATLAS_MAP_STYLE.applyBasemapTreatment(map);
   }
 
   function createMap(container) {
@@ -596,8 +575,7 @@
         geometry: { type: "LineString", coordinates: options.coordinates || segmentCoordinates(segment) }
       }
     });
-    const firstLabelLayer = (map.getStyle().layers || []).find((layer) => layer.type === "symbol" && layer.layout?.["text-field"]);
-    const beforeLabelId = firstLabelLayer?.id;
+    const beforeLabelId = window.JOURNEY_ATLAS_MAP_STYLE.routeInsertionLayer(map);
     map.addLayer({
       id: casingId,
       type: "line",
@@ -1039,7 +1017,7 @@
     if (!storyMap) {
       storyMap = new maplibregl.Map({container:'story-map-preview',style:OPENFREEMAP_STYLE,center:[9.2,47.4],zoom:4,interactive:false,attributionControl:false});
       window.JOURNEY_ATLAS_UTILS.addMapAttribution(storyMap, maplibregl);
-      storyMap.on('load',()=>{storyMapReady=true;renderStoryMap();});
+      storyMap.on('load',()=>{applyBasemapTreatment(storyMap);storyMapReady=true;renderStoryMap();});
       return;
     }
     if (!storyMapReady) return;
