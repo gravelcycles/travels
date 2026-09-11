@@ -10,6 +10,10 @@
   "dates": "13–26 August 2026",
   "note": "David and Michelle traveled with her parents, using Luzern as home base except for three nights around Como.",
   "cover": "./assets/photos/train-window.webp",
+  "overviewBounds": [
+    [5.9, 45.75],
+    [10.55, 47.85]
+  ],
   "places": [
     {
       "id": "zurich-flughafen",

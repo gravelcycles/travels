@@ -833,7 +833,11 @@
   function fitJourneyBounds(duration = 650) {
     if (!mainMapReady) return;
     const bounds = boundsFromCoordinates(journeyCoordinates());
-    if (bounds) mainMap.fitBounds(bounds, { padding: mapPadding(112), maxZoom: 8, duration });
+    if (bounds) {
+      // Editorial context can widen the overview without cropping any route.
+      for (const coordinate of journey.overviewBounds || []) bounds.extend(coordinate);
+      mainMap.fitBounds(bounds, { padding: mapPadding(112), maxZoom: 8, duration });
+    }
     else mainMap.easeTo({ center: [0, 20], zoom: 1.5, duration: 0 });
   }
 
