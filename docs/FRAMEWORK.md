@@ -71,7 +71,7 @@ password system.
 | `content/templates/journey.html` | All journey DOM, dialogs, control IDs, scripts and styles; real, demo, preview |
 | `content/templates/catalog.html` | Public catalog shell |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction, Replay UI |
-| `dist/assets/location-labels.js` | Shared destination grouping, screen-space clusters, anchored pins, compact previews and accessible day selection |
+| `dist/assets/location-labels.js` | Shared destination grouping, screen-space clusters, upright signposts, compact previews and accessible day selection |
 | `dist/assets/map-style.js` | Shared basemap palette, restrained settlement typography, and route/label stacking for every viewer map and Studio |
 | `dist/assets/atlas-utils.js` | Shared photo resolution, cover choice, camera helpers, preloading, desktop image reveals and other helpers |
 | `dist/assets/group-travel.js`, `group-travel.css`, `scripts/journey-extras.mjs` | Shared group projection, roster/day route details, group/media presentation and optional data validation |
@@ -174,7 +174,7 @@ arrives; a framework rewrite is not a prerequisite. No time estimate is a
 commitment: each stage should be a separate reviewable change with its own
 checks and deployment.
 
-HTML map pins do not participate in basemap glyph collision. Small footprints and route-body placement preferences reduce coverage; tips/dots intentionally mark route locations. Hard checks protect map controls and other pin hit targets. Dense views cluster nearby places, with edge/control culling and complete day navigation retained (T05, `docs/LOCATION_LABELS.md`).
+HTML map pins do not participate in basemap glyph collision. Small footprints and short vertical stems reduce coverage; signpost feet/dots intentionally mark route locations. Numbered boards always stay upright above their points, using a dot fallback in tight space. Hard checks protect map controls and other pin hit targets. Dense views cluster nearby places, with edge/control culling and complete day navigation retained (T05, `docs/LOCATION_LABELS.md`).
 
 Per-journey public bundle splitting and larger collection performance remain
 future scale decisions. Today all published journey data is loaded together;

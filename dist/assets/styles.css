@@ -568,12 +568,13 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 
 /* Small anchored pins leave the landscape and its place names in charge. */
 .location-label-anchor { width:1px; height:1px; pointer-events:none; }
-.location-pin { --pin-fill:#426b73; --pin-ink:#fff; position:absolute; left:var(--pin-x,0); top:var(--pin-y,0); transform:translate(-50%,-50%); width:32px; height:32px; padding:0; border:0; border-radius:50%; background:transparent; color:var(--pin-ink); pointer-events:auto; cursor:pointer; transition:filter 140ms ease,opacity 140ms ease; }
-.location-pin-shape { pointer-events:none; position:absolute; width:36px; height:40px; left:calc(50% - 18px); top:calc(50% - 18px); transform:rotate(var(--pin-angle,0deg)); transform-origin:18px 18px; overflow:visible; filter:drop-shadow(0 1px 2px #15323838); }
-.location-pin-shape path { fill:var(--pin-fill); stroke:#fff; stroke-width:2; stroke-linejoin:round; }
-.location-pin-number { pointer-events:none; position:relative; z-index:1; display:block; font:650 11px/32px Inter,ui-sans-serif,system-ui,sans-serif; font-variant-numeric:tabular-nums; }
+.location-pin { --pin-fill:#426b73; --pin-ink:#fff; position:absolute; left:0; top:var(--pin-y,0); transform:translate(-50%,-50%); width:32px; height:var(--pin-height,32px); padding:0; border:0; border-radius:9px; background:transparent; color:var(--pin-ink); pointer-events:auto; cursor:pointer; transition:filter 140ms ease,opacity 140ms ease; }
+.location-pin-stem { pointer-events:none; position:absolute; left:calc(50% - 1px); top:calc(50% + var(--pin-body-y) + 10px); width:2px; height:var(--pin-stem-height); background:var(--pin-fill); }
+.location-pin-foot { pointer-events:none; position:absolute; left:50%; top:calc(50% + var(--pin-foot-y)); transform:translate(-50%,-50%); width:5px; height:5px; border:1px solid #fff; border-radius:50%; background:var(--pin-fill); }
+.location-pin-number { pointer-events:none; position:absolute; left:50%; top:calc(50% + var(--pin-body-y)); transform:translate(-50%,-50%); z-index:1; display:grid; place-items:center; width:22px; height:22px; border:2px solid #fff; border-radius:7px; background:var(--pin-fill); box-shadow:0 1px 4px #15323838; font:650 11px/1 Inter,ui-sans-serif,system-ui,sans-serif; font-variant-numeric:tabular-nums; }
 .location-pin-dot { pointer-events:none; display:none; position:absolute; left:50%; top:50%; width:14px; height:14px; transform:translate(-50%,-50%); border:2px solid white; border-radius:50%; background:var(--pin-fill); box-shadow:0 1px 4px #15323840; transition:width 140ms ease,height 140ms ease; }
-.location-pin.is-dot .location-pin-shape,.location-pin.is-dot .location-pin-number { display:none; }
+.location-pin.is-dot .location-pin-stem,.location-pin.is-dot .location-pin-foot,.location-pin.is-dot .location-pin-number { display:none; }
+.location-pin.is-dot { border-radius:50%; }
 .location-pin.is-dot .location-pin-dot { display:block; }
 .location-pin.is-selected { --pin-fill:#153238; }
 .location-pin.is-preview { --pin-fill:#167e97; filter:drop-shadow(0 0 3px #167e9750); }
@@ -582,7 +583,7 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 .location-pin:focus-visible { outline:2px solid #587579; outline-offset:3px; }
 .day-row.route-preview { box-shadow:inset 3px 0 #167e97; }
 .day-row.route-preview .day-index { background:#167e97; color:#fff; border-color:#167e97; }
-@media(max-width:900px),(pointer:coarse) { .location-pin { width:44px; height:44px; } .location-pin-number { line-height:44px; } }
+@media(max-width:900px),(pointer:coarse) { .location-pin { width:44px; } }
 .map-place-card { position:absolute; z-index:7; width:216px; max-width:calc(100% - 16px); max-height:calc(100% - 16px); padding:12px 12px 6px; overflow:auto; border:1px solid #fff9; border-radius:14px; background:rgba(251,252,250,.97); color:#153238; box-shadow:0 4px 20px #15323824,0 1px 4px #15323814; font-size:12px; }
 .map-place-card > strong { display:block; padding-right:24px; font-size:13px; font-weight:650; line-height:1.3; }
 .map-place-meta { display:block; margin-top:3px; padding-right:18px; color:#52696e; font-size:10px; line-height:1.4; }

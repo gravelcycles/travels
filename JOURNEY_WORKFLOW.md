@@ -68,12 +68,14 @@ concise; do not author positions or trip-specific offsets. Pins anchor to the
 last reviewed arrival vertex for that destination, then a reviewed departure
 or the named place for a rest day. Unknown locations stay unmarked.
 
-One-day stops use a small numbered balloon; repeated stays and nearby places
-share a quiet dot with explicit day choices. Zoom separates nearby places.
-Pin bodies prefer space beside the route, with tips/dots on the actual point;
-controls and other hit targets stay clear. Pins remain attached while moving
-and settle their grouping/orientation afterward. Nearby journey stops remain
-available in day focus. Desktop hover or keyboard focus links the pin, route
+One-day stops use a small upright numbered signpost; repeated stays and nearby
+places share a quiet dot with explicit day choices. Zoom separates nearby places.
+A short vertical stem keeps the number above its location; posts never rotate
+or flip. The stem can extend slightly to clear a route, with a dot fallback
+when the upright shape cannot fit. Complete marker targets stay clear of
+controls and each other. Pins remain attached while moving and settle their
+grouping/stem height afterward. Nearby journey stops remain available in day
+focus. Desktop hover or keyboard focus links the pin, route
 and day row, with one small place preview and no camera movement. Single-day
 taps navigate directly; repeated stops open a day picker. Phone targets are
 44 px. Review linked previews, pointer handoff, Escape, repeat-day selection,
@@ -184,8 +186,8 @@ including photo, Replay, day preview and Studio maps. During desktop/phone QA,
 check that credits stay closed after tiles load and can still be opened and
 closed with the info button; route framing needs no extra attribution margin.
 
-Destination pins point directly at their mapped locations. Select a numbered
-pin or choose a visit from a repeat-stop dot; journal/day navigation remains
+Upright destination signposts have a small foot at their mapped locations.
+Select a numbered pin or choose a visit from a repeat-stop dot; journal/day navigation remains
 available. Check pin placement and rail stops at desktop and phone sizes after
 changing routes. Intermediate rail
 stops have small 5 px orange centers and 2 px white rims (9 px total). The orange

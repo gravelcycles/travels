@@ -431,7 +431,8 @@ test('location labels are inherited by real trips, samples, and a fresh data-onl
   const context = vm.createContext({}); vm.runInContext(code,context);
   const labels = context.JOURNEY_ATLAS_LOCATION_LABELS;
   const hooks = journey => ({ destinationForDay: day => journey.places.find(p=>p.id===(day.destinationId||day.placeId)),
-    segmentsForDay: day => day.segmentIds.map(id=>journey.segments.find(s=>s.id===id)),segmentCoordinates:segment=>segment.geometry });
+    segmentsForDay: day => day.segmentIds.map(id=>journey.segments.find(s=>s.id===id)),
+    segmentCoordinates:segment=>segment.geometry || [segment.from,segment.to].map(id=>{const place=journey.places.find(p=>p.id===id);return [place.lng,place.lat];}) });
   assert.equal(labels.groupsForJourney(draft,hooks(draft),draft.days[0].id,'journey').length,0,'Blank days invent no destinations');
   draft.places.push({id:'new-place',name:'New place',lng:139.7,lat:35.6});
   draft.days[0].placeId='new-place'; draft.days[1].placeId='new-place';
@@ -441,9 +442,16 @@ test('location labels are inherited by real trips, samples, and a fresh data-onl
   const pins = labels.clusterGroups(groups, ([x,y]) => ({x,y}), 44);
   assert.equal(pins.length,1); assert.equal(pins[0].days.length,2, 'Repeat stays become one unnumbered pin with every day retained');
   assert.deepEqual(Array.from(pins[0].members,member=>member.name),['New place']);
+  draft.places.push({id:'next-place',name:'Next place',lng:139.8,lat:35.7});
+  draft.days[2].placeId='next-place';
   const {data} = loadContent(root);
   for (const journey of [data.journeys.find(j=>j.kind!=='demo'), data.journeys.find(j=>j.kind==='demo'),draft]) {
     assert.ok(assets(renderJourneyPage(root,journey,{preview:true})).includes('location-labels.js'));
+    for (const group of labels.groupsForJourney(journey,hooks(journey),journey.days[0].id,'journey')) {
+      const placement=labels.placePin({x:100,y:100},{dot:group.days.length>1,targetSize:44,bounds:{left:0,right:320,top:0,bottom:300}});
+      assert.equal(placement.offset[0],0);
+      assert.equal(placement.postHeight,group.days.length>1?0:18,'Every journey inherits upright signposts and repeated-stay dots');
+    }
   }
   buildSite(root);
   assert.match(read(root,'dist/switzerland-italy.html'),/location-labels\.js\?v=[a-f0-9]+/);
