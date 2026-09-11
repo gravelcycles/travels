@@ -173,6 +173,7 @@
       record.animation?.cancel();
       record.animation = null;
       record.source = '';
+      delete record.image.dataset.imageRevealing;
     }
     function reveal(record) {
       const image = record.image;
@@ -187,13 +188,18 @@
       if (record.source === source) return;
       resetRecord(record);
       record.source = source;
+      image.dataset.imageRevealing = 'true';
       // A new animation always starts, even when ready/loading changes share a paint.
       const animation = image.animate([
         { opacity: 0, filter: 'blur(16px)' },
         { opacity: 1, filter: 'blur(0px)' }
       ], { duration: 650, easing: 'ease' });
       record.animation = animation;
-      animation.onfinish = () => { if (record.animation === animation) record.animation = null; };
+      animation.onfinish = animation.oncancel = () => {
+        if (record.animation !== animation) return;
+        record.animation = null;
+        delete image.dataset.imageRevealing;
+      };
     }
     function watch(image) {
       if (records.has(image)) return records.get(image);

@@ -185,6 +185,8 @@ button { color: inherit; }
 @media (min-width: 901px) {
   /* Desktop readiness uses the shared reveal animation, including cached images. */
   .progressive-image { transition: transform 220ms ease; }
+  /* Keep the preview beneath the transparent foreground until its reveal ends. */
+  .viewer-photo-frame:has(#modal-photo[data-photo-state="ready"][data-image-revealing="true"])::before { opacity: 1; }
 }
 .story-media button:hover img { transform: scale(1.025); }
 .story-media button > span, .story-media button > small { position: absolute; z-index: 1; color: #fff; }
@@ -253,7 +255,7 @@ code { background: #dfe6e2; padding: 2px 4px; font-size: 0.8rem; }
 .viewer-photo-frame { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
 .viewer-photo-frame::before { content: ""; position: absolute; inset: 0; background-image: var(--photo-backdrop, none); background-size: var(--photo-backdrop-width, 0px) var(--photo-backdrop-height, 0px); background-repeat: no-repeat; background-position: center; opacity: 0; pointer-events: none; }
 .viewer-photo-frame::before { filter: blur(24px); clip-path: inset(calc((100% - var(--photo-backdrop-height, 0px)) / 2) calc((100% - var(--photo-backdrop-width, 0px)) / 2)); }
-/* The preview belongs only to loading; it must not frame a loaded or zoomed photo. */
+/* Loading and the active desktop reveal use the preview; settled photos have clean edges. */
 .photo-stage.is-photo-loading .viewer-photo-frame::before { opacity: 1; }
 .photo-stage figure { min-width: 0; min-height: 0; margin: 0; display: grid; grid-template-rows: minmax(0, 1fr); position: relative; }
 .viewer-photo-frame #modal-photo { position: absolute; inset: 0; }
