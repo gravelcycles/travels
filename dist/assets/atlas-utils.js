@@ -193,7 +193,7 @@
       const animation = image.animate([
         { opacity: 0, filter: 'blur(16px)' },
         { opacity: 1, filter: 'blur(0px)' }
-      ], { duration: 650, easing: 'ease' });
+      ], { duration: image.id === 'modal-photo' ? 350 : 650, easing: 'ease' });
       record.animation = animation;
       animation.onfinish = animation.oncancel = () => {
         if (record.animation !== animation) return;
