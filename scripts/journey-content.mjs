@@ -65,6 +65,13 @@ export function validateJourneys(data) {
       globalIds.photos.add(video.id);
     }
     if (!j.days.length) fail(`${j.id}: at least one calendar day is required`);
+    if (j.overviewBounds != null) {
+      const bounds = j.overviewBounds;
+      if (!Array.isArray(bounds) || bounds.length !== 2 || !bounds.every(validCoordinate)
+        || bounds[0][0] >= bounds[1][0] || bounds[0][1] >= bounds[1][1]) {
+        fail(`${j.id}: overviewBounds must be southwest/northeast longitude/latitude corners with positive area`);
+      }
+    }
     if (j.coverPhoto != null) {
       if (typeof j.coverPhoto.photoId !== "string" || !Array.isArray(j.coverPhoto.focal) || j.coverPhoto.focal.length !== 2 || !j.coverPhoto.focal.every(n => Number.isFinite(n) && n >= 0 && n <= 100)) fail(`${j.id}: invalid cover photo/focal point`);
     }

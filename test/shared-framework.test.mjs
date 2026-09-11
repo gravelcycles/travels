@@ -44,6 +44,67 @@ function appFunction(name) {
   return app.slice(start, end < 0 ? undefined : end);
 }
 
+test('full-trip context expands real, demo and fresh-draft maps without cropping travel', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const { data, routes } = loadContent(root, { includeDrafts: true });
+  class Bounds {
+    constructor(point) { this.west = this.east = point[0]; this.south = this.north = point[1]; }
+    extend([lng, lat]) {
+      this.west = Math.min(this.west, lng); this.east = Math.max(this.east, lng);
+      this.south = Math.min(this.south, lat); this.north = Math.max(this.north, lat);
+      return this;
+    }
+    contains([lng, lat]) { return lng >= this.west && lng <= this.east && lat >= this.south && lat <= this.north; }
+  }
+  const family = data.journeys.find(j => j.id === 'switzerland-italy-family-2026');
+  for (const journey of [family, data.journeys.find(j => j.kind === 'demo'), draft]) {
+    let fitted, fallback;
+    const context = vm.createContext({ journey, mainMapReady: true,
+      window: { maplibregl: {}, JOURNEY_ATLAS_ROUTE_GEOMETRY: routes }, maplibregl: { LngLatBounds: Bounds },
+      placeById: id => journey.places.find(p => p.id === id), mapPadding: () => 40,
+      mainMap: { fitBounds: bounds => { fitted = bounds; }, easeTo: camera => { fallback = camera; } }
+    });
+    vm.runInContext(['segmentCoordinates', 'journeyCoordinates', 'boundsFromCoordinates', 'fitJourneyBounds'].map(appFunction).join('\n'), context);
+    context.fitJourneyBounds(0);
+    if (journey === draft) {
+      assert.equal(fitted, undefined, 'Empty drafts invent no geography');
+      assert.equal(fallback.zoom, 1.5);
+      journey.places.push({ id: 'fresh-place', name: 'New destination', lng: 139.7, lat: 35.6 });
+    } else {
+      const coordinates = context.journeyCoordinates();
+      assert.ok(coordinates.every(point => fitted.contains(point)), `${journey.id}: every route/place fits`);
+      if (journey === family) {
+        assert.ok(fitted.contains([5.956, 45.817]) && fitted.contains([10.493, 47.809]), 'All Swiss geographic extremes fit');
+      } else {
+        const automatic = coordinates.reduce((bounds, point) => bounds.extend(point), new Bounds(coordinates[0]));
+        assert.deepEqual(fitted, automatic, 'Absent bounds preserve automatic framing');
+      }
+    }
+    const points = context.journeyCoordinates(), point = points[0];
+    journey.overviewBounds = [[point[0] - 0.5, point[1] - 0.5], [point[0] + 0.5, point[1] + 0.5]];
+    context.fitJourneyBounds(0);
+    assert.ok([...points, ...journey.overviewBounds].every(p => fitted.contains(p)), `${journey.id}: context and all travel fit together`);
+  }
+  buildSite(root);
+  const published = bundle(read(root, 'dist/assets/journeys.js'), 'JOURNEY_ATLAS_DATA');
+  assert.deepEqual(published.journeys.find(j => j.id === family.id).overviewBounds, [[5.9, 45.75], [10.55, 47.85]]);
+});
+
+test('overview bounds reject malformed, reversed and degenerate geographic frames', () => {
+  const { data } = loadContent(repo);
+  const journey = data.journeys[0];
+  for (const value of [undefined, null, [[-5, 40], [10, 50]]]) {
+    journey.overviewBounds = value;
+    assert.doesNotThrow(() => validateJourneys(data));
+  }
+  for (const value of [{}, [], [[0, 0]], [[0, 0], [1, 1], [2, 2]], [[10, 40], [5, 50]],
+    [[0, 50], [1, 40]], [[0, 0], [0, 1]], [[0, 0], [1, 0]], [[-181, 0], [1, 1]],
+    [[0, 0], [1, 91]], [[0, 0], [NaN, 1]], [[0, 0], ['1', 1]]]) {
+    journey.overviewBounds = value;
+    assert.throws(() => validateJourneys(data), /overviewBounds/);
+  }
+});
+
 test('one template supplies every control and asset to real trips, all samples, and a blank new draft', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const { data } = loadContent(root, { includeDrafts: true });

@@ -49,6 +49,14 @@ Journey sources live in `content/journeys/<journey-id>.json`. The root catalog
 and stable trip-detail URLs are generated from each journey's `kind`, `published`,
 and `slug`. `dist/assets/journeys.js` is generated; do not edit it by hand.
 
+Optional `overviewBounds: [[west, south], [east, north]]` adds geographic context
+to the full-trip map. Use valid longitude/latitude corners with positive area;
+the viewer includes these bounds together with every route and place, so they
+cannot crop travel. Without the field, framing uses route/place bounds as before;
+empty drafts retain their empty map. Day, photo and Replay cameras are unaffected.
+Switzerland–Italy uses `[[5.9, 45.75], [10.55, 47.85]]` to show all of Switzerland
+around its itinerary. Keep such editorial coordinates in the journey source.
+
 ## Map location labels
 
 Basemap typography and layer order live in `dist/assets/map-style.js` and apply
