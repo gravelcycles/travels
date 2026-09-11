@@ -6,6 +6,10 @@ for a fresh agent. Create a data instance with Studio or `journey:new`; never
 copy Switzerland–Italy's page, itinerary, scripts, or photo manifests. The same
 template, runtime, and Studio provide every trip's available features.
 
+Selecting a day from the map, day arrows, albums or a direct link also brings
+its selected row into view in the left day list. Only that list scrolls, and
+already visible rows stay put; reduced motion uses an immediate scroll.
+
 This is the reusable handoff for adding another real trip. The user supplies
 the trip facts, photos, corrections, and visual judgment. The agent owns the
 terminal, local servers, asset generation, research, implementation, QA,

@@ -105,6 +105,27 @@ test('overview bounds reject malformed, reversed and degenerate geographic frame
   }
 });
 
+test('selecting a real, demo or fresh-draft day scrolls its newly selected row into view', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const { data } = loadContent(root);
+  for (const journey of [data.journeys.find(j => j.id === 'switzerland-italy-family-2026'), data.journeys.find(j => j.kind === 'demo'), draft]) {
+    const selected = journey.days[Math.min(10, journey.days.length - 1)];
+    let renderedId, scrolled = false;
+    const context = vm.createContext({ journey, activeDayId: journey.days[0].id, prefersReducedMotion: () => false,
+      dayById: id => journey.days.find(day => day.id === id), clearSegmentInspection() {},
+      renderDays() { renderedId = context.activeDayId; }, renderStory() {}, drawMainMap() {},
+      dayList: { clientHeight: 400, getBoundingClientRect: () => ({ top: 100, bottom: 500 }),
+        querySelector: () => {
+          assert.equal(renderedId, selected.id, 'Selection renders before scrolling');
+          return { getBoundingClientRect: () => ({ top: 600, bottom: 680 }) };
+        }, scrollBy: options => { assert.ok(options.top > 0); scrolled = true; } }
+    });
+    vm.runInContext(appFunction('scrollActiveDayIntoView') + appFunction('setActiveDay'), context);
+    context.setActiveDay(selected.id, false);
+    assert.ok(scrolled, journey.id);
+  }
+});
+
 test('one template supplies every control and asset to real trips, all samples, and a blank new draft', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const { data } = loadContent(root, { includeDrafts: true });
