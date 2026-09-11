@@ -13,7 +13,7 @@ function fixture({routes=[]}={}){
     remove(){this.isConnected=false;if(this.parent)this.parent.children=this.parent.children.filter(child=>child!==this);}
     contains(item){return this===item||this.children.some(child=>child.contains(item));}
     querySelector(selector){return this.children.find(child=>selector==='button'?child.tagName==='button':child.className===selector.slice(1))||this.children.map(child=>child.querySelector(selector)).find(Boolean);}
-    getBoundingClientRect(){const coordinate=this.parent?.coordinate;if(coordinate){const x=100+coordinate[0]+parseFloat(this.style['--pin-x']),y=100+coordinate[1]+parseFloat(this.style['--pin-y']);return {left:x-16,top:y-16,right:x+16,bottom:y+16,width:32,height:32};}return {left:100,top:100,bottom:700,right:900,width:800,height:600};}
+    getBoundingClientRect(){const coordinate=this.parent?.coordinate;if(coordinate){const x=100+coordinate[0],y=100+coordinate[1]+parseFloat(this.style['--pin-y']),height=parseFloat(this.style['--pin-height']);return {left:x-16,top:y-height/2,right:x+16,bottom:y+height/2,width:32,height};}return {left:100,top:100,bottom:700,right:900,width:800,height:600};}
     focus(){document.activeElement=this;this.listeners.get('focus')?.({target:this});}
   }
   const document=new Element('document');document.documentElement={dataset:{inputMode:'pointer'}};document.createElement=tag=>new Element(tag);

@@ -71,16 +71,19 @@
 
   function placePin(point, { dot, targetSize, bounds, occupied = [], routes = [] }) {
     if (point.x < bounds.left || point.x > bounds.right || point.y < bounds.top || point.y > bounds.bottom) return null;
-    const candidates = dot ? [[0, 0, 0]] : [[0, -20, 0], [20, 0, 90], [-20, 0, -90], [0, 20, 180]];
+    const candidates = dot ? [0] : [18, 22];
     let best = null, score = Infinity;
-    for (const [index, [x, y, angle]] of candidates.entries()) {
-      const box = {left:point.x+x-targetSize/2,right:point.x+x+targetSize/2,top:point.y+y-targetSize/2,bottom:point.y+y+targetSize/2};
+    for (const [index, postHeight] of candidates.entries()) {
+      // Include the board, stem and foot in the clickable/control-free rectangle.
+      const height = Math.max(targetSize, dot ? 0 : postHeight + 14);
+      const y = dot ? 0 : -(postHeight + 8) / 2;
+      const box = {left:point.x-targetSize/2,right:point.x+targetSize/2,top:point.y+y-height/2,bottom:point.y+y+height/2};
       if (box.left < bounds.left || box.right > bounds.right || box.top < bounds.top || box.bottom > bounds.bottom) continue;
       if (occupied.some(other => overlaps(box, other, 2))) continue;
-      const body = {left:point.x+x-13,right:point.x+x+13,top:point.y+y-13,bottom:point.y+y+13};
-      // The tip/dot marks the actual route point; prefer keeping the round body clear.
+      const body = {left:point.x-11,right:point.x+11,top:point.y-postHeight-11,bottom:point.y-postHeight+11};
+      // A slightly longer stem can clear a route; boards always stay above the point.
       const cost = routes.filter(route => crossesRoute(route, body)).length * 20 + index;
-      if (cost < score) { best = {offset:[x,y],angle,box,dot}; score = cost; }
+      if (cost < score) { best = {offset:[0,y],postHeight,height,box,dot}; score = cost; }
     }
     if (!best && !dot) return placePin(point, {dot:true,targetSize,bounds,occupied,routes});
     return best;
@@ -203,8 +206,12 @@
         const element = document.createElement('div'); element.className = 'location-label-anchor';
         const button = document.createElement('button'); button.type = 'button'; button.className = 'location-pin';
         button.classList.toggle('is-dot', placement.dot); button.classList.toggle('is-selected', group.selected);
-        button.style.setProperty('--pin-x', `${placement.offset[0]}px`); button.style.setProperty('--pin-y', `${placement.offset[1]}px`); button.style.setProperty('--pin-angle', `${placement.angle}deg`);
-        button.innerHTML = '<svg class="location-pin-shape" viewBox="-18 -18 36 40" aria-hidden="true"><path d="M0 20 L-5 12 A13 13 0 1 1 5 12 Z" /></svg><span class="location-pin-dot" aria-hidden="true"></span>';
+        button.style.setProperty('--pin-y', `${placement.offset[1]}px`);
+        button.style.setProperty('--pin-height', `${placement.height}px`);
+        button.style.setProperty('--pin-body-y', `${-placement.postHeight-placement.offset[1]}px`);
+        button.style.setProperty('--pin-foot-y', `${-placement.offset[1]}px`);
+        button.style.setProperty('--pin-stem-height', `${Math.max(0,placement.postHeight-10)}px`);
+        button.innerHTML = '<span class="location-pin-stem" aria-hidden="true"></span><span class="location-pin-foot" aria-hidden="true"></span><span class="location-pin-dot" aria-hidden="true"></span>';
         const number = document.createElement('span'); number.className = 'location-pin-number'; number.textContent = dot ? '' : group.days[0].number; number.setAttribute('aria-hidden','true'); button.append(number);
         const accessible = group.members.map(member => `${member.name} · ${dayText(member.days)}`).join('; ');
         button.setAttribute('aria-label', `${accessible} · ${dot ? 'Choose a day' : 'Open day'}`);

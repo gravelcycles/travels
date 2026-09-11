@@ -58,18 +58,25 @@ test('nearby locations cluster without dropping days and separate again on zoom'
   assert.equal(groups[0].members,undefined,'Source records remain untouched');
 });
 
-test('pins keep their tips on the location, prefer clear bodies, and never pull offscreen places inward', () => {
+test('signposts stay upright above their location with the complete marker inside its hit target', () => {
   const point={x:150,y:150}, bounds={left:0,right:300,top:0,bottom:300};
-  const routes=[{start:{x:0,y:150},end:{x:300,y:150},padding:3}];
-  const pin=placePin(point,{dot:false,targetSize:32,bounds,routes});
-  assert.equal(pin.dot,false);
-  const [x,y]=pin.offset, radians=pin.angle*Math.PI/180;
-  assert.ok(Math.abs(x-20*Math.sin(radians))<1e-9);
-  assert.ok(Math.abs(y+20*Math.cos(radians))<1e-9);
-  assert.ok(!crossesRoute(routes[0],{left:150+x-13,right:150+x+13,top:150+y-13,bottom:150+y+13}));
-  assert.equal(placePin({x:-1,y:150},{dot:false,targetSize:32,bounds}),null);
-  assert.equal(placePin(point,{dot:false,targetSize:32,bounds,occupied:[bounds]}),null);
-  assert.deepEqual(placePin(point,{dot:true,targetSize:44,bounds}).offset,[0,0]);
+  for (const targetSize of [32,44]) {
+    const routes=[{start:{x:0,y:150},end:{x:300,y:150},padding:3}];
+    const pin=placePin(point,{dot:false,targetSize,bounds,routes});
+    assert.equal(pin.dot,false); assert.equal(pin.offset[0],0); assert.equal(pin.postHeight,18);
+    assert.ok(pin.box.top<=point.y-pin.postHeight-11,'The entire board is clickable');
+    assert.ok(pin.box.bottom>=point.y+2.5,'The location foot is clickable too');
+    assert.ok(!crossesRoute(routes[0],{left:139,right:161,top:150-pin.postHeight-11,bottom:150-pin.postHeight+11}));
+    const crossing=[{start:{x:0,y:142},end:{x:300,y:142},padding:1}];
+    const taller=placePin(point,{dot:false,targetSize,bounds,routes:crossing});
+    assert.equal(taller.postHeight,22); assert.equal(taller.offset[0],0,'Clear nearby lines by extending upward only');
+    assert.ok(taller.height>=targetSize);
+    const edge=placePin({x:150,y:26},{dot:false,targetSize,bounds});
+    assert.equal(edge.dot,true,'Tight edges use a dot rather than a sideways or inverted post');
+    assert.deepEqual(edge.offset,[0,0]);
+    assert.equal(placePin({x:-1,y:150},{dot:false,targetSize,bounds}),null);
+    assert.equal(placePin(point,{dot:false,targetSize,bounds,occupied:[bounds]}),null);
+  }
 });
 
 test('real and demo maps use clustered pins with separate touch targets and protected controls', () => {

@@ -80,10 +80,11 @@ project-level status.
       distinguishable at overview and close-up scales. Use redundant color plus
       dash/width/casing/symbol cues, retain selected-route emphasis, place lines
       below labels, and test color-vision/low-contrast conditions.
-- [x] **T05 — Stop day dots covering labels.** Small numbered balloons replace
-      destination chips/connectors; repeat/nearby stops share quiet dots with
-      explicit day choices. Pin tips stay on location, bodies prefer space
-      beside routes, and clustering/control collision checks protect targets.
+- [x] **T05 — Stop day dots covering labels.** Small upright numbered signposts
+      replace destination chips/rotating balloons; repeat/nearby stops share dots with
+      explicit day choices. Signpost feet stay on location, boards stay
+      above short vertical stems, and clustering/control collision checks
+      protect complete targets. Tight spaces use dots instead of rotated posts.
       Hover/focus links pins, routes and day rows; one compact preview reveals
       details. Phone targets are 44 px. Exact basemap glyph collision remains
       unavailable to DOM pins; dense/edge views can still omit a pin while day
