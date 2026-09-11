@@ -96,6 +96,7 @@
   let hasPlayedOpeningMove = false;
   let locationLabels;
   let previewDayIds = [], previewSource = null, previewShowCard = false, previewClearTimer = null;
+  let previewSegmentId = null;
   let pendingMapAction = null;
   const preloadedPhotoUrls = new Set();
   const decodedPhotoUrls = new Set();
@@ -300,6 +301,8 @@
   function renderRouteLegs(day) {
     const segments = segmentsForDay(day);
     if (!segments.length) return "";
+    const mobile = window.matchMedia("(max-width: 900px)").matches;
+    const tag = mobile ? "button" : "div";
     return `
       <div class="route-legs">
         <ol>
@@ -309,11 +312,11 @@
             const stopCount = (segment.stops || []).length + 2;
             return `
               <li>
-                <button class="leg-card" type="button" data-route-segment="${escapeHtml(segment.id)}" aria-label="Explore ${escapeHtml(labels[segment.mode] || segment.mode)} route from ${escapeHtml(from.name)} to ${escapeHtml(to.name)}">
+                <${tag} class="leg-card" ${mobile ? 'type="button"' : 'tabindex="0" role="group"'} data-route-segment="${escapeHtml(segment.id)}" aria-label="${mobile ? "Explore" : "Highlight"} ${escapeHtml(labels[segment.mode] || segment.mode)} route from ${escapeHtml(from.name)} to ${escapeHtml(to.name)}">
                   <span class="leg-mode">${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)}</span>
                   <strong>${journey.routeGroups?.length ? `<span class="leg-audience">${escapeHtml(groupTravel.audience(journey, segment))}</span>` : ""}${escapeHtml(from.name)} → ${escapeHtml(to.name)}</strong>
                   <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""}${segment.stops ? ` · ${stopCount} stops` : ""}${segment.geometryStatus === "provisional" ? " · Provisional route" : ""}</small>
-                </button>
+                </${tag}>
               </li>
             `;
           }).join("")}
@@ -398,23 +401,43 @@
   function syncInspectionClasses() {
     const inspectedDay = inspectedSegmentId ? dayForSegment(inspectedSegmentId) : null;
     const dayIds = previewDayIds.length ? previewDayIds : inspectedDay ? [inspectedDay.id] : [];
-    const segmentIds = new Set(dayIds.flatMap(id => dayById(id)?.segmentIds || []));
+    const segmentIds = new Set(previewSegmentId ? [previewSegmentId] : dayIds.flatMap(id => dayById(id)?.segmentIds || []));
     document.querySelectorAll(".day-row").forEach(row => row.classList.toggle("route-preview", dayIds.includes(row.dataset.dayId)));
     document.querySelectorAll(".leg-card").forEach(card => card.classList.toggle("route-preview", segmentIds.has(card.dataset.routeSegment)));
     locationLabels?.setPreview(dayIds, { show: previewShowCard, preserveCard: previewSource === 'pin' });
   }
 
-  function setDayPreview(ids, source, showCard = true) {
+  function setDayPreview(ids, source, showCard = true, segmentId = null) {
     window.clearTimeout(previewClearTimer); previewClearTimer = null;
     const next = [...new Set(ids)].filter(id => dayById(id));
-    if (previewSource === source && next.join('|') === previewDayIds.join('|') && previewShowCard === showCard) return;
+    segmentId = segmentId && next.some(id => dayById(id).segmentIds.includes(segmentId)) ? segmentId : null;
+    if (previewSource === source && next.join('|') === previewDayIds.join('|') && previewShowCard === showCard && previewSegmentId === segmentId) return;
+    const previousSegmentId = previewSegmentId;
+    previewSegmentId = segmentId;
     previewDayIds = next; previewSource = next.length ? source : null; previewShowCard = Boolean(next.length && showCard);
-    const segments = new Set(next.flatMap(id => dayById(id).segmentIds));
+    const segments = new Set(segmentId ? [segmentId] : next.flatMap(id => dayById(id).segmentIds));
     if (mainMapReady) journey.segments.forEach(segment => {
       const sourceId = `main-source-${segment.id}`;
-      if (mainMap.getSource(sourceId)) mainMap.setFeatureState({source:sourceId,id:segment.id}, {previewed:segments.has(segment.id), previewMuted:Boolean(next.length) && !segments.has(segment.id)});
+      if (mainMap.getSource(sourceId)) mainMap.setFeatureState({source:sourceId,id:segment.id}, {previewed:segments.has(segment.id), previewMuted:Boolean(next.length) && !segments.has(segment.id), legMuted:Boolean(segmentId) && segment.id !== segmentId});
     });
+    if (mainMapReady && (previousSegmentId || segmentId) && previousSegmentId !== segmentId) {
+      // Keep an overlapping outbound/return leg above its greyed context;
+      // restore the original day ordering as soon as the preview ends.
+      const before = window.JOURNEY_ATLAS_MAP_STYLE.routeInsertionLayer(mainMap);
+      const foreground = new Set([`main-casing-${segmentId}`, `main-line-${segmentId}`]);
+      const layers = mainDecorations.layerIds.filter(id => mainMap.getLayer(id));
+      [...layers.filter(id => !foreground.has(id)), ...layers.filter(id => foreground.has(id))]
+        .forEach(id => mainMap.moveLayer(id, before));
+    }
     syncInspectionClasses();
+  }
+
+  function previewRouteLeg(segmentId) {
+    if (window.matchMedia('(max-width: 900px)').matches) return;
+    const day = dayForSegment(segmentId);
+    if (!day) return;
+    clearSegmentInspection(true);
+    setDayPreview([day.id], 'leg', false, segmentId);
   }
 
   function deferDayPreviewClear(source) {
@@ -464,7 +487,8 @@
     setInspectedFeatureState(inspectedSegmentId, false);
     inspectedSegmentId = null;
     routeInspectionPinned = false;
-    if (force) clearDayPreview('route'); else deferDayPreviewClear('route');
+    if (force) { clearDayPreview('route'); clearDayPreview('leg'); }
+    else deferDayPreviewClear('route');
     $("#route-inspector").hidden = true;
     syncInspectionClasses();
   }
@@ -623,7 +647,7 @@
     const baseColor = options.color || modeStyle.color;
     const baseWidth = modeStyle.width + (options.selected ? 1.4 : 0);
     const paint = {
-      "line-color": ["case", ["boolean", ["feature-state", "previewed"], false], modeStyle.color, baseColor],
+      "line-color": ["case", ["boolean", ["feature-state", "previewed"], false], modeStyle.color, ["boolean", ["feature-state", "legMuted"], false], "#92999a", baseColor],
       "line-width": ["case", ["any", ["boolean", ["feature-state", "inspected"], false], ["boolean", ["feature-state", "previewed"], false]], baseWidth + 3, baseWidth],
       "line-opacity": ["case", ["boolean", ["feature-state", "previewed"], false], 1, ["boolean", ["feature-state", "previewMuted"], false], 0.24, options.opacity]
     };
@@ -1781,33 +1805,35 @@
   detailPanel.addEventListener("mouseover", (event) => {
     if (!routeHoverEnabled()) return;
     const card = event.target.closest("[data-route-segment]");
-    if (card && !routeInspectionPinned) inspectSegment(card.dataset.routeSegment);
+    if (card && !card.contains(event.relatedTarget)) previewRouteLeg(card.dataset.routeSegment);
   });
   detailPanel.addEventListener("mouseout", (event) => {
     const card = event.target.closest("[data-route-segment]");
-    if (card && !card.contains(event.relatedTarget)) clearSegmentInspection();
+    if (card && !card.contains(event.relatedTarget)) clearDayPreview('leg');
   });
   detailPanel.addEventListener("focusin", (event) => {
     const card = event.target.closest("[data-route-segment]");
     if (!card) return;
-    clearSegmentInspection(true);
-    inspectSegment(card.dataset.routeSegment);
+    previewRouteLeg(card.dataset.routeSegment);
   });
   detailPanel.addEventListener("focusout", (event) => {
     const card = event.target.closest("[data-route-segment]");
-    if (card && !card.contains(event.relatedTarget)) clearSegmentInspection();
+    if (card && !card.contains(event.relatedTarget)) clearDayPreview('leg');
   });
   detailPanel.addEventListener("click", (event) => {
     const card = event.target.closest("[data-route-segment]");
-    if (card) {
-      inspectSegment(card.dataset.routeSegment, true);
-      if (window.matchMedia("(max-width: 900px)").matches) {
-        setMobileTab("map"); pendingMapAction = null;
-        window.setTimeout(() => { if(mainMapReady) { mainMap.resize(); mainMap.fitBounds(boundsFromCoordinates(segmentCoordinates(segmentById(card.dataset.routeSegment))), {padding:mapPadding(100),maxZoom:13,duration:prefersReducedMotion()?0:500}); } },100);
-      }
+    if (card && window.matchMedia("(max-width: 900px)").matches) {
+      setMobileTab("map"); pendingMapAction = null;
+      window.setTimeout(() => { if(mainMapReady) { mainMap.resize(); mainMap.fitBounds(boundsFromCoordinates(segmentCoordinates(segmentById(card.dataset.routeSegment))), {padding:mapPadding(100),maxZoom:13,duration:prefersReducedMotion()?0:500}); } },100);
     }
     const step=event.target.closest('[data-journal-step]'); if(step) { moveActiveDay(Number(step.dataset.journalStep)); showJournal(true); }
     if(event.target.closest('#resume-replay')) openReplay();
+  });
+
+  window.matchMedia("(max-width: 900px)").addEventListener("change", () => {
+    clearSegmentInspection(true);
+    const legs = detailPanel.querySelector(".route-legs");
+    if (legs) legs.outerHTML = renderRouteLegs(activeDay());
   });
 
   [storyMedia, photoStrip].forEach((container) => container.addEventListener("click", (event) => {
@@ -1905,7 +1931,7 @@
       }
       return;
     }
-    if (event.key === "Escape" && !photoDialog.open && inspectedSegmentId) {
+    if (event.key === "Escape" && !photoDialog.open && (inspectedSegmentId || previewSegmentId)) {
       clearSegmentInspection(true);
       return;
     }

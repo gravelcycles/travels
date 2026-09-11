@@ -479,3 +479,28 @@ test('real, demo and a fresh draft inherit settlement contrast and route stackin
   const studio = read(repo, 'studio/index.html');
   assert.ok(studio.indexOf('/dist/assets/map-style.js') < studio.indexOf('/studio.js'));
 });
+
+test('desktop leg previews and mobile tap rows carry over to real, demo and a newly populated draft', async t => {
+  const { legPreviewHarness } = await import('./route-leg-preview-harness.mjs');
+  const root = fixture(t), draft = createJourney(root, input);
+  assert.equal(legPreviewHarness(draft).context.renderRouteLegs(draft.days[0]), '', 'Empty drafts invent no legs');
+  draft.places = [{ id: 'fresh-start', name: 'Start' }, { id: 'fresh-end', name: 'End' }];
+  draft.segments = ['train', 'boat'].map((mode, i) => ({ id: `fresh-leg-${i}`, from: 'fresh-start', to: 'fresh-end', mode }));
+  draft.days[0].segmentIds = draft.segments.map(segment => segment.id);
+  const { data } = loadContent(root);
+  for (const journey of [data.journeys.find(j => j.kind === 'real' && j.published), data.journeys.find(j => j.kind === 'demo'), draft]) {
+    const h = legPreviewHarness(journey), day = journey.days.find(day => day.segmentIds.length);
+    const markup = h.context.renderRouteLegs(day);
+    assert.match(markup, /<div class="leg-card" tabindex="0" role="group"/);
+    assert.doesNotMatch(markup, /<button|aria-label="Explore/);
+    const card = h.cards.find(card => card.dataset.routeSegment === day.segmentIds[0]);
+    h.fire('mouseover', card);
+    for (const segment of journey.segments) {
+      assert.equal(h.states.get(segment.id).previewed, segment.id === day.segmentIds[0], `${journey.id}: ${segment.id}`);
+      if (segment.id !== day.segmentIds[0]) assert.equal(h.paint(segment.id, 'line-color'), '#92999a');
+    }
+    h.fire('mouseout', card); assert.ok([...h.states.values()].every(state => !state.previewed && !state.previewMuted && !state.legMuted));
+    h.setMobile(true); assert.match(h.context.renderRouteLegs(day), /<button class="leg-card" type="button"/);
+    h.setMobile(false); assert.match(h.context.renderRouteLegs(day), /<div class="leg-card" tabindex="0"/);
+  }
+});
