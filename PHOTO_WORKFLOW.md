@@ -86,11 +86,12 @@ photo. Verify a quick hide-then-swipe keeps location closed. Replay shows the
 route map and day story with fixed playback controls. It has no photo viewer,
 image preloads or photo pauses; browse photographs through the day albums.
 Check the affected flow on a demo and a fresh draft as well as the real trip.
-Desktop covers, journal images, thumbnails (including video posters), and full-screen
-photos play a 650 ms blur-to-focus reveal whenever they appear, including cached
-revisits. The reveal waits for image readiness and visibility without re-fetching
-bytes; rapid selections cancel the previous animation. Phone behavior is unchanged,
-and reduced-motion preferences disable the desktop reveal.
+Full-screen photos use a 350 ms blur-to-clear reveal on desktop and phones.
+Desktop covers, journal images and thumbnails (including video posters) retain
+their 650 ms reveal. Desktop reveals run on every appearance, including cached
+revisits, and wait for readiness and visibility without re-fetching bytes.
+Rapid selections cancel the previous animation, and reduced-motion preferences
+disable the reveal. Cached phone revisits retain their immediate presentation.
 The full viewer keeps its blurred preview underneath the desktop reveal until
 the actual animation finishes, avoiding a dark flash when a new photo becomes
 ready. Completion, cancellation and reduced motion clear this temporary backdrop;

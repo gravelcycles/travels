@@ -179,7 +179,7 @@ button { color: inherit; }
 }
 @media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
   #modal-photo[data-photo-state="ready"]:not([data-photo-reveal="instant"]) {
-    animation: photo-resolve 650ms ease backwards;
+    animation: photo-resolve 350ms ease backwards;
   }
 }
 @media (min-width: 901px) {

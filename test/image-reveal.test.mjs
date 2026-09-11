@@ -38,6 +38,7 @@ const settle = () => new Promise(resolve => queueMicrotask(resolve));
 
 test('cached desktop images reveal on appearance and cached viewer selections restart without reloading', async () => {
   const f = fixture(), image = new ImageElement();
+  image.id = 'modal-photo';
   image.dataset.photoState = 'ready'; image.dataset.photoReveal = 'instant';
   f.prepare(container(image));
   assert.equal(image.animations.length, 0, 'Wait until a cached image is visible');
@@ -45,7 +46,7 @@ test('cached desktop images reveal on appearance and cached viewer selections re
   assert.equal(image.animations.length, 1);
   assert.equal(image.dataset.imageRevealing, 'true', 'The preview covers the foreground fade');
   assert.deepEqual(image.animations[0].frames, [{ opacity: 0, filter: 'blur(16px)' }, { opacity: 1, filter: 'blur(0px)' }]);
-  assert.equal(image.animations[0].options.duration, 650);
+  assert.equal(image.animations[0].options.duration, 350);
   image.dispatchEvent(new Event('load')); image.dispatchEvent(new Event('atlas-photo-state'));
   f.prepare(container(image)); await settle();
   assert.equal(image.animations.length, 1, 'Duplicate ready events do not restart a reveal');
@@ -87,6 +88,7 @@ test('progressive and plain images reveal after load, including readiness set by
   progressive.classList.add('is-loaded');
   plain.complete = true; plain.dispatchEvent(new Event('load')); await settle();
   assert.equal(progressive.animations.length, 1); assert.equal(plain.animations.length, 1);
+  assert.equal(plain.animations[0].options.duration, 650, 'Other desktop images retain their existing reveal timing');
 });
 
 test('cached images reveal again after re-entry, while removed images release observers and queued events', async () => {
