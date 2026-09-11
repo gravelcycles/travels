@@ -91,8 +91,10 @@ photos play a 650 ms blur-to-focus reveal whenever they appear, including cached
 revisits. The reveal waits for image readiness and visibility without re-fetching
 bytes; rapid selections cancel the previous animation. Phone behavior is unchanged,
 and reduced-motion preferences disable the desktop reveal.
-Loaded full-screen photos must have clean edges after the reveal: the blurred placeholder is
-visible only while loading and must disappear before zooming or swiping.
+The full viewer keeps its blurred preview underneath the desktop reveal until
+the actual animation finishes, avoiding a dark flash when a new photo becomes
+ready. Completion, cancellation and reduced motion clear this temporary backdrop;
+loaded full-screen photos must have clean edges after the reveal.
 Mobile swipe-neighbor images stay hidden on desktop, before initialization and
 after closing; also check resizing an open viewer from phone to desktop width.
 Check taps/clicks through the grid, location panel and Back without lingering

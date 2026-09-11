@@ -43,6 +43,7 @@ test('cached desktop images reveal on appearance and cached viewer selections re
   assert.equal(image.animations.length, 0, 'Wait until a cached image is visible');
   f.show(image);
   assert.equal(image.animations.length, 1);
+  assert.equal(image.dataset.imageRevealing, 'true', 'The preview covers the foreground fade');
   assert.deepEqual(image.animations[0].frames, [{ opacity: 0, filter: 'blur(16px)' }, { opacity: 1, filter: 'blur(0px)' }]);
   assert.equal(image.animations[0].options.duration, 650);
   image.dispatchEvent(new Event('load')); image.dispatchEvent(new Event('atlas-photo-state'));
@@ -53,6 +54,8 @@ test('cached desktop images reveal on appearance and cached viewer selections re
   assert.equal(image.animations.length, 2);
   assert.equal(image.animations[0].cancelled, true);
   assert.equal(image.src, 'https://example.com/photo.webp', 'Reveals never replace or refetch the source');
+  image.animations[1].onfinish();
+  assert.equal(image.dataset.imageRevealing, undefined, 'The preview disappears when the actual animation finishes');
 });
 
 test('protected images wait for decoded readiness and never animate locked or failed placeholders', async () => {
@@ -62,6 +65,7 @@ test('protected images wait for decoded readiness and never animate locked or fa
   for (const state of ['locked', 'loading', 'error']) {
     image.dataset.photoState = state; image.dispatchEvent(new Event('load')); await settle();
     assert.equal(image.animations.length, 0);
+    assert.equal(image.dataset.imageRevealing, undefined);
   }
   image.src = image.currentSrc = 'blob:decoded-photo'; image.dataset.photoState = 'ready'; image.complete = false;
   image.dispatchEvent(new Event('atlas-photo-state')); await settle();
@@ -101,6 +105,7 @@ test('phone widths and reduced motion skip the desktop reveal and cancel an in-p
   f.prepare(container(image)); f.show(image); assert.equal(image.animations.length, 0);
   f.enable(true); assert.equal(image.animations.length, 1);
   f.enable(false); assert.equal(image.animations[0].cancelled, true);
+  assert.equal(image.dataset.imageRevealing, undefined, 'Reduced motion clears the reveal backdrop immediately');
   f.reset(image); f.prepare(container(image)); assert.equal(image.animations.length, 1);
 });
 
@@ -115,5 +120,16 @@ test('fast selection changes cannot reveal stale loading images or let an old co
   image.dispatchEvent(new Event('atlas-photo-state')); await settle();
   assert.equal(image.animations.length, 2);
   first.onfinish();
+  assert.equal(image.dataset.imageRevealing, 'true', 'A stale completion cannot remove the new photo preview');
   f.reset(image); assert.equal(image.animations[1].cancelled, true);
+  assert.equal(image.dataset.imageRevealing, undefined, 'Navigation cancels the old preview along with its animation');
+});
+
+test('external animation cancellation releases its preview without replaying a settled source', () => {
+  const f = fixture(), image = new ImageElement();
+  f.prepare(container(image)); f.show(image);
+  image.animations[0].oncancel();
+  assert.equal(image.dataset.imageRevealing, undefined);
+  f.prepare(container(image));
+  assert.equal(image.animations.length, 1);
 });
