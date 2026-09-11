@@ -23,7 +23,7 @@ function selection() {
     viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null,
     journey: { days, segments: [] }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],
     photosForDay: () => [], routeLabel: () => '', escapeHtml: value => value || '',
-    refreshPreloads() {}, renderDays() {}, renderStory() {}, drawMainMap() {}, renderViewerFilmstrip() {}, clearSegmentInspection() {}
+    refreshPreloads() {}, renderDays() {}, scrollActiveDayIntoView() {}, renderStory() {}, drawMainMap() {}, renderViewerFilmstrip() {}, clearSegmentInspection() {}
   });
   vm.runInContext(`${functionSource('setActiveDay')}\n${functionSource('updateViewer')}`, context);
   return context;
@@ -34,6 +34,24 @@ test('selecting a day leaves overview scope even when the mobile map is hidden',
   vm.runInContext('setActiveDay("d2", true)', context);
   assert.equal(context.activeDayId, 'd2');
   assert.equal(context.mapScope, 'day');
+});
+
+test('day-list scrolling reveals clipped rows without moving visible rows or hidden panels', () => {
+  let rect = { top: 700, bottom: 780 }, height = 400, reduced = false;
+  const calls = [];
+  const context = vm.createContext({ prefersReducedMotion: () => reduced,
+    dayList: { querySelector: () => ({ getBoundingClientRect: () => rect }), get clientHeight() { return height; },
+      getBoundingClientRect: () => ({ top: 100, bottom: 500 }), scrollBy: value => calls.push(value) }
+  });
+  vm.runInContext(functionSource('scrollActiveDayIntoView'), context);
+  context.scrollActiveDayIntoView();
+  assert.equal(calls.at(-1).top, 292); assert.equal(calls.at(-1).behavior, 'smooth');
+  rect = { top: 50, bottom: 130 }; reduced = true; context.scrollActiveDayIntoView();
+  assert.equal(calls.at(-1).top, -62); assert.equal(calls.at(-1).behavior, 'instant');
+  rect = { top: 112, bottom: 488 }; context.scrollActiveDayIntoView();
+  assert.equal(calls.length, 2, 'A fully visible day stays put');
+  height = 0; rect = { top: 700, bottom: 780 }; context.scrollActiveDayIntoView();
+  assert.equal(calls.length, 2, 'A hidden mobile panel does not scroll');
 });
 
 test('a day selected without a camera fit still updates the route scope', () => {

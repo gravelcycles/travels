@@ -1040,12 +1040,23 @@
     drawMainMap(Boolean(options && options.fit));
   }
 
+  function scrollActiveDayIntoView() {
+    const row = dayList.querySelector('.day-row.active');
+    if (!row || !dayList.clientHeight) return;
+    const listRect = dayList.getBoundingClientRect(), rowRect = row.getBoundingClientRect();
+    const margin = 12;
+    const top = rowRect.top < listRect.top + margin ? rowRect.top - listRect.top - margin
+      : rowRect.bottom > listRect.bottom - margin ? rowRect.bottom - listRect.bottom + margin : 0;
+    if (top) dayList.scrollBy({ top, behavior: prefersReducedMotion() ? 'instant' : 'smooth' });
+  }
+
   function setActiveDay(id, focus) {
     if (!dayById(id)) return;
     clearSegmentInspection(true);
     activeDayId = id;
     mapScope = "day";
     renderDays();
+    scrollActiveDayIntoView();
     renderStory();
     if (focus) {
       if ($(".map-panel").offsetParent === null) {
