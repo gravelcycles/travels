@@ -8,7 +8,7 @@ function harness(){
   const days=[{id:'first',segmentIds:['a','b']},{id:'second',segmentIds:['c']},{id:'rest',segmentIds:[]}];
   const rows=days.map(day=>({dataset:{dayId:day.id},classes:new Set(),classList:{toggle(name,on){on?this.owner.classes.add(name):this.owner.classes.delete(name);}}}));rows.forEach(row=>row.classList.owner=row);
   const states=new Map(),timers=new Map(),previews=[];let timer=0;
-  const context=vm.createContext({previewDayIds:[],previewSource:null,previewShowCard:false,previewClearTimer:null,inspectedSegmentId:null,
+  const context=vm.createContext({previewSegmentId:null,previewDayIds:[],previewSource:null,previewShowCard:false,previewClearTimer:null,inspectedSegmentId:null,
     window:{clearTimeout:id=>timers.delete(id),setTimeout:callback=>{timers.set(++timer,callback);return timer;}},
     dayById:id=>days.find(day=>day.id===id),dayForSegment:id=>days.find(day=>day.segmentIds.includes(id)),
     journey:{days,segments:['a','b','c'].map(id=>({id}))},mainMapReady:true,

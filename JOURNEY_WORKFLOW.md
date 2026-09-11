@@ -281,7 +281,13 @@ and stop keys live in Day details; pinch/drag operate the uncluttered map.
 Tap **All days** at the top of a focused day map to show the whole journey again.
 Tap **Day N of M** at the bottom to return to the all-days list. Mobile route
 taps select the day without opening a tooltip; mobile travel cards also omit
-tooltips. Desktop mouse hover, clicks and keyboard focus previews remain available.
+tooltips. Desktop map routes retain inspection. In Travel details, desktop legs
+are focusable rows: hover or keyboard focus highlights only that leg and greys
+all other routes, including other legs of the same day. They do not click,
+open a popup or move the camera. Leaving the row, moving focus away or Escape
+restores the map; overlapping legs keep the highlighted route on top. Check
+same-day leg transitions, keyboard focus, day changes and desktop/phone resizing
+on the reference trip, a demo and a fresh draft. Mobile rows retain tap-to-map.
 Desktop headers omit Sample journeys, the trip badge and About this atlas.
 
 Photo and grid headers use the Day N button to return to the day map. The
