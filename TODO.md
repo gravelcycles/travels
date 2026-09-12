@@ -219,3 +219,12 @@ project-level status.
       map/story, including exact located-photo zoom and empty days.
 
 - [ ] W06: Guided per-journey routing-data preparation with provenance, bounded local extracts and access/direction-aware profiles. Studio now checks readiness and explains missing setup; preserve policies no longer block explicit replacement previews. Do not enable generation for a new trip by copying another trip's routes.
+
+
+## UX proposals awaiting demo review — 12 September 2026
+
+The owner requested a demo of each proposed feature before it changes the live
+site: recovery drafts/conflict review; explicit sharing (without automatic
+reload persistence); batch photo editing; publication readiness/agent handoff;
+private video intake (W07); and a labeled map-only Replay timeline. These are
+pending review, not part of the 20 authorized bug fixes. Audit V1 stays excluded.

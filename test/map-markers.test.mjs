@@ -174,7 +174,8 @@ test('reopening the photo map or returning to a cancelled day cannot leave cache
   const day = journey.days.find(day=>day.segmentIds.some(id=>journey.segments.find(segment=>segment.id===id).mode==='train'));
   const f = renderFixture(journey,'viewer');
   let currentDay = day;
-  Object.assign(f.context,{viewerMap:f.map,viewerDecorations:f.decorations,viewerMapReady:true,viewerRouteKey:null,
+  f.map.easeTo=()=>{};
+  Object.assign(f.context,{viewerFeedback:null,viewerMap:f.map,viewerDecorations:f.decorations,viewerMapReady:true,viewerRouteKey:null,
     viewerPhotoIndex:0,viewerCameraPhoto:null,viewerPhotoMarkers:[],viewerTransition:null,window:{JOURNEY_ATLAS_MAP_STYLE:globalThis.JOURNEY_ATLAS_MAP_STYLE},photoDialog:{open:true},
     viewerDay:()=>currentDay,photosForDay:()=>[],dayCoordinates:()=>[],mapIsReady:()=>true});
   f.context.syncViewerMap();

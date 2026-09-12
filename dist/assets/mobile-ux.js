@@ -24,6 +24,7 @@
     let gesture = null, pointers = new Map(), pinch = null, suppressClick = false;
     let locationTimer, swipeTimer, swipeFrame, zoomFrame;
     let replayState = null;
+    let overlay = null, afterDismiss = null;
     let restoring = false, previousState = null, lastTap = null, viewerDepth = 0, fromAlbum = false, exitingToDay = false;
     const neighbors = [-1, 1].map(delta => {
       const node = document.createElement('img'); node.className = 'mobile-photo-neighbor'; node.hidden = true; node.alt = ''; node.setAttribute('aria-hidden', 'true'); node.draggable = false;
@@ -31,20 +32,38 @@
     });
     const enabled = () => media.matches;
     function snapshot() {
-      return {dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
+      return {overlay, dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
         viewerDay: current.day?.id, index: current.index, scope:api.scope(), depth:dialog.open?viewerDepth:0, fromAlbum, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
     }
     function save(push = false) {
-      if (!enabled() || restoring) return;
+      if (restoring) return;
       const state = snapshot();
       history[push ? 'pushState' : 'replaceState']({...history.state, mobileAtlas: state}, '', location.href);
       previousState = state;
+    }
+    function presentOverlay(id) {
+      const surface = $(`#${id}`);
+      if (surface.open) return;
+      if (!restoring) { save(); history.pushState({...history.state}, '', location.href); }
+      overlay = id; surface.showModal(); save();
+    }
+    function dismissOverlay(id, after) {
+      afterDismiss = after || null;
+      $(`#${id}`).close();
+    }
+    for (const id of ['album-dialog', 'replay-dialog', 'notes-dialog']) {
+      $(`#${id}`).addEventListener('close', () => {
+        // Native close events are queued. A replacement may already own the entry.
+        if ($(`#${id}`).open || overlay !== id) return;
+        overlay = null;
+        if (!restoring && history.state?.mobileAtlas?.overlay === id) history.back();
+      });
     }
     function exitToDay() {
       exitingToDay = true; fromAlbum = false;
       dialog.close(); api.tab('map');
     }
-    function openGrid(dayId) { api.openDay(dayId); setGrid(true); }
+    function openGrid(dayId) { api.openDay(dayId, {grid:true}); setGrid(true); }
     function back() {
       if (history.state?.mobileAtlas?.viewer) { history.back(); return; }
       dialog.close();
@@ -203,11 +222,13 @@
       panel.inert = value || !locationOpen; $('#album-continue').inert = value || !chrome; strip.inert = !value && enabled();
       if (value) { setChrome(true); $('.mobile-photo-header').inert = true; $('.mobile-photo-footer').inert = true; $('#mobile-grid-back').focus(); }
       else if (enabled()) $('#mobile-photo-grid').focus();
+      if (value) { api.suspendPhotos?.(); neighbors.forEach(({node})=>{api.clearImage(node);node.removeAttribute("src");node.hidden=true;}); }
+      else api.resumePhoto?.();
       if (record && changed) save();
     }
     function update(data) {
       current = data; stopSwipe(); stopZoom(); lastTap = null;
-      if (!enabled()) return;
+      if (!enabled()) { save(); return; }
       pointers.clear(); gesture = pinch = null; zoom(1);
       panel.inert=!locationOpen||grid;panel.setAttribute('aria-hidden',String(!locationOpen||grid));strip.inert=!grid;
       $('#mobile-photo-back .button-label').textContent = `Day ${data.day.number}`;
@@ -222,21 +243,23 @@
       $('#mobile-photo-location').disabled = !photo;
       $('#mobile-photo-grid').disabled = !data.photos.length;
       $('#photo-location-title').textContent = photo?.locationLabel || (photo?.mediaType === 'video' ? 'Video location' : 'Photo location');
-      $('#mobile-photo-location .location-hint').textContent = photo?.mediaType === 'video' ? 'Video location' : 'Photo location';
+      $('#mobile-photo-location .location-hint').textContent = photo?.caption || photo?.description ? 'Details & location' : photo?.mediaType === 'video' ? 'Video location' : 'Photo location';
       $('#photo-location-subtitle').textContent = Number.isFinite(photo?.lng) && Number.isFinite(photo?.lat) ? `Day ${data.day.number} · ${data.day.title}` : 'No exact location · showing the day’s route';
       neighbors.forEach(({node,delta}) => {
         const adjacent = data.photos[data.index + delta]; node.hidden = !adjacent;
         api.clearImage(node); node.removeAttribute('src');
-        if (adjacent) api.loadImage(node, adjacent);
+        if (adjacent && !grid) api.loadImage(node, adjacent);
       });
       measure(); transform(); save();
     }
-    function open() {
-      if (!enabled()) return;
+    function open(options = {}) {
       if (!dialog.open) {
-        save(); history.pushState({...history.state}, '', location.href);
-        viewerDepth = 1; locationOpen = grid = false; viewer.dataset.grid = 'false'; setChrome(true); revealTo(0);
-        panel.inert = true; panel.setAttribute('aria-hidden','true'); strip.inert = true; stage.inert = false;
+        if (!restoring) { save(); history.pushState({...history.state}, '', location.href); }
+        if (overlay) { const previousOverlay = overlay; overlay = null; $(`#${previousOverlay}`).close(); }
+        viewerDepth = 1;
+        if (!enabled()) return;
+        locationOpen = false; grid = Boolean(options.grid && enabled()); viewer.dataset.grid = String(grid); setChrome(true); revealTo(0);
+        panel.inert = true; panel.setAttribute('aria-hidden','true'); strip.inert = !grid; stage.inert = grid; $('.mobile-photo-header').inert = $('.mobile-photo-footer').inert = grid;
         $('#mobile-photo-location').setAttribute('aria-expanded','false');
         $('#mobile-photo-location .location-hint').textContent = 'Photo location';
 
@@ -245,28 +268,32 @@
     function closed() {
       neighbors.forEach(({node}) => {node.hidden=true;api.clearImage(node);node.removeAttribute('src');});
       stopSwipe(); stopZoom(); pointers.clear(); gesture = pinch = null; lastTap = null;
-      if (enabled() && !restoring && history.state?.mobileAtlas?.viewer) history.go(-Math.max(1,viewerDepth));
+      if (!restoring && history.state?.mobileAtlas?.viewer) history.go(-Math.max(1,viewerDepth));
     }
     window.addEventListener('popstate', event => {
       const state = event.state?.mobileAtlas;
-      if (!enabled() || !state) return;
+      if (!state) return;
       const old = previousState; restoring = true;
       viewerDepth = state.depth || 0;
+      const oldOverlay = overlay; overlay = state.overlay || null;
+      if (oldOverlay && oldOverlay !== overlay) $(`#${oldOverlay}`).close();
       const targetDay = old?.viewer && !state.viewer ? current.day?.id || state.dayId : state.dayId;
       if(api.day().id !== targetDay || state.scope === 'day' && api.scope() !== 'day') api.selectDay(targetDay);
       const targetTab = !state.viewer && (exitingToDay || old?.viewer) ? 'map' : state.tab;
       if ($('.atlas-shell').dataset.mobileTab !== targetTab) api.tab(targetTab);
       if(!state.viewer && state.scope === 'journey' && !old?.viewer)api.overview();
       if (state.viewer) {
-        if (!dialog.open || current.day?.id !== state.viewerDay) api.openDay(state.viewerDay);
+        if (!dialog.open || current.day?.id !== state.viewerDay) api.openDay(state.viewerDay, {grid:state.layer === 'grid'});
         if (!(old?.viewer && old.viewerDay === state.viewerDay)) api.selectPhoto(state.index || 0);
-        setLocation(state.layer === 'location', false); setGrid(state.layer === 'grid', false);
-      } else if (dialog.open) {dialog.close();if(fromAlbum){fromAlbum=false;api.album();}}
+        if (enabled()) { setLocation(state.layer === 'location', false); setGrid(state.layer === 'grid', false); }
+      } else if (dialog.open) { dialog.close(); fromAlbum=false; }
+      if (overlay) api.restoreOverlay(overlay);
       if(state.viewer && old?.layer === 'grid' && state.layer !== 'grid')$('#mobile-photo-grid').focus();
       else if(state.viewer && old?.layer === 'location' && state.layer !== 'location')$('#mobile-photo-location').focus();
       if(!state.viewer)exitingToDay=false;
       renderDay();
       restoring = false; previousState = state;
+      if (afterDismiss) { const after = afterDismiss; afterDismiss = null; after(); save(); }
     });
     function pointerDown(event) {
       if (!enabled() || grid || event.button > 0) return;
@@ -358,7 +385,7 @@
       if(action==='overview')overview();
       else if(action==='photos')api.album();
       else if(action==='unlock')window.JOURNEY_ATLAS_AUTH?.showPrompt();
-      else if(action==='about')$('#notes-dialog').showModal();
+      else if(action==='about')presentOverlay('notes-dialog');
     };
     media.addEventListener('change',()=>{
       stopZoom();
@@ -376,7 +403,7 @@
     window.addEventListener('resize',()=>{measure();measureReplay();});
     new ResizeObserver(()=>{ $('.map-panel').style.setProperty('--day-summary-height',`${$('.mobile-day-summary').offsetHeight}px`); }).observe($('.mobile-day-summary'));
     save();
-    return {enabled,renderDay,tabChanged,update,open,closed,openGrid,exitToDay,replayControlsChanged,locationVisible:()=>locationOpen,
+    return {enabled,presentOverlay,dismissOverlay,renderDay,tabChanged,update,open,closed,openGrid,exitToDay,replayControlsChanged,locationVisible:()=>locationOpen,gridVisible:()=>enabled()&&grid,
       fromAlbum:()=>{fromAlbum=true;},selectedDay:()=>navigate('map'),gridSelected:()=>{if(grid)setGrid(false);}, keyTarget:event=>enabled()&&(grid||event.target.closest('#photo-map'))};
   }
   const exported = {gestureAxis,swipeStep,panLimit,create};

@@ -6,7 +6,7 @@
   --panel: #fbfaf6;
   --panel-cool: #f1f3ef;
   --line: #cbd2ce;
-  --muted: #687b7e;
+  --muted: #536b6e;
   --route: #006f92;
   --selected: #d4512c;
   --map-water: #dce5e4;
@@ -598,3 +598,7 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 .map-place-visit:hover,.map-place-visit:focus-visible { background:#167e970a; }
 @media(max-width:900px),(pointer:coarse) { .map-place-close { width:44px; height:44px; } .map-place-card > strong,.map-place-meta { padding-right:32px; } .map-place-visit { min-height:44px; } }
 @media(prefers-reduced-motion:reduce) { .location-pin,.location-pin-dot { transition:none; } }
+
+/* Map dismissal and navigation each keep their own hit area. */
+#photo-map .maplibregl-ctrl-top-right { top:64px; }
+.mobile-photo-caption { display:none; }

@@ -29,6 +29,7 @@
   let availabilityRequestId = 0;
   let networkAvailable = false;
   let dirty = false;
+  let savingState = false;
   let savedRevisions = {};
   let savedStateRevision = null;
   let uploadingPhotos = false;
@@ -271,11 +272,9 @@
     $("#studio-photo-grid").innerHTML = photos.length ? photos.map((photo) => {
       const thumb = photo.srcset?.[0]?.src || photo.src;
       const located = Number.isFinite(photo.lat) && Number.isFinite(photo.lng);
-      const day = dayById(photo.dayId);
-      const lead = day?.leadPhotoId === photo.id;
-      return `<button type="button" data-photo-id="${photo.id}" class="${photo.id === selectedPhotoId ? "active" : ""}" aria-label="Edit ${escapeHtml(photo.caption || photo.sourceFilename || photo.id)}${lead ? ", lead photo" : ""}">
+      return `<button type="button" data-photo-id="${photo.id}" class="${photo.id === selectedPhotoId ? "active" : ""}" aria-label="Edit ${escapeHtml(photo.caption || photo.sourceFilename || photo.id)}">
         <img src="${photoUrl(thumb)}" alt="" loading="lazy" />
-        <span>${photo.hidden ? "HIDDEN · " : ""}${lead ? "LEAD · " : ""}${escapeHtml(photo.takenAt || photo.caption)}</span>
+        <span>${photo.hidden ? "HIDDEN · " : ""}${escapeHtml(photo.takenAt || photo.caption)}</span>
         <i class="${located ? "" : "unlocated"}" title="${located ? "Located" : "Needs location"}"></i>
       </button>`;
     }).join("") : `<p class="editor-note">${inTrash ? 'No photos in trash for this selection.' : 'No photos here yet. Use Upload photos to add some.'}</p>`;
@@ -296,11 +295,9 @@
     const ordered = photosForDay(resolved.dayId);
     const index = ordered.findIndex((item) => item.id === selectedPhotoId);
     const day = dayById(resolved.dayId);
-    $("#photo-order-status").textContent = `${day?.leadPhotoId === selectedPhotoId ? "Lead photo · " : ""}${index + 1} of ${ordered.length} in Day ${day?.number || "—"}. Album order is independent from the lead choice.`;
+    $("#photo-order-status").textContent = `${index + 1} of ${ordered.length} in Day ${day?.number || "—"}. The first visible photo appears in the day preview.`;
     $("#photo-move-earlier").disabled = index <= 0;
     $("#photo-move-later").disabled = index < 0 || index >= ordered.length - 1;
-    $("#photo-make-lead").disabled = Boolean(resolved.hidden) || day?.leadPhotoId === selectedPhotoId;
-    $("#photo-make-lead").textContent = day?.leadPhotoId === selectedPhotoId ? "Current lead photo" : "Use as lead photo";
   }
 
   function selectPhoto(id, center) {
@@ -407,7 +404,8 @@
   }
 
   function fitCoordinates(coordinates, maxZoom = 14) {
-    if (!coordinates.length) return;
+    mapFeedback?.empty(!coordinates.length);
+    if (!coordinates.length) {map.easeTo({center:[0,20],zoom:1.5,duration:0});return;}
     if (coordinates.length === 1) return map.easeTo({ center: coordinates[0], zoom: maxZoom, duration: 450 });
     const bounds = coordinates.reduce((result, coordinate) => result.extend(coordinate), new maplibregl.LngLatBounds(coordinates[0], coordinates[0]));
     map.fitBounds(bounds, { padding: 70, maxZoom, duration: 500 });
@@ -427,6 +425,7 @@
       addLine("studio-photo-routes", features, "#006f92", 4.7, .88);
     }
     if (Number.isFinite(photo.lat) && Number.isFinite(photo.lng)) {
+      mapFeedback?.empty(false);
       const element = document.createElement("div");
       element.className = "studio-photo-marker";
       const marker = new maplibregl.Marker({ element, draggable: true, anchor: "center" }).setLngLat([photo.lng, photo.lat]).addTo(map);
@@ -442,6 +441,7 @@
     } else if (center) {
       const destination = placeById(day.destinationId || day.placeId);
       const coordinates = day.segmentIds.flatMap((id) => segmentCoordinates(segmentById(id)));
+      mapFeedback?.empty(!coordinates.length && !destination);
       if (coordinates.length) fitCoordinates(coordinates, 13);
       else if (destination) map.easeTo({ center: [destination.lng, destination.lat], zoom: 13, duration: 500 });
       else map.easeTo({ center: [0, 20], zoom: 1.5, duration: 450 });
@@ -464,6 +464,7 @@
       addLine("studio-photo-routes", features, "#006f92", 4.7, .9);
     }
     if (!center) return;
+    mapFeedback?.empty(!coordinates.length && !placeById(day.destinationId || day.placeId));
     if (coordinates.length) fitCoordinates(coordinates, 13);
     else {
       const destination = placeById(day.destinationId || day.placeId);
@@ -547,6 +548,7 @@
   }
 
   function acceptRouteGeometry(geometry, routing, message, source) {
+    const previous = routeEditSnapshot();
     state.routes[selectedSegmentId] = {
       ...(state.routes[selectedSegmentId] || {}),
       controlPoints: routePoints.map((point) => [...point]),
@@ -555,6 +557,7 @@
       routing,
       ...(source ? { source } : {})
     };
+    recordRouteHistory(previous);
     $("#route-saved-state").textContent = "Pending save";
     markDirty(message);
     renderRouteList();
@@ -600,6 +603,15 @@
     routeHistoryIndex = 0;
     $("#undo-route").disabled = true;
     $("#redo-route").disabled = true;
+  }
+
+  function recordRouteHistory(previous) {
+    if (JSON.stringify(previous) === JSON.stringify(routeEditSnapshot())) return;
+    routeHistory[routeHistoryIndex] = previous;
+    routeHistory = routeHistory.slice(0, routeHistoryIndex + 1);
+    routeHistory.push(routeEditSnapshot());
+    routeHistoryIndex = routeHistory.length - 1;
+    updateUndoButtons();
   }
 
   function commitRoutePoints(points, { endpointsOnly = false } = {}) {
@@ -912,16 +924,6 @@
     refreshPhotoOrderControls();
   }
 
-  function makeSelectedPhotoLead() {
-    const photo = basePhotos.find((item) => item.id === selectedPhotoId);
-    if (!photo) return;
-    const resolved = photoWithOverride(photo);
-    if (resolved.hidden) return setStatus("A hidden photo cannot be the day lead", "error");
-    state.days[resolved.dayId] = { ...(state.days[resolved.dayId] || {}), photoOrder: explicitPhotoOrder(resolved.dayId), leadPhotoId: selectedPhotoId };
-    markDirty("Lead photo changed; save locally to persist it");
-    renderPhotoGrid();
-    refreshPhotoOrderControls();
-  }
 
   function acceptManualFallback() {
     const segment = segmentById(selectedSegmentId);
@@ -1002,24 +1004,35 @@
   }
 
   async function saveAll() {
+    if (savingState) return false;
     if (plans.get(journey.id)?.dirty) return savePlan();
+    savingState = true;
+    $("#save-all").disabled = true;
+    const snapshot = JSON.stringify(state);
     setStatus("Saving…");
     try {
       const response = await fetch("/api/state", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...state, stateRevision:savedStateRevision })
+        body: JSON.stringify({ ...JSON.parse(snapshot), stateRevision:savedStateRevision })
       });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || "Save failed");
       savedStateRevision = result.stateRevision;
-      markSaved();
-      if (mode === "routes") {
+      const unchanged = JSON.stringify(state) === snapshot;
+      if (unchanged) markSaved();
+      else markDirty("Earlier edits saved · newer changes still need saving");
+      if (unchanged && mode === "routes") {
         $("#route-saved-state").textContent = "Yes";
         renderRouteList();
       }
+      return true;
     } catch (error) {
       setStatus(error.message, "error");
+      return false;
+    } finally {
+      savingState = false;
+      $("#save-all").disabled = false;
     }
   }
 
@@ -1057,7 +1070,11 @@
     studioVideoPlayer.stop(); $('#studio-video-dialog').close();
     mode = nextMode;
     $(".studio-shell").dataset.mode = mode;
-    document.querySelectorAll(".studio-header [data-mode]").forEach((button) => button.classList.toggle("active", button.dataset.mode === mode));
+    document.querySelectorAll(".studio-header [data-mode]").forEach((button) => {
+      const selected = button.dataset.mode === mode;
+      button.classList.toggle("active", selected);
+      button.setAttribute("aria-pressed", String(selected));
+    });
     document.querySelectorAll("[data-panel]").forEach((panel) => { panel.hidden = panel.dataset.panel !== mode; });
     $("#route-tools").hidden = mode !== "routes";
     $("#map-instructions").textContent = mode === "photos"
@@ -1115,6 +1132,13 @@
     onPhotoGroups:(id,groupIds)=>{planExtras.setAudience(planForJourney().draft.photos.find(photo=>photo.id===id),groupIds || []);},
     onChange:refresh=>{dirtyPlan();if(refresh)renderPlanner();},onStatus:message=>{$('#plan-status').textContent=message;},previewVideo:previewStudioVideo});
   function uniquePlanId(kind, items) { let n=1; while (items.some(item => item.id === `${journey.id}-${kind}${n}`)) n++; return `${journey.id}-${kind}${n}`; }
+  function newPlaceCanBeRemoved(draft, id) {
+    return !journey.places.some(place => place.id === id)
+      && !draft.segments.some(leg => leg.from === id || leg.to === id)
+      && !draft.days.some(day => day.placeId === id || day.destinationId === id || Object.values(day.groupPlaces || {}).includes(id))
+      && draft.meetup?.placeId !== id;
+  }
+
   function renderPlanner() {
     const plan = planForJourney(), draft = plan.draft;
     if(renderedPlanId!==journey.id) {renderedPlanId=journey.id;$('#plan-status').textContent=plan.dirty?'Unsaved trip plan · check changes before saving.':'Edit the plan, check changes, then save locally.';}
@@ -1124,7 +1148,7 @@
     $('#plan-end').value = draft.endDate || draft.days.at(-1)?.calendarDate || '';
     $('#plan-timezone').value = draft.timeZone || 'UTC';
     const placeOptions = '<option value="">Choose a place</option>'+draft.places.map(p => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.name)}</option>`).join('');
-    $('#plan-places').innerHTML = draft.places.map(p => `<div class="plan-place" data-place="${escapeHtml(p.id)}"><label>Name<input data-place-field="name" value="${escapeHtml(p.name)}"></label><label>Longitude<input type="number" step="any" min="-180" max="180" data-place-field="lng" value="${p.lng??''}"></label><label>Latitude<input type="number" step="any" min="-90" max="90" data-place-field="lat" value="${p.lat??''}"></label></div>`).join('');
+    $('#plan-places').innerHTML = draft.places.map(p => `<div class="plan-place" data-place="${escapeHtml(p.id)}"><label>Name<input data-place-field="name" value="${escapeHtml(p.name)}"></label><label>Longitude<input type="number" step="any" min="-180" max="180" data-place-field="lng" value="${p.lng??''}"></label><label>Latitude<input type="number" step="any" min="-90" max="90" data-place-field="lat" value="${p.lat??''}"></label>${!journey.places.some(saved=>saved.id===p.id)?`<button type="button" data-remove-place="${escapeHtml(p.id)}" ${newPlaceCanBeRemoved(draft,p.id)?'':'disabled title="Remove this place from the plan’s days and legs first"'}>Remove new place</button>`:''}</div>`).join('');
     $('#plan-days').innerHTML = draft.days.map((day,index) => `<section class="plan-day" data-plan-day="${escapeHtml(day.id)}"><div class="plan-row"><strong>Day ${index+1} · ${escapeHtml(day.calendarDate || day.date)} · ${escapeHtml(state.days[day.id]?.title || day.title)}</strong><button type="button" data-move-day="-1" ${index===0?'disabled':''}>Earlier</button><button type="button" data-move-day="1" ${index===draft.days.length-1?'disabled':''}>Later</button></div><label>Destination<select data-day-destination>${placeOptions}</select></label>${planExtras.overnights(draft,day)}<ol>${day.segmentIds.map((id, i) => { const s=draft.segments.find(s=>s.id===id); return `<li data-plan-leg="${escapeHtml(id)}"><div class="plan-leg"><label>Mode<select data-leg-field="mode">${Object.entries(modeLabels).map(([key,label])=>`<option value="${key}" ${s.mode===key?'selected':''}>${label}</option>`).join('')}</select></label><label>From<select data-leg-field="from">${draft.places.map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===s.from?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label><label>To<select data-leg-field="to">${draft.places.map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===s.to?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label><label>Travel minutes<input data-leg-field="durationMinutes" type="number" min="0" value="${s.durationMinutes??''}"></label></div>${planExtras.audience(draft,s,"leg","Who took this leg?")}<button type="button" data-move-leg="-1" ${i===0?'disabled':''}>Earlier leg</button><button type="button" data-move-leg="1" ${i===day.segmentIds.length-1?'disabled':''}>Later leg</button>${s.geometry || routeGeometry[id] || state.routes[id] ? '<small>Reviewed route: endpoint/mode edits require a new route review.</small>' : '<small>Provisional endpoint guide; review geometry in Route drawing.</small>'}</li>`; }).join('')}</ol><button type="button" data-add-leg ${draft.places.length<1?'disabled':''}>+ Travel leg</button></section>`).join('');
     draft.days.forEach(day => { const select = [...document.querySelectorAll('[data-plan-day]')].find(e=>e.dataset.planDay===day.id)?.querySelector('[data-day-destination]'); if (select) select.value=day.destinationId || day.placeId || ''; });
     const visible = basePhotos.map(photoWithOverride).filter(p=>!p.hidden && !p.trashed);
@@ -1141,7 +1165,7 @@
   }
   function renderMomentEditor() {
     const draft=planForJourney().draft;
-    $('#plan-moments').innerHTML=(draft.replayMoments||[]).map((m,i)=>`<section class="plan-moment" data-moment="${escapeHtml(m.id)}"><div class="plan-row"><strong>Moment ${i+1}</strong><button type="button" data-move-moment="-1" ${!i?'disabled':''}>Earlier</button><button type="button" data-move-moment="1" ${i===draft.replayMoments.length-1?'disabled':''}>Later</button><button type="button" data-remove-moment>Remove moment</button></div><label>Day<select data-moment-field="dayId">${draft.days.map(d=>`<option value="${escapeHtml(d.id)}" ${d.id===m.dayId?'selected':''}>Day ${d.number} · ${escapeHtml(d.title)}</option>`).join('')}</select></label><label>Photograph<select data-moment-field="photoId"><option value="">Route / text chapter</option>${basePhotos.map(photoWithOverride).filter(p=>!p.hidden && !p.trashed && p.dayId===m.dayId).map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===m.photoId?'selected':''}>${escapeHtml(p.caption)}</option>`).join('')}</select></label><label>One sentence (optional)<input data-moment-field="caption" value="${escapeHtml(m.caption)}"></label><label>Duration (seconds)<input type="number" min="1" max="120" data-moment-field="duration" value="${m.duration}"></label><fieldset><legend>Travel legs (in day order)</legend>${(draft.days.find(d=>d.id===m.dayId)?.segmentIds||[]).map(id=>{ const s=draft.segments.find(s=>s.id===id); return `<label class="checkbox"><input type="checkbox" data-moment-segment="${escapeHtml(id)}" ${m.segmentIds?.includes(id)?'checked':''}>${escapeHtml(modeLabels[s.mode])} · ${escapeHtml(draft.places.find(p=>p.id===s.from)?.name)} → ${escapeHtml(draft.places.find(p=>p.id===s.to)?.name)}</label>`; }).join('')}</fieldset></section>`).join('') || '<p>Add a few moments to curate Replay. With none selected it follows the existing day/route sequence.</p>';
+    $('#plan-moments').innerHTML=(draft.replayMoments||[]).map((m,i)=>`<section class="plan-moment" data-moment="${escapeHtml(m.id)}"><div class="plan-row"><strong>Moment ${i+1}</strong><button type="button" data-move-moment="-1" ${!i?'disabled':''}>Earlier</button><button type="button" data-move-moment="1" ${i===draft.replayMoments.length-1?'disabled':''}>Later</button><button type="button" data-remove-moment>Remove moment</button></div><label>Day<select data-moment-field="dayId">${draft.days.map(d=>`<option value="${escapeHtml(d.id)}" ${d.id===m.dayId?'selected':''}>Day ${d.number} · ${escapeHtml(d.title)}</option>`).join('')}</select></label><label>One sentence (optional)<input data-moment-field="caption" value="${escapeHtml(m.caption)}"></label><label>Duration (seconds)<input type="number" min="1" max="120" data-moment-field="duration" value="${m.duration}"></label><fieldset><legend>Travel legs (in day order)</legend>${(draft.days.find(d=>d.id===m.dayId)?.segmentIds||[]).map(id=>{ const s=draft.segments.find(s=>s.id===id); return `<label class="checkbox"><input type="checkbox" data-moment-segment="${escapeHtml(id)}" ${m.segmentIds?.includes(id)?'checked':''}>${escapeHtml(modeLabels[s.mode])} · ${escapeHtml(draft.places.find(p=>p.id===s.from)?.name)} → ${escapeHtml(draft.places.find(p=>p.id===s.to)?.name)}</label>`; }).join('')}</fieldset></section>`).join('') || '<p>Add a few moments to curate Replay. With none selected it follows the existing day/route sequence.</p>';
   }
   function planError(message) {
     const draft=planForJourney().draft;
@@ -1191,7 +1215,7 @@
     if(e.dataset.momentField || e.dataset.momentSegment) {
       const m=draft.replayMoments.find(m=>m.id===e.closest('[data-moment]').dataset.moment);
       if(e.dataset.momentSegment) m.segmentIds=[...e.closest('fieldset').querySelectorAll('input:checked')].map(el=>el.dataset.momentSegment);
-      else { if(e.value==='') delete m[e.dataset.momentField]; else m[e.dataset.momentField]=e.dataset.momentField==='duration'?Number(e.value):e.value; if(e.dataset.momentField==='dayId') { delete m.photoId; m.segmentIds=[]; renderMomentEditor(); } }
+      else { if(e.dataset.momentField==='caption') m.caption=e.value; else if(e.value==='') delete m[e.dataset.momentField]; else m[e.dataset.momentField]=e.dataset.momentField==='duration'?Number(e.value):e.value; if(e.dataset.momentField==='dayId') { delete m.photoId; m.segmentIds=[]; renderMomentEditor(); } }
     }
     dirtyPlan();
   });
@@ -1200,7 +1224,8 @@
     const draft=planForJourney().draft;
     const day=draft.days.find(d=>d.id===e.closest('[data-plan-day]')?.dataset.planDay);
     const swap=(arr,i,delta)=>{ const j=i+Number(delta); if(j>=0&&j<arr.length) [arr[i],arr[j]]=[arr[j],arr[i]]; };
-    if(e.hasAttribute('data-move-day')) { const dates=draft.days.map(d=>[d.calendarDate,d.date]); swap(draft.days,draft.days.indexOf(day),e.dataset.moveDay); draft.days.forEach((d,i)=>{d.number=i+1; d.calendarDate=dates[i][0]; d.date=dates[i][1];}); }
+    if(e.dataset.removePlace) { if(!newPlaceCanBeRemoved(draft,e.dataset.removePlace))return; draft.places=draft.places.filter(place=>place.id!==e.dataset.removePlace); }
+    else if(e.hasAttribute('data-move-day')) { const dates=draft.days.map(d=>[d.calendarDate,d.date]); swap(draft.days,draft.days.indexOf(day),e.dataset.moveDay); draft.days.forEach((d,i)=>{d.number=i+1; d.calendarDate=dates[i][0]; d.date=dates[i][1];}); }
     else if(e.hasAttribute('data-add-leg')) { const id=uniquePlanId('leg',draft.segments); draft.segments.push({id,mode:'walk',from:draft.places[0].id,to:(draft.places[1]||draft.places[0]).id,geometryStatus:'provisional'}); day.segmentIds.push(id); }
     else if(e.hasAttribute('data-move-leg')) swap(day.segmentIds,day.segmentIds.indexOf(e.closest('[data-plan-leg]').dataset.planLeg),e.dataset.moveLeg);
     else if(e.dataset.pickCover) draft.coverPhoto={photoId:e.dataset.pickCover,focal:[50,50]};
@@ -1234,7 +1259,16 @@
     renderDayList();
     if (selectedDayId) selectDay(selectedDayId, false);
     markSaved("Ready");
-    map = new maplibregl.Map({ container: "studio-map", style: styleUrl, center: [8.45, 46.7], zoom: 7.5, attributionControl: false });
+    setMode(mode);
+    initStudioMap();
+  }
+  let mapFeedback;
+  function initStudioMap() {
+    mapFeedback?.destroy(); map?.remove(); map=null; mapReady=false;
+    activeMarkers.forEach(marker=>marker.remove()); activeMarkers=[];
+    try { map = new maplibregl.Map({ container: "studio-map", style: styleUrl, center: [0,20], zoom: 1.5, attributionControl: false }); }
+    catch (_error) { mapFeedback=window.JOURNEY_ATLAS_MAP_FEEDBACK.create('studio-map',initStudioMap);mapFeedback.fail();return; }
+    mapFeedback=window.JOURNEY_ATLAS_MAP_FEEDBACK.create('studio-map',initStudioMap);mapFeedback.watch(map);
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     window.JOURNEY_ATLAS_UTILS.addMapAttribution(map, maplibregl);
     map.on("load", () => {
@@ -1290,6 +1324,9 @@
   $("#save-all").addEventListener("click", saveAll);
   $("#studio-journey").addEventListener("change", (event) => setJourney(event.target.value));
   $("#photo-day-filter").addEventListener("change", () => {
+    const filter = $("#photo-day-filter").value;
+    const photos = filter === "all" ? journey.days.flatMap(day => photoBrowserPhotos(day.id)) : photoBrowserPhotos(filter);
+    selectPhoto(photos.some(photo => photo.id === selectedPhotoId) ? selectedPhotoId : photos[0]?.id, true);
     renderPhotoGrid();
   });
   $('#show-photo-trash').addEventListener('change', () => {
@@ -1352,7 +1389,6 @@
   });
   $("#photo-move-earlier").addEventListener("click", () => moveSelectedPhoto(-1));
   $("#photo-move-later").addEventListener("click", () => moveSelectedPhoto(1));
-  $("#photo-make-lead").addEventListener("click", makeSelectedPhotoLead);
   $("#apply-route-endpoints").addEventListener("click", readEndpointFields);
   $("#propose-route").addEventListener("click", proposeNetworkRoute);
   $("#accept-route-proposal").addEventListener("click", acceptNetworkProposal);
@@ -1360,11 +1396,14 @@
   $("#accept-route-gpx").addEventListener("click", acceptGpxProposal);
   $("#accept-manual-route").addEventListener("click", acceptManualFallback);
   $("#smooth-route").addEventListener("click", () => {
+    const previous = routeEditSnapshot();
     routeSmoothed = !routeSmoothed;
     $("#smooth-route").textContent = routeSmoothed ? "Use straight anchor guide" : "Smooth anchor guide";
     updateRouteAnchors();
+    recordRouteHistory(previous);
   });
   $("#reset-route").addEventListener("click", () => {
+    const previous = routeEditSnapshot();
     const segment = segmentById(selectedSegmentId);
     delete state.routes[selectedSegmentId];
     proposalGate.invalidate();
@@ -1372,7 +1411,7 @@
     routeProposalMeta = null;
     routeSmoothed = false;
     routePoints = defaultControlPoints(segment);
-    resetHistory(routePoints);
+    recordRouteHistory(previous);
     markDirty("Override removed; save to keep the reset");
     $("#route-saved-state").textContent = "Removed pending save";
     $("#smooth-route").textContent = "Smooth anchor guide";

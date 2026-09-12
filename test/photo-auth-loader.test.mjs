@@ -427,3 +427,15 @@ test('shared variants are deduplicated before the preload bound and cached plans
  f.auth.setPreloads(requests);for(let i=0;i<5;i++)await settle();assert.equal(f.calls.length,2);
  f.auth.setPreloads(requests);await settle();assert.equal(f.calls.length,2);
 });
+
+
+test('swipe neighbors use cached full photos without starting or promoting downloads',async()=>{
+  const f=fixture();await f.unlock();const neighbor=new Element();
+  assert.equal(f.auth.setCachedImage(neighbor,photo),false);assert.equal(f.calls.length,0);
+  f.auth.preload(photo,1280);await settle();const count=f.calls.length;
+  assert.equal(f.auth.setCachedImage(neighbor,photo),false);assert.equal(f.calls.length,count,'A smaller cached preview is not a full photo');
+  f.auth.preload(photo,Infinity);await settle();const loaded=f.calls.length;
+  assert.equal(f.auth.setCachedImage(neighbor,photo),true);assert.match(neighbor.src,/^blob:/);assert.equal(f.calls.length,loaded);
+  assert.ok(f.calls.every(([,options])=>options.priority==='low'));
+  f.auth.lock();assert.equal(f.auth.setCachedImage(neighbor,photo),false);
+});

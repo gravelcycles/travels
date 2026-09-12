@@ -509,3 +509,27 @@ upload. Never add private original URLs to public journey JSON. Private video
 publishing needs a separate authenticated, range-aware media delivery path,
 reviewed derivatives/posters, and timed caption support before personal clips
 are added. See the remaining work in `docs/FRAMEWORK.md` and `TODO.md`.
+
+
+## Audit fixes — 12 September 2026
+
+New same-place and multi-leg round trips can omit the optional day destination;
+the viewer labels them using known endpoints. Empty destinations use a neutral
+world view with a no-location message, never a previous day's framing. Maps
+share loading, failure and Retry feedback. MapLibre 5.24.0 is bundled locally
+with its license so external script delivery cannot stall the journal.
+
+In Studio, remove an unused newly added place with **Remove new place**. A
+place used by a leg, destination, group overnight or meetup must be unassigned
+first. Existing places retain their current lifecycle. Route acceptance,
+smoothing and **Restore original** enter Undo/Redo history with complete
+geometry. A blank optional Replay sentence is saved as an empty string.
+Replay's retired Photograph picker and the retired daily lead-photo control
+are removed; legacy values remain readable, and moving a legacy photo does
+not invalidate a map-only chapter.
+
+Album, Replay, About and photo presentation participate in browser Back and
+Forward. Empty-media album days open their story. These history entries do
+not change the URL or restore the last selection on reload: the owner excluded
+that audit item. The six proposed new features require a local demo and owner
+review before implementation on the live site.

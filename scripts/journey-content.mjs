@@ -84,7 +84,8 @@ export function validateJourneys(data) {
         momentIds.add(m.id);
         if (typeof m.caption !== "string" || !Number.isFinite(m.duration) || m.duration <= 0 || m.duration > 120) fail(`${m.id}: replay needs caption text (which may be blank) and duration greater than 0 and at most 120 seconds`);
         if (m.segmentIds && (!Array.isArray(m.segmentIds) || new Set(m.segmentIds).size !== m.segmentIds.length || m.segmentIds.some((id, i) => !day.segmentIds.includes(id) || (i && day.segmentIds.indexOf(id) <= day.segmentIds.indexOf(m.segmentIds[i-1]))))) fail(`${m.id}: replay segments must follow their day's travel order`);
-        if (m.photoId && !j.photos.some(p => p.id === m.photoId && p.dayId === m.dayId)) fail(`${m.id}: replay photo must belong to its day`);
+        // Legacy photo choices do not affect map-only Replay. Keep journey ownership validation.
+        if (m.photoId && !j.photos.some(p => p.id === m.photoId)) fail(`${m.id}: legacy replay photo must belong to its journey`);
         if (m.camera && (!validCoordinate(m.camera.center) || !Number.isFinite(m.camera.zoom) || m.camera.zoom < 2 || m.camera.zoom > 20 || m.camera.reviewed !== true)) fail(`${m.id}: replay camera must be reviewed with valid coordinates/zoom`);
       }
     }
@@ -190,8 +191,4 @@ export function validateOverrides(state, data) {
       }
     }
   }
-  for (const journey of data.journeys) for (const moment of journey.replayMoments || []) {
-    if (moment.photoId && state.photos[moment.photoId]?.dayId && state.photos[moment.photoId].dayId !== moment.dayId) throw new Error(`${moment.id}: replay photo was moved to another day; update the moment before saving`);
-  }
-
 }

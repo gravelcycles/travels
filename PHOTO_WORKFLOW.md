@@ -46,7 +46,7 @@ count can be lower than the editor's count.
 Select a photo and choose **Move photo to trash**, then **Save locally**. It is
 removed from the local preview, and from the live atlas after deployment. Use
 **Show trash → Restore photo from trash → Save locally** to recover it. Trashing
-preserves day order, pins, captions, and original visibility, and the cover/lead
+preserves day order, pins, captions, and original visibility, and the cover
 photo falls back to another visible photo. It is different from the existing
 **Hide from the public atlas** checkbox, which keeps the photo in the editor.
 Trash is recoverable album deletion: originals and already-hosted private R2
@@ -246,8 +246,8 @@ For each photo:
 4. Optionally write your own caption or notes. Leave them blank when unwanted;
    generated prose must not be added.
 5. Hide any photo that should not appear publicly.
-6. Use **Move earlier**, **Move later**, and **Use as lead photo** to establish
-   an explicit daily album order and a separate representative lead.
+6. Use **Move earlier** and **Move later** to establish the daily album order.
+   The first visible photo is the day preview; choose the journey cover separately.
 7. Choose **Save locally**. Review the JSON diff before committing.
 
 Saves write `content/photo-overrides.json` and rebuild the static
@@ -301,3 +301,18 @@ Videos**, including preview, duration, day/group assignment, title/caption,
 poster, credit and publication controls. **Photo route groups** edits existing
 photos' group assignments in their original manifests without changing image
 files, other metadata, order or visibility. See `JOURNEY_WORKFLOW.md`.
+
+
+## Editing reliability — 12 September 2026
+
+Changing **Photos from** selects a photo in that day or clears the editor when
+there are no matches. The complete upload form scrolls within its panel on a
+phone. Save status and **Preview atlas** remain visible at tablet widths.
+If you keep editing during a save, the acknowledged snapshot is saved and the
+newer edits remain visibly unsaved. Save again to persist them. Failed saves
+retain the edits and the warning on leaving the page.
+
+Phone photo captions appear in **Details & location**. Grids defer full photos
+until selection; swipe neighbors use the full-photo cache without promoting
+speculative work to a foreground download. Public-photo Retry uses the public
+loader and never asks for private-photo access.

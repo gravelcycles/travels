@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
     <title>Atlas Studio · Journey Atlas</title>
-    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
+    <link rel="stylesheet" href="/dist/assets/vendor/maplibre-5.24.0/maplibre-gl.css" />
     <link rel="stylesheet" href="/studio.css?v=20260908-1" />
+    <link rel="stylesheet" href="/dist/assets/map-feedback.css" />
   </head>
   <body>
     <header class="studio-header">
@@ -90,7 +91,7 @@
             <label>Saved map zoom<input id="photo-zoom" name="zoom" type="number" min="2" max="20" step="0.01" value="16" /></label>
           </div>
           <button class="secondary" id="switch-photo-view" type="button" disabled>Switch to current point’s zoom</button>
-          <p class="editor-note">Selecting another point in this day keeps the map position and zoom. Use this button to view the selected point’s saved location and zoom. Placing or dragging its pin saves the current map zoom for Replay.</p>
+          <p class="editor-note">Selecting another point in this day keeps the map position and zoom. Use this button to view the selected point’s saved location and zoom. Placing or dragging its pin saves the current map zoom for the photo viewer.</p>
           <button class="secondary" id="clear-photo-location" type="button">Clear location</button>
           <label for="photo-caption">Your caption (optional)</label>
           <input id="photo-caption" name="caption" />
@@ -105,7 +106,6 @@
             <div>
               <button class="secondary" id="photo-move-earlier" type="button">Move earlier</button>
               <button class="secondary" id="photo-move-later" type="button">Move later</button>
-              <button class="secondary" id="photo-make-lead" type="button">Use as lead photo</button>
             </div>
           </section>
           <p class="editor-note">Changes remain local until they are committed and the site is deployed. Private brainstorming belongs outside the description field.</p>
@@ -198,8 +198,8 @@
         <details><summary>Shared meetup</summary><div id="plan-meetup"></div></details>
         <details open><summary>Videos</summary><p>Add a hosted public MP4 or WebM link. Videos appear alongside photos in the shared viewer. Private video uploads are not supported yet.</p><div id="plan-videos"></div><button type="button" data-add-video>+ Video</button></details>
         <details><summary>Photo route groups</summary><p>Assign photos to routes without changing their captions, order or source images.</p><div id="plan-photo-groups"></div></details>
-        <details open><summary>Journey cover</summary><p>One photograph for the catalog and trip opening. Daily lead photos remain independent.</p><label>Cover photo<select id="cover-picker"></select></label><div id="cover-thumbnails" aria-label="Cover photo choices"></div><div class="plan-row"><label>Horizontal focal point<input id="cover-x" type="range" min="0" max="100"></label><label>Vertical focal point<input id="cover-y" type="range" min="0" max="100"></label></div><div id="cover-previews"></div></details>
-        <details><summary>Curated Replay moments</summary><p>Use short, factual captions. A moment's duration is editorial pacing. Only reviewed photo pins supply exact locations.</p><div id="plan-moments"></div><button type="button" id="plan-add-moment">+ Replay moment</button></details>
+        <details open><summary>Journey cover</summary><p>One photograph for the catalog and trip opening. Day previews use the first visible photo in album order.</p><label>Cover photo<select id="cover-picker"></select></label><div id="cover-thumbnails" aria-label="Cover photo choices"></div><div class="plan-row"><label>Horizontal focal point<input id="cover-x" type="range" min="0" max="100"></label><label>Vertical focal point<input id="cover-y" type="range" min="0" max="100"></label></div><div id="cover-previews"></div></details>
+        <details><summary>Curated Replay moments</summary><p>Use short, factual captions. A moment's duration is editorial pacing. Replay follows the map and the day's travel legs; photographs stay in the albums.</p><div id="plan-moments"></div><button type="button" id="plan-add-moment">+ Replay moment</button></details>
         <div class="plan-save-bar"><button type="button" id="plan-preview">Check changes</button><button type="button" id="plan-save" disabled>Save trip plan locally</button><p id="plan-status" role="status"></p></div>
       </section>
     </main>
@@ -231,13 +231,14 @@
       </form>
     </dialog>
 
-    <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
+    <script src="/dist/assets/vendor/maplibre-5.24.0/maplibre-gl.js"></script>
     <script src="/api/preview-assets/journeys.js"></script>
     <script src="/api/preview-assets/route-geometry.js"></script>
     <script src="/api/preview-assets/trip-photos.js"></script>
     <script src="/api/preview-assets/content-overrides.js"></script>
     <script src="/dist/assets/atlas-utils.js"></script>
     <script src="/dist/assets/map-style.js"></script>
+    <script src="/dist/assets/map-feedback.js"></script>
     <script src="/dist/assets/media-utils.js"></script>
     <script src="/plan-extras.js"></script>
     <script src="/studio.js?v=20260909-optional-day-copy"></script>

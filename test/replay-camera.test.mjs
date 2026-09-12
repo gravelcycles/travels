@@ -9,7 +9,7 @@ function harness(){
   const calls=[];
   const segments=[{id:'out',geometry:[[8,47],[8.5,47.2]]},{id:'return',geometry:[[8.5,47.2],[8,47]]}];
   const photo={id:'photo',lng:10,lat:45,zoom:19};
-  const context=vm.createContext({replayMapReady:true,replayProgress:0,replayUtils:globalThis.JOURNEY_ATLAS_REPLAY,
+  const context=vm.createContext({replayFeedback:null,replayMapReady:true,replayProgress:0,replayUtils:globalThis.JOURNEY_ATLAS_REPLAY,
     replayMap:{fitBounds:(bounds,options)=>calls.push({type:'fit',bounds,options}),easeTo:options=>calls.push({type:'ease',options})},
     replayMomentDay:()=>({id:'d'}),photoById:()=>photo,segmentById:id=>segments.find(s=>s.id===id),segmentCoordinates:s=>s.geometry,
     prefersReducedMotion:()=>false,replayMapPadding:()=>40,boundsFromCoordinates:points=>points,PHOTO_ZOOM_LIMITS:{min:2,max:20},dayCoordinates:()=>[],journeyCoordinates:()=>[]});
