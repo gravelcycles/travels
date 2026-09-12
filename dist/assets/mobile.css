@@ -180,3 +180,10 @@
  }
  @media(prefers-reduced-motion:reduce) { #mobile-photo-location > .location-chevron { transition:none; } }
 }
+
+@media(max-width:900px) {
+ #photo-map .maplibregl-ctrl-top-right { top:0; }
+ .photo-location-panel .mobile-photo-caption { display:block; margin:0 0 5px; font-size:13px; line-height:1.4; color:var(--ink); }
+ .photo-location-panel .mobile-photo-caption:empty { display:none; }
+ .photo-location-panel .photo-context-copy { max-height:110px; }
+}

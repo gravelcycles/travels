@@ -46,22 +46,22 @@ function viewerFixture({deferredHistory=false, reducedMotion=false, videoIndex=-
       setAttribute(name,value){this[name]=value;},removeAttribute(name){delete this[name];},children:[],append(child){child.parentElement=this;this.children.push(child);},focus(){},setPointerCapture(){},
       querySelectorAll(){return [];},closest(query){return selector.startsWith('#mobile-') && (query==='button' || query==='button:not(#mobile-photo-location)' && selector!=='#mobile-photo-location')?this:null;},
       addEventListener(name,fn,capture){(capture?this.captures:this.handlers).set(name,fn);},
-      showModal(){this.open=true;},close(){this.open=false;controller?.closed();}
+      showModal(){this.open=true;},close(){this.open=false;if(selector==='#photo-dialog')controller?.closed();else this.handlers.get('close')?.();}
     });
     return nodes.get(selector);
   }
   const days=[{id:'one',number:1,date:'Today',title:'One'},{id:'two',number:2,date:'Tomorrow',title:'Two'}];
   const photos=[0,1,2].map(i=>({id:`p${i}`,lng:8+i,lat:47}));
   if (videoIndex >= 0) Object.assign(photos[videoIndex], {mediaType:'video',title:'A video'});
-  let mediaPauses = 0;
+  let mediaPauses = 0, neighborLoads = 0;
   let day=days[0], index=0, locations=0, pauses=0, tabs=0, scope='day';
   const stack=[{}]; let cursor=0;
   const history={get state(){return stack[cursor];},replaceState(state){stack[cursor]=structuredClone(state);},pushState(state){stack.splice(++cursor);stack[cursor]=structuredClone(state);},back(){this.go(-1);},go(delta){const traverse=()=>{cursor=Math.max(0,Math.min(stack.length-1,cursor+delta));events.get('popstate')?.({state:this.state});};if(deferredHistory)traversals.push(traverse);else traverse();}};
   const api={day:()=>day,days:()=>days,scope:()=>scope,title:()=> 'Journey',dayInfo:()=>({route:'Route',meta:'Train',count:3}),
     tab:value=>{tabs++;node('.atlas-shell').dataset.mobileTab=value;},selectDay:id=>{day=days.find(d=>d.id===id);scope='day';},preview(){},stepDay(){},album(){},overview(){scope='journey';controller.renderDay();},replay(){},
-    location(){locations++;},pauseLocation(){pauses++;},pauseMedia(){mediaPauses++;},clearImage(){},loadImage(){},
+    location(){locations++;},pauseLocation(){pauses++;},pauseMedia(){mediaPauses++;},clearImage(){},loadImage(){neighborLoads++;},restoreOverlay:id=>controller.presentOverlay(id),
     move(delta){index+=delta;update();},selectPhoto(value){index=value;update();},
-    openDay(id=day.id){controller.open();day=days.find(d=>d.id===id);index=0;node('#photo-dialog').open=true;update();}};
+    openDay(id=day.id,options){controller.open(options);day=days.find(d=>d.id===id);index=0;node('#photo-dialog').open=true;update();}};
   const context=vm.createContext({window:{addEventListener:(name,fn)=>events.set(name,fn)},document:{querySelector:node,createElement:()=>node(`image${nodes.size}`)},
     matchMedia:query=>{if(!queries.has(query))queries.set(query,{matches:query.includes('900px') || reducedMotion && query.includes('reduced-motion'),addEventListener(_name,fn){this.changed=fn;}});return queries.get(query);},ResizeObserver:class{observe(){}},
     history,location:{href:'https://example.test/day'},performance:{now:()=>clock},requestAnimationFrame:fn=>{frames.set(++timer,fn);return timer;},cancelAnimationFrame:id=>frames.delete(id),
@@ -84,7 +84,7 @@ function viewerFixture({deferredHistory=false, reducedMotion=false, videoIndex=-
     if(!event.stopped){currentTarget.handlers.get('click')?.(event);target.onclick?.(event);}
     return event;
   }
-  return {api,node,controller,history,drag,click,get mediaPauses(){return mediaPauses;},resize(mobile){const query=queries.get('(max-width: 900px)');query.matches=mobile;query.changed();},get tabs(){return tabs;},get pauses(){return pauses;},flushHistory(){while(traversals.length)traversals.shift()();},get index(){return index;},get locations(){return locations;},flush(elapsed=300){clock+=elapsed;const raf=[...frames.values()];frames.clear();raf.forEach(fn=>fn(clock));const work=[...timers.values()];timers.clear();work.forEach(fn=>fn());}};
+  return {api,node,controller,history,drag,click,get neighborLoads(){return neighborLoads;},get mediaPauses(){return mediaPauses;},resize(mobile){const query=queries.get('(max-width: 900px)');query.matches=mobile;query.changed();},get tabs(){return tabs;},get pauses(){return pauses;},flushHistory(){while(traversals.length)traversals.shift()();},get index(){return index;},get locations(){return locations;},flush(elapsed=300){clock+=elapsed;const raf=[...frames.values()];frames.clear();raf.forEach(fn=>fn(clock));const work=[...timers.values()];timers.clear();work.forEach(fn=>fn());}};
 }
 
 test('video scrubbing stays native, video taps cannot zoom, and opening the media grid pauses playback', () => {
@@ -275,4 +275,29 @@ test('All days restores the whole map, saves its scope and supports Back to the 
   assert.equal(f.node('#mobile-day-title').textContent,'Journey');
   f.history.back();assert.equal(f.api.scope(),'day');
   assert.equal(f.node('.atlas-shell').dataset.mapScope,'day');
+});
+
+
+test('Album, Replay and About dismiss with Back and restore with Forward on phone and desktop',()=>{
+  for(const mobile of [true,false])for(const id of ['album-dialog','replay-dialog','notes-dialog']){
+    const f=viewerFixture();if(!mobile)f.resize(false);
+    f.controller.presentOverlay(id);assert.equal(f.node(`#${id}`).open,true);
+    f.history.back();assert.equal(f.node(`#${id}`).open,false);
+    f.history.go(1);assert.equal(f.node(`#${id}`).open,true);
+    f.controller.dismissOverlay(id);assert.equal(f.node(`#${id}`).open,false);assert.equal(f.history.state.mobileAtlas.overlay,null);
+  }
+});
+test('an album opens its grid, Back restores the album, and Forward restores the same grid',()=>{
+  const f=viewerFixture();f.controller.presentOverlay('album-dialog');f.controller.openGrid('two');
+  assert.equal(f.node('#album-dialog').open,false);assert.equal(f.controller.gridVisible(),true);
+  assert.equal(f.neighborLoads,0,'A grid must not request full-size neighbor images');
+  f.history.back();assert.equal(f.node('#photo-dialog').open,false);assert.equal(f.node('#album-dialog').open,true);
+  f.history.go(1);assert.equal(f.node('#photo-dialog').open,true);assert.equal(f.controller.gridVisible(),true);
+  f.history.back();assert.equal(f.node('#album-dialog').open,true,'Forward must not create extra history entries');
+});
+test('opening a desktop photo keeps its map and caption controls interactive',()=>{
+  const f=viewerFixture();f.resize(false);f.api.openDay('one');
+  assert.equal(f.node('#photo-location-panel').inert,false);assert.equal(f.node('.photo-stage').inert,false);
+  f.history.back();assert.equal(f.node('#photo-dialog').open,false);
+  f.history.go(1);assert.equal(f.node('#photo-dialog').open,true);
 });

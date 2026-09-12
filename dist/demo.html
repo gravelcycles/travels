@@ -16,15 +16,15 @@
       document.documentElement.classList.add('journey-starting');
       window.addEventListener('load', () => document.documentElement.classList.remove('journey-starting'), { once: true });
     </script>
-    <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
     <link
       rel="stylesheet"
-      href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
+      href="./assets/vendor/maplibre-5.24.0/maplibre-gl.css"
     />
-    <link rel="stylesheet" href="./assets/styles.css?v=14aa16ad0802" />
-    <link rel="stylesheet" href="./assets/mobile.css?v=388afd1ddf0f" />
+    <link rel="stylesheet" href="./assets/styles.css?v=ece27b62bc04" />
+    <link rel="stylesheet" href="./assets/mobile.css?v=f1c70d9c3c10" />
     <link rel="stylesheet" href="./assets/group-travel.css?v=0644b8613316" />
+    <link rel="stylesheet" href="./assets/map-feedback.css?v=31eb86c9e975" />
   </head>
   <body data-journey-scope="demo" data-journey-id="nine-to-como">
     <header class="site-header">
@@ -134,7 +134,7 @@
       <button id="mobile-next-day" type="button" aria-label="Next day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button>
     </nav>
 
-    <dialog class="notes-dialog" id="notes-dialog">
+    <dialog class="notes-dialog" id="notes-dialog" aria-labelledby="notes-journey-title">
       <form method="dialog" class="dialog-card">
         <div class="dialog-top">
           <div><span>ABOUT THE ATLAS</span><h2 id="notes-journey-title">Nine to Como</h2></div>
@@ -199,6 +199,7 @@
             <p id="modal-day-route"></p>
             <p class="modal-location" id="modal-location"></p>
             <strong id="viewer-media-title" hidden></strong>
+            <p class="mobile-photo-caption" id="mobile-photo-caption"></p>
             <p class="modal-description" id="modal-description"></p>
             <a id="video-credit" target="_blank" rel="noopener noreferrer" hidden></a>
           </div>
@@ -257,20 +258,21 @@
       </div>
     </dialog>
 
-    <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
+    <script src="./assets/vendor/maplibre-5.24.0/maplibre-gl.js"></script>
     <script src="./assets/journeys.js?v=3c4151785a13"></script>
     <script src="./assets/route-geometry.js?v=36b5f3ca96f8"></script>
     <script src="./assets/trip-photos.js?v=6c3e5f753764"></script>
     <script src="./assets/content-overrides.js?v=0ba847958637"></script>
     <script src="./assets/replay-utils.js?v=3affec64ef97"></script>
     <script src="./assets/photo-service.js?v=7cf17f81b44e"></script>
-    <script src="./assets/photo-auth.js?v=43f650853672"></script>
+    <script src="./assets/photo-auth.js?v=b86232e61d7a"></script>
     <script src="./assets/atlas-utils.js?v=5ed3e9078b90"></script>
     <script src="./assets/map-style.js?v=e5948bb6f50c"></script>
-    <script src="./assets/mobile-ux.js?v=6fbd4a5f0278"></script>
+    <script src="./assets/map-feedback.js?v=ecf2650f2582"></script>
+    <script src="./assets/mobile-ux.js?v=86945829df97"></script>
     <script src="./assets/group-travel.js?v=55518f719e29"></script>
     <script src="./assets/media-utils.js?v=46457ba15695"></script>
     <script src="./assets/location-labels.js?v=061475caf569"></script>
-    <script src="./assets/app.js?v=9e1a241284b7"></script>
+    <script src="./assets/app.js?v=a57d4acaf8cf"></script>
   </body>
 </html>

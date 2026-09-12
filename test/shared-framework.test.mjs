@@ -59,7 +59,7 @@ test('full-trip context expands real, demo and fresh-draft maps without cropping
   const family = data.journeys.find(j => j.id === 'switzerland-italy-family-2026');
   for (const journey of [family, data.journeys.find(j => j.kind === 'demo'), draft]) {
     let fitted, fallback;
-    const context = vm.createContext({ journey, mainMapReady: true,
+    const context = vm.createContext({ journey, mainFeedback:null,mainMapReady: true,
       window: { maplibregl: {}, JOURNEY_ATLAS_ROUTE_GEOMETRY: routes }, maplibregl: { LngLatBounds: Bounds },
       placeById: id => journey.places.find(p => p.id === id), mapPadding: () => 40,
       mainMap: { fitBounds: bounds => { fitted = bounds; }, easeTo: camera => { fallback = camera; } }
@@ -593,4 +593,19 @@ test('desktop leg previews and mobile tap rows carry over to real, demo and a ne
     h.setMobile(true); assert.match(h.context.renderRouteLegs(day), /<button class="leg-card" type="button"/);
     h.setMobile(false); assert.match(h.context.renderRouteLegs(day), /<div class="leg-card" tabindex="0"/);
   }
+});
+
+test('real, sample and fresh-draft pages inherit map recovery, named About and locally pinned maps',t=>{
+  const root=fixture(t),draft=createJourney(root,{...input,slug:'audit-map-fixture'}),{data}=loadContent(root);
+  for(const journey of [data.journeys.find(j=>j.kind==='real'),data.journeys.find(j=>j.kind==='demo'),draft]){
+    const html=renderJourneyPage(root,journey,{preview:true});
+    assert.match(html,/id="notes-dialog" aria-labelledby="notes-journey-title"/);
+    assert.match(html,/id="mobile-photo-caption"/);
+    assert.match(html,/\/dist\/assets\/map-feedback.js/);
+    assert.match(html,/\/dist\/assets\/vendor\/maplibre-5\.24\.0\/maplibre-gl.js/);
+    assert.doesNotMatch(html,/unpkg\.com/);
+  }
+  const css=read(root,'dist/assets/styles.css'),muted=css.match(/--muted:\s*(#[a-f0-9]{6})/)[1];
+  const luminance=hex=>{const c=hex.slice(1).match(/../g).map(n=>parseInt(n,16)/255).map(n=>n<=.04045?n/12.92:((n+.055)/1.055)**2.4);return c[0]*.2126+c[1]*.7152+c[2]*.0722;};
+  for(const background of ['#fbfaf6','#e7ece8'])assert.ok((luminance(background)+.05)/(luminance(muted)+.05)>=4.5,background);
 });

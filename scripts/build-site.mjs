@@ -48,7 +48,7 @@ export function buildSite(root) {
   const versions = new Map();
   const hash = value => crypto.createHash("sha256").update(value).digest("hex").slice(0, 12);
   for (const [file, value] of outputs) versions.set(file, hash(value));
-  for (const file of ["assets/map-style.js", "assets/photo-auth.js", "assets/atlas-utils.js", "assets/group-travel.js", "assets/media-utils.js", "assets/group-travel.css", "assets/app.js", "assets/location-labels.js", "assets/catalog.js", "assets/replay-utils.js", "assets/styles.css", "assets/mobile.css", "assets/mobile-ux.js", "assets/input-mode.js"]) versions.set(file, hash(fs.readFileSync(path.join(root, "dist", file))));
+  for (const file of ["assets/map-feedback.js", "assets/map-feedback.css", "assets/map-style.js", "assets/photo-auth.js", "assets/atlas-utils.js", "assets/group-travel.js", "assets/media-utils.js", "assets/group-travel.css", "assets/app.js", "assets/location-labels.js", "assets/catalog.js", "assets/replay-utils.js", "assets/styles.css", "assets/mobile.css", "assets/mobile-ux.js", "assets/input-mode.js"]) versions.set(file, hash(fs.readFileSync(path.join(root, "dist", file))));
   const versioned = html => html.replace(/\.\/assets\/([a-z-]+\.(?:js|css))(?:\?v=[^\"]*)?/g, (_, file) => `./assets/${file}?v=${versions.get(`assets/${file}`) || "1"}`);
   for (const j of published.filter(j => j.kind === "real")) outputs.set(j.slug, versioned(renderJourneyPage(root, j)));
   const demo = published.find(j => j.kind === "demo");

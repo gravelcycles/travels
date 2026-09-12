@@ -282,6 +282,17 @@
       if(current()&&(local||token)&&!item.entry){img.dataset.photoError='true';img.dataset.photoFailure=error.photoFailure||'network';imageState(img,'error');img.dispatchEvent(new Event('error'));}
     } finally {item.loading=false;prune();}
   }
+  // Swipe neighbors never start or promote network work. The speculative queue
+  // owns warming; only selecting a photograph gives it foreground priority.
+  function setCachedImage(img, photo) {
+    if (token && expiresAt <= Date.now()/1000) expireAccess();
+    const src = selected(photo, Infinity), entry = (local || token) && cache.get(src);
+    clearImage(img);
+    if (!entry?.url) return false;
+    const item = {src, fullOnly:true, entry:null, priority:2};
+    images.set(img, item); img.dataset.privateSrc = src;
+    display(img, item, entry); return true;
+  }
   function setImage(img,photo,width=1280,{fullOnly=false}={}) {
     const src=selected(photo,fullOnly?Infinity:width),preview=fullOnly?src:selected(photo,1280),thumbnail=fullOnly?src:selected(photo,480);
     if(token&&expiresAt<=Date.now()/1000)expireAccess();
@@ -388,7 +399,7 @@
   for(const button of document.querySelectorAll('[data-unlock]'))button.addEventListener('click',()=>begin());
   dialog.querySelector('[data-dismiss]').addEventListener('click',closePrompt);
   dialog.addEventListener('close',()=>{if(!token)rememberGuest();lastFocus?.focus?.();});
-  window.JOURNEY_ATLAS_AUTH={isProtected,markup,hydrate,prepare,setImage,clearImage,setPreloads,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets,selected(photo,width)].slice(-MAX_PREFETCH));},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
+  window.JOURNEY_ATLAS_AUTH={isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets,selected(photo,width)].slice(-MAX_PREFETCH));},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
 })();

@@ -72,6 +72,8 @@ password system.
 | `content/templates/catalog.html` | Public catalog shell |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction, Replay UI |
 | `dist/assets/location-labels.js` | Shared destination grouping, screen-space clusters, upright signposts, compact previews and accessible day selection |
+| `dist/assets/map-feedback.js`, `map-feedback.css` | Shared map loading, recovery, Retry and no-location feedback; used in Studio too |
+| `dist/assets/vendor/maplibre-5.24.0/` | Pinned MapLibre browser JS/CSS and license, served from the site |
 | `dist/assets/map-style.js` | Shared basemap palette, restrained settlement typography, and route/label stacking for every viewer map and Studio |
 | `dist/assets/atlas-utils.js` | Shared photo resolution, cover choice, camera helpers, preloading, desktop image reveals and other helpers |
 | `dist/assets/group-travel.js`, `group-travel.css`, `scripts/journey-extras.mjs` | Shared group projection, roster/day route details, group/media presentation and optional data validation |
@@ -210,3 +212,13 @@ planner. Photo assignments retain their canonical manifest layout; checks are
 read-only and saves use source/state revisions and backups. Per-day changes to
 individual group membership are still future work; groups have stable
 membership. See W07 in TODO.md.
+
+
+## UX review follow-up — 12 September 2026
+
+The audit's 20 authorized findings are addressed in shared code. URL/reload
+persistence (V1) is explicitly excluded. The six proposed capabilities are
+held for interactive local demo review before implementation or deployment;
+this includes recovery/conflict review, explicit sharing, batch photo editing,
+publication readiness, private video intake (W07) and labeled Replay seeking.
+This review gate does not block delivery of the authorized bug fixes.

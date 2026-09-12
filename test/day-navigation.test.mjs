@@ -141,7 +141,7 @@ test('same-day viewer navigation does not rebuild background photos or redraw th
 });
 test('viewer route layers are reused within a day and rebuilt when the day changes',()=>{
  const calls=[];let day={id:'d1',segmentIds:['a']};
- const context=vm.createContext({window:{},mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,viewerMapReady:true,photoDialog:{open:true},viewerMap:{},mapIsReady:()=>true,viewerDay:()=>day,
+ const context=vm.createContext({viewerFeedback:null,window:{},mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,viewerMapReady:true,photoDialog:{open:true},viewerMap:{easeTo(){}},mapIsReady:()=>true,viewerDay:()=>day,
   viewerPhotoIndex:0,photosForDay:()=>[{id:'one'},{id:'two'}],viewerCameraPhoto:null,viewerTransition:{cancel(){}},viewerPhotoMarkers:[],viewerRouteKey:null,viewerDecorations:{},
   journey:{id:'trip',segments:[{id:'a'},{id:'b'}]},dayCoordinates:()=>[],
   clearDecorations:()=>calls.push('clear'),addSegmentLayer:()=>calls.push('route'),addDayStopMarkers:()=>calls.push('stops')});
@@ -176,8 +176,8 @@ test('mobile and touch map hover cannot open route details; route taps select th
   for (const [mobile, hover, shouldPreview] of [[true, true, false], [true, false, false], [false, false, false], [false, true, true]]) {
     const context = selection(), events = new Map(), calls = [], canvas = {style:{}};
     Object.assign(context, {
-      mainMapReady: true,
-      window: {maplibregl: {}, matchMedia: query => ({matches: query.includes('900px') ? mobile : hover})},
+      mainMapReady: true, mainFeedback:null,mapStatus:{},retryMainMap(){},
+      window: {JOURNEY_ATLAS_MAP_FEEDBACK:{create:()=>({watch(){}})},maplibregl: {}, matchMedia: query => ({matches: query.includes('900px') ? mobile : hover})},
       createMap: () => ({on: (name, handler) => events.set(name, handler), getCanvas: () => canvas}),
       routeFeatureAtPoint: () => ({properties:{segmentId:'leg'}}),
       dayForSegment: () => context.journey.days[0],

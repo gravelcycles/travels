@@ -16,15 +16,15 @@
       document.documentElement.classList.add('journey-starting');
       window.addEventListener('load', () => document.documentElement.classList.remove('journey-starting'), { once: true });
     </script>
-    <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
     <link
       rel="stylesheet"
-      href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
+      href="./assets/vendor/maplibre-5.24.0/maplibre-gl.css"
     />
     <link rel="stylesheet" href="./assets/styles.css" />
     <link rel="stylesheet" href="./assets/mobile.css" />
     <link rel="stylesheet" href="./assets/group-travel.css" />
+    <link rel="stylesheet" href="./assets/map-feedback.css" />
   </head>
   <body data-journey-id="{{id}}">
     <header class="site-header">
@@ -134,7 +134,7 @@
       <button id="mobile-next-day" type="button" aria-label="Next day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button>
     </nav>
 
-    <dialog class="notes-dialog" id="notes-dialog">
+    <dialog class="notes-dialog" id="notes-dialog" aria-labelledby="notes-journey-title">
       <form method="dialog" class="dialog-card">
         <div class="dialog-top">
           <div><span>ABOUT THE ATLAS</span><h2 id="notes-journey-title">{{title}}</h2></div>
@@ -199,6 +199,7 @@
             <p id="modal-day-route"></p>
             <p class="modal-location" id="modal-location"></p>
             <strong id="viewer-media-title" hidden></strong>
+            <p class="mobile-photo-caption" id="mobile-photo-caption"></p>
             <p class="modal-description" id="modal-description"></p>
             <a id="video-credit" target="_blank" rel="noopener noreferrer" hidden></a>
           </div>
@@ -257,7 +258,7 @@
       </div>
     </dialog>
 
-    <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
+    <script src="./assets/vendor/maplibre-5.24.0/maplibre-gl.js"></script>
     <script src="./assets/journeys.js"></script>
     <script src="./assets/route-geometry.js"></script>
     <script src="./assets/trip-photos.js"></script>
@@ -267,6 +268,7 @@
     <script src="./assets/photo-auth.js"></script>
     <script src="./assets/atlas-utils.js"></script>
     <script src="./assets/map-style.js"></script>
+    <script src="./assets/map-feedback.js"></script>
     <script src="./assets/mobile-ux.js"></script>
     <script src="./assets/group-travel.js"></script>
     <script src="./assets/media-utils.js"></script>

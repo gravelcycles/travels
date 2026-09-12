@@ -11,6 +11,7 @@ function fixture(){
   replayDialog:{open:false,showModal(){this.open=true;}},replayMomentDay:()=>({id:'d'}),updateReplayControls(){},renderReplayMoment(){},initReplayMap(){},replayTick(){},refreshPreloads(){},
   $:selector=>{if(!elements.has(selector))elements.set(selector,{focus(){}});return elements.get(selector);},
   window:{setTimeout(callback,delay){timers.set(++id,{callback,delay});return id;},clearTimeout:id=>timers.delete(id),requestAnimationFrame:()=>++frames,cancelAnimationFrame(){}}});
+ context.window.JOURNEY_ATLAS_MOBILE_UI={presentOverlay:()=>context.replayDialog.showModal()};
  vm.runInContext(['cancelReplayAutoplay','scheduleReplayAutoplay','pauseReplay','startReplay','toggleReplay','openReplay'].map(fn).join('\n'),context);
  return {context,timers,run:code=>vm.runInContext(code,context)};
 }
