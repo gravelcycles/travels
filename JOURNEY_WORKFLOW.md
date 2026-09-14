@@ -328,7 +328,11 @@ content sources in one click; **Check changes** is optional and read-only.
 **Preview atlas** shows the last explicitly saved content. Save and autosave
 status are always visible. A failed Save retains the draft and exposes
 **Download draft**. **Review / discard draft** compares each changed field with
-the current saved files, including after a reload. **Discard all draft edits**
+the current saved files, including after a reload. Changes are grouped by day,
+photo, route or trip, with a count, photo thumbnails and readable field names.
+Saved values and your changes appear side by side; changed words are marked,
+photo/day references use names, and full route coordinates expand on demand.
+**Discard all draft edits**
 returns Studio to the saved version and keeps an undo copy under **Recover local
 drafts**. Neither review nor discard writes trip content. Revision conflicts
 require reconciliation with newer disk

@@ -641,3 +641,19 @@ test('every journey ignores old photo Hide flags while respecting Trash', t => {
     assert.equal(globalThis.JOURNEY_ATLAS_UTILS.resolveCover({...journey,coverPhoto:{photoId:photos[1].id}},visible).photo.id,photos[1].id);
   }
 });
+
+test('family, demo and fresh drafts share readable grouped edit reviews', async t => {
+  const {studioDraftDiff}=await import('../scripts/studio-draft-diff.mjs');
+  await import('../studio/draft-review.js');
+  const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root,{includeDrafts:true}),saved=readOverrides(root);
+  const journeys=[data.journeys.find(j=>j.kind!=='demo' && j.published),data.journeys.find(j=>j.kind==='demo'),data.journeys.find(j=>j.id===draft.id)];
+  for(const journey of journeys){
+    const state=structuredClone(saved),day=journey.days[0];
+    state.days[day.id]={...state.days[day.id],text:'A new day story'};
+    const changes=studioDraftDiff(data,saved,{state,plans:[]});
+    assert.equal(changes.length,1,journey.id);assert.equal(changes[0].field,'Day story');
+    assert.match(changes[0].subject,/^Day 1 · /);assert.equal(changes[0].journey,journey.title);
+    const review=globalThis.JOURNEY_ATLAS_DRAFT_REVIEW.render(changes);
+    assert.equal(review.summary,'1 change in 1 day.');assert.match(review.html,/<ins>/);
+  }
+});

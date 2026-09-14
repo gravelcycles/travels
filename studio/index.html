@@ -35,8 +35,9 @@
     </div>
 
     <dialog id="draft-diff-dialog" aria-labelledby="draft-diff-title">
-      <h2 id="draft-diff-title">Review local draft</h2>
+      <h2 id="draft-diff-title">Review your changes</h2>
       <p id="draft-diff-status" role="status"></p>
+      <p class="draft-diff-help">Compared with your last local save. Your draft is autosaved; publishing is separate.<br>Removed words are <del>crossed out</del>; added words are <ins>highlighted</ins>.</p>
       <div id="draft-diff-content"></div>
       <div class="draft-diff-actions"><button id="close-draft-diff" type="button">Keep editing</button><button id="discard-draft" type="button">Discard all draft edits</button></div>
     </dialog>
@@ -254,6 +255,7 @@
     <script src="/dist/assets/media-utils.js"></script>
     <script src="/plan-extras.js"></script>
     <script src="/studio-recovery.js"></script>
+    <script src="/draft-review.js"></script>
     <script src="/studio.js?v=20260909-optional-day-copy"></script>
   </body>
 </html>

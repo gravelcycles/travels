@@ -112,7 +112,7 @@ function serveFile(response, filename) {
 function staticFileFor(pathname) {
   if (pathname === "/" || pathname === "/studio" || pathname === "/studio/") return path.join(repoRoot, "studio/index.html");
   if (pathname === "/studio/story-review.html") return path.join(repoRoot, "studio/story-review.html");
-  if (["/studio.css", "/studio.js", "/plan-extras.js", "/studio-recovery.js"].includes(pathname)) return path.join(repoRoot, "studio", pathname.slice(1));
+  if (["/studio.css", "/studio.js", "/plan-extras.js", "/studio-recovery.js", "/draft-review.js"].includes(pathname)) return path.join(repoRoot, "studio", pathname.slice(1));
   if (pathname.startsWith("/dist/")) {
     const relative = pathname.slice(6);
     const resolved = path.resolve(repoRoot, "dist", relative || "index.html");
