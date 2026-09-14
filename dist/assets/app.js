@@ -18,7 +18,7 @@
         const override = contentOverrides.photos?.[photo.id] || {};
         return window.JOURNEY_ATLAS_UTILS.resolvePhoto(photo, override);
       })
-      .filter((photo) => !photo.hidden);
+      .filter((photo) => !photo.trashed);
   });
   const OPENFREEMAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
   const PHOTO_ZOOM_LIMITS = { min: 2, max: 20 };

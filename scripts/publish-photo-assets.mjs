@@ -9,7 +9,7 @@ export async function publishPhotoAssets(root,journeyId,{publish=false,all=false
  const journey=loadJourneys(root,{includeDrafts:true}).journeys.find(j=>j.id===journeyId);
  if(!journey)throw new Error('Choose a known journey.');if(!journey.published&&publish)throw new Error('Draft journeys stay private.');
  const files=['','-uploads'].map(suffix=>path.join(root,journey.published?`content/photo-manifests/${journeyId}${suffix}.json`:`build/draft-assets/${journeyId}/${suffix?'uploads':'photos'}.json`)).filter(f=>fs.existsSync(f));
- const overrides=readOverrides(root),photos=files.flatMap(f=>readJson(f)).filter(p=>(all||p.assetStatus==='local')&&!overrides.photos[p.id]?.hidden&&!overrides.photos[p.id]?.trashed);
+ const overrides=readOverrides(root),photos=files.flatMap(f=>readJson(f)).filter(p=>(all||p.assetStatus==='local')&&!overrides.photos[p.id]?.trashed);
  const assets=new Map();
  for(const photo of photos){if(!photo.protected||!photo.srcset?.length||photo.srcset.length>3)throw new Error('Migrate this photo to the private thumbnail/preview/full-size format first.');for(const variant of photo.srcset){
   if(!isPrivatePhotoUrl(variant.src))throw new Error('Only private photo paths may be published.');

@@ -127,7 +127,7 @@ uses 2.4-second rest-day scenes and approximately 50 seconds for the nine-leg
 Mürren day. Replay frames each active leg and preserves reduced-motion controls.
 Invalid editorial references fail validation. Reviewed camera targets can frame
 rest-day locations. Empty moment lists retain automatic route/day Replay for
-other journeys. Save the plan after preview; the editor checks the source
+other journeys. Save the plan directly; checking changes is optional. The editor checks the source
 revision to avoid overwriting a trip changed in another session.
 
 Source/output structure:
@@ -317,6 +317,23 @@ browser Back returns to the day map, while Escape dismisses a nested layer.
 Check these flows on the reference trip, a demo and a fresh empty draft.
 
 ## Editing and regeneration
+
+Studio automatically captures edits in browser storage immediately and writes an
+unpublished recovery snapshot to ignored `build/studio-drafts/` after a brief
+pause. Reloading the same tab restores unfinished day/photo/route/plan edits,
+including invalid or incomplete forms. Other tab drafts remain available under
+**Recover local drafts**. This does not change content sources, local atlas
+previews, or public output. **Save locally** validates and applies edits to the
+content sources in one click; **Check changes** is optional and read-only.
+**Preview atlas** shows the last explicitly saved content. Save and autosave
+status are always visible. A failed Save retains the draft and exposes
+**Download draft**. **Review / discard draft** compares each changed field with
+the current saved files, including after a reload. **Discard all draft edits**
+returns Studio to the saved version and keeps an undo copy under **Recover local
+drafts**. Neither review nor discard writes trip content. Revision conflicts
+require reconciliation with newer disk
+edits, never a blind reload or overwrite. Automatic drafts include editor data,
+not pending upload file bytes or unaccepted generated route proposals.
 
 The local Atlas Studio is the review surface. The agent runs `npm run studio`,
 opens `http://127.0.0.1:4173/studio/` for the user, and stops the server after

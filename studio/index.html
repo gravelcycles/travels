@@ -22,11 +22,24 @@
         <button data-mode="days" type="button">Day copy</button>
       </nav>
       <div class="studio-actions">
-        <span id="save-status" role="status">Loading…</span>
         <a id="preview-journey" href="/preview/switzerland-italy.html?photoSource=local" target="_blank" rel="noreferrer">Preview atlas</a>
-        <button id="save-all" type="button">Save locally</button>
+        <button id="save-all" type="button" disabled>Save locally</button>
       </div>
     </header>
+    <div class="studio-feedback">
+      <span id="save-status" role="status" aria-live="polite">Loading…</span>
+      <span id="draft-status" role="status" aria-live="polite"></span>
+      <button id="review-draft" type="button" hidden>Review / discard draft</button>
+      <button id="download-draft" type="button" hidden>Download draft</button>
+      <details id="recover-drafts" hidden><summary>Recover local drafts</summary><div id="recover-draft-list"></div></details>
+    </div>
+
+    <dialog id="draft-diff-dialog" aria-labelledby="draft-diff-title">
+      <h2 id="draft-diff-title">Review local draft</h2>
+      <p id="draft-diff-status" role="status"></p>
+      <div id="draft-diff-content"></div>
+      <div class="draft-diff-actions"><button id="close-draft-diff" type="button">Keep editing</button><button id="discard-draft" type="button">Discard all draft edits</button></div>
+    </dialog>
 
     <main class="studio-shell" data-mode="photos">
       <aside class="browser-panel">
@@ -97,7 +110,6 @@
           <input id="photo-caption" name="caption" />
           <label for="photo-description">Your notes (optional)</label>
           <textarea id="photo-description" name="description" rows="5" placeholder="Your words, if you want them. Leave blank for no description."></textarea>
-          <label class="checkbox"><input id="photo-hidden" name="hidden" type="checkbox" /> Hide from the public atlas</label>
           <button class="secondary danger" id="trash-photo" type="button">Move photo to trash</button>
           <p id="photo-asset-status" class="editor-note"></p>
           <section class="photo-order-panel" aria-labelledby="photo-order-heading">
@@ -187,7 +199,7 @@
 
       <section id="trip-planner" data-panel="planner" hidden aria-label="Trip structure, travelers, media and Replay editor">
         <h2>Shape the journey</h2>
-        <p>Preview changes, then save locally. The trip address and existing IDs stay stable.</p>
+        <p>Edits autosave as an unpublished local draft. Save locally applies them to the atlas; checking changes is optional.</p>
         <label>Trip title<input id="plan-title" maxlength="160"></label>
         <label>Introduction<textarea id="plan-subtitle" rows="2"></textarea></label>
         <div class="plan-row"><label>Start date<input id="plan-start" type="date"></label><label>End date<input id="plan-end" type="date"></label><label>Photo time zone<input id="plan-timezone" placeholder="Europe/Berlin"></label></div>
@@ -200,7 +212,7 @@
         <details><summary>Photo route groups</summary><p>Assign photos to routes without changing their captions, order or source images.</p><div id="plan-photo-groups"></div></details>
         <details open><summary>Journey cover</summary><p>One photograph for the catalog and trip opening. Day previews use the first visible photo in album order.</p><label>Cover photo<select id="cover-picker"></select></label><div id="cover-thumbnails" aria-label="Cover photo choices"></div><div class="plan-row"><label>Horizontal focal point<input id="cover-x" type="range" min="0" max="100"></label><label>Vertical focal point<input id="cover-y" type="range" min="0" max="100"></label></div><div id="cover-previews"></div></details>
         <details><summary>Curated Replay moments</summary><p>Use short, factual captions. A moment's duration is editorial pacing. Replay follows the map and the day's travel legs; photographs stay in the albums.</p><div id="plan-moments"></div><button type="button" id="plan-add-moment">+ Replay moment</button></details>
-        <div class="plan-save-bar"><button type="button" id="plan-preview">Check changes</button><button type="button" id="plan-save" disabled>Save trip plan locally</button><p id="plan-status" role="status"></p></div>
+        <div class="plan-save-bar"><button type="button" id="plan-preview">Check changes (optional)</button><button type="button" id="plan-save" disabled>Save trip plan locally</button><p id="plan-status" role="status"></p></div>
       </section>
     </main>
 
@@ -241,6 +253,7 @@
     <script src="/dist/assets/map-feedback.js"></script>
     <script src="/dist/assets/media-utils.js"></script>
     <script src="/plan-extras.js"></script>
+    <script src="/studio-recovery.js"></script>
     <script src="/studio.js?v=20260909-optional-day-copy"></script>
   </body>
 </html>
