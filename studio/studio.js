@@ -1321,13 +1321,6 @@
       $('#recover-drafts').hidden = true;
     } catch(error) { setStatus(`Could not restore draft: ${error.message}`, 'error'); }
   });
-  function diffValue(value) {
-    if (value === null) return '<em>Not set</em>';
-    if (typeof value === 'string') return `<pre>${escapeHtml(value || '(empty)')}</pre>`;
-    const text=JSON.stringify(value,null,2);
-    if (text.length>500) return `<details><summary>${Array.isArray(value)?`${value.length} items`:'Show value'}</summary><pre>${escapeHtml(text)}</pre></details>`;
-    return `<pre>${escapeHtml(text)}</pre>`;
-  }
   $('#review-draft').addEventListener('click', async () => {
     $('#draft-diff-status').textContent='Comparing your draft with the saved files…';
     $('#draft-diff-content').innerHTML='';
@@ -1337,8 +1330,9 @@
       const response=await fetch('/api/draft-diff',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(draftSnapshot())});
       const result=await response.json();
       if(!response.ok || !result.ok)throw new Error(result.error || 'Could not compare drafts');
-      $('#draft-diff-status').textContent=result.changes.length?`${result.changes.length} changed field${result.changes.length===1?'':'s'} across your local draft. Discard removes all these draft edits; saved atlas content stays as it is.`:'This draft matches the saved files. You can clear the draft.';
-      $('#draft-diff-content').innerHTML=result.changes.map(change=>`<section class="draft-change"><h3>${escapeHtml(change.section)} · ${escapeHtml(change.label)}</h3><div class="draft-change-values"><div><strong>Saved</strong>${diffValue(change.before)}</div><div><strong>Your draft</strong>${diffValue(change.after)}</div></div></section>`).join('');
+      const review=window.JOURNEY_ATLAS_DRAFT_REVIEW.render(result.changes, photoUrl);
+      $('#draft-diff-status').textContent=review.summary;
+      $('#draft-diff-content').innerHTML=review.html;
       $('#discard-draft').disabled=false;
     } catch(error) { $('#draft-diff-status').textContent=`Could not compare changes: ${error.message}`; }
   });

@@ -20,6 +20,13 @@ function fixture(t) {
   const overridesPath = path.join(root, 'content/photo-overrides.json');
   const knownPhotos = new Set(loadContent(root).data.journeys.flatMap(journey => journey.photos.map(photo => photo.id)));
   atomicJson(overridesPath, Object.fromEntries(Object.entries(readJson(overridesPath)).filter(([id]) => knownPhotos.has(id))));
+  // Removing local intake also removes references to it from the fixture's albums.
+  const daysPath = path.join(root, 'content/day-overrides.json'), days = readJson(daysPath);
+  for (const day of Object.values(days)) {
+    if (day.photoOrder) day.photoOrder = day.photoOrder.filter(id => knownPhotos.has(id));
+    if (day.leadPhotoId && !knownPhotos.has(day.leadPhotoId)) delete day.leadPhotoId;
+  }
+  atomicJson(daysPath, days);
   fs.cpSync(path.join(repo, 'dist'), path.join(root, 'dist'), { recursive: true });
   return root;
 }
