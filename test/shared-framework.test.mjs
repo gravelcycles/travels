@@ -609,3 +609,35 @@ test('real, sample and fresh-draft pages inherit map recovery, named About and l
   const luminance=hex=>{const c=hex.slice(1).match(/../g).map(n=>parseInt(n,16)/255).map(n=>n<=.04045?n/12.92:((n+.055)/1.055)**2.4);return c[0]*.2126+c[1]*.7152+c[2]*.0722;};
   for(const background of ['#fbfaf6','#e7ece8'])assert.ok((luminance(background)+.05)/(luminance(muted)+.05)>=4.5,background);
 });
+
+
+test('family, demo and freshly generated draft save directly and retain incomplete recovery drafts', async t => {
+  const {studioSaveHarness}=await import('./studio-save-harness.mjs');
+  const {writeStudioDraft,readStudioDraft}=await import('../scripts/studio-drafts.mjs');
+  const root=fixture(t), draft=createJourney(root,input), {data}=loadContent(root,{includeDrafts:true}), state=readOverrides(root);
+  const journeys=[data.journeys.find(j=>j.kind!=='demo' && j.published),data.journeys.find(j=>j.kind==='demo'),data.journeys.find(j=>j.id===draft.id)];
+  for (const journey of journeys) {
+    const f=studioSaveHarness(data,journey,state);
+    f.plan.draft.title=`${journey.title} edited`;
+    assert.equal(await f.context.savePlan(),true,journey.id);
+    assert.equal(f.requests.length,1);assert.equal(f.requests[0].preview,false);
+    const recovery={schema:1,sequence:1,dirty:true,state,plans:[[journey.id,{draft:{...journey,title:''},dirty:true}]]};
+    writeStudioDraft(root,journey.id,recovery);
+    assert.equal(readStudioDraft(root,journey.id).plans[0][1].draft.title,'');
+  }
+  buildSite(root);
+  assert.ok(!read(root,'dist/assets/journeys.js').includes('studio-drafts'),'Automatic draft snapshots never enter the public bundle');
+});
+
+
+test('every journey ignores old photo Hide flags while respecting Trash', t => {
+  const root=fixture(t), draft=createJourney(root,input), {data}=loadContent(root,{includeDrafts:true});
+  const journeys=[data.journeys.find(j=>j.kind!=='demo' && j.published),data.journeys.find(j=>j.kind==='demo'),draft];
+  for (const journey of journeys) {
+    const photos=[{id:`${journey.id}-visible`,dayId:journey.days[0].id},{id:`${journey.id}-hidden`,dayId:journey.days[0].id,hidden:true},{id:`${journey.id}-trash`,dayId:journey.days[0].id,trashed:true}];
+    const overrides={photos:{[photos[0].id]:{hidden:true}}};
+    const visible=globalThis.JOURNEY_ATLAS_UTILS.visiblePhotos(journey,{[journey.id]:photos},overrides);
+    assert.deepEqual(visible.map(photo=>photo.id),photos.slice(0,2).map(photo=>photo.id));
+    assert.equal(globalThis.JOURNEY_ATLAS_UTILS.resolveCover({...journey,coverPhoto:{photoId:photos[1].id}},visible).photo.id,photos[1].id);
+  }
+});

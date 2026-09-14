@@ -96,7 +96,7 @@ test("validates daily photo order and lead-photo ownership", () => {
   assert.throws(() => validateOverrides({ photos: {}, routes: {}, days: { [day.id]: { photoOrder: [photos[0], photos[0]] } } }, data), /unique photo IDs/);
   assert.throws(() => validateOverrides({ photos: {}, routes: {}, days: { [day.id]: { leadPhotoId: journey.photos.find(photo => photo.dayId !== day.id).id } } }, data), /another day/);
 });
-test("the family photo review covers every source photo and excludes hidden media from the public build", t => {
+test("the family photo review covers every source photo and includes formerly hidden photos and excludes trash from the public build", t => {
   const root = fixture(t);
   const manifest = JSON.parse(fs.readFileSync(path.join(root, "content/photo-manifests/switzerland-italy-family-2026.json"), "utf8"));
   const reviews = JSON.parse(fs.readFileSync(path.join(root, "content/photo-overrides.json"), "utf8"));
@@ -118,9 +118,9 @@ test("the family photo review covers every source photo and excludes hidden medi
   buildSite(root);
   const publicPhotos = generated(root, "trip-photos", "JOURNEY_ATLAS_PHOTOS")["switzerland-italy-family-2026"];
   const reviewedPublicPhotos = publicPhotos.filter(photo => originalIds.has(photo.id));
-  const expectedIds = manifest.filter(photo => !reviews[photo.id].hidden && !reviews[photo.id].trashed).map(photo => photo.id).sort();
+  const expectedIds = manifest.filter(photo => !reviews[photo.id].trashed && photo.assetStatus !== "local").map(photo => photo.id).sort();
   assert.deepEqual(reviewedPublicPhotos.map(photo => photo.id).sort(), expectedIds);
-  assert.ok(!publicPhotos.some(photo => reviews[photo.id]?.hidden || reviews[photo.id]?.trashed));
+  assert.ok(!publicPhotos.some(photo => reviews[photo.id]?.trashed));
   const publicOverrides = generated(root, "content-overrides", "JOURNEY_ATLAS_CONTENT_OVERRIDES");
   for (const photo of reviewedPublicPhotos) {
     // Preserve the saved edits exactly, including blank copy, pins, and zooms.

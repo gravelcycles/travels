@@ -36,11 +36,11 @@ test('explicit EXIF offsets convert the instant into the journey calendar', () =
   assert.throws(() => captureDateParts({ DateTimeOriginal:new Date() }, 'UTC'));
   assert.throws(() => captureDateParts({ DateTimeOriginal:'2026:09:01 25:00:00' }, 'UTC'));
 });
-test('hidden or missing covers fall back to a visible photo and then text',()=>{
+test('legacy hidden photos remain visible and missing covers fall back to text',()=>{
   const {resolveCover,visiblePhotos,photoCaption,travelDuration}=globalThis.JOURNEY_ATLAS_UTILS;
   const j={id:'trip',coverPhoto:{photoId:'hidden',focal:[30,70]}};
   const photos=visiblePhotos(j,{trip:[{id:'hidden'},{id:'visible'}]},{photos:{hidden:{hidden:true}}});
-  assert.equal(resolveCover(j,photos).photo.id,'visible');assert.equal(resolveCover(j,[]).photo,undefined);
+  assert.equal(resolveCover(j,photos).photo.id,'hidden');assert.equal(resolveCover(j,[]).photo,undefined);
   assert.equal(photoCaption({caption:'Day · 12:30',takenAt:'18 Aug · 12:30'},{title:'Day'}),'Day');
   assert.equal(photoCaption({caption:'Lunch · 12:30',takenAt:'18 Aug · 12:30'},{title:'Day'}),'Lunch · 12:30');
   assert.equal(travelDuration([{durationMinutes:120,durationMaxMinutes:180,durationQualifier:'with stops'},{durationMinutes:55}]),'2 h 55 min–3 h 55 min travel · with stops');

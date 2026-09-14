@@ -39,14 +39,15 @@ updates are deterministic code tasks; no LLM or API key is needed. Accessibility
 alt text is a separate field; new uploads use a neutral day-based label.
 
 **Photos from** counts exactly the photos shown in the current Studio grid:
-hidden photos are included and labelled **HIDDEN**, while trashed photos appear
-only with **Show trash** enabled. The public atlas excludes hidden photos, so its
-count can be lower than the editor's count.
+all non-trashed photos are included. The separate Hide from atlas feature was
+removed at the owner's request on 14 September 2026; legacy `hidden` photo flags
+are ignored throughout Studio, publication and the atlas. Deleted photos remain
+in Trash and appear in Studio only with **Show trash** enabled.
 
 Select a photo and choose **Move photo to trash**, then **Save locally**. It is
 removed from the local preview, and from the live atlas after deployment. Use
 **Show trash → Restore photo from trash → Save locally** to recover it. Trashing
-preserves day order, pins, captions, and original visibility, and the cover
+preserves day order, pins, captions, and other metadata, and the cover
 photo falls back to another visible photo. It is different from the existing
 **Hide from the public atlas** checkbox, which keeps the photo in the editor.
 Trash is recoverable album deletion: originals and already-hosted private R2
@@ -108,7 +109,7 @@ The selected thumbnail keeps its separate album-selection border.
 `--publish` uses Wrangler's owner authorization to upload to private R2. It
 refuses public bucket settings, checks WebP metadata and content hashes, uploads
 missing objects, then downloads and verifies every selected object before marking
-its manifest published. It skips hidden/trash, refuses draft publication, and
+its manifest published. It skips trash, refuses draft publication, and
 never uploads originals, overwrites mismatched objects, commits or pushes.
 Retries reuse matching objects. Use `--all` for a complete reviewed migration;
 the default selects pending local photos. Both bulk imports and Studio share
@@ -194,9 +195,9 @@ date-inferred day assignments were retained, with alt text, visibility decisions
 and review status. The generated captions and descriptions from that review were
 removed on 9 September; only traveler-written visible copy remains.
 Because none contains GPS, every photo remains explicitly marked as reviewed
-but unlocated rather than receiving an inferred viewpoint. Ninety-five photos
-remain visible; eight near-duplicate or low-quality frames and one private-
-residence exterior are hidden from generated public photo data.
+but unlocated rather than receiving an inferred viewpoint. The original review hid nine images. The owner removed the Hide feature on
+14 September 2026: previously hidden photos now appear in the atlas unless they
+were also moved to Trash. Deleted photos remain deleted.
 
 ## Other journeys
 

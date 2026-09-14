@@ -92,7 +92,7 @@
   }
 
   function photosForDay(dayId, { visibleOnly = false } = {}) {
-    const photos = basePhotos.map(photoWithOverride).filter((photo) => photo.dayId === dayId && (!visibleOnly || (!photo.hidden && !photo.trashed)));
+    const photos = basePhotos.map(photoWithOverride).filter((photo) => photo.dayId === dayId && (!visibleOnly || (!photo.trashed)));
     const order = state.days[dayId]?.photoOrder || [];
     const positions = new Map(order.map((id, index) => [id, index]));
     return photos.map((photo, index) => ({ photo, index })).sort((a, b) => {
@@ -168,8 +168,9 @@
     return simplified;
   }
 
-  function markDirty(message = "Unsaved changes") {
+  function markDirty(message = "Draft edits · Save locally to apply") {
     dirty = true;
+    persistDraft();
     const status = $("#save-status");
     status.textContent = message;
     status.className = "dirty";
@@ -178,8 +179,9 @@
   function markSaved(message = "Saved locally") {
     if ([...plans.values()].some(plan=>plan.dirty)) { markDirty("Other trip plans still need saving"); return; }
     dirty = false;
+    persistDraft();
     const status = $("#save-status");
-    status.textContent = message;
+    status.textContent = `${message} · ${new Date().toLocaleTimeString()}`;
     status.className = "saved";
   }
 
@@ -274,7 +276,7 @@
       const located = Number.isFinite(photo.lat) && Number.isFinite(photo.lng);
       return `<button type="button" data-photo-id="${photo.id}" class="${photo.id === selectedPhotoId ? "active" : ""}" aria-label="Edit ${escapeHtml(photo.caption || photo.sourceFilename || photo.id)}">
         <img src="${photoUrl(thumb)}" alt="" loading="lazy" />
-        <span>${photo.hidden ? "HIDDEN · " : ""}${escapeHtml(photo.takenAt || photo.caption)}</span>
+        <span>${escapeHtml(photo.takenAt || photo.caption)}</span>
         <i class="${located ? "" : "unlocated"}" title="${located ? "Located" : "Needs location"}"></i>
       </button>`;
     }).join("") : `<p class="editor-note">${inTrash ? 'No photos in trash for this selection.' : 'No photos here yet. Use Upload photos to add some.'}</p>`;
@@ -325,7 +327,6 @@
     $("#photo-zoom").value = photo.zoom || 16;
     $("#photo-caption").value = photo.caption || "";
     $("#photo-description").value = photo.description || "";
-    $("#photo-hidden").checked = Boolean(photo.hidden);
     $('#trash-photo').textContent = photo.trashed ? 'Restore photo from trash' : 'Move photo to trash';
     $('#photo-asset-status').textContent = photo.trashed ? 'In trash. Save locally to remove it from the atlas on the next deployment. Originals and hosted files are retained for recovery.' : photo.assetStatus === 'local' ? 'Local upload · ready to review. Asset publishing is needed before this photo can appear on the live site.' : 'Photo assets published · edits appear after the next site deployment.';
     refreshPhotoOrderControls();
@@ -356,8 +357,7 @@
       dayId: $("#photo-day").value,
       caption: $("#photo-caption").value.trim(),
       description: $("#photo-description").value.trim(),
-      locationLabel: $("#photo-place").value.trim(),
-      hidden: $("#photo-hidden").checked
+      locationLabel: $("#photo-place").value.trim()
     };
     if (Number.isFinite(lat) && Number.isFinite(lng) && $("#photo-lat").value !== "" && $("#photo-lng").value !== "") {
       override.location = { lat: Number(lat.toFixed(6)), lng: Number(lng.toFixed(6)) };
@@ -366,11 +366,8 @@
       override.location = null;
       delete override.zoom;
     }
+    delete override.hidden;
     state.photos[selectedPhotoId] = override;
-    if (override.hidden && state.days[override.dayId]?.leadPhotoId === selectedPhotoId) {
-      const { leadPhotoId, ...dayOverride } = state.days[override.dayId];
-      state.days[override.dayId] = { ...dayOverride, photoOrder: explicitPhotoOrder(override.dayId) };
-    }
     if (previous.dayId !== override.dayId) {
       for (const dayId of [previous.dayId, override.dayId]) {
         const current = state.days[dayId] || {};
@@ -1007,32 +1004,31 @@
     if (savingState) return false;
     if (plans.get(journey.id)?.dirty) return savePlan();
     savingState = true;
-    $("#save-all").disabled = true;
+    $('#save-all').disabled = true;
+    $('#plan-save').disabled = true;
     const snapshot = JSON.stringify(state);
-    setStatus("Saving…");
+    persistDraft();
+    setStatus('Saving locally…');
     try {
-      const response = await fetch("/api/state", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...JSON.parse(snapshot), stateRevision:savedStateRevision })
+      const response = await fetch('/api/state', {
+        method:'PUT', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({...JSON.parse(snapshot), stateRevision:savedStateRevision})
       });
       const result = await response.json();
-      if (!response.ok || !result.ok) throw new Error(result.error || "Save failed");
+      if (!response.ok || !result.ok) throw new Error(result.error || 'Save failed');
       savedStateRevision = result.stateRevision;
       const unchanged = JSON.stringify(state) === snapshot;
       if (unchanged) markSaved();
-      else markDirty("Earlier edits saved · newer changes still need saving");
-      if (unchanged && mode === "routes") {
-        $("#route-saved-state").textContent = "Yes";
-        renderRouteList();
-      }
+      else markDirty('Earlier edits saved · newer changes still need saving');
+      if (unchanged && mode === 'routes') { $('#route-saved-state').textContent='Yes'; renderRouteList(); }
+      await draftRecovery?.flush();
       return true;
-    } catch (error) {
-      setStatus(error.message, "error");
+    } catch(error) {
+      persistDraft();
+      setStatus(`Not saved: ${error.message}`, 'error');
       return false;
     } finally {
-      savingState = false;
-      $("#save-all").disabled = false;
+      savingState=false; $('#save-all').disabled=false; $('#plan-save').disabled=false;
     }
   }
 
@@ -1103,7 +1099,7 @@
     return plans.get(journey.id);
   }
   function planChanges(draft) { return planExtras.changes(draft); }
-  function dirtyPlan() { const plan = planForJourney(); plan.dirty = true; plan.version = (plan.version || 0) + 1; plan.previewed = false; markDirty('Trip plan changed · check before saving'); $('#plan-status').textContent='Unsaved trip plan · check changes before saving.'; $('#plan-save').disabled = true; }
+  function dirtyPlan() { const plan=planForJourney(); plan.dirty=true; plan.version=(plan.version || 0)+1; plan.previewed=false; markDirty('Trip plan changed'); $('#plan-status').textContent='Draft autosaves locally. Save locally when ready; checking changes is optional.'; $('#plan-save').disabled=savingState; }
   const studioPosters = window.JOURNEY_ATLAS_MEDIA.createPosterLoader(document);
   const studioVideoPlayer = window.JOURNEY_ATLAS_MEDIA.createVideoPlayer({video:$('#studio-video'),shell:$('#studio-video-shell'),play:$('#studio-video-play'),status:$('#studio-video-status'),retry:$('#studio-video-retry'),sourceLink:$('#studio-video-credit'),posters:studioPosters});
   let previewingVideo = null;
@@ -1151,16 +1147,17 @@
     $('#plan-places').innerHTML = draft.places.map(p => `<div class="plan-place" data-place="${escapeHtml(p.id)}"><label>Name<input data-place-field="name" value="${escapeHtml(p.name)}"></label><label>Longitude<input type="number" step="any" min="-180" max="180" data-place-field="lng" value="${p.lng??''}"></label><label>Latitude<input type="number" step="any" min="-90" max="90" data-place-field="lat" value="${p.lat??''}"></label>${!journey.places.some(saved=>saved.id===p.id)?`<button type="button" data-remove-place="${escapeHtml(p.id)}" ${newPlaceCanBeRemoved(draft,p.id)?'':'disabled title="Remove this place from the plan’s days and legs first"'}>Remove new place</button>`:''}</div>`).join('');
     $('#plan-days').innerHTML = draft.days.map((day,index) => `<section class="plan-day" data-plan-day="${escapeHtml(day.id)}"><div class="plan-row"><strong>Day ${index+1} · ${escapeHtml(day.calendarDate || day.date)} · ${escapeHtml(state.days[day.id]?.title || day.title)}</strong><button type="button" data-move-day="-1" ${index===0?'disabled':''}>Earlier</button><button type="button" data-move-day="1" ${index===draft.days.length-1?'disabled':''}>Later</button></div><label>Destination<select data-day-destination>${placeOptions}</select></label>${planExtras.overnights(draft,day)}<ol>${day.segmentIds.map((id, i) => { const s=draft.segments.find(s=>s.id===id); return `<li data-plan-leg="${escapeHtml(id)}"><div class="plan-leg"><label>Mode<select data-leg-field="mode">${Object.entries(modeLabels).map(([key,label])=>`<option value="${key}" ${s.mode===key?'selected':''}>${label}</option>`).join('')}</select></label><label>From<select data-leg-field="from">${draft.places.map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===s.from?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label><label>To<select data-leg-field="to">${draft.places.map(p=>`<option value="${escapeHtml(p.id)}" ${p.id===s.to?'selected':''}>${escapeHtml(p.name)}</option>`).join('')}</select></label><label>Travel minutes<input data-leg-field="durationMinutes" type="number" min="0" value="${s.durationMinutes??''}"></label></div>${planExtras.audience(draft,s,"leg","Who took this leg?")}<button type="button" data-move-leg="-1" ${i===0?'disabled':''}>Earlier leg</button><button type="button" data-move-leg="1" ${i===day.segmentIds.length-1?'disabled':''}>Later leg</button>${s.geometry || routeGeometry[id] || state.routes[id] ? '<small>Reviewed route: endpoint/mode edits require a new route review.</small>' : '<small>Provisional endpoint guide; review geometry in Route drawing.</small>'}</li>`; }).join('')}</ol><button type="button" data-add-leg ${draft.places.length<1?'disabled':''}>+ Travel leg</button></section>`).join('');
     draft.days.forEach(day => { const select = [...document.querySelectorAll('[data-plan-day]')].find(e=>e.dataset.planDay===day.id)?.querySelector('[data-day-destination]'); if (select) select.value=day.destinationId || day.placeId || ''; });
-    const visible = basePhotos.map(photoWithOverride).filter(p=>!p.hidden && !p.trashed);
+    const visible = basePhotos.map(photoWithOverride).filter(p=>!p.trashed);
     $('#cover-picker').innerHTML = '<option value="">First visible photo</option>'+visible.map(p=>`<option value="${escapeHtml(p.id)}">${escapeHtml(p.caption || p.id)}</option>`).join('');
     $('#cover-picker').value = draft.coverPhoto?.photoId || '';
     $('#cover-x').value = draft.coverPhoto?.focal?.[0] ?? 50; $('#cover-y').value = draft.coverPhoto?.focal?.[1] ?? 50;
     $('#cover-thumbnails').innerHTML = visible.map(p=>`<button type="button" data-pick-cover="${escapeHtml(p.id)}" aria-label="Use ${escapeHtml(p.caption || p.id)} as trip cover" aria-pressed="${draft.coverPhoto?.photoId===p.id}"><img loading="lazy" src="${escapeHtml(photoUrl(p.srcset?.[0]?.src || p.src))}" alt="${escapeHtml(p.caption || '')}"></button>`).join('');
     renderCoverPreviews(); renderMomentEditor(); extrasEditor.render();
-    $('#plan-save').disabled = !plan.previewed;
+    $('#plan-save').disabled = savingState;
+    $('#plan-alignment').value = plan.alignment || 'dates';
   }
   function renderCoverPreviews() {
-    const {photo,position} = window.JOURNEY_ATLAS_UTILS.resolveCover(planForJourney().draft, basePhotos.map(photoWithOverride).filter(p=>!p.hidden && !p.trashed));
+    const {photo,position} = window.JOURNEY_ATLAS_UTILS.resolveCover(planForJourney().draft, basePhotos.map(photoWithOverride).filter(p=>!p.trashed));
     $('#cover-previews').innerHTML = ['Desktop','Phone'].map(label=>`<figure class="cover-preview ${label.toLowerCase()}"><figcaption>${label}</figcaption>${photo?`<img src="${escapeHtml(photoUrl(photo.srcset?.find(v=>v.width>=1280)?.src || photo.src))}" style="object-position:${position}" alt="${escapeHtml(photo.caption)}">`:'<p>A journey taking shape</p>'}</figure>`).join('');
   }
   function renderMomentEditor() {
@@ -1174,40 +1171,69 @@
     return message;
   }
   async function previewPlan() {
-    const plan=planForJourney();
-    const changes={...planChanges(plan.draft),title:$('#plan-title').value,subtitle:$('#plan-subtitle').value,startDate:$('#plan-start').value,endDate:$('#plan-end').value,timeZone:$('#plan-timezone').value};
-    if (!changes.startDate && !changes.endDate) { delete changes.startDate; delete changes.endDate; }
-    const owner=journey, version=plan.version, stateSnapshot=JSON.stringify(state);
-    plan.previewed=false; $('#plan-save').disabled=true; $('#plan-status').textContent='Checking trip plan…';
-    const input={journeyId:journey.id,changes,state,alignment:$('#plan-alignment').value,preview:true,revision:plan.revision};
+    const plan=planForJourney(), owner=journey, version=plan.version, stateSnapshot=JSON.stringify(state);
+    plan.previewed=false;
+    $('#plan-status').textContent='Checking trip plan…';
+    const input={journeyId:owner.id,changes:planChanges(plan.draft),state,alignment:plan.alignment || 'dates',preview:true,revision:plan.revision};
     try {
-      const result=await (await fetch('/api/journey-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)})).json();
-      if (journey!==owner || plan.version!==version || JSON.stringify(state)!==stateSnapshot) { if(journey===owner)$('#plan-status').textContent='The plan changed while checking. Check changes again before saving.'; return; }
-      if (!result.ok) throw new Error(result.error);
-      state=result.state; plan.draft=result.journey; plan.revision=result.revision; plan.previewed=true;
-      $('#plan-status').textContent=`Ready to save: ${result.journey.days.length} days · ${result.journey.travelers?.length || 0} travelers · ${result.journey.routeGroups?.length || 0} routes · ${result.journey.videos?.length || 0} video${result.journey.videos?.length === 1 ? '' : 's'}. Added: ${result.added.join(', ') || 'none'}. Removed empty dates: ${result.removed.join(', ') || 'none'}. Existing IDs, notes and overrides are preserved.`;
-      renderPlanner();
-    } catch(error) { if(journey===owner)$('#plan-status').textContent=planError(error.message); }
+      const response=await fetch('/api/journey-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)});
+      const result=await response.json();
+      if (journey!==owner || plan.version!==version || JSON.stringify(state)!==stateSnapshot) {
+        if (journey===owner) $('#plan-status').textContent='The plan changed while checking. Save locally when ready, or check again.';
+        return;
+      }
+      if (!response.ok || !result.ok) throw new Error(result.error || 'Check failed');
+      // Preview is read-only: never replace live forms or day/photo edits with
+      // a response, and never reconcile a date change twice before saving it.
+      plan.previewed=true;
+      $('#plan-status').textContent=`Changes checked: ${result.journey.days.length} days. Added: ${result.added.join(', ') || 'none'}. Removed empty dates: ${result.removed.join(', ') || 'none'}. Save locally when ready.`;
+    } catch(error) {
+      if (journey===owner) { $('#plan-status').textContent=error.message; setStatus(`Could not check plan: ${error.message}`, 'error'); }
+    }
   }
   async function savePlan() {
-    const plan=planForJourney();
-    if (!plan.previewed || plan.saving) { setStatus('Check the trip plan before saving','error'); return false; }
-    plan.saving=true; $('.studio-shell').inert=true; $('.studio-header nav').inert=true; $('#save-all').disabled=true;
+    if (savingState) return false;
+    const plan=planForJourney(), owner=journey;
+    const stateSnapshot=JSON.stringify(state), planSnapshot=JSON.stringify(plan.draft);
+    savingState=true; plan.saving=true;
+    $('.studio-shell').inert=true; $('.studio-header nav').inert=true;
+    $('#save-all').disabled=true; $('#plan-save').disabled=true;
+    persistDraft(); setStatus('Saving trip plan and edits locally…');
     try {
-      const result=await (await fetch('/api/journey-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({journeyId:journey.id,changes:planChanges(plan.draft),revision:plan.revision,state,stateRevision:savedStateRevision,preview:false})})).json();
-      if (!result.ok) throw new Error(result.error);
+      const response=await fetch('/api/journey-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({journeyId:owner.id,changes:planChanges(plan.draft),alignment:plan.alignment || 'dates',revision:plan.revision,state,stateRevision:savedStateRevision,preview:false})});
+      const result=await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || 'Save failed');
       savedStateRevision=result.stateRevision;
-      state=result.state; Object.assign(journey,result.journey); plan.draft=structuredClone(result.journey); plan.revision=result.revision; savedRevisions[journey.id]=result.revision; plan.dirty=false; plan.previewed=false;
-      basePhotos=result.journey.photos; photosByJourney[journey.id]=basePhotos; renderPhotoGrid();
-      renderJourneySelector(); renderDaySelectors(); renderDayList(); renderRouteList(); renderPlanner(); markSaved('Trip plan and edits saved locally');
-      $('#plan-status').textContent='Saved. The selected trip preview now includes these changes.'; return true;
-    } catch(error) { $('#plan-status').textContent=planError(error.message); return false; }
-    finally {plan.saving=false;$('.studio-shell').inert=false;$('.studio-header nav').inert=false;$('#save-all').disabled=false;}
+      const stateUnchanged=JSON.stringify(state)===stateSnapshot, planUnchanged=JSON.stringify(plan.draft)===planSnapshot;
+      if (stateUnchanged) state=result.state;
+      Object.assign(owner,result.journey);
+      if (planUnchanged) { plan.draft=structuredClone(result.journey); plan.dirty=false; }
+      plan.revision=result.revision; savedRevisions[owner.id]=result.revision; plan.previewed=false;
+      if (journey===owner) {
+        basePhotos=result.journey.photos; photosByJourney[owner.id]=basePhotos;
+        renderJourneySelector(); renderDaySelectors(); renderDayList(); renderRouteList(); renderPhotoGrid();
+        if (planUnchanged) renderPlanner();
+        $('#plan-status').textContent='Trip plan saved locally. Open Preview atlas to see the saved result.';
+      }
+      if (stateUnchanged && planUnchanged) markSaved('Trip plan and edits saved locally');
+      else markDirty('Earlier edits saved · newer changes still need saving');
+      await draftRecovery?.flush();
+      return true;
+    } catch(error) {
+      persistDraft();
+      const message=`Not saved: ${error.message}`;
+      $('#plan-status').textContent=message; setStatus(message, 'error'); return false;
+    } finally {
+      savingState=false; plan.saving=false;
+      $('.studio-shell').inert=false; $('.studio-header nav').inert=false;
+      $('#save-all').disabled=false; $('#plan-save').disabled=false;
+    }
   }
   $('#trip-planner').addEventListener('input',event=>{
     const e=event.target, draft=planForJourney().draft;
     const headerFields={'plan-title':'title','plan-subtitle':'subtitle','plan-start':'startDate','plan-end':'endDate','plan-timezone':'timeZone'};
     if(headerFields[e.id]) draft[headerFields[e.id]]=e.value;
+    if(e.id==='plan-alignment') planForJourney().alignment=e.value;
     if (e.dataset.placeField) { const p=draft.places.find(p=>p.id===e.closest('[data-place]').dataset.place); p[e.dataset.placeField]=e.dataset.placeField==='name'?e.value:(e.value===''?null:Number(e.value)); }
     if (e.hasAttribute('data-day-destination')) { const day=draft.days.find(d=>d.id===e.closest('[data-plan-day]').dataset.planDay); if(e.value) day.destinationId=e.value; else delete day.destinationId; }
     if(e.dataset.legField) { const leg=draft.segments.find(s=>s.id===e.closest('[data-plan-leg]').dataset.planLeg); if (['from','to','mode'].includes(e.dataset.legField) && (leg.geometry || routeGeometry[leg.id] || state.routes[leg.id])) { $('#plan-status').textContent='Reviewed leg endpoints and modes stay fixed here. Use Route drawing to review a changed line; add a new leg for a different journey.'; renderPlanner(); return; } if(e.value==='') delete leg[e.dataset.legField]; else leg[e.dataset.legField]=e.dataset.legField==='durationMinutes'?Number(e.value):e.value; }
@@ -1239,13 +1265,118 @@
   $('#plan-preview').addEventListener('click',previewPlan);
   $('#plan-save').addEventListener('click',savePlan);
 
+  let draftRecovery = null;
+  function draftSnapshot() {
+    return {dirty, state, savedStateRevision, savedRevisions,
+      plans:[...plans].filter(([,plan]) => plan.dirty).map(([id,plan]) => [id, {...plan, saving:false}]),
+      journeyId:journey.id, title:journey.title, mode, selectedPhotoId, selectedSegmentId, selectedDayId};
+  }
+  function persistDraft() {
+    if (!draftRecovery) return;
+    draftRecovery.capture(draftSnapshot());
+    $('#download-draft').hidden = !dirty;
+    $('#review-draft').hidden = !dirty;
+  }
+  function restoreDraft(draft) {
+    state = draft.state;
+    savedStateRevision = draft.savedStateRevision;
+    savedRevisions = draft.savedRevisions || {};
+    plans.clear();
+    for (const [id,plan] of draft.plans) plans.set(id, {...plan, saving:false, previewed:false});
+    journey = data.journeys.find(item => item.id === draft.journeyId) || journey;
+    basePhotos = photosByJourney[journey.id] || journey.photos || [];
+    selectedPhotoId = draft.selectedPhotoId;
+    selectedSegmentId = draft.selectedSegmentId;
+    selectedDayId = draft.selectedDayId;
+    mode = draft.mode || 'photos';
+    dirty = true;
+  }
+  async function initDraftRecovery(workspaceId) {
+    if (!workspaceId) return false;
+    try {
+      draftRecovery = window.JOURNEY_ATLAS_STUDIO_RECOVERY.create({workspaceId,
+        storage:window.localStorage, session:window.sessionStorage, fetch,
+        onStatus:(message,failed) => { $('#draft-status').textContent=message; $('#draft-status').className=failed?'error':''; }});
+      const draft = await draftRecovery.recover();
+      if (draft) { restoreDraft(draft); persistDraft(); return true; }
+      const response = await fetch('/api/drafts');
+      const result = await response.json();
+      const otherDrafts=(result.drafts || []).filter(item => item.id !== draftRecovery.id);
+      $('#recover-drafts').hidden = !otherDrafts.length;
+      $('#recover-draft-list').innerHTML = otherDrafts.map(item => `<button type="button" data-recover-draft="${escapeHtml(item.id)}">Restore ${escapeHtml(item.title)} · ${escapeHtml(new Date(item.updatedAt).toLocaleString())}</button>`).join('');
+    } catch(error) { $('#draft-status').textContent=`Draft recovery unavailable: ${error.message}`; $('#draft-status').className='error'; }
+    return false;
+  }
+  $('#recover-draft-list').addEventListener('click', async event => {
+    const id=event.target.closest('[data-recover-draft]')?.dataset.recoverDraft;
+    if (!id || dirty) { if (dirty) setStatus('Save or download your current edits before restoring another draft.', 'error'); return; }
+    try {
+      const result=await (await fetch(`/api/drafts/${id}`)).json();
+      if (!result.draft?.dirty) throw new Error('This draft has already been saved.');
+      restoreDraft(result.draft);
+      renderJourneySelector(); renderDaySelectors(); renderPhotoGrid(); renderRouteList(); renderDayList();
+      if (selectedPhotoId) selectPhoto(selectedPhotoId, false);
+      if (selectedDayId) selectDay(selectedDayId, false);
+      setMode(mode); markDirty('Recovered local draft · Save locally to apply these edits');
+      $('#recover-drafts').hidden = true;
+    } catch(error) { setStatus(`Could not restore draft: ${error.message}`, 'error'); }
+  });
+  function diffValue(value) {
+    if (value === null) return '<em>Not set</em>';
+    if (typeof value === 'string') return `<pre>${escapeHtml(value || '(empty)')}</pre>`;
+    const text=JSON.stringify(value,null,2);
+    if (text.length>500) return `<details><summary>${Array.isArray(value)?`${value.length} items`:'Show value'}</summary><pre>${escapeHtml(text)}</pre></details>`;
+    return `<pre>${escapeHtml(text)}</pre>`;
+  }
+  $('#review-draft').addEventListener('click', async () => {
+    $('#draft-diff-status').textContent='Comparing your draft with the saved files…';
+    $('#draft-diff-content').innerHTML='';
+    $('#discard-draft').disabled=true;
+    $('#draft-diff-dialog').showModal();
+    try {
+      const response=await fetch('/api/draft-diff',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(draftSnapshot())});
+      const result=await response.json();
+      if(!response.ok || !result.ok)throw new Error(result.error || 'Could not compare drafts');
+      $('#draft-diff-status').textContent=result.changes.length?`${result.changes.length} changed field${result.changes.length===1?'':'s'} across your local draft. Discard removes all these draft edits; saved atlas content stays as it is.`:'This draft matches the saved files. You can clear the draft.';
+      $('#draft-diff-content').innerHTML=result.changes.map(change=>`<section class="draft-change"><h3>${escapeHtml(change.section)} · ${escapeHtml(change.label)}</h3><div class="draft-change-values"><div><strong>Saved</strong>${diffValue(change.before)}</div><div><strong>Your draft</strong>${diffValue(change.after)}</div></div></section>`).join('');
+      $('#discard-draft').disabled=false;
+    } catch(error) { $('#draft-diff-status').textContent=`Could not compare changes: ${error.message}`; }
+  });
+  $('#close-draft-diff').addEventListener('click', () => $('#draft-diff-dialog').close());
+  $('#discard-draft').addEventListener('click', async () => {
+    $('#discard-draft').disabled=true;
+    $('#draft-diff-status').textContent='Discarding the local draft…';
+    // Keep a recovery archive on disk before clearing the browser snapshot.
+    // If disk autosave is unavailable, retain the current draft and show error.
+    try {
+      if (!draftRecovery) throw new Error('Local draft recovery is unavailable. Download your draft before continuing.');
+      await draftRecovery.flush();
+      const snapshot=draftSnapshot();
+      const response=await fetch(`/api/drafts/${draftRecovery.id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...snapshot,schema:1,sequence:draftRecovery.sequence+1,dirty:false,discarded:true})});
+      const result=await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || 'Could not discard draft');
+      draftRecovery.capture({...snapshot,dirty:false,discarded:true});
+      dirty=false;
+      window.location.reload();
+    } catch(error) { $('#draft-diff-status').textContent=`Draft kept: ${error.message}`; $('#discard-draft').disabled=false; }
+  });
+  $('#download-draft').addEventListener('click', () => {
+    const url=URL.createObjectURL(new Blob([JSON.stringify(draftSnapshot(), null, 2)], {type:'application/json'}));
+    const link=document.createElement('a'); link.href=url; link.download='atlas-studio-unsaved-edits.json'; link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+  window.addEventListener('pagehide', () => { if (dirty) persistDraft(); });
+
   async function init() {
+    let recovered=false;
     try {
       const response = await fetch("/api/state");
       const loadedState = await response.json();
+      if (!response.ok) throw new Error(loadedState.error || "Could not load saved edits");
       savedRevisions = loadedState.revisions || {};
       savedStateRevision = loadedState.stateRevision;
       state = { photos: loadedState.photos || {}, routes: loadedState.routes || {}, days: loadedState.days || {} };
+      recovered=await initDraftRecovery(loadedState.workspaceId);
     } catch (error) {
       setStatus(`Could not load local edits: ${error.message}`, "error");
       return;
@@ -1258,7 +1389,9 @@
     renderRouteList();
     renderDayList();
     if (selectedDayId) selectDay(selectedDayId, false);
-    markSaved("Ready");
+    if (recovered) markDirty("Recovered local draft · Save locally to apply these edits");
+    else markSaved("Ready");
+    $("#save-all").disabled=false; $("#plan-save").disabled=false;
     setMode(mode);
     initStudioMap();
   }
@@ -1310,6 +1443,7 @@
       const response = await fetch("/api/journeys", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(input) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Could not create the trip");
+      savedRevisions[result.journey.id]=result.revision;
       data.journeys.push(result.journey);
       setJourney(result.journey.id);
       setMode("days");
@@ -1429,7 +1563,7 @@
   $("#undo-route").addEventListener("click", () => restoreRouteHistory(-1));
   $("#redo-route").addEventListener("click", () => restoreRouteHistory(1));
   window.addEventListener("beforeunload", (event) => {
-    if (!dirty && !uploadingPhotos && !pendingPhotoDays.size) return;
+    if ((!dirty || draftRecovery?.safeToReload) && !uploadingPhotos && !pendingPhotoDays.size) return;
     event.preventDefault();
     event.returnValue = "";
   });

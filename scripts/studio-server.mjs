@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+import { studioDraftDiff } from "./studio-draft-diff.mjs";
+import { studioWorkspaceId, readStudioDraft, writeStudioDraft, listStudioDrafts } from "./studio-drafts.mjs";
+
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import http from "node:http";
@@ -109,7 +112,7 @@ function serveFile(response, filename) {
 function staticFileFor(pathname) {
   if (pathname === "/" || pathname === "/studio" || pathname === "/studio/") return path.join(repoRoot, "studio/index.html");
   if (pathname === "/studio/story-review.html") return path.join(repoRoot, "studio/story-review.html");
-  if (["/studio.css", "/studio.js", "/plan-extras.js"].includes(pathname)) return path.join(repoRoot, "studio", pathname.slice(1));
+  if (["/studio.css", "/studio.js", "/plan-extras.js", "/studio-recovery.js"].includes(pathname)) return path.join(repoRoot, "studio", pathname.slice(1));
   if (pathname.startsWith("/dist/")) {
     const relative = pathname.slice(6);
     const resolved = path.resolve(repoRoot, "dist", relative || "index.html");
@@ -128,7 +131,7 @@ function stateRevision() {
   return crypto.createHash('sha256').update(JSON.stringify(readOverrides(repoRoot))).digest('hex');
 }
 function assertStateRevision(revision) {
-  if (!revision || revision !== stateRevision()) throw new Error('Saved edits changed on disk. Reload Studio before saving; your current unsaved form has been kept.');
+  if (!revision || revision !== stateRevision()) throw new Error('Saved edits changed on disk. Your draft is kept. Download the draft and reconcile it with the newer saved edits before saving again.');
 }
 let photoImportBusy = false;
 const server = http.createServer((request, response) => {
@@ -138,6 +141,37 @@ const server = http.createServer((request, response) => {
   const url = new URL(request.url, `http://127.0.0.1:${port}`);
   // Only same-origin browser writes may reach the loopback editor.
   if (!["GET", "HEAD"].includes(request.method) && request.headers.origin && request.headers.origin !== `http://127.0.0.1:${port}` && request.headers.origin !== `http://localhost:${port}`) return send(response, 403, "Unexpected origin");
+  if (request.method === "POST" && url.pathname === "/api/draft-diff") {
+    let body="";
+    request.setEncoding("utf8");
+    request.on("data", chunk => { body+=chunk; if(body.length>5_000_000) request.destroy(); });
+    request.on("end", () => {
+      try {
+        const {data,routes}=loadContent(repoRoot,{includeDrafts:true});
+        send(response,200,JSON.stringify({ok:true,changes:studioDraftDiff(data,readOverrides(repoRoot),JSON.parse(body),routes)}),"application/json");
+      } catch(error) { send(response,400,JSON.stringify({ok:false,error:error.message}),"application/json"); }
+    });
+    return;
+  }
+  if (request.method === "GET" && url.pathname === "/api/drafts") {
+    return send(response, 200, JSON.stringify({ok:true, drafts:listStudioDrafts(repoRoot)}), "application/json");
+  }
+  const draftMatch = url.pathname.match(/^\/api\/drafts\/([a-zA-Z0-9-]{1,80})$/);
+  if (draftMatch && request.method === "GET") {
+    return send(response, 200, JSON.stringify({ok:true, draft:readStudioDraft(repoRoot, draftMatch[1])}), "application/json");
+  }
+  if (draftMatch && request.method === "PUT") {
+    let body = "";
+    request.setEncoding("utf8");
+    request.on("data", chunk => { body += chunk; if (body.length > 5_000_000) request.destroy(); });
+    request.on("end", () => {
+      try {
+        const draft = writeStudioDraft(repoRoot, draftMatch[1], JSON.parse(body));
+        send(response, 200, JSON.stringify({ok:true, draft:{sequence:draft.sequence, updatedAt:draft.updatedAt}}), "application/json");
+      } catch(error) { send(response, 400, JSON.stringify({ok:false, error:error.message}), "application/json"); }
+    });
+    return;
+  }
   if (request.method === "POST" && url.pathname === "/api/photos/import") {
     if (photoImportBusy) return send(response, 409, JSON.stringify({ ok:false, error:'Another photo is processing. Try again shortly.' }), 'application/json');
     photoImportBusy = true;
@@ -178,7 +212,7 @@ const server = http.createServer((request, response) => {
     request.setEncoding("utf8");
     request.on("data", chunk => { body += chunk; if (body.length > 10000) request.destroy(); });
     request.on("end", () => {
-      try { const journey = createJourney(repoRoot, JSON.parse(body)); return send(response, 201, JSON.stringify({ ok: true, journey }), "application/json; charset=utf-8"); }
+      try { const journey = createJourney(repoRoot, JSON.parse(body)); return send(response, 201, JSON.stringify({ ok: true, journey, revision:journeyRevision(journey) }), "application/json; charset=utf-8"); }
       catch (error) { return send(response, 400, JSON.stringify({ ok: false, error: error.message }), "application/json; charset=utf-8"); }
     });
     return;
@@ -195,12 +229,12 @@ const server = http.createServer((request, response) => {
         const base = data.journeys.find(j => j.id === input.journeyId);
         if (!base) throw new Error("Unknown journey");
         const revision = journeyRevision(base);
-        if (input.revision && input.revision !== revision) throw new Error("This trip changed on disk. Reload Studio before saving the plan.");
+        if (input.revision && input.revision !== revision) throw new Error("This trip changed on disk. Your draft is kept. Download the draft and reconcile it with the newer trip before saving again.");
         const state = input.state || readOverrides(repoRoot);
         const result = prepareJourneyPlan(data, base, input.changes || {}, state, input.alignment);
         if (!input.preview) {
           assertStateRevision(input.stateRevision);
-          if (!input.revision) throw new Error("Preview the plan before saving");
+          if (!input.revision) throw new Error("The trip revision is missing. Your draft is kept; reopen Studio to load the trip revision.");
           sourceWrite = writePlanSources(repoRoot, base, result.journey);
           saveState(result.state);
         }
@@ -213,7 +247,7 @@ const server = http.createServer((request, response) => {
     return;
   }
   if (request.method === "GET" && url.pathname === "/api/state") {
-    return send(response, 200, JSON.stringify({ ...readOverrides(repoRoot), stateRevision:stateRevision(), revisions:Object.fromEntries(loadContent(repoRoot,{includeDrafts:true}).data.journeys.map(j=>[j.id,journeyRevision(j)])) }), "application/json; charset=utf-8");
+    return send(response, 200, JSON.stringify({ ...readOverrides(repoRoot), workspaceId:studioWorkspaceId(repoRoot), stateRevision:stateRevision(), revisions:Object.fromEntries(loadContent(repoRoot,{includeDrafts:true}).data.journeys.map(j=>[j.id,journeyRevision(j)])) }), "application/json; charset=utf-8");
   }
   if (request.method === "PUT" && url.pathname === "/api/state") {
     let body = "";

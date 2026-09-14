@@ -64,8 +64,14 @@ test('bad image and foreign day fail without replacing an existing album or leav
 
 test('publishing is preview-only by default and retryable; failed verification keeps photos local', async t => {
   const root = fixture(t), bytes = await photoBytes(200);
+  // Existing local assets belong to other authoring sessions; this fixture
+  // owns only the generated upload below.
+  const manifestFile=path.join(root,`content/photo-manifests/${journeyId}.json`);
+  atomicJson(manifestFile,readJson(manifestFile).map(photo=>({...photo,assetStatus:'published'})));
   const { photo } = await importStudioPhoto(root, { journeyId, dayId:'family-d1', filename:'small.jpg', bytes });
   assert.deepEqual(photo.srcset.map(v => v.width), [200]);
+  const overridesFile=path.join(root,'content/photo-overrides.json');
+  atomicJson(overridesFile,{...readJson(overridesFile),[photo.id]:{hidden:true}}); // Legacy Hide never blocks publishing.
   const calls = [], stored = new Map(); let offline = false;
   const remote = async (resource, options = {}) => {
     calls.push({resource,method:options.method||'GET'});

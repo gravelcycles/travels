@@ -24,10 +24,10 @@ actual content, reviewed geometry and photographs must be supplied per trip.
 | Mobile Replay | Large route map, anchored timeline and playback controls, compact day story and Explore day action; landscape places the story beside the map | Shared automatic/curated moments; no Photos tab, images or photo preloads; day albums remain the place to browse photographs | journey.html, app.js, mobile-ux.js, mobile.css |
 | Direct entry and accessibility | Day/photo deep links, a slim slate keyboard-focus indicator without orange or persistent rings after mouse/touch input, reduced-motion support | Shared browser behavior; phone day links open the day map; dialog/history focus restoration remains available | app.js, mobile-ux.js, input-mode.js |
 | New-trip planning | Title/dates/time zone, complete draft calendar, places, ordered legs, date changes, stable IDs, preview | Studio + New trip or `journey:new`; ignored local draft until promoted | create-journey, planner, Studio |
-| Group and video authoring | Add/edit/remove travelers and groups, exclusive membership, per-leg and photo/video audiences, group overnight places and meetup; hosted-video forms with day/title/link/poster/caption/credit/visibility/order, native preview and duration detection | Studio **Trip plan & media** checks the full plan before saving; source revisions and backups protect edits; removal of referenced groups is blocked until reassigned; hosted public MP4/WebM only | Studio plan-extras, journey-planner, studio-plan-sources |
-| Photo authoring | Multi-upload, capture-date assignment, unmatched-day review, album order and cover selection, pins/copy, recoverable trash | Private originals and trip time zone/calendar; blank captions are valid | Studio, studio-photo-service |
+| Group and video authoring | Add/edit/remove travelers and groups, exclusive membership, per-leg and photo/video audiences, group overnight places and meetup; hosted-video forms with day/title/link/poster/caption/credit/visibility/order, native preview and duration detection | Studio **Trip plan & media** validates the full plan on Save; checking changes first is optional; source revisions and backups protect edits; removal of referenced groups is blocked until reassigned; hosted public MP4/WebM only | Studio plan-extras, journey-planner, studio-plan-sources |
+| Photo authoring | Multi-upload, capture-date assignment, unmatched-day review, album order and cover selection, pins/copy, all non-trashed photos visible (no Hide control), recoverable trash | Private originals and trip time zone/calendar; blank captions are valid | Studio, studio-photo-service |
 | Route authoring | Endpoint/control-point editing, undo/redo, routing readiness with actionable setup messages, point cleanup and mode-aware replacement proposals, reviewed geometry preservation until acceptance, GPX import | Per-journey network extracts/manifest or private GPX; missing inputs disable generation with a visible next step; preserve applies to unattended builds and permits explicit Studio previews | Studio, routing scripts |
-| Editorial safety | Readable overrides, ownership/reference validation, local backups and revision checks | Stable namespaced IDs; originals and local draft assets remain ignored | journey-content, Studio server |
+| Editorial safety | Automatic unpublished drafts (immediate browser copy and local disk autosave), reload recovery, saved/draft diff and discard with recovery archive, draft download, one-click Save without Preview, always-visible status, local backups and revision checks | Stable namespaced IDs; originals and local draft assets remain ignored | journey-content, Studio server |
 | Reproducible delivery | Validated generation, cache-busted assets, Pages CI, bounded orphan-deployment recovery/retry and public verification | Reviewed published sources; no private originals/network fetch needed for site build; GitHub service failures remain visible | build-site, Pages workflow, recover-pages |
 
 ## Features versus editorial content
@@ -72,8 +72,7 @@ fields and their defaults with the feature; do not silently add a per-trip flag.
 - Public-photo Retry stays public. Mobile grids defer full-photo loading and
   adjacent images reuse the cache while the guarded speculative queue warms it.
 
-Reload/automatic resume behavior remains unchanged at the owner's request.
-Recovery drafts, explicit sharing, batch editing, publication readiness, private
-video intake and a labeled Replay timeline are **proposals for local demo review**,
-not delivered product features. Sharing demos must not imply approval for reload
-persistence. Replay stays map-only and publishing stays agent-operated.
+The owner requested automatic unpublished draft recovery, review and discard on
+14 September 2026; these are now delivered Studio features. Explicit sharing,
+batch editing, publication readiness, private video intake and a labeled Replay
+timeline remain proposals. Replay stays map-only and publishing stays agent-operated.
