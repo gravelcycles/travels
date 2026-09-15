@@ -115,10 +115,11 @@ Photo thumbnails and groups are no longer displayed on the journey map.
 Saved photo locations remain available in Studio and the photo viewer. The
 current viewer thumbnail has an orange outline, with no Selected text badge.
 
-When moving between two located photos, the viewer map first frames both pins,
-then settles on the next photo's saved location and zoom. The move takes about
-two seconds and respects reduced motion. Photos without locations retain the
-day's map context.
+When both photo pins are already in view, the viewer map stays still. Nearby
+moves go directly to the next view; longer moves use a parabolic zoom arc with
+a brief 40 ms pause at the widest view. Saved map frames preserve the composed
+area on different screen sizes. Older photos automatically use their saved pin
+and zoom. Reduced motion skips animation; unlocated photos use the day’s context.
 
 ## Replay a trip
 
@@ -152,9 +153,14 @@ npm run studio
 The agent then opens `http://127.0.0.1:4173/studio/`. Choose any journey first.
 In **Photo locations**, select a day and photo, click the map (or drag its pin)
 to set the exact location, and add the precise place, caption, scene description,
-and preferred map zoom. Selecting another photo in the same day keeps the map's
-current position and zoom. **Switch to current point’s zoom** restores the
-selected photo's saved view; placing its pin records the current zoom for Replay.
+and preferred map zoom. Pan and zoom to compose the surrounding area, then choose
+**Use current map frame** to save its bounds separately from the pin. The dashed
+outline shows the saved frame; existing photos infer one from their pin and zoom.
+Selecting another photo in the same day keeps the working view, so nearby pins
+can share a frame. **Show saved frame** restores it; **Reset frame to pin** returns
+to automatic framing. Moving a pin inside a custom frame preserves that frame;
+moving it outside resets to automatic framing. The photo viewer uses the saved
+frame; Replay retains its route/day camera.
 In **Route drawing**, select a day and any of its travel
 legs, click the orange line to add control points, drag any point—including the
 start and end—or type exact endpoint coordinates. Moving an endpoint updates

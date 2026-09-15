@@ -21,8 +21,9 @@
 - Preserve private photo originals; publish reviewed, optimized derivatives.
 - Keep human-edited photo and route overrides as readable JSON sources; treat
   the browser-loaded override JavaScript as generated output.
-- A highlighted located photo should move the map to its exact coordinate and
-  intentional local zoom, while its caption and description explain the scene.
+- A located photo keeps its exact pin separate from its composed map frame.
+  Keep the camera still while successive photo pins are already in view;
+  travel to the saved frame only when needed to show the next location.
 - Full-screen photo browsing remains anchored to a calendar day; changing days
   also changes the atlas map/story context.
 - Give photos a tiny embedded preview, responsive sizes, lazy off-screen loads,

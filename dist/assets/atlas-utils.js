@@ -17,7 +17,7 @@
   function resolvePhoto(photo, override = {}) {
     const result = { ...photo, ...override, ...(override.location || {}) };
     if (override.location === null) {
-      delete result.lat; delete result.lng; delete result.zoom;
+      delete result.lat; delete result.lng; delete result.zoom; delete result.mapFrame;
       result.locationLabel = "";
     }
     // Legacy Hide flags never exclude photos; Trash is the removal mechanism.
@@ -57,6 +57,59 @@
       && Math.abs(photo.lng) <= 180 && Math.abs(photo.lat) <= 90);
   }
 
+  function validPhotoFrame(frame) {
+    const b = frame?.bounds;
+    return Array.isArray(b) && b.length === 2 && b.every(p => Array.isArray(p) && p.length === 2 && p.every(Number.isFinite))
+      && b[0][0] >= -180 && b[0][0] < 180 && b[1][0] > b[0][0] && b[1][0] - b[0][0] <= 360
+      && b[0][1] >= -85.051129 && b[1][1] <= 85.051129 && b[1][1] > b[0][1];
+  }
+
+  function frameContainsPhoto(frame, photo) {
+    if (!validPhotoFrame(frame) || !locatedPhoto(photo)) return false;
+    const [[west, south], [east, north]] = frame.bounds;
+    const lng = west + ((photo.lng - west) % 360 + 360) % 360;
+    return lng <= east && photo.lat >= south && photo.lat <= north;
+  }
+
+  function normalizePhotoFrame(bounds) {
+    const [[west, south], [east, north]] = bounds;
+    const width = Math.min(360, east - west);
+    const start = west >= -180 && west < 180 ? west : ((west + 180) % 360 + 360) % 360 - 180;
+    return { bounds: [[start, Math.max(-85.051129, south)], [start + width, Math.min(85.051129, north)]] };
+  }
+
+  // Older photos have no viewport recorded. Reconstruct their north-up frame
+  // from the pin, saved zoom and the actual display size without rewriting data.
+  function photoMapFrame(photo, { width = 360, height = 260 } = {}) {
+    if (!locatedPhoto(photo)) return null;
+    if (validPhotoFrame(photo.mapFrame)) return photo.mapFrame;
+    const world = 512 * 2 ** Math.max(2, Math.min(20, photo.zoom || 16));
+    const lat = Math.max(-85.051128, Math.min(85.051128, photo.lat)) * Math.PI / 180;
+    const y = (1 - Math.log(Math.tan(Math.PI / 4 + lat / 2)) / Math.PI) / 2;
+    const latitude = value => Math.atan(Math.sinh(Math.PI * (1 - 2 * value))) * 180 / Math.PI;
+    const halfWidth = Math.min(180, width / world * 180);
+    return normalizePhotoFrame([[photo.lng - halfWidth, latitude(y + height / world / 2)],
+      [photo.lng + halfWidth, latitude(y - height / world / 2)]]);
+  }
+
+  function photoMapCamera(map, photo, { padding = 0 } = {}) {
+    if (validPhotoFrame(photo.mapFrame)) {
+      const camera = map.cameraForBounds(photo.mapFrame.bounds, { padding, maxZoom: 20 });
+      if (camera) return { center: camera.center, zoom: camera.zoom, bearing: 0, pitch: 0 };
+    }
+    return { center: [photo.lng, photo.lat], zoom: Math.max(2, Math.min(20, photo.zoom || 16)) };
+  }
+
+  function photoInMapFrame(map, photo, padding = 0) {
+    if (!locatedPhoto(photo)) return false;
+    const canvas = map.getCanvas();
+    const center = map.getCenter();
+    const lng = photo.lng + 360 * Math.round((center.lng - photo.lng) / 360);
+    const point = map.project([lng, photo.lat]);
+    return point.x >= padding && point.x <= canvas.clientWidth - padding
+      && point.y >= padding && point.y <= canvas.clientHeight - padding;
+  }
+
   function photoMapTransition(map, { schedule = setTimeout, unschedule = clearTimeout } = {}) {
     let generation = 0, timer = null, listener = null, cleanup = null;
     function cancel({ stopMap = true } = {}) {
@@ -72,11 +125,17 @@
     }
     function move(from, to, { reducedMotion = false, padding = 36, onFinish } = {}) {
       cancel();
-      if (!locatedPhoto(to)) return;
+      if (!locatedPhoto(to)) { onFinish?.(); return; }
       const token = generation;
       cleanup = onFinish;
-      const target = { center: [to.lng, to.lat], zoom: Math.max(2, Math.min(20, to.zoom || 16)) };
+      const target = photoMapCamera(map, to);
       const finish = () => { const fn = cleanup; cleanup = null; fn?.(); };
+      // Navigation changes the active pin, not the camera, while both pins fit.
+      // Use the live viewport so manual pans, resizing and rapid navigation count.
+      if (locatedPhoto(from) && photoInMapFrame(map, from) && photoInMapFrame(map, to)) {
+        finish();
+        return;
+      }
       const listen = fn => {
         listener = () => {
           map.off("moveend", listener); listener = null;
@@ -84,26 +143,34 @@
         };
         map.on("moveend", listener);
       };
-      const settle = () => {
-        listen(finish);
-        map.easeTo({ ...target, duration: reducedMotion ? 0 : 950 });
-      };
       const separate = locatedPhoto(from) && from.id !== to.id
         && (Math.abs(from.lng - to.lng) > 0.00001 || Math.abs(from.lat - to.lat) > 0.00001);
       if (!separate || reducedMotion) {
         listen(finish);
-        map.easeTo({ ...target, duration: reducedMotion ? 0 : 650 });
+        map.easeTo({ ...target, duration: reducedMotion ? 0 : 500 });
         return;
       }
+      const toLng = to.lng + 360 * Math.round((from.lng - to.lng) / 360);
+      const bounds = [[Math.min(from.lng, toLng), Math.min(from.lat, to.lat)],
+        [Math.max(from.lng, toLng), Math.max(from.lat, to.lat)]];
+      const overview = map.cameraForBounds(bounds, { padding, maxZoom: Math.min(map.getZoom(), target.zoom) });
+      // A small pan or a direct zoom to a wider destination needs no extra arc.
+      if (!overview || overview.zoom >= Math.min(map.getZoom(), target.zoom) - 0.35) {
+        listen(finish);
+        map.easeTo({ ...target, duration: 500 });
+        return;
+      }
+      const duration = Math.round(Math.min(800, 500 + (Math.min(map.getZoom(), target.zoom) - overview.zoom) * 45));
       listen(() => {
-        timer = schedule(() => { timer = null; if (token === generation) settle(); }, 150);
+        timer = schedule(() => {
+          timer = null;
+          if (token !== generation) return;
+          listen(finish);
+          map.easeTo({ ...target, duration, easing: t => t * t });
+        }, 40);
       });
-      // About two seconds total: orient to both pins, pause briefly, settle.
-      map.fitBounds([[Math.min(from.lng, to.lng), Math.min(from.lat, to.lat)],
-        [Math.max(from.lng, to.lng), Math.max(from.lat, to.lat)]], {
-        padding, maxZoom: Math.max(2, Math.min(map.getZoom(), target.zoom) - 0.8),
-        duration: 850, linear: true
-      });
+      // Quadratic halves form a parabolic zoom arc with only 40 ms at its peak.
+      map.easeTo({ ...overview, pitch: 0, duration, easing: t => 1 - (1 - t) ** 2 });
     }
     return { move, cancel };
   }
@@ -235,5 +302,5 @@
   function prepareImageReveals(container) { (imageReveals ||= createImageReveals()).prepare(container); }
   function resetImageReveal(image) { (imageReveals ||= createImageReveals()).reset(image); }
 
-  root.JOURNEY_ATLAS_UTILS = { createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, photoMapTransition };
+  root.JOURNEY_ATLAS_UTILS = { createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

@@ -82,7 +82,7 @@
 
       <section class="map-workspace">
         <div id="studio-map" aria-label="Editable journey map"></div>
-        <div class="map-instructions" id="map-instructions">Click the map or drag the pin to save this photo's exact location and the current map zoom.</div>
+        <div class="map-instructions" id="map-instructions">Click or drag the pin to set the photo’s location. Pan and zoom, then choose Use current map frame.</div>
         <div class="route-tools" id="route-tools" hidden>
           <button id="undo-route" type="button">Undo</button>
           <button id="redo-route" type="button">Redo</button>
@@ -104,8 +104,16 @@
             <label>Longitude<input id="photo-lng" name="lng" inputmode="decimal" /></label>
             <label>Saved map zoom<input id="photo-zoom" name="zoom" type="number" min="2" max="20" step="0.01" value="16" /></label>
           </div>
-          <button class="secondary" id="switch-photo-view" type="button" disabled>Switch to current point’s zoom</button>
-          <p class="editor-note">Selecting another point in this day keeps the map position and zoom. Use this button to view the selected point’s saved location and zoom. Placing or dragging its pin saves the current map zoom for the photo viewer.</p>
+          <section class="photo-frame-panel" aria-labelledby="photo-frame-heading">
+            <strong id="photo-frame-heading">Map frame</strong>
+            <p id="photo-frame-status" role="status">Place a pin to set its map frame.</p>
+            <div>
+              <button class="secondary" id="capture-photo-frame" type="button" disabled>Use current map frame</button>
+              <button class="secondary" id="switch-photo-view" type="button" disabled>Show saved frame</button>
+              <button class="secondary" id="reset-photo-frame" type="button" disabled>Reset frame to pin</button>
+            </div>
+            <p>The dashed outline shows this photo’s frame. Pan and zoom to compose the map, then save its visible area. Selecting another photo in this day keeps your working view, so you can use the same frame for nearby pins.</p>
+          </section>
           <button class="secondary" id="clear-photo-location" type="button">Clear location</button>
           <label for="photo-caption">Your caption (optional)</label>
           <input id="photo-caption" name="caption" />

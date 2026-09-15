@@ -17,6 +17,27 @@ function fixture(t) {
   return root;
 }
 const input = { title: "Future trip", startDate: "2027-12-30", endDate: "2028-01-02", timeZone: "Asia/Tokyo" };
+
+test('photo frames validate the pin and survive source serialization and public builds', t => {
+  const root = fixture(t), { data } = loadContent(root);
+  const p = data.journeys.find(j => j.kind === 'demo' && j.photos.length).photos[0];
+  const mapFrame = { bounds: [[7.8,46.8],[8.6,47.6]] };
+  const override = { location: { lng:8, lat:47 }, zoom:14.25, mapFrame };
+  const state = { photos: { [p.id]: override }, days: {}, routes: {} };
+  validateOverrides(state, data);
+  writeJson(path.join(root, 'content/photo-overrides.json'), state.photos);
+  buildSite(root);
+  assert.deepEqual(generated(root, 'content-overrides', 'JOURNEY_ATLAS_CONTENT_OVERRIDES').photos[p.id].mapFrame, mapFrame);
+  for (const bounds of [[], [[8,47],[8,48]], [[8,48],[9,47]], [[8,47],[400,48]], [[7,-90],[9,48]], [[9,48],[10,49]], [[8,47],[9,NaN]]]) {
+    override.mapFrame = { bounds };
+    assert.throws(() => validateOverrides(state, data), /invalid photo map frame/);
+  }
+  override.mapFrame = null;
+  validateOverrides(state, data);
+  override.location = { lng:-179.9, lat:47 };
+  override.mapFrame = { bounds: [[179,46],[181,48]] };
+  validateOverrides(state, data);
+});
 function generated(root, file, key) {
   const ctx = { window: {} }; vm.runInNewContext(fs.readFileSync(path.join(root, `dist/assets/${file}.js`), "utf8"), ctx);
   return JSON.parse(JSON.stringify(ctx.window[key]));

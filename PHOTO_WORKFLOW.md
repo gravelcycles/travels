@@ -48,8 +48,7 @@ Select a photo and choose **Move photo to trash**, then **Save locally**. It is
 removed from the local preview, and from the live atlas after deployment. Use
 **Show trash → Restore photo from trash → Save locally** to recover it. Trashing
 preserves day order, pins, captions, and other metadata, and the cover
-photo falls back to another visible photo. It is different from the existing
-**Hide from the public atlas** checkbox, which keeps the photo in the editor.
+photo falls back to another visible photo. There is no separate Hide checkbox.
 Trash is recoverable album deletion: originals and already-hosted private R2
 objects remain. Permanent erasure requires checking every journey reference,
 removing the exact unreferenced objects, and verifying their authenticated URLs.
@@ -242,19 +241,25 @@ For each photo:
 
 1. Confirm or change its journey day.
 2. Click the map at the actual viewpoint, then drag the pin if needed.
-3. Name the exact place within the city or landscape and adjust the 12–18 map
-   zoom; 16 is a useful street-level default.
+3. Name the exact place. Pan and zoom, then choose **Use current map frame**
+   to save the visible area independently of the photo’s pin. **Show saved frame**
+   restores it; **Reset frame to pin** uses the saved 2–20 zoom around the pin.
+   Existing photos infer their frame automatically from their pin and zoom.
 4. Optionally write your own caption or notes. Leave them blank when unwanted;
    generated prose must not be added.
-5. Hide any photo that should not appear publicly.
+5. Move unwanted photos to Trash. All other photos remain in the atlas.
 6. Use **Move earlier** and **Move later** to establish the daily album order.
    The first visible photo is the day preview; choose the journey cover separately.
 7. Choose **Save locally**. Review the JSON diff before committing.
 
 Saves write `content/photo-overrides.json` and rebuild the static
 `dist/assets/content-overrides.js` consumed by the atlas. They do not modify the
-originals or hosted R2 objects. When a located photo is highlighted in the
-full-screen day viewer, the map moves to this exact coordinate and zoom.
+originals or hosted R2 objects. A custom frame is stored as `mapFrame.bounds`,
+two `[longitude, latitude]` corners (southwest and northeast), separate from
+`location` and `zoom`. The viewer fits this area to its screen; existing photos
+without bounds retain their pin and zoom. When both pins are already visible,
+photo navigation keeps the map still. Longer moves use a quadratic zoom arc
+with a 40 ms apex pause. Replay continues to frame its routes and days.
 
 ## Generated image sizes and private publishing
 

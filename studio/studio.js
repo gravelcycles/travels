@@ -306,6 +306,7 @@
     const base = basePhotos.find((photo) => photo.id === id);
     $("#photo-form").inert = !base;
     $("#switch-photo-view").disabled = true;
+    refreshPhotoFrameControls(null);
     if (!base) {
       selectedPhotoId = null;
       if (mapReady) clearActiveMap();
@@ -345,6 +346,43 @@
     renderPhotoMap(photo, true);
   }
 
+  function refreshPhotoFrameControls(photo) {
+    const utils = window.JOURNEY_ATLAS_UTILS;
+    const located = utils.locatedPhoto(photo);
+    const custom = located && utils.validPhotoFrame(photo.mapFrame);
+    $("#capture-photo-frame").disabled = !mapReady || !located;
+    $("#reset-photo-frame").disabled = !custom;
+    $("#photo-zoom").readOnly = Boolean(custom);
+    $("#photo-frame-status").textContent = !located ? "Place a pin to set its map frame."
+      : custom ? "Custom map frame saved. The pin can sit anywhere inside it."
+        : "Automatic frame from this photo’s saved pin and zoom.";
+  }
+
+  function capturePhotoFrame() {
+    const base = basePhotos.find(photo => photo.id === selectedPhotoId);
+    if (!mapReady || !base) return;
+    const photo = photoWithOverride(base);
+    const utils = window.JOURNEY_ATLAS_UTILS;
+    if (!utils.locatedPhoto(photo)) return;
+    map.stop();
+    const mapFrame = utils.normalizePhotoFrame(map.getBounds().toArray());
+    if (!utils.frameContainsPhoto(mapFrame, photo)) {
+      $("#photo-frame-status").textContent = "Bring the photo’s pin into view before saving this frame.";
+      return;
+    }
+    captureCurrentMapZoom();
+    state.photos[selectedPhotoId] = { ...(state.photos[selectedPhotoId] || {}), mapFrame };
+    readPhotoForm();
+  }
+
+  function resetPhotoFrame() {
+    const base = basePhotos.find(photo => photo.id === selectedPhotoId);
+    if (!base) return;
+    state.photos[selectedPhotoId] = { ...(state.photos[selectedPhotoId] || {}), mapFrame: null };
+    markDirty();
+    renderPhotoMap(photoWithOverride(base), true);
+  }
+
   function readPhotoForm() {
     const base = basePhotos.find((photo) => photo.id === selectedPhotoId);
     if (!base) return;
@@ -362,9 +400,12 @@
     if (Number.isFinite(lat) && Number.isFinite(lng) && $("#photo-lat").value !== "" && $("#photo-lng").value !== "") {
       override.location = { lat: Number(lat.toFixed(6)), lng: Number(lng.toFixed(6)) };
       override.zoom = Number.isFinite(zoom) ? clampPhotoZoom(zoom) : 16;
+      const frame = override.mapFrame === undefined ? base.mapFrame : override.mapFrame;
+      if (frame && !window.JOURNEY_ATLAS_UTILS.frameContainsPhoto(frame, { ...override.location })) override.mapFrame = null;
     } else {
       override.location = null;
       delete override.zoom;
+      override.mapFrame = null;
     }
     delete override.hidden;
     state.photos[selectedPhotoId] = override;
@@ -387,7 +428,7 @@
   function clearActiveMap() {
     activeMarkers.forEach((marker) => marker.remove());
     activeMarkers = [];
-    ["studio-photo-routes-casing", "studio-photo-routes", "studio-original-route", "studio-saved-route-casing", "studio-saved-route", "studio-anchor-guide", "studio-proposed-route-casing", "studio-proposed-route"].forEach((id) => {
+    ["studio-photo-frame", "studio-photo-routes-casing", "studio-photo-routes", "studio-original-route", "studio-saved-route-casing", "studio-saved-route", "studio-anchor-guide", "studio-proposed-route-casing", "studio-proposed-route"].forEach((id) => {
       if (map.getLayer(id)) map.removeLayer(id);
       if (map.getSource(id)) map.removeSource(id);
     });
@@ -409,6 +450,7 @@
   }
 
   function renderPhotoMap(photo, center = true) {
+    refreshPhotoFrameControls(photo);
     $("#switch-photo-view").disabled = !Number.isFinite(photo.lat) || !Number.isFinite(photo.lng);
     clearActiveMap();
     const day = dayById(photo.dayId);
@@ -423,6 +465,13 @@
     }
     if (Number.isFinite(photo.lat) && Number.isFinite(photo.lng)) {
       mapFeedback?.empty(false);
+      const canvas = map.getCanvas();
+      const frame = window.JOURNEY_ATLAS_UTILS.photoMapFrame(photo, { width: canvas.clientWidth, height: canvas.clientHeight });
+      if (frame) {
+        const [[west, south], [east, north]] = frame.bounds;
+        addLine("studio-photo-frame", [{ type: "Feature", properties: {}, geometry: { type: "LineString",
+          coordinates: [[west,south], [east,south], [east,north], [west,north], [west,south]] } }], "#d4512c", 2, .7, [4,3]);
+      }
       const element = document.createElement("div");
       element.className = "studio-photo-marker";
       const marker = new maplibregl.Marker({ element, draggable: true, anchor: "center" }).setLngLat([photo.lng, photo.lat]).addTo(map);
@@ -430,11 +479,11 @@
         const position = marker.getLngLat();
         $("#photo-lat").value = position.lat.toFixed(6);
         $("#photo-lng").value = position.lng.toFixed(6);
-        captureCurrentMapZoom();
+        if (!window.JOURNEY_ATLAS_UTILS.validPhotoFrame(photo.mapFrame)) captureCurrentMapZoom();
         readPhotoForm();
       });
       activeMarkers.push(marker);
-      if (center) map.easeTo({ center: [photo.lng, photo.lat], zoom: photo.zoom || 16, duration: 500 });
+      if (center) map.easeTo({ ...window.JOURNEY_ATLAS_UTILS.photoMapCamera(map, photo), duration: 500 });
     } else if (center) {
       const destination = placeById(day.destinationId || day.placeId);
       const coordinates = day.segmentIds.flatMap((id) => segmentCoordinates(segmentById(id)));
@@ -1074,7 +1123,7 @@
     document.querySelectorAll("[data-panel]").forEach((panel) => { panel.hidden = panel.dataset.panel !== mode; });
     $("#route-tools").hidden = mode !== "routes";
     $("#map-instructions").textContent = mode === "photos"
-      ? "Click the map or drag the pin to save this photo's exact location and the current map zoom. Located photos open at that view in the atlas."
+      ? "Click or drag the pin to set the photo’s location. Pan and zoom, then choose Use current map frame."
       : (mode === "routes"
         ? "Drag the first or last numbered point to adjust only that endpoint, then Save locally. Click the orange guide to add intermediate anchors for a route proposal."
         : "Edit this day's date label, title, and description. The map shows every travel leg assigned to the day.");
@@ -1386,6 +1435,7 @@
     if (recovered) markDirty("Recovered local draft · Save locally to apply these edits");
     else markSaved("Ready");
     $("#save-all").disabled=false; $("#plan-save").disabled=false;
+    if (!recovered && journey.published === false) mode="days";
     setMode(mode);
     initStudioMap();
   }
@@ -1393,7 +1443,7 @@
   function initStudioMap() {
     mapFeedback?.destroy(); map?.remove(); map=null; mapReady=false;
     activeMarkers.forEach(marker=>marker.remove()); activeMarkers=[];
-    try { map = new maplibregl.Map({ container: "studio-map", style: styleUrl, center: [0,20], zoom: 1.5, attributionControl: false }); }
+    try { map = new maplibregl.Map({ container: "studio-map", style: styleUrl, center: [0,20], zoom: 1.5, attributionControl: false, dragRotate: false, pitchWithRotate: false, maxPitch: 0 }); map.touchZoomRotate.disableRotation(); }
     catch (_error) { mapFeedback=window.JOURNEY_ATLAS_MAP_FEEDBACK.create('studio-map',initStudioMap);mapFeedback.fail();return; }
     mapFeedback=window.JOURNEY_ATLAS_MAP_FEEDBACK.create('studio-map',initStudioMap);mapFeedback.watch(map);
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
@@ -1409,7 +1459,8 @@
       if (!selectedPhotoId) return;
       $("#photo-lat").value = event.lngLat.lat.toFixed(6);
       $("#photo-lng").value = event.lngLat.lng.toFixed(6);
-      captureCurrentMapZoom();
+      const photo = photoWithOverride(basePhotos.find(photo => photo.id === selectedPhotoId));
+      if (!window.JOURNEY_ATLAS_UTILS.validPhotoFrame(photo.mapFrame)) captureCurrentMapZoom();
       readPhotoForm();
       selectPhoto(selectedPhotoId, false);
     });
@@ -1509,6 +1560,8 @@
   });
   $("#photo-form").addEventListener("change", readPhotoForm);
   $("#switch-photo-view").addEventListener("click", switchToCurrentPhotoView);
+  $("#capture-photo-frame").addEventListener("click", capturePhotoFrame);
+  $("#reset-photo-frame").addEventListener("click", resetPhotoFrame);
   $("#clear-photo-location").addEventListener("click", () => {
     $("#photo-lat").value = "";
     $("#photo-lng").value = "";

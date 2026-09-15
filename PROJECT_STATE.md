@@ -432,11 +432,18 @@ CI now installs locked image dependencies before its tests and build.
 
 ## Photo viewer camera
 
-Located photos in the viewer use their saved coordinate and zoom. Moving
-between two photos frames both locations, then settles on the next in about
-1.95 seconds. New selections, closing the viewer, manual camera movement and
-hidden tabs cancel pending movement; reduced motion is immediate. Returning
-to the mobile map refreshes day controls and frames the selected day.
+Prepared for commit, 15 September: the viewer holds its camera when both photo pins
+are visible. Small moves go directly to the destination; distance moves use
+quadratic zoom halves with only 40 ms at the apex (1.04–1.64 seconds total).
+Studio captures `mapFrame.bounds` independently of the pin, shows its dashed
+outline, and offers Show saved frame / Reset frame to pin. Older frames are
+inferred from the existing pin and zoom; custom frames fit different viewport
+sizes. Moving a pin within a frame preserves it. Replay retains its map-only
+route/day behavior.
+New selections, closing, manual movement, and hidden tabs cancel pending moves;
+reduced motion is immediate. Regression checks cover off-center frame
+restoration and stationary nearby-photo navigation. This update is prepared
+locally and has not been deployed.
 
 ## Studio editing and saved traveler edits · 9 September 2026
 
