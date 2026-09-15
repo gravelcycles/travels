@@ -5,17 +5,18 @@ import vm from 'node:vm';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/media-utils.js';
 import '../studio/plan-extras.js';
+import '../studio/draft-review.js';
 const app = fs.readFileSync(new URL('../dist/assets/app.js', import.meta.url),'utf8');
 function fn(source,name) {const start=source.indexOf(`  function ${name}(`);assert.ok(start>=0,name);return source.slice(start,source.indexOf('\n  function ',start+1));}
 function editor() {
   const nodes=new Map(), requests=[];
-  const $=selector=>{if(!nodes.has(selector))nodes.set(selector,{value:'',dataset:{},handlers:{},classList:{toggle(){}},setAttribute(){},addEventListener(n,fn){this.handlers[n]=fn;},reset(){},querySelectorAll(){return [];}});return nodes.get(selector);};
+  const $=selector=>{if(!nodes.has(selector))nodes.set(selector,{value:'',dataset:{},handlers:{},classList:{toggle(){}},setAttribute(){},addEventListener(n,fn){this.handlers[n]=fn;},showModal(){this.open=true;},close(){this.open=false;},reset(){},querySelectorAll(){return [];}});return nodes.get(selector);};
   const photos=[{id:'p1',dayId:'d1',caption:'One'},{id:'p2',dayId:'d2',caption:'Two'}];
   const journey={id:'trip',places:[{id:'a',name:'A',lng:8,lat:47}],segments:[{id:'leg',from:'a',to:'a',mode:'walk',geometry:[[8,47],[8.01,47.01],[8,47]]}],photos,
     days:[{id:'d1',title:'One',segmentIds:['leg']},{id:'d2',title:'Two',segmentIds:[]}],replayMoments:[{id:'m',dayId:'d1',caption:'Sentence',segmentIds:[]}]};
   const context=vm.createContext({structuredClone,URL,URLSearchParams,document:{querySelector:$,querySelectorAll:()=>[],addEventListener(){}},
     fetch:(url,options)=>new Promise(resolve=>requests.push({url,body:JSON.parse(options.body),resolve})),
-    window:{addEventListener(){},JOURNEY_ATLAS_DATA:{journeys:[journey]},JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS,JOURNEY_ATLAS_MEDIA:globalThis.JOURNEY_ATLAS_MEDIA,JOURNEY_ATLAS_PLAN_EXTRAS:globalThis.JOURNEY_ATLAS_PLAN_EXTRAS}});
+    window:{addEventListener(){},JOURNEY_ATLAS_DRAFT_REVIEW:globalThis.JOURNEY_ATLAS_DRAFT_REVIEW,JOURNEY_ATLAS_DATA:{journeys:[journey]},JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS,JOURNEY_ATLAS_MEDIA:globalThis.JOURNEY_ATLAS_MEDIA,JOURNEY_ATLAS_PLAN_EXTRAS:globalThis.JOURNEY_ATLAS_PLAN_EXTRAS}});
   const source=fs.readFileSync(new URL('../studio/studio.js',import.meta.url),'utf8');
   vm.runInContext(source.replace('  init();\n})();', `
     drawRouteEditor=()=>{};renderRouteList=()=>{};renderPhotoGrid=()=>{};refreshPhotoOrderControls=()=>{};renderDaySelectors=()=>{};
@@ -89,4 +90,21 @@ test('map feedback clears recovered failures, has bounded waiting and a real ret
   feedback.empty(true);assert.equal(panel.hidden,false);assert.match(panel.children[0].textContent,/No location/);
   events.get('error')();events.get('idle')();assert.match(panel.children[0].textContent,/No location/);
   feedback.empty(false);assert.equal(panel.hidden,true);feedback.destroy();assert.equal(timers.size,0);
+});
+
+test('a save response retains new typing and independent disk edits for the next save',async()=>{
+  const f=editor();f.api.editDay('Sent');const saving=f.api.saveAll();f.api.editDay('Newer');
+  f.requests[0].resolve({ok:true,json:async()=>({ok:true,stateRevision:'r1',state:{days:{d1:{title:'Sent'},d2:{text:'Other tab story'}},photos:{},routes:{}}})});
+  await saving;assert.equal(f.api.state().days.d1.title,'Newer');assert.equal(f.api.state().days.d2.text,'Other tab story');
+  const next=f.api.saveAll();assert.equal(f.requests[1].body.days.d2.text,'Other tab story');
+  f.requests[1].resolve({ok:true,json:async()=>({ok:true,stateRevision:'r2'})});await next;
+});
+test('conflict review keeps the draft and retries with the exact displayed revision and choice',async()=>{
+  const f=editor();f.api.editDay('My words');const saving=f.api.saveAll();
+  f.requests[0].resolve({ok:false,json:async()=>({ok:false,stateRevision:'disk-r1',conflicts:[{id:'field-id',label:'Day 1 / Day story',savedText:'Their words',draftText:'My words'}]})});
+  assert.equal(await saving,false);assert.equal(f.$('#save-conflict-dialog').open,true);assert.equal(f.api.state().days.d1.title,'My words');
+  assert.match(f.$('#save-conflict-fields').innerHTML,/Their|My/);assert.equal(f.$('#save-all').disabled,false);
+  f.$('#save-conflict-fields').querySelectorAll=()=>[{value:'draft'}];f.$('#save-conflict-form').handlers.submit({preventDefault(){}});
+  assert.deepEqual(f.requests[1].body.resolution,{stateRevision:'disk-r1',choices:{'field-id':'draft'}});
+  f.requests[1].resolve({ok:true,json:async()=>({ok:true,stateRevision:'r2'})});await new Promise(resolve=>setImmediate(resolve));assert.equal(f.api.dirty(),false);
 });

@@ -325,7 +325,7 @@ including invalid or incomplete forms. Other tab drafts remain available under
 **Recover local drafts**. This does not change content sources, local atlas
 previews, or public output. **Save locally** validates and applies edits to the
 content sources in one click; **Check changes** is optional and read-only.
-**Preview atlas** shows the last explicitly saved content. Save and autosave
+**Preview atlas** opens the selected day’s story using the last explicitly saved content, including on phones. Day copy has separate title, optional short tagline, and full story fields. Blank taglines omit the subtitle; the viewer no longer generates a “stayed here” line beneath the day title. Story paragraphs retain their line breaks. Travel details begins collapsed as one compact row; expand it to inspect every leg. Save and autosave
 status are always visible. A failed Save retains the draft and exposes
 **Download draft**. **Review / discard draft** compares each changed field with
 the current saved files, including after a reload. Changes are grouped by day,
@@ -334,9 +334,7 @@ Saved values and your changes appear side by side; changed words are marked,
 photo/day references use names, and full route coordinates expand on demand.
 **Discard all draft edits**
 returns Studio to the saved version and keeps an undo copy under **Recover local
-drafts**. Neither review nor discard writes trip content. Revision conflicts
-require reconciliation with newer disk
-edits, never a blind reload or overwrite. Automatic drafts include editor data,
+drafts**. Neither review nor discard writes trip content. Studio retains the exact saved versions under ignored `build/studio-revisions/`, including across server restarts. Save combines independent draft and disk edits automatically. If both changed the same field, a dialog shows the saved value and your draft and requires a choice for that field. Choices are checked against the displayed disk revision; a further disk change triggers review again. Older drafts without a recoverable baseline also require choices before replacing differing fields. Cancelling keeps the draft, and failed builds roll back content writes. Automatic drafts include editor data,
 not pending upload file bytes or unaccepted generated route proposals.
 
 The local Atlas Studio is the review surface. The agent runs `npm run studio`,

@@ -105,6 +105,7 @@ export function validateJourneys(data) {
     j.days.forEach((d, i) => {
       if (d.number !== i + 1) fail(`${d.id}: day numbers must be consecutive`);
       if (typeof d.title !== "string" || !d.title.trim()) fail(`${d.id}: missing title`);
+      for (const field of ['tagline', 'text']) if (d[field] != null && typeof d[field] !== 'string') fail(`${d.id}: invalid ${field}`);
       for (const field of ["placeId", "destinationId"]) if (d[field] != null && !places.has(d[field])) fail(`${d.id}: unknown ${field}`);
       if (!Array.isArray(d.segmentIds)) fail(`${d.id}: missing ordered segmentIds`);
       for (const id of d.segmentIds) {
@@ -164,11 +165,11 @@ export function validateOverrides(state, data) {
       const owner = owners[kind].get(id);
       if (!owner) throw new Error(`Unknown ${kind} override ID: ${id}`);
       if (!value || Array.isArray(value) || typeof value !== "object") throw new Error(`Invalid override: ${id}`);
-      const allowed = kind === "days" ? ["date", "title", "text", "leadPhotoId", "photoOrder"] : kind === "routes" ? ["controlPoints", "geometry", "smoothed", "smoothing", "routing", "source", "updatedAt"] : ["caption", "description", "alt", "locationLabel", "dayId", "location", "zoom", "mapFrame", "hidden", "trashed", "reviewed", "locationStatus", "privacyStatus"];
+      const allowed = kind === "days" ? ["date", "title", "tagline", "text", "leadPhotoId", "photoOrder"] : kind === "routes" ? ["controlPoints", "geometry", "smoothed", "smoothing", "routing", "source", "updatedAt"] : ["caption", "description", "alt", "locationLabel", "dayId", "location", "zoom", "mapFrame", "hidden", "trashed", "reviewed", "locationStatus", "privacyStatus"];
       for (const key of Object.keys(value)) if (!allowed.includes(key)) throw new Error(`${id}: unsupported override field ${key}`);
       if (kind === "photos" && value.dayId && !owner.days.some(d => d.id === value.dayId)) throw new Error(`${id}: photo day belongs to another journey or does not exist`);
       if (kind === "routes") for (const key of ["geometry", "controlPoints"]) if (!Array.isArray(value[key]) || value[key].length < 2 || !value[key].every(validCoordinate)) throw new Error(`${id}: invalid ${key}`);
-      for (const key of ["date", "title", "text", "leadPhotoId", "caption", "description", "alt", "locationLabel", "dayId", "locationStatus", "privacyStatus"]) if (value[key] != null && typeof value[key] !== "string") throw new Error(`${id}: invalid ${key}`);
+      for (const key of ["date", "title", "tagline", "text", "leadPhotoId", "caption", "description", "alt", "locationLabel", "dayId", "locationStatus", "privacyStatus"]) if (value[key] != null && typeof value[key] !== "string") throw new Error(`${id}: invalid ${key}`);
       if (value.title != null && !value.title.trim()) throw new Error(`${id}: title cannot be empty`);
       if (value.location != null && !validCoordinate([value.location.lng, value.location.lat])) throw new Error(`${id}: invalid photo location`);
       if (value.zoom != null && (!Number.isFinite(value.zoom) || value.zoom < 2 || value.zoom > 20)) throw new Error(`${id}: invalid photo zoom`);

@@ -103,11 +103,11 @@ test('a fresh draft can add, edit, reassign and remove hosted videos without los
 });
 
 test('the actual Studio check handler discards stale responses after another edit', async () => {
-  const source=fs.readFileSync(path.join(repo,'studio/studio.js'),'utf8'), start=source.indexOf('  async function previewPlan()'), end=source.indexOf('\n  async function savePlan()',start);
+  const source=fs.readFileSync(path.join(repo,'studio/studio.js'),'utf8'), start=source.indexOf('  async function previewPlan()'), end=source.indexOf('\n  async function savePlan(',start);
   const nodes=new Map(), $=id=>{if(!nodes.has(id))nodes.set(id,{value:'',textContent:'',disabled:false});return nodes.get(id);};
   let resolve, rendered=0;
   const journey=sample(), draft=structuredClone(journey), plan={draft,version:1,revision:'r1'}, state={photos:{},routes:{},days:{}};
-  const context=vm.createContext({$,journey,state,planForJourney:()=>plan,planChanges:()=>({}),renderPlanner:()=>rendered++,fetch:()=>new Promise(done=>{resolve=done;})});
+  const context=vm.createContext({$,journey,state,savedStateRevision:'state-r1',planForJourney:()=>plan,planChanges:()=>({}),renderPlanner:()=>rendered++,fetch:()=>new Promise(done=>{resolve=done;})});
   vm.runInContext(source.slice(start,end),context);
   const check=context.previewPlan(); plan.version++; draft.travelers[0].name='Latest edit';
   resolve({json:async()=>({ok:true,journey:structuredClone(journey),state,revision:'r1',added:[],removed:[]})}); await check;

@@ -2,7 +2,7 @@ const equal = (a,b) => JSON.stringify(a) === JSON.stringify(b);
 const object = value => value && typeof value === 'object' && !Array.isArray(value);
 const title = value => value?.sourceFilename || value?.name || value?.title || value?.label || value?.caption || value?.id || '';
 const labels = {
-  text:'Day story', description:'Notes', caption:'Caption', alt:'Image description', title:'Title', date:'Display date',
+  tagline:'Tagline', text:'Day story', description:'Notes', caption:'Caption', alt:'Image description', title:'Title', date:'Display date',
   dayId:'Journey day', locationLabel:'Exact place', location:'Photo location', zoom:'Map zoom', mapFrame:'Map frame',
   leadPhotoId:'Lead photo', photoOrder:'Album order', trashed:'Trash', reviewed:'Review status',
   locationStatus:'Location review', privacyStatus:'Privacy review', geometry:'Route line', controlPoints:'Drawing anchors',
@@ -14,7 +14,7 @@ const labels = {
   lat:'Latitude', lng:'Longitude', center:'Map center', objectPosition:'Crop position', order:'Order',
 };
 const label = key => labels[key] || String(key).replace(/([a-z])([A-Z])/g,'$1 $2').replace(/[-_]/g,' ').replace(/^./,c=>c.toUpperCase());
-const textFields = new Set(['text','description','caption','alt','locationLabel','subtitle']);
+const textFields = new Set(['tagline','text','description','caption','alt','locationLabel','subtitle']);
 const atomic = new Set(['location','geometry','controlPoints','mapFrame','center','routing','source']);
 const references = new Set(['dayId','leadPhotoId','photoId','placeId','destinationId','from','to']);
 const collections = {days:'Day',photos:'Photo',segments:'Route',places:'Place',replayMoments:'Replay chapter',travelers:'Traveler',routeGroups:'Travel group',videos:'Video'};
@@ -83,7 +83,7 @@ export function studioDraftDiff(data, saved, draft, routes = {}) {
     const nextJourney=plans.get(journey?.id)?.draft || journey;
     changes.push({section,label:`${ctx.journey} / ${ctx.subject} / ${field}`,...ctx,field,before,after,
       displayBefore:display(before,key,journey),displayAfter:display(after,key,nextJourney,draft.state || saved),
-      textDiff:typeof before==='string' && typeof after==='string' && ['title','subtitle','text','caption','description','alt','locationLabel'].includes(key)});
+      textDiff:typeof before==='string' && typeof after==='string' && ['title','subtitle','tagline','text','caption','description','alt','locationLabel'].includes(key)});
   }
   for (const kind of ['days','photos','routes']) {
     const section={days:'Day copy',photos:'Photos',routes:'Routes'}[kind];

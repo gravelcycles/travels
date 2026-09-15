@@ -273,8 +273,13 @@ body { display:flex; flex-direction:column; }
 #recover-draft-list button { display:block; width:100%; margin:5px 0; text-align:left; }
 @media (max-width:980px) { body { display:block; } .studio-shell { height:auto; } .studio-feedback { position:sticky; top:0; z-index:25; padding:8px 14px; } }
 
-#draft-diff-dialog { width:min(1050px,calc(100vw - 28px)); max-height:90dvh; padding:24px; color:var(--ink); background:var(--panel); border:1px solid var(--line); border-radius:12px; }
-#draft-diff-dialog::backdrop { background:#153238aa; }
+#draft-diff-dialog, #save-conflict-dialog { width:min(1050px,calc(100vw - 28px)); max-height:90dvh; padding:24px; color:var(--ink); background:var(--panel); border:1px solid var(--line); border-radius:12px; }
+#draft-diff-dialog::backdrop, #save-conflict-dialog::backdrop { background:#153238aa; }
+#save-conflict-dialog .draft-change { margin:20px 0; }
+#save-conflict-dialog .draft-value { max-height:280px; overflow:auto; }
+#save-conflict-dialog select { width:100%; margin-top:8px; }
+#save-conflict-dialog del { background:#f7d9d1; }
+#save-conflict-dialog ins { background:#c9e6cd; }
 #draft-diff-dialog h2 { margin:0 0 12px; font:28px Georgia,serif; }
 #draft-diff-status { margin:0; font-weight:750; }
 .draft-diff-help { font-size:13px; line-height:1.6; color:#4b6162; margin:10px 0 24px; }

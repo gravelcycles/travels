@@ -680,3 +680,33 @@ test('photo map frames validate, persist and fit the viewer for the family, a de
   const preview=bundle(studioAsset(root,'content-overrides'),'JOURNEY_ATLAS_CONTENT_OVERRIDES');
   for(const journey of journeys)assert.deepEqual(preview.photos[journey.photos[0].id].mapFrame,state.photos[journey.photos[0].id].mapFrame);
 });
+
+test('saved day stories and optional taglines reach real, demo and fresh draft previews', t => {
+  const root=fixture(t),fresh=createJourney(root,input),{data}=loadContent(root,{includeDrafts:true});
+  const selected=[data.journeys.find(j=>j.kind==='real'),data.journeys.find(j=>j.kind==='demo'),fresh];
+  const overrides=readOverrides(root),copy=vm.createContext({});
+  vm.runInContext(appFunction('escapeHtml')+appFunction('dayCopyMarkup'),copy);
+  for(const journey of selected) {
+    const day=journey.days[4] || journey.days[0];
+    overrides.days[day.id]={...overrides.days[day.id],title:'A slower day',tagline:'Rain & <quiet>',text:'First paragraph.\n\nThe full second paragraph.'};
+  }
+  writeJson(path.join(root,'content/day-overrides.json'),Object.fromEntries(Object.entries(overrides.days).filter(([id])=>!fresh.days.some(day=>day.id===id))));
+  writeJson(path.join(root,'build/studio-draft-overrides.json'),{photos:{},routes:{},days:Object.fromEntries(Object.entries(overrides.days).filter(([id])=>fresh.days.some(day=>day.id===id)))});
+  buildSite(root);
+  const live=bundle(studioAsset(root,'content-overrides'),'JOURNEY_ATLAS_CONTENT_OVERRIDES');
+  for(const journey of selected) {
+    const base=journey.days[4] || journey.days[0],day={...base,...live.days[base.id]};
+    assert.equal(day.text,'First paragraph.\n\nThe full second paragraph.');
+    const markup=copy.dayCopyMarkup(day);
+    assert.match(markup,/Rain &amp; &lt;quiet&gt;/);assert.ok(markup.includes(day.text));
+    assert.doesNotMatch(copy.dayCopyMarkup({...day,tagline:' ',text:''}),/place-line|day-story|stayed here/);
+    const page=renderJourneyPage(root,journey,{preview:true});
+    assert.match(page,/id="mobile-story-tagline"/);assert.match(page,/id="mobile-day-tagline"/);
+  }
+  const publicCopy=bundle(read(root,'dist/assets/content-overrides.js'),'JOURNEY_ATLAS_CONTENT_OVERRIDES');
+  assert.equal(publicCopy.days[fresh.days[0].id],undefined,'Fresh draft prose stays unpublished');
+  assert.match(appFunction('renderStory'),/<details class="travel-details"><summary>Travel details/);
+  assert.doesNotMatch(appFunction('renderStory'),/<details[^>]*open/);
+  assert.match(read(repo,'dist/assets/styles.css'),/\.day-story[^}]*white-space:pre-wrap/);
+  const broken=structuredClone(data);broken.journeys[0].days[0].tagline={bad:true};assert.throws(()=>validateJourneys(broken),/invalid tagline/);
+});

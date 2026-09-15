@@ -113,7 +113,7 @@ test('trash excludes photos from public data even without hidden; restoring pres
 test('the upload UI retains successful files when a batch also contains a failure', async () => {
   const source = fs.readFileSync(path.join(repo, 'studio/studio.js'), 'utf8');
   const start = source.indexOf('  async function uploadPhotos(');
-  const end = source.indexOf('\n  async function saveAll()', start);
+  const end = source.indexOf('\n  function retainNewerEdits(', start);
   const nodes = new Map();
   const node = id => { if(!nodes.has(id)) nodes.set(id, { value:'', textContent:'', disabled:false }); return nodes.get(id); };
   node('#upload-photo-files').files = [{name:'broken.jpg',size:10},{name:'good.jpg',size:10}];
@@ -160,7 +160,7 @@ test('missing and out-of-trip capture dates require an individual day instead of
 
 test('auto batch UI shows all assigned days and retains undated files for individual retry', async () => {
   const source=fs.readFileSync(path.join(repo,'studio/studio.js'),'utf8');
-  const start=source.indexOf('  async function uploadPhotos('), end=source.indexOf('\n  async function saveAll()',start);
+  const start=source.indexOf('  async function uploadPhotos('), end=source.indexOf('\n  function retainNewerEdits(',start);
   const nodes=new Map(), node=id=>{if(!nodes.has(id))nodes.set(id,{value:'',textContent:'',disabled:false});return nodes.get(id);};
   node('#upload-photo-day').value='auto';
   node('#upload-photo-files').files=['first','second','undated'].map(name=>({name:`${name}.jpg`,size:10}));
