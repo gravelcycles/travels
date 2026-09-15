@@ -325,7 +325,7 @@ including invalid or incomplete forms. Other tab drafts remain available under
 **Recover local drafts**. This does not change content sources, local atlas
 previews, or public output. **Save locally** validates and applies edits to the
 content sources in one click; **Check changes** is optional and read-only.
-**Preview atlas** opens the selected day’s story using the last explicitly saved content, including on phones. Day copy has separate title, optional short tagline, and full story fields. Blank taglines omit the subtitle; the viewer no longer generates a “stayed here” line beneath the day title. Story paragraphs retain their line breaks. Travel details begins collapsed as one compact row; expand it to inspect every leg. Save and autosave
+**Preview atlas** opens the selected day’s story using the last explicitly saved content, including on phones. Day copy has separate title, optional short tagline, and full story fields. Short taglines appear in italics in the day list and journal, including on phones. Blank taglines omit the subtitle; the viewer no longer generates a “stayed here” line beneath the day title. Days without recorded travel omit the automatic “In one place” label from the journal, day list and map legend. Story paragraphs retain their line breaks. Travel details begins collapsed as one compact row; expand it to inspect every leg. Save and autosave
 status are always visible. A failed Save retains the draft and exposes
 **Download draft**. **Review / discard draft** compares each changed field with
 the current saved files, including after a reload. Changes are grouped by day,

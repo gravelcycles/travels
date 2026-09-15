@@ -387,7 +387,7 @@
 
   function modeLabel(day) {
     const modes = modesForDay(day);
-    return modes.length ? modes.map((mode) => labels[mode]).join(" + ") : (journey.status === "planned" ? "To plan" : "In one place");
+    return modes.length ? modes.map((mode) => labels[mode]).join(" + ") : (journey.status === "planned" ? "To plan" : "");
   }
 
   function dayForSegment(segmentId) {
@@ -921,7 +921,7 @@
     const modes = [...new Set(segments.map((segment) => segment.mode))];
     const selectedSegments = new Set(activeDay().segmentIds);
     const stateKey = (label, color, opacity = 1) => `<span>${lineSwatch("train", color, opacity)}${escapeHtml(label)}</span>`;
-    let markup = focused ? `<strong class="legend-heading">Day ${activeDay().number}${modes.length ? " routes" : " · In one place"}</strong>` : "";
+    let markup = focused ? `<strong class="legend-heading">Day ${activeDay().number}${modes.length ? " routes" : ""}</strong>` : "";
     markup += modes.map((mode) => {
       const cue = modeStyles[mode]?.cue || "route";
       return `<span title="${escapeHtml(`${labels[mode]} · ${cue}`)}" aria-label="${escapeHtml(`${labels[mode]}, ${cue} line`)}">${lineSwatch(mode, modeStyles[mode]?.color)}${labels[mode]}</span>`;
@@ -948,7 +948,7 @@
         <button class="day-row ${day.id === activeDayId ? "active" : ""}" data-day-id="${escapeHtml(day.id)}" type="button" ${day.id === activeDayId ? 'aria-current="true"' : ""}>
           <span class="day-index">${String(day.number).padStart(2, "0")}</span>
           <span class="day-copy">
-            <small>${escapeHtml(day.date)} · ${escapeHtml(modeLabel(day))}</small>
+            <small>${escapeHtml([day.date, modeLabel(day)].filter(Boolean).join(' · '))}</small>
             <strong>${escapeHtml(day.title)}</strong>
             ${day.tagline?.trim() ? `<em>${escapeHtml(day.tagline)}</em>` : ""}
           </span>
@@ -994,11 +994,11 @@
 
     const distance = dayDistance(day);
     const duration = dayDuration(day);
-    const modes = modesForDay(day);
+    const travelSummary = [distance ? formatDistance(distance) : '', modeLabel(day), duration].filter(Boolean).join(' · ');
     detailPanel.innerHTML = `
       <div class="detail-eyebrow">DAY ${String(day.number).padStart(2, "0")} · ${escapeHtml(day.date)}</div>
       ${dayCopyMarkup(day)}
-      <p class="travel-summary">${distance ? `${formatDistance(distance)} · ` : ''}${escapeHtml(modeLabel(day))}${duration ? ` · ${escapeHtml(duration)}` : ''}</p>
+      ${travelSummary ? `<p class="travel-summary">${escapeHtml(travelSummary)}</p>` : ''}
       ${day.segmentIds.length ? `<details class="travel-details"><summary>Travel details <span>${day.segmentIds.length} leg${day.segmentIds.length===1?'':'s'}</span></summary>${renderRouteLegs(day)}</details>` : ''}
       ${groupTravel.dayDetails(sourceJourney, sourceJourney.days.find(item => item.id === day.id), activeGroupId)}
       <nav class="journal-day-nav" aria-label="Journal days"><button type="button" data-journal-step="-1" ${day.number===1?'disabled':''}>← Previous day</button><span>Day ${day.number} of ${journey.days.length}</span><button type="button" data-journal-step="1" ${day.number===journey.days.length?'disabled':''}>Next day →</button></nav>

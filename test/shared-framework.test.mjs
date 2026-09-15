@@ -710,3 +710,20 @@ test('saved day stories and optional taglines reach real, demo and fresh draft p
   assert.match(read(repo,'dist/assets/styles.css'),/\.day-story[^}]*white-space:pre-wrap/);
   const broken=structuredClone(data);broken.journeys[0].days[0].tagline={bad:true};assert.throws(()=>validateJourneys(broken),/invalid tagline/);
 });
+
+test('days without travel omit automatic stay labels across real, demo and fresh draft views', t => {
+  const root=fixture(t),fresh=createJourney(root,input),{data}=loadContent(root,{includeDrafts:true});
+  for (const original of [data.journeys.find(j=>j.kind==='real'),data.journeys.find(j=>j.kind==='demo'),fresh]) {
+    const day={...original.days[0],segmentIds:[]},journey={...original,days:[day]},dayList={innerHTML:''},legend={innerHTML:''};
+    const context=vm.createContext({journey,dayList,activeDayId:day.id,mapScope:'day',activeDay:()=>day,
+      modesForDay:()=>[],segmentsForDay:()=>[],photosForDay:()=>[],mediaUtils:{label:()=>''},syncInspectionClasses(){},
+      $:()=>legend,palette:{muted:'#888'},lineSwatch:()=>'',labels:{train:'Train'}});
+    vm.runInContext(['escapeHtml','modeLabel','renderDays','renderLegend'].map(appFunction).join('\n'),context);
+    context.renderDays();context.renderLegend();
+    assert.doesNotMatch(dayList.innerHTML+legend.innerHTML,/In one place|·\s*<\/small>/);
+    assert.equal(context.modeLabel(day),journey.status==='planned'?'To plan':'');
+    context.modesForDay=()=>['train'];assert.equal(context.modeLabel(day),'Train');
+  }
+  assert.doesNotMatch(app,/In one place/);
+  assert.match(appFunction('renderStory'),/travelSummary \? `<p class="travel-summary">/);
+});
