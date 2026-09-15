@@ -657,3 +657,26 @@ test('family, demo and fresh drafts share readable grouped edit reviews', async 
     assert.equal(review.summary,'1 change in 1 day.');assert.match(review.html,/<ins>/);
   }
 });
+
+test('photo map frames validate, persist and fit the viewer for the family, a demo and a fresh draft', t => {
+  const root=fixture(t),draft=createJourney(root,input);
+  draft.photos=[{id:`${draft.id}-photo`,dayId:draft.days[0].id,src:'./assets/sample.webp',caption:'',lat:35.6,lng:139.7}];
+  writeJson(path.join(root,`content/drafts/${draft.id}.json`),draft);
+  const {data}=loadContent(root,{includeDrafts:true}),state=readOverrides(root);
+  const journeys=[data.journeys.find(j=>j.kind!=='demo' && j.published),data.journeys.find(j=>j.kind==='demo'),data.journeys.find(j=>j.id===draft.id)];
+  const utils=globalThis.JOURNEY_ATLAS_UTILS;
+  for (const journey of journeys) {
+    const base=journey.photos[0],point={lng:8,lat:47},frame={bounds:[[7.99,46.99],[8.03,47.02]]};
+    state.photos[base.id]={...state.photos[base.id],location:point,mapFrame:frame};
+    const resolved=utils.resolvePhoto(base,state.photos[base.id]);
+    assert.equal(utils.frameContainsPhoto(frame,resolved),true,journey.id);
+    const calls=[],map={cameraForBounds:(bounds,options)=>{calls.push({bounds,options});return {center:[8.01,47.005],zoom:13};}};
+    assert.deepEqual(utils.photoMapCamera(map,resolved),{center:[8.01,47.005],zoom:13,bearing:0,pitch:0});
+    assert.deepEqual(calls[0].bounds,frame.bounds);
+  }
+  writeJson(path.join(root,'content/photo-overrides.json'),Object.fromEntries(Object.entries(state.photos).filter(([id])=>!id.startsWith(draft.id))));
+  writeJson(path.join(root,'build/studio-draft-overrides.json'),{photos:{[draft.photos[0].id]:state.photos[draft.photos[0].id]},routes:{},days:{}});
+  buildSite(root);
+  const preview=bundle(studioAsset(root,'content-overrides'),'JOURNEY_ATLAS_CONTENT_OVERRIDES');
+  for(const journey of journeys)assert.deepEqual(preview.photos[journey.photos[0].id].mapFrame,state.photos[journey.photos[0].id].mapFrame);
+});

@@ -128,6 +128,19 @@ commit after it is known.
 - Let manual map gestures cancel pending photo moves without stopping the active
   drag or zoom. Closing the viewer and switching photos still stop old transitions.
 
+### Preserve photo map frames and simplify camera travel
+
+- Keep the viewer map still when both photo pins are in view. Nearby moves go
+  directly to the next view; longer moves use a quadratic arc with a 40 ms apex
+  pause and no forced extra zoom-out.
+- Add Studio controls to capture, restore, and reset map bounds independently
+  of the photo pin, with a dashed frame outline. Existing frames are inferred
+  from saved pins and zooms. Custom bounds fit different viewer dimensions;
+  Replay retains its map-only route/day framing.
+- Cover stationary navigation, travel/cancellation, frame fitting, Studio edits,
+  validation and build serialization with regression tests. Browser checks
+  confirm off-center frame restoration and stationary nearby-photo navigation.
+
 ### Restore a gentle image reveal
 
 - Keep the embedded preview underneath a 480 ms fade into the sharp photograph

@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import { validateJourneyExtras } from "./journey-extras.mjs";
 import path from "node:path";
+import "../dist/assets/atlas-utils.js";
 
 export const readJson = (filename, fallback) => fs.existsSync(filename) ? JSON.parse(fs.readFileSync(filename, "utf8")) : fallback;
 export const writeJson = (filename, value) => {
@@ -118,7 +119,10 @@ export function validateJourneys(data) {
       if ((end - start) / 86400000 + 1 !== j.days.length) fail(`${j.id}: date range must include every calendar day`);
       j.days.forEach((d,i) => { if (d.calendarDate !== new Date(+start + i * 86400000).toISOString().slice(0,10)) fail(`${d.id}: calendar date does not match trip range`); });
     }
-    for (const p of j.photos) if (!days.has(p.dayId)) fail(`${p.id}: photo references an unknown day`);
+    for (const p of j.photos) {
+      if (!days.has(p.dayId)) fail(`${p.id}: photo references an unknown day`);
+      if (p.mapFrame != null && !globalThis.JOURNEY_ATLAS_UTILS.validPhotoFrame(p.mapFrame)) fail(`${p.id}: invalid photo map frame`);
+    }
   }
   if (!ids.has(data.defaultJourneyId)) fail("Default journey does not exist");
   return data;
@@ -160,7 +164,7 @@ export function validateOverrides(state, data) {
       const owner = owners[kind].get(id);
       if (!owner) throw new Error(`Unknown ${kind} override ID: ${id}`);
       if (!value || Array.isArray(value) || typeof value !== "object") throw new Error(`Invalid override: ${id}`);
-      const allowed = kind === "days" ? ["date", "title", "text", "leadPhotoId", "photoOrder"] : kind === "routes" ? ["controlPoints", "geometry", "smoothed", "smoothing", "routing", "source", "updatedAt"] : ["caption", "description", "alt", "locationLabel", "dayId", "location", "zoom", "hidden", "trashed", "reviewed", "locationStatus", "privacyStatus"];
+      const allowed = kind === "days" ? ["date", "title", "text", "leadPhotoId", "photoOrder"] : kind === "routes" ? ["controlPoints", "geometry", "smoothed", "smoothing", "routing", "source", "updatedAt"] : ["caption", "description", "alt", "locationLabel", "dayId", "location", "zoom", "mapFrame", "hidden", "trashed", "reviewed", "locationStatus", "privacyStatus"];
       for (const key of Object.keys(value)) if (!allowed.includes(key)) throw new Error(`${id}: unsupported override field ${key}`);
       if (kind === "photos" && value.dayId && !owner.days.some(d => d.id === value.dayId)) throw new Error(`${id}: photo day belongs to another journey or does not exist`);
       if (kind === "routes") for (const key of ["geometry", "controlPoints"]) if (!Array.isArray(value[key]) || value[key].length < 2 || !value[key].every(validCoordinate)) throw new Error(`${id}: invalid ${key}`);
@@ -168,6 +172,11 @@ export function validateOverrides(state, data) {
       if (value.title != null && !value.title.trim()) throw new Error(`${id}: title cannot be empty`);
       if (value.location != null && !validCoordinate([value.location.lng, value.location.lat])) throw new Error(`${id}: invalid photo location`);
       if (value.zoom != null && (!Number.isFinite(value.zoom) || value.zoom < 2 || value.zoom > 20)) throw new Error(`${id}: invalid photo zoom`);
+      if (value.mapFrame != null) {
+        const utils = globalThis.JOURNEY_ATLAS_UTILS;
+        const photo = utils.resolvePhoto(owner.photos.find(photo => photo.id === id), value);
+        if (!utils.validPhotoFrame(value.mapFrame) || !utils.frameContainsPhoto(value.mapFrame, { ...photo, hidden: false, trashed: false })) throw new Error(`${id}: invalid photo map frame; include the photo pin`);
+      }
       if (value.hidden != null && typeof value.hidden !== "boolean") throw new Error(`${id}: invalid photo visibility`);
       if (value.trashed != null && typeof value.trashed !== "boolean") throw new Error(`${id}: invalid trash state`);
       if (value.reviewed != null && typeof value.reviewed !== "boolean") throw new Error(`${id}: invalid photo review status`);
