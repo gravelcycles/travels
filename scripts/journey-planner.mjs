@@ -46,7 +46,7 @@ export function prepareJourneyPlan(data, base, changes, state, alignment = 'date
   for (const p of base.places) if (!journey.places.some(next => next.id === p.id)) throw new Error(`Cannot remove an existing place: ${p.id}`);
   // No silent deletion of notes, route/photo associations or editorial overrides.
   for (const day of removed) {
-    if (day.text?.trim() || day.title !== 'Day to plan' || day.segmentIds.length || state.days[day.id] || base.photos.some(p => (state.photos[p.id]?.dayId || p.dayId) === day.id) || base.videos?.some(video => video.dayId === day.id) || base.meetup?.dayId === day.id || base.replayMoments?.some(m => m.dayId === day.id)) throw new Error(`Day ${day.number} (${day.calendarDate}) has content. Keep it in the date range, or move the itinerary before shortening the trip.`);
+    if (day.text?.trim() || day.tagline?.trim() || day.title !== 'Day to plan' || day.segmentIds.length || state.days[day.id] || base.photos.some(p => (state.photos[p.id]?.dayId || p.dayId) === day.id) || base.videos?.some(video => video.dayId === day.id) || base.meetup?.dayId === day.id || base.replayMoments?.some(m => m.dayId === day.id)) throw new Error(`Day ${day.number} (${day.calendarDate}) has content. Keep it in the date range, or move the itinerary before shortening the trip.`);
   }
   if (journey.startDate !== base.startDate || journey.endDate !== base.endDate) journey.dates = `${journey.startDate} – ${journey.endDate}`;
   if (journey.replayMoments) journey.replayMoments = journey.replayMoments.map(moment => {

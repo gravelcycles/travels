@@ -100,12 +100,15 @@
       for (const prefix of ['mobile-day', 'mobile-story']) {
         $(`#${prefix}-date`).textContent = prefix === 'mobile-day' ? day.date : `Day ${day.number} · ${day.date}`;
         $(`#${prefix}-title`).textContent = day.title;
-        $(`#${prefix}-meta`).textContent = prefix === 'mobile-story' ? `${info.route} · ${info.meta}` : info.meta;
+        $(`#${prefix}-tagline`).textContent = info.tagline || '';
+        $(`#${prefix}-tagline`).hidden = !info.tagline;
+        $(`#${prefix}-meta`).textContent = info.meta;
       }
       $('#mobile-story-legend').innerHTML = $('#map-legend').innerHTML;
       $('#mobile-day-photos').textContent = info.count ? `${info.hasVideos ? "Photos & videos" : "Photos"} · ${info.count}` : 'No photos yet';
       $('#mobile-day-photos').disabled = !info.count;
       if(api.scope()==='journey') {
+        $('#mobile-day-tagline').hidden=true;
         $('#mobile-day-date').textContent='The whole journey';$('#mobile-day-title').textContent=api.title();
         $('#mobile-day-meta').textContent=`${api.days().length} days · Choose a day to explore its route`;
         $('#mobile-day-photos').textContent=info.albumHasVideos?'Photos & videos':'All photos';$('#mobile-day-photos').disabled=false;

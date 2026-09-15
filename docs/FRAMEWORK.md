@@ -219,6 +219,10 @@ membership. See W07 in TODO.md.
 The audit's 20 authorized findings are addressed in shared code. URL/reload
 persistence (V1) is explicitly excluded. The six proposed capabilities are
 held for interactive local demo review before implementation or deployment;
-this includes recovery/conflict review, explicit sharing, batch photo editing,
+this includes explicit sharing, batch photo editing,
 publication readiness, private video intake (W07) and labeled Replay seeking.
 This review gate does not block delivery of the authorized bug fixes.
+
+## Studio persistence follow-up — 15 September 2026
+
+The owner subsequently requested reload recovery, readable draft review, and usable Save conflict handling. Those are now shared capabilities: local revision snapshots support three-way saves, independent changes combine, and conflicting fields require an explicit saved/draft choice. No force overwrite is inferred from a reload. Editable day taglines, preserved story paragraphs and compact expandable travel details use the existing shared templates and editorial overrides for real trips, demos and fresh drafts.

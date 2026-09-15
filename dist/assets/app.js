@@ -950,7 +950,7 @@
           <span class="day-copy">
             <small>${escapeHtml(day.date)} · ${escapeHtml(modeLabel(day))}</small>
             <strong>${escapeHtml(day.title)}</strong>
-            <em>${escapeHtml(routeLabel(day))}</em>
+            ${day.tagline?.trim() ? `<em>${escapeHtml(day.tagline)}</em>` : ""}
           </span>
           <span class="day-meta">${photos.length ? `${mediaUtils.label(photos)}` : ""}${pattern !== "stay" ? lineSwatch(pattern) : ""}</span>
         </button>
@@ -958,6 +958,12 @@
     }).join("");
     syncInspectionClasses();
 
+  }
+
+  function dayCopyMarkup(day) {
+    return `<h2>${escapeHtml(day.title)}</h2>
+      ${day.tagline?.trim() ? `<p class="place-line">${escapeHtml(day.tagline)}</p>` : ''}
+      ${day.text?.trim() ? `<p class="day-story">${escapeHtml(day.text)}</p>` : ''}`;
   }
 
   function renderStory() {
@@ -991,11 +997,9 @@
     const modes = modesForDay(day);
     detailPanel.innerHTML = `
       <div class="detail-eyebrow">DAY ${String(day.number).padStart(2, "0")} · ${escapeHtml(day.date)}</div>
-      <h2>${escapeHtml(day.title)}</h2>
-      <p class="place-line">${escapeHtml(routeLabel(day))}</p>
-      ${day.text?.trim() ? `<p class="day-story">${escapeHtml(day.text)}</p>` : ""}
+      ${dayCopyMarkup(day)}
       <p class="travel-summary">${distance ? `${formatDistance(distance)} · ` : ''}${escapeHtml(modeLabel(day))}${duration ? ` · ${escapeHtml(duration)}` : ''}</p>
-      ${day.segmentIds.length ? `<section class="travel-details" aria-label="Travel details"><h3>Travel details · ${day.segmentIds.length} leg${day.segmentIds.length===1?'':'s'}</h3>${renderRouteLegs(day)}</section>` : ''}
+      ${day.segmentIds.length ? `<details class="travel-details"><summary>Travel details <span>${day.segmentIds.length} leg${day.segmentIds.length===1?'':'s'}</span></summary>${renderRouteLegs(day)}</details>` : ''}
       ${groupTravel.dayDetails(sourceJourney, sourceJourney.days.find(item => item.id === day.id), activeGroupId)}
       <nav class="journal-day-nav" aria-label="Journal days"><button type="button" data-journal-step="-1" ${day.number===1?'disabled':''}>← Previous day</button><span>Day ${day.number} of ${journey.days.length}</span><button type="button" data-journal-step="1" ${day.number===journey.days.length?'disabled':''}>Next day →</button></nav>
       <button id="resume-replay" type="button" ${replayJourneyId===journey.id?'':'hidden'}>Return to paused Replay</button>
@@ -1776,7 +1780,7 @@
     const params=new URLSearchParams(location.hash.replace(/^#/,'')); const search=new URLSearchParams(location.search);
     const photo=params.get('photo')||search.get('photo'), day=params.get('day')||search.get('day');
     if(photoById(photo)) {if(replayDialog.open)replayDialog.close(); $('#album-dialog').close(); dismissIntroduction();openPhoto(photo);}
-    else if(dayById(day)) {if(replayDialog.open)replayDialog.close(); photoDialog.close(); $('#album-dialog').close(); dismissIntroduction();setActiveDay(day,true);if(window.JOURNEY_ATLAS_MOBILE_UI?.enabled())setMobileTab('map');else showJournal(true);}
+    else if(dayById(day)) {if(replayDialog.open)replayDialog.close(); photoDialog.close(); $('#album-dialog').close(); dismissIntroduction();setActiveDay(day,true);if(window.JOURNEY_ATLAS_MOBILE_UI?.enabled() && search.get('view')!=='story')setMobileTab('map');else showJournal(true);}
   }
   window.addEventListener('hashchange',handleDeepLink);
   window.addEventListener('atlas-photos-unlocked',refreshPreloads);
@@ -2002,7 +2006,7 @@
   });
   window.JOURNEY_ATLAS_MOBILE_UI = window.JOURNEY_ATLAS_MOBILE.create({
     day:activeDay, days:()=>journey.days, scope:()=>mapScope, title:()=>journey.title,
-    dayInfo:day=>({route:routeLabel(day),meta:[dayDistance(day)?formatDistance(dayDistance(day)):'',modeLabel(day),dayDuration(day)].filter(Boolean).join(' · '),count:photosForDay(day.id).length,hasVideos:photosForDay(day.id).some(mediaUtils.isVideo),albumHasVideos:orderedPhotos().some(mediaUtils.isVideo)}),
+    dayInfo:day=>({route:routeLabel(day),tagline:day.tagline?.trim() || '',meta:[dayDistance(day)?formatDistance(dayDistance(day)):'',modeLabel(day),dayDuration(day)].filter(Boolean).join(' · '),count:photosForDay(day.id).length,hasVideos:photosForDay(day.id).some(mediaUtils.isVideo),albumHasVideos:orderedPhotos().some(mediaUtils.isVideo)}),
     selectDay:id=>setActiveDay(id,true), stepDay:moveActiveDay, tab:setMobileTab, preview:renderStoryMap,
     openDay:openDayViewer, move:moveViewer, selectPhoto:index=>{viewerPhotoIndex=index;updateViewer();},
     overview:fitRoute, album:openAlbum, replay:openReplay,

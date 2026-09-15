@@ -6,12 +6,13 @@ import { studioWorkspaceId, readStudioDraft, writeStudioDraft, listStudioDrafts 
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import http from "node:http";
-import crypto from "node:crypto";
 import { importStudioPhoto, MAX_PHOTO_BYTES } from "./studio-photo-service.mjs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { prepareJourneyPlan, journeyRevision } from "./journey-planner.mjs";
 import { writePlanSources } from "./studio-plan-sources.mjs";
+import { rememberRevision, readRevision, reconcile, conflictReview } from "./studio-reconcile.mjs";
+import "../studio/plan-extras.js";
 import { createJourney } from "./create-journey.mjs";
 import { loadContent, validateOverrides } from "./journey-content.mjs";
 import { renderJourneyPage, studioAsset, readOverrides } from "./build-site.mjs";
@@ -65,7 +66,7 @@ function validateState(state) {
   }
   for (const [id, day] of Object.entries(state.days)) {
     if (!id || !isPlainObject(day)) throw new Error("Invalid day override");
-    for (const field of ["date", "title", "text"]) {
+    for (const field of ["date", "title", "tagline", "text"]) {
       if (day[field] != null && typeof day[field] !== "string") throw new Error(`Invalid ${field} for ${id}`);
     }
   }
@@ -91,11 +92,17 @@ function saveState(state) {
   const subset = (kind, publicOnly) => Object.fromEntries(Object.entries(state[kind]).filter(([id]) => publicIds[kind].has(id) === publicOnly));
   const draftPath = path.join(repoRoot, "build/studio-draft-overrides.json");
   if (fs.existsSync(draftPath)) fs.copyFileSync(draftPath, path.join(backupDirectory, `${stamp}-draft-overrides.json`));
-  writeJsonAtomic(draftPath, Object.fromEntries(Object.keys(publicIds).map(kind => [kind, subset(kind, false)])));
-  writeJsonAtomic(photoPath, subset("photos", true));
-  writeJsonAtomic(routePath, subset("routes", true));
-  writeJsonAtomic(dayPath, subset("days", true));
-  execFileSync(process.execPath, [path.join(repoRoot, "scripts/build-content-overrides.mjs")], { cwd: repoRoot, stdio: "inherit" });
+  const originals = new Map([draftPath, photoPath, routePath, dayPath].map(file => [file, fs.existsSync(file) ? fs.readFileSync(file) : null]));
+  try {
+    writeJsonAtomic(draftPath, Object.fromEntries(Object.keys(publicIds).map(kind => [kind, subset(kind, false)])));
+    writeJsonAtomic(photoPath, subset("photos", true));
+    writeJsonAtomic(routePath, subset("routes", true));
+    writeJsonAtomic(dayPath, subset("days", true));
+    execFileSync(process.execPath, [path.join(repoRoot, "scripts/build-content-overrides.mjs")], { cwd: repoRoot, stdio: "inherit" });
+  } catch (error) {
+    for (const [file, value] of originals) { if (value === null) fs.rmSync(file, { force:true }); else fs.writeFileSync(file, value); }
+    throw error;
+  }
 }
 
 function send(response, status, body, contentType = "text/plain; charset=utf-8") {
@@ -127,20 +134,42 @@ function staticFileFor(pathname) {
   return null;
 }
 
-function stateRevision() {
-  return crypto.createHash('sha256').update(JSON.stringify(readOverrides(repoRoot))).digest('hex');
-}
-function assertStateRevision(revision) {
-  if (!revision || revision !== stateRevision()) throw new Error('Saved edits changed on disk. Your draft is kept. Download the draft and reconcile it with the newer saved edits before saving again.');
+function reconcileSave(input, data, journey) {
+  const saved = readOverrides(repoRoot);
+  const stateRevision = rememberRevision(repoRoot, saved);
+  const revision = journey ? rememberRevision(repoRoot, journey) : undefined;
+  if (!input.stateRevision && !input.preview) throw new Error('The saved version is missing. Your draft is kept; reopen Studio to load the saved version.');
+  if (journey && !input.revision && !input.preview) throw new Error('The trip revision is missing. Your draft is kept; reopen Studio to load the trip revision.');
+  // Choices only apply to the exact disk versions shown in the dialog.
+  const choices = input.resolution?.stateRevision === stateRevision && input.resolution?.revision === revision ? input.resolution.choices : {};
+  const stateBase = input.stateRevision === stateRevision ? saved : readRevision(repoRoot, input.stateRevision);
+  const state = reconcile(stateBase, input.state || saved, saved, { choices, prefix: ['state'] });
+  let plan = { conflicts: [] };
+  if (journey) {
+    const base = input.revision === revision ? journey : readRevision(repoRoot, input.revision);
+    const changes = globalThis.JOURNEY_ATLAS_PLAN_EXTRAS.changes;
+    // Only submitted fields belong to this save; immutable trip metadata and
+    // newly imported photo files always come from the latest source.
+    const pick = value => value && Object.fromEntries(Object.entries(changes(value)).filter(([key]) => Object.hasOwn(input.changes || {}, key)));
+    plan = reconcile(pick(base), input.changes || {}, pick(journey), { choices, prefix: ['plan', journey.id] });
+  }
+  const conflicts = [...state.conflicts, ...plan.conflicts];
+  if (conflicts.length) {
+    const error = new Error('Choose which version to keep for the fields changed in both places. Your draft is safe.');
+    error.conflict = { conflicts: conflictReview(conflicts, data, saved), stateRevision, revision };
+    throw error;
+  }
+  return { state: state.value, changes: plan.value };
 }
 let photoImportBusy = false;
 const server = http.createServer((request, response) => {
+  const localPort = request.socket.localPort;
   const remote = request.socket.remoteAddress;
   if (remote !== "127.0.0.1" && remote !== "::1" && remote !== "::ffff:127.0.0.1") return send(response, 403, "Atlas Studio is local only");
-  if (![ `127.0.0.1:${port}`, `localhost:${port}` ].includes(request.headers.host)) return send(response, 403, "Unexpected host");
-  const url = new URL(request.url, `http://127.0.0.1:${port}`);
+  if (![ `127.0.0.1:${localPort}`, `localhost:${localPort}` ].includes(request.headers.host)) return send(response, 403, "Unexpected host");
+  const url = new URL(request.url, `http://127.0.0.1:${localPort}`);
   // Only same-origin browser writes may reach the loopback editor.
-  if (!["GET", "HEAD"].includes(request.method) && request.headers.origin && request.headers.origin !== `http://127.0.0.1:${port}` && request.headers.origin !== `http://localhost:${port}`) return send(response, 403, "Unexpected origin");
+  if (!["GET", "HEAD"].includes(request.method) && request.headers.origin && request.headers.origin !== `http://127.0.0.1:${localPort}` && request.headers.origin !== `http://localhost:${localPort}`) return send(response, 403, "Unexpected origin");
   if (request.method === "POST" && url.pathname === "/api/draft-diff") {
     let body="";
     request.setEncoding("utf8");
@@ -228,26 +257,24 @@ const server = http.createServer((request, response) => {
         const { data } = loadContent(repoRoot, { includeDrafts: true });
         const base = data.journeys.find(j => j.id === input.journeyId);
         if (!base) throw new Error("Unknown journey");
-        const revision = journeyRevision(base);
-        if (input.revision && input.revision !== revision) throw new Error("This trip changed on disk. Your draft is kept. Download the draft and reconcile it with the newer trip before saving again.");
-        const state = input.state || readOverrides(repoRoot);
-        const result = prepareJourneyPlan(data, base, input.changes || {}, state, input.alignment);
+        const merged = reconcileSave(input, data, base);
+        const result = prepareJourneyPlan(data, base, merged.changes, merged.state, input.alignment);
         if (!input.preview) {
-          assertStateRevision(input.stateRevision);
-          if (!input.revision) throw new Error("The trip revision is missing. Your draft is kept; reopen Studio to load the trip revision.");
           sourceWrite = writePlanSources(repoRoot, base, result.journey);
           saveState(result.state);
+          result.journey = loadContent(repoRoot, { includeDrafts:true }).data.journeys.find(j => j.id === base.id);
+          result.state = readOverrides(repoRoot);
         }
-        send(response, 200, JSON.stringify({ ok:true, ...result, stateRevision:stateRevision(), revision:input.preview ? revision : journeyRevision(result.journey) }), "application/json; charset=utf-8");
+        send(response, 200, JSON.stringify({ ok:true, ...result, stateRevision:rememberRevision(repoRoot, readOverrides(repoRoot)), revision:rememberRevision(repoRoot, input.preview ? base : result.journey) }), "application/json; charset=utf-8");
       } catch (error) {
         sourceWrite?.restore();
-        send(response, 400, JSON.stringify({ ok:false, error:error.message }), "application/json; charset=utf-8");
+        send(response, error.conflict ? 409 : 400, JSON.stringify({ ok:false, error:error.message, ...error.conflict }), "application/json; charset=utf-8");
       }
     });
     return;
   }
   if (request.method === "GET" && url.pathname === "/api/state") {
-    return send(response, 200, JSON.stringify({ ...readOverrides(repoRoot), workspaceId:studioWorkspaceId(repoRoot), stateRevision:stateRevision(), revisions:Object.fromEntries(loadContent(repoRoot,{includeDrafts:true}).data.journeys.map(j=>[j.id,journeyRevision(j)])) }), "application/json; charset=utf-8");
+    return send(response, 200, JSON.stringify({ ...readOverrides(repoRoot), workspaceId:studioWorkspaceId(repoRoot), stateRevision:rememberRevision(repoRoot, readOverrides(repoRoot)), revisions:Object.fromEntries(loadContent(repoRoot,{includeDrafts:true}).data.journeys.map(j=>[j.id,rememberRevision(repoRoot,j)])) }), "application/json; charset=utf-8");
   }
   if (request.method === "PUT" && url.pathname === "/api/state") {
     let body = "";
@@ -259,11 +286,13 @@ const server = http.createServer((request, response) => {
     request.on("end", () => {
       try {
         const input = JSON.parse(body);
-        assertStateRevision(input.stateRevision);
-        saveState(input);
-        send(response, 200, JSON.stringify({ ok: true, stateRevision:stateRevision() }), "application/json; charset=utf-8");
+        const { data } = loadContent(repoRoot, { includeDrafts:true });
+        const merged = reconcileSave({ ...input, state: { photos:input.photos, routes:input.routes, days:input.days } }, data);
+        saveState(merged.state);
+        const state = readOverrides(repoRoot);
+        send(response, 200, JSON.stringify({ ok: true, state, stateRevision:rememberRevision(repoRoot,state) }), "application/json; charset=utf-8");
       } catch (error) {
-        send(response, 400, JSON.stringify({ ok: false, error: error.message }), "application/json; charset=utf-8");
+        send(response, error.conflict ? 409 : 400, JSON.stringify({ ok:false, error:error.message, ...error.conflict }), "application/json; charset=utf-8");
       }
     });
     return;
@@ -321,6 +350,6 @@ const server = http.createServer((request, response) => {
 });
 
 server.listen(port, "127.0.0.1", () => {
-  console.log(`Atlas Studio: http://127.0.0.1:${port}/studio/`);
+  console.log(`Atlas Studio: http://127.0.0.1:${server.address().port}/studio/`);
   console.log("Press Ctrl+C to stop.");
 });

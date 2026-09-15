@@ -200,9 +200,12 @@
           <input id="day-date" name="date" />
           <label for="day-title">Day title</label>
           <input id="day-title" name="title" />
-          <label for="day-description">Day description</label>
+          <label for="day-tagline">Short tagline</label>
+          <input id="day-tagline" name="tagline" aria-describedby="day-tagline-note" />
+          <p id="day-tagline-note" class="editor-note">A short line beneath the day title. Leave blank to omit it.</p>
+          <label for="day-description">Day story</label>
           <textarea id="day-description" name="text" rows="10"></textarea>
-          <p class="editor-note">The title appears in the day list and journal. The description is also used as concise route-story context.</p>
+          <p class="editor-note">The title and tagline appear in the day list and journal. Your full story appears in Day details. Save locally, then open Preview atlas to check this day.</p>
         </form>
       </aside>
 
@@ -224,6 +227,15 @@
         <div class="plan-save-bar"><button type="button" id="plan-preview">Check changes (optional)</button><button type="button" id="plan-save" disabled>Save trip plan locally</button><p id="plan-status" role="status"></p></div>
       </section>
     </main>
+
+    <dialog id="save-conflict-dialog" aria-labelledby="save-conflict-title">
+      <form id="save-conflict-form">
+        <h2 id="save-conflict-title">Keep the right version</h2>
+        <p>These fields changed in your draft and in the saved files. Choose a version for each. All other edits will be combined automatically.</p>
+        <div id="save-conflict-fields"></div>
+        <div class="draft-diff-actions"><button type="button" id="cancel-save-conflict">Keep editing</button><button type="submit">Apply choices and save locally</button></div>
+      </form>
+    </dialog>
 
     <dialog id="studio-video-dialog" aria-labelledby="studio-video-title">
       <header><h2 id="studio-video-title">Video preview</h2><button id="studio-video-close" type="button" aria-label="Close video preview">Close</button></header>
