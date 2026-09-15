@@ -113,7 +113,7 @@ button { color: inherit; }
 .day-copy small, .day-copy strong, .day-copy em { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .day-copy small { color: var(--muted); font-size: 0.68rem; font-weight: 750; letter-spacing: 0.045em; text-transform: uppercase; }
 .day-copy strong { margin-top: 3px; font: 700 1rem Georgia, "Times New Roman", serif; }
-.day-copy em { margin-top: 3px; color: var(--ink-soft); font-size: 0.76rem; font-style: normal; }
+.day-copy em { margin-top: 3px; color: var(--ink-soft); font-size: 0.76rem; font-style: italic; }
 .day-meta { min-width: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; color: var(--muted); font-size: 0.65rem; }
 
 .line-swatch { --swatch: var(--route); width: 32px; height: 9px; display: inline-block; flex: 0 0 auto; background-position: center; background-repeat: repeat-x; filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff); }
@@ -201,7 +201,7 @@ button { color: inherit; }
 .story-detail h2 { margin: 10px 0 8px; font: 700 clamp(1.75rem, 2.5vw, 2.5rem)/1 Georgia, "Times New Roman", serif; letter-spacing: -0.04em; }
 .story-detail h3 { margin: 19px 0 7px; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; }
 .story-detail p { margin: 0; color: var(--ink-soft); line-height: 1.58; font-size: 0.95rem; }
-.story-detail .place-line { color: var(--muted); font-size: 0.84rem; }
+.story-detail .place-line { color: var(--muted); font-size: 0.84rem; font-style: italic; }
 .detail-stats { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); margin-top: 17px; }
 .detail-stats div { padding: 11px; min-width: 0; }
 .detail-stats div + div { border-left: 1px solid var(--line); }
