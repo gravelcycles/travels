@@ -587,3 +587,11 @@ leg `geometryStatus: "provisional"`. Never present endpoint guides as imported
 tracks. Use the existing roster/group assignments for separate arrivals and
 omit `groupIds` on shared cycling days. Missing origins stay in notes until
 known; dates follow the confirmed intake, with any inferred year documented.
+
+
+The place-card presentation follows a Maps-style list → detail →
+Overview/Reviews/Photos flow. The photo list tiles, star breakdown, quick actions
+and expandable mobile sheet all read the same `pointsOfInterest` records;
+no new intake fields or Google service integration are required. Each photo’s
+source and credit remain visible in the gallery. Group review edits in the
+`experience` preview remain browser-local.

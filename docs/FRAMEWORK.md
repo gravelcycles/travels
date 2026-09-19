@@ -248,3 +248,11 @@ and D1 provisioning are unresolved W08 work, documented in
 POI clustering/collision handling for large collections and deeper mobile overlay
 history should be resolved after reviewing this small demo. New authorized demos
 are distinct from the six earlier audit proposals.
+
+
+The second places UX pass adopts a Maps-style left sidebar/photo tiles and
+Overview/Reviews/Photos tabs in the same shared module. It adds no trip-specific
+schema or service dependency. Desktop panel restoration and phone sheet
+expansion are shared; the distribution derives solely from our group reviews.
+Live writes, large-collection pin collisions and complete overlay history remain
+W08 follow-up work, separate from this presentation refinement.

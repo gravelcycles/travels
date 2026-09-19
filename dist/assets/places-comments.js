@@ -3,6 +3,11 @@
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const average = reviews => reviews.length ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1) : null;
   const filterPlaces = (journey, category = 'all', dayId = '') => (journey.pointsOfInterest || []).filter(point => (category === 'all' || point.category === category) && (!dayId || point.dayIds.includes(dayId)));
+  const ratingSummary = reviews => ({
+    average: average(reviews), count: reviews.length,
+    distribution: [5, 4, 3, 2, 1].map(stars => ({ stars, count: reviews.filter(review => review.rating === stars).length }))
+  });
+  const placeTabs = ['overview', 'reviews', 'photos'];
   function validateComment(name, body) {
     if (typeof name !== 'string' || !name.trim() || name.trim().length > 40) throw new Error('Choose a display name of 1–40 characters.');
     if (typeof body !== 'string' || !body.trim() || body.trim().length > 1000) throw new Error('Write a comment of 1–1,000 characters.');
@@ -54,7 +59,7 @@
     const preview = ['places', 'comments'].includes(new URLSearchParams(location.search).get('experience'));
     const panel = $('#places-panel'), list = $('#places-content'), commentsDialog = $('#comments-dialog'), unlockDialog = $('#experience-unlock');
     const assetBase = new URL('.', document.querySelector('script[src*="/places-comments.js"]').src);
-    let category = 'all', selectedId = '', imageIndex = 0, markers = [], open = false, journeyId = '', store, visitor = null, currentPhoto = null, afterUnlock;
+    let category = 'all', selectedId = '', placeTab = 'overview', expanded = false, markers = [], open = false, journeyId = '', store, visitor = null, currentPhoto = null, afterUnlock;
     const visitorKey = 'atlas-experience-visitor-v1';
     if (preview) {
       try { const saved = JSON.parse(sessionStorage.getItem(visitorKey)); if (typeof saved?.id === 'string' && typeof saved?.name === 'string' && saved.name.trim() && saved.name.length <= 40) visitor = saved; } catch { /* An unavailable session starts as a new demo visitor. */ }
@@ -82,52 +87,93 @@
       if (!map || !points.length) return;
       const bounds = points.reduce((bounds, point) => bounds.extend(point.coordinates), new maplibregl.LngLatBounds(points[0].coordinates, points[0].coordinates));
       const mobile = matchMedia('(max-width:900px)').matches;
-      map.fitBounds(bounds, { padding: { top: mobile ? 105 : 80, bottom: mobile ? map.getContainer().clientHeight * 0.5 + 10 : 80, left: 45, right: 45 }, maxZoom: 16, duration: matchMedia('(prefers-reduced-motion:reduce)').matches ? 0 : 700 });
+      const frame = map.getContainer().getBoundingClientRect();
+      const bottom = mobile ? Math.max(40, frame.bottom - panel.getBoundingClientRect().top + 30) : (preview ? 110 : 80);
+      map.fitBounds(bounds, { padding: { top: mobile ? 105 : 80, bottom, left: 45, right: 45 }, maxZoom: 16, duration: matchMedia('(prefers-reduced-motion:reduce)').matches ? 0 : 700 });
     }
     function selectPlace(id, move = true) {
-      selectedId = id; imageIndex = 0; renderPlaces(); renderMarkers();
+      selectedId = id; placeTab = 'overview'; renderPlaces(); renderMarkers();
       if (move) {
         const point = options.journey().pointsOfInterest?.find(p => p.id === id);
-        if (point) options.map()?.easeTo({ center: point.coordinates, zoom: 15, offset: [0, matchMedia('(max-width:900px)').matches ? -innerHeight * 0.2 : 0], duration: matchMedia('(prefers-reduced-motion:reduce)').matches ? 0 : 600 });
+        if (point) options.map()?.easeTo({ center: point.coordinates, zoom: 15, padding: 0, offset: [0, matchMedia('(max-width:900px)').matches ? -innerHeight * 0.2 : 0], duration: matchMedia('(prefers-reduced-motion:reduce)').matches ? 0 : 600 });
       }
       list.scrollTop = 0; list.querySelector('h3')?.focus({ preventScroll: true });
     }
-    function imageHtml(point) {
-      const picture = point.images?.[imageIndex];
-      if (!picture) return '<div class="place-no-image">A place worth remembering<span>No photos added yet</span></div>';
-      const src = picture.src.startsWith('./assets/') ? new URL(picture.src.slice(9), assetBase).href : picture.src;
-      return `<figure class="place-image"><img src="${escape(src)}" alt="${escape(picture.alt)}"/><figcaption>${escape(picture.credit)} · <a href="${escape(picture.sourceUrl)}" target="_blank" rel="noopener noreferrer">Source ↗</a></figcaption></figure>${point.images.length > 1 ? `<div class="place-image-nav"><button data-image-step="-1" aria-label="Previous place image">←</button><span>${imageIndex + 1} / ${point.images.length}</span><button data-image-step="1" aria-label="Next place image">→</button></div>` : ''}`;
+    const icon = name => {
+      const paths = {
+        pin: '<path d="M18 10c0 5-6 10-6 10S6 15 6 10a6 6 0 1 1 12 0Z"/><circle cx="12" cy="10" r="2"/>',
+        photos: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.5"/><path d="m3 17 5-5 4 4 3-3 6 5"/>',
+        review: '<path d="m4 16 12-12 4 4L8 20H4v-4Z"/><path d="m13 7 4 4"/>',
+        link: '<path d="M14 4h6v6M20 4 10 14M10 4H4v16h16v-6"/>',
+        day: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 11h18"/>',
+        back: '<path d="m12 5-7 7 7 7M5 12h15"/>',
+        close: '<path d="m6 6 12 12M18 6 6 18"/>',
+        globe: '<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>'
+      };
+      return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.pin}</svg>`;
+    };
+    const imageUrl = picture => picture.src.startsWith('./assets/') ? new URL(picture.src.slice(9), assetBase).href : picture.src;
+    const ratingStars = score => `<span class="place-score-stars" aria-label="${score} out of 5 stars"><span aria-hidden="true">★★★★★</span><span aria-hidden="true" style="width:${Number(score) * 20}%">★★★★★</span></span>`;
+    function imageHtml(picture, { hero = false } = {}) {
+      if (!picture) return `<div class="place-no-image">${icon('photos')}<span>No photos added yet</span></div>`;
+      return `<figure class="place-image${hero ? ' place-hero' : ''}"><img src="${escape(imageUrl(picture))}" alt="${escape(picture.alt)}"/>${hero ? '<button class="place-photo-count" data-show-place-tab="photos" type="button">' + icon('photos') + ' View photos</button>' : ''}<figcaption>${escape(picture.credit)} · <a href="${escape(picture.sourceUrl)}" target="_blank" rel="noopener noreferrer">Source ↗</a></figcaption></figure>`;
+    }
+    function showPlaceTab(name, { focus = false, scroll = true } = {}) {
+      if (!placeTabs.includes(name) || !selectedId) return;
+      placeTab = name;
+      for (const tab of list.querySelectorAll('[data-place-tab]')) {
+        const active = tab.dataset.placeTab === name;
+        tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1;
+        if (active && focus) tab.focus({ preventScroll: true });
+      }
+      for (const section of list.querySelectorAll('[data-place-tab-panel]')) section.hidden = section.dataset.placeTabPanel !== name;
+      if (scroll) list.querySelector('.place-tabs')?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+    }
+    function reviewHtml(point, reviews) {
+      const summary = ratingSummary(reviews), own = preview ? store.reviews(point.id)[0] : null;
+      return `<section class="place-reviews"><h4>Review summary</h4><p class="place-sample-note">${point.sample ? 'Sample reviews from our group' : 'Ratings from our traveling group'}</p><div class="place-rating-summary"><div class="place-rating-bars">${summary.distribution.map(row => `<div aria-label="${row.count} ${row.stars}-star reviews"><span>${row.stars}</span><span class="place-rating-track"><i style="width:${summary.count ? row.count / summary.count * 100 : 0}%"></i></span></div>`).join('')}</div><div class="place-score-total"><strong>${summary.average || '—'}</strong>${summary.average ? ratingStars(summary.average) : ''}<span>${summary.count} ${summary.count === 1 ? 'review' : 'reviews'}</span></div></div><p id="place-review-notice" role="status"></p>${preview && point.status === 'visited' ? `<details class="place-review-editor"><summary>${icon('review')} Write a review</summary><form id="place-review-form"><label>Your name<input name="name" maxlength="40" required autocomplete="off" value="${escape(own?.authorName || '')}"/></label><fieldset><legend>Your rating</legend><div class="place-rating-input">${[1, 2, 3, 4, 5].map(n => `<label><input type="radio" name="rating" value="${n}" aria-label="${n} ${n === 1 ? 'star' : 'stars'}" required ${own?.rating === n ? 'checked' : ''}/><span aria-hidden="true">★</span></label>`).join('')}</div></fieldset><label>Your review<textarea name="body" rows="3" maxlength="1000" required placeholder="Share your experience at this place">${escape(own?.text || '')}</textarea></label><p id="place-review-status" role="status"></p><button class="experience-primary">Post demo review</button><small>Only you see this browser’s demo changes.</small></form></details>` : ''}${!reviews.length ? `<p class="place-review-empty">${point.status === 'saved' ? 'Saved for a future visit. No group ratings yet.' : 'No reviews yet. A place for your group’s memories.'}</p>` : ''}${reviews.map(review => `<article><span class="place-review-avatar" aria-hidden="true">${escape(review.authorName.slice(0, 1).toUpperCase())}</span><div class="place-review-copy"><strong>${escape(review.authorName)}</strong><small>Our group${point.sample && review.authorId !== 'demo-you' ? ' · Sample review' : ''}</small>${stars(review.rating)}<p>${escape(review.text)}</p></div></article>`).join('')}</section>`;
     }
     function renderPlaces() {
       const journey = options.journey(), points = filterPlaces(journey, category, $('#places-day-only').checked ? options.dayId() : '');
       const point = points.find(p => p.id === selectedId);
+      panel.classList.toggle('place-selected', Boolean(point));
       $('#places-count').textContent = `${points.length} ${points.length === 1 ? 'place' : 'places'}`;
       $('#places-fit').disabled = !points.length;
       for (const button of document.querySelectorAll('[data-place-filter]')) button.setAttribute('aria-pressed', String(button.dataset.placeFilter === category));
       if (!point) {
-        selectedId = '';
-        list.innerHTML = points.length ? `<p class="places-intro">The meals, small discoveries and detours we want to remember.</p>${points.map(point => {
-          const reviews = reviewsFor(point), score = average(reviews);
-          return `<button class="place-card" data-place-id="${escape(point.id)}"><span class="place-card-category ${point.category}">${point.category === 'food' ? 'FOOD & DRINK' : 'WORTH A STOP'}${point.sample ? ' · SAMPLE' : ''}</span><strong>${escape(point.name)}</strong><span>${escape(point.summary)}</span><span class="place-card-bottom">${score ? `<b>★ ${score}</b> Our group · ${reviews.length}` : point.status === 'saved' ? '♡ Saved for next time' : 'No group reviews yet'}<span aria-hidden="true">↗</span></span></button>`;
-        }).join('')}` : '<div class="places-empty"><span aria-hidden="true">◇</span><h3>No places here yet</h3><p>Meals and discoveries can be added as the journey takes shape.</p></div>';
+        selectedId = ''; placeTab = 'overview';
+        list.innerHTML = points.length ? points.map(point => {
+          const reviews = reviewsFor(point), score = average(reviews), photo = point.images?.[0];
+          return `<button class="place-card" data-place-id="${escape(point.id)}"><span class="place-card-copy"><strong>${escape(point.name)}</strong><span class="place-card-rating">${score ? `${score} ${ratingStars(score)} <span>(${reviews.length})</span>` : 'No group ratings yet'}</span><span class="place-card-type">${point.category === 'food' ? 'Food & drink' : 'Place of interest'} · ${point.status === 'visited' ? 'Visited' : 'Saved'}</span><span class="place-card-description">${escape(point.summary)}</span><small>${point.sample ? 'Our group · Sample content' : 'Our group’s places'}</small></span>${photo ? `<span class="place-card-picture"><img src="${escape(imageUrl(photo))}" alt="${escape(photo.alt)}"/><span>${photo.permission === 'illustration' ? 'Illustration' : 'Photo'}</span></span>` : `<span class="place-card-picture place-card-placeholder">${icon('photos')}</span>`}</button>`;
+        }).join('') : '<div class="places-empty"><span aria-hidden="true">◇</span><h3>No places here yet</h3><p>Meals and discoveries can be added as the journey takes shape.</p></div>';
         return;
       }
       const reviews = reviewsFor(point), score = average(reviews);
-      list.innerHTML = `<button class="places-back" data-place-back>← All places</button>${imageHtml(point)}<div class="place-detail"><span class="place-card-category ${point.category}">${point.category === 'food' ? 'FOOD & DRINK' : 'WORTH A STOP'}${point.sample ? ' · SAMPLE' : ''}</span><h3 tabindex="-1">${escape(point.name)}</h3><p>${escape(point.summary)}</p>${point.address ? `<p class="place-address">${escape(point.address)}</p>` : ''}<div class="place-day-chips">${point.dayIds.map(id => { const day = journey.days.find(day => day.id === id); return `<span>Day ${day.number} · ${escape(day.date)}</span>`; }).join('')}<span>${point.status === 'visited' ? 'Visited' : 'Saved for next time'}</span></div>${point.note ? `<blockquote>${escape(point.note)}</blockquote>` : ''}<div class="place-links">${point.mapsUrl ? `<a target="_blank" rel="noopener noreferrer" href="${escape(point.mapsUrl)}">Open in Maps ↗</a>` : ''}${point.sources.map(source => `<a target="_blank" rel="noopener noreferrer" href="${escape(source.url)}">${escape(source.label)} ↗</a>`).join('')}</div><small class="place-accuracy">${point.locationAccuracy === 'approximate' ? 'Approximate map position' : 'Reviewed map position'}</small><section class="place-reviews"><header><div><span class="place-card-category">OUR GROUP</span><h4>${score ? `<b>${score}</b> <span aria-hidden="true">★</span>` : 'No ratings yet'}</h4></div><span>${reviews.length} ${reviews.length === 1 ? 'review' : 'reviews'}</span></header>${point.sample ? '<p class="place-sample-note">Invented reviews for this UX demo.</p>' : ''}${reviews.map(review => `<article><div><strong>${escape(review.authorName)}</strong>${stars(review.rating)}</div><p>${escape(review.text)}</p></article>`).join('')}${preview && point.status === 'visited' ? `<details class="place-review-editor"><summary>Try a group review</summary><form id="place-review-form"><label>Your name<input name="name" maxlength="40" required autocomplete="off" value="${escape(store.reviews(point.id)[0]?.authorName || '')}"/></label><fieldset><legend>Your rating</legend><div class="place-rating-input">${[1, 2, 3, 4, 5].map(n => `<label><input type="radio" name="rating" value="${n}" required ${store.reviews(point.id)[0]?.rating === n ? 'checked' : ''}/><span>${n} ★</span></label>`).join('')}</div></fieldset><label>Your review<textarea name="body" rows="3" maxlength="1000" required>${escape(store.reviews(point.id)[0]?.text || '')}</textarea></label><p id="place-review-status" role="status"></p><button class="experience-primary">Save demo review</button><small>Only you see this browser’s demo changes.</small></form></details>` : ''}</section></div>`;
+      list.innerHTML = `${imageHtml(point.images?.[0], { hero: true })}<header class="place-identity"><h3 tabindex="-1">${escape(point.name)}</h3><button class="place-rating-link" data-show-place-tab="reviews" type="button">${score ? `${score} ${ratingStars(score)} <span>(${reviews.length})</span>` : 'No ratings yet'}<span>Our group</span></button><p>${point.category === 'food' ? 'Food & drink' : 'Place of interest'} · <span>${point.status === 'visited' ? 'Visited on this trip' : 'Saved for next time'}</span></p>${point.sample ? '<small>Demo place · reviews are fictional</small>' : ''}</header><div class="place-tabs" role="tablist" aria-label="Place details">${placeTabs.map((tab, index) => `<button type="button" id="place-tab-${tab}" role="tab" data-place-tab="${tab}" aria-controls="place-tab-panel-${tab}" aria-selected="${index === 0}" tabindex="${index === 0 ? 0 : -1}">${tab[0].toUpperCase() + tab.slice(1)}</button>`).join('')}</div><div id="place-tab-panel-overview" data-place-tab-panel="overview" role="tabpanel" aria-labelledby="place-tab-overview"><div class="place-quick-actions"><button data-place-map type="button"><span>${icon('pin')}</span>Show on map</button><button data-show-place-tab="reviews" type="button"><span>${icon('review')}</span>Reviews</button><button data-show-place-tab="photos" type="button"><span>${icon('photos')}</span>Photos</button>${point.mapsUrl ? `<a href="${escape(point.mapsUrl)}" target="_blank" rel="noopener noreferrer"><span>${icon('link')}</span>Google Maps</a>` : ''}</div><div class="place-overview-copy"><p>${escape(point.summary)}</p>${point.note ? `<blockquote>${escape(point.note)}</blockquote>` : ''}</div><div class="place-facts">${point.address ? `<div>${icon('pin')}<span>${escape(point.address)}</span></div>` : ''}${point.dayIds.length ? `<div>${icon('day')}<span>${point.dayIds.map(id => { const day = journey.days.find(day => day.id === id); return `Day ${day.number} · ${escape(day.date)}`; }).join('<br/>')}</span></div>` : ''}${point.sources.map(source => `<a href="${escape(source.url)}" target="_blank" rel="noopener noreferrer">${icon('globe')}<span>${escape(source.label)}</span>${icon('link')}</a>`).join('')}</div><p class="place-accuracy">${point.locationAccuracy === 'approximate' ? 'Approximate map position' : 'Reviewed map position'}</p></div><div id="place-tab-panel-reviews" data-place-tab-panel="reviews" role="tabpanel" aria-labelledby="place-tab-reviews" hidden>${reviewHtml(point, reviews)}</div><div id="place-tab-panel-photos" data-place-tab-panel="photos" role="tabpanel" aria-labelledby="place-tab-photos" hidden><div class="place-photo-gallery"><h4>Photos <span>(${point.images?.length || 0})</span></h4>${point.images?.length ? point.images.map(picture => imageHtml(picture)).join('') : imageHtml(null)}</div></div>`;
+      showPlaceTab(placeTab, { scroll: false });
       const form = $('#place-review-form');
       form?.addEventListener('submit', event => {
         event.preventDefault(); const data = new FormData(form);
-        try { store.saveReview(point.id, data.get('name'), Number(data.get('rating')), data.get('body')); renderPlaces(); $('#places-message').textContent = 'Demo review saved in this browser.'; } catch (error) { status('#place-review-status', error.message); }
+        try {
+          store.saveReview(point.id, data.get('name'), Number(data.get('rating')), data.get('body'));
+          renderPlaces(); status('#place-review-notice', 'Demo review saved in this browser.');
+          $('#place-review-notice').scrollIntoView({ block: 'nearest' });
+        } catch (error) { status('#place-review-status', error.message); }
       });
+    }
+    function setSheetExpanded(value) {
+      expanded = value; panel.dataset.expanded = String(value);
+      $('#places-sheet-toggle').setAttribute('aria-expanded', String(value));
+      $('#places-sheet-toggle').setAttribute('aria-label', value ? 'Show more map' : 'Expand places');
     }
     function openPlaces() {
       options.explore(); open = true; document.body.classList.add('places-open'); panel.hidden = false;
-      $('#open-places').setAttribute('aria-expanded', 'true'); renderPlaces(); renderMarkers();
-      requestAnimationFrame(() => { options.map()?.resize(); fitPlaces(); }); $('#close-places').focus();
+      $('#open-places').setAttribute('aria-expanded', 'true'); setSheetExpanded(false); renderPlaces(); renderMarkers();
+      requestAnimationFrame(() => { options.map()?.resize(); fitPlaces(); }); (selectedId ? $('#places-back-to-list') : $('#close-places')).focus();
     }
     function closePlaces() {
       open = false; panel.hidden = true; document.body.classList.remove('places-open'); renderMarkers();
-      $('#open-places').setAttribute('aria-expanded', 'false'); options.map()?.resize(); $('#open-places').focus();
+      $('#open-places').setAttribute('aria-expanded', 'false'); options.map()?.resize(); (matchMedia('(max-width:900px)').matches ? $('#mobile-day-picker') : $('#open-places')).focus();
     }
     function openComments() {
       if (!currentPhoto) return;
@@ -170,15 +216,45 @@
     $('#open-places').addEventListener('click', openPlaces);
     $('#mobile-open-places').addEventListener('click', openPlaces);
     $('#close-places').addEventListener('click', closePlaces);
+    $('#close-place-details').addEventListener('click', closePlaces);
+    $('#places-back-to-list').addEventListener('click', () => { selectedId = ''; renderPlaces(); renderMarkers(); list.scrollTop = 0; $('#close-places').focus(); });
     $('#places-fit').addEventListener('click', fitPlaces);
     $('#places-day-only').addEventListener('change', () => { selectedId = ''; renderPlaces(); renderMarkers(); fitPlaces(); });
     document.querySelectorAll('[data-place-filter]').forEach(button => button.addEventListener('click', () => { category = button.dataset.placeFilter; selectedId = ''; renderPlaces(); renderMarkers(); fitPlaces(); }));
     list.addEventListener('click', event => {
       const card = event.target.closest('[data-place-id]'); if (card) selectPlace(card.dataset.placeId);
-      if (event.target.closest('[data-place-back]')) { selectedId = ''; renderPlaces(); renderMarkers(); }
-      const step = event.target.closest('[data-image-step]');
-      if (step) { const point = options.journey().pointsOfInterest.find(point => point.id === selectedId); imageIndex = (imageIndex + Number(step.dataset.imageStep) + point.images.length) % point.images.length; renderPlaces(); }
+      const tab = event.target.closest('[data-place-tab], [data-show-place-tab]');
+      if (tab) showPlaceTab(tab.dataset.placeTab || tab.dataset.showPlaceTab, { focus: true });
+      if (event.target.closest('[data-place-map]')) {
+        const point = options.journey().pointsOfInterest.find(point => point.id === selectedId);
+        setSheetExpanded(false);
+        options.map()?.easeTo({ center: point.coordinates, zoom: 16, padding: 0, offset: [0, matchMedia('(max-width:900px)').matches ? -innerHeight * 0.18 : 0], duration: matchMedia('(prefers-reduced-motion:reduce)').matches ? 0 : 500 });
+      }
     });
+    list.addEventListener('keydown', event => {
+      const tab = event.target.closest('[data-place-tab]');
+      if (!tab || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const index = placeTabs.indexOf(tab.dataset.placeTab);
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? placeTabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + placeTabs.length) % placeTabs.length;
+      showPlaceTab(placeTabs[next], { focus: true, scroll: false });
+    });
+    $('#places-sheet-toggle').addEventListener('click', () => setSheetExpanded(!expanded));
+    let sheetTouch = null;
+    $('#places-sheet-toggle').addEventListener('pointerdown', event => { sheetTouch = event.clientY; event.currentTarget.setPointerCapture(event.pointerId); });
+    $('#places-sheet-toggle').addEventListener('pointerup', event => {
+      if (sheetTouch !== null && Math.abs(event.clientY - sheetTouch) > 30) {
+        // The following click is suppressed by pointer travel in most browsers;
+        // use a one-shot capture listener for the remaining click-producing ones.
+        setSheetExpanded(event.clientY < sheetTouch);
+        const suppress = click => { click.stopImmediatePropagation(); click.preventDefault(); };
+        const handle = event.currentTarget;
+        handle.addEventListener('click', suppress, { once: true, capture: true });
+        setTimeout(() => handle.removeEventListener('click', suppress, true), 0);
+      }
+      sheetTouch = null;
+    });
+    $('#places-sheet-toggle').addEventListener('pointercancel', () => { sheetTouch = null; });
     list.addEventListener('error', event => { if (event.target.tagName === 'IMG') { event.target.hidden = true; event.target.parentElement.classList.add('image-unavailable'); } }, true);
     $('#open-photo-comments').addEventListener('click', openComments);
     $('#close-comments').addEventListener('click', () => commentsDialog.close());
@@ -232,5 +308,5 @@
       }
     };
   }
-  root.JOURNEY_ATLAS_PLACES = { average, filterPlaces, validateComment, createDemoStore, create };
+  root.JOURNEY_ATLAS_PLACES = { average, ratingSummary, placeTabs, filterPlaces, validateComment, createDemoStore, create };
 })(typeof window === 'undefined' ? globalThis : window);

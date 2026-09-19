@@ -140,7 +140,7 @@ test('one template supplies every control and asset to real trips, all samples, 
     assert.doesNotMatch(desktopHeader, /Sample journeys|Family journey|About this atlas|site-badge|open-notes/);
   }
   assert.ok(ids(reference).includes('mobile-back'), 'The shared header provides the return to all days');
-  for (const id of ['open-places', 'mobile-open-places', 'places-panel', 'open-photo-comments', 'comments-dialog', 'experience-unlock']) assert.ok(ids(reference).includes(id), `Shared places/comments control ${id} exists`);
+  for (const id of ['open-places', 'mobile-open-places', 'places-panel', 'places-sheet-toggle', 'open-photo-comments', 'comments-dialog', 'experience-unlock']) assert.ok(ids(reference).includes(id), `Shared places/comments control ${id} exists`);
   for (const asset of ['places-comments.js', 'places-comments.css']) assert.ok(assets(reference).includes(asset));
   const replay = reference.match(/<dialog class="replay-dialog"[\s\S]*?<\/dialog>/)[0];
   assert.doesNotMatch(replay, /<img|replay-photo|replay-view-(?:map|photos)/, 'Replay has no photo surface or media switch');
