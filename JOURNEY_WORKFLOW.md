@@ -180,6 +180,11 @@ of the workspace.
 
 ## Route geometry priority
 
+Follow [ROUTE_GEOMETRY_WORKFLOW.md](ROUTE_GEOMETRY_WORKFLOW.md) to turn route
+links, GPX files or itinerary endpoints into reviewed multimodal geometry.
+Detailed network geometry is part of completing a route; a new trip does not
+stop at the default straight-line fallback when reconstruction is authorized.
+
 Use the highest-quality available source for every leg:
 
 1. A traveler-supplied GPX recording.
