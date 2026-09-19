@@ -38,6 +38,12 @@ examples use representative September 2026 calendars; these are not travel
 records. Sample photos and route geometry remain illustrative, not newly
 verified geographic evidence.
 
+Route construction for new instances follows
+[ROUTE_GEOMETRY_WORKFLOW.md](../ROUTE_GEOMETRY_WORKFLOW.md): GPX or mode-appropriate
+network geometry, explicit provenance, geometric review and static preservation.
+An unresolved original track can have a clearly labeled reconstruction; the
+shared endpoint fallback is not a substitute for completing authorized route work.
+
 ## The model
 
 ```text
