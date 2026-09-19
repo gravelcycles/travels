@@ -118,6 +118,13 @@ bicycle, GPX, review, and publishing flow.
 
 See [the trip intake and provenance](docs/FLORENCE_GENOA.md). The supplied
 cycle.travel and token-bearing Komoot shares both returned 404 in a browser.
-All eleven legs are provisional endpoint guides. Five represent separate/shared
-arrival legs and six represent the revised bicycle stages; no road/rail track
-or elevation is claimed. The per-journey network manifest is empty pending intake.
+All eleven legs now have reviewed network geometry: three rail legs from
+OpenRailRouting, two representative coach corridors from OSRM, and six bicycle
+candidates from BRouter trekking. They reconstruct physical corridors; they do
+not claim to recover the unavailable original GPS track or booked services.
+Exact requests and quality checks are in the journey's routing manifest, and
+static output is protected by preserve entries. Use
+[ROUTE_GEOMETRY_WORKFLOW.md](ROUTE_GEOMETRY_WORKFLOW.md) for this reusable process.
+The original cycling plan is 364–374 km; mapped town-to-town candidates total
+300.0 km before campsite approaches. Thursday and Friday discrepancies remain
+visible in the stories. All precise private accommodation data stays local.

@@ -49,7 +49,8 @@ to duplicate and they do not certify route or photo-location accuracy.
 - [JOURNEY_WORKFLOW.md](../JOURNEY_WORKFLOW.md): intake through reviewed promotion.
 - [PHOTO_WORKFLOW.md](../PHOTO_WORKFLOW.md): originals, derivatives, review and publishing.
 - [PHOTO_AUTH_HANDOFF.md](../PHOTO_AUTH_HANDOFF.md): shared photo service operations.
-- [TRAIN_ROUTE_WORKFLOW.md](../TRAIN_ROUTE_WORKFLOW.md): route research and generation.
+- [ROUTE_GEOMETRY_WORKFLOW.md](../ROUTE_GEOMETRY_WORKFLOW.md): detailed multimodal routes, provider import, provenance and review.
+- [TRAIN_ROUTE_WORKFLOW.md](../TRAIN_ROUTE_WORKFLOW.md): local railway network research and generation.
 - [FRAMEWORK.md](FRAMEWORK.md): source ownership, exceptions and remaining migration.
 
 When changing a feature, update its row and the applicable workflow. A dated
@@ -80,5 +81,6 @@ timeline remain proposals. Replay stays map-only and publishing stays agent-oper
 
 Florence–Genoa is a real planning instance of the existing group-route and
 new-trip capabilities: nine travelers, four arrival groups, a shared train and
-six shared bicycle days. Its route geometry remains provisional; see
-[FLORENCE_GENOA.md](FLORENCE_GENOA.md). No new feature or trip-specific code.
+six shared bicycle days. All eleven legs now have preserved network geometry
+from rail, road and bicycle routers, with explicit reconstruction provenance;
+see [FLORENCE_GENOA.md](FLORENCE_GENOA.md). No trip-specific runtime code.

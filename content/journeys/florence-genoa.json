@@ -7,13 +7,13 @@
   "badge": "PLANNING",
   "label": "Florence to Genoa · Cycling trip",
   "title": "Florence to Genoa",
-  "subtitle": "Nine travelers, six riding days and 364–374 km from Tuscany to Liguria. Initial plan; routes still to confirm.",
+  "subtitle": "Nine travelers, six riding days from Tuscany to Liguria. Detailed route reconstruction; the original plan estimates 364–374 cycling km.",
   "kicker": "CYCLING JOURNEY · INITIAL PLAN",
   "dates": "9–15 May 2026",
   "startDate": "2026-05-09",
   "endDate": "2026-05-15",
   "timeZone": "Europe/Rome",
-  "note": "Initial plan from the revised itinerary. All map lines are provisional connections between approximate town centres, not road or rail tracks. The cycle.travel and Komoot links returned 404 on 19 September 2026. Cycling estimates total 364–374 km; the 364 km statistic uses Friday’s lower estimate and excludes unmeasured arrival travel. Campsites and alternatives are suggestions, not confirmed bookings. Wednesday’s overnight and Thursday’s stage still need reconciliation.",
+  "note": "The map follows reconstructed railways, roads and cycling paths. It is not the original cycle.travel/Komoot track: both shares returned 404 on 19 September 2026. Route distances measure these reconstructions; the original cycling plan estimates 364–374 km, compared with 300.0 km currently mapped between towns, excluding campsite approaches. Arrival routes use representative corridors and station-area anchors; tickets, bus terminals and local transfers remain unconfirmed. Wednesday’s overnight and Thursday’s distance still need reconciliation. Campsites are suggestions, not confirmed bookings.",
   "cover": "",
   "places": [
     {
@@ -27,36 +27,36 @@
       "id": "fg-hamburg",
       "name": "Hamburg",
       "country": "Germany",
-      "lat": 53.551,
-      "lng": 9.994
+      "lat": 53.55295,
+      "lng": 10.00689
     },
     {
       "id": "fg-freiburg",
       "name": "Freiburg im Breisgau",
       "country": "Germany",
-      "lat": 47.999,
-      "lng": 7.842
+      "lat": 47.99775,
+      "lng": 7.8411
     },
     {
       "id": "fg-lucerne",
       "name": "Lucerne",
       "country": "Switzerland",
-      "lat": 47.0502,
-      "lng": 8.3093
+      "lat": 47.0504,
+      "lng": 8.31
     },
     {
       "id": "fg-milan",
       "name": "Milan",
       "country": "Italy",
-      "lat": 45.4642,
-      "lng": 9.19
+      "lat": 45.48599,
+      "lng": 9.20512
     },
     {
       "id": "fg-florence",
       "name": "Florence",
       "country": "Italy",
-      "lat": 43.7696,
-      "lng": 11.2558
+      "lat": 43.7764,
+      "lng": 11.24837
     },
     {
       "id": "fg-fucecchio",
@@ -152,8 +152,8 @@
       "groupIds": [
         "berlin"
       ],
-      "geometryStatus": "provisional",
-      "source": "Traveler: Marc and Anna, Berlin to Florence by FlixBus; terminals, connections and departure date/time unconfirmed. Map is an approximate endpoint guide; detailed geometry pending."
+      "source": "Traveler: Marc and Anna, Berlin to Florence by FlixBus; terminals, connections and departure date/time unconfirmed. Representative road corridor, not a verified coach service. City/station-area endpoints are map anchors, not confirmed boarding terminals; actual bus-to-train transfers remain to plan. Mapped reconstruction: 1218.6 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest.",
+      "distanceKm": 1218.6
     },
     {
       "id": "florence-genoa-hamburg-freiburg",
@@ -163,8 +163,8 @@
       "groupIds": [
         "hamburg"
       ],
-      "geometryStatus": "provisional",
-      "source": "Traveler: Mo and Paula, Hamburg to Freiburg im Breisgau by train; service and intermediate stops unconfirmed. Map is an approximate endpoint guide; detailed geometry pending."
+      "source": "Traveler: Mo and Paula, Hamburg to Freiburg im Breisgau by train; service and intermediate stops unconfirmed. Representative physical railway corridor. Intermediate request points are geometry anchors, not confirmed passenger stops. No exact service, timetable or platform is claimed. Mapped reconstruction: 785.8 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest.",
+      "distanceKm": 785.8
     },
     {
       "id": "florence-genoa-freiburg-milan",
@@ -174,8 +174,8 @@
       "groupIds": [
         "hamburg"
       ],
-      "geometryStatus": "provisional",
-      "source": "Traveler: Mo and Paula, Freiburg to Milan by bus; operator and terminals unconfirmed. Map is an approximate endpoint guide; detailed geometry pending."
+      "source": "Traveler: Mo and Paula, Freiburg to Milan by bus; operator and terminals unconfirmed. Representative road corridor, not a verified coach service. City/station-area endpoints are map anchors, not confirmed boarding terminals; actual bus-to-train transfers remain to plan. Mapped reconstruction: 430.3 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest.",
+      "distanceKm": 430.3
     },
     {
       "id": "florence-genoa-lucerne-milan",
@@ -186,8 +186,8 @@
         "lucerne",
         "kawan"
       ],
-      "geometryStatus": "provisional",
-      "source": "Traveler clarification: Qen, Jonas, David, Michelle and Kawan travel by train from Lucerne to Milan. Kawan also reaches Lucerne by train; origin is unknown, so that preceding leg is not drawn. Map is an approximate endpoint guide; detailed geometry pending."
+      "source": "Traveler clarification: Qen, Jonas, David, Michelle and Kawan travel by train from Lucerne to Milan. Kawan also reaches Lucerne by train; origin is unknown, so that preceding leg is not drawn. Representative physical railway corridor. Intermediate request points are geometry anchors, not confirmed passenger stops. No exact service, timetable or platform is claimed. Mapped reconstruction: 236.6 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest.",
+      "distanceKm": 236.6
     },
     {
       "id": "florence-genoa-milan-florence",
@@ -199,62 +199,56 @@
         "lucerne",
         "kawan"
       ],
-      "geometryStatus": "provisional",
-      "source": "Traveler: seven travelers join in Milan for a non-Frecciarossa train to Florence. Train category, service and changes unconfirmed. Map is an approximate endpoint guide; detailed geometry pending."
+      "source": "Traveler: seven travelers join in Milan for a non-Frecciarossa train to Florence. Train category, service and changes unconfirmed. Representative physical railway corridor. Intermediate request points are geometry anchors, not confirmed passenger stops. No exact service, timetable or platform is claimed. Mapped reconstruction: 314.9 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest.",
+      "distanceKm": 314.9
     },
     {
       "id": "florence-genoa-florence-fucecchio",
       "from": "fg-florence",
       "to": "fg-fucecchio",
       "mode": "bike",
-      "distanceKm": 66,
-      "geometryStatus": "provisional",
-      "source": "Revised traveler itinerary: Sunday 66 km, including 11 km offroad. Campsite access is not yet reconciled with the city-based route. Map is an approximate endpoint guide; detailed geometry pending."
+      "distanceKm": 48.2,
+      "source": "Revised traveler itinerary: Sunday 66 km, including 11 km offroad. Campsite access is not yet reconciled with the city-based route. Reconstructed town-to-town bicycle corridor, not the unavailable cycle.travel/Komoot track. Campsite access and detours excluded. Road/surface suitability and the original stage distances remain to reconcile. Mapped reconstruction: 48.2 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest."
     },
     {
       "id": "florence-genoa-fucecchio-lucca",
       "from": "fg-fucecchio",
       "to": "fg-lucca",
       "mode": "bike",
-      "distanceKm": 46,
-      "geometryStatus": "provisional",
-      "source": "Revised traveler itinerary: Monday 46 km, following EuroVelo 5 according to notes. Alignment and campsite detour unverified. Map is an approximate endpoint guide; detailed geometry pending."
+      "distanceKm": 34.6,
+      "source": "Revised traveler itinerary: Monday 46 km, following EuroVelo 5 according to notes. Alignment and campsite detour unverified. Reconstructed town-to-town bicycle corridor, not the unavailable cycle.travel/Komoot track. Campsite access and detours excluded. Road/surface suitability and the original stage distances remain to reconcile. Mapped reconstruction: 34.6 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest."
     },
     {
       "id": "florence-genoa-lucca-massa",
       "from": "fg-lucca",
       "to": "fg-massa",
       "mode": "bike",
-      "distanceKm": 54,
-      "geometryStatus": "provisional",
-      "source": "Revised traveler itinerary: Tuesday 54 km towards Massa, following EuroVelo 5 according to notes. Alignment unverified. Map is an approximate endpoint guide; detailed geometry pending."
+      "distanceKm": 48.8,
+      "source": "Revised traveler itinerary: Tuesday 54 km towards Massa, following EuroVelo 5 according to notes. Alignment unverified. Reconstructed town-to-town bicycle corridor, not the unavailable cycle.travel/Komoot track. Campsite access and detours excluded. Road/surface suitability and the original stage distances remain to reconcile. Mapped reconstruction: 48.8 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest."
     },
     {
       "id": "florence-genoa-massa-mattarana",
       "from": "fg-massa",
       "to": "fg-mattarana",
       "mode": "bike",
-      "distanceKm": 74,
-      "geometryStatus": "provisional",
-      "source": "Revised traveler itinerary: Wednesday 74 km towards Mattarana. Camping Oasi is near Sestri Levante, not Mattarana; final endpoint unresolved. Map is an approximate endpoint guide; detailed geometry pending."
+      "distanceKm": 60.8,
+      "source": "Revised traveler itinerary: Wednesday 74 km towards Mattarana. Camping Oasi is near Sestri Levante, not Mattarana; final endpoint unresolved. Reconstructed town-to-town bicycle corridor, not the unavailable cycle.travel/Komoot track. Campsite access and detours excluded. Road/surface suitability and the original stage distances remain to reconcile. Mapped reconstruction: 60.8 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest."
     },
     {
       "id": "florence-genoa-mattarana-sestri",
       "from": "fg-mattarana",
       "to": "fg-sestri",
       "mode": "bike",
-      "distanceKm": 62,
-      "geometryStatus": "provisional",
-      "source": "Revised traveler itinerary: Thursday 62 km to Sestri Levante, replacing the earlier Pian dei Manzi destination. Track and distance need reconciliation with Wednesday. Map is an approximate endpoint guide; detailed geometry pending."
+      "distanceKm": 25.8,
+      "source": "Revised traveler itinerary: Thursday 62 km to Sestri Levante, replacing the earlier Pian dei Manzi destination. Track and distance need reconciliation with Wednesday. Reconstructed town-to-town bicycle corridor, not the unavailable cycle.travel/Komoot track. Campsite access and detours excluded. Road/surface suitability and the original stage distances remain to reconcile. Mapped reconstruction: 25.8 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest."
     },
     {
       "id": "florence-genoa-sestri-genoa",
       "from": "fg-sestri",
       "to": "fg-genoa",
       "mode": "bike",
-      "distanceKm": 62,
-      "geometryStatus": "provisional",
-      "source": "Revised traveler itinerary: Friday 62–72 km to Genoa. Numeric distance retains the 62 km lower estimate; final route and distance pending. Map is an approximate endpoint guide; detailed geometry pending."
+      "distanceKm": 81.8,
+      "source": "Revised traveler itinerary: Friday 62–72 km to Genoa. The mapped distance differs from that plan; alignment remains to confirm. Reconstructed town-to-town bicycle corridor, not the unavailable cycle.travel/Komoot track. Campsite access and detours excluded. Road/surface suitability and the original stage distances remain to reconcile. Mapped reconstruction: 81.8 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest."
     }
   ],
   "days": [
@@ -264,7 +258,7 @@
       "calendarDate": "2026-05-09",
       "date": "Saturday · 9 May",
       "title": "Everyone meets in Florence",
-      "text": "Marc and Anna travel from Berlin to Florence by FlixBus.\n\nMo and Paula take the train from Hamburg to Freiburg im Breisgau, then a bus to Milan. Qen, Jonas, David and Michelle travel from Lucerne to Milan by train. Kawan reaches Lucerne by train and joins them; Kawan’s starting point still needs adding.\n\nThe seven travelers meet in Milan and continue to Florence on a non-Frecciarossa train. Exact services, connections, departure days and arrival times are still to confirm; these legs are grouped under the Saturday arrival for now.\n\nProposed overnight: Camping Village Internazionale Firenze (now hu Firenze Certosa camping in town). Everyone meets in Florence; the meeting point and time are open. Arrival lines are provisional town-to-town guides.",
+      "text": "Marc and Anna travel from Berlin to Florence by FlixBus.\n\nMo and Paula take the train from Hamburg to Freiburg im Breisgau, then a bus to Milan. Qen, Jonas, David and Michelle travel from Lucerne to Milan by train. Kawan reaches Lucerne by train and joins them; Kawan’s starting point still needs adding.\n\nThe seven travelers meet in Milan and continue to Florence on a non-Frecciarossa train. Exact services, connections, departure days and arrival times are still to confirm; these legs are grouped under the Saturday arrival for now.\n\nProposed overnight: Camping Village Internazionale Firenze (now hu Firenze Certosa camping in town). Everyone meets in Florence; the meeting point and time are open. The map follows representative rail and road corridors. Station-area pins are mapping anchors; exact coach terminals, transfer routes and the Florence meeting point are not yet settled.",
       "segmentIds": [
         "florence-genoa-berlin-florence",
         "florence-genoa-hamburg-freiburg",
@@ -282,7 +276,7 @@
       "calendarDate": "2026-05-10",
       "date": "Sunday · 10 May",
       "title": "Florence to Fucecchio",
-      "text": "The first riding day heads towards Fucecchio, with 66 km planned and around 11 km offroad in the supplied notes.\n\nProposed overnight: Toscana Village Srl in Montopoli in Val d’Arno. Supplied planning pin: 43.678487, 10.767459. The Google Maps campsite pin in the notes is different (43.676046, 10.752759); confirm the approach and whether the distance includes it.\n\nAlternative retained from the notes: a riverside spot near Fucecchio / Roffia. This is an unconfirmed idea; permission and suitability have not been established. The map line is a provisional connection, awaiting the track.",
+      "text": "The first riding day heads towards Fucecchio, with 66 km planned and around 11 km offroad in the supplied notes.\n\nProposed overnight: Toscana Village Srl in Montopoli in Val d’Arno. Supplied planning pin: 43.678487, 10.767459. The Google Maps campsite pin in the notes is different (43.676046, 10.752759); confirm the approach and whether the distance includes it.\n\nAlternative retained from the notes: a riverside spot near Fucecchio / Roffia. This is an unconfirmed idea; permission and suitability have not been established.\n\nMapped candidate: 48.2 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
       "segmentIds": [
         "florence-genoa-florence-fucecchio"
       ],
@@ -296,7 +290,7 @@
       "calendarDate": "2026-05-11",
       "date": "Monday · 11 May",
       "title": "Fucecchio to Lucca",
-      "text": "A shorter riding day to leave time to explore Lucca, with Pisa mentioned as an optional visit in the notes. Any Pisa detour still needs planning.\n\nProposed overnight: Agricampeggio La Valle, beyond Lucca. Supplied pin: 43.829140, 10.425546. Alternative from the notes: the forest behind the campsite, with permission and suitability unconfirmed.\n\nThe notes describe the ride as straightforward on EuroVelo 5. The exact alignment, campsite access and 46 km estimate still need checking against the track.",
+      "text": "A shorter riding day to leave time to explore Lucca, with Pisa mentioned as an optional visit in the notes. Any Pisa detour still needs planning.\n\nProposed overnight: Agricampeggio La Valle, beyond Lucca. Supplied pin: 43.829140, 10.425546. Alternative from the notes: the forest behind the campsite, with permission and suitability unconfirmed.\n\nThe notes describe the ride as straightforward on EuroVelo 5. The exact alignment, campsite access and 46 km estimate still need checking against the track.\n\nMapped candidate: 34.6 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
       "segmentIds": [
         "florence-genoa-fucecchio-lucca"
       ],
@@ -310,7 +304,7 @@
       "calendarDate": "2026-05-12",
       "date": "Tuesday · 12 May",
       "title": "Lucca to the Massa coast",
-      "text": "Continue towards Marina di Massa. The revised table uses Massa and 54 km, replacing the earlier Marina di Carrara entry.\n\nProposed overnight: Camping Lilly Pineta. Supplied planning pin: 44.028501, 10.077718. The linked campsite pin is 44.025105, 10.077470; confirm the entrance.\n\nThe notes again suggest a straightforward day following EuroVelo 5. This is retained as a route note, not a verified alignment.",
+      "text": "Continue towards Marina di Massa. The revised table uses Massa and 54 km, replacing the earlier Marina di Carrara entry.\n\nProposed overnight: Camping Lilly Pineta. Supplied planning pin: 44.028501, 10.077718. The linked campsite pin is 44.025105, 10.077470; confirm the entrance.\n\nThe notes again suggest a straightforward day following EuroVelo 5. This is retained as a route note, not a verified alignment.\n\nMapped candidate: 48.8 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
       "segmentIds": [
         "florence-genoa-lucca-massa"
       ],
@@ -324,7 +318,7 @@
       "calendarDate": "2026-05-13",
       "date": "Wednesday · 13 May",
       "title": "Towards Mattarana",
-      "text": "The longest listed stage follows the easier opening days. The notes flag more climbing here; the tested coastal alternative reportedly adds around 30 km with similar elevation. No elevation total has been imported.\n\nThe destination is Mattarana, but the proposed Camping Oasi Holiday Park is at Passo delle Campane near Sestri Levante (official pin: 44.258050, 9.493494), farther west. The supplied planning pin is 44.264809, 9.505556. This mismatch must be resolved before choosing the stage endpoint or overnight.\n\nAlternative from the notes: a nearby forest or riverside spot, with permission and suitability unconfirmed. The older note about resting in Genoa the next day conflicts with the revised Thursday in Sestri Levante; no extra rest day has been inserted.",
+      "text": "The longest listed stage follows the easier opening days. The notes flag more climbing here; the tested coastal alternative reportedly adds around 30 km with similar elevation. No elevation total has been imported.\n\nThe destination is Mattarana, but the proposed Camping Oasi Holiday Park is at Passo delle Campane near Sestri Levante (official pin: 44.258050, 9.493494), farther west. The supplied planning pin is 44.264809, 9.505556. This mismatch must be resolved before choosing the stage endpoint or overnight.\n\nAlternative from the notes: a nearby forest or riverside spot, with permission and suitability unconfirmed. The older note about resting in Genoa the next day conflicts with the revised Thursday in Sestri Levante; no extra rest day has been inserted.\n\nMapped candidate: 60.8 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
       "segmentIds": [
         "florence-genoa-massa-mattarana"
       ],
@@ -338,7 +332,7 @@
       "calendarDate": "2026-05-14",
       "date": "Thursday · 14 May",
       "title": "Mattarana to Sestri Levante",
-      "text": "The revised itinerary ends at Sestri Levante and names Camping Mare Monti, replacing the earlier Pian dei Manzi plan. Supplied campsite pin: 44.263141, 9.442277.\n\nThe notes describe a beautiful final stretch with some tricky unpaved roads. It is not yet clear whether this comment and the linked Komoot suggestion refer to the earlier route or this revision.\n\nRetain the supplied 62 km estimate for now. The exact track and Wednesday’s overnight are needed to explain this distance and establish the actual start of the day.",
+      "text": "The revised itinerary ends at Sestri Levante and names Camping Mare Monti, replacing the earlier Pian dei Manzi plan. Supplied campsite pin: 44.263141, 9.442277.\n\nThe notes describe a beautiful final stretch with some tricky unpaved roads. It is not yet clear whether this comment and the linked Komoot suggestion refer to the earlier route or this revision.\n\nThe supplied plan estimates 62 km. The exact track and Wednesday’s overnight are needed to explain this distance and establish the actual start of the day.\n\nMapped candidate: 25.8 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
       "segmentIds": [
         "florence-genoa-mattarana-sestri"
       ],
@@ -352,7 +346,7 @@
       "calendarDate": "2026-05-15",
       "date": "Friday · 15 May",
       "title": "Sestri Levante to Genoa",
-      "text": "Finish in Genoa, with 62–72 km in the revised plan. Proposed overnight: Airbnb in Genoa; booking status is unconfirmed.\n\nA shorter coastal option is mentioned, with roughly 35–45 km on busy roads with cars. Keep that tradeoff visible until the exact route is available.\n\nThe trip’s 364 km statistic uses the lower 62 km estimate for this day; the six riding days total 364–374 km. Arrival travel is unmeasured and is not included in that cycling total.",
+      "text": "Finish in Genoa, with 62–72 km in the revised plan. Proposed overnight: Airbnb in Genoa; booking status is unconfirmed.\n\nA shorter coastal option is mentioned, with roughly 35–45 km on busy roads with cars. Keep that tradeoff visible until the exact route is available.\n\nThe original six-day cycling plan totals 364–374 km. The mapped town-to-town reconstruction totals 300.0 km before campsite approaches and other detours. Route statistics now measure the mapped reconstruction, including the separate arrival routes when they are selected.\n\nMapped candidate: 81.8 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
       "segmentIds": [
         "florence-genoa-sestri-genoa"
       ],

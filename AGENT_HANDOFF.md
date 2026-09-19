@@ -5,9 +5,10 @@
 The real `florence-genoa` instance covers 9–15 May 2026 with nine travelers,
 four arrival groups and six shared bicycle stages. Arrivals include the owner’s
 all-train clarification for Kawan and the Lucerne party; the Milan–Florence
-train is shared by seven people. All geometry is explicitly provisional because
-both supplied route shares return 404. Read [the intake and open issues](docs/FLORENCE_GENOA.md)
-before adding tracks, dates, services or photos. The revised itinerary supersedes
+train is shared by seven people. All eleven legs now have detailed network
+geometry, with reconstructed alignment distinguished from the unavailable
+original track and unconfirmed services. Read [the intake and open issues](docs/FLORENCE_GENOA.md)
+and [the multimodal route recipe](ROUTE_GEOMETRY_WORKFLOW.md) before updating routes. The revised itinerary supersedes
 the older table. No shared runtime/template changes or copied family assets.
 
 
