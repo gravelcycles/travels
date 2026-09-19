@@ -78,3 +78,9 @@ The owner requested automatic unpublished draft recovery, review and discard on
 14 September 2026; these are now delivered Studio features. Explicit sharing,
 batch editing, publication readiness, private video intake and a labeled Replay
 timeline remain proposals. Replay stays map-only and publishing stays agent-operated.
+
+
+Florence–Genoa is a real planning instance of the existing group-route and
+new-trip capabilities: nine travelers, four arrival groups, a shared train and
+six shared bicycle days. Its route geometry remains provisional; see
+[FLORENCE_GENOA.md](FLORENCE_GENOA.md). No new feature or trip-specific code.

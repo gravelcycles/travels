@@ -187,7 +187,7 @@ test('a shared template edit propagates on rebuild, replacing edited generated H
 
 test('Studio planner requests preserve the shared group/video contract for the reference, a demo and a fresh draft', t => {
   const root=fixture(t), draft=createJourney(root,input), {data}=loadContent(root,{includeDrafts:true}), state=readOverrides(root);
-  const targets=[data.journeys.find(j=>j.kind==='real' && j.published),data.journeys.find(j=>j.routeGroups?.length),data.journeys.find(j=>j.id===draft.id)];
+  const targets=[data.journeys.find(j=>j.kind==='real' && j.published),data.journeys.find(j=>j.kind === 'demo' && j.routeGroups?.length),data.journeys.find(j=>j.id===draft.id)];
   for(const journey of targets) {
     const changes=globalThis.JOURNEY_ATLAS_PLAN_EXTRAS.changes(journey);
     assert.deepEqual(Object.keys(changes.photoGroups),journey.photos.map(photo=>photo.id));
@@ -367,7 +367,7 @@ test('real, demo and fresh draft share routing readiness and explicit replacemen
 test('group routes and day videos are shared by the reference, sample and a fresh draft', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const { data } = loadContent(root, { includeDrafts: true });
-  const sample = data.journeys.find(j => j.routeGroups?.length);
+  const sample = data.journeys.find(j => j.kind === 'demo' && j.routeGroups?.length);
   assert.equal(sample.travelers.length, 9);
   assert.equal(sample.routeGroups.length, 3);
   const utils = globalThis.JOURNEY_ATLAS_GROUPS;
@@ -429,7 +429,7 @@ test('photo and video IDs cannot collide in the shared viewer or across journeys
 });
 
 test('group and media validation reject broken references, false meetups and unsafe/publication-ambiguous video sources', () => {
-  const source = loadContent(repo).data.journeys.find(j => j.routeGroups?.length);
+  const source = loadContent(repo).data.journeys.find(j => j.kind === 'demo' && j.routeGroups?.length);
   const invalid = [
     [j => j.travelers.push({ id:j.travelers[0].id, name:'Duplicate' }), /duplicate travelers/],
     [j => j.routeGroups[1].travelerIds.push(j.travelers[0].id), /only one route group/],
@@ -498,7 +498,7 @@ test('video playback uses the existing viewer and stops, releases and retries me
 
 test('Day details include the full roster, route and overnight for each group, including shared rest days', () => {
   const groups = globalThis.JOURNEY_ATLAS_GROUPS;
-  const sample = loadContent(repo).data.journeys.find(j => j.routeGroups?.length);
+  const sample = loadContent(repo).data.journeys.find(j => j.kind === 'demo' && j.routeGroups?.length);
   const first = groups.dayDetails(sample, sample.days[0], 'lake-ferry');
   for (const traveler of sample.travelers) assert.ok(first.includes(traveler.name));
   for (const place of ['Lugano','Varenna','Menaggio']) assert.ok(first.includes(`Overnight: ${place}`));

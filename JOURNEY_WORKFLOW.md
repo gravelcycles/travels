@@ -577,3 +577,13 @@ preview or `experience=comments` for the display-name/password/photo-comment
 preview. The sample password is `demo`. Preview reviews/comments stay in this
 browser; they are not authored trip data and do not synchronize to other
 visitors. Real shared comments require the proposed Worker/database extension.
+
+## Initial route-link intake example
+
+[Florence–Genoa](docs/FLORENCE_GENOA.md) records an initial seven-day plan when
+traveler route shares are unavailable. Keep the latest table as the active
+itinerary, retain superseded facts in provenance, and mark every unreviewed
+leg `geometryStatus: "provisional"`. Never present endpoint guides as imported
+tracks. Use the existing roster/group assignments for separate arrivals and
+omit `groupIds` on shared cycling days. Missing origins stay in notes until
+known; dates follow the confirmed intake, with any inferred year documented.
