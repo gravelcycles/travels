@@ -232,3 +232,25 @@ This review gate does not block delivery of the authorized bug fixes.
 ## Studio persistence follow-up — 15 September 2026
 
 The owner subsequently requested reload recovery, readable draft review, and usable Save conflict handling. Those are now shared capabilities: local revision snapshots support three-way saves, independent changes combine, and conflicting fields require an explicit saved/draft choice. No force overwrite is inferred from a reload. Editable day taglines, preserved story paragraphs and compact expandable travel details use the existing shared templates and editorial overrides for real trips, demos and fresh drafts.
+
+
+## Places and conversations — 19 September 2026
+
+`pointsOfInterest` is a validated optional annotation collection, independent of
+itinerary `places`. `scripts/places-content.mjs` owns validation and the shared
+`dist/assets/places-comments.js` / `.css` and `journey.html` own presentation.
+`journeys.js` carries the curated place records through the existing generated
+bundle. Ordinary Studio saves preserve them; data is authored by prompting the
+agent. All journeys inherit the layer and its empty state; no concrete trip IDs
+or API calls occur in shared code. Alpine Crossing contains clearly labeled
+example places, invented group reviews and illustrative media.
+
+The temporary `experience=places|comments` query is a UX-review entry point in
+the same template, not a general feature-flag system. Only this explicit preview
+exposes local review editing and the fake-password comment simulation. Live
+comments, server-bound visitor identities, moderation, eligible-photo validation
+and D1 provisioning are unresolved W08 work, documented in
+[PLACES_AND_COMMENTS.md](PLACES_AND_COMMENTS.md). Existing photo auth is unchanged.
+POI clustering/collision handling for large collections and deeper mobile overlay
+history should be resolved after reviewing this small demo. New authorized demos
+are distinct from the six earlier audit proposals.

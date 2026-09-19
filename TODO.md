@@ -235,3 +235,20 @@ site: recovery drafts/conflict review; explicit sharing (without automatic
 reload persistence); batch photo editing; publication readiness/agent handoff;
 private video intake (W07); and a labeled map-only Replay timeline. These are
 pending review, not part of the 20 authorized bug fixes. Audit V1 stays excluded.
+
+
+## Places and photo comments — 19 September 2026
+
+- [x] **W08 demo:** shared prompt-authored POI schema/layer, food/sight/day filters,
+      credited images, source links, group review averages and saved-place state.
+      Local UX previews exercise review writing and display-name/password/photo
+      comments with own-comment deletion, empty states and storage errors.
+- [ ] **W08 live comments:** review the demos; extend the existing photo Worker
+      with signed visitor identities distinct from password IDs, authenticated
+      D1 reads/writes, eligible-photo indexing, idempotency, pagination, posting
+      limits, own-comment deletion, owner moderation and export. Implement and
+      test expiry/revocation/CORS and deployment as one service change. No SSO or
+      Google Maps API. Keep group reviews prompt-authored unless a later request
+      defines server-authorized group editing. See docs/PLACES_AND_COMMENTS.md.
+- [ ] **W08 polish after demo review:** dense POI marker collision/clustering,
+      source/image intake tooling and full mobile overlay Back/Forward behavior.

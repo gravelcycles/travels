@@ -16,6 +16,7 @@ import '../dist/assets/map-style.js';
 import { mapStyleHarness } from './map-style-harness.mjs';
 import '../dist/assets/group-travel.js';
 import '../dist/assets/media-utils.js';
+import '../dist/assets/places-comments.js';
 import '../studio/plan-extras.js';
 import { validateJourneyExtras } from '../scripts/journey-extras.mjs';
 
@@ -139,6 +140,8 @@ test('one template supplies every control and asset to real trips, all samples, 
     assert.doesNotMatch(desktopHeader, /Sample journeys|Family journey|About this atlas|site-badge|open-notes/);
   }
   assert.ok(ids(reference).includes('mobile-back'), 'The shared header provides the return to all days');
+  for (const id of ['open-places', 'mobile-open-places', 'places-panel', 'open-photo-comments', 'comments-dialog', 'experience-unlock']) assert.ok(ids(reference).includes(id), `Shared places/comments control ${id} exists`);
+  for (const asset of ['places-comments.js', 'places-comments.css']) assert.ok(assets(reference).includes(asset));
   const replay = reference.match(/<dialog class="replay-dialog"[\s\S]*?<\/dialog>/)[0];
   assert.doesNotMatch(replay, /<img|replay-photo|replay-view-(?:map|photos)/, 'Replay has no photo surface or media switch');
   assert.match(replay, /id="replay-map"/);
@@ -271,7 +274,7 @@ test('the same introduction opens for real trips, samples and empty drafts; deep
 
 test('shared browser code and HTML templates contain no concrete trip IDs or URLs', () => {
   const { data } = loadContent(repo);
-  for (const filename of ['dist/assets/app.js', 'dist/assets/map-style.js', 'dist/assets/location-labels.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'dist/assets/group-travel.js', 'dist/assets/media-utils.js', 'studio/studio.js', 'studio/plan-extras.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
+  for (const filename of ['dist/assets/places-comments.js', 'dist/assets/places-comments.css', 'dist/assets/app.js', 'dist/assets/map-style.js', 'dist/assets/location-labels.js', 'dist/assets/atlas-utils.js', 'dist/assets/replay-utils.js', 'dist/assets/catalog.js', 'dist/assets/mobile-ux.js', 'dist/assets/mobile.css', 'dist/assets/input-mode.js', 'dist/assets/group-travel.js', 'dist/assets/media-utils.js', 'studio/studio.js', 'studio/plan-extras.js', 'content/templates/journey.html', 'content/templates/catalog.html']) {
     const source = read(repo, filename);
     for (const journey of data.journeys) {
       assert.ok(!source.includes(journey.id), `${filename} must express ${journey.id} behavior through data`);
@@ -726,4 +729,28 @@ test('days without travel omit automatic stay labels across real, demo and fresh
   }
   assert.doesNotMatch(app,/In one place/);
   assert.match(appFunction('renderStory'),/travelSummary \? `<p class="travel-summary">/);
+});
+
+
+test('places are data-only annotations inherited by real, demo and fresh-draft journeys', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const { data } = loadContent(root, { includeDrafts: true });
+  const targets = [data.journeys.find(j => j.kind === 'real'), data.journeys.find(j => j.pointsOfInterest?.length), data.journeys.find(j => j.id === draft.id)];
+  for (const journey of targets) {
+    const before = structuredClone({ days: journey.days, places: journey.places, segments: journey.segments });
+    if (!journey.pointsOfInterest) {
+      assert.deepEqual(globalThis.JOURNEY_ATLAS_PLACES.filterPlaces(journey), []);
+      journey.pointsOfInterest = [{ id: 'a-new-discovery', name: 'A new discovery', category: 'sight', coordinates: [139.7, 35.6], locationAccuracy: 'approximate', status: 'saved', dayIds: [journey.days[0].id], summary: 'A place for a future visit.', sources: [{ label: 'Source', url: 'https://example.com/place' }], images: [], reviews: [] }];
+    }
+    validateJourneys(data);
+    assert.ok(globalThis.JOURNEY_ATLAS_PLACES.filterPlaces(journey).length > 0);
+    const result = prepareJourneyPlan(data, journey, { title: journey.title + ' reviewed' }, readOverrides(root)).journey;
+    assert.deepEqual(result.pointsOfInterest, journey.pointsOfInterest, 'Ordinary Studio saves retain curated places');
+    assert.deepEqual({ days: journey.days, places: journey.places, segments: journey.segments }, before, 'Annotations never become route nodes or alter the itinerary');
+    assert.ok(ids(renderJourneyPage(root, journey, { preview: true })).includes('places-panel'));
+  }
+  buildSite(root);
+  const output = bundle(read(root, 'dist/assets/journeys.js'), 'JOURNEY_ATLAS_DATA');
+  assert.equal(output.journeys.find(j => j.pointsOfInterest?.length).pointsOfInterest.length, 3);
+  assert.ok(!output.journeys.some(j => j.id === draft.id), 'Fresh local data stays unpublished');
 });
