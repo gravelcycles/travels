@@ -56,10 +56,10 @@ project-level status.
 
 ## P0 · Content corrections
 
-- [ ] **Florence–Genoa route intake.** Initial 9–15 May 2026 itinerary is built.
-      Await a working route share/GPX, Kawan’s origin, and resolution of the
+- [ ] **Florence–Genoa route intake.** Cycling-only 10–15 May 2026 itinerary is built.
+      Await a working route share/GPX and resolution of the
       Mattarana/Oasi overnight mismatch and Thursday distance. See
-      [the trip intake](docs/FLORENCE_GENOA.md); all eleven lines now follow
+      [the trip intake](docs/FLORENCE_GENOA.md); all six cycling lines follow
       reconstructed networks, but exact alignment and campsite approaches remain open.
 
 

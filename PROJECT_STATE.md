@@ -1,15 +1,16 @@
 # Project state
 
-## Florence–Genoa initial trip — 19 September 2026
+## Florence–Genoa cycling-only trip — 20 September 2026
 
-The real `florence-genoa` instance covers 9–15 May 2026 with nine travelers,
-four arrival groups and six shared bicycle stages. Arrivals include the owner’s
-all-train clarification for Kawan and the Lucerne party; the Milan–Florence
-train is shared by seven people. All eleven legs now have detailed network
-geometry, with reconstructed alignment distinguished from the unavailable
-original track and unconfirmed services. Read [the intake and open issues](docs/FLORENCE_GENOA.md)
-and [the multimodal route recipe](ROUTE_GEOMETRY_WORKFLOW.md) before updating routes. The revised itinerary supersedes
-the older table. No shared runtime/template changes or copied family assets.
+The owner removed the arrival day and all train/bus travel. The real
+`florence-genoa` instance now contains six bicycle days, 10–15 May 2026,
+numbered 1–6, with stable riding IDs and all detailed bicycle geometry retained.
+The 300 km summary counts cycling only. Arrival-only pins, route groups and
+meetup references are removed; the nine-person source roster remains.
+Read [the intake and open issues](docs/FLORENCE_GENOA.md) and
+[the route recipe](ROUTE_GEOMETRY_WORKFLOW.md) before updating routes. Exact GPX,
+campsite access and Thursday's distance still need reconciliation. No shared
+runtime/template changes or copied family assets.
 
 
 ## Studio group and video authoring — 10 September 2026

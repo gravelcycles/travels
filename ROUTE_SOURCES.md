@@ -114,17 +114,16 @@ an external router. See `JOURNEY_WORKFLOW.md` for the full train, ferry, road,
 bicycle, GPX, review, and publishing flow.
 
 
-## Florence–Genoa — 19 September 2026
+## Florence–Genoa — updated 20 September 2026
 
 See [the trip intake and provenance](docs/FLORENCE_GENOA.md). The supplied
 cycle.travel and token-bearing Komoot shares both returned 404 in a browser.
-All eleven legs now have reviewed network geometry: three rail legs from
-OpenRailRouting, two representative coach corridors from OSRM, and six bicycle
-candidates from BRouter trekking. They reconstruct physical corridors; they do
-not claim to recover the unavailable original GPS track or booked services.
-Exact requests and quality checks are in the journey's routing manifest, and
+The journey now contains only six bicycle days, 10–15 May, as requested by the
+owner. All six routes retain the reviewed BRouter trekking reconstruction.
+Arrival train/bus routes, their geometry and arrival-only pins have been removed.
+Exact bicycle requests and quality checks remain in the journey manifest;
 static output is protected by preserve entries. Use
-[ROUTE_GEOMETRY_WORKFLOW.md](ROUTE_GEOMETRY_WORKFLOW.md) for this reusable process.
+[ROUTE_GEOMETRY_WORKFLOW.md](ROUTE_GEOMETRY_WORKFLOW.md) for the reusable process.
 The original cycling plan is 364–374 km; mapped town-to-town candidates total
 300.0 km before campsite approaches. Thursday and Friday discrepancies remain
 visible in the stories. All precise private accommodation data stays local.

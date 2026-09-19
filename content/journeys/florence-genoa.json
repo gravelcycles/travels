@@ -9,48 +9,13 @@
   "title": "Florence to Genoa",
   "subtitle": "Nine travelers, six riding days from Tuscany to Liguria. Detailed route reconstruction; the original plan estimates 364–374 cycling km.",
   "kicker": "CYCLING JOURNEY · INITIAL PLAN",
-  "dates": "9–15 May 2026",
-  "startDate": "2026-05-09",
+  "dates": "10–15 May 2026",
+  "startDate": "2026-05-10",
   "endDate": "2026-05-15",
   "timeZone": "Europe/Rome",
-  "note": "The map follows reconstructed railways, roads and cycling paths. It is not the original cycle.travel/Komoot track: both shares returned 404 on 19 September 2026. Route distances measure these reconstructions; the original cycling plan estimates 364–374 km, compared with 300.0 km currently mapped between towns, excluding campsite approaches. Arrival routes use representative corridors and station-area anchors; tickets, bus terminals and local transfers remain unconfirmed. Wednesday’s overnight and Thursday’s distance still need reconciliation. Campsites are suggestions, not confirmed bookings.",
+  "note": "Six cycling days from Florence to Genoa. The map follows reconstructed roads and cycling paths. It is not the original cycle.travel/Komoot track: both shares returned 404 on 19 September 2026. Route distances measure these reconstructions; the original cycling plan estimates 364–374 km, compared with 300.0 km currently mapped between towns, excluding campsite approaches. Wednesday’s overnight and Thursday’s distance still need reconciliation. Campsites are suggestions, not confirmed bookings.",
   "cover": "",
   "places": [
-    {
-      "id": "fg-berlin",
-      "name": "Berlin",
-      "country": "Germany",
-      "lat": 52.52,
-      "lng": 13.405
-    },
-    {
-      "id": "fg-hamburg",
-      "name": "Hamburg",
-      "country": "Germany",
-      "lat": 53.55295,
-      "lng": 10.00689
-    },
-    {
-      "id": "fg-freiburg",
-      "name": "Freiburg im Breisgau",
-      "country": "Germany",
-      "lat": 47.99775,
-      "lng": 7.8411
-    },
-    {
-      "id": "fg-lucerne",
-      "name": "Lucerne",
-      "country": "Switzerland",
-      "lat": 47.0504,
-      "lng": 8.31
-    },
-    {
-      "id": "fg-milan",
-      "name": "Milan",
-      "country": "Italy",
-      "lat": 45.48599,
-      "lng": 9.20512
-    },
     {
       "id": "fg-florence",
       "name": "Florence",
@@ -101,13 +66,6 @@
       "lng": 8.9463
     },
     {
-      "id": "fg-camp-florence",
-      "name": "Camping Village Internazionale Firenze",
-      "country": "Italy",
-      "lat": 43.724715,
-      "lng": 11.218994
-    },
-    {
       "id": "fg-camp-toscana",
       "name": "Toscana Village · supplied planning pin",
       "country": "Italy",
@@ -144,64 +102,6 @@
     }
   ],
   "segments": [
-    {
-      "id": "florence-genoa-berlin-florence",
-      "from": "fg-berlin",
-      "to": "fg-florence",
-      "mode": "bus",
-      "groupIds": [
-        "berlin"
-      ],
-      "source": "Traveler: Marc and Anna, Berlin to Florence by FlixBus; terminals, connections and departure date/time unconfirmed. Representative road corridor, not a verified coach service. City/station-area endpoints are map anchors, not confirmed boarding terminals; actual bus-to-train transfers remain to plan. Mapped reconstruction: 1218.6 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest.",
-      "distanceKm": 1218.6
-    },
-    {
-      "id": "florence-genoa-hamburg-freiburg",
-      "from": "fg-hamburg",
-      "to": "fg-freiburg",
-      "mode": "train",
-      "groupIds": [
-        "hamburg"
-      ],
-      "source": "Traveler: Mo and Paula, Hamburg to Freiburg im Breisgau by train; service and intermediate stops unconfirmed. Representative physical railway corridor. Intermediate request points are geometry anchors, not confirmed passenger stops. No exact service, timetable or platform is claimed. Mapped reconstruction: 785.8 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest.",
-      "distanceKm": 785.8
-    },
-    {
-      "id": "florence-genoa-freiburg-milan",
-      "from": "fg-freiburg",
-      "to": "fg-milan",
-      "mode": "bus",
-      "groupIds": [
-        "hamburg"
-      ],
-      "source": "Traveler: Mo and Paula, Freiburg to Milan by bus; operator and terminals unconfirmed. Representative road corridor, not a verified coach service. City/station-area endpoints are map anchors, not confirmed boarding terminals; actual bus-to-train transfers remain to plan. Mapped reconstruction: 430.3 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest.",
-      "distanceKm": 430.3
-    },
-    {
-      "id": "florence-genoa-lucerne-milan",
-      "from": "fg-lucerne",
-      "to": "fg-milan",
-      "mode": "train",
-      "groupIds": [
-        "lucerne",
-        "kawan"
-      ],
-      "source": "Traveler clarification: Qen, Jonas, David, Michelle and Kawan travel by train from Lucerne to Milan. Kawan also reaches Lucerne by train; origin is unknown, so that preceding leg is not drawn. Representative physical railway corridor. Intermediate request points are geometry anchors, not confirmed passenger stops. No exact service, timetable or platform is claimed. Mapped reconstruction: 236.6 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest.",
-      "distanceKm": 236.6
-    },
-    {
-      "id": "florence-genoa-milan-florence",
-      "from": "fg-milan",
-      "to": "fg-florence",
-      "mode": "train",
-      "groupIds": [
-        "hamburg",
-        "lucerne",
-        "kawan"
-      ],
-      "source": "Traveler: seven travelers join in Milan for a non-Frecciarossa train to Florence. Train category, service and changes unconfirmed. Representative physical railway corridor. Intermediate request points are geometry anchors, not confirmed passenger stops. No exact service, timetable or platform is claimed. Mapped reconstruction: 314.9 km. Sources and exact request: ROUTE_SOURCES.md and the journey routing manifest.",
-      "distanceKm": 314.9
-    },
     {
       "id": "florence-genoa-florence-fucecchio",
       "from": "fg-florence",
@@ -253,26 +153,8 @@
   ],
   "days": [
     {
-      "id": "florence-genoa-d1",
-      "number": 1,
-      "calendarDate": "2026-05-09",
-      "date": "Saturday · 9 May",
-      "title": "Everyone meets in Florence",
-      "text": "Marc and Anna travel from Berlin to Florence by FlixBus.\n\nMo and Paula take the train from Hamburg to Freiburg im Breisgau, then a bus to Milan. Qen, Jonas, David and Michelle travel from Lucerne to Milan by train. Kawan reaches Lucerne by train and joins them; Kawan’s starting point still needs adding.\n\nThe seven travelers meet in Milan and continue to Florence on a non-Frecciarossa train. Exact services, connections, departure days and arrival times are still to confirm; these legs are grouped under the Saturday arrival for now.\n\nProposed overnight: Camping Village Internazionale Firenze (now hu Firenze Certosa camping in town). Everyone meets in Florence; the meeting point and time are open. The map follows representative rail and road corridors. Station-area pins are mapping anchors; exact coach terminals, transfer routes and the Florence meeting point are not yet settled.",
-      "segmentIds": [
-        "florence-genoa-berlin-florence",
-        "florence-genoa-hamburg-freiburg",
-        "florence-genoa-freiburg-milan",
-        "florence-genoa-lucerne-milan",
-        "florence-genoa-milan-florence"
-      ],
-      "tagline": "Four arrivals, one cycling trip",
-      "placeId": "fg-camp-florence",
-      "destinationId": "fg-florence"
-    },
-    {
       "id": "florence-genoa-d2",
-      "number": 2,
+      "number": 1,
       "calendarDate": "2026-05-10",
       "date": "Sunday · 10 May",
       "title": "Florence to Fucecchio",
@@ -286,7 +168,7 @@
     },
     {
       "id": "florence-genoa-d3",
-      "number": 3,
+      "number": 2,
       "calendarDate": "2026-05-11",
       "date": "Monday · 11 May",
       "title": "Fucecchio to Lucca",
@@ -300,7 +182,7 @@
     },
     {
       "id": "florence-genoa-d4",
-      "number": 4,
+      "number": 3,
       "calendarDate": "2026-05-12",
       "date": "Tuesday · 12 May",
       "title": "Lucca to the Massa coast",
@@ -314,7 +196,7 @@
     },
     {
       "id": "florence-genoa-d5",
-      "number": 5,
+      "number": 4,
       "calendarDate": "2026-05-13",
       "date": "Wednesday · 13 May",
       "title": "Towards Mattarana",
@@ -328,7 +210,7 @@
     },
     {
       "id": "florence-genoa-d6",
-      "number": 6,
+      "number": 5,
       "calendarDate": "2026-05-14",
       "date": "Thursday · 14 May",
       "title": "Mattarana to Sestri Levante",
@@ -342,11 +224,11 @@
     },
     {
       "id": "florence-genoa-d7",
-      "number": 7,
+      "number": 6,
       "calendarDate": "2026-05-15",
       "date": "Friday · 15 May",
       "title": "Sestri Levante to Genoa",
-      "text": "Finish in Genoa, with 62–72 km in the revised plan. Proposed overnight: Airbnb in Genoa; booking status is unconfirmed.\n\nA shorter coastal option is mentioned, with roughly 35–45 km on busy roads with cars. Keep that tradeoff visible until the exact route is available.\n\nThe original six-day cycling plan totals 364–374 km. The mapped town-to-town reconstruction totals 300.0 km before campsite approaches and other detours. Route statistics now measure the mapped reconstruction, including the separate arrival routes when they are selected.\n\nMapped candidate: 81.8 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
+      "text": "Finish in Genoa, with 62–72 km in the revised plan. Proposed overnight: Airbnb in Genoa; booking status is unconfirmed.\n\nA shorter coastal option is mentioned, with roughly 35–45 km on busy roads with cars. Keep that tradeoff visible until the exact route is available.\n\nThe original six-day cycling plan totals 364–374 km. The mapped town-to-town reconstruction totals 300.0 km before campsite approaches and other detours. Route statistics measure the six mapped cycling stages.\n\nMapped candidate: 81.8 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
       "segmentIds": [
         "florence-genoa-sestri-genoa"
       ],
@@ -393,45 +275,5 @@
       "id": "michelle",
       "name": "Michelle"
     }
-  ],
-  "routeGroups": [
-    {
-      "id": "berlin",
-      "label": "Marc & Anna · Berlin",
-      "travelerIds": [
-        "marc",
-        "anna"
-      ]
-    },
-    {
-      "id": "hamburg",
-      "label": "Mo & Paula · Hamburg",
-      "travelerIds": [
-        "mo",
-        "paula"
-      ]
-    },
-    {
-      "id": "lucerne",
-      "label": "Qen, Jonas, David & Michelle · Lucerne",
-      "travelerIds": [
-        "qen",
-        "jonas",
-        "david",
-        "michelle"
-      ]
-    },
-    {
-      "id": "kawan",
-      "label": "Kawan · via Lucerne",
-      "travelerIds": [
-        "kawan"
-      ]
-    }
-  ],
-  "meetup": {
-    "dayId": "florence-genoa-d1",
-    "placeId": "fg-florence",
-    "label": "Everyone joins in Florence on Saturday 9 May; meeting point and time to confirm."
-  }
+  ]
 }

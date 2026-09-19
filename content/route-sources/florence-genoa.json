@@ -4,127 +4,6 @@
   "networks": {},
   "modeNetworks": {},
   "segments": {
-    "florence-genoa-berlin-florence": {
-      "strategy": "preserve",
-      "provenance": {
-        "provider": "OSRM road service / OpenStreetMap",
-        "retrievedAt": "2026-09-19",
-        "requestUrl": "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.405,52.520;11.576,48.137;11.404,47.269;11.24837,43.7764?overview=full&geometries=geojson&steps=false",
-        "profile": "driving",
-        "rawSha256": "5bec5427a5dcbfe112d30fb90b55d0c65d20fb137d61d3f9b3cb96c4aad6822c",
-        "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
-        "rawPointCount": 16678,
-        "outputPointCount": 4561,
-        "rawDistanceKm": 1218.894,
-        "distanceKm": 1218.631,
-        "endpointOffsetsMeters": [
-          0,
-          39
-        ],
-        "largestRawGapKm": 4.005,
-        "largestGapEnvironment": "network geometry",
-        "notes": "Representative road corridor, not a verified coach service. City/station-area endpoints are map anchors, not confirmed boarding terminals; actual bus-to-train transfers remain to plan."
-      }
-    },
-    "florence-genoa-hamburg-freiburg": {
-      "strategy": "preserve",
-      "provenance": {
-        "provider": "OpenRailRouting (GraphHopper) / OpenStreetMap",
-        "retrievedAt": "2026-09-19",
-        "requestUrl": "https://routing.openrailrouting.org/route?point=53.55295%2C10.00689&point=52.3779%2C9.7429&point=51.3129%2C9.4471&point=50.1076%2C8.6638&point=49.4795%2C8.4687&point=48.9936%2C8.4013&point=47.99775%2C7.8411&profile=tgv_all&points_encoded=false&instructions=false&details=railway_class&details=road_environment&details=railway_service&way_point_max_distance=0",
-        "profile": "tgv_all",
-        "rawSha256": "def04603df548916807f8eccad969b8aa8c5b3d268cf2aca69f3c644d8bb93b5",
-        "dataDate": "2026-09-10T04:00:00Z",
-        "engineVersion": "11.0",
-        "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
-        "rawPointCount": 5284,
-        "outputPointCount": 1669,
-        "rawDistanceKm": 785.854,
-        "distanceKm": 785.79,
-        "endpointOffsetsMeters": [
-          3,
-          1
-        ],
-        "largestRawGapKm": 3.94,
-        "largestGapEnvironment": "network geometry",
-        "notes": "Representative physical railway corridor. Intermediate request points are geometry anchors, not confirmed passenger stops. No exact service, timetable or platform is claimed."
-      }
-    },
-    "florence-genoa-freiburg-milan": {
-      "strategy": "preserve",
-      "provenance": {
-        "provider": "OSRM road service / OpenStreetMap",
-        "retrievedAt": "2026-09-19",
-        "requestUrl": "https://routing.openstreetmap.de/routed-car/route/v1/driving/7.8411,47.99775;7.592,47.548;8.682,46.713;9.20512,45.48599?overview=full&geometries=geojson&steps=false",
-        "profile": "driving",
-        "rawSha256": "f29a8eac425ce3c24187f76a715c74d604a0b1188effd525f582e44f2d0aa626",
-        "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
-        "rawPointCount": 9288,
-        "outputPointCount": 2369,
-        "rawDistanceKm": 430.577,
-        "distanceKm": 430.341,
-        "endpointOffsetsMeters": [
-          48,
-          73
-        ],
-        "largestRawGapKm": 1.603,
-        "largestGapEnvironment": "network geometry",
-        "notes": "Representative road corridor, not a verified coach service. City/station-area endpoints are map anchors, not confirmed boarding terminals; actual bus-to-train transfers remain to plan."
-      }
-    },
-    "florence-genoa-lucerne-milan": {
-      "strategy": "preserve",
-      "provenance": {
-        "provider": "OpenRailRouting (GraphHopper) / OpenStreetMap",
-        "retrievedAt": "2026-09-19",
-        "requestUrl": "https://routing.openrailrouting.org/route?point=47.0504,8.3100&point=47.0489,8.5491&point=46.1952,9.0290&point=46.0052,8.9465&point=45.8329,9.0318&point=45.48599,9.20512&profile=non_tgv&points_encoded=false&instructions=false&details=railway_class&details=road_environment&details=railway_service&way_point_max_distance=0",
-        "profile": "non_tgv",
-        "rawSha256": "c14c1120890db0ecc8372543c1a7c2aadb6cc195e62a5f8db2c14d8645762e1a",
-        "dataDate": "2026-09-10T04:00:00Z",
-        "engineVersion": "11.0",
-        "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
-        "rawPointCount": 2298,
-        "outputPointCount": 835,
-        "rawDistanceKm": 236.616,
-        "distanceKm": 236.563,
-        "endpointOffsetsMeters": [
-          31,
-          2
-        ],
-        "largestRawGapKm": 14.68,
-        "largestGapEnvironment": "railway tunnel",
-        "notes": "Representative physical railway corridor. Intermediate request points are geometry anchors, not confirmed passenger stops. No exact service, timetable or platform is claimed."
-      }
-    },
-    "florence-genoa-milan-florence": {
-      "strategy": "preserve",
-      "provenance": {
-        "provider": "OpenRailRouting (GraphHopper) / OpenStreetMap",
-        "retrievedAt": "2026-09-19",
-        "requestUrl": "https://routing.openrailrouting.org/route?point=45.48599%2C9.20512&point=45.05186%2C9.7065&point=44.8111%2C10.3283&point=44.5051%2C11.3414&point=43.879%2C11.1108&point=43.7764%2C11.24837&profile=non_tgv&points_encoded=false&instructions=false&details=railway_class&details=road_environment&details=railway_service&way_point_max_distance=0",
-        "profile": "non_tgv",
-        "rawSha256": "52cd305fdc8f5b88ccdead6c41ffe5b9f199d0e5cf9fadd875d31d2e5a46d8f3",
-        "dataDate": "2026-09-10T04:00:00Z",
-        "engineVersion": "11.0",
-        "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
-        "rawPointCount": 1755,
-        "outputPointCount": 626,
-        "rawDistanceKm": 314.93,
-        "distanceKm": 314.911,
-        "endpointOffsetsMeters": [
-          2,
-          51
-        ],
-        "largestRawGapKm": 9.532,
-        "largestGapEnvironment": "railway tunnel",
-        "notes": "Representative physical railway corridor. Intermediate request points are geometry anchors, not confirmed passenger stops. No exact service, timetable or platform is claimed."
-      }
-    },
     "florence-genoa-florence-fucecchio": {
       "strategy": "preserve",
       "provenance": {
@@ -134,7 +13,7 @@
         "profile": "trekking",
         "rawSha256": "70c3a27dc69dedf7ed4d4fcce6ab6c1d85714b305dd19f831a153dc7560d68a5",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1412,
         "outputPointCount": 502,
         "rawDistanceKm": 48.322,
@@ -157,7 +36,7 @@
         "profile": "trekking",
         "rawSha256": "b22379c9b997c7df9e023b4b6a415def32af8db8b6cc1d68bea15bc3c1774541",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1094,
         "outputPointCount": 310,
         "rawDistanceKm": 34.607,
@@ -180,7 +59,7 @@
         "profile": "trekking",
         "rawSha256": "f0746d8529829322bc9ecf7eb3fb4cb9f789547193e670e9d59e0d84f555d52a",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1456,
         "outputPointCount": 492,
         "rawDistanceKm": 48.876,
@@ -203,7 +82,7 @@
         "profile": "trekking",
         "rawSha256": "8291cd6c1d6f90070a0334614a79cdffe13058fc96dd735f81bffec9862deaeb",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 2047,
         "outputPointCount": 611,
         "rawDistanceKm": 60.908,
@@ -226,7 +105,7 @@
         "profile": "trekking",
         "rawSha256": "eac20a714e00c307de00e782f35377dbfbbc82b71d986545f3b4833c5d7bb091",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1080,
         "outputPointCount": 461,
         "rawDistanceKm": 25.899,
@@ -249,7 +128,7 @@
         "profile": "trekking",
         "rawSha256": "fc96c56b575d2f8791eecbc1601fa625e5613b34518271e3452e77661fd92287",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 3267,
         "outputPointCount": 1293,
         "rawDistanceKm": 82.091,
