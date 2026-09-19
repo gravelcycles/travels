@@ -18,7 +18,7 @@ protection is unchanged. A protected photo still needs real photo access before
 the comment preview can be opened.
 
 Places supports food/sight filters, this-day filtering, map pins, source links,
-image credits, an image carousel, group averages and individual reviews. A saved
+image credits, a photo gallery, group averages and individual reviews. A saved
 but unvisited place has no reviews. The normal shared Places control is available
 on every journey, with an empty state when no places have been authored.
 
@@ -41,6 +41,24 @@ descriptions link to tourism/venue sources; positions are explicitly approximate
 All reviews and visit memories are invented and marked sample. Existing atlas
 illustrations are labeled as illustrations, not venue photographs. Switzerland's
 real trip has no fabricated restaurant visits or ratings.
+
+## Maps-style place cards
+
+The owner asked for a closer Google Maps experience after reviewing the first
+prototype. The shared places view now uses a left sidebar on desktop, compact
+photo list tiles, a large photo header, name/rating/category, round quick actions,
+Overview/Reviews/Photos tabs, a five-to-one-star distribution and individual
+review rows. Phones use a bottom sheet with a tappable/draggable expansion
+handle. Tab changes preserve an unfinished review; arrow keys, Home and End
+navigate the tabs. Closing places restores the normal journey panels.
+
+This is our own shared component using our curated data, not an embedded Google
+card. Ratings say **Our group**. There is no Google logo, copied review feed,
+Maps API request, automatic opening-hours feed or new backend dependency. A
+Google Maps action opens the existing source link. The current first-party
+reference was [Wirtshaus Taube on Google Maps](https://www.google.com/maps/search/?api=1&query=Wirtshaus+Taube+Luzern),
+inspected 19 September 2026; the general review flow is documented in
+[Google Maps Help](https://support.google.com/maps/answer/6230175?hl=en).
 
 ## What lives where
 

@@ -4,9 +4,21 @@ import { validatePointsOfInterest } from '../scripts/places-content.mjs';
 import { loadContent } from '../scripts/journey-content.mjs';
 import '../dist/assets/places-comments.js';
 
-const { average, filterPlaces, validateComment, createDemoStore } = globalThis.JOURNEY_ATLAS_PLACES;
+const { average, ratingSummary, filterPlaces, validateComment, createDemoStore } = globalThis.JOURNEY_ATLAS_PLACES;
 const memory = () => { const values = new Map(); return { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value) }; };
 const example = () => structuredClone(loadContent(new URL('..', import.meta.url).pathname).data.journeys.find(journey => journey.pointsOfInterest?.length));
+
+test('group rating summaries retain empty states and count every star level accurately', () => {
+  const reviews = [{ rating: 5 }, { rating: 4 }, { rating: 5 }, { rating: 1 }];
+  assert.deepEqual(ratingSummary(reviews), {
+    average: '3.8', count: 4,
+    distribution: [{ stars: 5, count: 2 }, { stars: 4, count: 1 }, { stars: 3, count: 0 }, { stars: 2, count: 0 }, { stars: 1, count: 1 }]
+  });
+  const empty = ratingSummary([]);
+  assert.equal(empty.average, null);
+  assert.equal(empty.count, 0);
+  assert.ok(empty.distribution.every(row => row.count === 0));
+});
 
 test('places filter by category/day without changing itinerary or assigning a rating to saved places', () => {
   const journey = example(), original = structuredClone(journey);

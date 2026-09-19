@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="./assets/mobile.css?v=e91be2f9b304" />
     <link rel="stylesheet" href="./assets/group-travel.css?v=0644b8613316" />
     <link rel="stylesheet" href="./assets/map-feedback.css?v=31eb86c9e975" />
-    <link rel="stylesheet" href="./assets/places-comments.css?v=540bae54fcc2" />
+    <link rel="stylesheet" href="./assets/places-comments.css?v=97c3a37cefef" />
   </head>
   <body data-journey-scope="demo" data-journey-id="nine-to-como">
     <header class="site-header">
@@ -113,6 +113,8 @@
       </section>
 
       <aside id="places-panel" class="places-panel" aria-labelledby="places-title" hidden>
+        <button id="places-sheet-toggle" type="button" class="places-sheet-toggle" aria-label="Expand places" aria-expanded="false"><span aria-hidden="true"></span></button>
+        <div class="place-detail-navigation"><button id="places-back-to-list" type="button" aria-label="Back to all places"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5-7 7 7 7M5 12h15"/></svg><span>Places</span></button><button id="close-place-details" type="button" aria-label="Close place details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
         <header class="places-heading"><div><span class="place-card-category">ALONG THE WAY</span><h2 id="places-title">Places we found</h2></div><button id="close-places" type="button" aria-label="Close places">×</button></header>
         <div class="places-filters" role="group" aria-label="Filter places"><button data-place-filter="all" type="button" aria-pressed="true">All</button><button data-place-filter="food" type="button" aria-pressed="false">Food & drink</button><button data-place-filter="sight" type="button" aria-pressed="false">Sights</button></div>
         <div class="places-options"><label><input id="places-day-only" type="checkbox"/> This day only</label><button id="places-fit" type="button">Show on map ↗</button></div>
@@ -292,7 +294,7 @@
     <script src="./assets/group-travel.js?v=55518f719e29"></script>
     <script src="./assets/media-utils.js?v=46457ba15695"></script>
     <script src="./assets/location-labels.js?v=061475caf569"></script>
-    <script src="./assets/places-comments.js?v=f60c32c75205"></script>
+    <script src="./assets/places-comments.js?v=407a359523d1"></script>
     <script src="./assets/app.js?v=76e7baf26176"></script>
   </body>
 </html>
