@@ -106,7 +106,9 @@ add each segment to the routing manifest with `strategy: "preserve"` and
 `provenance` recording the exact request, profile, simplification tolerance,
 raw/output counts, measured length and review limitations. The
 [Florence–Genoa manifest](content/route-sources/florence-genoa.json) is a worked
-example covering rail, road and bicycle responses.
+bicycle example. Its [earlier multimodal version](https://github.com/gravelcycles/travels/blob/5e3cf48afe57c530109f7c5dcfef6136a33480c1/content/route-sources/florence-genoa.json)
+also demonstrates rail and road responses; those arrival legs were removed from
+the itinerary at the owner’s request on 20 September 2026.
 
 Preserve entries protect static geometry during unattended generation. They
 do not provide a local routing network: Studio needs a separately prepared

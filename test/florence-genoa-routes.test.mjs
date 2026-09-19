@@ -8,16 +8,10 @@ const journey = read('journeys/florence-genoa.json');
 const geometry = read('route-geometry/florence-genoa.json');
 const manifest = read('route-sources/florence-genoa.json');
 const overrides = read('route-overrides.json');
-function distanceToEdge(point, a, b) {
-  const scale = Math.cos(point[1] * Math.PI / 180);
-  const dx = (b[0] - a[0]) * scale, dy = b[1] - a[1];
-  const length = dx * dx + dy * dy;
-  const t = length ? Math.max(0, Math.min(1, ((point[0] - a[0]) * scale * dx + (point[1] - a[1]) * dy) / length)) : 0;
-  return haversine(point, [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])]);
-}
-
-test('Florence–Genoa keeps detailed geometry for every arrival and cycling leg', () => {
-  assert.equal(journey.segments.length, 11);
+test('Florence–Genoa keeps detailed geometry for all six cycling legs', () => {
+  assert.equal(journey.segments.length, 6);
+  assert.ok(journey.segments.every(s => s.mode === 'bike'));
+  assert.deepEqual(Object.keys(manifest.segments).sort(), Object.keys(geometry).sort());
   assert.deepEqual(Object.keys(geometry).sort(), journey.segments.map(s => s.id).sort());
   for (const segment of journey.segments) {
     const line = geometry[segment.id];
@@ -44,36 +38,19 @@ test('Florence–Genoa keeps detailed geometry for every arrival and cycling leg
   }
 });
 
-test('rail reconstructions retain the reviewed corridors in geographical order', () => {
-  const anchors = {
-    'hamburg-freiburg': [[9.7429, 52.3779], [9.4471, 51.3129], [8.6638, 50.1076], [8.4687, 49.4795], [8.4013, 48.9936]],
-    'lucerne-milan': [[8.5491, 47.0489], [9.0290, 46.1952], [8.9465, 46.0052], [9.0318, 45.8329]],
-    'milan-florence': [[9.7065, 45.05186], [10.3283, 44.8111], [11.3414, 44.5051], [11.1108, 43.8790]],
-  };
-  for (const [suffix, points] of Object.entries(anchors)) {
-    const line = geometry[`florence-genoa-${suffix}`];
-    let previous = -1;
-    for (const point of points) {
-      // Simplification may remove a vertex on a straight station platform.
-      const distances = line.slice(1).map((p, i) => distanceToEdge(point, line[i], p));
-      const distance = Math.min(...distances), index = distances.indexOf(distance);
-      assert.ok(distance < 0.3, `${suffix}: missing corridor anchor`);
-      assert.ok(index > previous, `${suffix}: reversed anchor order`);
-      previous = index;
-    }
-  }
-});
-
-test('all arrival parties still join six shared cycling stages without invented origins', () => {
-  const bikes = journey.segments.filter(s => s.mode === 'bike');
-  assert.equal(bikes.length, 6);
-  assert.ok(bikes.every(s => !s.groupIds?.length));
-  for (const group of journey.routeGroups) {
-    const arrivals = journey.segments.filter(s => s.groupIds?.includes(group.id));
-    assert.equal(arrivals.at(-1).to, 'fg-florence');
-    if (['lucerne', 'kawan'].includes(group.id)) assert.ok(arrivals.every(s => s.mode === 'train'));
-  }
-  assert.match(journey.days[0].text, /Kawan’s starting point still needs adding/);
-  assert.match(journey.days[5].text, /62 km/);
-  assert.match(journey.days[5].text, /25\.8 km/);
+test('the cycling-only itinerary keeps riding dates and stable IDs after removing arrivals', () => {
+  assert.equal(journey.days.length, 6);
+  assert.equal(journey.startDate, '2026-05-10');
+  assert.equal(journey.endDate, '2026-05-15');
+  assert.deepEqual(journey.days.map(d => d.number), [1, 2, 3, 4, 5, 6]);
+  assert.deepEqual(journey.days.map(d => d.id), [2, 3, 4, 5, 6, 7].map(n => `florence-genoa-d${n}`));
+  assert.deepEqual(journey.days.map(d => d.calendarDate), [10, 11, 12, 13, 14, 15].map(n => `2026-05-${n}`));
+  assert.deepEqual(journey.days.flatMap(d => d.segmentIds), journey.segments.map(s => s.id));
+  assert.equal(journey.routeGroups, undefined);
+  assert.equal(journey.meetup, undefined);
+  assert.equal(journey.travelers.length, 9);
+  assert.ok(journey.places.every(p => p.country === 'Italy' && p.id !== 'fg-milan'));
+  const thursday = journey.days.find(d => d.calendarDate === '2026-05-14');
+  assert.match(thursday.text, /62 km/);
+  assert.match(thursday.text, /25\.8 km/);
 });

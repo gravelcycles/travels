@@ -81,8 +81,8 @@ batch editing, publication readiness, private video intake and a labeled Replay
 timeline remain proposals. Replay stays map-only and publishing stays agent-operated.
 
 
-Florence–Genoa is a real planning instance of the existing group-route and
-new-trip capabilities: nine travelers, four arrival groups, a shared train and
-six shared bicycle days. All eleven legs now have preserved network geometry
-from rail, road and bicycle routers, with explicit reconstruction provenance;
+Florence–Genoa is a cycling-only planning instance: nine travelers and six
+bicycle days from 10–15 May 2026. Its six legs retain detailed, preserved
+bicycle-network geometry with explicit reconstruction provenance. Arrival
+travel and its group filters were removed at the owner’s request;
 see [FLORENCE_GENOA.md](FLORENCE_GENOA.md). No trip-specific runtime code.

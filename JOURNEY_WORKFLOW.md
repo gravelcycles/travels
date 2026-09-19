@@ -40,6 +40,12 @@ photos. A day owns an ordered `segmentIds` array; this is the source of truth
 for which legs appear and in what order. A segment owns its transport `mode`,
 `from`, `to`, distance/duration when known, and optional named `stops`.
 
+When removing an arrival day, preserve the retained riding dates and stable IDs,
+renumber display days, and update the trip's date range. Remove the deleted legs
+from geometry and source manifests, plus arrival-only places, meetup references
+and obsolete route groups. Otherwise stale pins can still expand the overview.
+Retain the traveler roster and reviewed geometry for the remaining days.
+
 Keep these concepts separate:
 
 - `stops`: meaningful, named places displayed to the reader;
