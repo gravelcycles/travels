@@ -18,7 +18,7 @@ function fixture(t) {
   for (const dir of ['content','dist']) fs.cpSync(path.join(repo,dir),path.join(root,dir),{recursive:true,filter:filename=>!filename.includes('/drafts/')});
   return root;
 }
-const sample = () => loadContent(repo).data.journeys.find(journey=>journey.routeGroups?.length);
+const sample = () => loadContent(repo).data.journeys.find(journey=>journey.kind === 'demo' && journey.routeGroups?.length);
 
 test('membership moves are exclusive and referenced groups cannot silently become shared', () => {
   const draft=sample(), original=structuredClone(draft), [first,second]=draft.routeGroups, person=first.travelerIds[0];
@@ -46,7 +46,7 @@ test('Studio forms escape editorial text and expose editable group, overnight, m
 });
 
 test('planner round-trips group/video edits and photo assignments through their canonical sources', t => {
-  const root=fixture(t), {data}=loadContent(root), base=data.journeys.find(j=>j.routeGroups?.length), state=readOverrides(root);
+  const root=fixture(t), {data}=loadContent(root), base=data.journeys.find(j=>j.kind === 'demo' && j.routeGroups?.length), state=readOverrides(root);
   const draft=structuredClone(base), first=draft.routeGroups[0], second=draft.routeGroups[1];
   draft.travelers[0].name='Alex edited'; first.label='Mountain route edited';
   extras.assignTraveler(draft,first.travelerIds[0],second.id);
