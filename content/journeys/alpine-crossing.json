@@ -518,5 +518,145 @@
       "caption": "The long road north",
       "duration": 2.4
     }
+  ],
+  "pointsOfInterest": [
+    {
+      "id": "lucerne-riverside-dinner",
+      "name": "Wirtshaus Taube",
+      "category": "food",
+      "coordinates": [
+        8.3027,
+        47.0504
+      ],
+      "locationAccuracy": "approximate",
+      "status": "visited",
+      "dayIds": [
+        "alps-d1"
+      ],
+      "sample": true,
+      "summary": "Swiss cooking beside the Reuss, in the heart of Lucerne.",
+      "address": "Burgerstrasse 3, Lucerne",
+      "note": "Sample memory: the kind of dinner that turns into a whole evening.",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Wirtshaus+Taube+Luzern",
+      "sources": [
+        {
+          "label": "Lucerne Tourism",
+          "url": "https://www.luzern.com/de/gastro/wirtshaus-taube"
+        },
+        {
+          "label": "Restaurant",
+          "url": "https://www.taube-luzern.ch/"
+        }
+      ],
+      "images": [
+        {
+          "src": "./assets/photos/bike-pass.webp",
+          "alt": "Illustrative mountain café scene; not a photograph of Wirtshaus Taube",
+          "credit": "Atlas sample illustration · not this venue",
+          "sourceUrl": "https://github.com/gravelcycles/travels",
+          "permission": "illustration"
+        }
+      ],
+      "reviews": [
+        {
+          "authorId": "sample-alex",
+          "authorName": "Alex (sample)",
+          "rating": 5,
+          "text": "A long dinner by the river. I would happily come back for another slow evening."
+        },
+        {
+          "authorId": "sample-jamie",
+          "authorName": "Jamie (sample)",
+          "rating": 4,
+          "text": "A lovely spot for the whole table. Next time I would book a little earlier."
+        },
+        {
+          "authorId": "sample-sam",
+          "authorName": "Sam (sample)",
+          "rating": 5,
+          "text": "My favorite part was staying for one more drink and watching the river."
+        }
+      ]
+    },
+    {
+      "id": "lucerne-chapel-bridge",
+      "name": "Chapel Bridge",
+      "category": "sight",
+      "coordinates": [
+        8.3074,
+        47.0515
+      ],
+      "locationAccuracy": "approximate",
+      "status": "visited",
+      "dayIds": [
+        "alps-d1",
+        "alps-d2"
+      ],
+      "sample": true,
+      "summary": "The covered wooden bridge across the Reuss. A small detour through the city’s story.",
+      "note": "Sample memory: we crossed it three times, and somehow the light was different each time.",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Chapel+Bridge+Lucerne",
+      "sources": [
+        {
+          "label": "Lucerne Tourism",
+          "url": "https://www.luzern.com/en/poi/chapel-bridge"
+        }
+      ],
+      "images": [
+        {
+          "src": "./assets/photos/train-window.webp",
+          "alt": "Illustrative Swiss lake and village; not a photograph of Chapel Bridge",
+          "credit": "Atlas sample illustration · not this venue",
+          "sourceUrl": "https://github.com/gravelcycles/travels",
+          "permission": "illustration"
+        },
+        {
+          "src": "./assets/photos/alpine-route.webp",
+          "alt": "Illustrative alpine landscape; not a photograph of Chapel Bridge",
+          "credit": "Atlas sample illustration · not this venue",
+          "sourceUrl": "https://github.com/gravelcycles/travels",
+          "permission": "illustration"
+        }
+      ],
+      "reviews": [
+        {
+          "authorId": "sample-alex",
+          "authorName": "Alex (sample)",
+          "rating": 5,
+          "text": "An easy stop that became one of the moments I remember most."
+        },
+        {
+          "authorId": "sample-sam",
+          "authorName": "Sam (sample)",
+          "rating": 4,
+          "text": "Worth lingering over the painted panels instead of just walking through."
+        }
+      ]
+    },
+    {
+      "id": "lucerne-musegg-wall",
+      "name": "Musegg Wall",
+      "category": "sight",
+      "coordinates": [
+        8.305,
+        47.0558
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "alps-d2"
+      ],
+      "sample": true,
+      "summary": "A historic city wall to keep on our list for another Lucerne morning.",
+      "sources": [
+        {
+          "label": "Lucerne sights",
+          "url": "https://www.luzern.com/en/the-city/sights/top-sights"
+        }
+      ],
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Musegg+Wall+Lucerne",
+      "images": [],
+      "reviews": []
+    }
   ]
 }

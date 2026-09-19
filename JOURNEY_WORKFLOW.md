@@ -552,3 +552,28 @@ Forward. Empty-media album days open their story. These history entries do
 not change the URL or restore the last selection on reload: the owner excluded
 that audit item. The six proposed new features require a local demo and owner
 review before implementation on the live site.
+
+
+## Places, meals and group memories
+
+Ask the agent to add each point through the journey's optional
+`pointsOfInterest` array; supply a place name or Maps link, day(s), visited/saved
+status and the group's actual ratings and notes. Never invent a visit or import
+Google's ratings as our group's opinions. The agent researches source links,
+reviews coordinates and attribution, proposes image candidates, and imports
+approved derivatives. Google Maps is an optional outbound reference; there is
+no Maps API or automatic photo scraper. Use our own, permission-backed or
+licensed imagery; retain links and an empty image slot when reuse is unclear.
+
+These annotations do not alter route nodes or Replay. Their content and reviews
+are public; private original images do not belong in journey JSON. Record an
+image's source, credit and permission basis. The validated schema and reusable
+intake prompt are in [PLACES_AND_COMMENTS.md](docs/PLACES_AND_COMMENTS.md).
+Ordinary Studio itinerary edits retain these fields. Validate/build, check the
+map at desktop/phone sizes, then follow the normal publishing workflow.
+
+Use `demo.html?journey=alpine-crossing&experience=places` for the group review
+preview or `experience=comments` for the display-name/password/photo-comment
+preview. The sample password is `demo`. Preview reviews/comments stay in this
+browser; they are not authored trip data and do not synchronize to other
+visitors. Real shared comments require the proposed Worker/database extension.
