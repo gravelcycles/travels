@@ -95,6 +95,7 @@
   let storyDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
   let hasPlayedOpeningMove = false;
   let locationLabels;
+  let placesUI;
   let previewDayIds = [], previewSource = null, previewShowCard = false, previewClearTimer = null;
   let previewSegmentId = null;
   let pendingMapAction = null;
@@ -583,9 +584,11 @@
         }
       });
       drawMainMap(false);
+      placesUI?.mapReady();
       if (!hasPlayedOpeningMove) {
         hasPlayedOpeningMove = true;
         window.requestAnimationFrame(() => {
+          if (document.body.classList.contains('places-open') && sourceJourney.pointsOfInterest?.length) return;
           if(mapScope === 'day') {
             if($('.map-panel').offsetParent !== null) { focusDay(activeDay()); pendingMapAction=null; }
           } else fitJourneyBounds(prefersReducedMotion() ? 0 : 2500);
@@ -789,6 +792,7 @@
   }
 
   function drawMainMap(fit, attempt = 0) {
+    if (typeof placesUI !== 'undefined') placesUI?.update();
     renderLegend();
     if (!mainMapReady) return;
     if (!mapIsReady(mainMap)) {
@@ -1207,6 +1211,7 @@
     const photos = photosForDay(day.id);
     viewerPhotoIndex = Math.max(0, Math.min(photos.length - 1, viewerPhotoIndex));
     const photo = photos[viewerPhotoIndex];
+    if (typeof placesUI !== 'undefined') placesUI?.photoChanged(photo);
     activeDayId = day.id;
     mapScope = "day";
     const modalPhoto = $("#modal-photo");
@@ -1767,7 +1772,7 @@
   }
   function renderIntroduction() {
     const intro=$('#trip-intro');
-    if(location.hash || new URLSearchParams(location.search).has('day') || new URLSearchParams(location.search).has('photo')) { intro.hidden=true; return; }
+    if(location.hash || new URLSearchParams(location.search).has('day') || new URLSearchParams(location.search).has('photo') || ['places','comments'].includes(new URLSearchParams(location.search).get('experience'))) { intro.hidden=true; return; }
     const {photo,position}=window.JOURNEY_ATLAS_UTILS.resolveCover(journey,journey.photos);
     intro.innerHTML=`<div class="intro-photo" style="--cover-position:${position}">${photo?photoImageMarkup(photo,{eager:true,sizes:'(max-width: 900px) 100vw, 60vw'}):'<div class="intro-text-art">A journey taking shape</div>'}</div><div class="intro-copy"><span>${escapeHtml(journey.dates)} · ${journey.days.length} days</span><h1>${escapeHtml(journey.title)}</h1><p>${escapeHtml(journey.subtitle)}</p><div><button id="intro-relive" type="button">Relive the trip</button><button id="intro-map" type="button">Explore the map</button></div></div>`;
     intro.hidden=false; document.body.classList.add('intro-open'); $('.atlas-shell').inert=true; $('.mobile-nav').inert=true;
@@ -1998,7 +2003,7 @@
       clearSegmentInspection(true);
       return;
     }
-    if (!photoDialog.open || window.JOURNEY_ATLAS_MOBILE_UI?.keyTarget(event) || ['INPUT','SELECT','TEXTAREA'].includes(event.target.tagName)) return;
+    if (!photoDialog.open || document.querySelector('#comments-dialog[open], #experience-unlock[open]') || window.JOURNEY_ATLAS_MOBILE_UI?.keyTarget(event) || ['INPUT','SELECT','TEXTAREA'].includes(event.target.tagName)) return;
     if (event.key === "ArrowLeft" && event.shiftKey) moveViewerDay(-1);
     else if (event.key === "ArrowRight" && event.shiftKey) moveViewerDay(1);
     else if (event.key === "ArrowLeft") moveViewer(-1);
@@ -2027,10 +2032,19 @@
     renderDayNavigator();
   });
 
+  placesUI = window.JOURNEY_ATLAS_PLACES.create({
+    journey: () => sourceJourney, dayId: () => activeDayId, map: () => mainMap,
+    photos: () => orderedPhotos().filter(photo => !mediaUtils.isVideo(photo)), openPhoto,
+    protected: photo => window.JOURNEY_ATLAS_AUTH?.isProtected(photo),
+    unlocked: () => window.JOURNEY_ATLAS_AUTH?.unlocked,
+    unlock: () => window.JOURNEY_ATLAS_AUTH?.showPrompt(),
+    explore: () => { dismissIntroduction(); setMobileTab('map'); }
+  });
   renderAll({ fit: false });
   initMainMap();
   setMobileTab('map');
   handleDeepLink();
   renderIntroduction();
+  placesUI.start();
   document.documentElement.classList.remove('journey-starting');
 })();

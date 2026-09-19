@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="./assets/mobile.css?v=e91be2f9b304" />
     <link rel="stylesheet" href="./assets/group-travel.css?v=0644b8613316" />
     <link rel="stylesheet" href="./assets/map-feedback.css?v=31eb86c9e975" />
+    <link rel="stylesheet" href="./assets/places-comments.css?v=540bae54fcc2" />
   </head>
   <body data-journey-scope="demo" data-journey-id="nine-to-como">
     <header class="site-header">
@@ -66,6 +67,7 @@
         <nav id="mobile-journey-actions" class="mobile-journey-actions" aria-label="Explore the journey">
           <button data-journey-action="overview" type="button">Whole trip map</button>
           <button data-journey-action="photos" type="button">All photos</button>
+          <button id="mobile-open-places" type="button" aria-controls="places-panel">Places we found</button>
           <button data-journey-action="unlock" type="button">Unlock photos</button>
           <button data-journey-action="about" type="button">About this atlas</button>
           <a href="./">All journeys</a>
@@ -84,6 +86,7 @@
             <button id="focus-day" type="button" aria-label="Zoom to the selected day's complete route">Day close-up</button>
             <button id="fit-route" type="button" aria-label="Fit the whole route on the map">Fit route</button>
             <button id="show-all-photos" type="button">All photos · <span id="photo-count"></span></button>
+            <button id="open-places" type="button" aria-controls="places-panel" aria-expanded="false">Places · <span id="place-count">0</span></button>
           </div>
         </div>
         <div id="map" aria-label="Map showing the selected journey"></div>
@@ -109,6 +112,13 @@
 
       </section>
 
+      <aside id="places-panel" class="places-panel" aria-labelledby="places-title" hidden>
+        <header class="places-heading"><div><span class="place-card-category">ALONG THE WAY</span><h2 id="places-title">Places we found</h2></div><button id="close-places" type="button" aria-label="Close places">×</button></header>
+        <div class="places-filters" role="group" aria-label="Filter places"><button data-place-filter="all" type="button" aria-pressed="true">All</button><button data-place-filter="food" type="button" aria-pressed="false">Food & drink</button><button data-place-filter="sight" type="button" aria-pressed="false">Sights</button></div>
+        <div class="places-options"><label><input id="places-day-only" type="checkbox"/> This day only</label><button id="places-fit" type="button">Show on map ↗</button></div>
+        <div class="places-list-meta"><span id="places-count"></span><span id="places-message" role="status"></span></div>
+        <div id="places-content" class="places-content"></div>
+      </aside>
       <aside class="story-panel" aria-label="Journey details">
         <div class="mobile-story-heading"><span id="mobile-story-date"></span><h2 id="mobile-story-title"></h2><p id="mobile-story-tagline" hidden></p><p id="mobile-story-meta"></p></div>
         <div id="mobile-story-legend" class="mobile-story-legend" aria-label="Route key"></div>
@@ -171,6 +181,7 @@
         <header class="mobile-photo-header"><button id="mobile-photo-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Day</span></button><span id="mobile-photo-count" aria-live="polite"></span><button id="mobile-photo-grid" type="button" aria-label="Show this day's photos and videos"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6" height="6" rx="1.3"/><rect x="14" y="4" width="6" height="6" rx="1.3"/><rect x="4" y="14" width="6" height="6" rx="1.3"/><rect x="14" y="14" width="6" height="6" rx="1.3"/></svg></button></header>
 
         <button class="photo-close" aria-label="Close photo and video viewer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+        <button id="open-photo-comments" class="open-photo-comments" type="button" aria-haspopup="dialog" aria-controls="comments-dialog" hidden>Comments · <span id="photo-comments-count">0</span></button>
         <section class="photo-stage" aria-live="polite">
           <button class="photo-nav photo-prev" type="button" aria-label="Previous photo or video">‹</button>
           <figure>
@@ -258,8 +269,16 @@
       </div>
     </dialog>
 
+    <div id="experience-bar" class="experience-bar" aria-label="Places and comments UX preview" hidden><div><strong>Try the ideas</strong><small>Demo changes stay in this browser</small></div><button id="experience-places" type="button">Places</button><button id="experience-comments" type="button">Photo comments</button><details><summary aria-label="Demo options">•••</summary><div><button id="experience-reset" type="button">Reset this demo</button><a id="experience-exit">Exit preview</a></div></details><span id="experience-status" role="status"></span></div>
+
+    <dialog id="experience-unlock" class="experience-unlock" aria-labelledby="experience-unlock-title">
+      <span class="place-card-category">UNLOCK FLOW · UX DEMO</span><h2 id="experience-unlock-title">Come on in.</h2><p>Photos to look back on.<br/>A place to leave a little memory.</p>
+      <form id="experience-unlock-form"><label for="experience-display-name">Your display name</label><input id="experience-display-name" maxlength="40" placeholder="What should we call you?" required autocomplete="off"/><small>Your name appears beside your comments. No account needed.</small><label for="experience-password">Shared password</label><input id="experience-password" type="password" required autocomplete="off" aria-describedby="experience-password-hint"/><small id="experience-password-hint">For this sample, use <b>demo</b>. This does not unlock private trip photos.</small><p id="experience-unlock-error" role="alert"></p><button class="experience-primary" type="submit">Unlock photos & join in</button><button id="experience-unlock-cancel" class="experience-secondary" type="button">Maybe later</button></form>
+    </dialog>
+    <dialog id="comments-dialog" class="comments-dialog" aria-labelledby="comments-title"><header class="comments-heading"><div><span class="place-card-category">LITTLE MEMORIES</span><h2 id="comments-title">Around this photo</h2></div><button id="close-comments" type="button" aria-label="Close photo comments">×</button></header><p id="comments-photo-title" class="comments-photo-title"></p><div class="comments-meta"><span id="comments-count"></span><span>Browser-only demo</span></div><div id="comments-list" class="comments-list"></div><form id="comment-form" class="comment-form"><div class="comment-byline">Commenting as <strong id="comment-author"></strong><button id="comment-change-name" type="button">Change</button></div><label for="comment-body">Leave a memory</label><textarea id="comment-body" maxlength="1000" rows="3" placeholder="I remember this…" required></textarea><p id="comment-status" role="status"></p><button class="experience-primary" type="submit">Post comment</button><small>In the live version, everyone with photo access would see this. This demo saves only in your browser.</small></form></dialog>
+
     <script src="./assets/vendor/maplibre-5.24.0/maplibre-gl.js"></script>
-    <script src="./assets/journeys.js?v=4bda364410b7"></script>
+    <script src="./assets/journeys.js?v=f76b9692fd1b"></script>
     <script src="./assets/route-geometry.js?v=b06a68347e42"></script>
     <script src="./assets/trip-photos.js?v=735a0713c47c"></script>
     <script src="./assets/content-overrides.js?v=3abf8b6499f3"></script>
@@ -273,6 +292,7 @@
     <script src="./assets/group-travel.js?v=55518f719e29"></script>
     <script src="./assets/media-utils.js?v=46457ba15695"></script>
     <script src="./assets/location-labels.js?v=061475caf569"></script>
-    <script src="./assets/app.js?v=843c9e53f0ec"></script>
+    <script src="./assets/places-comments.js?v=f60c32c75205"></script>
+    <script src="./assets/app.js?v=76e7baf26176"></script>
   </body>
 </html>

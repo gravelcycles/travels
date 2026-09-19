@@ -1,9 +1,11 @@
+import { validatePointsOfInterest } from './places-content.mjs';
 const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const safeUrl = value => {
   if (typeof value !== 'string') return false;
   try { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password; } catch { return false; }
 };
 export function validateJourneyExtras(journey) {
+  validatePointsOfInterest(journey);
   const fail = message => { throw new Error(`${journey.id}: ${message}`); };
   const collection = name => {
     const items = journey[name] ?? [];
