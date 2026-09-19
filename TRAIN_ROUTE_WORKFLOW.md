@@ -1,6 +1,8 @@
 # Reproducing rail-aligned train routes
 
-Use this guide when adding train legs to a new trip. It documents the current
+Use this guide when adding train legs to a new trip. For the complete multimodal
+process, including GPX, cycling, roads and documented router-response imports,
+start with [ROUTE_GEOMETRY_WORKFLOW.md](ROUTE_GEOMETRY_WORKFLOW.md). It documents the current
 implementation, checked on 9 September 2026. Read [JOURNEY_WORKFLOW.md](JOURNEY_WORKFLOW.md)
 for trip creation and publishing, and [ROUTE_SOURCES.md](ROUTE_SOURCES.md) for
 the existing trip's evidence. Commands here are for agents to run.
@@ -224,8 +226,9 @@ consume Studio control points.
 If a route must remain a reviewed exception, store its geometry in the journey
 geometry JSON and use `strategy: "preserve"` for that segment in the manifest,
 with a `provenance` object explaining the reason and evidence. Preserve without
-existing geometry warns; Studio also refuses network proposals for preserve
-entries. Never hide a failed reconstruction behind an unlabelled straight line.
+existing geometry warns. Preserve protects unattended generation; Studio can
+produce an explicit replacement proposal when a suitable local mode network
+is available. Imported static geometry alone does not supply that network. Never hide a failed reconstruction behind an unlabelled straight line.
 
 Before handing off a new route:
 
