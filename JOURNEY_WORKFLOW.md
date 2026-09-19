@@ -552,3 +552,14 @@ Forward. Empty-media album days open their story. These history entries do
 not change the URL or restore the last selection on reload: the owner excluded
 that audit item. The six proposed new features require a local demo and owner
 review before implementation on the live site.
+
+
+## Initial route-link intake example
+
+[Florence–Genoa](docs/FLORENCE_GENOA.md) records an initial seven-day plan when
+traveler route shares are unavailable. Keep the latest table as the active
+itinerary, retain superseded facts in provenance, and mark every unreviewed
+leg `geometryStatus: "provisional"`. Never present endpoint guides as imported
+tracks. Use the existing roster/group assignments for separate arrivals and
+omit `groupIds` on shared cycling days. Missing origins stay in notes until
+known; dates follow the confirmed intake, with any inferred year documented.

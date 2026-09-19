@@ -112,3 +112,12 @@ segment's mode. It rejects ambiguous or overly distant snaps, retains the last
 reviewed geometry on failure, and does not send precise journey coordinates to
 an external router. See `JOURNEY_WORKFLOW.md` for the full train, ferry, road,
 bicycle, GPX, review, and publishing flow.
+
+
+## Florence–Genoa — 19 September 2026
+
+See [the trip intake and provenance](docs/FLORENCE_GENOA.md). The supplied
+cycle.travel and token-bearing Komoot shares both returned 404 in a browser.
+All eleven legs are provisional endpoint guides. Five represent separate/shared
+arrival legs and six represent the revised bicycle stages; no road/rail track
+or elevation is claimed. The per-journey network manifest is empty pending intake.

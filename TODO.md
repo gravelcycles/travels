@@ -56,6 +56,12 @@ project-level status.
 
 ## P0 · Content corrections
 
+- [ ] **Florence–Genoa route intake.** Initial 9–15 May 2026 itinerary is built.
+      Await a working route share/GPX, Kawan’s origin, and resolution of the
+      Mattarana/Oasi overnight mismatch and Thursday distance. See
+      [the trip intake](docs/FLORENCE_GENOA.md); current map lines are provisional.
+
+
 - [x] **T01 — Correct Day 1 legs and story.** In `family-d1`, keep only
       `family-airport-luzern` (Zürich Flughafen → Luzern). Remove the reverse
       pickup leg from the day and reconcile title, `destinationId`, prose,

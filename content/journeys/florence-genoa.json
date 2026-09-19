@@ -1,0 +1,443 @@
+{
+  "id": "florence-genoa",
+  "kind": "real",
+  "published": true,
+  "slug": "florence-genoa.html",
+  "status": "planned",
+  "badge": "PLANNING",
+  "label": "Florence to Genoa · Cycling trip",
+  "title": "Florence to Genoa",
+  "subtitle": "Nine travelers, six riding days and 364–374 km from Tuscany to Liguria. Initial plan; routes still to confirm.",
+  "kicker": "CYCLING JOURNEY · INITIAL PLAN",
+  "dates": "9–15 May 2026",
+  "startDate": "2026-05-09",
+  "endDate": "2026-05-15",
+  "timeZone": "Europe/Rome",
+  "note": "Initial plan from the revised itinerary. All map lines are provisional connections between approximate town centres, not road or rail tracks. The cycle.travel and Komoot links returned 404 on 19 September 2026. Cycling estimates total 364–374 km; the 364 km statistic uses Friday’s lower estimate and excludes unmeasured arrival travel. Campsites and alternatives are suggestions, not confirmed bookings. Wednesday’s overnight and Thursday’s stage still need reconciliation.",
+  "cover": "",
+  "places": [
+    {
+      "id": "fg-berlin",
+      "name": "Berlin",
+      "country": "Germany",
+      "lat": 52.52,
+      "lng": 13.405
+    },
+    {
+      "id": "fg-hamburg",
+      "name": "Hamburg",
+      "country": "Germany",
+      "lat": 53.551,
+      "lng": 9.994
+    },
+    {
+      "id": "fg-freiburg",
+      "name": "Freiburg im Breisgau",
+      "country": "Germany",
+      "lat": 47.999,
+      "lng": 7.842
+    },
+    {
+      "id": "fg-lucerne",
+      "name": "Lucerne",
+      "country": "Switzerland",
+      "lat": 47.0502,
+      "lng": 8.3093
+    },
+    {
+      "id": "fg-milan",
+      "name": "Milan",
+      "country": "Italy",
+      "lat": 45.4642,
+      "lng": 9.19
+    },
+    {
+      "id": "fg-florence",
+      "name": "Florence",
+      "country": "Italy",
+      "lat": 43.7696,
+      "lng": 11.2558
+    },
+    {
+      "id": "fg-fucecchio",
+      "name": "Fucecchio",
+      "country": "Italy",
+      "lat": 43.729,
+      "lng": 10.811
+    },
+    {
+      "id": "fg-lucca",
+      "name": "Lucca",
+      "country": "Italy",
+      "lat": 43.843,
+      "lng": 10.503
+    },
+    {
+      "id": "fg-massa",
+      "name": "Marina di Massa",
+      "country": "Italy",
+      "lat": 44.007,
+      "lng": 10.101
+    },
+    {
+      "id": "fg-mattarana",
+      "name": "Mattarana",
+      "country": "Italy",
+      "lat": 44.2471,
+      "lng": 9.6235
+    },
+    {
+      "id": "fg-sestri",
+      "name": "Sestri Levante",
+      "country": "Italy",
+      "lat": 44.27,
+      "lng": 9.395
+    },
+    {
+      "id": "fg-genoa",
+      "name": "Genoa",
+      "country": "Italy",
+      "lat": 44.4056,
+      "lng": 8.9463
+    },
+    {
+      "id": "fg-camp-florence",
+      "name": "Camping Village Internazionale Firenze",
+      "country": "Italy",
+      "lat": 43.724715,
+      "lng": 11.218994
+    },
+    {
+      "id": "fg-camp-toscana",
+      "name": "Toscana Village · supplied planning pin",
+      "country": "Italy",
+      "lat": 43.678487,
+      "lng": 10.767459
+    },
+    {
+      "id": "fg-camp-la-valle",
+      "name": "Agricampeggio La Valle · supplied planning pin",
+      "country": "Italy",
+      "lat": 43.82914,
+      "lng": 10.425546
+    },
+    {
+      "id": "fg-camp-lilly",
+      "name": "Camping Lilly Pineta · supplied planning pin",
+      "country": "Italy",
+      "lat": 44.028501,
+      "lng": 10.077718
+    },
+    {
+      "id": "fg-camp-oasi",
+      "name": "Camping Oasi · proposed overnight",
+      "country": "Italy",
+      "lat": 44.25805,
+      "lng": 9.493494
+    },
+    {
+      "id": "fg-camp-mare-monti",
+      "name": "Camping Mare Monti · supplied planning pin",
+      "country": "Italy",
+      "lat": 44.263141,
+      "lng": 9.442277
+    }
+  ],
+  "segments": [
+    {
+      "id": "florence-genoa-berlin-florence",
+      "from": "fg-berlin",
+      "to": "fg-florence",
+      "mode": "bus",
+      "groupIds": [
+        "berlin"
+      ],
+      "geometryStatus": "provisional",
+      "source": "Traveler: Marc and Anna, Berlin to Florence by FlixBus; terminals, connections and departure date/time unconfirmed. Map is an approximate endpoint guide; detailed geometry pending."
+    },
+    {
+      "id": "florence-genoa-hamburg-freiburg",
+      "from": "fg-hamburg",
+      "to": "fg-freiburg",
+      "mode": "train",
+      "groupIds": [
+        "hamburg"
+      ],
+      "geometryStatus": "provisional",
+      "source": "Traveler: Mo and Paula, Hamburg to Freiburg im Breisgau by train; service and intermediate stops unconfirmed. Map is an approximate endpoint guide; detailed geometry pending."
+    },
+    {
+      "id": "florence-genoa-freiburg-milan",
+      "from": "fg-freiburg",
+      "to": "fg-milan",
+      "mode": "bus",
+      "groupIds": [
+        "hamburg"
+      ],
+      "geometryStatus": "provisional",
+      "source": "Traveler: Mo and Paula, Freiburg to Milan by bus; operator and terminals unconfirmed. Map is an approximate endpoint guide; detailed geometry pending."
+    },
+    {
+      "id": "florence-genoa-lucerne-milan",
+      "from": "fg-lucerne",
+      "to": "fg-milan",
+      "mode": "train",
+      "groupIds": [
+        "lucerne",
+        "kawan"
+      ],
+      "geometryStatus": "provisional",
+      "source": "Traveler clarification: Qen, Jonas, David, Michelle and Kawan travel by train from Lucerne to Milan. Kawan also reaches Lucerne by train; origin is unknown, so that preceding leg is not drawn. Map is an approximate endpoint guide; detailed geometry pending."
+    },
+    {
+      "id": "florence-genoa-milan-florence",
+      "from": "fg-milan",
+      "to": "fg-florence",
+      "mode": "train",
+      "groupIds": [
+        "hamburg",
+        "lucerne",
+        "kawan"
+      ],
+      "geometryStatus": "provisional",
+      "source": "Traveler: seven travelers join in Milan for a non-Frecciarossa train to Florence. Train category, service and changes unconfirmed. Map is an approximate endpoint guide; detailed geometry pending."
+    },
+    {
+      "id": "florence-genoa-florence-fucecchio",
+      "from": "fg-florence",
+      "to": "fg-fucecchio",
+      "mode": "bike",
+      "distanceKm": 66,
+      "geometryStatus": "provisional",
+      "source": "Revised traveler itinerary: Sunday 66 km, including 11 km offroad. Campsite access is not yet reconciled with the city-based route. Map is an approximate endpoint guide; detailed geometry pending."
+    },
+    {
+      "id": "florence-genoa-fucecchio-lucca",
+      "from": "fg-fucecchio",
+      "to": "fg-lucca",
+      "mode": "bike",
+      "distanceKm": 46,
+      "geometryStatus": "provisional",
+      "source": "Revised traveler itinerary: Monday 46 km, following EuroVelo 5 according to notes. Alignment and campsite detour unverified. Map is an approximate endpoint guide; detailed geometry pending."
+    },
+    {
+      "id": "florence-genoa-lucca-massa",
+      "from": "fg-lucca",
+      "to": "fg-massa",
+      "mode": "bike",
+      "distanceKm": 54,
+      "geometryStatus": "provisional",
+      "source": "Revised traveler itinerary: Tuesday 54 km towards Massa, following EuroVelo 5 according to notes. Alignment unverified. Map is an approximate endpoint guide; detailed geometry pending."
+    },
+    {
+      "id": "florence-genoa-massa-mattarana",
+      "from": "fg-massa",
+      "to": "fg-mattarana",
+      "mode": "bike",
+      "distanceKm": 74,
+      "geometryStatus": "provisional",
+      "source": "Revised traveler itinerary: Wednesday 74 km towards Mattarana. Camping Oasi is near Sestri Levante, not Mattarana; final endpoint unresolved. Map is an approximate endpoint guide; detailed geometry pending."
+    },
+    {
+      "id": "florence-genoa-mattarana-sestri",
+      "from": "fg-mattarana",
+      "to": "fg-sestri",
+      "mode": "bike",
+      "distanceKm": 62,
+      "geometryStatus": "provisional",
+      "source": "Revised traveler itinerary: Thursday 62 km to Sestri Levante, replacing the earlier Pian dei Manzi destination. Track and distance need reconciliation with Wednesday. Map is an approximate endpoint guide; detailed geometry pending."
+    },
+    {
+      "id": "florence-genoa-sestri-genoa",
+      "from": "fg-sestri",
+      "to": "fg-genoa",
+      "mode": "bike",
+      "distanceKm": 62,
+      "geometryStatus": "provisional",
+      "source": "Revised traveler itinerary: Friday 62–72 km to Genoa. Numeric distance retains the 62 km lower estimate; final route and distance pending. Map is an approximate endpoint guide; detailed geometry pending."
+    }
+  ],
+  "days": [
+    {
+      "id": "florence-genoa-d1",
+      "number": 1,
+      "calendarDate": "2026-05-09",
+      "date": "Saturday · 9 May",
+      "title": "Everyone meets in Florence",
+      "text": "Marc and Anna travel from Berlin to Florence by FlixBus.\n\nMo and Paula take the train from Hamburg to Freiburg im Breisgau, then a bus to Milan. Qen, Jonas, David and Michelle travel from Lucerne to Milan by train. Kawan reaches Lucerne by train and joins them; Kawan’s starting point still needs adding.\n\nThe seven travelers meet in Milan and continue to Florence on a non-Frecciarossa train. Exact services, connections, departure days and arrival times are still to confirm; these legs are grouped under the Saturday arrival for now.\n\nProposed overnight: Camping Village Internazionale Firenze (now hu Firenze Certosa camping in town). Everyone meets in Florence; the meeting point and time are open. Arrival lines are provisional town-to-town guides.",
+      "segmentIds": [
+        "florence-genoa-berlin-florence",
+        "florence-genoa-hamburg-freiburg",
+        "florence-genoa-freiburg-milan",
+        "florence-genoa-lucerne-milan",
+        "florence-genoa-milan-florence"
+      ],
+      "tagline": "Four arrivals, one cycling trip",
+      "placeId": "fg-camp-florence",
+      "destinationId": "fg-florence"
+    },
+    {
+      "id": "florence-genoa-d2",
+      "number": 2,
+      "calendarDate": "2026-05-10",
+      "date": "Sunday · 10 May",
+      "title": "Florence to Fucecchio",
+      "text": "The first riding day heads towards Fucecchio, with 66 km planned and around 11 km offroad in the supplied notes.\n\nProposed overnight: Toscana Village Srl in Montopoli in Val d’Arno. Supplied planning pin: 43.678487, 10.767459. The Google Maps campsite pin in the notes is different (43.676046, 10.752759); confirm the approach and whether the distance includes it.\n\nAlternative retained from the notes: a riverside spot near Fucecchio / Roffia. This is an unconfirmed idea; permission and suitability have not been established. The map line is a provisional connection, awaiting the track.",
+      "segmentIds": [
+        "florence-genoa-florence-fucecchio"
+      ],
+      "tagline": "66 km planned · 11 km offroad",
+      "placeId": "fg-camp-toscana",
+      "destinationId": "fg-fucecchio"
+    },
+    {
+      "id": "florence-genoa-d3",
+      "number": 3,
+      "calendarDate": "2026-05-11",
+      "date": "Monday · 11 May",
+      "title": "Fucecchio to Lucca",
+      "text": "A shorter riding day to leave time to explore Lucca, with Pisa mentioned as an optional visit in the notes. Any Pisa detour still needs planning.\n\nProposed overnight: Agricampeggio La Valle, beyond Lucca. Supplied pin: 43.829140, 10.425546. Alternative from the notes: the forest behind the campsite, with permission and suitability unconfirmed.\n\nThe notes describe the ride as straightforward on EuroVelo 5. The exact alignment, campsite access and 46 km estimate still need checking against the track.",
+      "segmentIds": [
+        "florence-genoa-fucecchio-lucca"
+      ],
+      "tagline": "46 km planned · time to explore",
+      "placeId": "fg-camp-la-valle",
+      "destinationId": "fg-lucca"
+    },
+    {
+      "id": "florence-genoa-d4",
+      "number": 4,
+      "calendarDate": "2026-05-12",
+      "date": "Tuesday · 12 May",
+      "title": "Lucca to the Massa coast",
+      "text": "Continue towards Marina di Massa. The revised table uses Massa and 54 km, replacing the earlier Marina di Carrara entry.\n\nProposed overnight: Camping Lilly Pineta. Supplied planning pin: 44.028501, 10.077718. The linked campsite pin is 44.025105, 10.077470; confirm the entrance.\n\nThe notes again suggest a straightforward day following EuroVelo 5. This is retained as a route note, not a verified alignment.",
+      "segmentIds": [
+        "florence-genoa-lucca-massa"
+      ],
+      "tagline": "54 km planned · Camping Lilly Pineta",
+      "placeId": "fg-camp-lilly",
+      "destinationId": "fg-massa"
+    },
+    {
+      "id": "florence-genoa-d5",
+      "number": 5,
+      "calendarDate": "2026-05-13",
+      "date": "Wednesday · 13 May",
+      "title": "Towards Mattarana",
+      "text": "The longest listed stage follows the easier opening days. The notes flag more climbing here; the tested coastal alternative reportedly adds around 30 km with similar elevation. No elevation total has been imported.\n\nThe destination is Mattarana, but the proposed Camping Oasi Holiday Park is at Passo delle Campane near Sestri Levante (official pin: 44.258050, 9.493494), farther west. The supplied planning pin is 44.264809, 9.505556. This mismatch must be resolved before choosing the stage endpoint or overnight.\n\nAlternative from the notes: a nearby forest or riverside spot, with permission and suitability unconfirmed. The older note about resting in Genoa the next day conflicts with the revised Thursday in Sestri Levante; no extra rest day has been inserted.",
+      "segmentIds": [
+        "florence-genoa-massa-mattarana"
+      ],
+      "tagline": "74 km planned · climbing begins",
+      "placeId": "fg-mattarana",
+      "destinationId": "fg-mattarana"
+    },
+    {
+      "id": "florence-genoa-d6",
+      "number": 6,
+      "calendarDate": "2026-05-14",
+      "date": "Thursday · 14 May",
+      "title": "Mattarana to Sestri Levante",
+      "text": "The revised itinerary ends at Sestri Levante and names Camping Mare Monti, replacing the earlier Pian dei Manzi plan. Supplied campsite pin: 44.263141, 9.442277.\n\nThe notes describe a beautiful final stretch with some tricky unpaved roads. It is not yet clear whether this comment and the linked Komoot suggestion refer to the earlier route or this revision.\n\nRetain the supplied 62 km estimate for now. The exact track and Wednesday’s overnight are needed to explain this distance and establish the actual start of the day.",
+      "segmentIds": [
+        "florence-genoa-mattarana-sestri"
+      ],
+      "tagline": "62 km in the notes · track to reconcile",
+      "placeId": "fg-camp-mare-monti",
+      "destinationId": "fg-sestri"
+    },
+    {
+      "id": "florence-genoa-d7",
+      "number": 7,
+      "calendarDate": "2026-05-15",
+      "date": "Friday · 15 May",
+      "title": "Sestri Levante to Genoa",
+      "text": "Finish in Genoa, with 62–72 km in the revised plan. Proposed overnight: Airbnb in Genoa; booking status is unconfirmed.\n\nA shorter coastal option is mentioned, with roughly 35–45 km on busy roads with cars. Keep that tradeoff visible until the exact route is available.\n\nThe trip’s 364 km statistic uses the lower 62 km estimate for this day; the six riding days total 364–374 km. Arrival travel is unmeasured and is not included in that cycling total.",
+      "segmentIds": [
+        "florence-genoa-sestri-genoa"
+      ],
+      "tagline": "62–72 km planned · finish in Genoa",
+      "placeId": "fg-genoa",
+      "destinationId": "fg-genoa"
+    }
+  ],
+  "photos": [],
+  "travelers": [
+    {
+      "id": "marc",
+      "name": "Marc"
+    },
+    {
+      "id": "anna",
+      "name": "Anna"
+    },
+    {
+      "id": "mo",
+      "name": "Mo"
+    },
+    {
+      "id": "paula",
+      "name": "Paula"
+    },
+    {
+      "id": "kawan",
+      "name": "Kawan"
+    },
+    {
+      "id": "qen",
+      "name": "Qen"
+    },
+    {
+      "id": "jonas",
+      "name": "Jonas"
+    },
+    {
+      "id": "david",
+      "name": "David"
+    },
+    {
+      "id": "michelle",
+      "name": "Michelle"
+    }
+  ],
+  "routeGroups": [
+    {
+      "id": "berlin",
+      "label": "Marc & Anna · Berlin",
+      "travelerIds": [
+        "marc",
+        "anna"
+      ]
+    },
+    {
+      "id": "hamburg",
+      "label": "Mo & Paula · Hamburg",
+      "travelerIds": [
+        "mo",
+        "paula"
+      ]
+    },
+    {
+      "id": "lucerne",
+      "label": "Qen, Jonas, David & Michelle · Lucerne",
+      "travelerIds": [
+        "qen",
+        "jonas",
+        "david",
+        "michelle"
+      ]
+    },
+    {
+      "id": "kawan",
+      "label": "Kawan · via Lucerne",
+      "travelerIds": [
+        "kawan"
+      ]
+    }
+  ],
+  "meetup": {
+    "dayId": "florence-genoa-d1",
+    "placeId": "fg-florence",
+    "label": "Everyone joins in Florence on Saturday 9 May; meeting point and time to confirm."
+  }
+}
