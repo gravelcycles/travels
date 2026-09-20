@@ -24,7 +24,7 @@
     let gesture = null, pointers = new Map(), pinch = null, suppressClick = false;
     let locationTimer, swipeTimer, swipeFrame, zoomFrame;
     let replayState = null;
-    let overlay = null, afterDismiss = null;
+    let overlay = null, overlayDepth = 0, afterDismiss = null;
     let restoring = false, previousState = null, lastTap = null, viewerDepth = 0, fromAlbum = false, exitingToDay = false;
     const neighbors = [-1, 1].map(delta => {
       const node = document.createElement('img'); node.className = 'mobile-photo-neighbor'; node.hidden = true; node.alt = ''; node.setAttribute('aria-hidden', 'true'); node.draggable = false;
@@ -32,7 +32,7 @@
     });
     const enabled = () => media.matches;
     function snapshot() {
-      return {overlay, dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
+      return {overlay, overlayDepth, dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
         viewerDay: current.day?.id, index: current.index, scope:api.scope(), depth:dialog.open?viewerDepth:0, fromAlbum, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
     }
     function save(push = false) {
@@ -45,13 +45,13 @@
       const surface = $(`#${id}`);
       if (surface.open) return;
       if (!restoring) { save(); history.pushState({...history.state}, '', location.href); }
-      overlay = id; surface.showModal(); save();
+      overlay = id; if (!restoring) overlayDepth++; surface.showModal(); save();
     }
     function dismissOverlay(id, after) {
       afterDismiss = after || null;
       $(`#${id}`).close();
     }
-    for (const id of ['album-dialog', 'replay-dialog', 'notes-dialog']) {
+    for (const id of ['album-dialog', 'replay-dialog', 'notes-dialog', 'comments-dialog', 'experience-unlock']) {
       $(`#${id}`).addEventListener('close', () => {
         // Native close events are queued. A replacement may already own the entry.
         if ($(`#${id}`).open || overlay !== id) return;
@@ -258,7 +258,7 @@
     function open(options = {}) {
       if (!dialog.open) {
         if (!restoring) { save(); history.pushState({...history.state}, '', location.href); }
-        if (overlay) { const previousOverlay = overlay; overlay = null; $(`#${previousOverlay}`).close(); }
+        if (overlay) { const previousOverlay = overlay; overlay = null; overlayDepth = 0; $(`#${previousOverlay}`).close(); }
         viewerDepth = 1;
         if (!enabled()) return;
         locationOpen = false; grid = Boolean(options.grid && enabled()); viewer.dataset.grid = String(grid); setChrome(true); revealTo(0);
@@ -271,13 +271,16 @@
     function closed() {
       neighbors.forEach(({node}) => {node.hidden=true;api.clearImage(node);node.removeAttribute('src');});
       stopSwipe(); stopZoom(); pointers.clear(); gesture = pinch = null; lastTap = null;
-      if (!restoring && history.state?.mobileAtlas?.viewer) history.go(-Math.max(1,viewerDepth));
+      if (!restoring && history.state?.mobileAtlas?.viewer) history.go(-Math.max(1, viewerDepth + (history.state.mobileAtlas.overlayDepth || 0)));
     }
     window.addEventListener('popstate', event => {
       const state = event.state?.mobileAtlas;
       if (!state) return;
+      // A Places/gallery entry can change while this atlas snapshot is identical.
+      // Leave its camera and focused input alone; that surface restores itself.
+      if (JSON.stringify(state) === JSON.stringify(previousState) && !afterDismiss) return;
       const old = previousState; restoring = true;
-      viewerDepth = state.depth || 0;
+      viewerDepth = state.depth || 0; overlayDepth = state.overlayDepth || 0;
       const oldOverlay = overlay; overlay = state.overlay || null;
       if (oldOverlay && oldOverlay !== overlay) $(`#${oldOverlay}`).close();
       const targetDay = old?.viewer && !state.viewer ? current.day?.id || state.dayId : state.dayId;

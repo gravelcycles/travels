@@ -1,6 +1,6 @@
 # Places and photo conversations
 
-Architecture and working UX demos, 19 September 2026.
+Architecture and working UX previews, updated 20 September 2026.
 
 The smallest useful extension is **curated place data in Git + live photo
 comments in the existing Cloudflare service**. Keep the shared map and viewer.
@@ -28,37 +28,59 @@ template. It works on a real trip, sample or Studio draft; it is not a journey
 feature flag or separate application. Without it there are no comment/write
 controls. Remove this review entry point when the live flow replaces it.
 
-The demo reviews/comments save in localStorage, scoped by journey and then
-place/photo ID. Demo visitor identity lasts for this browser tab's session and
-survives reload when sessionStorage is available. It is not verified identity.
-Closing the tab or clearing the demo session can lose deletion ownership;
-**Reset this demo** clears that journey's local entries. These demo writes never
-reach the Worker, repository, other visitors or a database. A failed storage
-write keeps the form text and reports failure. Treat demo text as disposable.
+Preview comments, reviews and unfinished drafts save in localStorage, scoped by
+journey and then place/photo ID. The local visitor ID survives closing a tab;
+demo access lasts for the tab session. Changing a display name preserves
+ownership, and earlier comments retain their original attribution. This is not
+verified identity. Clearing browser data can lose local ownership. Reset preview
+edits requires confirmation and clears only the active journey's preview data.
+No preview write reaches the Worker, repository, other visitors or a database.
+Failed writes retain text and report failure; unavailable storage preserves the
+current-page draft with an honest notice. Treat preview text as disposable.
 
 Real Lucerne locations demonstrate the editorial shape. Their addresses and
-descriptions link to tourism/venue sources; positions are explicitly approximate.
-All reviews and visit memories are invented and marked sample. Existing atlas
-illustrations are labeled as illustrations, not venue photographs. Switzerland's
-real trip has no fabricated restaurant visits or ratings.
+descriptions link to tourism/venue sources; positions remain explicitly
+approximate. All group reviews and visit memories are invented and marked sample.
+Place cards now use actual photographs: restaurant media authorized for
+noncommercial use and Wikimedia Commons images with credited reuse licenses.
+Author, source and license links appear in galleries; derivative details are in
+[the asset credits](../dist/assets/places/ATTRIBUTION.md). Switzerland's real trip
+has no fabricated restaurant visits or ratings.
 
 ## Maps-style place cards
 
-The owner asked for a closer Google Maps experience after reviewing the first
-prototype. The shared places view now uses a left sidebar on desktop, compact
-photo list tiles, a large photo header, name/rating/category, round quick actions,
-Overview/Reviews/Photos tabs, a five-to-one-star distribution and individual
-review rows. Phones use a bottom sheet with a tappable/draggable expansion
-handle. Tab changes preserve an unfinished review; arrow keys, Home and End
-navigate the tabs. Closing places restores the normal journey panels.
+The shared places view retains the familiar list → place →
+Overview/Reviews/Photos flow, with the atlas's warm surfaces and restrained type.
+Search, category and day filters preserve their state when returning from a
+place. Empty filtered results offer a direct way back to all places. Ratings
+belong explicitly to our group; saved unvisited places have no invented score.
 
-This is our own shared component using our curated data, not an embedded Google
-card. Ratings say **Our group**. There is no Google logo, copied review feed,
-Maps API request, automatic opening-hours feed or new backend dependency. A
-Google Maps action opens the existing source link. The current first-party
-reference was [Wirtshaus Taube on Google Maps](https://www.google.com/maps/search/?api=1&query=Wirtshaus+Taube+Luzern),
-inspected 19 September 2026; the general review flow is documented in
-[Google Maps Help](https://support.google.com/maps/answer/6230175?hl=en).
+The UX preview supports rating-only or written reviews, editing, deletion with
+Undo, and per-place draft recovery. Photos open an accessible full-screen gallery
+with previous/next navigation, complete images and attribution. Map pins use
+screen-space clustering with accessible place choices. A phone sheet expands
+for reading and contracts for the map. Tabs support arrow keys, Home and End.
+Browser Back and Forward follow place details and galleries.
+
+Photo conversations use a contextual panel with per-photo drafts, previous/next
+photo navigation, edit/delete-own and Undo. Password plus display name is one
+small welcome form; changing a name later does not ask for the password again.
+The composer gives clear saved/error feedback and supports Command/Ctrl+Enter.
+Back, Close and Escape dismiss the foreground surface before its photograph.
+Short screens, reduced motion and keyboard focus have dedicated treatments.
+
+The code is shared across real journeys, samples and empty drafts. The
+`places-comments.js` coordinator owns the local persistence adapter;
+`places-panel.js` and `photo-comments.js` own focused interfaces, with matching
+stylesheets. Real trip photo authentication is unchanged. No backend has been
+provisioned as part of this UX work.
+
+These are our own components and curated records. There is no Google logo,
+copied review feed, Maps API call or automatic opening-hours feed. The Google
+Maps action opens an ordinary link. The first-party layout reference was
+[Wirtshaus Taube on Google Maps](https://www.google.com/maps/search/?api=1&query=Wirtshaus+Taube+Luzern),
+inspected 19 September 2026. The project-specific quality criteria and evidence
+are in [the UX acceptance record](PLACES_UX_REVIEW_2026-09-20.md).
 
 ## What lives where
 
@@ -165,9 +187,9 @@ Each entry has a stable ID, `name`, `category` (`food`/`sight`), `[lng, lat]`
 `coordinates`, `locationAccuracy` (`approximate`/`verified`), `status`
 (`visited`/`saved`), `dayIds`, `summary`, and labeled HTTPS `sources`. Optional
 `note`, `address`, `mapsUrl`, `images`, `reviews` and `sample` supply content.
-Images need `src`, `alt`, `credit`, `sourceUrl` and `permission` (`owned`,
+Images need `src`, `alt`, `credit`, `sourceUrl`, optional HTTPS `licenseUrl`, and `permission` (`owned`,
 `permission`, `licensed`, `illustration`). Reviews need `authorId`, `authorName`,
-an integer `rating` 1–5, and `text`; one entry per author per place. The UI derives
+an integer `rating` 1–5, and `text` (empty for a rating-only review); one entry per author per place. The UI derives
 the mean. A single joint review also works: one stable group author with one score.
 Saved/unvisited places cannot have ratings. Sources and private originals should
 be reviewed before publication; the supported place content is public.
@@ -203,5 +225,5 @@ reviews prompt-authored until there is a specific need for in-browser editing.
 If those become live writes, add server-assigned traveler/editor authorization;
 the shared visitor password alone cannot distinguish the traveling group from
 friends visiting the site. Do not bolt unverified group membership onto the
-display-name form. Dense POI clustering/collision handling, image intake tools
-and deeper mobile Back/Forward integration remain follow-up work after UX review.
+display-name form. Image intake remains agent-operated. Live service delivery and group authorization
+remain separate follow-up work; the local UX does not simulate trusted permissions.

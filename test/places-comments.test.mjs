@@ -47,12 +47,16 @@ test('place sources reject unsafe assets, bad references, missing attribution an
     point => { point.images[0].src = './assets/places/../../secret.jpg'; },
     point => { point.images[0].credit = ''; },
     point => { point.images[0].permission = 'found-online'; },
+    point => { point.images[0].licenseUrl = 'javascript:alert(1)'; },
     point => { point.mapsUrl = 'https://user:password@example.com'; },
     point => { point.reviews[0].rating = 6; },
     point => { point.reviews[0].rating = 3.5; },
+    point => { point.reviews[0].text = null; },
     point => { point.reviews.push(point.reviews[0]); }
   ];
   for (const edit of edits) { const journey = example(); edit(journey.pointsOfInterest[0]); assert.throws(() => validatePointsOfInterest(journey), /pointsOfInterest/); }
+  const ratingOnly = example(); ratingOnly.pointsOfInterest[0].reviews[0].text = '';
+  assert.doesNotThrow(() => validatePointsOfInterest(ratingOnly));
   const duplicate = example(); duplicate.pointsOfInterest.push(duplicate.pointsOfInterest[0]);
   assert.throws(() => validatePointsOfInterest(duplicate), /unique stable IDs/);
 });
@@ -89,4 +93,73 @@ test('demo validation, storage failure and review updates preserve truthful stat
   assert.deepEqual(unavailable.comments('photo'), [], 'Failed writes must not appear as saved');
   storage.setItem('trip', '{broken'); assert.deepEqual(store.comments('photo'), []);
   store.reset(); assert.deepEqual(store.reviews('place'), []);
+});
+
+test('editing and undo retain comment author attribution and reject other visitors', () => {
+  const storage = memory(), store = createDemoStore(storage, 'trip');
+  const visitor = { id: 'alex-device', name: 'Alex' };
+  store.addComment('photo', visitor, 'Original', 'one', 100);
+  visitor.name = 'New name';
+  assert.throws(() => store.editComment('one', 'another-device', 'Changed'), /own comments/);
+  store.editComment('one', visitor.id, ' Edited ');
+  const edited = store.comments('photo')[0];
+  assert.equal(edited.body, 'Edited'); assert.equal(edited.displayName, 'Alex');
+  assert.equal(edited.createdAt, 100); assert.ok(Number.isFinite(edited.editedAt));
+  assert.throws(() => store.editComment('one', visitor.id, ' '));
+  assert.equal(store.comments('photo')[0].body, 'Edited');
+  const removed = store.removeComment('one', visitor.id);
+  assert.equal(store.comments('photo').length, 0);
+  assert.throws(() => store.restoreComment(removed, 'another-device'), /own comments/);
+  store.restoreComment(removed, visitor.id);
+  assert.deepEqual(store.comments('photo')[0], edited);
+  assert.throws(() => store.restoreComment(removed, visitor.id), /already/);
+  store.addComment('photo', visitor, 'New comment', 'two', 101);
+  assert.equal(store.comments('photo')[1].displayName, 'New name');
+});
+
+test('comment retries are idempotent while conflicting IDs cannot overwrite a memory', () => {
+  const store = createDemoStore(memory(), 'trip'), visitor = { id:'visitor',name:'Alex' };
+  const comment = store.addComment('photo',visitor,'Hello','id',10);
+  assert.deepEqual(store.addComment('photo',visitor,'Hello','id',11),comment);
+  assert.equal(store.comments('photo').length,1);
+  assert.throws(()=>store.addComment('photo',visitor,'Other','id',12));
+  assert.throws(()=>store.addComment('other-photo',visitor,'Hello','id',12));
+});
+
+test('rating-only reviews, removal and restore keep the group average accurate', () => {
+  const store = createDemoStore(memory(), 'trip');
+  store.saveReview('place',' Alex ',4,'');
+  assert.equal(store.reviews('place')[0].text,'');
+  const deleted = store.removeReview('place');
+  assert.equal(average(store.reviews('place')),null);
+  store.saveReview(deleted.pointId,deleted.authorName,deleted.rating,deleted.text);
+  assert.equal(average(store.reviews('place')),'4.0');
+  assert.throws(()=>store.saveReview('place',' ',4,''));
+});
+
+test('unfinished drafts survive reopening, stay scoped to their journey and reset explicitly', () => {
+  const storage = memory(), store = createDemoStore(storage,'trip');
+  store.draft('photo:a',{body:'Unsent memory'});
+  store.draft('photo:b',{body:'A different photo',editingId:'existing'});
+  store.draft('review:a',{name:'Alex',rating:0,body:'An unfinished review'});
+  assert.deepEqual(createDemoStore(storage,'trip').draft('photo:a'),{body:'Unsent memory'});
+  assert.equal(createDemoStore(storage,'other-trip').draft('photo:a'),null);
+  const retrieved = store.draft('photo:a'); retrieved.body='Changed outside storage';
+  assert.equal(store.draft('photo:a').body,'Unsent memory');
+  store.draft('photo:a',null); assert.equal(store.draft('photo:a'),null);
+  assert.equal(store.draft('photo:b').editingId,'existing');
+  assert.throws(()=>store.draft('__proto__',{}));
+  store.reset(); assert.equal(store.draft('photo:b'),null); assert.equal(store.draft('review:a'),null);
+});
+
+test('failed edits, deletes and draft writes leave persisted text intact', () => {
+  const values = memory(); let fail = false;
+  const store = createDemoStore({getItem:values.getItem,setItem(k,v){if(fail)throw Error('full');values.setItem(k,v);}},'trip');
+  store.addComment('p',{id:'v',name:'Alex'},'Keep me','c',1);
+  store.draft('photo:p',{body:'Keep draft'}); fail=true;
+  assert.throws(()=>store.editComment('c','v','Lost edit'),/could not save/);
+  assert.throws(()=>store.removeComment('c','v'),/could not save/);
+  assert.throws(()=>store.draft('photo:p',null),/could not save/);
+  assert.equal(store.comments('p')[0].body,'Keep me');
+  assert.equal(store.draft('photo:p').body,'Keep draft');
 });

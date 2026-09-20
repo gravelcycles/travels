@@ -20,7 +20,7 @@ function selection() {
   const context = vm.createContext({
     window: {}, clearDayPreview(){}, deferDayPreviewClear(){}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
     activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null,
-    viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null,
+    viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null, placesUI: null,
     journey: { days, segments: [] }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],
     photosForDay: () => [], routeLabel: () => '', escapeHtml: value => value || '',
     refreshPreloads() {}, renderDays() {}, scrollActiveDayIntoView() {}, renderStory() {}, drawMainMap() {}, renderViewerFilmstrip() {}, clearSegmentInspection() {}
@@ -102,6 +102,30 @@ test('returning to the mobile map positions day controls and frames the selected
   });
   vm.runInContext(functionSource('setMobileTab'), context);
   vm.runInContext('setMobileTab("map")', context);
+  assert.deepEqual(calls, ['resize', 'controls', 'd2']);
+});
+
+test('opening Places before a queued map return keeps place framing and clears the pending day fit', () => {
+  const context = selection(), calls = [], timers = [];
+  let placesOpen = false;
+  Object.assign(context, {
+    mapScope: 'day', activeDayId: 'd2', pendingMapAction: 'focus',
+    mainMap: { resize() { calls.push('resize'); } },
+    placesUI: { isOpen: () => placesOpen },
+    window: { setTimeout: fn => timers.push(fn) },
+    renderDayNavigator() { calls.push('controls'); },
+    activeDay: () => ({ id: context.activeDayId }),
+    focusDay(day) { calls.push(day.id); },
+    fitJourneyBounds() { calls.push('journey'); }
+  });
+  vm.runInContext(functionSource('setMobileTab'), context);
+  context.setMobileTab('map');
+  placesOpen = true; // Places opens and frames its pins before the 80 ms callback.
+  timers.shift()();
+  assert.deepEqual(calls, ['resize', 'controls']);
+  assert.equal(context.pendingMapAction, null);
+  placesOpen = false; calls.length = 0;
+  context.setMobileTab('map'); timers.shift()();
   assert.deepEqual(calls, ['resize', 'controls', 'd2']);
 });
 

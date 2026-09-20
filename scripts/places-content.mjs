@@ -24,12 +24,13 @@ export function validatePointsOfInterest(journey) {
     if (!Array.isArray(point.sources) || !point.sources.length || point.sources.some(source => !text(source.label, 120) || !https(source.url))) fail(`${point.id} needs labeled HTTPS sources`);
     if (!Array.isArray(point.images ?? []) || (point.images || []).length > 12) fail(`${point.id} has invalid images`);
     for (const picture of point.images || []) {
+      if (picture?.licenseUrl != null && !https(picture.licenseUrl)) fail(`${point.id} image license needs a safe HTTPS URL`);
       if (!picture || !(https(picture.src) || /^\.\/assets\/(?:photos|places)\/[a-z0-9-]+\.(?:webp|jpg|png)$/.test(picture.src)) || !text(picture.alt, 300) || !text(picture.credit, 300) || !https(picture.sourceUrl) || !['owned', 'permission', 'licensed', 'illustration'].includes(picture.permission)) fail(`${point.id} image needs a safe source, alt, credit, source URL and permission basis`);
     }
     if (!Array.isArray(point.reviews ?? []) || (point.reviews || []).length > 50) fail(`${point.id} has invalid reviews`);
     const reviewers = new Set();
     for (const review of point.reviews || []) {
-      if (!review || !id(review.authorId) || reviewers.has(review.authorId) || !text(review.authorName, 60) || !Number.isInteger(review.rating) || review.rating < 1 || review.rating > 5 || !text(review.text, 1000)) fail(`${point.id} review needs a unique author, rating 1–5 and text`);
+      if (!review || !id(review.authorId) || reviewers.has(review.authorId) || !text(review.authorName, 60) || !Number.isInteger(review.rating) || review.rating < 1 || review.rating > 5 || typeof review.text !== 'string' || review.text.length > 1000) fail(`${point.id} review needs a unique author, rating 1–5 and optional review text`);
       reviewers.add(review.authorId);
     }
     if (point.status === 'saved' && point.reviews?.length) fail(`${point.id} cannot review an unvisited place`);

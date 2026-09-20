@@ -234,31 +234,33 @@ This review gate does not block delivery of the authorized bug fixes.
 The owner subsequently requested reload recovery, readable draft review, and usable Save conflict handling. Those are now shared capabilities: local revision snapshots support three-way saves, independent changes combine, and conflicting fields require an explicit saved/draft choice. No force overwrite is inferred from a reload. Editable day taglines, preserved story paragraphs and compact expandable travel details use the existing shared templates and editorial overrides for real trips, demos and fresh drafts.
 
 
-## Places and conversations — 19 September 2026
+## Places and conversations — updated 20 September 2026
 
 `pointsOfInterest` is a validated optional annotation collection, independent of
-itinerary `places`. `scripts/places-content.mjs` owns validation and the shared
-`dist/assets/places-comments.js` / `.css` and `journey.html` own presentation.
-`journeys.js` carries the curated place records through the existing generated
-bundle. Ordinary Studio saves preserve them; data is authored by prompting the
-agent. All journeys inherit the layer and its empty state; no concrete trip IDs
-or API calls occur in shared code. Alpine Crossing contains clearly labeled
-example places, invented group reviews and illustrative media.
+itinerary `places`. `scripts/places-content.mjs` owns validation. Shared template
+shells mount `places-panel.js` / `.css` and `photo-comments.js` / `.css`; the
+`places-comments.js` coordinator supplies the local UX persistence adapter.
+`journeys.js` carries curated records through the generated bundle. Ordinary
+Studio saves preserve them. Data and approved images are authored through chat;
+there are no concrete journey branches or Maps API calls in shared code.
 
-The temporary `experience=places|comments` query is a UX-review entry point in
-the same template, not a general feature-flag system. Only this explicit preview
-exposes local review editing and the fake-password comment simulation. Live
-comments, server-bound visitor identities, moderation, eligible-photo validation
-and D1 provisioning are unresolved W08 work, documented in
-[PLACES_AND_COMMENTS.md](PLACES_AND_COMMENTS.md). Existing photo auth is unchanged.
-POI clustering/collision handling for large collections and deeper mobile overlay
-history should be resolved after reviewing this small demo. New authorized demos
-are distinct from the six earlier audit proposals.
+All journeys inherit the layer, search/filter/empty states, galleries and
+Map-style list/detail organization refined for the atlas. Alpine Crossing has
+real places and credited venue/Commons photos, with explicitly fictional group
+reviews. Drafts preserve unfinished local review/comment text through navigation;
+removals are recoverable through Undo. A local visitor ID outlives the display
+name and tab session. Comments/unlock join the existing shared overlay history;
+parent photo dismissal unwinds nested layers. Places/gallery history preserves
+other atlas state. Pins cluster by rendered distance.
 
+The temporary `experience=places|comments` query is a UX entry point in the same
+shared template, not a general feature-flag system. Only this explicit preview
+exposes local review editing and the sample-password comment simulation.
+It is not a live write/auth implementation. The owner's 20 September request
+explicitly authorized completing this UX before backend work.
 
-The second places UX pass adopts a Maps-style left sidebar/photo tiles and
-Overview/Reviews/Photos tabs in the same shared module. It adds no trip-specific
-schema or service dependency. Desktop panel restoration and phone sheet
-expansion are shared; the distribution derives solely from our group reviews.
-Live writes, large-collection pin collisions and complete overlay history remain
-W08 follow-up work, separate from this presentation refinement.
+Live comments, server-bound identities, moderation, eligible-photo validation,
+D1 provisioning and a production rollout remain W08 work in
+[PLACES_AND_COMMENTS.md](PLACES_AND_COMMENTS.md). Existing real photo auth is
+unchanged. Image intake remains agent-operated. The detailed UX verification
+record is [PLACES_UX_REVIEW_2026-09-20.md](PLACES_UX_REVIEW_2026-09-20.md).
