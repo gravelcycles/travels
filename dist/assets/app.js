@@ -1111,6 +1111,7 @@
       window.setTimeout(() => {
         mainMap.resize();
         renderDayNavigator();
+        if (placesUI?.isOpen()) { pendingMapAction = null; return; }
         if (pendingMapAction === "fit") fitJourneyBounds();
         else if (pendingMapAction === "focus" || mapScope === "day") focusDay(activeDay());
         pendingMapAction = null;
@@ -1211,7 +1212,6 @@
     const photos = photosForDay(day.id);
     viewerPhotoIndex = Math.max(0, Math.min(photos.length - 1, viewerPhotoIndex));
     const photo = photos[viewerPhotoIndex];
-    if (typeof placesUI !== 'undefined') placesUI?.photoChanged(photo);
     activeDayId = day.id;
     mapScope = "day";
     const modalPhoto = $("#modal-photo");
@@ -1296,6 +1296,8 @@
     if (dayChanged) setActiveDay(day.id, true);
     else if (scopeChanged) drawMainMap(false);
     if (viewerMapReady) syncViewerMap();
+    // Conversation context follows the newly selected image, including its auth state.
+    if (typeof placesUI !== 'undefined') placesUI?.photoChanged(photo);
     refreshPreloads();
   }
 
@@ -2015,7 +2017,7 @@
     selectDay:id=>setActiveDay(id,true), stepDay:moveActiveDay, tab:setMobileTab, preview:renderStoryMap,
     openDay:openDayViewer, move:moveViewer, selectPhoto:index=>{viewerPhotoIndex=index;updateViewer();},
     overview:fitRoute, album:openAlbum, replay:openReplay,
-    restoreOverlay:id=>{if(id==='album-dialog')openAlbum();else if(id==='replay-dialog')openReplay();else window.JOURNEY_ATLAS_MOBILE_UI.presentOverlay(id);},
+    restoreOverlay:id=>{if(id==='album-dialog')openAlbum();else if(id==='replay-dialog')openReplay();else if(['comments-dialog','experience-unlock'].includes(id))placesUI?.restoreOverlay(id);else window.JOURNEY_ATLAS_MOBILE_UI.presentOverlay(id);},
     location:()=>{viewerCameraPhoto=null;initViewerMap();},
     pauseLocation:()=>viewerTransition?.cancel(),
     replayMap:()=>{if(replayMapReady && replayDialog.open){replayMap.resize();drawReplayMomentMap(currentReplayMoment(),replayProgress,true);}},
@@ -2038,7 +2040,9 @@
     protected: photo => window.JOURNEY_ATLAS_AUTH?.isProtected(photo),
     unlocked: () => window.JOURNEY_ATLAS_AUTH?.unlocked,
     unlock: () => window.JOURNEY_ATLAS_AUTH?.showPrompt(),
-    explore: () => { dismissIntroduction(); setMobileTab('map'); }
+    explore: () => { dismissIntroduction(); setMobileTab('map'); },
+    restoreMap: () => mapScope === 'day' ? focusDay(activeDay()) : fitJourneyBounds(),
+    canRestoreMapCamera: () => mainMapReady && hasPlayedOpeningMove && !mainMap?.isMoving()
   });
   renderAll({ fit: false });
   initMainMap();

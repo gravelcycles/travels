@@ -578,8 +578,8 @@ licensed imagery; retain links and an empty image slot when reuse is unclear.
 
 These annotations do not alter route nodes or Replay. Their content and reviews
 are public; private original images do not belong in journey JSON. Record an
-image's source, credit and permission basis. The validated schema and reusable
-intake prompt are in [PLACES_AND_COMMENTS.md](docs/PLACES_AND_COMMENTS.md).
+image's source, credit and permission basis, with a license URL where applicable.
+The validated schema and reusable intake prompt are in [PLACES_AND_COMMENTS.md](docs/PLACES_AND_COMMENTS.md).
 Ordinary Studio itinerary edits retain these fields. Validate/build, check the
 map at desktop/phone sizes, then follow the normal publishing workflow.
 
@@ -588,6 +588,19 @@ preview or `experience=comments` for the display-name/password/photo-comment
 preview. The sample password is `demo`. Preview reviews/comments stay in this
 browser; they are not authored trip data and do not synchronize to other
 visitors. Real shared comments require the proposed Worker/database extension.
+
+The place-card presentation follows a Maps-style list → detail →
+Overview/Reviews/Photos flow. The photo list tiles, star breakdown, quick actions
+and expandable mobile sheet all read the same `pointsOfInterest` records;
+no Google service integration is required. Ratings may omit written text. Each
+photo’s source and credit remain visible in the gallery. Group review edits in the
+`experience` preview remain browser-local.
+
+The polished preview retains searches, filter state and per-place/per-photo drafts.
+Check rating-only reviews, edit/delete/Undo, full-screen gallery attribution,
+name changes and browser Back/Forward as part of UX validation. Use the desktop,
+phone and short-screen matrix in `docs/PLACES_UX_REVIEW_2026-09-20.md`. A reset
+requires confirmation and affects only browser-local edits for this journey.
 
 ## Initial route-link intake example
 
@@ -598,11 +611,3 @@ leg `geometryStatus: "provisional"`. Never present endpoint guides as imported
 tracks. Use the existing roster/group assignments for separate arrivals and
 omit `groupIds` on shared cycling days. Missing origins stay in notes until
 known; dates follow the confirmed intake, with any inferred year documented.
-
-
-The place-card presentation follows a Maps-style list → detail →
-Overview/Reviews/Photos flow. The photo list tiles, star breakdown, quick actions
-and expandable mobile sheet all read the same `pointsOfInterest` records;
-no new intake fields or Google service integration are required. Each photo’s
-source and credit remain visible in the gallery. Group review edits in the
-`experience` preview remain browser-local.

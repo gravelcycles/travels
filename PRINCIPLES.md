@@ -38,3 +38,27 @@
   and verification for the user.
 - Verify changes on the deployed GitHub Pages site, including a fresh load.
 - `noindex` discourages discovery but does not make a public Pages site private.
+
+## Interaction quality
+
+The owner's direction for new places/reviews/photo conversations is Apple-like
+care, while retaining the atlas's personal character. This means:
+
+- Preserve unfinished text, selection, scroll position and the surrounding trip
+  when moving between views. A background update must never replace a draft.
+- Give each screen a clear primary action; reveal secondary actions where they
+  are needed. Keep implementation and prototype explanations out of the story.
+- Make Back go one level up, Close dismiss the current surface, and Undo recover
+  a recent removal. Browser history must agree with those visible controls.
+- Keep the map and photograph as context. A panel must make the next action
+  obvious without covering the content that explains it.
+- Use warm paper, restrained color, clear type, generous touch targets and
+  short interruptible transitions. Respect reduced motion and keyboard use.
+- Design incomplete, empty, loading and failed states as carefully as success.
+  Report saving honestly and retain the text when a write fails.
+- Keep a self-chosen display name separate from ownership. A name change is
+  a small edit, not a new account or another password ceremony.
+
+See [the UX acceptance record](docs/PLACES_UX_REVIEW_2026-09-20.md) for this
+feature's review matrix and [the earlier UX audit](docs/UX_AUDIT_2026-09-12.md)
+for the established reliability and visual principles.

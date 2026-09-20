@@ -13,6 +13,7 @@ Switzerland–Italy is the reference experience; starting another trip adds data
 not another copy of the application.
 
 - [Framework, audit, and remaining work](docs/FRAMEWORK.md)
+- [Design and interaction principles](PRINCIPLES.md)
 - [Feature inventory and required trip data](docs/FEATURES.md)
 - [New-trip and shared-feature prompts for agents](docs/AGENT_PROMPTS.md)
 - [Step-by-step trip creation and publishing](JOURNEY_WORKFLOW.md)

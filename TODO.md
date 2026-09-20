@@ -237,7 +237,7 @@ private video intake (W07); and a labeled map-only Replay timeline. These are
 pending review, not part of the 20 authorized bug fixes. Audit V1 stays excluded.
 
 
-## Places and photo comments — 19 September 2026
+## Places and photo comments — updated 20 September 2026
 
 - [x] **W08 demo:** shared prompt-authored POI schema/layer, food/sight/day filters,
       credited images, source links, group review averages and saved-place state.
@@ -250,5 +250,10 @@ pending review, not part of the 20 authorized bug fixes. Audit V1 stays excluded
       test expiry/revocation/CORS and deployment as one service change. No SSO or
       Google Maps API. Keep group reviews prompt-authored unless a later request
       defines server-authorized group editing. See docs/PLACES_AND_COMMENTS.md.
-- [ ] **W08 polish after demo review:** dense POI marker collision/clustering,
-      source/image intake tooling and full mobile overlay Back/Forward behavior.
+- [x] **W08 UX polish:** preserved drafts and context, search/filter recovery,
+      rating-only/editable reviews, full-screen galleries, photo conversations
+      with name changes and edit/delete/Undo, POI clusters and coordinated Back.
+      See docs/PLACES_UX_REVIEW_2026-09-20.md for verification evidence.
+- [ ] **W08 image intake:** further automate source/permission review and optimized
+      derivatives if repeated prompt-based intake shows a need. Current intake is
+      agent-operated; no Google Maps API or image scraping service is planned.

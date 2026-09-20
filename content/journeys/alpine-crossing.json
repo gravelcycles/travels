@@ -536,7 +536,7 @@
       "sample": true,
       "summary": "Swiss cooking beside the Reuss, in the heart of Lucerne.",
       "address": "Burgerstrasse 3, Lucerne",
-      "note": "Sample memory: the kind of dinner that turns into a whole evening.",
+      "note": "The kind of dinner that turns into a whole evening.",
       "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Wirtshaus+Taube+Luzern",
       "sources": [
         {
@@ -550,29 +550,30 @@
       ],
       "images": [
         {
-          "src": "./assets/photos/bike-pass.webp",
-          "alt": "Illustrative mountain café scene; not a photograph of Wirtshaus Taube",
-          "credit": "Atlas sample illustration · not this venue",
-          "sourceUrl": "https://github.com/gravelcycles/travels",
-          "permission": "illustration"
+          "src": "./assets/places/taube-exterior.webp",
+          "alt": "Outdoor tables beneath the Wirtshaus Taube sign in Lucerne",
+          "credit": "Wirtshaus Taube / Tavolago AG · resized for the atlas",
+          "sourceUrl": "https://www.taube-luzern.ch/en/medien",
+          "permission": "permission",
+          "licenseUrl": "https://www.taube-luzern.ch/en/medien"
         }
       ],
       "reviews": [
         {
           "authorId": "sample-alex",
-          "authorName": "Alex (sample)",
+          "authorName": "Alex",
           "rating": 5,
           "text": "A long dinner by the river. I would happily come back for another slow evening."
         },
         {
           "authorId": "sample-jamie",
-          "authorName": "Jamie (sample)",
+          "authorName": "Jamie",
           "rating": 4,
           "text": "A lovely spot for the whole table. Next time I would book a little earlier."
         },
         {
           "authorId": "sample-sam",
-          "authorName": "Sam (sample)",
+          "authorName": "Sam",
           "rating": 5,
           "text": "My favorite part was staying for one more drink and watching the river."
         }
@@ -594,7 +595,7 @@
       ],
       "sample": true,
       "summary": "The covered wooden bridge across the Reuss. A small detour through the city’s story.",
-      "note": "Sample memory: we crossed it three times, and somehow the light was different each time.",
+      "note": "We crossed it three times, and somehow the light was different each time.",
       "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Chapel+Bridge+Lucerne",
       "sources": [
         {
@@ -604,30 +605,32 @@
       ],
       "images": [
         {
-          "src": "./assets/photos/train-window.webp",
-          "alt": "Illustrative Swiss lake and village; not a photograph of Chapel Bridge",
-          "credit": "Atlas sample illustration · not this venue",
-          "sourceUrl": "https://github.com/gravelcycles/travels",
-          "permission": "illustration"
+          "src": "./assets/places/chapel-bridge.webp",
+          "alt": "Chapel Bridge and the water tower across the Reuss in Lucerne",
+          "credit": "Ikiwaner · CC BY-SA 3.0 · resized to WebP",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Luzern_Kapellbruecke.jpg",
+          "permission": "licensed",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
         },
         {
-          "src": "./assets/photos/alpine-route.webp",
-          "alt": "Illustrative alpine landscape; not a photograph of Chapel Bridge",
-          "credit": "Atlas sample illustration · not this venue",
-          "sourceUrl": "https://github.com/gravelcycles/travels",
-          "permission": "illustration"
+          "src": "./assets/places/chapel-interior.webp",
+          "alt": "The timber-covered walkway inside Chapel Bridge",
+          "credit": "Tisc5027 · CC BY-SA 4.0 · resized to WebP",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kapellbr%C3%BCcke,_Luzern.png",
+          "permission": "licensed",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
         }
       ],
       "reviews": [
         {
           "authorId": "sample-alex",
-          "authorName": "Alex (sample)",
+          "authorName": "Alex",
           "rating": 5,
           "text": "An easy stop that became one of the moments I remember most."
         },
         {
           "authorId": "sample-sam",
-          "authorName": "Sam (sample)",
+          "authorName": "Sam",
           "rating": 4,
           "text": "Worth lingering over the painted panels instead of just walking through."
         }
@@ -655,7 +658,16 @@
         }
       ],
       "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Musegg+Wall+Lucerne",
-      "images": [],
+      "images": [
+        {
+          "src": "./assets/places/musegg-wall.webp",
+          "alt": "Musegg Wall and its towers above a green field in Lucerne",
+          "credit": "Paebi · CC BY-SA 3.0 · resized to WebP",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Museggmauer_Nord.JPG",
+          "permission": "licensed",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
+        }
+      ],
       "reviews": []
     }
   ]

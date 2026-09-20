@@ -25,7 +25,9 @@
     <link rel="stylesheet" href="./assets/mobile.css?v=e91be2f9b304" />
     <link rel="stylesheet" href="./assets/group-travel.css?v=0644b8613316" />
     <link rel="stylesheet" href="./assets/map-feedback.css?v=31eb86c9e975" />
-    <link rel="stylesheet" href="./assets/places-comments.css?v=97c3a37cefef" />
+    <link rel="stylesheet" href="./assets/places-comments.css?v=10c8ea2e1474" />
+    <link rel="stylesheet" href="./assets/places-panel.css?v=1" />
+    <link rel="stylesheet" href="./assets/photo-comments.css?v=1" />
   </head>
   <body data-journey-id="switzerland-italy-family-2026">
     <header class="site-header">
@@ -112,15 +114,7 @@
 
       </section>
 
-      <aside id="places-panel" class="places-panel" aria-labelledby="places-title" hidden>
-        <button id="places-sheet-toggle" type="button" class="places-sheet-toggle" aria-label="Expand places" aria-expanded="false"><span aria-hidden="true"></span></button>
-        <div class="place-detail-navigation"><button id="places-back-to-list" type="button" aria-label="Back to all places"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5-7 7 7 7M5 12h15"/></svg><span>Places</span></button><button id="close-place-details" type="button" aria-label="Close place details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
-        <header class="places-heading"><div><span class="place-card-category">ALONG THE WAY</span><h2 id="places-title">Places we found</h2></div><button id="close-places" type="button" aria-label="Close places">×</button></header>
-        <div class="places-filters" role="group" aria-label="Filter places"><button data-place-filter="all" type="button" aria-pressed="true">All</button><button data-place-filter="food" type="button" aria-pressed="false">Food & drink</button><button data-place-filter="sight" type="button" aria-pressed="false">Sights</button></div>
-        <div class="places-options"><label><input id="places-day-only" type="checkbox"/> This day only</label><button id="places-fit" type="button">Show on map ↗</button></div>
-        <div class="places-list-meta"><span id="places-count"></span><span id="places-message" role="status"></span></div>
-        <div id="places-content" class="places-content"></div>
-      </aside>
+      <aside id="places-panel" class="places-panel" aria-label="Places we found" hidden></aside>
       <aside class="story-panel" aria-label="Journey details">
         <div class="mobile-story-heading"><span id="mobile-story-date"></span><h2 id="mobile-story-title"></h2><p id="mobile-story-tagline" hidden></p><p id="mobile-story-meta"></p></div>
         <div id="mobile-story-legend" class="mobile-story-legend" aria-label="Route key"></div>
@@ -271,16 +265,12 @@
       </div>
     </dialog>
 
-    <div id="experience-bar" class="experience-bar" aria-label="Places and comments UX preview" hidden><div><strong>Try the ideas</strong><small>Demo changes stay in this browser</small></div><button id="experience-places" type="button">Places</button><button id="experience-comments" type="button">Photo comments</button><details><summary aria-label="Demo options">•••</summary><div><button id="experience-reset" type="button">Reset this demo</button><a id="experience-exit">Exit preview</a></div></details><span id="experience-status" role="status"></span></div>
-
-    <dialog id="experience-unlock" class="experience-unlock" aria-labelledby="experience-unlock-title">
-      <span class="place-card-category">UNLOCK FLOW · UX DEMO</span><h2 id="experience-unlock-title">Come on in.</h2><p>Photos to look back on.<br/>A place to leave a little memory.</p>
-      <form id="experience-unlock-form"><label for="experience-display-name">Your display name</label><input id="experience-display-name" maxlength="40" placeholder="What should we call you?" required autocomplete="off"/><small>Your name appears beside your comments. No account needed.</small><label for="experience-password">Shared password</label><input id="experience-password" type="password" required autocomplete="off" aria-describedby="experience-password-hint"/><small id="experience-password-hint">For this sample, use <b>demo</b>. This does not unlock private trip photos.</small><p id="experience-unlock-error" role="alert"></p><button class="experience-primary" type="submit">Unlock photos & join in</button><button id="experience-unlock-cancel" class="experience-secondary" type="button">Maybe later</button></form>
-    </dialog>
-    <dialog id="comments-dialog" class="comments-dialog" aria-labelledby="comments-title"><header class="comments-heading"><div><span class="place-card-category">LITTLE MEMORIES</span><h2 id="comments-title">Around this photo</h2></div><button id="close-comments" type="button" aria-label="Close photo comments">×</button></header><p id="comments-photo-title" class="comments-photo-title"></p><div class="comments-meta"><span id="comments-count"></span><span>Browser-only demo</span></div><div id="comments-list" class="comments-list"></div><form id="comment-form" class="comment-form"><div class="comment-byline">Commenting as <strong id="comment-author"></strong><button id="comment-change-name" type="button">Change</button></div><label for="comment-body">Leave a memory</label><textarea id="comment-body" maxlength="1000" rows="3" placeholder="I remember this…" required></textarea><p id="comment-status" role="status"></p><button class="experience-primary" type="submit">Post comment</button><small>In the live version, everyone with photo access would see this. This demo saves only in your browser.</small></form></dialog>
+    <div id="experience-bar" class="experience-bar" aria-label="Places and comments UX preview" hidden></div>
+    <dialog id="experience-unlock" class="experience-unlock" aria-labelledby="experience-unlock-title"></dialog>
+    <dialog id="comments-dialog" class="comments-dialog" aria-labelledby="comments-title"></dialog>
 
     <script src="./assets/vendor/maplibre-5.24.0/maplibre-gl.js"></script>
-    <script src="./assets/journeys.js?v=901e0348443e"></script>
+    <script src="./assets/journeys.js?v=ccb65205779e"></script>
     <script src="./assets/route-geometry.js?v=08165f025069"></script>
     <script src="./assets/trip-photos.js?v=735a0713c47c"></script>
     <script src="./assets/content-overrides.js?v=3abf8b6499f3"></script>
@@ -290,11 +280,13 @@
     <script src="./assets/atlas-utils.js?v=dabba93cb00b"></script>
     <script src="./assets/map-style.js?v=e5948bb6f50c"></script>
     <script src="./assets/map-feedback.js?v=ecf2650f2582"></script>
-    <script src="./assets/mobile-ux.js?v=39a1d917c65a"></script>
+    <script src="./assets/mobile-ux.js?v=2d1c4769724b"></script>
     <script src="./assets/group-travel.js?v=55518f719e29"></script>
     <script src="./assets/media-utils.js?v=46457ba15695"></script>
     <script src="./assets/location-labels.js?v=061475caf569"></script>
-    <script src="./assets/places-comments.js?v=407a359523d1"></script>
-    <script src="./assets/app.js?v=76e7baf26176"></script>
+    <script src="./assets/places-comments.js?v=8dabdd2ca5ed"></script>
+    <script src="./assets/places-panel.js?v=1"></script>
+    <script src="./assets/photo-comments.js?v=1"></script>
+    <script src="./assets/app.js?v=e12121fcbf73"></script>
   </body>
 </html>
