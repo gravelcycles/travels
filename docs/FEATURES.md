@@ -10,6 +10,10 @@ unpublished editorial work and remaining service/intake projects. In particular,
 Live Photos playback is still an investigation, and live comment writes and
 private-video intake remain unimplemented.
 
+Heading East exercises the shared city-stay contract with eleven stops through
+Venice, 23 October 2026, and fourteen researched route legs. Extensions remain
+content-only; see [its intake and route evidence](HEADING_EAST.md).
+
 | Capability | What carries over | Trip input / empty behavior | Main owner |
 | --- | --- | --- | --- |
 | Catalog and stable URL | Real-trip catalog, cover rows, stable detail page; desktop headers omit sample links, trip badges and About | `kind`, `published`, `slug`; drafts and demos stay out of the real catalog | build-site, catalog.js |

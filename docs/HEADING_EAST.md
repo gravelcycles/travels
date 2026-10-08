@@ -13,11 +13,15 @@ Each city is one event. Photos, taglines and stories are deliberately empty.
 | Düsseldorf | 30 September–1 October | Köln → Düsseldorf |
 | Berlin | 1–5 October | Düsseldorf → Duisburg → Essen → Dortmund → Hamm → Bielefeld → Hannover → Wolfsburg → Berlin-Spandau → Berlin Hbf |
 | Prague | 5–11 October | Berlin → Dresden by train; Dresden → Ústí nad Labem by replacement bus; Ústí → Prague by train |
-| Salzburg | From 11 October | Prague → Tábor → České Budějovice → Summerau → Linz; Linz → Wels → Attnang-Puchheim → Salzburg |
+| Salzburg | 11–15 October | Prague → Tábor → České Budějovice → Summerau → Linz; Linz → Wels → Attnang-Puchheim → Salzburg |
+| Innsbruck | 15–18 October | Salzburg → Rosenheim bypass → Kufstein → Wörgl → Jenbach → Innsbruck Hbf |
+| Bolzano | 18–19 October | Innsbruck Hbf → Brennero/Brenner → Fortezza/Franzensfeste → Bressanone/Brixen → Bolzano/Bozen |
+| Venice | 19–23 October | Bolzano → Trento → Rovereto → Verona Porta Nuova → Vicenza → Padova → Venezia Mestre → Venezia Santa Lucia |
 
-Salzburg's departure is unknown. The machine range ends on the last supplied
-date, 11 October, and can be extended. Dresden, Basel, Ústí and Linz are transit
-places, not additional city stays. Incoming legs belong to the arriving city;
+The owner extended the itinerary on 8 October through Venice on 19–23 October.
+The machine range ends on the last supplied date, 23 October, and can be extended.
+Dresden, Basel, Ústí and Linz are transit places, not additional city stays.
+Incoming legs belong to the arriving city;
 passing through Düsseldorf en route to Köln does not create an earlier stay.
 
 ## Evidence and confidence
@@ -59,10 +63,27 @@ anchor, or the particular track used from network geometry.
   101, establish Linz–Wels–Attnang-Puchheim–Salzburg. The 11 October departure
   and any date-specific alteration remain unconfirmed; no additional bus has
   been invented for this planned leg.
+- [ÖBB timetable 300](https://www.oebb.at/en/dam/jcr:fb78ad2b-8968-4e55-8eb5-24a656cf650e/kif300.pdf),
+  valid from 14 June 2026, supports Salzburg–Kufstein–Wörgl–Jenbach–Innsbruck
+  and Innsbruck–Brennero/Brenner. Salzburg–Innsbruck is drawn on the German
+  corridor through the Rosenheim bypass, without an invented Rosenheim Hbf
+  passenger stop. The selected service and Lower Inn Valley track remain
+  unconfirmed.
+- [Südtirolmobil timetable 100](https://www.suedtirolmobil.info/de/meine-fahrt/fahrplaene)
+  covers Brenner–Bolzano–Trento–Rovereto–Verona through 12 December 2026.
+  The route is constrained over the existing Brenner summit railway, not the
+  unfinished base tunnel. [ÖBB's Brenner works notice](https://presse-oebb.at/news-oebb-starten-bauarbeiten-auf-der-brennerstrecke?id=245281&l=deutsch&menueid=27020)
+  concerned 17 July–1 August; it does not justify adding a second replacement
+  bus on 18 October. This is not a guarantee against later timetable changes.
+- [Trenitalia's route overview](https://www.trenitalia.com/en/connections/frecce/frecciarossa.html)
+  corroborates the Verona–Vicenza–Padova–Venice corridor. The mapped arrival
+  reaches **Venezia Santa Lucia**, across the lagoon railway from Mestre.
+  Bolzano–Venice is one mapped rail leg, potentially involving a change at
+  Verona; no direct train, departure time or transfer is asserted as booked.
 
 ## Geometry and preservation
 
-All eleven legs have detailed static network geometry: ten rail legs and one
+All fourteen legs have detailed static network geometry: thirteen rail legs and one
 road leg. Rail requests use OpenRailRouting's `tgv_all` profile with explicit
 station constraints; `/info` reported OSM data dated 8 October 2026, 04:00 UTC.
 Road geometry uses OSRM's driving profile. `via` entries are shaping anchors,
@@ -76,12 +97,12 @@ under `build/route-inputs/backpacking-europe-heading-east/`. Reviewed geometry
 is preserved against unattended regeneration. Distances measure the mapped
 reconstruction, not ticket mileage; road-router durations are not bus schedules.
 
-QA: all endpoints are within 24 m of station anchors; intermediate anchors
+QA: all endpoints are within 81 m of station anchors; intermediate anchors
 are within 250 m. Simplification uses 0.00003 tolerance with five-decimal output,
 under 1% length change, and no artificial densification. Long straight rail
 vertices can span tunnels or straight tracks; they are retained from the
 network, not converted into guessed road segments. Geometry is approximately
-2,797 km across the eleven legs. Service-level uncertainty remains visible in
+3,380 km across the fourteen legs. Service-level uncertainty remains visible in
 each leg's Travel details as “Reconstructed corridor · service unconfirmed”.
 
 Validation: the full test suite passes (366 tests), including daily-reference,
@@ -89,5 +110,12 @@ demo and freshly generated city-draft contracts, transfer-date photo assignment,
 planner shifts and invalid ranges. Desktop and 390 px phone reviews covered the
 new city journey, Switzerland–Italy and Alpine Crossing using photo-free QA
 fixtures with the identical map/runtime. City navigation, Prague travel details
-and map-only Replay were checked. Studio showed all eight stop ranges and the
+and map-only Replay were checked. Studio showed the original eight stop ranges and the
 new city authoring controls. Temporary QA pages are excluded from publication.
+
+Extension QA: the same 366-test suite and production build pass with the three
+new stays. Desktop route review covered the German corridor, Brenner curves and
+the Verona–Venice railway; raw tunnel metadata supports the long Brenner tunnel
+vertices. All three new routes retain ordered station anchors and less than 1%
+simplification loss. The 390 px phone view exposes all eleven stops, the correct
+Venice date range and its incoming line. Replay reaches Venice at moment 15/15.

@@ -33,8 +33,11 @@ test('Heading East preserves corrected city order and the researched train–bus
  const {data,routes}=loadContent(new URL('..',import.meta.url).pathname);
  const j=data.journeys.find(j=>j.id==='backpacking-europe-heading-east');
  assert.equal(j.eventMode,'city');assert.equal(j.published,true);
- assert.deepEqual(j.days.map(d=>d.title),['Luzern','Freiburg','Hamburg','Köln','Düsseldorf','Berlin','Prague','Salzburg']);
+ assert.deepEqual(j.days.map(d=>d.title),['Luzern','Freiburg','Hamburg','Köln','Düsseldorf','Berlin','Prague','Salzburg','Innsbruck','Bolzano','Venice']);
  assert.deepEqual(j.days.slice(3,6).map(d=>[d.calendarDate,d.calendarEndDate]),[['2026-09-29','2026-09-30'],['2026-09-30','2026-10-01'],['2026-10-01','2026-10-05']]);
+ assert.deepEqual(j.days.slice(7).map(d=>[d.calendarDate,d.calendarEndDate]),[['2026-10-11','2026-10-15'],['2026-10-15','2026-10-18'],['2026-10-18','2026-10-19'],['2026-10-19','2026-10-23']]);
+ assert.equal(j.endDate,'2026-10-23');
+ assert.equal(j.segments.length,14);
  const prague=j.days.find(d=>d.title==='Prague');
  const legs=prague.segmentIds.map(id=>j.segments.find(s=>s.id===id));
  assert.deepEqual(legs.map(s=>s.mode),['train','bus','train']);

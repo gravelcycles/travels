@@ -281,5 +281,6 @@ delight/day-experience prototypes are preserved on branches listed in
   date-range importer and existing private-photo service.
 - Confirm personal train departures/diversions and the coach's station approaches
   if tickets or tracks become available; current detailed geometry is explicitly
-  reconstructed. Extend Salzburg beyond the known 11 October arrival when known.
+  reconstructed. The itinerary now extends through Venice on 23 October.
+  Add later cities when supplied.
 - No separate city-trip implementation or framework fork is needed.

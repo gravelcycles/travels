@@ -84,6 +84,11 @@ the journey range. A same-date origin or arrival-only final stop is valid.
 assign incoming travel legs to the arriving city. Transfer stations do not
 need separate events. See [Heading East](docs/HEADING_EAST.md) for an example.
 
+When extending a city journey, preserve its existing event IDs, close the previous
+final stay on the new arrival date, and update the journey end date and display
+range. Add the new incoming legs and reviewed geometry to each arriving city.
+Heading East's Salzburg → Innsbruck → Bolzano → Venice extension uses this flow.
+
 Studio's Stop copy edits city titles and stories; Trip plan edits arrival and
 departure dates and adds city stops. Adjust both sides of a changed transfer date. Changing the trip
 range preserves city records; moving the itinerary shifts their dates together.
