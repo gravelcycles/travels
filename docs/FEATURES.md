@@ -44,6 +44,7 @@ content-only; see [its intake and route evidence](HEADING_EAST.md).
 | Batch photo editing | Searchable day-filtered contact sheet, multi-selection and visible select-all, explicit outside-filter counts, batch day/stop assignment, move selected to each album’s start, Trash/Restore and guarded last-batch Undo | Photos → Select multiple; existing draft autosave, review, save and conflict handling. Source manifests and legacy hidden flags are preserved. Undo lasts until reload/journey change and refuses later changes to affected fields | Studio photo-batch model/UI; [photo workflow](../PHOTO_WORKFLOW.md) |
 | Route authoring | Endpoint/control-point editing, undo/redo, routing readiness with actionable setup messages, point cleanup and mode-aware replacement proposals, reviewed geometry preservation until acceptance, GPX import | Per-journey network extracts/manifest or private GPX; missing inputs disable generation with a visible next step; preserve applies to unattended builds and permits explicit Studio previews | Studio, routing scripts |
 | Editorial safety | Automatic unpublished drafts (immediate browser copy and local disk autosave), reload recovery, grouped saved/draft review with photo thumbnails, readable names and word highlights, discard with recovery archive, draft download, one-click Save without Preview, always-visible status, local backups, automatic merging of independent disk edits and field-by-field choices for actual conflicts | Stable namespaced IDs; originals and local draft assets remain ignored | journey-content, Studio server |
+| Ready to share | Read-only review of the current Studio draft and trip plan against saved sources; real local-asset blockers, optional editorial choices, links to the affected editor, revision-bound acknowledgements and a copyable publishing handoff | Works for real trips, samples and empty drafts. Blank captions/stories and photo-only days are valid. Local draft promotion and protected-asset publication remain agent-operated. Public deployment is explicitly unverified until the agent checks it | Studio ready-to-share, studio-readiness; [workflow](../JOURNEY_WORKFLOW.md#ready-to-share-review) |
 | Reproducible delivery | Validated generation, cache-busted assets, Pages CI, bounded orphan-deployment recovery/retry and public verification | Reviewed published sources; no private originals/network fetch needed for site build; GitHub service failures remain visible | build-site, Pages workflow, recover-pages |
 
 ## Features versus editorial content
@@ -92,8 +93,10 @@ fields and their defaults with the feature; do not silently add a per-trip flag.
 The owner requested automatic unpublished draft recovery, review and discard on
 14 September 2026; these are now delivered Studio features. Explicit sharing,
 batch editing, publication readiness, private video and a labeled Replay timeline
-were proposals. Batch editing and private video were authorized and implemented
-on 8 October. Replay stays map-only and publishing stays agent-operated.
+were proposals. Batch editing, private video and Studio readiness were authorized
+and implemented on 8 October. Readiness prepares an agent handoff; it does not
+publish or verify a live deployment. Explicit sharing and named Replay stops
+remain design proposals. Replay playback and its slider are already shipped.
 
 
 Florence–Genoa is a cycling-only planning instance: nine travelers and six

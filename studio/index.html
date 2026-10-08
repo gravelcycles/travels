@@ -26,6 +26,7 @@
       <div class="studio-actions">
         <a id="preview-journey" href="/preview/switzerland-italy.html?photoSource=local" target="_blank" rel="noreferrer">Preview atlas</a>
         <button id="save-all" type="button" disabled>Save locally</button>
+        <button id="ready-to-share" type="button" disabled>Ready to share</button>
       </div>
     </header>
     <div class="studio-feedback">
@@ -42,6 +43,16 @@
       <p class="draft-diff-help">Compared with your last local save. Your draft is autosaved; publishing is separate.<br>Removed words are <del>crossed out</del>; added words are <ins>highlighted</ins>.</p>
       <div id="draft-diff-content"></div>
       <div class="draft-diff-actions"><button id="close-draft-diff" type="button">Keep editing</button><button id="discard-draft" type="button">Discard all draft edits</button></div>
+    </dialog>
+
+    <dialog id="ready-share-dialog" aria-labelledby="ready-share-title">
+      <div class="ready-share-heading"><div><h2 id="ready-share-title">Ready to share</h2><p id="ready-share-journey"></p></div><button id="ready-share-close" type="button">Keep editing</button></div>
+      <p id="ready-share-status" role="status" aria-live="polite"></p>
+      <p>A review of this journey’s current draft and local sources. Publishing stays with the agent; checking or preparing a handoff does not save, upload or deploy.</p>
+      <div id="ready-share-sources"></div>
+      <div class="ready-share-actions"><button id="ready-share-check" type="button">Check again</button><button id="ready-share-prepare" type="button" disabled>Prepare publishing handoff</button></div>
+      <ul id="ready-share-items"></ul>
+      <div id="ready-share-brief" hidden><label for="ready-share-text">Publishing handoff — includes unresolved items</label><textarea id="ready-share-text" readonly rows="12"></textarea><button id="ready-share-copy" type="button" disabled>Copy handoff</button></div>
     </dialog>
 
     <main class="studio-shell" data-mode="photos">
@@ -303,6 +314,7 @@
     <script src="/draft-review.js"></script>
     <script src="/photo-batch.js"></script>
     <script src="/photo-batch-ui.js"></script>
+    <script src="/ready-to-share.js"></script>
     <script src="/studio.js?v=20260909-optional-day-copy"></script>
   </body>
 </html>

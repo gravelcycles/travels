@@ -20,6 +20,8 @@ import '../dist/assets/places-comments.js';
 import '../studio/plan-extras.js';
 import '../studio/photo-batch.js';
 import { validateJourneyExtras } from '../scripts/journey-extras.mjs';
+import { assessStudioReadiness } from '../scripts/studio-readiness.mjs';
+import { journeyRevision } from '../scripts/journey-planner.mjs';
 
 const repo = path.resolve(import.meta.dirname, '..');
 const input = { title: 'A completely new trip', slug: 'framework-test-trip', startDate: '2028-02-28', endDate: '2028-03-01', timeZone: 'Asia/Tokyo' };
@@ -39,6 +41,21 @@ function bundle(source, key) {
   return JSON.parse(JSON.stringify(context.window[key]));
 }
 const app = read(repo, 'dist/assets/app.js');
+
+test('Studio readiness uses the same validation for reference, demo and fresh empty drafts', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const { data } = loadContent(root, { includeDrafts:true }), state = readOverrides(root);
+  for (const journey of [data.journeys.find(j => j.kind === 'real'), data.journeys.find(j => j.kind === 'demo'), data.journeys.find(j => j.id === draft.id)]) {
+    const report = assessStudioReadiness(root, { journeyId:journey.id, state, stateRevision:journeyRevision(state), revision:journeyRevision(journey), changes:globalThis.JOURNEY_ATLAS_PLAN_EXTRAS.changes(journey) });
+    assert.equal(report.draft.valid,true,journey.id);assert.equal(report.draft.unsaved,false,journey.id);
+    assert.equal(report.public.status,'unverified',journey.id);
+    assert.deepEqual(report.items.filter(item=>item.severity==='blocker').map(item=>item.id),journey.published?[]:['draft-promotion']);
+    if(journey.id===draft.id){
+      assert.ok(report.items.some(item=>item.id==='empty-content' && item.severity==='review'));
+      assert.ok(report.items.some(item=>item.id==='day-context' && item.severity==='review'));
+    }
+  }
+});
 
 test('catalog, real trips, demos and fresh drafts inherit the globe icon and public share image', async t => {
   const root = fixture(t), draft = createJourney(root, input);

@@ -38,6 +38,39 @@ Never invent a stop, exact timetable, photo coordinate, or route. Record what
 is approximate. Exact dates, personal references, and precise photo locations
 need a privacy review before broader sharing.
 
+## Ready to share review
+
+In Studio, **Ready to share** checks the selected journey's current draft and
+trip plan without saving it. It separately reports unsaved draft edits, the
+current source files on disk, and the public version. The public version is
+**unverified**: a saved file, `published: true`, an uploaded derivative, or a
+branch on GitHub does not prove that the reviewed content is live.
+
+Resolve invalid data and unsaved/stale source baselines through the linked
+editors and normal **Save locally** flow. Local photo and private-video assets
+remain blockers until the agent publishes them; missing or empty derivatives
+are called out. Trashed photos and hidden videos are excluded from this check.
+The panel never uploads, changes the trip's publication status or modifies sources.
+
+Review the actual selected media, missing photo pins, empty/photo-only days,
+cover fallback, and provisional route evidence. **Reviewed — keep as described**
+records an explicit choice for this exact assessment. It does not certify a
+provisional line or invent a location. Blank captions and optional stories are
+valid; empty drafts need no copied itinerary. A local draft does still need the
+agent's normal source promotion before it can enter a public build.
+
+**Prepare publishing handoff** rechecks the current draft and saved files and
+produces a copyable brief, including unresolved blockers, chosen review items,
+the draft/source/route fingerprints and the publishing checklist. **Copy handoff**
+also rechecks. An edit, journey switch, source change or changed asset finding
+invalidates older choices. These choices last only in the open Studio session;
+the copied handoff records them. Checking or copying never saves or deploys.
+
+The agent follows the handoff: reconcile concurrent changes, publish and verify
+pending protected assets, fetch/integrate current remote main, run tests/build,
+commit generated output, deploy, and verify the Pages run and a fresh public
+page and its media. Report the verified public commit and URL separately.
+
 ## Stable data model
 
 Use stable, slug-like IDs for journeys, days, places, route segments, and
