@@ -3,6 +3,7 @@
 node_modules/
 photos/
 build/
+dist/qa-arrival-*.html
 
 
 # Future trip drafts stay local until explicitly reviewed for publication.

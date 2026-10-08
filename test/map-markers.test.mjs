@@ -216,7 +216,7 @@ test('reopening the photo map or returning to a cancelled day cannot leave cache
   f.map.easeTo=()=>{};
   Object.assign(f.context,{viewerFeedback:null,viewerMap:f.map,viewerDecorations:f.decorations,viewerMapReady:true,viewerRouteKey:null,
     viewerPhotoIndex:0,viewerCameraPhoto:null,viewerPhotoMarkers:[],viewerTransition:null,window:{JOURNEY_ATLAS_MAP_STYLE:globalThis.JOURNEY_ATLAS_MAP_STYLE},photoDialog:{open:true},
-    viewerDay:()=>currentDay,photosForDay:()=>[],dayCoordinates:()=>[],mapIsReady:()=>true});
+    cityCoordinate:()=>null,viewerDay:()=>currentDay,photosForDay:()=>[],dayCoordinates:()=>[],mapIsReady:()=>true});
   f.context.syncViewerMap();
   f.context.photoDialog.open=false;
   for(const route of f.trainRoutes(day)){f.sources.get(route.sourceId).loaded=true;f.map.rendered.add(route.lineId);}

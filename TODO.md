@@ -1,5 +1,9 @@
 # Project TODO
 
+- Arrival → city: unpublished demo available on `codex/arrival-stay-demo`.
+  Owner review of pacing and destination framing is pending; do not publish
+  without a new request. See [demo details](docs/ARRIVAL_CITY_DEMO.md).
+
 The [current workstream checkpoint](WIP.md) records branch tips, preserved
 prototypes, saved trip edits and task context. This file remains the backlog;
 an unchecked item is not evidence of an existing implementation branch.

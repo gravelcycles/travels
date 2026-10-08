@@ -1,5 +1,9 @@
 # Building a journey atlas
 
+For the unpublished arrival/city interaction review, use the shared-template
+[local demo workflow](docs/ARRIVAL_CITY_DEMO.md). Its labelled placeholder media
+stays in ignored preview files, and the owner has explicitly deferred publishing.
+
 Start with [the framework contract](docs/FRAMEWORK.md) and
 [feature inventory](docs/FEATURES.md). Use [the new-trip prompt](docs/AGENT_PROMPTS.md)
 for a fresh agent. Create a data instance with Studio or `journey:new`; never
