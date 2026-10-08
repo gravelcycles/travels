@@ -227,6 +227,9 @@ test('one template supplies every control and asset to real trips, all samples, 
     assert.deepEqual(ids(preview), ids(reference), journey.id);
     assert.deepEqual(assets(preview), assets(reference), journey.id);
     assert.match(preview, /\/api\/preview-assets\/journeys.js/);
+    for (const id of ['open-places', 'mobile-open-places']) {
+      assert.match(preview, new RegExp(`<button[^>]*id="${id}"[^>]* hidden[ >]`), `${journey.id}: Places stays hidden until its content is loaded`);
+    }
   }
   assert.deepEqual(ids(read(root, 'dist/demo.html')), ids(reference));
   assert.deepEqual(assets(read(root, 'dist/demo.html')), assets(reference));

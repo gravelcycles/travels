@@ -76,7 +76,7 @@
         <nav id="mobile-journey-actions" class="mobile-journey-actions" aria-label="Explore the journey">
           <button data-journey-action="overview" type="button">Whole trip map</button>
           <button data-journey-action="photos" type="button">All photos</button>
-          <button id="mobile-open-places" type="button" aria-controls="places-panel">Places we found</button>
+          <button id="mobile-open-places" type="button" aria-controls="places-panel" hidden>Places we found</button>
           <button data-journey-action="unlock" type="button">Unlock photos</button>
           <button data-journey-action="about" type="button">About this atlas</button>
           <a href="./">All journeys</a>
@@ -95,7 +95,7 @@
             <button id="focus-day" type="button" data-event-aria="Zoom to the selected day's complete route" aria-label="Zoom to the selected day's complete route" data-event-copy="Day close-up">Day close-up</button>
             <button id="fit-route" type="button" aria-label="Fit the whole route on the map">Fit route</button>
             <button id="show-all-photos" type="button">All photos · <span id="photo-count"></span></button>
-            <button id="open-places" type="button" aria-controls="places-panel" aria-expanded="false">Places · <span id="place-count">0</span></button>
+            <button id="open-places" type="button" aria-controls="places-panel" aria-expanded="false" hidden>Places · <span id="place-count">0</span></button>
           </div>
         </div>
         <div id="map" aria-label="Map showing the selected journey"></div>
