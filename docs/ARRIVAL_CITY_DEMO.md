@@ -10,6 +10,12 @@ existing gallery. **Replay arrival** repeats the sequence; **Skip to city** ends
 it early. Dragging/zooming during arrival cancels the automatic camera and offers
 **Back to city**. Reduced motion and route-free stops go straight to the stay.
 
+The moving icon uses subpixel positioning and cached distance interpolation on
+every animation frame. Route source updates are capped at 30 Hz and completed
+legs are sent only once. Travel has gentle acceleration/deceleration, consistent
+speed across connected legs, and a 6.5–10 second duration. The original route
+geometry is retained; disconnected legs are never joined by an invented line.
+
 The clock belongs to the selected event: navigation, whole-trip overview, hidden
 tabs, photos and map retry cannot leave an old arrival callback in control.
 Returning from the mobile story does not replay the arrival. Unlocated photos
@@ -41,7 +47,8 @@ journeys, samples and drafts. No journey ID check or new content flag is used.
 
 ## Review
 
-427 tests pass, including sequence/cancellation/reduced-motion checks, city-camera
+430 tests pass, including distance interpolation, independent marker/line cadence,
+sequence/cancellation/reduced-motion checks, city-camera
 fallback and shared template parity for Switzerland–Italy, Alpine Crossing and a
 fresh draft. The site build passes. Desktop and 390 px phone checks exercised
 Venice arrival, skip/replay, the destination view, and gallery navigation.

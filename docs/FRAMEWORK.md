@@ -344,6 +344,8 @@ No separate trip implementation or framework migration is introduced.
 `codex/arrival-stay-demo` adds shared arrival playback and destination-focused
 stay/photo framing without new journey fields or trip-specific branches.
 `arrival-chapter.js` isolates the clock and cancellation from map rendering.
+It caches distance sampling once per arrival, updates the subpixel marker every
+frame, and limits GeoJSON work to changed legs at 30 Hz.
 The local review generator renders the shared template with explicitly synthetic
 media; original content and private services remain outside the fixture.
 Owner review of timing and station-based city framing is pending. Do not treat
