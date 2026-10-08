@@ -12,9 +12,9 @@
 .arrival-actions button { border: 1px solid #ccd4d1; padding: 10px 12px; min-height: 42px; background: transparent; color: #203b43; font-size: 12px; font-weight: 700; cursor: pointer; }
 .arrival-actions button:last-child { background: #203b43; border-color: #203b43; color: #fffdf7; }
 .arrival-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #e7ece7; }
-.arrival-progress i { display: block; height: 100%; background: #d4512c; width: 0; }
+.arrival-progress i { display: block; height: 100%; background: #d4512c; width: 100%; transform: scaleX(0); transform-origin: left center; }
 .arrival-chapter[data-phase="stay"] .arrival-progress, .arrival-chapter[data-phase="explore"] .arrival-progress { display: none; }
-.arrival-position { width: 26px; height: 26px; display: grid; place-items: center; border: 3px solid #fffdf7; border-radius: 50%; background: #d4512c; color: #fff; box-shadow: 0 2px 8px #203b4345; font-size: 11px; }
+.arrival-trace { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .map-panel:has(.arrival-chapter:not([hidden])) #map-legend { visibility: hidden; }
 @media (max-width: 900px) {
   .arrival-chapter { left: 12px; right: 12px; bottom: 180px; padding: 10px 12px; gap: 8px; }

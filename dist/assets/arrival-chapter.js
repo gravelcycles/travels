@@ -78,7 +78,7 @@
     let start = 0;
     for (const leg of legs) { leg.start = start; leg.end = start += leg.weight / total; }
     if (legs.length) legs.at(-1).end = 1;
-    return { legs, duration: 2500 };
+    return { legs, duration: 2500, arrivalHold: 250 };
   }
 
   // Interpolate by distance, with no route-wide measurements in the animation loop.
@@ -108,7 +108,64 @@
       const point = leg === active ? tip : sample(leg, localProgress(leg));
       return { segment: leg.segment, coordinates: [...leg.coordinates.slice(0, point.index), point.point] };
     }) : [];
-    return { active, progress: amount, position: tip?.point, lines };
+    return { active, progress: amount, position: tip?.point, index: tip?.index, lines };
+  }
+
+  // One cached canvas draws both trail and icon on the same display frame.
+  // No GeoJSON serialization, map worker rebuilds, or separate marker clock.
+  function createDrawing({ map, plan, styleForSegment, document = root.document, Path = root.Path2D, pixelRatio = () => root.devicePixelRatio || 1 }) {
+    const canvas = document.createElement('canvas'), context = canvas.getContext('2d');
+    if (!context || !Path) return null;
+    canvas.className = 'arrival-trace';
+    canvas.setAttribute('role', 'img'); canvas.setAttribute('aria-label', 'Journey progress');
+    map.getCanvas().after(canvas);
+    let trails = [], width = 0, height = 0, lastFrame = null, destroyed = false;
+    function paint(frame) {
+      if (destroyed || !frame.position) return;
+      lastFrame = frame;
+      context.clearRect(0, 0, width, height);
+      const tip = map.project(frame.position);
+      for (const trail of trails) {
+        if (frame.progress <= trail.leg.start) continue;
+        const active = trail.leg === frame.active;
+        const last = active ? frame.index - 1 : trail.points.length - 1;
+        while (trail.vertex < last) {
+          const point = trail.points[++trail.vertex]; trail.path.lineTo(point.x, point.y);
+        }
+        const path = active ? new Path(trail.path) : trail.path;
+        if (active) path.lineTo(tip.x, tip.y);
+        const style = trail.style;
+        context.lineCap = 'round'; context.lineJoin = 'round';
+        context.setLineDash([]); context.lineWidth = style.casingWidth;
+        context.strokeStyle = style.casing; context.globalAlpha = 0.96; context.stroke(path);
+        context.setLineDash((style.dash || []).map(value => value * style.width));
+        context.lineWidth = style.width; context.strokeStyle = style.color; context.globalAlpha = 1; context.stroke(path);
+      }
+      context.save(); context.setLineDash([]); context.beginPath();
+      context.arc(tip.x, tip.y, 13, 0, Math.PI * 2);
+      context.fillStyle = '#d4512c'; context.shadowColor = '#203b4345'; context.shadowBlur = 8; context.shadowOffsetY = 2; context.fill();
+      context.shadowColor = 'transparent'; context.strokeStyle = '#fffdf7'; context.lineWidth = 3; context.stroke();
+      context.fillStyle = '#fff'; context.font = '14px sans-serif'; context.textAlign = 'center'; context.textBaseline = 'middle';
+      context.fillText('→', tip.x, tip.y); context.restore();
+    }
+    function project() {
+      if (destroyed) return;
+      const base = map.getCanvas(), ratio = pixelRatio();
+      width = base.clientWidth; height = base.clientHeight;
+      canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      trails = plan.legs.map(leg => {
+        const points = leg.coordinates.map(point => map.project(point)), path = new Path();
+        path.moveTo(points[0].x, points[0].y);
+        return { leg, points, path, vertex: 0, style: styleForSegment(leg.segment) };
+      });
+      if (lastFrame) paint(lastFrame);
+    }
+    project(); map.on('move', project); map.on('resize', project);
+    return {
+      draw(frame) { if (frame.progress !== lastFrame?.progress) paint(frame); },
+      destroy() { if (destroyed) return; destroyed = true; map.off('move', project); map.off('resize', project); canvas.remove(); }
+    };
   }
 
   function destination(day, places, segments, coordinates) {
@@ -127,18 +184,15 @@
       stop(); current = { key, plan };
       if (reducedMotion || !plan.legs.length) { stay(); return; }
       const owner = generation;
-      state('arrival'); onFrame(frame(plan, 0), current);
-      let origin, lastLineTime = -Infinity, lastLineProgress = 0;
+      state('arrival'); onFrame(frame(plan, 0, { drawLines: false }), current);
+      let origin;
       function tick(now) {
         if (owner !== generation) return;
         origin ??= now;
         const elapsed = now - origin;
         const progress = Math.max(0, Math.min(1, elapsed / plan.duration));
-        // Keep the marker on every display frame; expensive GeoJSON updates run at most 30 Hz.
-        const drawLines = progress !== lastLineProgress && (now - lastLineTime >= 1000 / 30 || progress === 1);
-        onFrame(frame(plan, progress, { drawLines, since: lastLineProgress }), current);
-        if (drawLines) { lastLineTime = now; lastLineProgress = progress; }
-        if (progress === 1) { stay(); return; }
+        onFrame(frame(plan, progress, { drawLines: false }), current);
+        if (elapsed >= plan.duration + (plan.arrivalHold || 0)) { stay(); return; }
         pending = requestFrame(tick);
       }
       pending = requestFrame(tick);
@@ -147,5 +201,5 @@
     function explore() { stop(); state('explore'); }
     return { start, stay, cancel, explore, get phase() { return phase; }, get key() { return current?.key; } };
   }
-  root.JOURNEY_ATLAS_ARRIVAL = { plan, frame, destination, create };
+  root.JOURNEY_ATLAS_ARRIVAL = { plan, frame, destination, create, createDrawing };
 })(typeof window === 'undefined' ? globalThis : window);
