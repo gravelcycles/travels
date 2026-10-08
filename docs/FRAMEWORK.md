@@ -345,7 +345,7 @@ No separate trip implementation or framework migration is introduced.
 stay/photo framing without new journey fields or trip-specific branches.
 `arrival-chapter.js` isolates the clock and cancellation from map rendering.
 It caches an overhead timing outline and projected canvas paths once per arrival,
-then paints the route and icon together at display cadence without GeoJSON worker
+then paints the route without a moving icon at display cadence without GeoJSON worker
 updates. Cancellable camera stages pull back around the previous view, then pan
 and zoom onto the selected route in one continuous move. Named endpoint pins and
 the route title retain geographic context. Each stage waits for its own move-end
