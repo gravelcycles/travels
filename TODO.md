@@ -236,12 +236,25 @@ project-level status.
 
 The owner requested demos before the proposed features changed the live site.
 Studio recovery drafts, readable comparisons and save-conflict review were
-subsequently authorized and delivered on 14–15 September. Explicit sharing
-(without automatic visitor reload persistence), publication readiness/agent handoff,
-private video intake (W07), and a labeled
-map-only Replay timeline remain proposals. The six-feature demo and separate
-delight/day-experience prototypes are preserved on branches listed in
-[WIP.md](WIP.md). Audit V1 stays excluded.
+subsequently authorized and delivered on 14–15 September. Batch editing,
+private video intake and Ready to share were authorized on 8 October and now
+have shared implementations. Explicit sharing (without automatic visitor reload
+persistence) and named stops on the map-only Replay timeline remain proposals.
+Replay playback and its slider are already shipped. The six-feature demo and
+separate delight/day-experience prototypes are preserved on branches listed in
+[WIP.md](WIP.md). Audit V1 stays excluded. The Photos + Places scene on the local
+day-experience branch demonstrates nearby photo discovery; adoption in shared
+production code remains pending.
+
+- [x] **Ready to share — 8 October:** shared read-only Studio review of the
+      current draft, saved sources, private derivative availability and explicit
+      editorial choices; revision-bound acknowledgements and copyable handoff.
+      Optional blank captions/stories and empty/photo-only days stay valid.
+- [ ] **Deployment receipt integration:** the readiness panel intentionally
+      reports the public version as unverified. Continue agent-operated Pages
+      run and fresh-page/media verification; only add a live status indicator
+      when it can be tied to a verified deployed commit, not a local branch or
+      `published` field.
 
 ## Live Photos intake — checkpointed 8 October 2026
 

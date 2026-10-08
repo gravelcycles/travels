@@ -91,6 +91,7 @@ password system.
 | `dist/assets/input-mode.js` | Shared pointer/keyboard focus presentation for catalog, journeys and draft previews |
 | `studio/` | Local authoring UI for any selected journey |
 | `studio/plan-extras.js`, `scripts/studio-plan-sources.mjs` | Studio roster/group/overnight/meetup and hosted-video forms; source-preserving persistence of photo group assignments |
+| `studio/ready-to-share.js`, `scripts/studio-readiness.mjs` | Shared read-only draft/source readiness assessment, revision-bound editorial choices and agent publishing handoff; never infer a verified public version from local or Git state |
 | `scripts/journey-content.mjs`, `journey-planner.mjs`, `create-journey.mjs` | Loading, validation, planner rules, fresh-trip creation |
 | `scripts/build-site.mjs` | Public builds and local preview page/data generation |
 | `content/branding/`, `content/site.json`, `scripts/build-branding.mjs` | Shared globe-pin identity, reviewed icon/share rasters, public site URL and brand asset generation; see [BRANDING.md](BRANDING.md) |
@@ -235,6 +236,14 @@ authorized on 8 October. Batch uses one shared Studio transaction model and
 contact sheet for real trips, demos and fresh drafts through existing
 save/recovery. Private video uses the same protected media service as photos.
 This review gate does not block delivery of authorized changes.
+
+Ready to share was authorized on 8 October and now uses the shared Studio
+validator against the current in-memory plan and overrides. It reports source
+and derivative blockers, deliberate editorial choices and a revision-bound
+agent handoff. It never writes sources or claims a local/Git state is live.
+Live deployment verification remains an agent-operated delivery check; adding
+a verifiable deployment receipt is a possible later integration, not a claimed
+capability of this panel.
 
 The [8 October workstream checkpoint](../WIP.md) records the local day-experience
 prototype and two design demos on separate branches. They are review artifacts,

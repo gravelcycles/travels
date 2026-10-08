@@ -121,10 +121,12 @@ test('the upload UI retains successful files when a batch also contains a failur
   node('#upload-photo-day').value = 'd1';
   const photo = {id:'new-photo',dayId:'d1',caption:'',description:'',assetStatus:'local'};
   const basePhotos = [];
+  let readinessInvalidations = 0;
   const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),
     $:node, journey:{id:'trip'}, basePhotos, photosByJourney:{}, plans:new Map(), savedRevisions:{}, uploadingPhotos:false,
     URLSearchParams, dayById:id=>({id,number:1}), photoWithOverride:p=>p,
     pendingPhotoDays:new Map(),photoUploadSerial:0,renderPendingPhotoDays(){},
+    readiness:{invalidate(){readinessInvalidations++;}},
     renderDaySelectors(){},renderPhotoGrid(){},selectPhoto(id){context.selected=id;},
     fetch:async url=>({ok:true,json:async()=>url.includes('filename=broken')?{ok:false,error:'Cannot decode'}:url==='/api/state'?{revisions:{trip:'new-revision'}}:{ok:true,photo,duplicate:false,warnings:[]}})
   });
@@ -134,6 +136,7 @@ test('the upload UI retains successful files when a batch also contains a failur
   assert.match(node('#photo-upload-status').textContent,/broken.jpg: Cannot decode/);
   assert.match(node('#photo-upload-status').textContent,/good.jpg: added locally/);
   assert.equal(node('#upload-photos').disabled,false);
+  assert.equal(readinessInvalidations,1,'A successful import invalidates an earlier readiness review.');
 });
 
 test('batch imports use each capture date with the journey timezone and keep captions blank', async t => {
@@ -166,8 +169,10 @@ test('auto batch UI shows all assigned days and retains undated files for indivi
   node('#upload-photo-day').value='auto';
   node('#upload-photo-files').files=['first','second','undated'].map(name=>({name:`${name}.jpg`,size:10}));
   const basePhotos=[], pendingPhotoDays=new Map(), requested=[];
+  let readinessInvalidations=0;
   const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),$:node,journey:{id:'trip'},basePhotos,photosByJourney:{},plans:new Map(),savedRevisions:{},uploadingPhotos:false,
     pendingPhotoDays,photoUploadSerial:0,URLSearchParams,dayById:id=>({id,number:id==='d1'?1:2}),photoWithOverride:p=>p,
+    readiness:{invalidate(){readinessInvalidations++;}},
     renderPendingPhotoDays(){},renderDaySelectors(){},renderPhotoGrid(){},selectPhoto(){},
     fetch:async url=>({ok:true,json:async()=>{
       if(url==='/api/state')return {revisions:{trip:'revision'}};
@@ -185,4 +190,5 @@ test('auto batch UI shows all assigned days and retains undated files for indivi
   await vm.runInContext('uploadPhotos(retries)',context);
   assert.equal(basePhotos.length,3);assert.equal(pendingPhotoDays.size,0);
   assert.equal(requested.at(-1),'d2');
+  assert.equal(readinessInvalidations,3,'Every successful import or retry invalidates the old review.');
 });

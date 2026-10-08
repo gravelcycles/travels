@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { studioDraftDiff } from "./studio-draft-diff.mjs";
+import { assessStudioReadiness } from "./studio-readiness.mjs";
 import { studioWorkspaceId, readStudioDraft, writeStudioDraft, listStudioDrafts } from "./studio-drafts.mjs";
 
 import { execFileSync } from "node:child_process";
@@ -123,7 +124,7 @@ function serveFile(response, filename) {
 function staticFileFor(pathname) {
   if (pathname === "/" || pathname === "/studio" || pathname === "/studio/") return path.join(repoRoot, "studio/index.html");
   if (pathname === "/studio/story-review.html") return path.join(repoRoot, "studio/story-review.html");
-  if (["/studio.css", "/studio.js", "/plan-extras.js", "/studio-recovery.js", "/draft-review.js", "/photo-batch.js", "/photo-batch-ui.js", "/photo-batch.css"].includes(pathname)) return path.join(repoRoot, "studio", pathname.slice(1));
+  if (["/studio.css", "/studio.js", "/plan-extras.js", "/studio-recovery.js", "/draft-review.js", "/photo-batch.js", "/photo-batch-ui.js", "/photo-batch.css", "/ready-to-share.js"].includes(pathname)) return path.join(repoRoot, "studio", pathname.slice(1));
   if (pathname.startsWith("/dist/")) {
     const relative = pathname.slice(6);
     const resolved = path.resolve(repoRoot, "dist", relative || "index.html");
@@ -195,6 +196,22 @@ const server = http.createServer((request, response) => {
       try {if(tooLarge)return;const result=await importStudioVideo(repoRoot,{journeyId:url.searchParams.get('journeyId'),dayId:url.searchParams.get('dayId'),filename:url.searchParams.get('filename'),title:url.searchParams.get('title'),bytes:Buffer.concat(chunks)});send(response,201,JSON.stringify({ok:true,...result}),'application/json');}
       catch(error){send(response,400,JSON.stringify({ok:false,error:error.message}),'application/json');}
       finally{videoImportBusy=false;}
+    });
+    return;
+  }
+  if (request.method === 'POST' && url.pathname === '/api/readiness') {
+    const chunks = []; let size = 0, rejected = false;
+    request.on('data', chunk => {
+      size += chunk.length;
+      if (size > 5_000_000) {
+        if (!rejected) send(response, 413, JSON.stringify({ ok:false, error:'This readiness request is too large.' }), 'application/json');
+        rejected = true; chunks.length = 0;
+      } else if (!rejected) chunks.push(chunk);
+    });
+    request.on('end', () => {
+      if (rejected) return;
+      try { send(response, 200, JSON.stringify({ ok:true, report:assessStudioReadiness(repoRoot, JSON.parse(Buffer.concat(chunks).toString('utf8'))) }), 'application/json'); }
+      catch (error) { send(response, 400, JSON.stringify({ ok:false, error:error.message }), 'application/json'); }
     });
     return;
   }

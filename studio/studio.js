@@ -170,6 +170,7 @@
   }
 
   function markDirty(message = "Draft edits · Save locally to apply") {
+    readiness?.invalidate();
     dirty = true;
     persistDraft();
     const status = $("#save-status");
@@ -178,6 +179,7 @@
   }
 
   function markSaved(message = "Saved locally") {
+    readiness?.invalidate();
     if ([...plans.values()].some(plan=>plan.dirty)) { markDirty("Other trip plans still need saving"); return; }
     dirty = false;
     persistDraft();
@@ -1020,6 +1022,7 @@
           if (!basePhotos.some(photo => photo.id === result.photo.id)) basePhotos.push(result.photo);
           photosByJourney[currentJourney.id] = basePhotos;
           currentJourney.photos = basePhotos;
+          readiness?.invalidate();
           lastPhotoId = result.photo.id;
           addedDayIds.add(photoWithOverride(result.photo).dayId);
           messages.push(`${file.name}: ${result.duplicate ? 'already imported' : 'added locally'} · ${eventWord('title')} ${dayById(photoWithOverride(result.photo).dayId)?.number || '—'}.${result.warnings.length ? ' ' + result.warnings.join(' ') : ''}`);
@@ -1129,6 +1132,7 @@
   }
 
   function setJourney(id) {
+    readiness?.invalidate();
     studioVideoPlayer.stop(); $('#studio-video-dialog').close();
     const nextJourney = data.journeys.find((item) => item.id === id);
     if (!nextJourney) return;
@@ -1235,6 +1239,7 @@
       const result=await response.json();if(!response.ok||!result.ok)throw new Error(result.error || 'Video import failed.');
       current.videos ||= [];if(!current.videos.some(v=>v.id===result.video.id))current.videos.push(result.video);
       const plan=plans.get(current.id);if(plan){plan.draft.videos ||= [];if(!plan.draft.videos.some(v=>v.id===result.video.id))plan.draft.videos.push(result.video);plan.previewed=false;}
+      readiness?.invalidate();
       if(journey.id===current.id){renderPlanner();$('#plan-status').textContent=`${result.duplicate?'Already imported':'Video prepared locally'}. ${result.warnings.join(' ')}`;}
     } catch(error) {status.textContent=error.message;}
     finally {importingVideo=false;panel.querySelector('[data-import-video]').disabled=false;}
@@ -1402,6 +1407,38 @@
   });
 
   let draftRecovery = null;
+  const readiness = window.JOURNEY_ATLAS_READINESS?.create({ document, fetch, clipboard: window.navigator?.clipboard,
+    getInput: () => {
+      const plan = planForJourney();
+      return { journeyId:journey.id, state, stateRevision:savedStateRevision, revision:plan.revision, changes:planChanges(plan.draft), alignment:plan.alignment || 'dates' };
+    },
+    openEditor: action => {
+      if (action.mode === 'save') { $('#save-all').focus(); return; }
+      if (action.mode === 'media') {
+        setMode('planner');
+        const card = [...document.querySelectorAll('[data-video]')].find(node => node.dataset.video === action.id);
+        card?.scrollIntoView({ block:'center' }); card?.querySelector('input')?.focus(); return;
+      }
+      setMode(action.mode);
+      if (action.mode === 'photos') {
+        const photo = basePhotos.find(photo => photo.id === action.id);
+        // Keep batch Undo and selection, but expose the individual photo editor.
+        if ($('#photo-batch-toggle').getAttribute('aria-pressed') === 'true') $('#photo-batch-toggle').click();
+        $('#photo-search').value = '';
+        $('#show-photo-trash').checked = Boolean(photo && photoWithOverride(photo).trashed);
+        $('#photo-day-filter').value = 'all'; renderDaySelectors(); renderPhotoGrid();
+        if (photo) selectPhoto(photo.id, false);
+        $('#photo-day-filter').focus();
+      } else if (action.mode === 'routes' && action.id) {
+        if (planForJourney().dirty || !segmentById(action.id)) {
+          setMode('planner'); $('#plan-status').textContent = 'Review and save the current trip plan before opening its route in the drawing editor.'; $('#plan-title').focus(); return;
+        }
+        $('#route-day-filter').value = dayForSegment(action.id)?.id || journey.days[0]?.id;
+        renderRouteList(); selectRoute(action.id, true); $('#route-day-filter').focus();
+      } else if (action.mode === 'days' && action.id) { selectDay(action.id, false); $('#day-title').focus(); }
+      else if (action.mode === 'planner') $('#plan-title').focus();
+    }
+  });
   function draftSnapshot() {
     return {dirty, state, savedStateRevision, savedRevisions,
       plans:[...plans].filter(([,plan]) => plan.dirty).map(([id,plan]) => [id, {...plan, saving:false}]),
@@ -1522,6 +1559,7 @@
     if (recovered) markDirty("Recovered local draft · Save locally to apply these edits");
     else markSaved("Ready");
     $("#save-all").disabled=false; $("#plan-save").disabled=false;
+    $('#ready-to-share').disabled=false;
     if (!recovered && journey.published === false) mode="days";
     setMode(mode);
     initStudioMap();
