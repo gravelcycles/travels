@@ -10,11 +10,17 @@ existing gallery. **Replay arrival** repeats the sequence; **Skip to city** ends
 it early. Dragging/zooming during arrival cancels the automatic camera and offers
 **Back to city**. Reduced motion and route-free stops go straight to the stay.
 
-The moving icon uses subpixel positioning and cached distance interpolation on
-every animation frame. Route source updates are capped at 30 Hz and completed
-legs are sent only once. Travel has gentle acceleration/deceleration, consistent
-speed across connected legs, and a 6.5–10 second duration. The original route
-geometry is retained; disconnected legs are never joined by an invented line.
+The moving icon uses subpixel positioning on every animation frame. Each arrival
+frames the route immediately, plays for **2.5 seconds**, then starts the existing
+city zoom with no departure pause, arrival hold, or travel easing. Route source
+updates remain capped at 30 Hz and completed legs are sent only once.
+
+The timing follows a simplified overhead outline in Mercator space, retaining
+bends greater than 2.5% of the leg's bounding-box diagonal. Progress projected
+along each outline span is linear with time: small switchbacks move faster than
+straight track. True backtracking gets 4% of that span's time to remain continuous
+rather than teleport. The original track is still drawn and the icon stays on it;
+the simplified outline is only a cached clock. Disconnected legs stay separate.
 
 The clock belongs to the selected event: navigation, whole-trip overview, hidden
 tabs, photos and map retry cannot leave an old arrival callback in control.
@@ -47,7 +53,8 @@ journeys, samples and drafts. No journey ID check or new content flag is used.
 
 ## Review
 
-430 tests pass, including distance interpolation, independent marker/line cadence,
+432 tests pass, including overhead pacing, switchbacks/backtracking, the exact
+2.5-second transition, independent marker/line cadence,
 sequence/cancellation/reduced-motion checks, city-camera
 fallback and shared template parity for Switzerland–Italy, Alpine Crossing and a
 fresh draft. The site build passes. Desktop and 390 px phone checks exercised

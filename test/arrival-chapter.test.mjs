@@ -25,7 +25,7 @@ test('arrival completes once, can be skipped, and stale city callbacks cannot mo
   const h=harness(),p=plan(legs,routes);
   h.controller.start('first',p);const stale=[...h.queued.values()][0];
   h.controller.start('second',p);stale(50000);assert.deepEqual(h.stays,[]);
-  h.tick(0);h.tick(p.duration+1001);assert.deepEqual(h.stays,['second']);assert.equal(h.queued.size,0);
+  h.tick(0);h.tick(p.duration);assert.deepEqual(h.stays,['second']);assert.equal(h.queued.size,0);
   h.controller.start('third',p);h.controller.stay();assert.deepEqual(h.stays,['second','third']);assert.equal(h.queued.size,0);
 });
 test('panning cancels the automatic camera, while reduced motion and empty routes skip travel',()=>{
@@ -43,19 +43,39 @@ test('stay framing uses destination, then the final available endpoint, and inve
 });
 
 test('cached sampling keeps the marker on unevenly spaced route geometry without remeasuring it',()=>{
-  const route={id:'uneven',geometry:[[10,48],[10,48],[10.001,48],[10.4,48.2],[10.4,48.2],[11,49]]};
-  const p=plan([route],routes),replay=globalThis.JOURNEY_ATLAS_REPLAY;
-  const expected=[0,.001,.1,.5,.9,.999,1].map(progress=>({progress,point:replay.partialLine(route.geometry,progress).at(-1)}));
-  const distance=replay.coordinateDistance;
-  replay.coordinateDistance=()=>{throw Error('Distance must only be measured when planning');};
+  const route={id:'uneven',geometry:[[0,0],[0,0],[.001,0],[.4,0],[.4,0],[1,0]]};
+  const p=plan([route],routes),distance=Math.hypot;
+  Math.hypot=()=>{throw Error('Distance must only be measured when planning');};
   try {
-    for(const {progress,point} of expected){
+    for(const progress of [0,.001,.1,.5,.9,.999,1]){
       const f=frame(p,progress);
-      assert.deepEqual(f.position,point);
-      assert.deepEqual(f.lines[0].coordinates.at(-1),point);
+      assert.ok(Math.abs(f.position[0]-progress)<1e-10);
+      assert.equal(f.position[1],0);
+      assert.deepEqual(f.lines[0].coordinates.at(-1),f.position);
     }
-  } finally { replay.coordinateDistance=distance; }
+  } finally { Math.hypot=distance; }
   assert.deepEqual(frame(plan([{id:'still',geometry:[[10,48],[10,48]]}],routes),.5).position,[10,48]);
+});
+
+test('overhead progress is linear through small switchbacks while the full track is drawn',()=>{
+  const geometry=Array.from({length:101},(_,index)=>[index*.005,index===0||index===100?0:index%2?.02:-.02]);
+  geometry.push([1,0]);
+  const p=plan([{id:'switchbacks',geometry}],routes);
+  for(const progress of [.1,.2,.3,.4,.5,.75]) assert.ok(Math.abs(frame(p,progress).position[0]-progress)<1e-10,'Winding sections must not consume extra overview time');
+  assert.deepEqual(frame(p,1).lines[0].coordinates,geometry,'Only the timing is simplified');
+  assert.deepEqual(frame(p,.25).position,geometry[50],'The marker follows the real track, not the shortcut');
+});
+
+test('backtracking has positive time while major bends and closed loops stay meaningful',()=>{
+  const p=plan([{id:'folded',geometry:[[0,0],[.4,.01],[.1,-.01],[.45,.01],[.3,-.01],[.5,0],[1,0]]}],routes);
+  assert.ok(p.legs[0].distances.every((distance,index,all)=>!index||distance>all[index-1]),'Reverse sections must not teleport');
+  assert.ok(Math.abs(frame(p,.5).position[0]-.5)<.025,'Reverse sections only get a small share of time');
+  const bent=plan([{id:'bend',geometry:[[0,0],[1,0],[1,1]]}],routes);
+  assert.deepEqual(bent.legs[0].overviewIndices,[0,1,2]);
+  const loop=plan([{id:'loop',geometry:[[0,0],[1,0],[1,1],[0,0]]}],routes);
+  assert.ok(loop.legs[0].distance>3);
+  assert.ok(frame(loop,.5).position.every(Number.isFinite));
+  assert.deepEqual(frame(loop,1).position,[0,0]);
 });
 
 test('speed stays continuous across connected legs with different lengths',()=>{
@@ -67,22 +87,23 @@ test('speed stays continuous across connected legs with different lengths',()=>{
   assert.deepEqual(frame(p,.4,{since:.3}).lines.map(line=>line.segment.id),['long'],'Completed legs are not sent to the map again');
 });
 
-test('marker advances every display frame while line updates are capped and the endpoints ease gently',()=>{
+test('every day travels linearly for exactly 2.5 seconds, then starts the city zoom without a pause',()=>{
   const h=harness(),p=plan([{id:'rail',geometry:[[0,0],[4,0]]}],routes);
+  assert.equal(p.duration,2500);assert.equal(plan(legs,routes).duration,2500);
   h.controller.start('smooth',p);h.tick(0);
   let lineUpdates=0,markerUpdates=0,previous=0;
-  for(let timestamp=660;timestamp<=1660;timestamp+=10){
+  for(let timestamp=10;timestamp<=1010;timestamp+=10){
     h.tick(timestamp);const f=h.samples.at(-1);
+    assert.equal(f.progress,timestamp/2500);
     if(f.lines.length)lineUpdates++;
     if(f.progress>previous)markerUpdates++;
     previous=f.progress;
   }
   assert.equal(markerUpdates,101);
   assert.ok(lineUpdates<=31,`${lineUpdates} updates exceeded 30 Hz over one second`);
-  assert.ok(h.samples.find(f=>f.progress>0).progress<.001,'Departure eases in');
-  h.tick(650+p.duration-10);assert.ok(h.samples.at(-1).progress>.999,'Arrival eases out');
-  h.tick(650+p.duration);
+  h.tick(2499);assert.equal(h.controller.phase,'arrival');assert.deepEqual(h.stays,[]);
+  h.tick(2500);
   assert.deepEqual(h.samples.at(-1).position,[4,0]);
   assert.deepEqual(h.samples.at(-1).lines[0].coordinates,[[0,0],[4,0]],'The final line is always flushed');
-  h.tick(p.duration+1001);assert.deepEqual(h.stays,['smooth']);
+  assert.deepEqual(h.stays,['smooth']);assert.equal(h.queued.size,0);
 });

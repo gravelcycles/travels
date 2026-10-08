@@ -901,7 +901,7 @@
     fitJourneyBounds();
   }
 
-  function focusDay(day) {
+  function focusDay(day, duration = 650) {
     mapScope = "day";
     renderLegend();
     if (!mainMapReady) { pendingMapAction="focus"; return; }
@@ -909,9 +909,9 @@
     const coordinates = dayCoordinates(day);
     mainFeedback?.empty(!coordinates.length);
     if (coordinates.length > 1) {
-      mainMap.fitBounds(boundsFromCoordinates(coordinates), { padding: mapPadding(112), maxZoom: 12.5, duration: 650 });
+      mainMap.fitBounds(boundsFromCoordinates(coordinates), { padding: mapPadding(112), maxZoom: 12.5, duration });
     } else if (coordinates.length === 1) {
-      mainMap.easeTo({ center: coordinates[0], zoom: 12, duration: 650 });
+      mainMap.easeTo({ center: coordinates[0], zoom: 12, duration });
     } else mainMap.easeTo({center:[0,20], zoom:1.5, duration:0});
   }
 
@@ -975,7 +975,7 @@
     if (!mainMapReady) { pendingMapAction = 'arrival'; return; }
     photoBubbles?.close();
     cancelArrival();
-    focusDay(day);
+    focusDay(day, 0);
     arrivalPlan = window.JOURNEY_ATLAS_ARRIVAL.plan(segmentsForDay(day), segmentCoordinates);
     for (const leg of arrivalPlan.legs) addSegmentLayer(mainMap, mainDecorations, leg.segment, {prefix:'arrival-guide',color:palette.muted,opacity:0.18,selected:false});
     if (arrivalPlan.legs.length && !prefersReducedMotion()) {
