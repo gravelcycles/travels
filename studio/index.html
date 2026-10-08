@@ -19,7 +19,7 @@
         <button class="active" data-mode="photos" type="button">Photos</button>
         <button data-mode="routes" type="button">Route drawing</button>
         <button data-mode="planner" type="button">Trip plan & media</button>
-        <button data-mode="days" type="button">Day copy</button>
+        <button data-mode="days" type="button" data-event-copy="Day copy">Day copy</button>
       </nav>
       <div class="studio-actions">
         <a id="preview-journey" href="/preview/switzerland-italy.html?photoSource=local" target="_blank" rel="noreferrer">Preview atlas</a>
@@ -48,7 +48,7 @@
           <label for="studio-journey">Journey</label>
           <select id="studio-journey"></select>
           <button id="new-trip" type="button">+ New trip</button>
-          <p id="journey-draft-note" class="editor-note" hidden>Local draft · Start with day titles and notes. Destinations and routes can come later.</p>
+          <p id="journey-draft-note" class="editor-note" hidden data-event-copy="Local draft · Start with day titles and notes. Destinations and routes can come later.">Local draft · Start with day titles and notes. Destinations and routes can come later.</p>
         </div>
         <section class="photo-browser" data-panel="photos">
           <label for="photo-day-filter">Photos from</label>
@@ -56,12 +56,12 @@
           <label class="checkbox"><input id="show-photo-trash" type="checkbox" /> Show trash</label>
           <details class="photo-upload-panel">
             <summary>Upload photos</summary>
-            <label for="upload-photo-day">Assign photos to days</label>
+            <label for="upload-photo-day" data-event-copy="Assign photos to days">Assign photos to days</label>
             <select id="upload-photo-day"></select>
             <label for="upload-photo-files">Choose photos (select multiple)</label>
             <input id="upload-photo-files" type="file" accept=".jpg,.jpeg,.png,.webp,.heic,.heif" multiple />
             <p id="photo-upload-selection" class="editor-note" role="status">Select as many photos as you like in one batch.</p>
-            <p class="editor-note">Capture dates automatically match journey days. Photos without a matching date can be assigned individually. JPEG, PNG, WebP or HEIC · Up to 50 MB each. Images are resized automatically and kept local until published. Captions start blank.</p>
+            <p class="editor-note" data-event-copy="Capture dates automatically match journey days. Photos without a matching date can be assigned individually. JPEG, PNG, WebP or HEIC · Up to 50 MB each. Images are resized automatically and kept local until published. Captions start blank.">Capture dates automatically match journey days. Photos without a matching date can be assigned individually. JPEG, PNG, WebP or HEIC · Up to 50 MB each. Images are resized automatically and kept local until published. Captions start blank.</p>
             <button id="upload-photos" type="button">Add photos locally</button>
             <div id="photo-upload-status" role="status" aria-live="polite"></div>
             <div id="photo-upload-review"></div>
@@ -74,7 +74,7 @@
           <div class="route-list" id="studio-route-list"></div>
         </section>
         <section class="day-browser" data-panel="days" hidden>
-          <label for="day-editor-filter">Journey day</label>
+          <label for="day-editor-filter" data-event-copy="Journey day">Journey day</label>
           <select id="day-editor-filter"></select>
           <div class="day-edit-list" id="studio-day-list"></div>
         </section>
@@ -95,7 +95,7 @@
       <aside class="editor-panel">
         <form id="photo-form" data-panel="photos">
           <div class="selected-photo" id="selected-photo"></div>
-          <label for="photo-day">Journey day</label>
+          <label for="photo-day" data-event-copy="Journey day">Journey day</label>
           <select id="photo-day" name="dayId"></select>
           <label for="photo-place">Exact place</label>
           <input id="photo-place" name="locationLabel" placeholder="e.g. Kapellbrücke, north end" />
@@ -112,7 +112,7 @@
               <button class="secondary" id="switch-photo-view" type="button" disabled>Show saved frame</button>
               <button class="secondary" id="reset-photo-frame" type="button" disabled>Reset frame to pin</button>
             </div>
-            <p>The dashed outline shows this photo’s frame. Pan and zoom to compose the map, then save its visible area. Selecting another photo in this day keeps your working view, so you can use the same frame for nearby pins.</p>
+            <p data-event-copy="The dashed outline shows this photo’s frame. Pan and zoom to compose the map, then save its visible area. Selecting another photo in this day keeps your working view, so you can use the same frame for nearby pins.">The dashed outline shows this photo’s frame. Pan and zoom to compose the map, then save its visible area. Selecting another photo in this day keeps your working view, so you can use the same frame for nearby pins.</p>
           </section>
           <button class="secondary" id="clear-photo-location" type="button">Clear location</button>
           <label for="photo-caption">Your caption (optional)</label>
@@ -123,7 +123,7 @@
           <p id="photo-asset-status" class="editor-note"></p>
           <section class="photo-order-panel" aria-labelledby="photo-order-heading">
             <strong id="photo-order-heading">Daily photo placement</strong>
-            <p id="photo-order-status" role="status">Choose a photo to set its place in this day's album.</p>
+            <p id="photo-order-status" role="status" data-event-copy="Choose a photo to set its place in this day's album.">Choose a photo to set its place in this day's album.</p>
             <div>
               <button class="secondary" id="photo-move-earlier" type="button">Move earlier</button>
               <button class="secondary" id="photo-move-later" type="button">Move later</button>
@@ -194,18 +194,18 @@
         </section>
 
         <form id="day-form" data-panel="days" hidden>
-          <span class="eyebrow">SELECTED DAY</span>
-          <h2 id="day-editor-heading">Choose a day</h2>
+          <span class="eyebrow" data-event-copy="SELECTED DAY">SELECTED DAY</span>
+          <h2 id="day-editor-heading" data-event-copy="Choose a day">Choose a day</h2>
           <label for="day-date">Date label</label>
           <input id="day-date" name="date" />
-          <label for="day-title">Day title</label>
+          <label for="day-title" data-event-copy="Day title">Day title</label>
           <input id="day-title" name="title" />
           <label for="day-tagline">Short tagline</label>
           <input id="day-tagline" name="tagline" aria-describedby="day-tagline-note" />
-          <p id="day-tagline-note" class="editor-note">A short line beneath the day title. Leave blank to omit it.</p>
-          <label for="day-description">Day story</label>
+          <p id="day-tagline-note" class="editor-note" data-event-copy="A short line beneath the day title. Leave blank to omit it.">A short line beneath the day title. Leave blank to omit it.</p>
+          <label for="day-description" data-event-copy="Day story">Day story</label>
           <textarea id="day-description" name="text" rows="10"></textarea>
-          <p class="editor-note">The title and tagline appear in the day list and journal. Your full story appears in Day details. Save locally, then open Preview atlas to check this day.</p>
+          <p class="editor-note" data-event-copy="The title and tagline appear in the day list and journal. Your full story appears in Day details. Save locally, then open Preview atlas to check this day.">The title and tagline appear in the day list and journal. Your full story appears in Day details. Save locally, then open Preview atlas to check this day.</p>
         </form>
       </aside>
 
@@ -218,12 +218,12 @@
         <label>When dates change<select id="plan-alignment"><option value="dates">Keep existing content on its calendar date</option><option value="itinerary">Move the itinerary to the new start date</option></select></label>
         <details open><summary>Travelers & route groups</summary><div id="plan-party"></div></details>
         <details><summary>Named places</summary><p>Enter reviewed longitude/latitude. Existing route geometry is preserved when a place changes.</p><div id="plan-places"></div><button id="plan-add-place" type="button">+ Named place</button></details>
-        <details><summary>Days & ordered travel legs</summary><p>Moving a day moves its story, routes and photos to the adjacent date. Photo capture timestamps remain unchanged.</p><div id="plan-days"></div></details>
+        <details><summary data-event-copy="Days & ordered travel legs">Days & ordered travel legs</summary><p data-event-copy="Moving a day moves its story, routes and photos to the adjacent date. Photo capture timestamps remain unchanged.">Moving a day moves its story, routes and photos to the adjacent date. Photo capture timestamps remain unchanged.</p><button id="plan-add-stop" type="button" hidden>+ City stop</button><div id="plan-days"></div></details>
         <details><summary>Shared meetup</summary><div id="plan-meetup"></div></details>
         <details open><summary>Videos</summary><p>Add a hosted public MP4 or WebM link. Videos appear alongside photos in the shared viewer. Private video uploads are not supported yet.</p><div id="plan-videos"></div><button type="button" data-add-video>+ Video</button></details>
         <details><summary>Photo route groups</summary><p>Assign photos to routes without changing their captions, order or source images.</p><div id="plan-photo-groups"></div></details>
-        <details open><summary>Journey cover</summary><p>One photograph for the catalog and trip opening. Day previews use the first visible photo in album order.</p><label>Cover photo<select id="cover-picker"></select></label><div id="cover-thumbnails" aria-label="Cover photo choices"></div><div class="plan-row"><label>Horizontal focal point<input id="cover-x" type="range" min="0" max="100"></label><label>Vertical focal point<input id="cover-y" type="range" min="0" max="100"></label></div><div id="cover-previews"></div></details>
-        <details><summary>Curated Replay moments</summary><p>Use short, factual captions. A moment's duration is editorial pacing. Replay follows the map and the day's travel legs; photographs stay in the albums.</p><div id="plan-moments"></div><button type="button" id="plan-add-moment">+ Replay moment</button></details>
+        <details open><summary>Journey cover</summary><p data-event-copy="One photograph for the catalog and trip opening. Day previews use the first visible photo in album order.">One photograph for the catalog and trip opening. Day previews use the first visible photo in album order.</p><label>Cover photo<select id="cover-picker"></select></label><div id="cover-thumbnails" aria-label="Cover photo choices"></div><div class="plan-row"><label>Horizontal focal point<input id="cover-x" type="range" min="0" max="100"></label><label>Vertical focal point<input id="cover-y" type="range" min="0" max="100"></label></div><div id="cover-previews"></div></details>
+        <details><summary>Curated Replay moments</summary><p data-event-copy="Use short, factual captions. A moment's duration is editorial pacing. Replay follows the map and the day's travel legs; photographs stay in the albums.">Use short, factual captions. A moment's duration is editorial pacing. Replay follows the map and the day's travel legs; photographs stay in the albums.</p><div id="plan-moments"></div><button type="button" id="plan-add-moment">+ Replay moment</button></details>
         <div class="plan-save-bar"><button type="button" id="plan-preview">Check changes (optional)</button><button type="button" id="plan-save" disabled>Save trip plan locally</button><p id="plan-status" role="status"></p></div>
       </section>
     </main>
@@ -246,9 +246,10 @@
     <dialog id="new-trip-dialog" aria-labelledby="new-trip-heading">
       <form id="new-trip-form">
         <div class="new-trip-heading"><h2 id="new-trip-heading">Where to next?</h2><button id="cancel-new-trip" type="button" aria-label="Close new trip">×</button></div>
-        <p>A name and dates are enough to start. We'll create a day for every date, ready for your plans.</p>
+        <p data-event-copy="A name and dates are enough to start. We'll create a day for every date, ready for your plans.">A name and dates are enough to start. We'll create a day for every date, ready for your plans.</p>
         <label for="new-trip-title">Trip name</label>
         <input id="new-trip-title" name="title" required maxlength="160" placeholder="e.g. Autumn in Japan" />
+        <label>Organize events by<select name="eventMode"><option value="day">Calendar day</option><option value="city">City stay</option></select></label>
         <div class="new-trip-dates">
           <label>Start date<input id="new-trip-start" name="startDate" type="date" required /></label>
           <label>End date<input id="new-trip-end" name="endDate" type="date" required /></label>

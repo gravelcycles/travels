@@ -21,7 +21,7 @@ notes for agents; do not ask the user to run them.
 Start with the smallest useful intake and fill gaps incrementally:
 
 - trip name and URL slug;
-- date range and one row per calendar day;
+- date range and event structure: calendar days (default), or one city stay per event;
 - each day's ordered legs: mode, from, to, known intermediate stops, and any
   service/route name;
 - day title and a few factual notes;
@@ -66,6 +66,32 @@ cannot crop travel. Without the field, framing uses route/place bounds as before
 empty drafts retain their empty map. Day, photo and Replay cameras are unaffected.
 Switzerland–Italy uses `[[5.9, 45.75], [10.55, 47.85]]` to show all of Switzerland
 around its itinerary. Keep such editorial coordinates in the journey source.
+
+## City stays instead of calendar days
+
+Choose **City stay** in Studio's New trip form, or pass `--events city` to
+`journey:new`. Optional journey `eventMode` accepts `day` (the default when
+absent) or `city`. City journeys reuse the same `days`, `dayId`, photo overrides,
+route ownership and deep links; do not build another viewer or expand a stay
+into empty daily events. Public controls say Stop/Stops throughout the map,
+journal, albums and Replay. Existing trips retain Day/Days.
+
+In city mode, each entry has an arrival `calendarDate` and a departure or last
+known `calendarEndDate`, both ISO dates. End cannot precede start; consecutive
+stays meet on their shared transfer date, and the first/last boundaries match
+the journey range. A same-date origin or arrival-only final stop is valid.
+`date` remains an editable display label. Use a city title and destination;
+assign incoming travel legs to the arriving city. Transfer stations do not
+need separate events. See [Heading East](docs/HEADING_EAST.md) for an example.
+
+Studio's Stop copy edits city titles and stories; Trip plan edits arrival and
+departure dates and adds city stops. Adjust both sides of a changed transfer date. Changing the trip
+range preserves city records; moving the itinerary shifts their dates together.
+Invalid shortening is rejected rather than dropping a city or its content.
+Photo imports (bulk and Studio) match the entire stay; on a shared transfer date
+they default to the later city. Manually assign origin/departure-city photos
+when needed. An unknown final departure can be extended when the next facts
+arrive. Do not invent photos, stay descriptions or exact services.
 
 ## Map location labels
 

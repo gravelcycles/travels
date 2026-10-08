@@ -1,0 +1,497 @@
+{
+  "eventMode": "city",
+  "id": "backpacking-europe-heading-east",
+  "kind": "real",
+  "published": true,
+  "slug": "backpacking-europe-heading-east.html",
+  "status": "ongoing",
+  "badge": "JOURNEY",
+  "label": "Backpacking Europe: Heading East",
+  "title": "Backpacking Europe: Heading East",
+  "subtitle": "Eight city stops from Luzern to Salzburg, by train with one replacement bus. Photos and stories to follow.",
+  "kicker": "BACKPACKING EUROPE · AUTUMN 2026",
+  "dates": "1 Sep – 11 Oct 2026",
+  "startDate": "2026-09-01",
+  "endDate": "2026-10-11",
+  "timeZone": "Europe/Berlin",
+  "note": "City stops span arrival to departure; Salzburg is open from 11 October. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed.",
+  "cover": "",
+  "places": [
+    {
+      "id": "backpacking-europe-heading-east-luzern",
+      "name": "Luzern",
+      "lng": 8.31041,
+      "lat": 47.05019,
+      "country": "Switzerland"
+    },
+    {
+      "id": "backpacking-europe-heading-east-basel",
+      "name": "Basel SBB",
+      "lng": 7.58956,
+      "lat": 47.5474,
+      "country": "Switzerland"
+    },
+    {
+      "id": "backpacking-europe-heading-east-freiburg",
+      "name": "Freiburg",
+      "lng": 7.84116,
+      "lat": 47.99768,
+      "country": "Germany"
+    },
+    {
+      "id": "backpacking-europe-heading-east-hamburg",
+      "name": "Hamburg",
+      "lng": 10.0067,
+      "lat": 53.5528,
+      "country": "Germany"
+    },
+    {
+      "id": "backpacking-europe-heading-east-koln",
+      "name": "Köln",
+      "lng": 6.9581,
+      "lat": 50.943,
+      "country": "Germany"
+    },
+    {
+      "id": "backpacking-europe-heading-east-dusseldorf",
+      "name": "Düsseldorf",
+      "lng": 6.7944,
+      "lat": 51.2198,
+      "country": "Germany"
+    },
+    {
+      "id": "backpacking-europe-heading-east-berlin",
+      "name": "Berlin",
+      "lng": 13.3694,
+      "lat": 52.5251,
+      "country": "Germany"
+    },
+    {
+      "id": "backpacking-europe-heading-east-dresden",
+      "name": "Dresden Hbf",
+      "lng": 13.7322,
+      "lat": 51.0403,
+      "country": "Germany"
+    },
+    {
+      "id": "backpacking-europe-heading-east-usti",
+      "name": "Ústí nad Labem hl. n.",
+      "lng": 14.0453,
+      "lat": 50.6597,
+      "country": "Czechia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-prague",
+      "name": "Prague",
+      "lng": 14.4353,
+      "lat": 50.083,
+      "country": "Czechia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-linz",
+      "name": "Linz Hbf",
+      "lng": 14.2916,
+      "lat": 48.2902,
+      "country": "Austria"
+    },
+    {
+      "id": "backpacking-europe-heading-east-salzburg",
+      "name": "Salzburg",
+      "lng": 13.0456,
+      "lat": 47.813,
+      "country": "Austria"
+    }
+  ],
+  "segments": [
+    {
+      "id": "backpacking-europe-heading-east-luzern-basel",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-luzern",
+      "to": "backpacking-europe-heading-east-basel",
+      "via": [
+        {
+          "name": "Olten",
+          "lng": 7.9076,
+          "lat": 47.3519
+        },
+        {
+          "name": "Liestal",
+          "lng": 7.7343,
+          "lat": 47.4814
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 93.7
+    },
+    {
+      "id": "backpacking-europe-heading-east-basel-freiburg",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-basel",
+      "to": "backpacking-europe-heading-east-freiburg",
+      "via": [
+        {
+          "name": "Basel Bad Bf",
+          "lng": 7.6073,
+          "lat": 47.5674
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 62
+    },
+    {
+      "id": "backpacking-europe-heading-east-freiburg-hamburg",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-freiburg",
+      "to": "backpacking-europe-heading-east-hamburg",
+      "via": [
+        {
+          "name": "Karlsruhe Hbf",
+          "lng": 8.4022,
+          "lat": 48.9935
+        },
+        {
+          "name": "Mannheim Hbf",
+          "lng": 8.4689,
+          "lat": 49.4794
+        },
+        {
+          "name": "Frankfurt (Main) Hbf",
+          "lng": 8.6638,
+          "lat": 50.1071
+        },
+        {
+          "name": "Fulda",
+          "lng": 9.684,
+          "lat": 50.5547
+        },
+        {
+          "name": "Kassel-Wilhelmshöhe",
+          "lng": 9.4473,
+          "lat": 51.3128
+        },
+        {
+          "name": "Göttingen",
+          "lng": 9.9261,
+          "lat": 51.5368
+        },
+        {
+          "name": "Hannover Hbf",
+          "lng": 9.741,
+          "lat": 52.377
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 784.2
+    },
+    {
+      "id": "backpacking-europe-heading-east-hamburg-koln",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-hamburg",
+      "to": "backpacking-europe-heading-east-koln",
+      "via": [
+        {
+          "name": "Bremen Hbf",
+          "lng": 8.8138,
+          "lat": 53.0835
+        },
+        {
+          "name": "Osnabrück Hbf",
+          "lng": 8.0618,
+          "lat": 52.2729
+        },
+        {
+          "name": "Münster (Westf) Hbf",
+          "lng": 7.6343,
+          "lat": 51.9566
+        },
+        {
+          "name": "Dortmund Hbf",
+          "lng": 7.4593,
+          "lat": 51.5179
+        },
+        {
+          "name": "Essen Hbf",
+          "lng": 7.0148,
+          "lat": 51.4515
+        },
+        {
+          "name": "Duisburg Hbf",
+          "lng": 6.776,
+          "lat": 51.4292
+        },
+        {
+          "name": "Düsseldorf Hbf",
+          "lng": 6.7944,
+          "lat": 51.2198
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 477
+    },
+    {
+      "id": "backpacking-europe-heading-east-koln-dusseldorf",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-koln",
+      "to": "backpacking-europe-heading-east-dusseldorf",
+      "via": [],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 40.3
+    },
+    {
+      "id": "backpacking-europe-heading-east-dusseldorf-berlin",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-dusseldorf",
+      "to": "backpacking-europe-heading-east-berlin",
+      "via": [
+        {
+          "name": "Duisburg Hbf",
+          "lng": 6.776,
+          "lat": 51.4292
+        },
+        {
+          "name": "Essen Hbf",
+          "lng": 7.0148,
+          "lat": 51.4515
+        },
+        {
+          "name": "Dortmund Hbf",
+          "lng": 7.4593,
+          "lat": 51.5179
+        },
+        {
+          "name": "Hamm (Westf) Hbf",
+          "lng": 7.8073,
+          "lat": 51.6781
+        },
+        {
+          "name": "Bielefeld Hbf",
+          "lng": 8.5327,
+          "lat": 52.0293
+        },
+        {
+          "name": "Hannover Hbf",
+          "lng": 9.741,
+          "lat": 52.377
+        },
+        {
+          "name": "Wolfsburg Hbf",
+          "lng": 10.7875,
+          "lat": 52.4295
+        },
+        {
+          "name": "Berlin-Spandau",
+          "lng": 13.1968,
+          "lat": 52.5348
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 542.5
+    },
+    {
+      "id": "backpacking-europe-heading-east-berlin-dresden",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-berlin",
+      "to": "backpacking-europe-heading-east-dresden",
+      "via": [
+        {
+          "name": "Berlin Südkreuz",
+          "lng": 13.365,
+          "lat": 52.475
+        },
+        {
+          "name": "Dresden-Neustadt",
+          "lng": 13.74,
+          "lat": 51.0659
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 205.2
+    },
+    {
+      "id": "backpacking-europe-heading-east-dresden-usti",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-dresden",
+      "to": "backpacking-europe-heading-east-usti",
+      "via": [],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 64.7
+    },
+    {
+      "id": "backpacking-europe-heading-east-usti-prague",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-usti",
+      "to": "backpacking-europe-heading-east-prague",
+      "via": [
+        {
+          "name": "Praha-Holešovice",
+          "lng": 14.4394,
+          "lat": 50.1108
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 112.3
+    },
+    {
+      "id": "backpacking-europe-heading-east-prague-linz",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-prague",
+      "to": "backpacking-europe-heading-east-linz",
+      "via": [
+        {
+          "name": "Tábor",
+          "lng": 14.67646,
+          "lat": 49.4146
+        },
+        {
+          "name": "České Budějovice",
+          "lng": 14.4887,
+          "lat": 48.9743
+        },
+        {
+          "name": "Summerau",
+          "lng": 14.4482,
+          "lat": 48.558
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 290.1
+    },
+    {
+      "id": "backpacking-europe-heading-east-linz-salzburg",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-linz",
+      "to": "backpacking-europe-heading-east-salzburg",
+      "via": [
+        {
+          "name": "Wels Hbf",
+          "lng": 14.0247,
+          "lat": 48.166
+        },
+        {
+          "name": "Attnang-Puchheim",
+          "lng": 13.7207,
+          "lat": 48.0084
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 124.6
+    }
+  ],
+  "days": [
+    {
+      "id": "backpacking-europe-heading-east-luzern-stay",
+      "number": 1,
+      "calendarDate": "2026-09-01",
+      "calendarEndDate": "2026-09-01",
+      "date": "1 Sept",
+      "title": "Luzern",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-luzern",
+      "destinationId": "backpacking-europe-heading-east-luzern",
+      "segmentIds": []
+    },
+    {
+      "id": "backpacking-europe-heading-east-freiburg-stay",
+      "number": 2,
+      "calendarDate": "2026-09-01",
+      "calendarEndDate": "2026-09-17",
+      "date": "1 Sept – 17 Sept",
+      "title": "Freiburg",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-freiburg",
+      "destinationId": "backpacking-europe-heading-east-freiburg",
+      "segmentIds": [
+        "backpacking-europe-heading-east-luzern-basel",
+        "backpacking-europe-heading-east-basel-freiburg"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-hamburg-stay",
+      "number": 3,
+      "calendarDate": "2026-09-17",
+      "calendarEndDate": "2026-09-29",
+      "date": "17 Sept – 29 Sept",
+      "title": "Hamburg",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-hamburg",
+      "destinationId": "backpacking-europe-heading-east-hamburg",
+      "segmentIds": [
+        "backpacking-europe-heading-east-freiburg-hamburg"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-koln-stay",
+      "number": 4,
+      "calendarDate": "2026-09-29",
+      "calendarEndDate": "2026-09-30",
+      "date": "29 Sept – 30 Sept",
+      "title": "Köln",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-koln",
+      "destinationId": "backpacking-europe-heading-east-koln",
+      "segmentIds": [
+        "backpacking-europe-heading-east-hamburg-koln"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-dusseldorf-stay",
+      "number": 5,
+      "calendarDate": "2026-09-30",
+      "calendarEndDate": "2026-10-01",
+      "date": "30 Sept – 1 Oct",
+      "title": "Düsseldorf",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-dusseldorf",
+      "destinationId": "backpacking-europe-heading-east-dusseldorf",
+      "segmentIds": [
+        "backpacking-europe-heading-east-koln-dusseldorf"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-berlin-stay",
+      "number": 6,
+      "calendarDate": "2026-10-01",
+      "calendarEndDate": "2026-10-05",
+      "date": "1 Oct – 5 Oct",
+      "title": "Berlin",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-berlin",
+      "destinationId": "backpacking-europe-heading-east-berlin",
+      "segmentIds": [
+        "backpacking-europe-heading-east-dusseldorf-berlin"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-prague-stay",
+      "number": 7,
+      "calendarDate": "2026-10-05",
+      "calendarEndDate": "2026-10-11",
+      "date": "5 Oct – 11 Oct",
+      "title": "Prague",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-prague",
+      "destinationId": "backpacking-europe-heading-east-prague",
+      "segmentIds": [
+        "backpacking-europe-heading-east-berlin-dresden",
+        "backpacking-europe-heading-east-dresden-usti",
+        "backpacking-europe-heading-east-usti-prague"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-salzburg-stay",
+      "number": 8,
+      "calendarDate": "2026-10-11",
+      "calendarEndDate": "2026-10-11",
+      "date": "From 11 Oct",
+      "title": "Salzburg",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-salzburg",
+      "destinationId": "backpacking-europe-heading-east-salzburg",
+      "segmentIds": [
+        "backpacking-europe-heading-east-prague-linz",
+        "backpacking-europe-heading-east-linz-salzburg"
+      ]
+    }
+  ],
+  "photos": []
+}

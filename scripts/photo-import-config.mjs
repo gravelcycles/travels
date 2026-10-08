@@ -16,9 +16,13 @@ export function photoImportConfig(root, data, options = {}) {
   new Intl.DateTimeFormat("en", { timeZone });
   const daysByDate = new Map();
   for (const day of journey.days) {
-    calendarDate(day.calendarDate);
-    if (daysByDate.has(day.calendarDate)) throw new Error("Duplicate photo calendar date");
-    daysByDate.set(day.calendarDate, day);
+    const start = calendarDate(day.calendarDate), end = calendarDate(journey.eventMode === 'city' ? day.calendarEndDate : day.calendarDate);
+    if (end < start || end - start > 366 * 86400000) throw new Error('Invalid photo calendar range');
+    for (let time = +start; time <= +end; time += 86400000) {
+      const date = new Date(time).toISOString().slice(0, 10);
+      if (journey.eventMode !== 'city' && daysByDate.has(date)) throw new Error('Duplicate photo calendar date');
+      daysByDate.set(date, day);
+    }
   }
   return { journey, releaseTag, idPrefix, timeZone, daysByDate,
     sourceDirectory: path.resolve(root, options.source || config.sourceDirectory || `photos/${journey.id}`),

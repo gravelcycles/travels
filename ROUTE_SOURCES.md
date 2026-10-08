@@ -127,3 +127,10 @@ static output is protected by preserve entries. Use
 The original cycling plan is 364–374 km; mapped town-to-town candidates total
 300.0 km before campsite approaches. Thursday and Friday discrepancies remain
 visible in the stories. All precise private accommodation data stays local.
+
+## Backpacking Europe: Heading East
+
+See [the researched itinerary and limitations](docs/HEADING_EAST.md) and
+[its preserved route manifest](content/route-sources/backpacking-europe-heading-east.json).
+Ten rail legs and one Dresden–Ústí nad Labem road leg use detailed OSM network
+reconstructions. Owner-confirmed city dates are separate from inferred services.

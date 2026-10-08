@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "journeyId": "backpacking-europe-heading-east",
+  "networks": {},
+  "modeNetworks": {},
+  "segments": {
+    "backpacking-europe-heading-east-luzern-basel": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=47.05019%2C8.31041&point=47.3519%2C7.9076&point=47.4814%2C7.7343&point=47.5474%2C7.58956&profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "5e0e94154e1596fd5d7fc92b81f967d59abecf781bccfb4d81e994a6316e36e3",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 856,
+        "outputPointCount": 321,
+        "rawDistanceKm": 93.714,
+        "distanceKm": 93.699,
+        "endpointOffsetsMeters": [
+          4,
+          17
+        ],
+        "waypointOffsetsMeters": [
+          4,
+          16,
+          72,
+          17
+        ],
+        "largestRawGapKm": 2.226,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact historical diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-basel-freiburg": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=47.5474%2C7.58956&point=47.5674%2C7.6073&point=47.99768%2C7.84116&profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "2295c7059b56f2e938f177a888e6697c56f782e2a135d23ea926ef225683fa4c",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 467,
+        "outputPointCount": 137,
+        "rawDistanceKm": 62.05,
+        "distanceKm": 62.042,
+        "endpointOffsetsMeters": [
+          17,
+          4
+        ],
+        "waypointOffsetsMeters": [
+          17,
+          12,
+          4
+        ],
+        "largestRawGapKm": 3.457,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact historical diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-freiburg-hamburg": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=47.99768%2C7.84116&point=48.9935%2C8.4022&point=49.4794%2C8.4689&point=50.1071%2C8.6638&point=50.5547%2C9.684&point=51.3128%2C9.4473&point=51.5368%2C9.9261&point=52.377%2C9.741&point=53.5528%2C10.0067&profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "a27eeac4e320af871c4ba6c8d369a57171dfbae20f46c8335c890dfdfc7a4278",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 5227,
+        "outputPointCount": 1671,
+        "rawDistanceKm": 784.235,
+        "distanceKm": 784.175,
+        "endpointOffsetsMeters": [
+          4,
+          7
+        ],
+        "waypointOffsetsMeters": [
+          4,
+          2,
+          0,
+          44,
+          1,
+          5,
+          6,
+          2,
+          7
+        ],
+        "largestRawGapKm": 3.94,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact historical diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-hamburg-koln": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=53.5528%2C10.0067&point=53.0835%2C8.8138&point=52.2729%2C8.0618&point=51.9566%2C7.6343&point=51.5179%2C7.4593&point=51.4515%2C7.0148&point=51.4292%2C6.776&point=51.2198%2C6.7944&point=50.943%2C6.9581&profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "77c9218d423d526adfc879fbfb0093ac54847683fb674d2ee5265c4a618b988b",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 3517,
+        "outputPointCount": 1103,
+        "rawDistanceKm": 476.999,
+        "distanceKm": 476.952,
+        "endpointOffsetsMeters": [
+          7,
+          2
+        ],
+        "waypointOffsetsMeters": [
+          7,
+          5,
+          1,
+          52,
+          6,
+          8,
+          4,
+          1,
+          2
+        ],
+        "largestRawGapKm": 5.354,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact historical diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-koln-dusseldorf": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=50.943%2C6.9581&point=51.2198%2C6.7944&profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "85a2de449ab6793945aedb86ebf2fc83b95355c69dd2f3c6281a1633e902d278",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 434,
+        "outputPointCount": 124,
+        "rawDistanceKm": 40.353,
+        "distanceKm": 40.348,
+        "endpointOffsetsMeters": [
+          2,
+          1
+        ],
+        "waypointOffsetsMeters": [
+          2,
+          1
+        ],
+        "largestRawGapKm": 1.472,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact historical diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-dusseldorf-berlin": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=51.2198%2C6.7944&point=51.4292%2C6.776&point=51.4515%2C7.0148&point=51.5179%2C7.4593&point=51.6781%2C7.8073&point=52.0293%2C8.5327&point=52.377%2C9.741&point=52.4295%2C10.7875&point=52.5348%2C13.1968&point=52.5251%2C13.3694&profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "78eed7c4a9da7cfb01e26205b3f55262c85e7354389abd1489066644784814ad",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 3408,
+        "outputPointCount": 1024,
+        "rawDistanceKm": 542.506,
+        "distanceKm": 542.468,
+        "endpointOffsetsMeters": [
+          1,
+          0
+        ],
+        "waypointOffsetsMeters": [
+          1,
+          4,
+          8,
+          6,
+          3,
+          2,
+          2,
+          2,
+          5,
+          0
+        ],
+        "largestRawGapKm": 4.564,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact historical diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-berlin-dresden": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=52.5251%2C13.3694&point=52.475%2C13.365&point=51.0659%2C13.74&point=51.0403%2C13.7322&profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "3ddb6507fd35181960aa9a0b2b9cc445455a119c61a253f210937eec85e831a1",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 1543,
+        "outputPointCount": 423,
+        "rawDistanceKm": 205.172,
+        "distanceKm": 205.152,
+        "endpointOffsetsMeters": [
+          0,
+          17
+        ],
+        "waypointOffsetsMeters": [
+          0,
+          2,
+          3,
+          17
+        ],
+        "largestRawGapKm": 6.295,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact historical diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-dresden-usti": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.7322,51.0403;14.0453,50.6597?overview=full&geometries=geojson&steps=false",
+        "profile": "driving",
+        "rawSha256": "d78a88bd38bbd8d5eb7b0eec211fd9ffb69d76f6b0701633dbee59f0368af685",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 1209,
+        "outputPointCount": 385,
+        "rawDistanceKm": 64.729,
+        "distanceKm": 64.701,
+        "endpointOffsetsMeters": [
+          9,
+          24
+        ],
+        "waypointOffsetsMeters": [
+          9,
+          25
+        ],
+        "largestRawGapKm": 0.574,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact historical diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-usti-prague": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=50.6597%2C14.0453&point=50.1108%2C14.4394&point=50.083%2C14.4353&profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "d4ef421e9504241f87279f6c8c4566e15348236a94507365906d22a67c648572",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 1385,
+        "outputPointCount": 448,
+        "rawDistanceKm": 112.29,
+        "distanceKm": 112.261,
+        "endpointOffsetsMeters": [
+          2,
+          21
+        ],
+        "waypointOffsetsMeters": [
+          2,
+          5,
+          21
+        ],
+        "largestRawGapKm": 2.453,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact historical diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-prague-linz": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=50.083%2C14.4353&point=49.4146%2C14.67646&point=48.9743%2C14.4887&point=48.558%2C14.4482&point=48.2902%2C14.2916&profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "9365bb7f9bbf3aa9aaf65cdf0fc55aa02f957413715c146b960bbf280c6c2827",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 4937,
+        "outputPointCount": 1787,
+        "rawDistanceKm": 290.236,
+        "distanceKm": 290.106,
+        "endpointOffsetsMeters": [
+          21,
+          4
+        ],
+        "waypointOffsetsMeters": [
+          21,
+          0,
+          0,
+          72,
+          4
+        ],
+        "largestRawGapKm": 2.063,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact historical diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-linz-salzburg": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=48.2902%2C14.2916&point=48.166%2C14.0247&point=48.0084%2C13.7207&point=47.813%2C13.0456&profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "4a3dbd6049015092450caa3b280033a8dc645c54860cd302dd310fdca585a549",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 1521,
+        "outputPointCount": 438,
+        "rawDistanceKm": 124.591,
+        "distanceKm": 124.565,
+        "endpointOffsetsMeters": [
+          4,
+          3
+        ],
+        "waypointOffsetsMeters": [
+          4,
+          16,
+          235,
+          2
+        ],
+        "largestRawGapKm": 1.678,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact historical diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    }
+  }
+}

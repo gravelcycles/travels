@@ -1,3 +1,4 @@
+import '../dist/assets/atlas-utils.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -120,7 +121,7 @@ test('the upload UI retains successful files when a batch also contains a failur
   node('#upload-photo-day').value = 'd1';
   const photo = {id:'new-photo',dayId:'d1',caption:'',description:'',assetStatus:'local'};
   const basePhotos = [];
-  const context = vm.createContext({
+  const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),
     $:node, journey:{id:'trip'}, basePhotos, photosByJourney:{}, plans:new Map(), savedRevisions:{}, uploadingPhotos:false,
     URLSearchParams, dayById:id=>({id,number:1}), photoWithOverride:p=>p,
     pendingPhotoDays:new Map(),photoUploadSerial:0,renderPendingPhotoDays(){},
@@ -165,7 +166,7 @@ test('auto batch UI shows all assigned days and retains undated files for indivi
   node('#upload-photo-day').value='auto';
   node('#upload-photo-files').files=['first','second','undated'].map(name=>({name:`${name}.jpg`,size:10}));
   const basePhotos=[], pendingPhotoDays=new Map(), requested=[];
-  const context=vm.createContext({$:node,journey:{id:'trip'},basePhotos,photosByJourney:{},plans:new Map(),savedRevisions:{},uploadingPhotos:false,
+  const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),$:node,journey:{id:'trip'},basePhotos,photosByJourney:{},plans:new Map(),savedRevisions:{},uploadingPhotos:false,
     pendingPhotoDays,photoUploadSerial:0,URLSearchParams,dayById:id=>({id,number:id==='d1'?1:2}),photoWithOverride:p=>p,
     renderPendingPhotoDays(){},renderDaySelectors(){},renderPhotoGrid(){},selectPhoto(){},
     fetch:async url=>({ok:true,json:async()=>{

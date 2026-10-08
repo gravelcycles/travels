@@ -24,7 +24,7 @@ export function assignPhotoDay(journey, metadata, dayId = 'auto') {
   let captured;
   try { captured = captureDateParts(metadata, journey.timeZone); } catch { /* Requires a manual day below. */ }
   if (!dayId || dayId === 'auto') {
-    const day = captured && journey.days.find(day => day.calendarDate === captured.date);
+    const day = captured && globalThis.JOURNEY_ATLAS_UTILS.eventForDate(journey, captured.date);
     if (!day) {
       const error = new Error(captured ? `Capture date ${captured.date} is outside this journey. Choose a day for this photo.` : 'No usable capture date. Choose a day for this photo.');
       error.needsDay = true;
@@ -35,7 +35,7 @@ export function assignPhotoDay(journey, metadata, dayId = 'auto') {
   const day = journey.days.find(day => day.id === dayId);
   if (!day) throw new Error('Choose a day in this journey.');
   const warnings = !captured ? ['No usable capture date; used your selected day.']
-    : captured.date !== day.calendarDate ? [`Camera date is ${captured.date}; used your selected day (${day.calendarDate}).`] : [];
+    : !globalThis.JOURNEY_ATLAS_UTILS.eventContainsDate(journey, day, captured.date) ? [`Camera date is ${captured.date}; used your selected day (${day.calendarDate}).`] : [];
   return { day, captured, warnings };
 }
 

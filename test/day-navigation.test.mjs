@@ -1,3 +1,4 @@
+import '../dist/assets/atlas-utils.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -17,7 +18,7 @@ function selection() {
     return nodes.get(selector);
   };
   const days = [{ id: 'd1', number: 1, segmentIds: [] }, { id: 'd2', number: 2, segmentIds: [] }];
-  const context = vm.createContext({
+  const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),
     window: {}, clearDayPreview(){}, deferDayPreviewClear(){}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
     activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null,
     viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null, placesUI: null,
@@ -39,7 +40,7 @@ test('selecting a day leaves overview scope even when the mobile map is hidden',
 test('day-list scrolling reveals clipped rows without moving visible rows or hidden panels', () => {
   let rect = { top: 700, bottom: 780 }, height = 400, reduced = false;
   const calls = [];
-  const context = vm.createContext({ prefersReducedMotion: () => reduced,
+  const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form), prefersReducedMotion: () => reduced,
     dayList: { querySelector: () => ({ getBoundingClientRect: () => rect }), get clientHeight() { return height; },
       getBoundingClientRect: () => ({ top: 100, bottom: 500 }), scrollBy: value => calls.push(value) }
   });
@@ -139,7 +140,7 @@ test('Fit route returns to journey scope and fits the route', () => {
 });
 
 test('Fit route bounds use routes and journey places, excluding distant photo pins', () => {
-  const context=vm.createContext({journey:{segments:[{geometry:[[8,47],[9,46]]}],places:[{lng:8,lat:47}],photos:[{lng:-80,lat:20}]},segmentCoordinates:s=>s.geometry});
+  const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),journey:{segments:[{geometry:[[8,47],[9,46]]}],places:[{lng:8,lat:47}],photos:[{lng:-80,lat:20}]},segmentCoordinates:s=>s.geometry});
   vm.runInContext(functionSource('journeyCoordinates'),context);
   assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('journeyCoordinates()',context))),[[8,47],[9,46],[8,47]]);
 });
@@ -147,7 +148,7 @@ test('Fit route bounds use routes and journey places, excluding distant photo pi
 test('selecting another viewer photo preserves thumbnail elements and updates selection only', () => {
   let builds=0,prepares=0,buttons=[];
   const strip={dataset:{},querySelectorAll:()=>buttons,set innerHTML(html){builds++;buttons=[...html.matchAll(/data-viewer-index="(\d+)"/g)].map(m=>({dataset:{viewerIndex:m[1]},selected:false,classList:{toggle(name,value){this.active=value;}},setAttribute(name,value){this[name]=value;},scrollIntoView(){}}));}};
-  const context=vm.createContext({viewerPhotoIndex:0,mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,escapeHtml:value=>value,photoImageMarkup:()=>'<img>',prepareProgressiveImages(){prepares++;},$:selector=>selector==='#viewer-filmstrip'?strip:buttons.find(b=>b.classList.active)});
+  const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerPhotoIndex:0,mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,escapeHtml:value=>value,photoImageMarkup:()=>'<img>',prepareProgressiveImages(){prepares++;},$:selector=>selector==='#viewer-filmstrip'?strip:buttons.find(b=>b.classList.active)});
   vm.runInContext(functionSource('renderViewerFilmstrip'),context);
   const photos=[{id:'one'},{id:'two'},{id:'three'}];context.photos=photos;
   vm.runInContext('renderViewerFilmstrip(photos)',context);const original=[...buttons];
@@ -165,7 +166,7 @@ test('same-day viewer navigation does not rebuild background photos or redraw th
 });
 test('viewer route layers are reused within a day and rebuilt when the day changes',()=>{
  const calls=[];let day={id:'d1',segmentIds:['a']};
- const context=vm.createContext({viewerFeedback:null,window:{},mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,viewerMapReady:true,photoDialog:{open:true},viewerMap:{easeTo(){}},mapIsReady:()=>true,viewerDay:()=>day,
+ const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerFeedback:null,window:{},mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,viewerMapReady:true,photoDialog:{open:true},viewerMap:{easeTo(){}},mapIsReady:()=>true,viewerDay:()=>day,
   viewerPhotoIndex:0,photosForDay:()=>[{id:'one'},{id:'two'}],viewerCameraPhoto:null,viewerTransition:{cancel(){}},viewerPhotoMarkers:[],viewerRouteKey:null,viewerDecorations:{},
   journey:{id:'trip',segments:[{id:'a'},{id:'b'}]},dayCoordinates:()=>[],
   clearDecorations:()=>calls.push('clear'),addSegmentLayer:()=>calls.push('route'),addDayStopMarkers:()=>calls.push('stops')});
@@ -175,7 +176,7 @@ test('viewer route layers are reused within a day and rebuilt when the day chang
 });
 
 test('a collapsed mobile location panel does not schedule hidden viewer map work',()=>{
-  const context=vm.createContext({viewerMapReady:true,photoDialog:{open:true},window:{JOURNEY_ATLAS_MOBILE_UI:{enabled:()=>true,locationVisible:()=>false}}});
+  const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerMapReady:true,photoDialog:{open:true},window:{JOURNEY_ATLAS_MOBILE_UI:{enabled:()=>true,locationVisible:()=>false}}});
   vm.runInContext(functionSource('syncViewerMap'),context);
   assert.doesNotThrow(()=>vm.runInContext('syncViewerMap()',context),'hidden maps must return before checking readiness or scheduling retries');
 });
@@ -221,7 +222,7 @@ test('mobile and touch map hover cannot open route details; route taps select th
 test('route inspection is suppressed on phones while desktop retains its tooltip',()=>{
   for(const mobile of [true,false]) {
     const nodes=new Map(), $=id=>{if(!nodes.has(id))nodes.set(id,{hidden:true});return nodes.get(id);};
-    const context=vm.createContext({$,window:{matchMedia:()=>({matches:mobile})},
+    const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),$,window:{matchMedia:()=>({matches:mobile})},
       segmentById:()=>({from:'a',to:'b',mode:'train'}),dayForSegment:()=>({number:1}),
       placeById:id=>({name:id}),labels:{train:'Train'},conciseDayStory:()=> 'Day story',
       routeInspectionPinned:false,inspectedSegmentId:null,setInspectedFeatureState(){},syncInspectionClasses(){},setDayPreview(){},
