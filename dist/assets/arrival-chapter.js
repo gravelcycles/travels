@@ -78,7 +78,7 @@
     let start = 0;
     for (const leg of legs) { leg.start = start; leg.end = start += leg.weight / total; }
     if (legs.length) legs.at(-1).end = 1;
-    return { legs, duration: 2500, arrivalHold: 250 };
+    return { legs, framingDuration: 250, duration: 2500, arrivalHold: 250 };
   }
 
   // Interpolate by distance, with no route-wide measurements in the animation loop.
@@ -174,18 +174,38 @@
     return segments.slice().reverse().flatMap(segment => coordinates(segment).slice().reverse()).find(located) || null;
   }
 
+  function afterCamera(map, move, ready) {
+    // Stop an older camera before listening for this move's completion.
+    map.stop();
+    let active = true;
+    const owner = {};
+    function finish(event) {
+      if (!active || (event && event.arrivalCamera !== owner)) return;
+      active = false; map.off('moveend', finish); ready();
+    }
+    map.on('moveend', finish);
+    move({ arrivalCamera: owner });
+    if (!map.isMoving()) finish();
+    return () => {
+      if (!active) return;
+      active = false; map.off('moveend', finish); map.stop();
+    };
+  }
+
   // An owned clock prevents a previous city from stealing the camera after navigation.
-  function create({ onFrame, onStay, onState, requestFrame = callback => root.requestAnimationFrame(callback), cancelFrame = id => root.cancelAnimationFrame(id) }) {
-    let pending = null, generation = 0, current = null, phase = 'idle';
+  function create({ onFrame, onStay, onState, onArrival, requestFrame = callback => root.requestAnimationFrame(callback), cancelFrame = id => root.cancelAnimationFrame(id) }) {
+    let pending = null, preparation = null, generation = 0, current = null, phase = 'idle';
     const state = value => { phase = value; onState?.(value, current); };
-    function stop() { generation++; if (pending !== null) cancelFrame(pending); pending = null; }
+    function stop() {
+      generation++; if (pending !== null) cancelFrame(pending); pending = null;
+      const cleanup = preparation; preparation = null; cleanup?.();
+    }
     function stay() { stop(); if (!current) return; state('stay'); onStay(current); }
-    function start(key, plan, { reducedMotion = false } = {}) {
+    function start(key, plan, { reducedMotion = false, prepare } = {}) {
       stop(); current = { key, plan };
       if (reducedMotion || !plan.legs.length) { stay(); return; }
       const owner = generation;
-      state('arrival'); onFrame(frame(plan, 0, { drawLines: false }), current);
-      let origin;
+      let origin, begun = false;
       function tick(now) {
         if (owner !== generation) return;
         origin ??= now;
@@ -195,11 +215,24 @@
         if (elapsed >= plan.duration + (plan.arrivalHold || 0)) { stay(); return; }
         pending = requestFrame(tick);
       }
-      pending = requestFrame(tick);
+      function begin() {
+        if (owner !== generation || begun) return;
+        begun = true;
+        const cleanup = preparation; preparation = null; cleanup?.();
+        state('arrival'); onArrival?.(current);
+        if (owner !== generation) return;
+        onFrame(frame(plan, 0, { drawLines: false }), current);
+        pending = requestFrame(tick);
+      }
+      if (prepare) {
+        state('framing');
+        const cleanup = prepare(begin);
+        if (owner === generation && !begun) preparation = cleanup; else cleanup?.();
+      } else begin();
     }
     function cancel() { stop(); state('idle'); current = null; }
     function explore() { stop(); state('explore'); }
     return { start, stay, cancel, explore, get phase() { return phase; }, get key() { return current?.key; } };
   }
-  root.JOURNEY_ATLAS_ARRIVAL = { plan, frame, destination, create, createDrawing };
+  root.JOURNEY_ATLAS_ARRIVAL = { plan, frame, destination, create, createDrawing, afterCamera };
 })(typeof window === 'undefined' ? globalThis : window);

@@ -16,9 +16,12 @@ are cached; playback does not rebuild GeoJSON or send work to the map's route
 workers. The overlay respects train/bus/TBD styling and display pixel density,
 reprojects on resize, and restores the regular map layers when it ends.
 
-Each arrival frames the route immediately, plays for **2.5 seconds**, holds the
-completed route and icon for **0.25 seconds**, then starts the city zoom. Travel
-remains linear with no departure pause or easing.
+Selecting a stop first eases the map to its full route in about **0.25 seconds**.
+Playback waits for that camera move to finish, then plays for **2.5 seconds**,
+holds the completed route and icon for **0.25 seconds**, and starts the city zoom.
+The framing time does not consume travel time. Travel itself remains linear.
+Replay uses the same preparation; reduced motion skips it. Changing stops,
+skipping, or dragging during preparation cancels the pending playback too.
 
 The timing follows a simplified overhead outline in Mercator space, retaining
 bends greater than 2.5% of the leg's bounding-box diagonal. Progress projected
@@ -58,7 +61,8 @@ journeys, samples and drafts. No journey ID check or new content flag is used.
 
 ## Review
 
-435 tests pass, including overhead pacing, switchbacks/backtracking, the exact
+438 tests pass, including camera preparation/completion/cancellation, overhead pacing,
+switchbacks/backtracking, the exact
 2.5-second travel plus 250 ms hold, synchronized canvas painting and cleanup,
 sequence/cancellation/reduced-motion checks, city-camera
 fallback and shared template parity for Switzerland–Italy, Alpine Crossing and a
