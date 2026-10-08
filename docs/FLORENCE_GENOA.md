@@ -18,6 +18,12 @@ The nine travelers remain in the source roster. The earlier arrival research
 and geometry remain available in Git history; do not reintroduce them into the
 public journey unless the owner asks.
 
+On 8 October 2026 the owner simplified the public descriptions to campsite
+names only. The five camping nights retain their named sites; the final Genoa
+day has no camping description. Distance taglines and the long overview note
+are removed. Planning estimates, route evidence and unresolved campsite pins
+remain in this document and the route sources.
+
 ## Revised cycling itinerary
 
 The second table in the user’s message takes precedence over the first.
@@ -32,8 +38,8 @@ Distances are the supplied plan, not measurements of rendered geometry.
 | Thu 14 May | Sestri Levante | 62 km | Camping Mare Monti |
 | Fri 15 May | Genoa | 62–72 km | Airbnb; private address retained locally |
 
-The original six riding days total **364–374 km**. Keep this range in the
-stories and planning tags. Numeric segment distances now measure the network
+The original six riding days total **364–374 km**, retained here as planning
+evidence. Numeric segment distances now measure the network
 reconstruction of the six cycling stages. The summary shows **300 km**; the
 reconstructed cycling total is **300.0 km**, excluding campsite approaches and
 other detours.
@@ -85,7 +91,7 @@ Sources and corridor choices:
 - [BRouter trekking](https://github.com/abrensch/brouter) supplies the six
   town-to-town bicycle candidates. Friday runs inland via the Lavagna valley,
   Cicagna and the hills east of Genoa. Thursday's 25.8 km and Friday's 81.8 km
-  differ materially from the plan; the stories say so. They have not been
+  differ materially from the plan, as recorded in the route sources. They have not been
   extended or shortened artificially to reproduce the supplied estimates.
   The returned road metadata contains cycleways, residential roads, paths and
   primary/secondary roads. No motorway/trunk sections were found; that does
@@ -105,11 +111,11 @@ retain more than 99.5% of raw measured length. Raw responses are kept in ignored
 
 These are **reviewed geometric reconstructions**, not the original GPX. Clearing
 provisional endpoint status means the map now has network geometry; uncertainty
-remains explicit in source and story copy.
+remains explicit in the route sources and this intake record.
 
 ## Campsite sources and conflicting pins
 
-The owner’s coordinates are preserved in the day stories, in latitude/longitude
+The owner’s coordinates are preserved below, in latitude/longitude
 order. JSON place coordinates are explicitly named `lat` and `lng`.
 These suggested overnights and the river/forest alternatives have no confirmed
 booking, permission, availability or suitability status.

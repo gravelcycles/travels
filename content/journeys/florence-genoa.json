@@ -7,13 +7,13 @@
   "badge": "PLANNING",
   "label": "Florence to Genoa · Cycling trip",
   "title": "Florence to Genoa",
-  "subtitle": "Nine travelers, six riding days from Tuscany to Liguria. Detailed route reconstruction; the original plan estimates 364–374 cycling km.",
+  "subtitle": "Six riding days from Tuscany to Liguria.",
   "kicker": "CYCLING JOURNEY · INITIAL PLAN",
   "dates": "10–15 May 2026",
   "startDate": "2026-05-10",
   "endDate": "2026-05-15",
   "timeZone": "Europe/Rome",
-  "note": "Six cycling days from Florence to Genoa. The map follows reconstructed roads and cycling paths. It is not the original cycle.travel/Komoot track: both shares returned 404 on 19 September 2026. Route distances measure these reconstructions; the original cycling plan estimates 364–374 km, compared with 300.0 km currently mapped between towns, excluding campsite approaches. Wednesday’s overnight and Thursday’s distance still need reconciliation. Campsites are suggestions, not confirmed bookings.",
+  "note": "",
   "cover": "",
   "places": [
     {
@@ -158,11 +158,10 @@
       "calendarDate": "2026-05-10",
       "date": "Sunday · 10 May",
       "title": "Florence to Fucecchio",
-      "text": "The first riding day heads towards Fucecchio, with 66 km planned and around 11 km offroad in the supplied notes.\n\nProposed overnight: Toscana Village Srl in Montopoli in Val d’Arno. Supplied planning pin: 43.678487, 10.767459. The Google Maps campsite pin in the notes is different (43.676046, 10.752759); confirm the approach and whether the distance includes it.\n\nAlternative retained from the notes: a riverside spot near Fucecchio / Roffia. This is an unconfirmed idea; permission and suitability have not been established.\n\nMapped candidate: 48.2 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
+      "text": "Toscana Village Srl",
       "segmentIds": [
         "florence-genoa-florence-fucecchio"
       ],
-      "tagline": "66 km planned · 11 km offroad",
       "placeId": "fg-camp-toscana",
       "destinationId": "fg-fucecchio"
     },
@@ -172,11 +171,10 @@
       "calendarDate": "2026-05-11",
       "date": "Monday · 11 May",
       "title": "Fucecchio to Lucca",
-      "text": "A shorter riding day to leave time to explore Lucca, with Pisa mentioned as an optional visit in the notes. Any Pisa detour still needs planning.\n\nProposed overnight: Agricampeggio La Valle, beyond Lucca. Supplied pin: 43.829140, 10.425546. Alternative from the notes: the forest behind the campsite, with permission and suitability unconfirmed.\n\nThe notes describe the ride as straightforward on EuroVelo 5. The exact alignment, campsite access and 46 km estimate still need checking against the track.\n\nMapped candidate: 34.6 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
+      "text": "Agricampeggio La Valle",
       "segmentIds": [
         "florence-genoa-fucecchio-lucca"
       ],
-      "tagline": "46 km planned · time to explore",
       "placeId": "fg-camp-la-valle",
       "destinationId": "fg-lucca"
     },
@@ -186,11 +184,10 @@
       "calendarDate": "2026-05-12",
       "date": "Tuesday · 12 May",
       "title": "Lucca to the Massa coast",
-      "text": "Continue towards Marina di Massa. The revised table uses Massa and 54 km, replacing the earlier Marina di Carrara entry.\n\nProposed overnight: Camping Lilly Pineta. Supplied planning pin: 44.028501, 10.077718. The linked campsite pin is 44.025105, 10.077470; confirm the entrance.\n\nThe notes again suggest a straightforward day following EuroVelo 5. This is retained as a route note, not a verified alignment.\n\nMapped candidate: 48.8 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
+      "text": "Camping Lilly Pineta",
       "segmentIds": [
         "florence-genoa-lucca-massa"
       ],
-      "tagline": "54 km planned · Camping Lilly Pineta",
       "placeId": "fg-camp-lilly",
       "destinationId": "fg-massa"
     },
@@ -200,11 +197,10 @@
       "calendarDate": "2026-05-13",
       "date": "Wednesday · 13 May",
       "title": "Towards Mattarana",
-      "text": "The longest listed stage follows the easier opening days. The notes flag more climbing here; the tested coastal alternative reportedly adds around 30 km with similar elevation. No elevation total has been imported.\n\nThe destination is Mattarana, but the proposed Camping Oasi Holiday Park is at Passo delle Campane near Sestri Levante (official pin: 44.258050, 9.493494), farther west. The supplied planning pin is 44.264809, 9.505556. This mismatch must be resolved before choosing the stage endpoint or overnight.\n\nAlternative from the notes: a nearby forest or riverside spot, with permission and suitability unconfirmed. The older note about resting in Genoa the next day conflicts with the revised Thursday in Sestri Levante; no extra rest day has been inserted.\n\nMapped candidate: 60.8 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
+      "text": "Camping Oasi Holiday Park",
       "segmentIds": [
         "florence-genoa-massa-mattarana"
       ],
-      "tagline": "74 km planned · climbing begins",
       "placeId": "fg-mattarana",
       "destinationId": "fg-mattarana"
     },
@@ -214,11 +210,10 @@
       "calendarDate": "2026-05-14",
       "date": "Thursday · 14 May",
       "title": "Mattarana to Sestri Levante",
-      "text": "The revised itinerary ends at Sestri Levante and names Camping Mare Monti, replacing the earlier Pian dei Manzi plan. Supplied campsite pin: 44.263141, 9.442277.\n\nThe notes describe a beautiful final stretch with some tricky unpaved roads. It is not yet clear whether this comment and the linked Komoot suggestion refer to the earlier route or this revision.\n\nThe supplied plan estimates 62 km. The exact track and Wednesday’s overnight are needed to explain this distance and establish the actual start of the day.\n\nMapped candidate: 25.8 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
+      "text": "Camping Mare Monti",
       "segmentIds": [
         "florence-genoa-mattarana-sestri"
       ],
-      "tagline": "62 km in the notes · track to reconcile",
       "placeId": "fg-camp-mare-monti",
       "destinationId": "fg-sestri"
     },
@@ -228,11 +223,10 @@
       "calendarDate": "2026-05-15",
       "date": "Friday · 15 May",
       "title": "Sestri Levante to Genoa",
-      "text": "Finish in Genoa, with 62–72 km in the revised plan. Proposed overnight: Airbnb in Genoa; booking status is unconfirmed.\n\nA shorter coastal option is mentioned, with roughly 35–45 km on busy roads with cars. Keep that tradeoff visible until the exact route is available.\n\nThe original six-day cycling plan totals 364–374 km. The mapped town-to-town reconstruction totals 300.0 km before campsite approaches and other detours. Route statistics measure the six mapped cycling stages.\n\nMapped candidate: 81.8 km on roads and paths between the named destinations. This is a bicycle-router reconstruction, not the unavailable original track; campsite approaches are not included.",
+      "text": "",
       "segmentIds": [
         "florence-genoa-sestri-genoa"
       ],
-      "tagline": "62–72 km planned · finish in Genoa",
       "placeId": "fg-genoa",
       "destinationId": "fg-genoa"
     }

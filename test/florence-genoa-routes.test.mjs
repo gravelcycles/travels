@@ -51,6 +51,7 @@ test('the cycling-only itinerary keeps riding dates and stable IDs after removin
   assert.equal(journey.travelers.length, 9);
   assert.ok(journey.places.every(p => p.country === 'Italy' && p.id !== 'fg-milan'));
   const thursday = journey.days.find(d => d.calendarDate === '2026-05-14');
-  assert.match(thursday.text, /62 km/);
-  assert.match(thursday.text, /25\.8 km/);
+  const thursdaySegment = journey.segments.find(s => s.id === thursday.segmentIds[0]);
+  assert.match(thursdaySegment.source, /62 km/);
+  assert.equal(thursdaySegment.distanceKm, 25.8);
 });
