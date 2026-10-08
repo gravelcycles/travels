@@ -332,6 +332,99 @@
         "largestRawGapKm": 1.678,
         "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact historical diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
       }
+    },
+    "backpacking-europe-heading-east-salzburg-innsbruck": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class&point=47.813%2C13.0456&point=47.58297%2C12.16573&point=47.4916%2C12.0607&point=47.3888%2C11.7788&point=47.26341%2C11.40085",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "ea14de4833586d71186ed757dc9259b31f1f021a0d7600d0786a839a03130206",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 2154,
+        "outputPointCount": 690,
+        "rawDistanceKm": 192.33,
+        "distanceKm": 192.292,
+        "endpointOffsetsMeters": [
+          3,
+          1
+        ],
+        "waypointOffsetsMeters": [
+          2,
+          2,
+          2,
+          8,
+          1
+        ],
+        "largestRawGapKm": 2.23,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-innsbruck-bolzano": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=47.26341%2C11.40085&point=47.0039%2C11.5069&point=46.7909%2C11.6107&point=46.7074%2C11.6518&point=46.49674%2C11.35733&profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "3d209b60fff403f2f89fb6a07eda151d0654bd7975360296199301a62af740d0",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 2066,
+        "outputPointCount": 711,
+        "rawDistanceKm": 125.414,
+        "distanceKm": 125.363,
+        "endpointOffsetsMeters": [
+          1,
+          81
+        ],
+        "waypointOffsetsMeters": [
+          1,
+          0,
+          125,
+          176,
+          81
+        ],
+        "largestRawGapKm": 1.784,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-bolzano-venice": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "requestUrl": "https://routing.openrailrouting.org/route?profile=tgv_all&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class&point=46.49674%2C11.35733&point=46.0728%2C11.1197&point=45.89082%2C11.03391&point=45.4292%2C10.9823&point=45.5415%2C11.5404&point=45.4173%2C11.8806&point=45.4817%2C12.2316&point=45.44172%2C12.32029",
+        "profile": "tgv_all",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "rawSha256": "e4072f5cacada078ee5beda7d162d55c58c12ef15b14278f8fbceb0b65814d5d",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 1848,
+        "outputPointCount": 599,
+        "rawDistanceKm": 265.517,
+        "distanceKm": 265.489,
+        "endpointOffsetsMeters": [
+          81,
+          3
+        ],
+        "waypointOffsetsMeters": [
+          81,
+          17,
+          17,
+          46,
+          34,
+          40,
+          4,
+          2
+        ],
+        "largestRawGapKm": 3.822,
+        "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
     }
   }
 }

@@ -8,13 +8,13 @@
   "badge": "JOURNEY",
   "label": "Backpacking Europe: Heading East",
   "title": "Backpacking Europe: Heading East",
-  "subtitle": "Eight city stops from Luzern to Salzburg, by train with one replacement bus. Photos and stories to follow.",
+  "subtitle": "Eleven city stops from Luzern to Venice, by train with one replacement bus. Photos and stories to follow.",
   "kicker": "BACKPACKING EUROPE · AUTUMN 2026",
-  "dates": "1 Sep – 11 Oct 2026",
+  "dates": "1 Sep – 23 Oct 2026",
   "startDate": "2026-09-01",
-  "endDate": "2026-10-11",
+  "endDate": "2026-10-23",
   "timeZone": "Europe/Berlin",
-  "note": "City stops span arrival to departure; Salzburg is open from 11 October. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed.",
+  "note": "City stops span arrival to departure, with the itinerary supplied through Venice on 23 October. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed.",
   "cover": "",
   "places": [
     {
@@ -100,6 +100,27 @@
       "lng": 13.0456,
       "lat": 47.813,
       "country": "Austria"
+    },
+    {
+      "id": "backpacking-europe-heading-east-innsbruck",
+      "name": "Innsbruck",
+      "lng": 11.40085,
+      "lat": 47.26341,
+      "country": "Austria"
+    },
+    {
+      "id": "backpacking-europe-heading-east-bolzano",
+      "name": "Bolzano",
+      "lng": 11.35733,
+      "lat": 46.49674,
+      "country": "Italy"
+    },
+    {
+      "id": "backpacking-europe-heading-east-venice",
+      "name": "Venice",
+      "lng": 12.32029,
+      "lat": 45.44172,
+      "country": "Italy"
     }
   ],
   "segments": [
@@ -375,6 +396,96 @@
       ],
       "geometryStatus": "reconstructed",
       "distanceKm": 124.6
+    },
+    {
+      "id": "backpacking-europe-heading-east-salzburg-innsbruck",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-salzburg",
+      "to": "backpacking-europe-heading-east-innsbruck",
+      "via": [
+        {
+          "name": "Kufstein",
+          "lng": 12.16573,
+          "lat": 47.58297
+        },
+        {
+          "name": "Wörgl Hbf",
+          "lng": 12.0607,
+          "lat": 47.4916
+        },
+        {
+          "name": "Jenbach",
+          "lng": 11.7788,
+          "lat": 47.3888
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 192.3
+    },
+    {
+      "id": "backpacking-europe-heading-east-innsbruck-bolzano",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-innsbruck",
+      "to": "backpacking-europe-heading-east-bolzano",
+      "via": [
+        {
+          "name": "Brennero/Brenner",
+          "lng": 11.5069,
+          "lat": 47.0039
+        },
+        {
+          "name": "Fortezza/Franzensfeste",
+          "lng": 11.6107,
+          "lat": 46.7909
+        },
+        {
+          "name": "Bressanone/Brixen",
+          "lng": 11.6518,
+          "lat": 46.7074
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 125.4
+    },
+    {
+      "id": "backpacking-europe-heading-east-bolzano-venice",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-bolzano",
+      "to": "backpacking-europe-heading-east-venice",
+      "via": [
+        {
+          "name": "Trento",
+          "lng": 11.1197,
+          "lat": 46.0728
+        },
+        {
+          "name": "Rovereto",
+          "lng": 11.03391,
+          "lat": 45.89082
+        },
+        {
+          "name": "Verona Porta Nuova",
+          "lng": 10.9823,
+          "lat": 45.4292
+        },
+        {
+          "name": "Vicenza",
+          "lng": 11.5404,
+          "lat": 45.5415
+        },
+        {
+          "name": "Padova",
+          "lng": 11.8806,
+          "lat": 45.4173
+        },
+        {
+          "name": "Venezia Mestre",
+          "lng": 12.2316,
+          "lat": 45.4817
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 265.5
     }
   ],
   "days": [
@@ -481,8 +592,8 @@
       "id": "backpacking-europe-heading-east-salzburg-stay",
       "number": 8,
       "calendarDate": "2026-10-11",
-      "calendarEndDate": "2026-10-11",
-      "date": "From 11 Oct",
+      "calendarEndDate": "2026-10-15",
+      "date": "11 Oct – 15 Oct",
       "title": "Salzburg",
       "text": "",
       "placeId": "backpacking-europe-heading-east-salzburg",
@@ -490,6 +601,48 @@
       "segmentIds": [
         "backpacking-europe-heading-east-prague-linz",
         "backpacking-europe-heading-east-linz-salzburg"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-innsbruck-stay",
+      "number": 9,
+      "calendarDate": "2026-10-15",
+      "calendarEndDate": "2026-10-18",
+      "date": "15 Oct – 18 Oct",
+      "title": "Innsbruck",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-innsbruck",
+      "destinationId": "backpacking-europe-heading-east-innsbruck",
+      "segmentIds": [
+        "backpacking-europe-heading-east-salzburg-innsbruck"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-bolzano-stay",
+      "number": 10,
+      "calendarDate": "2026-10-18",
+      "calendarEndDate": "2026-10-19",
+      "date": "18 Oct – 19 Oct",
+      "title": "Bolzano",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-bolzano",
+      "destinationId": "backpacking-europe-heading-east-bolzano",
+      "segmentIds": [
+        "backpacking-europe-heading-east-innsbruck-bolzano"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-venice-stay",
+      "number": 11,
+      "calendarDate": "2026-10-19",
+      "calendarEndDate": "2026-10-23",
+      "date": "19 Oct – 23 Oct",
+      "title": "Venice",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-venice",
+      "destinationId": "backpacking-europe-heading-east-venice",
+      "segmentIds": [
+        "backpacking-europe-heading-east-bolzano-venice"
       ]
     }
   ],
