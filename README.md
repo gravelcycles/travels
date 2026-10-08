@@ -7,6 +7,9 @@ at `switzerland-italy.html`. Fictional viewer examples live separately at
 
 ## Project guide
 
+Read [WIP.md](WIP.md) for current workstreams, checkpoint branches, review
+decisions, task context and recovery references before starting new work.
+
 Trips are instances of one shared framework. New features belong in its shared
 template or runtime and carry into existing trips, samples, and new drafts.
 Switzerland–Italy is the reference experience; starting another trip adds data,

@@ -1,5 +1,13 @@
 # Project state
 
+## Workstream checkpoint — 8 October 2026
+
+[WIP.md](WIP.md) is the current cross-workstream handoff: saved family content,
+day-experience and design demos, Live Photos intake, remaining backend/framework
+work, task context, and all branch/recovery references. The checkout is reconciled
+with the 20 September release; unfinished content and prototypes are preserved
+on separate branches. The sections below are dated delivery records.
+
 ## Florence–Genoa cycling-only trip — 20 September 2026
 
 The owner removed the arrival day and all train/bus travel. The real
