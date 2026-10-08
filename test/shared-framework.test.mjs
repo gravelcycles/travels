@@ -18,6 +18,7 @@ import '../dist/assets/group-travel.js';
 import '../dist/assets/media-utils.js';
 import '../dist/assets/places-comments.js';
 import '../studio/plan-extras.js';
+import '../studio/photo-batch.js';
 import { validateJourneyExtras } from '../scripts/journey-extras.mjs';
 
 const repo = path.resolve(import.meta.dirname, '..');
@@ -836,4 +837,19 @@ test('city events keep shared controls, date ranges, photo intake and Replay wit
   writeJson(path.join(root,`content/drafts/${city.id}.json`),planned);
   buildSite(root);
   assert.ok(!bundle(read(root,'dist/assets/journeys.js'),'JOURNEY_ATLAS_DATA').journeys.some(j=>j.id===city.id),'city drafts remain private');
+});
+
+
+test('batch photo editing uses the same state contract for family, demo and an empty then populated fresh draft', t => {
+  const root=fixture(t), draft=createJourney(root,input), {data}=loadContent(root,{includeDrafts:true});
+  const batch=globalThis.JOURNEY_ATLAS_PHOTO_BATCH;
+  assert.deepEqual(batch.filterPhotos([],draft),[]);
+  const generated=data.journeys.find(journey=>journey.id===draft.id);
+  generated.photos=[{id:`${draft.id}-batch-test-photo`,dayId:generated.days[0].id,src:'https://images.example.test/independent.jpg',caption:'',description:'',alt:'Synthetic draft fixture'}];
+  for (const journey of [data.journeys.find(journey=>journey.id==='switzerland-italy-family-2026'),data.journeys.find(journey=>journey.kind==='demo'),generated]) {
+    const state={photos:{},days:{},routes:{}},photo=journey.photos[0];
+    const result=batch.applyBatch({journey,photos:journey.photos,state,selectedIds:[photo.id],action:'assign',dayId:journey.days.at(-1).id});
+    assert.equal(batch.orderedPhotos(journey,journey.photos,result.state).find(item=>item.id===photo.id).dayId,journey.days.at(-1).id);
+    assert.deepEqual(state,{photos:{},days:{},routes:{}});
+  }
 });

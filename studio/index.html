@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/dist/assets/vendor/maplibre-5.24.0/maplibre-gl.css" />
     <link rel="stylesheet" href="/studio.css?v=20260908-1" />
     <link rel="stylesheet" href="/dist/assets/map-feedback.css" />
+    <link rel="stylesheet" href="/photo-batch.css" />
   </head>
   <body>
     <header class="studio-header">
@@ -54,6 +55,28 @@
           <label for="photo-day-filter">Photos from</label>
           <select id="photo-day-filter"></select>
           <label class="checkbox"><input id="show-photo-trash" type="checkbox" /> Show trash</label>
+          <label for="photo-search">Find photos</label>
+          <input id="photo-search" type="search" placeholder="Filename, capture date or caption" />
+          <div class="photo-batch-entry"><button id="photo-batch-toggle" type="button" aria-pressed="false">Select multiple</button></div>
+          <div id="photo-batch-tools" hidden>
+            <div class="photo-batch-selection">
+              <strong id="photo-batch-count" role="status" aria-live="polite">0 selected</strong>
+              <button id="photo-batch-all" type="button">Select all shown</button>
+              <button id="photo-batch-clear" type="button" disabled>Clear selection</button>
+            </div>
+            <div class="photo-batch-actions">
+              <label>With selected photos<select id="photo-batch-action">
+                <option value="assign">Assign to a day / stop</option>
+                <option value="first">Move to start of each album</option>
+                <option value="trash">Move to trash</option>
+                <option value="restore">Restore from trash</option>
+              </select></label>
+              <label id="photo-batch-day-label"><span data-event-copy="Journey day">Journey day</span><select id="photo-batch-day"></select></label>
+              <button id="photo-batch-apply" type="button" disabled>Apply to 0 photos</button>
+              <button id="photo-batch-undo" type="button" disabled>Undo batch</button>
+            </div>
+            <p id="photo-batch-message" role="status" aria-live="polite">Selection stays selected when you change filters. Batch actions include every selected photo.</p>
+          </div>
           <details class="photo-upload-panel">
             <summary>Upload photos</summary>
             <label for="upload-photo-day" data-event-copy="Assign photos to days">Assign photos to days</label>
@@ -277,6 +300,8 @@
     <script src="/plan-extras.js"></script>
     <script src="/studio-recovery.js"></script>
     <script src="/draft-review.js"></script>
+    <script src="/photo-batch.js"></script>
+    <script src="/photo-batch-ui.js"></script>
     <script src="/studio.js?v=20260909-optional-day-copy"></script>
   </body>
 </html>

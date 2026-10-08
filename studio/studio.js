@@ -279,20 +279,7 @@
   }
 
   function renderPhotoGrid() {
-    const filter = $("#photo-day-filter").value;
-    const inTrash = $('#show-photo-trash').checked;
-    const photos = (filter === "all" ? journey.days.flatMap(day => photoBrowserPhotos(day.id)) : photoBrowserPhotos(filter));
-    $("#studio-photo-grid").innerHTML = photos.length ? photos.map((photo) => {
-      const thumb = photo.srcset?.[0]?.src || photo.src;
-      const located = Number.isFinite(photo.lat) && Number.isFinite(photo.lng);
-      return `<button type="button" data-photo-id="${photo.id}" class="${photo.id === selectedPhotoId ? "active" : ""}" aria-label="Edit ${escapeHtml(photo.caption || photo.sourceFilename || photo.id)}">
-        <img src="${photoUrl(thumb)}" alt="" loading="lazy" />
-        <span>${escapeHtml(photo.takenAt || photo.caption)}</span>
-        <i class="${located ? "" : "unlocated"}" title="${located ? "Located" : "Needs location"}"></i>
-      </button>`;
-    }).join("") : `<p class="editor-note">${inTrash ? 'No photos in trash for this selection.' : 'No photos here yet. Use Upload photos to add some.'}</p>`;
-    const selected = $("#studio-photo-grid .active");
-    if (selected) selected.scrollIntoView({ block: "nearest" });
+    photoBatch.render(window.JOURNEY_ATLAS_PHOTO_BATCH.orderedPhotos(journey, basePhotos, state), selectedPhotoId);
   }
 
   function refreshPhotoOrderControls() {
@@ -1148,6 +1135,7 @@
     journey = nextJourney;
     basePhotos = photosByJourney[journey.id] || journey.photos || [];
     selectedPhotoId = basePhotos[0]?.id || null;
+    photoBatch.reset();
     selectedSegmentId = journey.days.flatMap((day) => day.segmentIds)[0] || null;
     selectedDayId = journey.days[0]?.id || null;
     renderJourneySelector();
@@ -1380,6 +1368,21 @@
   $('#plan-preview').addEventListener('click',previewPlan);
   $('#plan-save').addEventListener('click',savePlan);
 
+  const photoBatch = window.JOURNEY_ATLAS_PHOTO_BATCH_UI.create({
+    getContext: () => ({journey:{...journey, days:journey.days.map(day => dayById(day.id))}, photos:basePhotos, state}),
+    replaceState(next, message) {
+      state = next;
+      markDirty(message);
+      renderDaySelectors();
+      const shown = window.JOURNEY_ATLAS_PHOTO_BATCH.filterPhotos(
+        window.JOURNEY_ATLAS_PHOTO_BATCH.orderedPhotos(journey, basePhotos, state), journey,
+        {query:$('#photo-search').value, dayId:$('#photo-day-filter').value, trash:$('#show-photo-trash').checked});
+      selectPhoto(shown.some(photo => photo.id === selectedPhotoId) ? selectedPhotoId : shown[0]?.id, false);
+    },
+    redraw:renderPhotoGrid, selectPhoto, photoUrl, escapeHtml,
+    resizeMap: () => { if (mapReady) map.resize(); }
+  });
+
   let draftRecovery = null;
   function draftSnapshot() {
     return {dirty, state, savedStateRevision, savedRevisions,
@@ -1609,7 +1612,7 @@
   });
   $("#studio-photo-grid").addEventListener("click", (event) => {
     const button = event.target.closest("[data-photo-id]");
-    if (button) selectPhoto(button.dataset.photoId);
+    if (button) photoBatch.click(button.dataset.photoId);
   });
   $("#studio-route-list").addEventListener("click", (event) => {
     const button = event.target.closest("[data-segment-id]");

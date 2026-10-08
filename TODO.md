@@ -237,8 +237,8 @@ project-level status.
 The owner requested demos before the proposed features changed the live site.
 Studio recovery drafts, readable comparisons and save-conflict review were
 subsequently authorized and delivered on 14–15 September. Explicit sharing
-(without automatic visitor reload persistence), batch photo editing,
-publication readiness/agent handoff, private video intake (W07), and a labeled
+(without automatic visitor reload persistence), publication readiness/agent handoff,
+private video intake (W07), and a labeled
 map-only Replay timeline remain proposals. The six-feature demo and separate
 delight/day-experience prototypes are preserved on branches listed in
 [WIP.md](WIP.md). Audit V1 stays excluded.
@@ -284,3 +284,11 @@ delight/day-experience prototypes are preserved on branches listed in
   reconstructed. The itinerary now extends through Venice on 23 October.
   Add later cities when supplied.
 - No separate city-trip implementation or framework fork is needed.
+
+
+- [x] **Batch photo editing — 8 October 2026:** authorized from the UX prototype;
+      shared Studio contact sheet/search/day and trash filters, visible select-all,
+      explicit selection counts outside filters, day/stop reassignment, ordered
+      album-start placement, recoverable Trash/Restore and guarded last-batch Undo.
+      Uses existing autosaved draft recovery, Save and conflict review. No Hide
+      feature or source-manifest rewrite; see PHOTO_WORKFLOW.md.

@@ -40,6 +40,7 @@ content-only; see [its intake and route evidence](HEADING_EAST.md).
 | New-trip planning | Title/dates/time zone, daily calendar or city stays, places, ordered legs, date changes, stable IDs, preview | Studio + New trip or `journey:new`; ignored local draft until promoted | create-journey, planner, Studio |
 | Group and video authoring | Add/edit/remove travelers and groups, exclusive membership, per-leg and photo/video audiences, group overnight places and meetup; hosted-video forms with day/title/link/poster/caption/credit/visibility/order, native preview and duration detection | Studio **Trip plan & media** validates the full plan on Save; checking changes first is optional; source revisions and backups protect edits; removal of referenced groups is blocked until reassigned; hosted public MP4/WebM only | Studio plan-extras, journey-planner, studio-plan-sources |
 | Photo authoring | Multi-upload, capture-date assignment, unmatched-day review, album order and cover selection, pins/copy, independently composed photo map frames, all non-trashed photos visible (no Hide control), recoverable trash | Private originals and trip time zone/calendar; blank captions are valid | Studio, studio-photo-service |
+| Batch photo editing | Searchable day-filtered contact sheet, multi-selection and visible select-all, explicit outside-filter counts, batch day/stop assignment, move selected to each album’s start, Trash/Restore and guarded last-batch Undo | Photos → Select multiple; existing draft autosave, review, save and conflict handling. Source manifests and legacy hidden flags are preserved. Undo lasts until reload/journey change and refuses later changes to affected fields | Studio photo-batch model/UI; [photo workflow](../PHOTO_WORKFLOW.md) |
 | Route authoring | Endpoint/control-point editing, undo/redo, routing readiness with actionable setup messages, point cleanup and mode-aware replacement proposals, reviewed geometry preservation until acceptance, GPX import | Per-journey network extracts/manifest or private GPX; missing inputs disable generation with a visible next step; preserve applies to unattended builds and permits explicit Studio previews | Studio, routing scripts |
 | Editorial safety | Automatic unpublished drafts (immediate browser copy and local disk autosave), reload recovery, grouped saved/draft review with photo thumbnails, readable names and word highlights, discard with recovery archive, draft download, one-click Save without Preview, always-visible status, local backups, automatic merging of independent disk edits and field-by-field choices for actual conflicts | Stable namespaced IDs; originals and local draft assets remain ignored | journey-content, Studio server |
 | Reproducible delivery | Validated generation, cache-busted assets, Pages CI, bounded orphan-deployment recovery/retry and public verification | Reviewed published sources; no private originals/network fetch needed for site build; GitHub service failures remain visible | build-site, Pages workflow, recover-pages |
@@ -89,8 +90,9 @@ fields and their defaults with the feature; do not silently add a per-trip flag.
 
 The owner requested automatic unpublished draft recovery, review and discard on
 14 September 2026; these are now delivered Studio features. Explicit sharing,
-batch editing, publication readiness, private video intake and a labeled Replay
-timeline remain proposals. Replay stays map-only and publishing stays agent-operated.
+publication readiness, private video intake and a labeled Replay
+timeline remain proposals. Batch photo editing was authorized and implemented on
+8 October 2026 using the existing Studio save and recovery pipeline. Replay stays map-only and publishing stays agent-operated.
 
 
 Florence–Genoa is a cycling-only planning instance: nine travelers and six

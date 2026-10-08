@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/media-utils.js';
 import '../studio/plan-extras.js';
+import '../studio/photo-batch.js';
 import '../studio/draft-review.js';
 const app = fs.readFileSync(new URL('../dist/assets/app.js', import.meta.url),'utf8');
 function fn(source,name) {const start=source.indexOf(`  function ${name}(`);assert.ok(start>=0,name);return source.slice(start,source.indexOf('\n  function ',start+1));}
@@ -18,6 +19,8 @@ function editor() {
     fetch:(url,options)=>new Promise(resolve=>requests.push({url,body:JSON.parse(options.body),resolve})),
     window:{addEventListener(){},JOURNEY_ATLAS_DRAFT_REVIEW:globalThis.JOURNEY_ATLAS_DRAFT_REVIEW,JOURNEY_ATLAS_DATA:{journeys:[journey]},JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS,JOURNEY_ATLAS_MEDIA:globalThis.JOURNEY_ATLAS_MEDIA,JOURNEY_ATLAS_PLAN_EXTRAS:globalThis.JOURNEY_ATLAS_PLAN_EXTRAS}});
   const source=fs.readFileSync(new URL('../studio/studio.js',import.meta.url),'utf8');
+  context.window.JOURNEY_ATLAS_PHOTO_BATCH = globalThis.JOURNEY_ATLAS_PHOTO_BATCH;
+  vm.runInContext(fs.readFileSync(new URL('../studio/photo-batch-ui.js', import.meta.url), 'utf8'), context);
   vm.runInContext(source.replace('  init();\n})();', `
     drawRouteEditor=()=>{};renderRouteList=()=>{};renderPhotoGrid=()=>{};refreshPhotoOrderControls=()=>{};renderDaySelectors=()=>{};
     routePoints=[[8,47],[8,47]]; resetHistory(routePoints);

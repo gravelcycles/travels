@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/media-utils.js';
 import '../studio/plan-extras.js';
+import '../studio/photo-batch.js';
 
 const detailed = [[8, 47], [8.01, 47.004], [8.02, 47.002], [8.03, 47.01], [8.04, 47.015]];
 const anchors = [detailed[0], detailed[2], detailed.at(-1)];
@@ -34,6 +35,8 @@ function editor(override = null, fetch = async () => ({ ok: true, json: async ()
     } }
   });
   const source = fs.readFileSync(new URL('../studio/studio.js', import.meta.url), 'utf8');
+  context.window.JOURNEY_ATLAS_PHOTO_BATCH = globalThis.JOURNEY_ATLAS_PHOTO_BATCH;
+  vm.runInContext(fs.readFileSync(new URL('../studio/photo-batch-ui.js', import.meta.url), 'utf8'), context);
   vm.runInContext(source.replace('  init();\n})();', `
     renderRouteList = () => {};
     clearActiveMap = () => {};

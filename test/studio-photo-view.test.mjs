@@ -6,6 +6,7 @@ import '../dist/assets/atlas-utils.js';
 import { photoMapHarness } from './photo-map-harness.mjs';
 import '../dist/assets/media-utils.js';
 import '../studio/plan-extras.js';
+import '../studio/photo-batch.js';
 
 function editor() {
   const nodes = new Map(), markers = [], moves = [];
@@ -39,6 +40,8 @@ function editor() {
     } }
   });
   const source = fs.readFileSync(new URL('../studio/studio.js', import.meta.url), 'utf8');
+  context.window.JOURNEY_ATLAS_PHOTO_BATCH = globalThis.JOURNEY_ATLAS_PHOTO_BATCH;
+  vm.runInContext(fs.readFileSync(new URL('../studio/photo-batch-ui.js', import.meta.url), 'utf8'), context);
   vm.runInContext(source.replace('  init();\n})();', `
     map = testMap; mapReady = true;
     clearActiveMap = () => {};
