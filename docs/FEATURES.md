@@ -6,7 +6,7 @@ and every new journey. “Available” means the common implementation exists;
 actual content, reviewed geometry and photographs must be supplied per trip.
 
 Local branch prototype: [Arrival → city](ARRIVAL_CITY_DEMO.md) traces the incoming
-route without a moving icon at display cadence after a contextual pullback and a
+route with a plain orange tracking circle at display cadence after a contextual pullback and a
 combined pan/zoom, with named endpoints and linear 1.5-second overhead
 progression and a 0.25-second arrival pause before the destination zoom. Unlocated
 photos keep the local city view.

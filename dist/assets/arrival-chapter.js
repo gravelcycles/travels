@@ -111,7 +111,7 @@
     return { active, progress: amount, position: tip?.point, index: tip?.index, lines };
   }
 
-  // A cached canvas draws the route trail on every display frame.
+  // A cached canvas draws the route trail and tracking circle on every display frame.
   // No GeoJSON serialization or map worker rebuilds.
   function createDrawing({ map, plan, styleForSegment, document = root.document, Path = root.Path2D, pixelRatio = () => root.devicePixelRatio || 1 }) {
     const canvas = document.createElement('canvas'), context = canvas.getContext('2d');
@@ -141,6 +141,11 @@
         context.setLineDash((style.dash || []).map(value => value * style.width));
         context.lineWidth = style.width; context.strokeStyle = style.color; context.globalAlpha = 1; context.stroke(path);
       }
+      context.save(); context.setLineDash([]); context.beginPath();
+      context.arc(tip.x, tip.y, 13, 0, Math.PI * 2);
+      context.globalAlpha = 1; context.fillStyle = '#d4512c'; context.shadowColor = '#203b4345'; context.shadowBlur = 8; context.shadowOffsetY = 2; context.fill();
+      context.shadowColor = 'transparent'; context.strokeStyle = '#fffdf7'; context.lineWidth = 3; context.stroke();
+      context.restore();
     }
     function project() {
       if (destroyed) return;
