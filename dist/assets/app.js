@@ -982,7 +982,7 @@
       const element = document.createElement('div'); element.className = 'arrival-position';
       element.setAttribute('role','img'); element.setAttribute('aria-label','Journey progress');
       element.textContent = '→';
-      arrivalMarker = new maplibregl.Marker({element,anchor:'center'}).setLngLat(arrivalPlan.legs[0].coordinates[0]).addTo(mainMap);
+      arrivalMarker = new maplibregl.Marker({element,anchor:'center'}).setSubpixelPositioning(true).setLngLat(arrivalPlan.legs[0].coordinates[0]).addTo(mainMap);
     }
     arrivalChapter.start(arrivalKey(day), arrivalPlan, {reducedMotion:prefersReducedMotion()});
   }
@@ -2218,8 +2218,7 @@
     onFrame: (frame, current) => {
       if (current.key !== arrivalKey(activeDay()) || !mainMapReady) return;
       for (const line of frame.lines) mainMap.getSource(`main-source-${line.segment.id}`)?.setData({type:'Feature',id:line.segment.id,properties:{segmentId:line.segment.id},geometry:{type:'LineString',coordinates:line.coordinates}});
-      const line = frame.lines.find(line => line.segment.id === frame.active?.segment.id);
-      if (line) arrivalMarker?.setLngLat(line.coordinates.at(-1));
+      if (frame.position) arrivalMarker?.setLngLat(frame.position);
       $('#arrival-progress').style.width = `${frame.progress * 100}%`;
     },
     onStay: current => { if (current.key !== arrivalKey(activeDay())) return; restoreArrivalLine(); showCity(activeDay()); }

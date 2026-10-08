@@ -56,6 +56,15 @@ test('arrival and stay controls inherit across reference, demo and fresh draft w
     const coordinate=s=>s.geometry||routes[s.id]||[];
     const plan=globalThis.JOURNEY_ATLAS_ARRIVAL.plan(segments,coordinate);
     assert.ok(plan.legs.every(leg=>day.segmentIds.includes(leg.segment.id)));
+    for(const progress of [0,.25,.5,.75,1]){
+      const animated=globalThis.JOURNEY_ATLAS_ARRIVAL.frame(plan,progress,{drawLines:false});
+      assert.deepEqual(animated.lines,[],'The icon can move independently of map source updates');
+      if(plan.legs.length){
+        assert.ok(animated.position.every(Number.isFinite),journey.id);
+        const drawn=globalThis.JOURNEY_ATLAS_ARRIVAL.frame(plan,progress);
+        assert.deepEqual(animated.position,drawn.lines.find(line=>line.segment.id===animated.active.segment.id).coordinates.at(-1));
+      }else assert.equal(animated.position,undefined);
+    }
     if(journey===draft){assert.equal(plan.legs.length,0);assert.equal(globalThis.JOURNEY_ATLAS_ARRIVAL.destination(day,journey.places,segments,coordinate),null);}
   }
 });

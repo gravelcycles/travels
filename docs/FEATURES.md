@@ -6,7 +6,8 @@ and every new journey. “Available” means the common implementation exists;
 actual content, reviewed geometry and photographs must be supplied per trip.
 
 Local branch prototype: [Arrival → city](ARRIVAL_CITY_DEMO.md) traces the incoming
-route before settling into a destination and keeping unlocated photos local.
+route with smooth subpixel motion and gentle departure/arrival before settling
+into a destination and keeping unlocated photos local.
 It reuses the shared page, gallery and route geometry. It is **not published**;
 the owner is reviewing this interaction before any production rollout.
 
