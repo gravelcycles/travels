@@ -185,7 +185,7 @@ test('navigation and skip cancel the quarter-second hold without leaving a late 
 });
 
 function drawingHarness(p){
-  const events=new Map(),strokes=[],icons=[];let clears=0,projects=0,removed=false,inserted=false;
+  const events=new Map(),strokes=[],circles=[],icons=[];let clears=0,projects=0,removed=false,inserted=false;
   class Path {
     constructor(other){this.points=other?.points.slice()||[];}
     moveTo(x,y){this.points.push(['move',x,y]);}
@@ -194,25 +194,27 @@ function drawingHarness(p){
   const context={
     clearRect(){clears++;},setTransform(){},setLineDash(dash){this.dash=dash;},
     stroke(path){if(path)strokes.push({points:path.points.slice(),dash:this.dash.slice(),color:this.strokeStyle});},
-    save(){},restore(){},beginPath(){},arc(){},fill(){},fillText(text,x,y){icons.push([x,y]);}
+    save(){},restore(){},beginPath(){},arc(x,y){circles.push([x,y]);},fill(){},fillText(text,x,y){icons.push([x,y]);}
   };
   const canvas={getContext:()=>context,setAttribute(){},remove(){removed=true;}};
   const base={clientWidth:800,clientHeight:600,after(node){assert.equal(node,canvas);inserted=true;}};
   const map={getCanvas:()=>base,project:([lng,lat])=>{projects++;return{x:lng*10,y:lat*10};},on:(name,callback)=>events.set(name,callback),off:name=>events.delete(name)};
   const drawing=createDrawing({map,plan:p,document:{createElement:()=>canvas},Path,pixelRatio:()=>2,styleForSegment:s=>({color:s.id,casing:'#fff',width:6,casingWidth:10,dash:s.id==='bus'?[2,2]:null})});
-  return {drawing,events,strokes,icons,canvas,base,get clears(){return clears;},get projects(){return projects;},get removed(){return removed;},get inserted(){return inserted;}};
+  return {drawing,events,strokes,circles,icons,canvas,base,get clears(){return clears;},get projects(){return projects;},get removed(){return removed;},get inserted(){return inserted;}};
 }
 
-test('canvas paints the route trail without a moving icon at display cadence without reprojecting the full route',()=>{
+test('canvas paints the trail and empty tracking circle together without reprojecting the full route',()=>{
   const p=plan(legs,routes),h=drawingHarness(p);
   assert.equal(h.inserted,true);assert.equal(h.canvas.width,1600);assert.equal(h.canvas.height,1200);
   const initialProjects=h.projects;
   for(let index=0;index<=120;index++)h.drawing.draw(frame(p,index/120,{drawLines:false}));
   assert.equal(h.clears,121,'No 30 Hz cap: every new display-frame position is painted');
   assert.equal(h.projects-initialProjects,121,'Only the moving tip is projected per frame');
-  assert.equal(h.icons.length,0);
+  assert.equal(h.circles.length,121);
+  assert.equal(h.icons.length,0,'The tracking circle has no arrow or text inside');
   const last=h.strokes.at(-1);
   assert.deepEqual(last.points.at(-1).slice(1),legs.at(-1).geometry.at(-1).map(value=>value*10),'The trail reaches the destination');
+  assert.deepEqual(last.points.at(-1).slice(1),h.circles.at(-1),'The circle stays at the growing trail tip');
   assert.deepEqual(last.dash,[12,12],'Bus dash styling survives the fast renderer');
   assert.deepEqual(last.points[0],['move',111,480],'Disconnected legs have separate paths');
   h.drawing.draw(frame(p,1,{drawLines:false}));assert.equal(h.clears,121,'The endpoint holds without repeated painting');
