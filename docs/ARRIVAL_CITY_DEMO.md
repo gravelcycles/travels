@@ -16,10 +16,10 @@ are cached; playback does not rebuild GeoJSON or send work to the map's route
 workers. The overlay respects train/bus/TBD styling and display pixel density,
 reprojects on resize, and restores the regular map layers when it ends.
 
-Selecting a stop pulls back around the current place, crosses a wider view that
-includes both the current location and the new route, then settles onto the route.
-The pullback takes 450–950 ms depending on zoom change, the pan 650 ms, and the
-final settle 450 ms; redundant stages are omitted. Named start/arrival pins and
+Selecting a stop pulls back around the current place to a wider geographic scale,
+then pans and zooms onto the next route in one continuous move.
+The pullback takes 450–950 ms depending on zoom change, followed by a combined
+750 ms pan and zoom; redundant stages are omitted. Named start/arrival pins and
 the route's **From → To** title preserve orientation. A distinct previous city
 is labelled during the camera move when navigating from a close city view.
 
