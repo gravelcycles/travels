@@ -12,6 +12,7 @@
   },
   "vars": { "ALLOWED_ORIGINS": "[\"https://gravelcycles.github.io\"]" },
   "r2_buckets": [{ "binding": "PHOTOS", "bucket_name": "travels-private-photos" }],
+  "d1_databases": [{ "binding": "COMMUNITY_DB", "database_name": "travels-community", "database_id": "3474d21e-9596-4de9-997d-52b7b4722f0f", "migrations_dir": "migrations" }],
   "ratelimits": [{ "name": "COMMUNITY_LIMITER", "namespace_id": "8102026", "simple": { "limit": 20, "period": 60 } }, { "name": "LOGIN_LIMITER", "namespace_id": "19092026", "simple": { "limit": 10, "period": 60 } }],
   "durable_objects": { "bindings": [{ "name": "AUTH_CODES", "class_name": "PhotoAuthCode" }] },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["PhotoAuthCode"] }],
