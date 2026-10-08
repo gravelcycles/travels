@@ -18,9 +18,10 @@ to the public site. [TODO.md](TODO.md) remains the backlog;
 - Five focused workstream branches below preserve saved content, prototypes,
   and investigation notes. They start from the same public baseline and can be
   resumed independently. Their commits are checkpoints, not release approval.
-  Workstream and recovery branches are local; only the main documentation is
-  published remotely. Exporting the saved local snapshots requires explicit
-  owner approval. Branch/path references below identify files on those branches.
+  At the owner's explicit request on 8 October, workstream and recovery branches
+  stay local; only the main Markdown documentation is published remotely.
+  Remote backup of those branches is outside this cleanup's scope.
+  Branch/path references below identify files on those local branches.
 - The exact original dirty working tree, both September safety snapshots, and
   all eight stashes are preserved on recovery branches. Original stashes and
   ignored private/local files are retained. Recovery branches are not candidates
