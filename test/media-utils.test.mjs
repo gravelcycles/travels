@@ -58,5 +58,7 @@ test('private playback waits for authorization and drops late grants/poster leas
  const player=globalThis.JOURNEY_ATLAS_MEDIA.createVideoPlayer(options),item={id:'private',title:'Private clip',protected:true,videoSrc:`/private-videos/assets/v1/${'a'.repeat(64)}.mp4`};
  player.show(item);assert.equal(video.src,undefined);const started=options.play.listeners.click();assert.equal(video.playCount,0);
  player.stop();sourceResolve('https://service.example/one-scoped-grant');posterResolve({url:'blob:private-poster',release(){released++;}});await started;await Promise.resolve();assert.equal(video.src,undefined);assert.equal(video.playCount,0);assert.equal(released,1);
+ const removed=[];video.removeAttribute=name=>{removed.push(name);delete video[name];};
+ player.show({id:'public',title:'Public clip',videoSrc:'https://public.example/no-cors.mp4'});assert.ok(removed.includes('crossorigin'),'Existing public native playback must not start requiring CORS');
  assert.match(globalThis.JOURNEY_ATLAS_MEDIA.captionVtt([{start:0,end:1.2,text:'<script>supplied words</script>'}]),/00:00:00.000 --> 00:00:01.200/);assert.doesNotMatch(globalThis.JOURNEY_ATLAS_MEDIA.captionVtt([{start:0,end:1,text:'<script>'}]),/<script>/);
 });

@@ -79,7 +79,8 @@
       if (current?.id === item.id) return;
       stop(); current = item; const epoch = generation;
       shell.hidden = false; video.setAttribute('aria-label', item.title || item.alt);
-      video.crossOrigin = 'anonymous';video.setAttribute('referrerpolicy','no-referrer');
+      if(item.protected)video.crossOrigin='anonymous';else video.removeAttribute('crossorigin');
+      video.setAttribute('referrerpolicy','no-referrer');
       if(item.protected) {
         status.textContent='Preparing private video…';
         ready=privateSource(item.videoSrc).then(src=>{if(epoch===generation){video.src=src;status.textContent='';}return epoch===generation;},error=>{if(epoch===generation){status.textContent=error.message||'Private video could not load.';retry.hidden=false;}return false;});
