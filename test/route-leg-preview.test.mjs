@@ -47,3 +47,15 @@ test('leg preview cancels delayed day previews and survives a map loading late',
   h.fire('mouseout', h.cards[0]); h.fire('mouseover', h.cards[1]); h.fire('mouseout', h.cards[1]);
   assert.equal(h.context.previewSegmentId, null);
 });
+
+
+test('TBD lines use a distinct dash while keeping mode colors and full geometry', () => {
+  const planned = structuredClone(journey);
+  planned.segments[0].planningStatus = 'tbd';
+  const h = legPreviewHarness(planned);
+  const layer = h.context.mainMap.getLayer('main-line-out');
+  assert.deepEqual(Array.from(layer.paint['line-dasharray']), [1, 1.4]);
+  assert.equal(h.paint('out', 'line-color'), '#0072b2');
+  assert.equal(h.context.mainMap.getLayer('main-line-back').paint['line-dasharray'], undefined);
+  assert.match(h.context.renderRouteLegs(planned.days[0]), /tbd-badge/);
+});

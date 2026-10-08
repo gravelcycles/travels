@@ -302,6 +302,25 @@
   function prepareImageReveals(container) { (imageReveals ||= createImageReveals()).prepare(container); }
   function resetImageReveal(image) { (imageReveals ||= createImageReveals()).reset(image); }
 
+  // Planning confidence is independent of reviewed network geometry and dates.
+  function projectPlanning(journey, showTbd = true) {
+    if (!journey.days.some(day => day.planningStatus === 'tbd')) return journey;
+    const days = journey.days.filter(day => showTbd || day.planningStatus !== 'tbd').map(day => ({
+      ...day, date: day.planningStatus === 'tbd' ? (day.calendarDate ? `TBD · ${day.date}` : 'TBD · Dates to decide') : day.date
+    }));
+    const dayIds = new Set(days.map(day => day.id));
+    const owners = new Map(days.flatMap(day => day.segmentIds.map(id => [id, day])));
+    const segments = journey.segments.filter(segment => owners.has(segment.id)).map(segment => ({...segment, planningStatus: owners.get(segment.id).planningStatus}));
+    const meetup = dayIds.has(journey.meetup?.dayId) ? journey.meetup : undefined;
+    const placeIds = new Set([meetup?.placeId, ...days.flatMap(day => [day.placeId, day.destinationId, ...Object.values(day.groupPlaces || {})]), ...segments.flatMap(segment => [segment.from, segment.to])]);
+    return {...journey, days, segments, meetup,
+      places: showTbd ? journey.places : journey.places.filter(place => placeIds.has(place.id)),
+      photos: (journey.photos || []).filter(photo => dayIds.has(photo.dayId)),
+      videos: (journey.videos || []).filter(video => dayIds.has(video.dayId)),
+      replayMoments: journey.replayMoments?.filter(moment => dayIds.has(moment.dayId))
+    };
+  }
+
   // Calendar days remain the storage/URL IDs; city events span arrival–departure dates.
   function eventWord(journey, form = 'singular') {
     const city = journey?.eventMode === 'city';
@@ -327,5 +346,5 @@
     return start === end ? format(start) : `${format(start)} – ${format(end)}`;
   }
 
-  root.JOURNEY_ATLAS_UTILS = { eventWord, eventCopy, applyEventCopy, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
+  root.JOURNEY_ATLAS_UTILS = { projectPlanning, eventWord, eventCopy, applyEventCopy, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

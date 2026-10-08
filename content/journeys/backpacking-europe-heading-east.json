@@ -8,13 +8,13 @@
   "badge": "JOURNEY",
   "label": "Backpacking Europe: Heading East",
   "title": "Backpacking Europe: Heading East",
-  "subtitle": "Eleven city stops from Luzern to Venice, by train with one replacement bus. Photos and stories to follow.",
+  "subtitle": "Eleven dated city stops to Venice, then eighteen TBD stops through Central Europe and the Balkans to Athens.",
   "kicker": "BACKPACKING EUROPE · AUTUMN 2026",
-  "dates": "1 Sep – 23 Oct 2026",
+  "dates": "1 Sep – 23 Oct 2026 · onward dates TBD",
   "startDate": "2026-09-01",
   "endDate": "2026-10-23",
   "timeZone": "Europe/Berlin",
-  "note": "City stops span arrival to departure, with the itinerary supplied through Venice on 23 October. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed.",
+  "note": "City stops span arrival to departure, with the itinerary supplied through Venice on 23 October. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed. The onward itinerary from Ljubljana to Athens is planned, not confirmed; dates, bookings and transfers remain TBD. Dotted routes mark these proposed legs. Rail is preferred where available; bus lines follow reconstructed road corridors, not operator GPS tracks. Lake Bled uses Lesce-Bled and a local bus; the onward railway via Ljubljana and Maribor avoids the autumn Jesenice closure. Recheck travel dates for replacement buses. Skopje, Tirana, Novi Pazar and Sarandë are transfer points, not extra stays.",
   "cover": "",
   "places": [
     {
@@ -121,6 +121,167 @@
       "lng": 12.32029,
       "lat": 45.44172,
       "country": "Italy"
+    },
+    {
+      "id": "backpacking-europe-heading-east-ljubljana",
+      "name": "Ljubljana",
+      "lng": 14.513,
+      "lat": 46.0581,
+      "country": "Slovenia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-lesce",
+      "name": "Lesce-Bled station",
+      "lng": 14.15792,
+      "lat": 46.36037,
+      "country": "Slovenia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-bled",
+      "name": "Lake Bled",
+      "lng": 14.1086,
+      "lat": 46.3712,
+      "country": "Slovenia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-vienna",
+      "name": "Vienna",
+      "lng": 16.378,
+      "lat": 48.1851,
+      "country": "Austria"
+    },
+    {
+      "id": "backpacking-europe-heading-east-wroclaw",
+      "name": "Wrocław",
+      "lng": 17.038,
+      "lat": 51.098,
+      "country": "Poland"
+    },
+    {
+      "id": "backpacking-europe-heading-east-warsaw",
+      "name": "Warsaw",
+      "lng": 21.0038,
+      "lat": 52.2288,
+      "country": "Poland"
+    },
+    {
+      "id": "backpacking-europe-heading-east-krakow",
+      "name": "Kraków",
+      "lng": 19.9474,
+      "lat": 50.0684,
+      "country": "Poland"
+    },
+    {
+      "id": "backpacking-europe-heading-east-budapest",
+      "name": "Budapest",
+      "lng": 19.0579,
+      "lat": 47.5109,
+      "country": "Hungary"
+    },
+    {
+      "id": "backpacking-europe-heading-east-oradea",
+      "name": "Oradea",
+      "lng": 21.9338,
+      "lat": 47.0727,
+      "country": "Romania"
+    },
+    {
+      "id": "backpacking-europe-heading-east-sibiu",
+      "name": "Sibiu",
+      "lng": 24.1618,
+      "lat": 45.8006,
+      "country": "Romania"
+    },
+    {
+      "id": "backpacking-europe-heading-east-timisoara",
+      "name": "Timișoara",
+      "lng": 21.2072,
+      "lat": 45.7504,
+      "country": "Romania"
+    },
+    {
+      "id": "backpacking-europe-heading-east-belgrade",
+      "name": "Belgrade",
+      "lng": 20.417,
+      "lat": 44.804,
+      "country": "Serbia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-zagreb",
+      "name": "Zagreb",
+      "lng": 15.978,
+      "lat": 45.8047,
+      "country": "Croatia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-split",
+      "name": "Split",
+      "lng": 16.4426,
+      "lat": 43.5036,
+      "country": "Croatia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-dubrovnik",
+      "name": "Dubrovnik",
+      "lng": 18.0853,
+      "lat": 42.6625,
+      "country": "Croatia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-sarajevo",
+      "name": "Sarajevo",
+      "lng": 18.3988,
+      "lat": 43.8594,
+      "country": "Bosnia and Herzegovina"
+    },
+    {
+      "id": "backpacking-europe-heading-east-novi-pazar",
+      "name": "Novi Pazar",
+      "lng": 20.518,
+      "lat": 43.139,
+      "country": "Serbia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-skopje",
+      "name": "Skopje",
+      "lng": 21.4469,
+      "lat": 41.9903,
+      "country": "North Macedonia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-ohrid",
+      "name": "Ohrid",
+      "lng": 20.8138,
+      "lat": 41.1274,
+      "country": "North Macedonia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-tirana",
+      "name": "Tirana",
+      "lng": 19.776,
+      "lat": 41.344,
+      "country": "Albania"
+    },
+    {
+      "id": "backpacking-europe-heading-east-qeparo",
+      "name": "Qeparo",
+      "lng": 19.8235,
+      "lat": 40.0548,
+      "country": "Albania"
+    },
+    {
+      "id": "backpacking-europe-heading-east-sarande",
+      "name": "Sarandë",
+      "lng": 20.0053,
+      "lat": 39.8753,
+      "country": "Albania"
+    },
+    {
+      "id": "backpacking-europe-heading-east-athens",
+      "name": "Athens",
+      "lng": 23.7201,
+      "lat": 37.989,
+      "country": "Greece"
     }
   ],
   "segments": [
@@ -486,6 +647,623 @@
       ],
       "geometryStatus": "reconstructed",
       "distanceKm": 265.5
+    },
+    {
+      "id": "backpacking-europe-heading-east-venice-ljubljana",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-venice",
+      "to": "backpacking-europe-heading-east-ljubljana",
+      "via": [
+        {
+          "name": "Trieste Centrale",
+          "lng": 13.77125,
+          "lat": 45.65824
+        },
+        {
+          "name": "Villa Opicina",
+          "lng": 13.79818,
+          "lat": 45.69742
+        },
+        {
+          "name": "Sežana",
+          "lng": 13.86895,
+          "lat": 45.7041
+        },
+        {
+          "name": "Divača",
+          "lng": 13.96953,
+          "lat": 45.68058
+        },
+        {
+          "name": "Postojna",
+          "lng": 14.22153,
+          "lat": 45.77298
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 306.6
+    },
+    {
+      "id": "backpacking-europe-heading-east-ljubljana-lesce",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-ljubljana",
+      "to": "backpacking-europe-heading-east-lesce",
+      "via": [
+        {
+          "name": "Kranj",
+          "lng": 14.35223,
+          "lat": 46.23334
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 52.7
+    },
+    {
+      "id": "backpacking-europe-heading-east-lesce-bled",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-lesce",
+      "to": "backpacking-europe-heading-east-bled",
+      "via": [],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 4.4
+    },
+    {
+      "id": "backpacking-europe-heading-east-bled-lesce",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-bled",
+      "to": "backpacking-europe-heading-east-lesce",
+      "via": [],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 4.4
+    },
+    {
+      "id": "backpacking-europe-heading-east-lesce-vienna",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-lesce",
+      "to": "backpacking-europe-heading-east-vienna",
+      "via": [
+        {
+          "name": "Ljubljana",
+          "lng": 14.51325,
+          "lat": 46.05828
+        },
+        {
+          "name": "Zidani Most",
+          "lng": 15.17475,
+          "lat": 46.0853
+        },
+        {
+          "name": "Celje",
+          "lng": 15.26806,
+          "lat": 46.22732
+        },
+        {
+          "name": "Maribor",
+          "lng": 15.65724,
+          "lat": 46.56077
+        },
+        {
+          "name": "Graz Hbf",
+          "lng": 15.41669,
+          "lat": 47.07279
+        },
+        {
+          "name": "Bruck an der Mur",
+          "lng": 15.27958,
+          "lat": 47.41396
+        },
+        {
+          "name": "Semmering",
+          "lng": 15.83068,
+          "lat": 47.63871
+        },
+        {
+          "name": "Wiener Neustadt Hbf",
+          "lng": 16.23387,
+          "lat": 47.81162
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 485
+    },
+    {
+      "id": "backpacking-europe-heading-east-vienna-wroclaw",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-vienna",
+      "to": "backpacking-europe-heading-east-wroclaw",
+      "via": [
+        {
+          "name": "Břeclav",
+          "lng": 16.89353,
+          "lat": 48.75455
+        },
+        {
+          "name": "Bohumín",
+          "lng": 18.35817,
+          "lat": 49.9004
+        },
+        {
+          "name": "Racibórz",
+          "lng": 18.22261,
+          "lat": 50.08603
+        },
+        {
+          "name": "Opole Główne",
+          "lng": 17.93014,
+          "lat": 50.66163
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 464
+    },
+    {
+      "id": "backpacking-europe-heading-east-wroclaw-warsaw",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-wroclaw",
+      "to": "backpacking-europe-heading-east-warsaw",
+      "via": [
+        {
+          "name": "Ostrów Wielkopolski",
+          "lng": 17.80585,
+          "lat": 51.64469
+        },
+        {
+          "name": "Kalisz",
+          "lng": 18.07176,
+          "lat": 51.743
+        },
+        {
+          "name": "Łódź Widzew",
+          "lng": 19.54198,
+          "lat": 51.76313
+        },
+        {
+          "name": "Skierniewice",
+          "lng": 20.15053,
+          "lat": 51.96724
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 397.7
+    },
+    {
+      "id": "backpacking-europe-heading-east-warsaw-krakow",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-warsaw",
+      "to": "backpacking-europe-heading-east-krakow",
+      "via": [
+        {
+          "name": "Włoszczowa Północ",
+          "lng": 19.94709,
+          "lat": 50.85777
+        },
+        {
+          "name": "Miechów",
+          "lng": 20.01125,
+          "lat": 50.35428
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 293.7
+    },
+    {
+      "id": "backpacking-europe-heading-east-krakow-budapest",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-krakow",
+      "to": "backpacking-europe-heading-east-budapest",
+      "via": [
+        {
+          "name": "Katowice",
+          "lng": 19.01894,
+          "lat": 50.25742
+        },
+        {
+          "name": "Bohumín",
+          "lng": 18.35817,
+          "lat": 49.9004
+        },
+        {
+          "name": "Břeclav",
+          "lng": 16.89353,
+          "lat": 48.75455
+        },
+        {
+          "name": "Bratislava hlavná stanica",
+          "lng": 17.10666,
+          "lat": 48.15871
+        },
+        {
+          "name": "Štúrovo",
+          "lng": 18.68347,
+          "lat": 47.80145
+        },
+        {
+          "name": "Vác",
+          "lng": 19.13692,
+          "lat": 47.78185
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 643.9
+    },
+    {
+      "id": "backpacking-europe-heading-east-budapest-oradea",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-budapest",
+      "to": "backpacking-europe-heading-east-oradea",
+      "via": [
+        {
+          "name": "Cegléd",
+          "lng": 19.80437,
+          "lat": 47.18242
+        },
+        {
+          "name": "Szolnok",
+          "lng": 20.17592,
+          "lat": 47.18149
+        },
+        {
+          "name": "Püspökladány",
+          "lng": 21.12304,
+          "lat": 47.32752
+        },
+        {
+          "name": "Biharkeresztes",
+          "lng": 21.72193,
+          "lat": 47.13548
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 246.4
+    },
+    {
+      "id": "backpacking-europe-heading-east-oradea-sibiu",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-oradea",
+      "to": "backpacking-europe-heading-east-sibiu",
+      "via": [
+        {
+          "name": "Arad",
+          "lng": 21.31565,
+          "lat": 46.19007
+        },
+        {
+          "name": "Simeria",
+          "lng": 23.01134,
+          "lat": 45.84721
+        },
+        {
+          "name": "Vințu de Jos",
+          "lng": 23.49822,
+          "lat": 45.98911
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 451.8
+    },
+    {
+      "id": "backpacking-europe-heading-east-sibiu-timisoara",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-sibiu",
+      "to": "backpacking-europe-heading-east-timisoara",
+      "via": [
+        {
+          "name": "Vințu de Jos",
+          "lng": 23.49822,
+          "lat": 45.98911
+        },
+        {
+          "name": "Simeria",
+          "lng": 23.01134,
+          "lat": 45.84721
+        },
+        {
+          "name": "Arad",
+          "lng": 21.31565,
+          "lat": 46.19007
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 389.6
+    },
+    {
+      "id": "backpacking-europe-heading-east-timisoara-belgrade",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-timisoara",
+      "to": "backpacking-europe-heading-east-belgrade",
+      "via": [
+        {
+          "name": "Moravița border road",
+          "lng": 21.2645,
+          "lat": 45.2512
+        },
+        {
+          "name": "Vršac",
+          "lng": 21.302,
+          "lat": 45.117
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 164.2
+    },
+    {
+      "id": "backpacking-europe-heading-east-belgrade-zagreb",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-belgrade",
+      "to": "backpacking-europe-heading-east-zagreb",
+      "via": [
+        {
+          "name": "Batrovci border motorway",
+          "lng": 19.109,
+          "lat": 45.048
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 389.4
+    },
+    {
+      "id": "backpacking-europe-heading-east-zagreb-split",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-zagreb",
+      "to": "backpacking-europe-heading-east-split",
+      "via": [
+        {
+          "name": "Karlovac",
+          "lng": 15.55102,
+          "lat": 45.4863
+        },
+        {
+          "name": "Oštarije",
+          "lng": 15.28063,
+          "lat": 45.22492
+        },
+        {
+          "name": "Gospić",
+          "lng": 15.39075,
+          "lat": 44.54401
+        },
+        {
+          "name": "Knin",
+          "lng": 16.19837,
+          "lat": 44.03457
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 423.7
+    },
+    {
+      "id": "backpacking-europe-heading-east-split-dubrovnik",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-split",
+      "to": "backpacking-europe-heading-east-dubrovnik",
+      "via": [
+        {
+          "name": "Ploče",
+          "lng": 17.432,
+          "lat": 43.055
+        },
+        {
+          "name": "Pelješac bridge west road",
+          "lng": 17.532,
+          "lat": 42.927
+        },
+        {
+          "name": "Ston",
+          "lng": 17.698,
+          "lat": 42.838
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 254
+    },
+    {
+      "id": "backpacking-europe-heading-east-dubrovnik-sarajevo",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-dubrovnik",
+      "to": "backpacking-europe-heading-east-sarajevo",
+      "via": [
+        {
+          "name": "Neum",
+          "lng": 17.614,
+          "lat": 42.923
+        },
+        {
+          "name": "Metković",
+          "lng": 17.649,
+          "lat": 43.053
+        },
+        {
+          "name": "Mostar",
+          "lng": 17.814,
+          "lat": 43.349
+        },
+        {
+          "name": "Konjic",
+          "lng": 17.961,
+          "lat": 43.654
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 265.6
+    },
+    {
+      "id": "backpacking-europe-heading-east-sarajevo-novi-pazar",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-sarajevo",
+      "to": "backpacking-europe-heading-east-novi-pazar",
+      "via": [
+        {
+          "name": "Rogatica",
+          "lng": 19.005,
+          "lat": 43.798
+        },
+        {
+          "name": "Višegrad",
+          "lng": 19.287,
+          "lat": 43.782
+        },
+        {
+          "name": "Priboj",
+          "lng": 19.531,
+          "lat": 43.583
+        },
+        {
+          "name": "Sjenica",
+          "lng": 20,
+          "lat": 43.274
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 284.1
+    },
+    {
+      "id": "backpacking-europe-heading-east-novi-pazar-skopje",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-novi-pazar",
+      "to": "backpacking-europe-heading-east-skopje",
+      "via": [
+        {
+          "name": "Ribariće",
+          "lng": 20.449,
+          "lat": 42.945
+        },
+        {
+          "name": "Mitrovica",
+          "lng": 20.866,
+          "lat": 42.883
+        },
+        {
+          "name": "Pristina",
+          "lng": 21.156,
+          "lat": 42.648
+        },
+        {
+          "name": "Hani i Elezit border",
+          "lng": 21.3005,
+          "lat": 42.145
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 220.3
+    },
+    {
+      "id": "backpacking-europe-heading-east-skopje-ohrid",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-skopje",
+      "to": "backpacking-europe-heading-east-ohrid",
+      "via": [
+        {
+          "name": "Tetovo",
+          "lng": 20.989,
+          "lat": 42.003
+        },
+        {
+          "name": "Gostivar",
+          "lng": 20.914,
+          "lat": 41.793
+        },
+        {
+          "name": "Kičevo",
+          "lng": 20.965,
+          "lat": 41.51
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 180.2
+    },
+    {
+      "id": "backpacking-europe-heading-east-ohrid-tirana",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-ohrid",
+      "to": "backpacking-europe-heading-east-tirana",
+      "via": [
+        {
+          "name": "Struga",
+          "lng": 20.677,
+          "lat": 41.179
+        },
+        {
+          "name": "Qafë Thanë",
+          "lng": 20.6106,
+          "lat": 41.063
+        },
+        {
+          "name": "Elbasan",
+          "lng": 20.083,
+          "lat": 41.112
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 138.2
+    },
+    {
+      "id": "backpacking-europe-heading-east-tirana-qeparo",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-tirana",
+      "to": "backpacking-europe-heading-east-qeparo",
+      "via": [
+        {
+          "name": "Vlorë",
+          "lng": 19.489,
+          "lat": 40.47
+        },
+        {
+          "name": "Dhërmi",
+          "lng": 19.638,
+          "lat": 40.145
+        },
+        {
+          "name": "Himarë",
+          "lng": 19.743,
+          "lat": 40.101
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 227.7
+    },
+    {
+      "id": "backpacking-europe-heading-east-qeparo-sarande",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-qeparo",
+      "to": "backpacking-europe-heading-east-sarande",
+      "via": [],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 40.6
+    },
+    {
+      "id": "backpacking-europe-heading-east-sarande-athens",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-sarande",
+      "to": "backpacking-europe-heading-east-athens",
+      "via": [
+        {
+          "name": "Gjirokastër",
+          "lng": 20.148,
+          "lat": 40.086
+        },
+        {
+          "name": "Kakavia",
+          "lng": 20.36,
+          "lat": 39.916
+        },
+        {
+          "name": "Ioannina",
+          "lng": 20.842,
+          "lat": 39.67
+        },
+        {
+          "name": "Rio",
+          "lng": 21.777,
+          "lat": 38.307
+        },
+        {
+          "name": "Corinth",
+          "lng": 22.928,
+          "lat": 37.934
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 560.3
     }
   ],
   "days": [
@@ -643,6 +1421,246 @@
       "destinationId": "backpacking-europe-heading-east-venice",
       "segmentIds": [
         "backpacking-europe-heading-east-bolzano-venice"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-ljubljana-stay",
+      "number": 12,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Ljubljana",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-ljubljana",
+      "destinationId": "backpacking-europe-heading-east-ljubljana",
+      "segmentIds": [
+        "backpacking-europe-heading-east-venice-ljubljana"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-bled-stay",
+      "number": 13,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Lake Bled",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-bled",
+      "destinationId": "backpacking-europe-heading-east-bled",
+      "segmentIds": [
+        "backpacking-europe-heading-east-ljubljana-lesce",
+        "backpacking-europe-heading-east-lesce-bled"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-vienna-stay",
+      "number": 14,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Vienna",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-vienna",
+      "destinationId": "backpacking-europe-heading-east-vienna",
+      "segmentIds": [
+        "backpacking-europe-heading-east-bled-lesce",
+        "backpacking-europe-heading-east-lesce-vienna"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-wroclaw-stay",
+      "number": 15,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Wrocław",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-wroclaw",
+      "destinationId": "backpacking-europe-heading-east-wroclaw",
+      "segmentIds": [
+        "backpacking-europe-heading-east-vienna-wroclaw"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-warsaw-stay",
+      "number": 16,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Warsaw",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-warsaw",
+      "destinationId": "backpacking-europe-heading-east-warsaw",
+      "segmentIds": [
+        "backpacking-europe-heading-east-wroclaw-warsaw"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-krakow-stay",
+      "number": 17,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Kraków",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-krakow",
+      "destinationId": "backpacking-europe-heading-east-krakow",
+      "segmentIds": [
+        "backpacking-europe-heading-east-warsaw-krakow"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-budapest-stay",
+      "number": 18,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Budapest",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-budapest",
+      "destinationId": "backpacking-europe-heading-east-budapest",
+      "segmentIds": [
+        "backpacking-europe-heading-east-krakow-budapest"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-oradea-stay",
+      "number": 19,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Oradea",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-oradea",
+      "destinationId": "backpacking-europe-heading-east-oradea",
+      "segmentIds": [
+        "backpacking-europe-heading-east-budapest-oradea"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-sibiu-stay",
+      "number": 20,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Sibiu",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-sibiu",
+      "destinationId": "backpacking-europe-heading-east-sibiu",
+      "segmentIds": [
+        "backpacking-europe-heading-east-oradea-sibiu"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-timisoara-stay",
+      "number": 21,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Timișoara",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-timisoara",
+      "destinationId": "backpacking-europe-heading-east-timisoara",
+      "segmentIds": [
+        "backpacking-europe-heading-east-sibiu-timisoara"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-belgrade-stay",
+      "number": 22,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Belgrade",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-belgrade",
+      "destinationId": "backpacking-europe-heading-east-belgrade",
+      "segmentIds": [
+        "backpacking-europe-heading-east-timisoara-belgrade"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-zagreb-stay",
+      "number": 23,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Zagreb",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-zagreb",
+      "destinationId": "backpacking-europe-heading-east-zagreb",
+      "segmentIds": [
+        "backpacking-europe-heading-east-belgrade-zagreb"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-split-stay",
+      "number": 24,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Split",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-split",
+      "destinationId": "backpacking-europe-heading-east-split",
+      "segmentIds": [
+        "backpacking-europe-heading-east-zagreb-split"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-dubrovnik-stay",
+      "number": 25,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Dubrovnik",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-dubrovnik",
+      "destinationId": "backpacking-europe-heading-east-dubrovnik",
+      "segmentIds": [
+        "backpacking-europe-heading-east-split-dubrovnik"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-sarajevo-stay",
+      "number": 26,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Sarajevo",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-sarajevo",
+      "destinationId": "backpacking-europe-heading-east-sarajevo",
+      "segmentIds": [
+        "backpacking-europe-heading-east-dubrovnik-sarajevo"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-ohrid-stay",
+      "number": 27,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Ohrid",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-ohrid",
+      "destinationId": "backpacking-europe-heading-east-ohrid",
+      "segmentIds": [
+        "backpacking-europe-heading-east-sarajevo-novi-pazar",
+        "backpacking-europe-heading-east-novi-pazar-skopje",
+        "backpacking-europe-heading-east-skopje-ohrid"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-qeparo-stay",
+      "number": 28,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Qeparo",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-qeparo",
+      "destinationId": "backpacking-europe-heading-east-qeparo",
+      "segmentIds": [
+        "backpacking-europe-heading-east-ohrid-tirana",
+        "backpacking-europe-heading-east-tirana-qeparo"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-athens-stay",
+      "number": 29,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Athens",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-athens",
+      "destinationId": "backpacking-europe-heading-east-athens",
+      "segmentIds": [
+        "backpacking-europe-heading-east-qeparo-sarande",
+        "backpacking-europe-heading-east-sarande-athens"
       ]
     }
   ],

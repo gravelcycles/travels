@@ -14,7 +14,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "5e0e94154e1596fd5d7fc92b81f967d59abecf781bccfb4d81e994a6316e36e3",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 856,
         "outputPointCount": 321,
         "rawDistanceKm": 93.714,
@@ -43,7 +43,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "2295c7059b56f2e938f177a888e6697c56f782e2a135d23ea926ef225683fa4c",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 467,
         "outputPointCount": 137,
         "rawDistanceKm": 62.05,
@@ -71,7 +71,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "a27eeac4e320af871c4ba6c8d369a57171dfbae20f46c8335c890dfdfc7a4278",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 5227,
         "outputPointCount": 1671,
         "rawDistanceKm": 784.235,
@@ -105,7 +105,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "77c9218d423d526adfc879fbfb0093ac54847683fb674d2ee5265c4a618b988b",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 3517,
         "outputPointCount": 1103,
         "rawDistanceKm": 476.999,
@@ -139,7 +139,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "85a2de449ab6793945aedb86ebf2fc83b95355c69dd2f3c6281a1633e902d278",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 434,
         "outputPointCount": 124,
         "rawDistanceKm": 40.353,
@@ -166,7 +166,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "78eed7c4a9da7cfb01e26205b3f55262c85e7354389abd1489066644784814ad",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 3408,
         "outputPointCount": 1024,
         "rawDistanceKm": 542.506,
@@ -201,7 +201,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "3ddb6507fd35181960aa9a0b2b9cc445455a119c61a253f210937eec85e831a1",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1543,
         "outputPointCount": 423,
         "rawDistanceKm": 205.172,
@@ -229,7 +229,7 @@
         "profile": "driving",
         "rawSha256": "d78a88bd38bbd8d5eb7b0eec211fd9ffb69d76f6b0701633dbee59f0368af685",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1209,
         "outputPointCount": 385,
         "rawDistanceKm": 64.729,
@@ -256,7 +256,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "d4ef421e9504241f87279f6c8c4566e15348236a94507365906d22a67c648572",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1385,
         "outputPointCount": 448,
         "rawDistanceKm": 112.29,
@@ -284,7 +284,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "9365bb7f9bbf3aa9aaf65cdf0fc55aa02f957413715c146b960bbf280c6c2827",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 4937,
         "outputPointCount": 1787,
         "rawDistanceKm": 290.236,
@@ -314,7 +314,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "4a3dbd6049015092450caa3b280033a8dc645c54860cd302dd310fdca585a549",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1521,
         "outputPointCount": 438,
         "rawDistanceKm": 124.591,
@@ -343,7 +343,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "ea14de4833586d71186ed757dc9259b31f1f021a0d7600d0786a839a03130206",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 2154,
         "outputPointCount": 690,
         "rawDistanceKm": 192.33,
@@ -373,7 +373,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "3d209b60fff403f2f89fb6a07eda151d0654bd7975360296199301a62af740d0",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 2066,
         "outputPointCount": 711,
         "rawDistanceKm": 125.414,
@@ -403,7 +403,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "e4072f5cacada078ee5beda7d162d55c58c12ef15b14278f8fbceb0b65814d5d",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1848,
         "outputPointCount": 599,
         "rawDistanceKm": 265.517,
@@ -424,6 +424,1170 @@
         ],
         "largestRawGapKm": 3.822,
         "notes": "Researched candidate corridor, constrained through named station anchors. Detailed network geometry does not establish a personal departure or exact diversion. See docs/HEADING_EAST.md for operator evidence and limitations."
+      }
+    },
+    "backpacking-europe-heading-east-venice-ljubljana": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+        "retrievedAt": "2026-10-08",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=45.44172%2C12.32029&point=45.6575%2C13.7717&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=45.6575%2C13.7717&point=45.69872%2C13.79708&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=45.69872%2C13.79708&point=45.7028%2C13.8692&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=45.7028%2C13.8692&point=45.6816%2C13.9698&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=45.6816%2C13.9698&point=45.77294%2C14.22112&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-venice-ljubljana-part1.json",
+            "sha256": "4f412da16ec3e79dea448b88064161d787d927440e1ad4ec81775865e0581291"
+          },
+          {
+            "file": "backpacking-europe-heading-east-venice-ljubljana-part2.json",
+            "sha256": "50a007cc878814a3238651c46a544bb46d61063d54ff212611aef1fe25587904"
+          },
+          {
+            "file": "backpacking-europe-heading-east-venice-ljubljana-part3.json",
+            "sha256": "331256c78098aec778e54be0131ad4d2b57e2ac53e2b8119f7032b860cca68bd"
+          },
+          {
+            "file": "backpacking-europe-heading-east-venice-ljubljana-part4.json",
+            "sha256": "3b463fd2cf99069c66d7cd364bb79a12b25acbfc3a22f77cd9007465012e85d3"
+          },
+          {
+            "file": "backpacking-europe-heading-east-venice-ljubljana-part5.json",
+            "sha256": "26bb216e448a2a3a62cee459e5e44494ec2635b2fb7fa3c8116c4a9b5b4b721f"
+          },
+          {
+            "file": "postojna-ljubljana-local.json",
+            "sha256": "8f6f0b477e00360361db4b17c9ee135bf9e2a41d3a65489ba736ce6bbbb96816"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 4211,
+        "outputPointCount": 1337,
+        "rawDistanceKm": 306.66,
+        "distanceKm": 306.55,
+        "endpointOffsetsMeters": [
+          1,
+          28
+        ],
+        "waypointOffsetsMeters": [
+          1,
+          90,
+          168,
+          146,
+          115,
+          32,
+          28
+        ],
+        "largestRawGapKm": 3.219,
+        "maxSectionJoinMeters": 1,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace. Postojna–Ljubljana uses the local OSM rail graph plus mapped construction=rail ways, without gap welding. Railway reconstruction can require replacement buses; confirm against travel dates. See docs/HEADING_EAST.md.",
+        "localGraph": {
+          "input": "slovenia-combined.json",
+          "provider": "OpenStreetMap via https://overpass-api.de/api/interpreter",
+          "weldGapsKm": 0,
+          "coordinateBounds": [
+            14.1,
+            45.7,
+            14.6,
+            46.12
+          ],
+          "query": "[out:json][timeout:40];way[railway=rail](45.70,14.10,46.12,14.60);(._;>;);out body; plus [out:json][timeout:40];way[railway=construction](45.70,14.10,46.12,14.60);(._;>;);out body;",
+          "rawInputs": [
+            {
+              "file": "slovenia-rail-retry.json",
+              "sha256": "b87fcf1ab96921e2881037d09cf81d33578be4d94afc6bc0b35cfcb737517cc7",
+              "dataDate": "2026-10-08T19:04:01Z"
+            },
+            {
+              "file": "slovenia-construction.json",
+              "sha256": "db9848a0cc20ac39a4ba522ed7c334e6a06fdf93e02a4f17c3504ca96a9f903e",
+              "dataDate": "2026-10-08T19:07:06Z"
+            }
+          ]
+        }
+      }
+    },
+    "backpacking-europe-heading-east-ljubljana-lesce": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+        "retrievedAt": "2026-10-08",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=46.0581%2C14.513&point=46.2362%2C14.3547&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=46.2362%2C14.3547&point=46.36037%2C14.15792&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-ljubljana-lesce-part1.json",
+            "sha256": "f72bba7b798283fbdd019e1db222a6131394951adb45e8d7a7ee49f458ee8e4e"
+          },
+          {
+            "file": "backpacking-europe-heading-east-ljubljana-lesce-part2.json",
+            "sha256": "b7fa4151cbeb6431632b411d4f69caebf3d3294a26629ab9fb8aef457c279464"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 761,
+        "outputPointCount": 285,
+        "rawDistanceKm": 52.71,
+        "distanceKm": 52.691,
+        "endpointOffsetsMeters": [
+          28,
+          3
+        ],
+        "waypointOffsetsMeters": [
+          28,
+          371,
+          3
+        ],
+        "largestRawGapKm": 1.559,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-lesce-bled": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/14.15792,46.36037;14.1086,46.3712?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-lesce-bled.json",
+            "sha256": "3f121c647f37d76025689edba9474db260414b153d72153c57444dee68b50e57"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 218,
+        "outputPointCount": 51,
+        "rawDistanceKm": 4.4,
+        "distanceKm": 4.388,
+        "endpointOffsetsMeters": [
+          25,
+          17
+        ],
+        "waypointOffsetsMeters": [
+          25,
+          17
+        ],
+        "largestRawGapKm": 0.143,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-bled-lesce": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/14.1086,46.3712;14.15792,46.36037?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-bled-lesce.json",
+            "sha256": "7660997f7d03b07f83e1626c233b1c24c53294b8ae8c1690e958b641eefeef72"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 223,
+        "outputPointCount": 50,
+        "rawDistanceKm": 4.414,
+        "distanceKm": 4.406,
+        "endpointOffsetsMeters": [
+          17,
+          25
+        ],
+        "waypointOffsetsMeters": [
+          17,
+          25
+        ],
+        "largestRawGapKm": 0.143,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-lesce-vienna": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+        "retrievedAt": "2026-10-08",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=46.36037%2C14.15792&point=46.0581%2C14.513&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=46.0581%2C14.513&point=46.0858%2C15.1738&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=46.0858%2C15.1738&point=46.2272%2C15.2689&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=46.2272%2C15.2689&point=46.5611%2C15.6561&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=46.5611%2C15.6561&point=47.0729%2C15.4173&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.0729%2C15.4173&point=47.414%2C15.2798&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.414%2C15.2798&point=47.6387%2C15.8307&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.6387%2C15.8307&point=47.8116%2C16.234&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.8116%2C16.234&point=48.1851%2C16.378&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-lesce-vienna-part1.json",
+            "sha256": "ada2282957410144b171cc82b4e056a78206ac042e3c77835029b2096cfa63ea"
+          },
+          {
+            "file": "backpacking-europe-heading-east-lesce-vienna-part2.json",
+            "sha256": "dc5a82ca9509cfd0edbb87f5d073276c21410611460e63827904cb39dd629b5f"
+          },
+          {
+            "file": "backpacking-europe-heading-east-lesce-vienna-part3.json",
+            "sha256": "4c0450e32172310154d5c2826b5d964a294cd17ebd0fa1b8430ba18429c9b85d"
+          },
+          {
+            "file": "backpacking-europe-heading-east-lesce-vienna-part4.json",
+            "sha256": "ec0669246ec538c546d14310e4383a53bfba3737b994fc2cb50a1ddc9b5bef12"
+          },
+          {
+            "file": "backpacking-europe-heading-east-lesce-vienna-part5.json",
+            "sha256": "94b540c0176498900a52a2372596ff5274d428cc0771b1e18b6bdf48bdacde64"
+          },
+          {
+            "file": "backpacking-europe-heading-east-lesce-vienna-part6.json",
+            "sha256": "6808f49b0adcbc8fbc8bcc1a4e274539a718c2bfc87868e602aa1c545b8b5bd0"
+          },
+          {
+            "file": "backpacking-europe-heading-east-lesce-vienna-part7.json",
+            "sha256": "264be1de9ccf3d913dd0631558f10fa424fff41f38193b2f5e8dfa6a61b508a7"
+          },
+          {
+            "file": "backpacking-europe-heading-east-lesce-vienna-part8.json",
+            "sha256": "e095fe77356a7e982e931cabc7e251050b025405410693c641e12bf5a4365b07"
+          },
+          {
+            "file": "backpacking-europe-heading-east-lesce-vienna-part9.json",
+            "sha256": "bb5773bc7b49ddc52315dfb2255d2e640b6f4e91469f0697092108758976608e"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 7195,
+        "outputPointCount": 2351,
+        "rawDistanceKm": 485.212,
+        "distanceKm": 485.048,
+        "endpointOffsetsMeters": [
+          3,
+          0
+        ],
+        "waypointOffsetsMeters": [
+          3,
+          28,
+          92,
+          66,
+          95,
+          48,
+          17,
+          2,
+          10,
+          0
+        ],
+        "largestRawGapKm": 1.964,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-vienna-wroclaw": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+        "retrievedAt": "2026-10-08",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=48.1851%2C16.378&point=48.7548%2C16.8929&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=48.7548%2C16.8929&point=49.9018%2C18.3572&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=49.9018%2C18.3572&point=50.0875%2C18.2198&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=50.0875%2C18.2198&point=50.6625%2C17.9307&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=50.6625%2C17.9307&point=51.098%2C17.038&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-vienna-wroclaw-part1.json",
+            "sha256": "631bb274d5c1755324fb743228b9e8a0612841919f1a94fd54e436056329f367"
+          },
+          {
+            "file": "backpacking-europe-heading-east-vienna-wroclaw-part2.json",
+            "sha256": "4f1cc505215136dd964f2c5d1a0b134255bcd2f43ad27fa03589b36b9c87d9fe"
+          },
+          {
+            "file": "backpacking-europe-heading-east-vienna-wroclaw-part3.json",
+            "sha256": "b394894d78ee0a3ef6a568b99800d5d57a42fcac1cc69cb90c5e55c241b01926"
+          },
+          {
+            "file": "backpacking-europe-heading-east-vienna-wroclaw-part4.json",
+            "sha256": "274a39955a8cd9a820703140293752a3dff45bdeffd8d700bb6c266b1248a161"
+          },
+          {
+            "file": "backpacking-europe-heading-east-vienna-wroclaw-part5.json",
+            "sha256": "8adcbca3f63e12f8fba25682473993e5dc868e7f13318a1577120e72ba045fca"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 2914,
+        "outputPointCount": 753,
+        "rawDistanceKm": 463.989,
+        "distanceKm": 463.955,
+        "endpointOffsetsMeters": [
+          0,
+          3
+        ],
+        "waypointOffsetsMeters": [
+          0,
+          54,
+          171,
+          259,
+          104,
+          3
+        ],
+        "largestRawGapKm": 5.132,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-wroclaw-warsaw": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+        "retrievedAt": "2026-10-08",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=51.098%2C17.038&point=51.6447%2C17.8063&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=51.6447%2C17.8063&point=51.7445%2C18.0704&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=51.7445%2C18.0704&point=51.7624%2C19.5417&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=51.7624%2C19.5417&point=51.966%2C20.1515&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=51.966%2C20.1515&point=52.2288%2C21.0038&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-wroclaw-warsaw-part1.json",
+            "sha256": "95923adffba4957dadfdb5979c192480ab8dcaaabdb0c58155ba0473ada0b21f"
+          },
+          {
+            "file": "backpacking-europe-heading-east-wroclaw-warsaw-part2.json",
+            "sha256": "4f2a382fa47349cae198da16b536d2dd3a8ef8645e111f477fddf369450278cf"
+          },
+          {
+            "file": "backpacking-europe-heading-east-wroclaw-warsaw-part3.json",
+            "sha256": "bde4b6336091725fce98b33959ecdb9f58f8a5ebec2a22a5b7e139556220e8fd"
+          },
+          {
+            "file": "backpacking-europe-heading-east-wroclaw-warsaw-part4.json",
+            "sha256": "770d5f29fc8bb6bb3b71661a83900e1713876fbcd6dbd408e52aed5dbcf22ae5"
+          },
+          {
+            "file": "backpacking-europe-heading-east-wroclaw-warsaw-part5.json",
+            "sha256": "7d7c8408ca94a2cceb4d0192a9e6a099c83f9d9cb1bfad907b692885f4da0296"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 2442,
+        "outputPointCount": 756,
+        "rawDistanceKm": 397.737,
+        "distanceKm": 397.696,
+        "endpointOffsetsMeters": [
+          3,
+          2
+        ],
+        "waypointOffsetsMeters": [
+          3,
+          31,
+          191,
+          83,
+          153,
+          2
+        ],
+        "largestRawGapKm": 5.167,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-warsaw-krakow": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+        "retrievedAt": "2026-10-08",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=52.2288%2C21.0038&point=50.8545%2C19.9606&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=50.8545%2C19.9606&point=50.3532%2C20.0165&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=50.3532%2C20.0165&point=50.0684%2C19.9474&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-warsaw-krakow-part1.json",
+            "sha256": "bdb1d1403c12574d0e41fbcbcae919585075aaf1adc025494b1bfd6437baa2b5"
+          },
+          {
+            "file": "backpacking-europe-heading-east-warsaw-krakow-part2.json",
+            "sha256": "b1058205a0f1f71aeb58f04f825d97e8cbab891c02eebeae8b09fd4a8b1aec10"
+          },
+          {
+            "file": "backpacking-europe-heading-east-warsaw-krakow-part3.json",
+            "sha256": "636dd94a9f0407c31a40b412954652ae5a267daf8cf88fec45d29efa7ac983ae"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 1541,
+        "outputPointCount": 533,
+        "rawDistanceKm": 293.693,
+        "distanceKm": 293.672,
+        "endpointOffsetsMeters": [
+          2,
+          2
+        ],
+        "waypointOffsetsMeters": [
+          2,
+          1016,
+          392,
+          2
+        ],
+        "largestRawGapKm": 5.178,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-krakow-budapest": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+        "retrievedAt": "2026-10-08",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=50.0684%2C19.9474&point=50.2573%2C19.0189&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=50.2573%2C19.0189&point=49.9018%2C18.3572&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=49.9018%2C18.3572&point=48.7548%2C16.8929&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=48.7548%2C16.8929&point=48.1584%2C17.1064&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=48.1584%2C17.1064&point=47.8006%2C18.6844&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.8006%2C18.6844&point=47.7828%2C19.1377&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.7828%2C19.1377&point=47.5109%2C19.0579&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-krakow-budapest-part1.json",
+            "sha256": "a3dd6a711e85cb3dde366be6aded239fda127d9df3b1e370896533ea3643ced8"
+          },
+          {
+            "file": "backpacking-europe-heading-east-krakow-budapest-part2.json",
+            "sha256": "34cd54afb776ad1bb60ffd6bf4488168e3eae57bc1e1a930290eff99c6f63125"
+          },
+          {
+            "file": "backpacking-europe-heading-east-krakow-budapest-part3.json",
+            "sha256": "829469d34795afbadad663632cb236b73dad3c4d74a940379565f3c2efba7262"
+          },
+          {
+            "file": "backpacking-europe-heading-east-krakow-budapest-part4.json",
+            "sha256": "05092d3797b98e268435f72a77b97fa8207840d21a5474f80257421b1ee12e98"
+          },
+          {
+            "file": "backpacking-europe-heading-east-krakow-budapest-part5.json",
+            "sha256": "acc0d071529e74c80a0c1629fba1dca0b9fbfa863680869a0759ebeda5391dce"
+          },
+          {
+            "file": "backpacking-europe-heading-east-krakow-budapest-part6.json",
+            "sha256": "b513f9dd0f6ec6f491ef1f7c72ed44fa52aa6df6b2f9827792dba4338e771d17"
+          },
+          {
+            "file": "backpacking-europe-heading-east-krakow-budapest-part7.json",
+            "sha256": "10072bb9d3aa23dbc25c3e4468341ab9bffca067e2d4a247e198cbb61ad33cf1"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 4858,
+        "outputPointCount": 1497,
+        "rawDistanceKm": 644.016,
+        "distanceKm": 643.944,
+        "endpointOffsetsMeters": [
+          2,
+          4
+        ],
+        "waypointOffsetsMeters": [
+          2,
+          14,
+          171,
+          54,
+          39,
+          117,
+          121,
+          4
+        ],
+        "largestRawGapKm": 4.791,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-budapest-oradea": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+        "retrievedAt": "2026-10-08",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=47.5109%2C19.0579&point=47.1823%2C19.8048&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.1823%2C19.8048&point=47.1815%2C20.1759&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.1815%2C20.1759&point=47.3291%2C21.1227&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.3291%2C21.1227&point=47.13546%2C21.72192&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.13546%2C21.72192&point=47.0727%2C21.9338&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-budapest-oradea-part1.json",
+            "sha256": "3bfe9731db3a26c2680a3f58958a956089218848565541743464f4ebf3444ab3"
+          },
+          {
+            "file": "backpacking-europe-heading-east-budapest-oradea-part2.json",
+            "sha256": "ee6006534a0df422d746cc9e242263b05ff4e62e452adeb4b6866b88010e3fdc"
+          },
+          {
+            "file": "backpacking-europe-heading-east-budapest-oradea-part3.json",
+            "sha256": "a2c35c0f62b991e90647d977c65fc26fde7dd296e48a8a23511854af04d002b1"
+          },
+          {
+            "file": "backpacking-europe-heading-east-budapest-oradea-part4.json",
+            "sha256": "1b2c08fce2dc267d91105307de866301c629b71d9278795068a94cb94aa46d3d"
+          },
+          {
+            "file": "backpacking-europe-heading-east-budapest-oradea-part5.json",
+            "sha256": "e9b01b7465f9b9cd8b8f2384f3059f35e478e607d17803e64504634f882fd0ad"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 1075,
+        "outputPointCount": 394,
+        "rawDistanceKm": 246.377,
+        "distanceKm": 246.363,
+        "endpointOffsetsMeters": [
+          4,
+          14
+        ],
+        "waypointOffsetsMeters": [
+          4,
+          35,
+          2,
+          177,
+          2,
+          14
+        ],
+        "largestRawGapKm": 4.868,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-oradea-sibiu": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+        "retrievedAt": "2026-10-08",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=47.0727%2C21.9338&point=46.1909%2C21.3158&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=46.1909%2C21.3158&point=45.8461%2C23.0106&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=45.8461%2C23.0106&point=45.98924%2C23.49813&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=45.98924%2C23.49813&point=45.8006%2C24.1618&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-oradea-sibiu-part1.json",
+            "sha256": "11d4837bc0b0632d0ec50a02e107594c2136f40fc78b015a3b11e8d51301c269"
+          },
+          {
+            "file": "backpacking-europe-heading-east-oradea-sibiu-part2.json",
+            "sha256": "19c1a4707f2c48e13bac926d812fd472e873be087f69e53ddc275d7fbf41b8a4"
+          },
+          {
+            "file": "backpacking-europe-heading-east-oradea-sibiu-part3.json",
+            "sha256": "b4f90e13913264118818082ed58a0bcee0eff9bbc0fc5f87c5fae03dfecd2939"
+          },
+          {
+            "file": "backpacking-europe-heading-east-oradea-sibiu-part4.json",
+            "sha256": "d96ebc25337efe56e559eaae8d17f163e65aa62e626cbd486ab6ee6f4f0e6e5c"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 2665,
+        "outputPointCount": 1166,
+        "rawDistanceKm": 451.852,
+        "distanceKm": 451.81,
+        "endpointOffsetsMeters": [
+          14,
+          11
+        ],
+        "waypointOffsetsMeters": [
+          14,
+          93,
+          136,
+          15,
+          11
+        ],
+        "largestRawGapKm": 3.95,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-sibiu-timisoara": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+        "retrievedAt": "2026-10-08",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=45.8006%2C24.1618&point=45.98924%2C23.49813&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=45.98924%2C23.49813&point=45.8461%2C23.0106&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=45.8461%2C23.0106&point=46.1909%2C21.3158&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-sibiu-timisoara-part1.json",
+            "sha256": "d43944d5a51bcbdb32ba725a438fcc2c61d22e311704b7d936cda96b4ff5f6d6"
+          },
+          {
+            "file": "backpacking-europe-heading-east-sibiu-timisoara-part2.json",
+            "sha256": "1e11d63b28a7812faecde371e8d1464c34debe496084fc96c70da8e10d7a845f"
+          },
+          {
+            "file": "backpacking-europe-heading-east-sibiu-timisoara-part3.json",
+            "sha256": "8526e1dbcc961c63972c670feca393d2da8ce3baf9619a69916af1f1942ae30d"
+          },
+          {
+            "file": "arad-timisoara-local.json",
+            "sha256": "8628aeb89265bfe9a6cfbb6f29535ebf0504b592d6d0defe80c0b1c4864ad126"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 2687,
+        "outputPointCount": 1077,
+        "rawDistanceKm": 389.621,
+        "distanceKm": 389.581,
+        "endpointOffsetsMeters": [
+          11,
+          58
+        ],
+        "waypointOffsetsMeters": [
+          11,
+          15,
+          136,
+          93,
+          58
+        ],
+        "largestRawGapKm": 3.95,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace. Arad–Timișoara uses the connected local OSM railway graph without gap welding; the hosted rail router reported a disconnected component. Candidate corridor via Arad; date-specific works may alter services. See docs/HEADING_EAST.md.",
+        "localGraph": {
+          "input": "romania-rail.json",
+          "provider": "OpenStreetMap via https://overpass-api.de/api/interpreter",
+          "weldGapsKm": 0,
+          "coordinateBounds": [
+            21.1,
+            45.55,
+            22.7,
+            46.25
+          ],
+          "query": "[out:json][timeout:40];way[railway=rail](45.55,21.10,46.25,22.70);(._;>;);out body;",
+          "rawInputs": [
+            {
+              "file": "romania-rail.json",
+              "sha256": "4cab507e5157c373865530a5a236b1f4a9c5fb061a0893c14e66bdc980fda3de",
+              "dataDate": "2026-10-08T19:05:06Z"
+            }
+          ]
+        }
+      }
+    },
+    "backpacking-europe-heading-east-timisoara-belgrade": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/21.2072,45.7504;21.2645,45.2512;21.302,45.117;20.417,44.804?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-timisoara-belgrade.json",
+            "sha256": "1ebe53bc8e8eb75924abf541d986b10e507ac450847930bbde5adf79be696c5c"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 3128,
+        "outputPointCount": 472,
+        "rawDistanceKm": 164.237,
+        "distanceKm": 164.186,
+        "endpointOffsetsMeters": [
+          8,
+          1
+        ],
+        "waypointOffsetsMeters": [
+          8,
+          55,
+          19,
+          1
+        ],
+        "largestRawGapKm": 1.322,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-belgrade-zagreb": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/20.417,44.804;19.109,45.048;15.978,45.8047?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-belgrade-zagreb.json",
+            "sha256": "4592a4c2769635d9ef567b2a7bc093d6ae603478c48039fd38c29f475f70201f"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 3195,
+        "outputPointCount": 895,
+        "rawDistanceKm": 389.416,
+        "distanceKm": 389.393,
+        "endpointOffsetsMeters": [
+          1,
+          30
+        ],
+        "waypointOffsetsMeters": [
+          1,
+          68,
+          30
+        ],
+        "largestRawGapKm": 2.144,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-zagreb-split": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+        "retrievedAt": "2026-10-08",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=45.8047%2C15.978&point=45.4845%2C15.5473&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=45.4845%2C15.5473&point=45.2256%2C15.278&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=45.2256%2C15.278&point=44.5466%2C15.383&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=44.5466%2C15.383&point=44.0342%2C16.1949&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=44.0342%2C16.1949&point=43.5036%2C16.4426&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-zagreb-split-part1.json",
+            "sha256": "58d0d77dbb26334bd66933fd81d79f63b832d15e0b353f9c11d36e2b7f46e0e9"
+          },
+          {
+            "file": "backpacking-europe-heading-east-zagreb-split-part2.json",
+            "sha256": "60dc859968c8f29bee88c87cd823565bb2809d7de54c1ec23133b5ad9b603886"
+          },
+          {
+            "file": "backpacking-europe-heading-east-zagreb-split-part3.json",
+            "sha256": "c11616345f123930e20318db293e7eb3b6e7c18c0b1eaa0f8bdec0857c80af07"
+          },
+          {
+            "file": "backpacking-europe-heading-east-zagreb-split-part4.json",
+            "sha256": "c5bc0f7e78c0d6ce53ba5c43002de5cf4b92bff4b1e427edf4f7de9e9df05218"
+          },
+          {
+            "file": "backpacking-europe-heading-east-zagreb-split-part5.json",
+            "sha256": "ad7313e0628d2d0bcefc8c2669327102e08f870e97f17ff5f80b5170818c0ac0"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 5746,
+        "outputPointCount": 2571,
+        "rawDistanceKm": 423.897,
+        "distanceKm": 423.734,
+        "endpointOffsetsMeters": [
+          31,
+          72
+        ],
+        "waypointOffsetsMeters": [
+          31,
+          352,
+          220,
+          679,
+          281,
+          72
+        ],
+        "largestRawGapKm": 3.18,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-split-dubrovnik": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/16.4426,43.5036;17.432,43.055;17.532,42.927;17.698,42.838;18.0853,42.6625?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-split-dubrovnik.json",
+            "sha256": "0dfdb1ce6cbbf41e5f11bdef8bba7e36b051a8bfecef745b805f9853710b3dbf"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 5528,
+        "outputPointCount": 1990,
+        "rawDistanceKm": 254.128,
+        "distanceKm": 253.95,
+        "endpointOffsetsMeters": [
+          2,
+          60
+        ],
+        "waypointOffsetsMeters": [
+          2,
+          6,
+          32,
+          6,
+          60
+        ],
+        "largestRawGapKm": 1.582,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-dubrovnik-sarajevo": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/18.0853,42.6625;17.614,42.923;17.649,43.053;17.814,43.349;17.961,43.654;18.3988,43.8594?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-dubrovnik-sarajevo.json",
+            "sha256": "10f67bc436ee0ac456df0b8580df945c6ed1d982b12eeced553e28120918d524"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 7796,
+        "outputPointCount": 2389,
+        "rawDistanceKm": 265.883,
+        "distanceKm": 265.63,
+        "endpointOffsetsMeters": [
+          60,
+          8
+        ],
+        "waypointOffsetsMeters": [
+          60,
+          13,
+          9,
+          64,
+          41,
+          8
+        ],
+        "largestRawGapKm": 0.84,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-sarajevo-novi-pazar": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/18.3988,43.8594;19.005,43.798;19.287,43.782;19.531,43.583;20,43.274;20.518,43.139?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-sarajevo-novi-pazar.json",
+            "sha256": "ed06026c4f97a178ca78f6125ba757600b5e1a81ad1d0a37c1160f8245477097"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 15308,
+        "outputPointCount": 3105,
+        "rawDistanceKm": 284.603,
+        "distanceKm": 284.118,
+        "endpointOffsetsMeters": [
+          8,
+          23
+        ],
+        "waypointOffsetsMeters": [
+          8,
+          8,
+          56,
+          112,
+          44,
+          23
+        ],
+        "largestRawGapKm": 0.596,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-novi-pazar-skopje": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/20.518,43.139;20.449,42.945;20.866,42.883;21.156,42.648;21.3005,42.145;21.4469,41.9903?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-novi-pazar-skopje.json",
+            "sha256": "b96d808c96c22736915f00b95e9a3263bab20f10c4cf385e07293d62225f0bb7"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 7398,
+        "outputPointCount": 1857,
+        "rawDistanceKm": 220.591,
+        "distanceKm": 220.345,
+        "endpointOffsetsMeters": [
+          23,
+          6
+        ],
+        "waypointOffsetsMeters": [
+          23,
+          194,
+          2,
+          14,
+          22,
+          6
+        ],
+        "largestRawGapKm": 1.502,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-skopje-ohrid": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/21.4469,41.9903;20.989,42.003;20.914,41.793;20.965,41.51;20.8138,41.1274?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-skopje-ohrid.json",
+            "sha256": "1a6cf167e24f559072250ec9f491d365df952d48b12132739f23e2632bde7e45"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 3951,
+        "outputPointCount": 1390,
+        "rawDistanceKm": 180.359,
+        "distanceKm": 180.216,
+        "endpointOffsetsMeters": [
+          6,
+          4
+        ],
+        "waypointOffsetsMeters": [
+          6,
+          29,
+          1,
+          15,
+          4
+        ],
+        "largestRawGapKm": 0.654,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-ohrid-tirana": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/20.8138,41.1274;20.677,41.179;20.6106,41.063;20.083,41.112;19.776,41.344?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-ohrid-tirana.json",
+            "sha256": "442d9c0cc18903eae75aa042ea59e458c4d05439781df2ede9f5a6d9ab2516cb"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 3998,
+        "outputPointCount": 1202,
+        "rawDistanceKm": 138.387,
+        "distanceKm": 138.23,
+        "endpointOffsetsMeters": [
+          4,
+          3
+        ],
+        "waypointOffsetsMeters": [
+          4,
+          2,
+          31,
+          24,
+          3
+        ],
+        "largestRawGapKm": 2.351,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-tirana-qeparo": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/19.776,41.344;19.489,40.47;19.638,40.145;19.743,40.101;19.8235,40.0548?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-tirana-qeparo.json",
+            "sha256": "1c179df1a78630e319f3cb81d4903201ba87b447e112b1a340348c5027e01452"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 5602,
+        "outputPointCount": 1434,
+        "rawDistanceKm": 227.898,
+        "distanceKm": 227.681,
+        "endpointOffsetsMeters": [
+          3,
+          12
+        ],
+        "waypointOffsetsMeters": [
+          3,
+          1,
+          10,
+          40,
+          12
+        ],
+        "largestRawGapKm": 4.098,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-qeparo-sarande": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/19.8235,40.0548;20.0053,39.8753?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-qeparo-sarande.json",
+            "sha256": "033399b80c3ede38caf0e5ef573bc088ac1596837712ba0b664fb85394c680a2"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 2476,
+        "outputPointCount": 675,
+        "rawDistanceKm": 40.746,
+        "distanceKm": 40.606,
+        "endpointOffsetsMeters": [
+          12,
+          17
+        ],
+        "waypointOffsetsMeters": [
+          12,
+          17
+        ],
+        "largestRawGapKm": 0.158,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-sarande-athens": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-08",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/20.0053,39.8753;20.148,40.086;20.36,39.916;20.842,39.67;21.777,38.307;22.928,37.934;23.7201,37.989?overview=full&geometries=geojson&steps=false"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-sarande-athens.json",
+            "sha256": "9c78451fdf8499ec9a824b60e172d793f5fd69bef075cf6176045eaba9946196"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 11196,
+        "outputPointCount": 2868,
+        "rawDistanceKm": 560.533,
+        "distanceKm": 560.292,
+        "endpointOffsetsMeters": [
+          17,
+          3
+        ],
+        "waypointOffsetsMeters": [
+          17,
+          5,
+          107,
+          23,
+          113,
+          8,
+          3
+        ],
+        "largestRawGapKm": 2.802,
+        "maxSectionJoinMeters": 0,
+        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
       }
     }
   }

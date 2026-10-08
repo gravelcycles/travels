@@ -328,3 +328,13 @@ stability, cross-day navigation and auth image cleanup. No-coordinate places are
 not yet supported: unfinished Studio points require a known coordinate before
 Save, with recovery retaining the unfinished draft. Image-file intake/permission
 research remains agent-operated; the editor manages approved image references.
+
+## TBD itineraries — 8 October 2026
+
+Optional day `planningStatus` (`confirmed`/`tbd`, absent = existing behavior)
+provides shared confidence styling and a non-mutating visibility projection.
+All incoming legs inherit their event's status; geometry quality stays separate.
+An undated TBD tail is validated without extending the known calendar. The viewer,
+Studio, photo assignment and calendar moves retain the shared contracts. Heading
+East supplies the content instance; family/demo/fresh-draft tests cover inheritance.
+No separate trip implementation or framework migration is introduced.

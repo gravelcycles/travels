@@ -104,6 +104,8 @@ export function validateJourneys(data) {
       if (s.geometry && (s.geometry.length < 2 || !s.geometry.every(validCoordinate))) fail(`${s.id}: invalid geometry`);
     }
     const assigned = new Set();
+    const datedDays = j.days.filter(day => day.calendarDate || day.planningStatus !== "tbd");
+    let reachedUndated = false;
     j.days.forEach((d, i) => {
       if (d.number !== i + 1) fail(`${d.id}: day numbers must be consecutive`);
       if (typeof d.title !== "string" || !d.title.trim()) fail(`${d.id}: missing title`);
@@ -114,6 +116,14 @@ export function validateJourneys(data) {
         if (!segments.has(id) || assigned.has(id)) fail(`${d.id}: unknown or multiply assigned segment ${id}`);
         assigned.add(id);
       }
+      if (d.planningStatus != null && !['confirmed', 'tbd'].includes(d.planningStatus)) fail(`${d.id}: planningStatus must be confirmed or tbd`);
+      const undated = d.planningStatus === 'tbd' && d.calendarDate == null;
+      if (undated) {
+        if (d.calendarEndDate) fail(`${d.id}: an undated TBD stop cannot have a departure date`);
+        reachedUndated = true;
+        return;
+      }
+      if (reachedUndated) fail(`${d.id}: undated TBD entries must follow the dated itinerary`);
       if (d.calendarDate) calendarDate(d.calendarDate);
       if (j.eventMode === 'city') {
         const start = calendarDate(d.calendarDate), end = calendarDate(d.calendarEndDate);
@@ -126,10 +136,10 @@ export function validateJourneys(data) {
       const start = calendarDate(j.startDate), end = calendarDate(j.endDate);
       if (end < start || (end - start) / 86400000 >= 366) fail(`${j.id}: choose a range of 1–366 calendar days`);
       if (j.eventMode === 'city') {
-        if (j.days[0].calendarDate !== j.startDate || j.days.at(-1).calendarEndDate !== j.endDate) fail(`${j.id}: city stops must cover the trip date range`);
+        if (j.days[0].calendarDate !== j.startDate || datedDays.at(-1)?.calendarEndDate !== j.endDate) fail(`${j.id}: city stops must cover the trip date range`);
       } else {
-        if ((end - start) / 86400000 + 1 !== j.days.length) fail(`${j.id}: date range must include every calendar day`);
-        j.days.forEach((d,i) => { if (d.calendarDate !== new Date(+start + i * 86400000).toISOString().slice(0,10)) fail(`${d.id}: calendar date does not match trip range`); });
+        if ((end - start) / 86400000 + 1 !== datedDays.length) fail(`${j.id}: date range must include every calendar day`);
+        datedDays.forEach((d,i) => { if (d.calendarDate !== new Date(+start + i * 86400000).toISOString().slice(0,10)) fail(`${d.id}: calendar date does not match trip range`); });
       }
     }
     for (const p of j.photos) {

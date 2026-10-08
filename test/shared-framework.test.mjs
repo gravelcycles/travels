@@ -912,3 +912,38 @@ test('Photos + Places editing and rendering are inherited by family, sample and 
     assert.ok(Object.hasOwn(globalThis.JOURNEY_ATLAS_PLAN_EXTRAS.changes(changed),'pointsOfInterest'));
   }
 });
+
+test('TBD planning is shared by the family, demo and fresh draft without inventing dates', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const {data} = loadContent(root);
+  const utils = globalThis.JOURNEY_ATLAS_UTILS;
+  for (const original of [data.journeys.find(j => j.id === 'switzerland-italy-family-2026'), data.journeys.find(j => j.kind === 'demo'), draft]) {
+    const journey = structuredClone(original);
+    assert.equal(utils.projectPlanning(journey, false), journey, 'Absent status keeps existing behavior');
+    const place = {id:`${journey.id}-future-place`,name:'A possible destination',lng:20,lat:40};
+    journey.places.push(place);
+    const segment = {id:`${journey.id}-future-leg`,from:journey.places[0].id,to:place.id,mode:'bus'};
+    journey.segments.push(segment);
+    const pending = {id:`${journey.id}-future-stop`,number:journey.days.length+1,title:'Next city',planningStatus:'tbd',date:'TBD',text:'',destinationId:place.id,segmentIds:[segment.id]};
+    journey.days.push(pending);
+    const record = {defaultJourneyId:journey.id,journeys:[journey]};
+    assert.doesNotThrow(() => validateJourneys(record));
+    const snapshot = JSON.stringify(journey);
+    const shown = utils.projectPlanning(journey), hidden = utils.projectPlanning(journey, false);
+    assert.match(shown.days.at(-1).date, /TBD.*Dates to decide/);
+    assert.equal(shown.segments.at(-1).planningStatus, 'tbd');
+    assert.equal(shown.days.at(-1).calendarDate, undefined);
+    assert.ok(!hidden.days.some(day => day.id === pending.id));
+    assert.ok(!hidden.segments.some(leg => leg.id === segment.id));
+    assert.ok(!hidden.places.some(p => p.id === place.id));
+    assert.equal(JSON.stringify(journey), snapshot, 'Filtering never mutates the source');
+    assert.ok(renderJourneyPage(root, journey, {preview:true}).includes('id="show-tbd"'));
+    const shifted = prepareJourneyPlan({...data, journeys:[journey],defaultJourneyId:journey.id}, journey, {endDate:journey.endDate}, {days:{},routes:{},photos:{}}).journey;
+    assert.equal(shifted.days.at(-1).planningStatus, 'tbd');
+    pending.planningStatus = 'maybe'; assert.throws(() => validateJourneys(record), /planningStatus/);
+    pending.planningStatus = 'tbd'; pending.calendarEndDate = '2028-04-01'; assert.throws(() => validateJourneys(record), /undated TBD/);
+    delete pending.calendarEndDate;
+    journey.days.push({...pending,id:`${journey.id}-bad-after`,number:pending.number+1,planningStatus:'confirmed',segmentIds:[]});
+    assert.throws(() => validateJourneys(record), /undated TBD entries/);
+  }
+});

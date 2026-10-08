@@ -41,7 +41,7 @@
       rel="stylesheet"
       href="./assets/vendor/maplibre-5.24.0/maplibre-gl.css"
     />
-    <link rel="stylesheet" href="./assets/styles.css?v=94f03cdff0a4" />
+    <link rel="stylesheet" href="./assets/styles.css?v=e25cd9e1e38b" />
     <link rel="stylesheet" href="./assets/mobile.css?v=e91be2f9b304" />
     <link rel="stylesheet" href="./assets/group-travel.css?v=832960325138" />
     <link rel="stylesheet" href="./assets/map-feedback.css?v=31eb86c9e975" />
@@ -82,6 +82,10 @@
 
         <section id="travel-party" class="travel-party" aria-label="Travelers and routes" hidden></section>
 
+        <label class="planning-filter" id="planning-filter" hidden>
+          <input type="checkbox" id="show-tbd" checked>
+          <span>Show TBD stops <small id="tbd-count"></small></span>
+        </label>
         <div class="route-heading">
           <span data-event-copy="THE DAYS">THE DAYS</span>
           <small id="day-count"></small>
@@ -297,14 +301,14 @@
     <dialog id="comments-dialog" class="comments-dialog" aria-labelledby="comments-title"></dialog>
 
     <script src="./assets/vendor/maplibre-5.24.0/maplibre-gl.js"></script>
-    <script src="./assets/journeys.js?v=934b73460383"></script>
-    <script src="./assets/route-geometry.js?v=29d087e16539"></script>
+    <script src="./assets/journeys.js?v=e9a63b322829"></script>
+    <script src="./assets/route-geometry.js?v=3ec02caaed24"></script>
     <script src="./assets/trip-photos.js?v=7197e388c5ff"></script>
     <script src="./assets/content-overrides.js?v=0b5cfc43ecd1"></script>
     <script src="./assets/replay-utils.js?v=3affec64ef97"></script>
     <script src="./assets/photo-service.js?v=7cf17f81b44e"></script>
     <script src="./assets/photo-auth.js?v=443935094484"></script>
-    <script src="./assets/atlas-utils.js?v=aaaf66c27156"></script>
+    <script src="./assets/atlas-utils.js?v=f4fe5c66292d"></script>
     <script src="./assets/map-style.js?v=e5948bb6f50c"></script>
     <script src="./assets/map-feedback.js?v=ecf2650f2582"></script>
     <script src="./assets/mobile-ux.js?v=4df271b0491f"></script>
@@ -317,6 +321,6 @@
     <script src="./assets/photo-bubbles.js?v=65f922679b84"></script>
     <script src="./assets/places-panel.js?v=c66ab1a6ba4d"></script>
     <script src="./assets/photo-comments.js?v=bcdeb2a1f2cc"></script>
-    <script src="./assets/app.js?v=0bda0b753e25"></script>
+    <script src="./assets/app.js?v=ef960accb561"></script>
   </body>
 </html>
