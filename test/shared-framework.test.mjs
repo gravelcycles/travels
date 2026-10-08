@@ -866,3 +866,18 @@ test('community UI is inherited while eligibility includes only published real v
     assert.match(html, /community-client\.js/); assert.match(html, /id="open-photo-comments"/);
   }
 });
+
+test('private video contracts, intake controls and local-only exclusion are shared by family, demo and a fresh draft', t => {
+  const root=fixture(t), created=createJourney(root,input),{data}=loadContent(root,{includeDrafts:true});
+  const journeys=[data.journeys.find(j=>j.kind==='real'&&j.published),data.journeys.find(j=>j.kind==='demo'),data.journeys.find(j=>j.id===created.id)];
+  for (const journey of journeys) {
+    const video={id:`${journey.id}-private-fixture`,dayId:journey.days[0].id,title:'Local synthetic video',caption:'',mimeType:'video/mp4',visibility:'private',protected:true,assetStatus:'local',src:`/private-videos/assets/v1/${'a'.repeat(64)}.mp4`,poster:`/private-photos/assets/v1/${'b'.repeat(64)}.webp`,width:320,height:180,bytes:1000,posterBytes:100,durationSeconds:2};
+    journey.videos=[video];validateJourneyExtras(journey);
+    const preview=renderJourneyPage(root,journey,{preview:true});assert.match(preview,/journey-video/);assert.match(preview,/media-utils\.js/);
+    const controls=globalThis.JOURNEY_ATLAS_PLAN_EXTRAS.videos(journey);assert.match(controls,/data-import-video/);assert.match(controls,/Local preview only/);assert.doesNotMatch(controls,/data-video-field="assetStatus"/);
+    const planned=prepareJourneyPlan(data,journey,{videos:journey.videos},readOverrides(root)).journey;assert.deepEqual(planned.videos,journey.videos);
+    const source=path.join(root,`content/${journey.published?'journeys':'drafts'}/${journey.id}.json`);const original=JSON.parse(fs.readFileSync(source,'utf8'));writeJson(source,{...original,videos:journey.videos});
+    for(const key of ['transcript','captions']){const invalid=structuredClone(journey);invalid.videos[0][key]=key==='transcript'?'Private words':[{start:0,end:1,text:'Private words'}];assert.throws(()=>validateJourneyExtras(invalid),/private transcripts/);}
+  }
+  buildSite(root);const output=fs.readFileSync(path.join(root,'dist/assets/journeys.js'),'utf8');assert.doesNotMatch(output,/private-fixture/);
+});

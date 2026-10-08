@@ -1197,11 +1197,11 @@
   }
   function planChanges(draft) { return planExtras.changes(draft); }
   function dirtyPlan() { const plan=planForJourney(); plan.dirty=true; plan.version=(plan.version || 0)+1; plan.previewed=false; markDirty('Trip plan changed'); $('#plan-status').textContent='Draft autosaves locally. Save locally when ready; checking changes is optional.'; $('#plan-save').disabled=savingState; }
-  const studioPosters = window.JOURNEY_ATLAS_MEDIA.createPosterLoader(document);
-  const studioVideoPlayer = window.JOURNEY_ATLAS_MEDIA.createVideoPlayer({video:$('#studio-video'),shell:$('#studio-video-shell'),play:$('#studio-video-play'),status:$('#studio-video-status'),retry:$('#studio-video-retry'),sourceLink:$('#studio-video-credit'),posters:studioPosters});
+  const studioPosters = window.JOURNEY_ATLAS_MEDIA.createPosterLoader(document,{privatePoster:src=>Promise.resolve({url:`/build/private-photo-assets/${src.slice('/private-photos/assets/'.length)}`,release(){}})});
+  const studioVideoPlayer = window.JOURNEY_ATLAS_MEDIA.createVideoPlayer({video:$('#studio-video'),shell:$('#studio-video-shell'),play:$('#studio-video-play'),status:$('#studio-video-status'),retry:$('#studio-video-retry'),sourceLink:$('#studio-video-credit'),posters:studioPosters,privateSource:src=>Promise.resolve(`/build/private-video-assets/${src.slice('/private-videos/assets/'.length)}`)});
   let previewingVideo = null;
   function previewStudioVideo(video) {
-    if (!planExtras.publicUrl(video.src) || [video.poster,video.creditUrl].filter(Boolean).some(url=>!planExtras.publicUrl(url))) { $('#plan-status').textContent='Use public HTTPS links for the video, opening-frame image and credit.'; return; }
+    if (video.visibility!=='private' && (!planExtras.publicUrl(video.src) || [video.poster,video.creditUrl].filter(Boolean).some(url=>!planExtras.publicUrl(url)))) { $('#plan-status').textContent='Use public HTTPS links for the video, opening-frame image and credit.'; return; }
     previewingVideo = {journeyId:journey.id,id:video.id,src:video.src};
     $('#studio-video-title').textContent = video.title || 'Video preview';
     $('#studio-video-caption').textContent = video.caption;
@@ -1210,7 +1210,7 @@
   }
   $('#studio-video').addEventListener('loadedmetadata',()=>{
     const selection=previewingVideo, duration=$('#studio-video').duration;
-    if (!selection || selection.journeyId!==journey.id || !Number.isFinite(duration) || duration<=0 || $('#studio-video').currentSrc!==new URL(selection.src).href) return;
+    if (!selection || selection.journeyId!==journey.id || selection.src.startsWith('/private-videos/') || !Number.isFinite(duration) || duration<=0 || $('#studio-video').currentSrc!==new URL(selection.src).href) return;
     const video=planForJourney().draft.videos?.find(video=>video.id===selection.id && video.src===selection.src);
     if (video && !video.durationSeconds) {
       video.durationSeconds=Math.round(duration*1000)/1000; dirtyPlan();
@@ -1221,9 +1221,27 @@
   $('#studio-video-close').addEventListener('click',()=>$('#studio-video-dialog').close());
   $('#studio-video-dialog').addEventListener('close',()=>{previewingVideo=null;studioVideoPlayer.stop();});
   document.addEventListener('visibilitychange',()=>{if(document.hidden)studioVideoPlayer.pause();});
+  let importingVideo=false;
+  async function importPrivateVideo(panel) {
+    if (importingVideo) return;
+    const file=panel.querySelector('[data-video-upload]').files[0], title=panel.querySelector('[data-video-upload-title]').value.trim(), dayId=panel.querySelector('[data-video-upload-day]').value;
+    const status=panel.querySelector('[data-video-upload-status]'), current=journey;
+    if (!file || !title) {status.textContent='Choose a video and give it a title.';return;}
+    if (file.size>250*1024*1024) {status.textContent='Choose a video up to 250 MB.';return;}
+    importingVideo=true;panel.querySelector('[data-import-video]').disabled=true;status.textContent='Preparing your private video and opening frame. This may take a few minutes…';
+    try {
+      const query=new URLSearchParams({journeyId:current.id,dayId,filename:file.name,title});
+      const response=await fetch(`/api/videos/import?${query}`,{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:file});
+      const result=await response.json();if(!response.ok||!result.ok)throw new Error(result.error || 'Video import failed.');
+      current.videos ||= [];if(!current.videos.some(v=>v.id===result.video.id))current.videos.push(result.video);
+      const plan=plans.get(current.id);if(plan){plan.draft.videos ||= [];if(!plan.draft.videos.some(v=>v.id===result.video.id))plan.draft.videos.push(result.video);plan.previewed=false;}
+      if(journey.id===current.id){renderPlanner();$('#plan-status').textContent=`${result.duplicate?'Already imported':'Video prepared locally'}. ${result.warnings.join(' ')}`;}
+    } catch(error) {status.textContent=error.message;}
+    finally {importingVideo=false;panel.querySelector('[data-import-video]').disabled=false;}
+  }
   const extrasEditor = planExtras.create({container:$('#trip-planner'),getDraft:()=>planForJourney().draft,getPhotos:()=>planForJourney().draft.photos.map(photoWithOverride),
     onPhotoGroups:(id,groupIds)=>{planExtras.setAudience(planForJourney().draft.photos.find(photo=>photo.id===id),groupIds || []);},
-    onChange:refresh=>{dirtyPlan();if(refresh)renderPlanner();},onStatus:message=>{$('#plan-status').textContent=message;},previewVideo:previewStudioVideo});
+    onChange:refresh=>{dirtyPlan();if(refresh)renderPlanner();},onStatus:message=>{$('#plan-status').textContent=message;},previewVideo:previewStudioVideo,importVideo:importPrivateVideo});
   function uniquePlanId(kind, items) { let n=1; while (items.some(item => item.id === `${journey.id}-${kind}${n}`)) n++; return `${journey.id}-${kind}${n}`; }
   function newPlaceCanBeRemoved(draft, id) {
     return !journey.places.some(place => place.id === id)

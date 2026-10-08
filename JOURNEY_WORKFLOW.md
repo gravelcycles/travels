@@ -546,8 +546,10 @@ attribution, confirms the link is intended for public viewing, hides a clip,
 marks sample footage, or keeps it local until a later published build. A local
 preview flag is not private video storage. Check changes and save locally to
 include the clip in Preview atlas; publication still uses the normal deployment
-workflow. File uploads and authenticated private video delivery remain future
-work; Studio currently accepts hosted public links.
+workflow. **Add a private video** accepts MOV/MP4/WebM clips up to five minutes
+and 250 MB, with an explicit day and title. Processing preserves the original
+privately and prepares a bounded MP4 and WebP poster. Imported clips remain local
+until the reviewed video publishing workflow in `PHOTO_WORKFLOW.md` succeeds.
 
 An optional journey `videos` list adds videos alongside photos in day previews,
 albums, the phone grid and the existing full-screen photo viewer. There is no
@@ -578,11 +580,26 @@ changing groups/trips or closing the viewer releases the source; opening the
 phone grid or backgrounding pauses it. Failures offer retry. Native video taps
 and scrubbing are not intercepted by photo swipe/zoom gestures.
 
-This first sample supports public hosted clips, not private video intake or
-upload. Never add private original URLs to public journey JSON. Private video
-publishing needs a separate authenticated, range-aware media delivery path,
-reviewed derivatives/posters, and timed caption support before personal clips
-are added. See the remaining work in `docs/FRAMEWORK.md` and `TODO.md`.
+Private entries instead require `visibility: "private"`, `protected: true`,
+`mimeType: "video/mp4"`, and explicit `assetStatus: "local" | "published"`. Their
+`src` is `/private-videos/assets/v1/<sha256>.mp4`; `poster` uses the existing
+`/private-photos/assets/v1/<sha256>.webp` namespace. Intake records `width`,
+`height`, `durationSeconds`, `bytes`, `posterBytes`, and a source hash. Original
+filenames and camera metadata stay in ignored local storage; source hashes are
+omitted from public bundles. Studio can change editorial fields, order, day and
+groups, but cannot forge derivative paths or publication status through plan saves.
+
+For public clips only, optional `transcript` is plain supplied text (at most 20,000 characters), shown
+in the native viewer and editable in Studio. Optional `captions` are up to 500
+ordered, non-overlapping `{start, end, text}` cues in seconds within the clip;
+`captionLanguage` optionally supplies a language tag. The viewer creates a native
+WebVTT track from this text. Nothing invents or automatically transcribes speech.
+Timed cue authoring is currently source/agent operated. Private clips reject speech
+transcripts/timed captions until protected text delivery is implemented; titles
+and brief editorial notes remain public like other journey stories. Hosted samples
+are unchanged.
+Never place a private original URL in journey JSON. Per-day group membership and
+Live Photos pairing remain follow-ups; video intake itself is implemented.
 
 
 ## Audit fixes — 12 September 2026

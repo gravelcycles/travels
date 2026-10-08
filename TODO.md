@@ -48,15 +48,15 @@ project-level status.
       Replay shipped after parts of the brief were written; then stage the
       remaining approved cover, story, mobile, album, Replay, and polish work.
 
-- [ ] **W07 — Private video intake and group authoring.** Public video playback
-      in the photo viewer, opening-frame thumbnails, and route-group details
-      in each day are demonstrated by Nine to Como. Before private
-      clips, add reviewed video/poster derivatives, authenticated byte-range
-      delivery with the existing photo access policy, timed captions/transcripts
-      and Studio video file intake. Roster/leg/photo/video assignment forms,
-      meetup/overnight editing and hosted-video forms are delivered. Model
-      per-day changes of group membership when the real itinerary needs them. Contracts:
-      `JOURNEY_WORKFLOW.md`, `PHOTO_WORKFLOW.md`, `docs/FRAMEWORK.md`.
+- [ ] **W07 — Group authoring follow-up.** Private video intake, reviewed
+      H.264/AAC/poster derivatives, authenticated byte-range delivery, supplied
+      public-clip transcripts/timed captions, and checksum-verified publishing are implemented
+      (8 October). Studio edits transcripts; timed cue authoring remains source/
+      agent operated. Protected private transcripts/caption tracks remain pending.
+      Roster/leg/photo/video assignments, meetup and overnight forms
+      are delivered. Per-day membership changes remain pending when a real itinerary
+      needs them. The six held MOVs still need specific review/publication approval.
+      Contracts: `JOURNEY_WORKFLOW.md`, `PHOTO_WORKFLOW.md`, `docs/FRAMEWORK.md`.
 
 ## P0 · Content corrections
 

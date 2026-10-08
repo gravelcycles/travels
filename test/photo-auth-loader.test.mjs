@@ -439,3 +439,18 @@ test('swipe neighbors use cached full photos without starting or promoting downl
   assert.ok(f.calls.every(([,options])=>options.priority==='low'));
   f.auth.lock();assert.equal(f.auth.setCachedImage(neighbor,photo),false);
 });
+
+test('private videos obtain only short-lived scoped grants while poster bytes use the existing private cache',async()=>{
+ const videoSrc=`/private-videos/assets/v1/${'d'.repeat(64)}.mp4`;
+ const f=fixture(url=>url.endsWith('/video-access')?Response.json({grant:'scoped.signature',expiresAt:Math.floor(Date.now()/1000)+500}):new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));
+ await assert.rejects(f.auth.videoSource(videoSrc),/Unlock/);assert.equal(f.calls.length,0);
+ await f.unlock();const url=await f.auth.videoSource(videoSrc);assert.equal(url,`https://photos.example.com${videoSrc}?grant=scoped.signature`);assert.doesNotMatch(url,/fixture-access-token/);
+ const request=f.calls.find(([url])=>url.endsWith('/video-access'));assert.equal(request[1].headers.Authorization,'Bearer fixture-access-token');assert.equal(JSON.parse(request[1].body).src,videoSrc);
+ const lease=await f.auth.acquirePoster(photo.src);assert.match(lease.url,/^blob:/);f.auth.lock();assert.ok(f.revoked.includes(lease.url));lease.release();
+ await assert.rejects(f.auth.videoSource('https://evil.example/movie.mp4'),/Invalid/);
+});
+test('a late grant cannot unlock video after locking, and excessive grant lifetimes fail closed',async()=>{
+ const videoSrc=`/private-videos/assets/v1/${'d'.repeat(64)}.mp4`;let finish;
+ const f=fixture(()=>new Promise(resolve=>{finish=resolve;}));await f.unlock();const pending=f.auth.videoSource(videoSrc);await settle();f.auth.lock();finish(Response.json({grant:'scoped.signature',expiresAt:Math.floor(Date.now()/1000)+500}));await assert.rejects(pending,/access changed/);
+ const excessive=fixture(()=>Response.json({grant:'scoped.signature',expiresAt:Math.floor(Date.now()/1000)+1800}));await excessive.unlock();await assert.rejects(excessive.auth.videoSource(videoSrc),/unavailable/);
+});
