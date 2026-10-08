@@ -98,3 +98,5 @@ bicycle days from 10–15 May 2026. Its six legs retain detailed, preserved
 bicycle-network geometry with explicit reconstruction provenance. Arrival
 travel and its group filters were removed at the owner’s request;
 see [FLORENCE_GENOA.md](FLORENCE_GENOA.md). No trip-specific runtime code.
+Its public day descriptions contain only campsite names; the existing optional
+taglines are omitted, with detailed planning evidence retained in route sources.

@@ -64,6 +64,10 @@ Journey sources live in `content/journeys/<journey-id>.json`. The root catalog
 and stable trip-detail URLs are generated from each journey's `kind`, `published`,
 and `slug`. `dist/assets/journeys.js` is generated; do not edit it by hand.
 
+For concise editorial copy, day `text` can contain only the campsite name and
+`tagline` can be omitted. Leave `text` empty when there is no campsite to list;
+retain route research and planning estimates in source records and intake docs.
+
 Optional `overviewBounds: [[west, south], [east, north]]` adds geographic context
 to the full-trip map. Use valid longitude/latitude corners with positive area;
 the viewer includes these bounds together with every route and place, so they
