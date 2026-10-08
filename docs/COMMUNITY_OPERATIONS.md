@@ -5,6 +5,21 @@ from the local implementation checks. The existing private-photo Worker owns
 all visitor access; curated Places and group reviews remain public Git content.
 Do not infer traveler/editor permission from a shared password or display name.
 
+## Provisioning record — 8 October 2026
+
+`travels-community` is provisioned and migration `0001_community.sql` is applied.
+The real database ID is in Wrangler configuration. Worker version
+`c7adbb5d-6643-43ce-a30a-ec920ef2f4ef` includes the community and video helpers.
+Existing photo credentials/signing secret were preserved; a separate random
+moderation key is installed. Its owner-readable local copy is ignored at
+`build/private-auth/community-admin.json` in the primary Travels checkout.
+Never commit or copy this value into an issue, chat, URL or browser bundle.
+
+Actual Miniflare checks cover shared writes, ownership and Undo; browser fixture
+checks cover the UI. Production read-only checks passed for signed visitor reads,
+admin export, photo delivery and anonymous/foreign-origin rejection. No invented
+comments were inserted into real memories. No billing/plan upgrade was performed.
+
 ## Provision once
 
 Keep the owner's Free-plan constraint: do not upgrade the Worker or activate a
