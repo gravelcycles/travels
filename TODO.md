@@ -277,9 +277,10 @@ production code remains pending.
       authenticated photo comments, eligible-target index, stable retry IDs,
       pagination, own edit/delete with five-minute Undo, separate admin moderation
       and private export. Shared UI and actual D1 runtime tests are included.
-- [ ] **W08 rollout:** provision the Free-plan D1 binding/migration and separate
-      administrator secret, deploy the Worker/index before Pages, verify public
-      authenticated flows. Follow docs/COMMUNITY_OPERATIONS.md. Group place reviews
+- [x] **W08 rollout — 8 October:** provisioned D1 binding/migration and separate
+      administrator secret; deployed and checked the Worker before Pages.
+      Actual runtime covers writes/Undo; production checks are read-only to avoid
+      fabricated memories. Follow docs/COMMUNITY_OPERATIONS.md. Group place reviews
       remain prompt-authored; a photo password grants no traveler/editor role.
 - [x] **W08 UX polish:** preserved drafts and context, search/filter recovery,
       rating-only/editable reviews, full-screen galleries, photo conversations

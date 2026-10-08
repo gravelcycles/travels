@@ -7,6 +7,64 @@ to the public site. [TODO.md](TODO.md) remains the backlog;
 [docs/FEATURES.md](docs/FEATURES.md) describes implemented capabilities;
 [docs/FRAMEWORK.md](docs/FRAMEWORK.md) defines the shared-code contract.
 
+## Four implemented workstreams — 8 October 2026
+
+The owner requested four parallel implementation agents after reviewing the demos.
+All four are now combined in this release. Original branches remain local.
+
+| Workstream | Local branch / checkpoint | Delivered behavior |
+| --- | --- | --- |
+| Places and photo conversations | `codex/places-community-20261008` · `f26ba19` | The shipped Places UI retains curated facts/group reviews. Photo conversations now use signed remembered visitor identities, shared D1 storage, own editing/deletion/Undo, retry-safe posting, pagination and separate owner moderation/export. |
+| Batch photo editing | `codex/batch-editing-20261008` · `f5d3019` | Studio Photos → Select multiple opens a contact sheet with search/day/trash filters, outside-filter selection counts, day assignment, album-start ordering, Trash/Restore and guarded Undo. Existing draft/save/recovery is reused. |
+| Private video | `codex/private-video-20261008` · `2074837`, `97d1198` | Studio imports bounded MOV/MP4/WebM clips, creates stripped MP4/poster derivatives, previews locally, and supports authenticated native seeking. Explicit publishing verifies hashes and checks a conservative storage ceiling. Original held family clips remain unpublished. Private speech transcripts/captions remain deferred. |
+| Ready to share | `codex/ready-to-share-20261008` · `7cf6ee9` | Studio checks the actual draft against saved sources, identifies asset/validation blockers, links to editors and produces a revision-bound publishing handoff. Blank captions/stories are valid. The panel reports the public version as unverified until external deployment checks. |
+
+Integration: `codex/workstreams-integration-20261008`, based on family release
+`b86bc45`. Validation: **403/403 tests**, build and clean generated-output checks;
+actual Worker runtime verifies login/remembered access, D1 persistence and Undo,
+and protected R2 video ranges/HEAD. Browser checks covered batch Trash/Undo,
+readiness navigation/draft states, synthetic video playback and comment editing.
+The integration also fixes serving Studio's batch assets and checks every
+script/style referenced by Studio through its real HTTP server.
+
+The comments database and migration are provisioned in the existing account.
+Worker version `c7adbb5d-6643-43ce-a30a-ec920ef2f4ef` was deployed before Pages;
+read-only production checks passed for anonymous/foreign-origin denial,
+authenticated profile/comment reads, separate admin access and protected photos.
+No fabricated comments or held family footage were published. Service operations,
+identity limitations, moderation and retention are in
+[COMMUNITY_OPERATIONS.md](docs/COMMUNITY_OPERATIONS.md).
+
+The existing no-paid-services constraint remains in force. No plan was upgraded;
+private video reuses the existing R2 bucket and authentication. Group place
+reviews remain prompt-authored; a photo password grants no traveler/editor role.
+
+## Photos + Places demo and Replay clarification
+
+**Replay playback and its slider are already shipped.** The unfinished timeline
+proposal adds named stops and clearer seeking. The day-experience experiment
+separately compares camera framing; neither means Replay itself is unfinished.
+
+The requested combined **Photos + Places** scene is saved locally at
+`codex/day-experience-review` · `37a8b0a`. Open
+[the local demo](http://127.0.0.1:4175/?scene=places): photo bubbles sit alongside
+place pins, photos link to a nearby place, and places offer nearby trip photos.
+Phone/desktop views, a stable selected group through zooming, an empty nearby
+state and an unlocated album photo are included. All sample album placements are
+explicitly illustrative and retain image credits. The 150 m proximity rule saves
+no geographic association. Production adoption remains a separate shared change.
+
+The prototype passed **369 repository + 11 prototype tests** and a build. Its
+source and run instructions are at
+`experiments/day-experience/README.md` on that local branch. The combined Studio
+preview runs at [port 4185](http://127.0.0.1:4185/studio/). These loopback links
+work only while the corresponding local servers are running.
+
+This section supersedes pending-status claims in the historical cleanup and
+family-publication checkpoints below. Remaining design work includes explicit
+sharing, named Replay timeline stops, the delight mockup and production adoption
+of photo bubbles. Framework W04–W06 and paired Live Photos W09 remain open.
+
 ## Publication update — 8 October 2026
 
 After the cleanup below, the owner explicitly requested publication of the saved
@@ -26,7 +84,8 @@ branches remain local. See [the publication record](docs/workstreams/family-cont
 - Refreshed the local map/Replay comparison against current shared code;
   **10/10 prototype checks** pass. The standalone feature and delight mockups
   remain simulations. Places/comments previews remain available on the live
-  site; visitor identities, shared storage and moderation are still pending.
+  site; visitor identities, shared storage and moderation were still pending at that checkpoint
+  and are delivered by the current release above.
 
 The rest of this file retains the cleanup inventory as a historical checkpoint;
 its baseline, local checkout and test counts describe that earlier operation.
