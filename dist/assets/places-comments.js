@@ -100,7 +100,8 @@
   }
 
   function create(options) {
-    const preview = ['places', 'comments'].includes(new URLSearchParams(location.search).get('experience'));
+    const preview = options.journey().kind === 'demo' && ['places', 'comments'].includes(new URLSearchParams(location.search).get('experience'));
+    const live = options.journey().kind !== 'demo' && Boolean(options.journey().published);
     let journeyId = '', store;
     function selectStore() {
       const id = options.journey().id;
@@ -108,11 +109,12 @@
       journeyId = id;
       let storage;
       try { storage = localStorage; } catch { storage = { getItem() { return null; }, setItem() { throw new Error('Storage unavailable'); } }; }
-      store = createDemoStore(storage, `atlas-experience-v1:${id}`);
+      const local = createDemoStore(storage, `${live ? 'atlas-community-drafts-v1' : 'atlas-experience-v1'}:${id}`);
+      store = live ? root.JOURNEY_ATLAS_COMMUNITY.createStore({ drafts: local, request: (...args) => root.JOURNEY_ATLAS_AUTH.communityRequest(...args) }) : local;
     }
     selectStore();
-    const shared = { ...options, preview, store: () => store };
-    const places = root.JOURNEY_ATLAS_PLACE_PANEL.create(shared);
+    const shared = { ...options, preview, live, store: () => store };
+    const places = root.JOURNEY_ATLAS_PLACE_PANEL.create({ ...shared, store: () => live ? ({ reviews: () => [], draft: (...args) => store.draft(...args) }) : store });
     const comments = root.JOURNEY_ATLAS_PHOTO_COMMENTS.create({ ...shared, onPlaces: () => places.open(), onReset: () => places.update(true) });
     function update() { selectStore(); places.update(); comments.update(); }
     update();

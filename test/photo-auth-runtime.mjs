@@ -1,13 +1,17 @@
+import fs from 'node:fs';
+import communityIndex from '../workers/photo-auth/community-index.mjs';
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import assert from 'node:assert/strict';
 import { createCredential, random, base64url } from '../workers/photo-auth/crypto.mjs';
 import { derivePasswordProofs } from '../workers/photo-auth/password-kdf.mjs';
 const verifier=random(),challenge=base64url(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(verifier)));
 const credential=await createCredential('runtime-fixture','runtime-fixture-password');
-const mf=new Miniflare(convertV4MiniflareOptions({modules:true,scriptPath:'workers/photo-auth/build/photo-worker/entry.js',compatibilityDate:'2026-09-09',bindings:{PHOTO_CREDENTIALS:JSON.stringify({version:2,credentials:[credential]}),SESSION_SIGNING_KEY:random(),ALLOWED_ORIGINS:'["https://gravelcycles.github.io"]'},r2Buckets:['PHOTOS'],durableObjects:{AUTH_CODES:{className:'PhotoAuthCode',useSQLite:true}},ratelimits:{LOGIN_LIMITER:{namespace_id:'19092026',simple:{limit:10,period:60}}}}));
+const mf=new Miniflare(convertV4MiniflareOptions({modules:true,scriptPath:'workers/photo-auth/build/photo-worker/entry.js',compatibilityDate:'2026-09-09',bindings:{PHOTO_CREDENTIALS:JSON.stringify({version:2,credentials:[credential]}),SESSION_SIGNING_KEY:random(),ALLOWED_ORIGINS:'["https://gravelcycles.github.io"]'},d1Databases:['COMMUNITY_DB'],r2Buckets:['PHOTOS'],durableObjects:{AUTH_CODES:{className:'PhotoAuthCode',useSQLite:true}},ratelimits:{COMMUNITY_LIMITER:{namespace_id:'8102026',simple:{limit:20,period:60}},LOGIN_LIMITER:{namespace_id:'19092026',simple:{limit:10,period:60}}}}));
 try{
+ const communityDb=await mf.getD1Database('COMMUNITY_DB');
+ await communityDb.exec(fs.readFileSync('workers/photo-auth/migrations/0001_community.sql','utf8').replaceAll('\n',' '));
  const proofs=await derivePasswordProofs('runtime-fixture-password',[credential]);
- const started=Date.now();const response=await mf.dispatchFetch('https://photos.example.com/private-photos/auth/login',{method:'POST',headers:{Origin:'https://photos.example.com','Content-Type':'application/json'},body:JSON.stringify({origin:'https://gravelcycles.github.io',proofs,challenge})});
+ const started=Date.now();const response=await mf.dispatchFetch('https://photos.example.com/private-photos/auth/login',{method:'POST',headers:{Origin:'https://photos.example.com','Content-Type':'application/json'},body:JSON.stringify({origin:'https://gravelcycles.github.io',proofs,challenge,displayName:'Runtime visitor'})});
  console.log('Runtime login status:',response.status,'elapsed ms:',Date.now()-started);
  assert.equal(response.status,200);
  const grant=await response.json(), cookie=response.headers.get('set-cookie').split(';')[0];
@@ -25,5 +29,16 @@ try{
  assert.equal((await mf.dispatchFetch(asset,{headers:{Origin:'https://gravelcycles.github.io','If-None-Match':photo.headers.get('ETag')}})).status,401);
  const resumed=await mf.dispatchFetch('https://photos.example.com/private-photos/auth/session',{method:'POST',headers:{Origin:'https://photos.example.com',Cookie:cookie,'Content-Type':'application/json'},body:JSON.stringify({origin:'https://gravelcycles.github.io',challenge})});
  assert.equal(resumed.status,200);assert.ok((await resumed.json()).code);
+ const journeyId=Object.keys(communityIndex).find(id=>communityIndex[id].length),photoId=communityIndex[journeyId][0];
+ const communityPath='https://photos.example.com/community/journeys/'+journeyId+'/photos/'+photoId+'/comments';
+ const requestHeaders={Origin:'https://gravelcycles.github.io',Authorization:`Bearer ${access.token}`,'Content-Type':'application/json'};
+ assert.equal((await mf.dispatchFetch(communityPath)).status,403);
+ const posted=await mf.dispatchFetch(communityPath,{method:'POST',headers:requestHeaders,body:JSON.stringify({body:'A runtime memory',clientRequestId:random()})});
+ assert.equal(posted.status,200);const comment=(await posted.json()).comment;assert.equal(comment.displayName,'Runtime visitor');assert.equal(comment.own,true);
+ const persisted=await communityDb.prepare('SELECT body FROM comments WHERE id = ?').bind(comment.id).first();assert.equal(persisted.body,'A runtime memory');
+ const listed=await mf.dispatchFetch(communityPath,{headers:requestHeaders});assert.equal((await listed.json()).comments.length,1);
+ const removed=await mf.dispatchFetch('https://photos.example.com/community/comments/'+comment.id,{method:'DELETE',headers:requestHeaders});assert.equal(removed.status,200);
+ const restored=await mf.dispatchFetch('https://photos.example.com/community/comments/'+comment.id+'/restore',{method:'POST',headers:requestHeaders,body:'{}'});assert.equal(restored.status,200);
+ console.log('Runtime D1 comment persistence, authenticated read/write and Undo passed.');
  console.log('Runtime PKCE, single-use grant, remembered session, and private R2 checks passed.');
 }finally{await mf.dispose();}

@@ -1,3 +1,15 @@
+## Photo conversations implementation — 8 October 2026
+
+The existing Worker now supports signed remembered visitor identities and the
+community API. Deployment requires the `COMMUNITY_DB` D1 binding/migration,
+`COMMUNITY_LIMITER`, and a separate `COMMUNITY_ADMIN_KEY`. Photo credentials,
+access-token expiry, first-party cookie/PKCE restoration and protected-photo
+cache behavior remain intact. See [the operations guide](docs/COMMUNITY_OPERATIONS.md)
+for Free-plan provisioning, deployment order, moderation/export and identity
+limitations. New or removed photos require deploying the generated Worker
+eligibility index before the corresponding Pages update. Local runtime tests
+exercise real D1 persistence as well as existing photo auth/cache behavior.
+
 # Private photo access — implementation handoff
 
 ## Quiet restoration — 10 September 2026

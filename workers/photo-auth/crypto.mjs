@@ -60,9 +60,9 @@ export async function verifyPasswordProofs(proofs, active) {
   }
   return accepted;
 }
-export async function issueToken(env, id, audience, kind = 'access', { now = Math.floor(Date.now() / 1000), expires } = {}) {
+export async function issueToken(env, id, audience, kind = 'access', { now = Math.floor(Date.now() / 1000), expires, visitorId, displayName } = {}) {
   const life = kind === 'remember' ? REMEMBER_SECONDS : ACCESS_SECONDS;
-  const payload = { v: 1, id, aud: audience, kind, iat: now, exp: Math.min(now + life, expires ?? now + life), nonce: random() };
+  const payload = { v: 1, id, aud: audience, kind, iat: now, exp: Math.min(now + life, expires ?? now + life), nonce: random(), ...(visitorId ? { visitorId, ...(displayName ? { displayName } : {}) } : {}) };
   const body = base64url(encoder.encode(JSON.stringify(payload)));
   return { token: `${body}.${base64url(await crypto.subtle.sign('HMAC', await signingKey(env), encoder.encode(body)))}`, expiresAt: payload.exp };
 }
@@ -76,6 +76,8 @@ export async function validateToken(token, env, audience, kind = 'access', now =
     const p = JSON.parse(new TextDecoder().decode(unbase64url(parts[0])));
     const life = kind === 'remember' ? REMEMBER_SECONDS : ACCESS_SECONDS;
     if (p.v !== 1 || p.aud !== audience || p.kind !== kind || !Number.isInteger(p.iat) || !Number.isInteger(p.exp) || p.iat > now + 30 || p.exp <= now || p.exp <= p.iat || p.exp - p.iat > life || unbase64url(p.nonce).length !== 32 || !active.some(c => c.id === p.id)) return null;
+    if (p.visitorId !== undefined && !/^[A-Za-z0-9_-]{43}$/.test(p.visitorId)) return null;
+    if (p.displayName !== undefined && (typeof p.displayName !== 'string' || !p.displayName.trim() || p.displayName.length > 40)) return null;
     return p;
   } catch { return null; }
 }
