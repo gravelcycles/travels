@@ -10,6 +10,7 @@
       content="{{description}}"
     />
     <title>{{title}} · Journey Atlas</title>
+    {{siteHead}}
     <script src="./assets/input-mode.js"></script>
     <script>
       // Keep the atlas out of the first paint until the entry view is chosen.
@@ -32,7 +33,7 @@
   <body data-journey-id="{{id}}">
     <header class="site-header">
       <a class="brand" href="./" aria-label="Back to Journey Atlas catalog">
-        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <img class="brand-mark" src="./assets/brand/icon.svg" width="34" height="34" alt="" />
         <span><small>JOURNEY ATLAS</small><strong>Journey Atlas</strong></span>
       </a>
       <div class="header-context">

@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "branding:build": "node scripts/build-branding.mjs",
     "content:build": "node scripts/build-content-overrides.mjs",
     "photos:build": "node scripts/build-photo-assets.mjs",
     "gpx:test": "node --test test/gpx-route-service.test.mjs",

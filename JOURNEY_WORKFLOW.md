@@ -6,6 +6,11 @@ for a fresh agent. Create a data instance with Studio or `journey:new`; never
 copy Switzerland–Italy's page, itinerary, scripts, or photo manifests. The same
 template, runtime, and Studio provide every trip's available features.
 
+Browser icons and link-preview artwork are shared automatically, including in
+fresh draft previews. A published journey uses its own title/subtitle and slug
+with the common globe-pin card; no per-trip logo or photograph is needed. See
+[the brand workflow](docs/BRANDING.md) for global artwork updates.
+
 Selecting a day from the map, day arrows, albums or a direct link also brings
 its selected row into view in the left day list. Only that list scrolls, and
 already visible rows stay put; reduced motion uses an immediate scroll.
