@@ -7,7 +7,32 @@ to the public site. [TODO.md](TODO.md) remains the backlog;
 [docs/FEATURES.md](docs/FEATURES.md) describes implemented capabilities;
 [docs/FRAMEWORK.md](docs/FRAMEWORK.md) defines the shared-code contract.
 
-## Baseline and repository state
+## Publication update — 8 October 2026
+
+After the cleanup below, the owner explicitly requested publication of the saved
+family-trip edits and demonstrations of the other workstreams. The family
+content is now included in this release on main; other prototype and recovery
+branches remain local. See [the publication record](docs/workstreams/family-content.md).
+
+- Published saved stories, cover/focal point, photo map frames and Trash choices,
+  Day 8 album order, and the airport–Luzern route edit without rewriting them.
+- Published the pending Day 2 photo through the existing protected media
+  service: all three derivatives uploaded and checksum-verified, with bucket
+  public endpoints still disabled. Its manifest status is now `published`.
+- Kept the saved Day 2 `hello` text. Replacing it is a future editorial edit.
+- Integrated with main through `7ea3c23`, preserving the newer Heading East
+  journey, globe branding, rail markers and cycling campsite copy. Validation:
+  **369/369 tests**, successful build, and clean diff checks.
+- Refreshed the local map/Replay comparison against current shared code;
+  **10/10 prototype checks** pass. The standalone feature and delight mockups
+  remain simulations. Places/comments previews remain available on the live
+  site; visitor identities, shared storage and moderation are still pending.
+
+The rest of this file retains the cleanup inventory as a historical checkpoint;
+its baseline, local checkout and test counts describe that earlier operation.
+The publication update above takes precedence for the family workstream.
+
+## Baseline and repository state (cleanup checkpoint)
 
 - The public baseline is `272086e344ea0f41a0093a5188e186a748aabded`, the
   20 September Places/comments UX release. Its original Pages deployment was
@@ -34,7 +59,7 @@ to the public site. [TODO.md](TODO.md) remains the backlog;
 
 | Workstream | Branch / checkpoint | Status and next step |
 | --- | --- | --- |
-| Saved family-trip content | `codex/family-content-wip` · `bb7164c` | Content checkpoint; review stories, photo choices/framing, pending upload and rail edit before publishing. |
+| Saved family-trip content | `codex/family-content-wip` · `bb7164c` | Published on main at the owner’s request on 8 October; original local checkpoint retained for recovery. |
 | Photo bubbles, day navigation and gentler Replay | `codex/day-experience-review` · `3a7da82` | Working local comparison prototype; select the behavior to integrate into shared source. |
 | Six proposed feature demos | `codex/ux-feature-previews` · `a9ae0b2` | Interactive design artifact; five proposals remain open, while Studio recovery subsequently shipped. |
 | Delight / creator experience | `codex/delight-preview` · `78ec3a5` | Separate interactive design artifact; choose a concrete improvement and reconcile it with current production. |
@@ -58,19 +83,14 @@ Five source files contain all the original saved Studio edits:
   Day 2 `IMG_1471.heic` record remains `assetStatus: "local"`. The original and
   three private derivative files are not part of Git or automatically uploaded.
 
-Generated bundles and four public HTML files were rebuilt against current main.
-The pending upload remains excluded from public photo output. All five source
-files preserve the original saved edits; no story was rewritten during cleanup.
+At cleanup, the new upload was still local and excluded from public photo output.
+The owner subsequently requested publication: all five content-source edits and
+the protected upload are now delivered as described in the publication update
+and [handoff](docs/workstreams/family-content.md). The source list above records
+the original checkpoint; the current upload manifest says `published`.
 
-**Review points:** Day 2 currently says `hello` (apparently a save-test value);
-review that explicitly rather than silently deleting it. Check prose/tagline,
-cover, album order, Trash choices and composed frames in Studio. Compare the
-manual airport rail line with reviewed geometry. Review/publish the pending
-photo through the existing private-photo workflow when ready. These checks are
-editorial/geographic/asset decisions, not failures in the automated suite.
-
-Validation: **361 tests pass**, `npm run build` succeeds, and diff checks pass.
-No new private-media delivery or visual/geographic verification is claimed.
+The saved Day 2 text `hello` remains unchanged. The publication preserves the
+saved editorial and geographic decisions, without claiming a new route survey.
 
 ### Day-experience review prototype
 
@@ -347,8 +367,8 @@ agent can run `git branch <name> <recorded-tip>` without changing the checkout.
    stack. Resolve generated-output conflicts by rebuilding, not selecting a
    stale bundle. Do not merge recovery snapshots.
 3. Keep prototypes out of Pages until their selected behavior is implemented
-   and reviewed in shared code. Keep unfinished family content out of main
-   until its review points and pending media are resolved.
+   and reviewed in shared code. The family checkpoint has now been published;
+   retain its historical branch without reapplying it over later content edits.
 4. Run appropriate targeted checks, `npm test`, `npm run build`, and
    `git diff --check`; include generated public output. The existing suite
    includes reference/demo/fresh-draft contracts. Local server tests need
