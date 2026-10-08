@@ -37,11 +37,17 @@ test('revisions survive server restarts and reject corrupt or invalid snapshot p
 
 test('real Studio API reconciles, saves repeatedly, serves story/tagline and rejects stale conflict choices', {timeout:60000}, async t=>{
   const root=fs.mkdtempSync(path.join(os.tmpdir(),'studio-save-api-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));
-  for(const dir of ['content','dist','scripts'])fs.cpSync(path.join(repo,dir),path.join(root,dir),{recursive:true,filter:src=>!src.includes(`${path.sep}drafts`)});
+  for(const dir of ['content','dist','scripts','studio'])fs.cpSync(path.join(repo,dir),path.join(root,dir),{recursive:true,filter:src=>!src.includes(`${path.sep}drafts`)});
   const child=spawn(process.execPath,[path.join(repo,'scripts/studio-server.mjs')],{env:{...process.env,ATLAS_STUDIO_ROOT:root,ATLAS_STUDIO_PORT:'0'},stdio:['ignore','pipe','pipe']});
   t.after(()=>child.kill());
   let output='';child.stderr.on('data',chunk=>output+=chunk);
   const origin=await new Promise((resolve,reject)=>{child.stdout.on('data',chunk=>{const m=String(chunk).match(/http:\/\/127.0.0.1:\d+/);if(m)resolve(m[0]);});child.on('error',reject);child.on('exit',code=>reject(Error(`Server exited ${code}: ${output}`)));});
+  const studioHtml = await (await fetch(origin + '/studio/')).text();
+  for (const match of studioHtml.matchAll(/(?:src|href)="(\/[^"?#]+\.(?:js|css))(?:[?#][^"]*)?"/g)) {
+    const response = await fetch(origin + match[1]);
+    assert.equal(response.status, 200, `Studio must serve ${match[1]}`);
+    assert.match(response.headers.get('content-type'), match[1].endsWith('.js') ? /javascript/ : /css/);
+  }
   const api=async(url,body,method='POST')=>{const response=await fetch(origin+url,body===undefined?{}:{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return {status:response.status,...await response.json()};};
   const loaded=await api('/api/state'),journey=loadContent(root).data.journeys.find(j=>j.kind==='real'),state=readOverrides(root);
   const baseline=structuredClone(journey),draft=structuredClone(journey),day=journey.days[4]||journey.days[0];
