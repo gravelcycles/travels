@@ -24,11 +24,11 @@
     return [...groups.values()].sort((a, b) => Number(b.selected) - Number(a.selected));
   }
 
-  function dayText(days) {
+  function dayText(days, eventWord = form => form === 'plural' ? 'days' : 'Day') {
     const numbers = days.map(day => day.number);
-    if (numbers.length === 1) return `Day ${numbers[0]}`;
-    if (numbers.every((number, index) => !index || number === numbers[index - 1] + 1)) return `Days ${numbers[0]}–${numbers.at(-1)}`;
-    return `Day ${numbers[0]} +${numbers.length - 1}`;
+    if (numbers.length === 1) return `${eventWord('title')} ${numbers[0]}`;
+    if (numbers.every((number, index) => !index || number === numbers[index - 1] + 1)) return `${eventWord('plural')[0].toUpperCase() + eventWord('plural').slice(1)} ${numbers[0]}–${numbers.at(-1)}`;
+    return `${eventWord('title')} ${numbers[0]} +${numbers.length - 1}`;
   }
 
   function overlaps(a, b, gap = 4) {
@@ -89,7 +89,7 @@
     return best;
   }
 
-  function create({ map, maplibregl, onSelectDay, onPreviewDays = () => {}, obstacles = () => [] }) {
+  function create({ map, maplibregl, onSelectDay, onPreviewDays = () => {}, obstacles = () => [], eventWord = form => ({title:'Day',plural:'days'}[form] || 'day') }) {
     const container = map.getContainer();
     let groups = [], routes = [], routeStrokes = [], entries = [], frame = null, card = null, cardEntry = null, cardKey = '', persistent = false;
     let previewIds = [], pendingFocus = false, closeTimer = null, openTimer = null, suppressedEntry = null;
@@ -144,7 +144,7 @@
       card.setAttribute('role', pinned ? 'dialog' : 'region'); card.setAttribute('aria-label', 'Place preview');
       const title = document.createElement('strong'); title.textContent = members.length === 1 ? members[0].name : 'Nearby places';
       const description = document.createElement('span'); description.id = 'map-place-description'; description.className = 'map-place-meta';
-      description.textContent = days.length === 1 ? `Day ${days[0].number} · ${days[0].date || ''}` : `${days.length} days · ${members.length === 1 ? 'Choose a visit' : 'Choose a place'}`;
+      description.textContent = days.length === 1 ? `${eventWord('title')} ${days[0].number} · ${days[0].date || ''}` : `${days.length} ${eventWord('plural')} · ${members.length === 1 ? 'Choose a visit' : 'Choose a place'}`;
       card.append(title, description);
       const close = document.createElement('button'); close.type = 'button'; close.className = 'map-place-close'; close.textContent = '×'; close.setAttribute('aria-label', 'Close place preview');
       close.addEventListener('click', () => dismiss(true)); card.append(close);
@@ -152,10 +152,10 @@
       const visits = members.flatMap(member => member.days.map(day => ({member,day}))).sort((a,b) => a.day.number-b.day.number);
       for (const {member,day} of visits) {
         const button = document.createElement('button'); button.type = 'button'; button.className = 'map-place-visit';
-        const heading = document.createElement('span'); heading.textContent = days.length === 1 ? 'Explore day' : `${members.length > 1 ? member.name + ' · ' : ''}Day ${day.number}`;
+        const heading = document.createElement('span'); heading.textContent = days.length === 1 ? `Explore ${eventWord()}` : `${members.length > 1 ? member.name + ' · ' : ''}${eventWord('title')} ${day.number}`;
         const note = document.createElement('small'); note.textContent = days.length === 1 ? (day.title === member.name ? '' : day.title || '') : day.date || '';
         button.append(heading, note);
-        button.setAttribute('aria-label', `Open day ${day.number}: ${day.title || member.name}`);
+        button.setAttribute('aria-label', `Open ${eventWord()} ${day.number}: ${day.title || member.name}`);
         button.addEventListener('click', () => select(day));
         button.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') onPreviewDays([day.id]); });
         button.addEventListener('focus', () => onPreviewDays([day.id]));
@@ -213,8 +213,8 @@
         button.style.setProperty('--pin-stem-height', `${Math.max(0,placement.postHeight-10)}px`);
         button.innerHTML = '<span class="location-pin-stem" aria-hidden="true"></span><span class="location-pin-foot" aria-hidden="true"></span><span class="location-pin-dot" aria-hidden="true"></span>';
         const number = document.createElement('span'); number.className = 'location-pin-number'; number.textContent = dot ? '' : group.days[0].number; number.setAttribute('aria-hidden','true'); button.append(number);
-        const accessible = group.members.map(member => `${member.name} · ${dayText(member.days)}`).join('; ');
-        button.setAttribute('aria-label', `${accessible} · ${dot ? 'Choose a day' : 'Open day'}`);
+        const accessible = group.members.map(member => `${member.name} · ${dayText(member.days, eventWord)}`).join('; ');
+        button.setAttribute('aria-label', `${accessible} · ${dot ? `Choose a ${eventWord()}` : `Open ${eventWord()}`}`);
         button.setAttribute('aria-expanded','false');
         if (dot) button.setAttribute('aria-haspopup','dialog');
         if (group.selected) button.setAttribute('aria-current','true');

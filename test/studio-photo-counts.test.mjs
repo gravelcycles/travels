@@ -1,3 +1,4 @@
+import '../dist/assets/atlas-utils.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -9,7 +10,7 @@ test('Photos from counts match the grid, including legacy hidden photos and the 
   const $=key=>{ if(key === '#studio-photo-grid .active')return null; if(!nodes.has(key))nodes.set(key,{});return nodes.get(key); };
   $('#photo-day-filter').value='d8'; $('#show-photo-trash').checked=false;
   const day={id:'d8',number:8,date:'20 Aug',title:'Como'};
-  const context=vm.createContext({$,basePhotos:[{id:'hidden',dayId:'d8',hidden:true},{id:'trash',dayId:'d8',trashed:true}],state:{days:{}},
+  const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),$,basePhotos:[{id:'hidden',dayId:'d8',hidden:true},{id:'trash',dayId:'d8',trashed:true}],state:{days:{}},
     journey:{days:[day]},photoWithOverride:p=>p,escapeHtml:v=>v,dayById:()=>day,photoUrl:v=>v,selectedPhotoId:null});
   vm.runInContext(['photosForDay','photoBrowserPhotos','optionMarkup','renderPhotoGrid'].map(fn).join('\n'),context);
   for(const trashed of [false,true]){

@@ -272,3 +272,17 @@ D1 provisioning and a production rollout remain W08 work in
 [PLACES_AND_COMMENTS.md](PLACES_AND_COMMENTS.md). Existing real photo auth is
 unchanged. Image intake remains agent-operated. The detailed UX verification
 record is [PLACES_UX_REVIEW_2026-09-20.md](PLACES_UX_REVIEW_2026-09-20.md).
+
+## City events — 8 October 2026
+
+The shared event contract now supports `eventMode: "city"` and per-event
+`calendarEndDate`, with the existing `days`/`dayId` storage and URL IDs retained.
+Daily calendars remain the absent default. Creation, validation, planner edits,
+photo capture-date assignment, catalog, journal, location labels, mobile controls,
+albums and Replay inherit it. Heading East is a data instance with eight city
+stops and eleven reconstructed legs, not another page implementation.
+
+Remaining route evidence: personal departures and historical diversions are
+unconfirmed; the DB Monday notice establishes the probable replacement-bus
+endpoints but not the actual coach streets. See `docs/HEADING_EAST.md`. No new
+framework migration is required for additional cities or later photo intake.

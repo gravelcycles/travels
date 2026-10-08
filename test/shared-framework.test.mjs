@@ -60,7 +60,7 @@ test('full-trip context expands real, demo and fresh-draft maps without cropping
   const family = data.journeys.find(j => j.id === 'switzerland-italy-family-2026');
   for (const journey of [family, data.journeys.find(j => j.kind === 'demo'), draft]) {
     let fitted, fallback;
-    const context = vm.createContext({ journey, mainFeedback:null,mainMapReady: true,
+    const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form), journey, mainFeedback:null,mainMapReady: true,
       window: { maplibregl: {}, JOURNEY_ATLAS_ROUTE_GEOMETRY: routes }, maplibregl: { LngLatBounds: Bounds },
       placeById: id => journey.places.find(p => p.id === id), mapPadding: () => 40,
       mainMap: { fitBounds: bounds => { fitted = bounds; }, easeTo: camera => { fallback = camera; } }
@@ -112,7 +112,7 @@ test('selecting a real, demo or fresh-draft day scrolls its newly selected row i
   for (const journey of [data.journeys.find(j => j.id === 'switzerland-italy-family-2026'), data.journeys.find(j => j.kind === 'demo'), draft]) {
     const selected = journey.days[Math.min(10, journey.days.length - 1)];
     let renderedId, scrolled = false;
-    const context = vm.createContext({ journey, activeDayId: journey.days[0].id, prefersReducedMotion: () => false,
+    const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form), journey, activeDayId: journey.days[0].id, prefersReducedMotion: () => false,
       dayById: id => journey.days.find(day => day.id === id), clearSegmentInspection() {},
       renderDays() { renderedId = context.activeDayId; }, renderStory() {}, drawMainMap() {},
       dayList: { clientHeight: 400, getBoundingClientRect: () => ({ top: 100, bottom: 500 }),
@@ -253,7 +253,7 @@ test('the same introduction opens for real trips, samples and empty drafts; deep
   for (const isDemoPage of [false, true]) for (const hasPhoto of [false, true]) {
     const nodes = new Map();
     const $ = selector => { if (!nodes.has(selector)) nodes.set(selector, { hidden: true, inert: false }); return nodes.get(selector); };
-    const context = vm.createContext({ $, isDemoPage, location: { hash: '', search: '' }, URLSearchParams,
+    const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form), $, isDemoPage, location: { hash: '', search: '' }, URLSearchParams,
       journey: { title: 'New trip', subtitle: '', dates: 'Tomorrow', days: [{}], photos: hasPhoto ? [{ id: 'photo' }] : [] },
       document: { body: { classList: { add() {} } } }, window: { JOURNEY_ATLAS_UTILS: globalThis.JOURNEY_ATLAS_UTILS },
       escapeHtml: value => value, photoImageMarkup: () => '<img alt="Sample" />', prepareProgressiveImages() {}
@@ -308,7 +308,7 @@ test('focus presentation follows keyboard and pointer input without moving or cl
 
 test('a newly generated draft inherits large endpoints for every train leg as route data is added', t => {
   const root = fixture(t), draft = createJourney(root, input);
-  const context = vm.createContext({ journey: draft,
+  const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form), journey: draft,
     placeById: id => draft.places.find(place => place.id === id),
     segmentsForDay: day => day.segmentIds.map(id => draft.segments.find(segment => segment.id === id)),
     segmentCoordinates: segment => segment.geometry
@@ -513,7 +513,7 @@ test('Day details include the full roster, route and overnight for each group, i
 test('location labels are inherited by real trips, samples, and a fresh data-only draft', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const code = read(repo, 'dist/assets/location-labels.js');
-  const context = vm.createContext({}); vm.runInContext(code,context);
+  const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),}); vm.runInContext(code,context);
   const labels = context.JOURNEY_ATLAS_LOCATION_LABELS;
   const hooks = journey => ({ destinationForDay: day => journey.places.find(p=>p.id===(day.destinationId||day.placeId)),
     segmentsForDay: day => day.segmentIds.map(id=>journey.segments.find(s=>s.id===id)),
@@ -554,7 +554,7 @@ test('real, demo and a fresh draft inherit settlement contrast and route stackin
     assert.ok(assets(html).indexOf('map-style.js') < assets(html).indexOf('app.js'));
     const map = mapStyleHarness();
     mapStyle.applyBasemapTreatment(map);
-    const context = vm.createContext({ window: { JOURNEY_ATLAS_MAP_STYLE: mapStyle },
+    const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form), window: { JOURNEY_ATLAS_MAP_STYLE: mapStyle },
       modeStyles: { train: { width: 5.8, color: '#0072b2' } }, palette: { casing: '#fffef8' },
       segmentCoordinates: segment => segment.geometry || [[0, 0], [0.1, 0.1]]
     });
@@ -687,7 +687,7 @@ test('photo map frames validate, persist and fit the viewer for the family, a de
 test('saved day stories and optional taglines reach real, demo and fresh draft previews', t => {
   const root=fixture(t),fresh=createJourney(root,input),{data}=loadContent(root,{includeDrafts:true});
   const selected=[data.journeys.find(j=>j.kind==='real'),data.journeys.find(j=>j.kind==='demo'),fresh];
-  const overrides=readOverrides(root),copy=vm.createContext({});
+  const overrides=readOverrides(root),copy=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),});
   vm.runInContext(appFunction('escapeHtml')+appFunction('dayCopyMarkup'),copy);
   for(const journey of selected) {
     const day=journey.days[4] || journey.days[0];
@@ -718,7 +718,7 @@ test('days without travel omit automatic stay labels across real, demo and fresh
   const root=fixture(t),fresh=createJourney(root,input),{data}=loadContent(root,{includeDrafts:true});
   for (const original of [data.journeys.find(j=>j.kind==='real'),data.journeys.find(j=>j.kind==='demo'),fresh]) {
     const day={...original.days[0],segmentIds:[]},journey={...original,days:[day]},dayList={innerHTML:''},legend={innerHTML:''};
-    const context=vm.createContext({journey,dayList,activeDayId:day.id,mapScope:'day',activeDay:()=>day,
+    const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),journey,dayList,activeDayId:day.id,mapScope:'day',activeDay:()=>day,
       modesForDay:()=>[],segmentsForDay:()=>[],photosForDay:()=>[],mediaUtils:{label:()=>''},syncInspectionClasses(){},
       $:()=>legend,palette:{muted:'#888'},lineSwatch:()=>'',labels:{train:'Train'}});
     vm.runInContext(['escapeHtml','modeLabel','renderDays','renderLegend'].map(appFunction).join('\n'),context);
@@ -753,4 +753,41 @@ test('places are data-only annotations inherited by real, demo and fresh-draft j
   const output = bundle(read(root, 'dist/assets/journeys.js'), 'JOURNEY_ATLAS_DATA');
   assert.equal(output.journeys.find(j => j.pointsOfInterest?.length).pointsOfInterest.length, 3);
   assert.ok(!output.journeys.some(j => j.id === draft.id), 'Fresh local data stays unpublished');
+});
+
+test('city events keep shared controls, date ranges, photo intake and Replay without daily expansion', t => {
+  const root = fixture(t), city = createJourney(root, {...input, eventMode:'city'});
+  const {data} = loadContent(root, {includeDrafts:true});
+  const utils = globalThis.JOURNEY_ATLAS_UTILS;
+  assert.equal(city.days.length, 1);
+  assert.equal(city.days[0].calendarEndDate, input.endDate);
+  const first = {...city.days[0], title:'First city', calendarEndDate:'2028-02-29', date:utils.eventDateLabel('2028-02-28','2028-02-29')};
+  const second = {...first, id:city.id+'-stop2', number:2, title:'Second city', calendarDate:'2028-02-29', calendarEndDate:'2028-03-01', date:utils.eventDateLabel('2028-02-29','2028-03-01')};
+  const state = {days:{},photos:{},routes:{}};
+  const planned = prepareJourneyPlan(data, city, {days:[first,second]}, state).journey;
+  assert.equal(planned.days.length,2);
+  const planData = {...data,journeys:data.journeys.map(j=>j.id===city.id?planned:j)};
+  const config = photoImportConfig(root, planData, {journey:city.id});
+  assert.equal(config.daysByDate.size,3);
+  assert.equal(config.daysByDate.get('2028-02-28').id,first.id);
+  assert.equal(config.daysByDate.get('2028-02-29').id,second.id,'transfer dates belong to the arriving city by default');
+  assert.equal(utils.eventForDate(planned,'2028-03-01').id,second.id);
+  assert.equal(utils.eventForDate(planned,'2028-03-02'),undefined);
+  const timeline = globalThis.JOURNEY_ATLAS_REPLAY.createTimeline(planned);
+  assert.deepEqual([...new Set(timeline.map(m=>m.dayId))], [first.id,second.id]);
+  const shifted = prepareJourneyPlan(planData, planned, {startDate:'2028-03-01',endDate:'2028-03-03'}, state,'itinerary').journey;
+  assert.deepEqual(shifted.days.map(d=>[d.id,d.calendarDate,d.calendarEndDate]),[[first.id,'2028-03-01','2028-03-02'],[second.id,'2028-03-02','2028-03-03']]);
+  assert.throws(()=>prepareJourneyPlan(planData, planned,{endDate:'2028-02-28'},state),/departure cannot precede arrival/);
+  for(const range of [{calendarDate:'2028-02-28'},{calendarDate:'2028-03-01'},{calendarEndDate:'2028-02-28'}]) {
+    assert.throws(()=>prepareJourneyPlan(planData,planned,{days:[first,{...second,...range}]},state),/transfer date|departure cannot precede arrival/);
+  }
+  for(const j of [data.journeys.find(j=>j.kind==='real'),data.journeys.find(j=>j.kind==='demo'),planned]) {
+    assert.deepEqual(ids(renderJourneyPage(root,j)),ids(renderJourneyPage(root,city)));
+    assert.deepEqual(assets(renderJourneyPage(root,j)),assets(renderJourneyPage(root,city)));
+    assert.equal(utils.eventWord(j,'plural'),j.eventMode==='city'?'stops':'days');
+    assert.equal(utils.eventCopy(j,'Day details'),j.eventMode==='city'?'Stop details':'Day details');
+  }
+  writeJson(path.join(root,`content/drafts/${city.id}.json`),planned);
+  buildSite(root);
+  assert.ok(!bundle(read(root,'dist/assets/journeys.js'),'JOURNEY_ATLAS_DATA').journeys.some(j=>j.id===city.id),'city drafts remain private');
 });

@@ -65,6 +65,8 @@ export function validateJourneys(data) {
       if (globalIds.photos.has(video.id)) fail(`Duplicate photo/video ID: ${video.id}`);
       globalIds.photos.add(video.id);
     }
+    if (j.eventMode != null && !['day', 'city'].includes(j.eventMode)) fail(`${j.id}: eventMode must be day or city`);
+    if (j.eventMode === 'city' && (!j.startDate || !j.endDate)) fail(`${j.id}: city stops require a trip date range`);
     if (!j.days.length) fail(`${j.id}: at least one calendar day is required`);
     if (j.overviewBounds != null) {
       const bounds = j.overviewBounds;
@@ -113,12 +115,22 @@ export function validateJourneys(data) {
         assigned.add(id);
       }
       if (d.calendarDate) calendarDate(d.calendarDate);
+      if (j.eventMode === 'city') {
+        const start = calendarDate(d.calendarDate), end = calendarDate(d.calendarEndDate);
+        if (end < start) fail(`${d.id}: stop departure cannot precede arrival`);
+        if (i && j.days[i - 1].calendarEndDate !== d.calendarDate) fail(`${d.id}: city stops must meet on their transfer date`);
+      } else if (d.calendarEndDate != null) fail(`${d.id}: date ranges require city event mode`);
     });
     if (assigned.size !== segments.size) fail(`${j.id}: every segment must belong to one day`);
     if (j.startDate || j.endDate) {
       const start = calendarDate(j.startDate), end = calendarDate(j.endDate);
-      if ((end - start) / 86400000 + 1 !== j.days.length) fail(`${j.id}: date range must include every calendar day`);
-      j.days.forEach((d,i) => { if (d.calendarDate !== new Date(+start + i * 86400000).toISOString().slice(0,10)) fail(`${d.id}: calendar date does not match trip range`); });
+      if (end < start || (end - start) / 86400000 >= 366) fail(`${j.id}: choose a range of 1–366 calendar days`);
+      if (j.eventMode === 'city') {
+        if (j.days[0].calendarDate !== j.startDate || j.days.at(-1).calendarEndDate !== j.endDate) fail(`${j.id}: city stops must cover the trip date range`);
+      } else {
+        if ((end - start) / 86400000 + 1 !== j.days.length) fail(`${j.id}: date range must include every calendar day`);
+        j.days.forEach((d,i) => { if (d.calendarDate !== new Date(+start + i * 86400000).toISOString().slice(0,10)) fail(`${d.id}: calendar date does not match trip range`); });
+      }
     }
     for (const p of j.photos) {
       if (!days.has(p.dayId)) fail(`${p.id}: photo references an unknown day`);

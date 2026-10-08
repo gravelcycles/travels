@@ -318,7 +318,7 @@
                 <${tag} class="leg-card" ${mobile ? 'type="button"' : 'tabindex="0" role="group"'} data-route-segment="${escapeHtml(segment.id)}" aria-label="${mobile ? "Explore" : "Highlight"} ${escapeHtml(labels[segment.mode] || segment.mode)} route from ${escapeHtml(from.name)} to ${escapeHtml(to.name)}">
                   <span class="leg-mode">${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)}</span>
                   <strong>${journey.routeGroups?.length ? `<span class="leg-audience">${escapeHtml(groupTravel.audience(journey, segment))}</span>` : ""}${escapeHtml(from.name)} → ${escapeHtml(to.name)}</strong>
-                  <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""}${segment.stops ? ` · ${stopCount} stops` : ""}${segment.geometryStatus === "provisional" ? " · Provisional route" : ""}</small>
+                  <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""}${segment.stops ? ` · ${stopCount} stops` : ""}${segment.geometryStatus === "provisional" ? " · Provisional route" : segment.geometryStatus === "reconstructed" ? " · Reconstructed corridor · service unconfirmed" : ""}</small>
                 </${tag}>
               </li>
             `;
@@ -480,7 +480,7 @@
     const from = placeById(segment.from);
     const to = placeById(segment.to);
     $("#route-inspector").hidden = !routeInspectionPinned;
-    $("#route-inspector-meta").textContent = `Day ${day.number} · ${labels[segment.mode] || segment.mode}`;
+    $("#route-inspector-meta").textContent = `${eventWord('title')} ${day.number} · ${labels[segment.mode] || segment.mode}`;
     $("#route-inspector-title").textContent = `${from.name} → ${to.name}`;
     $("#route-inspector-story").textContent = conciseDayStory(day);
   }
@@ -570,7 +570,7 @@
       mainFeedback.ready(); mapStatus.hidden = true;
       applyBasemapTreatment(mainMap);
       locationLabels = window.JOURNEY_ATLAS_LOCATION_LABELS.create({
-        map: mainMap, maplibregl, onSelectDay: id => setActiveDay(id, true),
+        map: mainMap, maplibregl, eventWord, onSelectDay: id => setActiveDay(id, true),
         onPreviewDays: ids => {
           if (ids.length) { setDayPreview(ids, 'pin', false); clearSegmentInspection(true); }
           else clearDayPreview('pin');
@@ -830,7 +830,7 @@
     window.JOURNEY_ATLAS_MOBILE_UI?.renderDay();
     navigator.hidden = mapScope !== "day";
     navigator.style.top = `${$("#map").offsetTop + 14}px`;
-    $("#focused-day-label").textContent = `Day ${dayIndex + 1} of ${journey.days.length}`;
+    $("#focused-day-label").textContent = `${eventWord('title')} ${dayIndex + 1} of ${journey.days.length}`;
     $("#previous-day").disabled = dayIndex <= 0;
     $("#next-day").disabled = dayIndex >= journey.days.length - 1;
   }
@@ -889,7 +889,10 @@
     } else mainMap.easeTo({center:[0,20], zoom:1.5, duration:0});
   }
 
+  const eventWord = (form) => window.JOURNEY_ATLAS_UTILS.eventWord(journey, form);
+
   function renderJourneyIdentity() {
+    window.JOURNEY_ATLAS_UTILS.applyEventCopy(journey, document);
     $("#journey-name").textContent = journey.label;
     $("#notes-journey-title").textContent = journey.title;
     $("#notes-journey-note").textContent = journey.note || "";
@@ -900,7 +903,7 @@
     $("#journey-kicker").textContent = journey.kicker;
     $("#journey-title").textContent = journey.title;
     $("#journey-subtitle").textContent = journey.subtitle;
-    $("#day-count").textContent = `${journey.days.length} days`;
+    $("#day-count").textContent = `${journey.days.length} ${eventWord('plural')}`;
     const album = orderedPhotos(), hasVideos = album.some(mediaUtils.isVideo);
     $('#show-all-photos').innerHTML = `${hasVideos ? 'Photos & videos' : 'All photos'} · <span id="photo-count">${album.length}</span>`;
     $('#show-all-photos').disabled = !album.length;
@@ -911,7 +914,7 @@
     $("#journey-summary").innerHTML = `
       <div><strong>${escapeHtml(journey.dates)}</strong><span>TRAVEL DATES</span></div>
       <div><strong>${journey.status === "planned" && !journey.segments.length ? "To plan" : (journey.segments.some(segment => Number.isFinite(segment.distanceKm)) ? formatDistance(totalDistance()) : "Distance pending")}</strong><span>${!activeGroupId && journey.routeGroups?.length > 1 ? "ALL ROUTES COMBINED" : "ROUTE LENGTH"}</span></div>
-      <div><strong>${journey.days.length}</strong><span>DAYS</span></div>
+      <div><strong>${journey.days.length}</strong><span>${eventWord('plural').toUpperCase()}</span></div>
     `;
   }
 
@@ -925,12 +928,12 @@
     const modes = [...new Set(segments.map((segment) => segment.mode))];
     const selectedSegments = new Set(activeDay().segmentIds);
     const stateKey = (label, color, opacity = 1) => `<span>${lineSwatch("train", color, opacity)}${escapeHtml(label)}</span>`;
-    let markup = focused ? `<strong class="legend-heading">Day ${activeDay().number}${modes.length ? " routes" : ""}</strong>` : "";
+    let markup = focused ? `<strong class="legend-heading">${eventWord('title')} ${activeDay().number}${modes.length ? " routes" : ""}</strong>` : "";
     markup += modes.map((mode) => {
       const cue = modeStyles[mode]?.cue || "route";
       return `<span title="${escapeHtml(`${labels[mode]} · ${cue}`)}" aria-label="${escapeHtml(`${labels[mode]}, ${cue} line`)}">${lineSwatch(mode, modeStyles[mode]?.color)}${labels[mode]}</span>`;
     }).join("");
-    if (focused && journey.segments.some((segment) => !selectedSegments.has(segment.id))) markup += stateKey("Other days", palette.muted, 0.32);
+    if (focused && journey.segments.some((segment) => !selectedSegments.has(segment.id))) markup += stateKey(`Other ${eventWord("plural")}`, palette.muted, 0.32);
     if (focused && modes.includes("train")) markup += '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>';
     $("#map-legend").innerHTML = markup;
   }
@@ -979,14 +982,14 @@
       storyMedia.innerHTML = `
         <button type="button" data-open-photo="${escapeHtml(firstPhoto.id)}" aria-label="Open ${escapeHtml(firstPhoto.caption || firstPhoto.alt || 'photo')} full screen">
           ${photoImageMarkup(firstPhoto, { alt: firstPhoto.alt, sizes: "(max-width: 900px) 100vw, 26vw", eager: true })}
-          <span>DAY ${String(day.number).padStart(2, "0")} · ${mediaUtils.label(photos).toUpperCase()}</span>
+          <span>${eventWord('upper')} ${String(day.number).padStart(2, "0")} · ${mediaUtils.label(photos).toUpperCase()}</span>
           <small>${escapeHtml(firstPhoto.caption)}</small>
         </button>
       `;
     } else {
       storyMedia.innerHTML = `
         <div class="story-empty" aria-label="A page from the journey">
-          <span>DAY ${String(day.number).padStart(2, "0")}</span>
+          <span>${eventWord('upper')} ${String(day.number).padStart(2, "0")}</span>
           <strong>${escapeHtml((destinationForDay(day)?.name || "Destination to plan"))}</strong>
           <small>${escapeHtml(day.date)} · A page from the journey</small>
         </div>
@@ -1000,12 +1003,12 @@
     const duration = dayDuration(day);
     const travelSummary = [distance ? formatDistance(distance) : '', modeLabel(day), duration].filter(Boolean).join(' · ');
     detailPanel.innerHTML = `
-      <div class="detail-eyebrow">DAY ${String(day.number).padStart(2, "0")} · ${escapeHtml(day.date)}</div>
+      <div class="detail-eyebrow">${eventWord('upper')} ${String(day.number).padStart(2, "0")} · ${escapeHtml(day.date)}</div>
       ${dayCopyMarkup(day)}
       ${travelSummary ? `<p class="travel-summary">${escapeHtml(travelSummary)}</p>` : ''}
       ${day.segmentIds.length ? `<details class="travel-details"><summary>Travel details <span>${day.segmentIds.length} leg${day.segmentIds.length===1?'':'s'}</span></summary>${renderRouteLegs(day)}</details>` : ''}
       ${groupTravel.dayDetails(sourceJourney, sourceJourney.days.find(item => item.id === day.id), activeGroupId)}
-      <nav class="journal-day-nav" aria-label="Journal days"><button type="button" data-journal-step="-1" ${day.number===1?'disabled':''}>← Previous day</button><span>Day ${day.number} of ${journey.days.length}</span><button type="button" data-journal-step="1" ${day.number===journey.days.length?'disabled':''}>Next day →</button></nav>
+      <nav class="journal-day-nav" aria-label="Journal ${eventWord('plural')}"><button type="button" data-journal-step="-1" ${day.number===1?'disabled':''}>← Previous ${eventWord()}</button><span>${eventWord('title')} ${day.number} of ${journey.days.length}</span><button type="button" data-journal-step="1" ${day.number===journey.days.length?'disabled':''}>Next ${eventWord()} →</button></nav>
       <button id="resume-replay" type="button" ${replayJourneyId===journey.id?'':'hidden'}>Return to paused Replay</button>
     `;
 
@@ -1039,7 +1042,7 @@
     const destination = sourceJourney.places.find(place => place.id === meetup?.placeId);
     const day = sourceJourney.days.find(day => day.id === meetup?.dayId);
     panel.innerHTML = `<h3>${sourceJourney.travelers.length} travelers${groups.length ? ` · ${groups.length} routes` : ''}</h3>
-      ${meetup ? `<p class="party-meetup"><strong>Meet in ${escapeHtml(destination.name)}</strong><span>Day ${day.number} · ${escapeHtml(meetup.label)}</span></p>` : ''}
+      ${meetup ? `<p class="party-meetup"><strong>Meet in ${escapeHtml(destination.name)}</strong><span>${eventWord('title')} ${day.number} · ${escapeHtml(meetup.label)}</span></p>` : ''}
       ${groups.length ? `<button type="button" class="party-all" data-route-group="" aria-pressed="${!activeGroupId}">Everyone · all routes</button>` : ''}
       <div class="party-groups">${groups.map(group => `<button type="button" data-route-group="${escapeHtml(group.id)}" aria-pressed="${activeGroupId === group.id}"><strong>${escapeHtml(group.label)} <span>${group.travelerIds.length}</span></strong><small>${group.travelerIds.map(id => escapeHtml(sourceJourney.travelers.find(person => person.id === id).name)).join(' · ')}</small></button>`).join('')}</div>
       ${groups.length ? `<p class="party-view" role="status">Viewing ${escapeHtml(selected?.label || 'everyone')} · map, journal & Replay</p>` : `<p>${sourceJourney.travelers.map(person => escapeHtml(person.name)).join(' · ')}</p>`}`;
@@ -1276,11 +1279,11 @@
       $("#modal-time").textContent = day.date;
       emptyStage.innerHTML = `<strong>${escapeHtml(day.title)}</strong><span>${escapeHtml(day.text || routeLabel(day))}</span>`;
     }
-    $("#modal-progress").textContent = photo ? `${isVideo ? "VIDEO" : "PHOTO"} ${viewerPhotoIndex + 1} OF ${photos.length}` : `DAY ${day.number}`;
+    $("#modal-progress").textContent = photo ? `${isVideo ? "VIDEO" : "PHOTO"} ${viewerPhotoIndex + 1} OF ${photos.length}` : `${eventWord('upper')} ${day.number}`;
     $("#modal-day-title").textContent = day.title;
     $("#modal-day-route").textContent = routeLabel(day);
-    $("#viewer-day-label").textContent = `Day ${day.number} · ${day.date}`;
-    $("#viewer-day-label").setAttribute("aria-label", `Day ${day.number} of ${journey.days.length} · ${day.date}`);
+    $("#viewer-day-label").textContent = `${eventWord('title')} ${day.number} · ${day.date}`;
+    $("#viewer-day-label").setAttribute("aria-label", `${eventWord('title')} ${day.number} of ${journey.days.length} · ${day.date}`);
     const dayIndex = journey.days.findIndex((item) => item.id === day.id);
     $("#viewer-previous-day").disabled = dayIndex <= 0;
     $("#viewer-next-day").disabled = dayIndex >= journey.days.length - 1;
@@ -1290,7 +1293,7 @@
     const continuation = $("#album-continue");
     continuation.hidden = Boolean(photo && viewerPhotoIndex < photos.length-1);
     continuation.dataset.day = next?.id || '';
-    continuation.innerHTML = next ? `<strong>${photo ? 'Next day' : 'Next day with photos or videos'} <span aria-hidden="true">→</span></strong><small>Day ${next.number} · ${escapeHtml(next.title)}</small>` : '<strong>Back to journey →</strong>';
+    continuation.innerHTML = next ? `<strong>${photo ? `Next ${eventWord()}` : `Next ${eventWord()} with photos or videos`} <span aria-hidden="true">→</span></strong><small>${eventWord('title')} ${next.number} · ${escapeHtml(next.title)}</small>` : '<strong>Back to journey →</strong>';
     renderViewerFilmstrip(photos);
     window.JOURNEY_ATLAS_MOBILE_UI?.update({day, photos, index: viewerPhotoIndex});
     if (dayChanged) setActiveDay(day.id, true);
@@ -1518,7 +1521,7 @@
       if(replayPositionMarker) replayPositionMarker.getElement().textContent=modeSymbols[segment.mode] || "";
     } else {
       const place = destinationForDay(replayMomentDay(moment));
-      if (place) addReplayMarker([place.lng, place.lat], "replay-place-marker", `Day destination: ${place.name}`, palette.selected);
+      if (place) addReplayMarker([place.lng, place.lat], "replay-place-marker", `${eventWord('title')} destination: ${place.name}`, palette.selected);
     }
     if (fit) fitReplayMoment(moment);
   }
@@ -1548,8 +1551,8 @@
     const timeline = $("#replay-timeline");
     timeline.max = Math.max(0, replayTimeline.length - 1);
     timeline.value = replayMomentIndex;
-    timeline.setAttribute("aria-valuetext", `Moment ${replayMomentIndex+1} of ${replayTimeline.length}, Day ${day.number}: ${day.title}`);
-    $("#replay-day-label").textContent = `${replayMomentIndex+1} / ${replayTimeline.length} · Day ${day.number}`;
+    timeline.setAttribute("aria-valuetext", `Moment ${replayMomentIndex+1} of ${replayTimeline.length}, ${eventWord('title')} ${day.number}: ${day.title}`);
+    $("#replay-day-label").textContent = `${replayMomentIndex+1} / ${replayTimeline.length} · ${eventWord('title')} ${day.number}`;
     $("#replay-previous-day").disabled = replayMomentIndex <= 0;
     $("#replay-next-day").disabled = replayMomentIndex >= replayTimeline.length - 1;
     $("#replay-toggle").textContent = (replayPlaying || replayAutoplayTimer !== null) ? "Pause" : (replayCompleted ? "Replay" : "Play");
@@ -1565,7 +1568,7 @@
     if (!moment) return;
     const day = replayMomentDay(moment);
     $("#replay-complete").hidden = true;
-    $("#replay-eyebrow").textContent = `DAY ${String(day.number).padStart(2, "0")} · ${day.date}`;
+    $("#replay-eyebrow").textContent = `${eventWord('upper')} ${String(day.number).padStart(2, "0")} · ${day.date}`;
     $("#replay-title").textContent = day.title;
     $("#replay-copy").textContent = moment.caption || (activeGroupId ? `${sourceJourney.routeGroups.find(group => group.id === activeGroupId).label} · ${routeLabel(day)}` : conciseDayStory(day));
     renderReplayRouteLabel(moment);
@@ -1582,7 +1585,7 @@
       $("#replay-mode").innerHTML = `${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)} · leg ${day.segmentIds.indexOf(segment.id) + 1} of ${day.segmentIds.length}`;
       $("#replay-route").textContent = `${from.name} → ${to.name}${journey.routeGroups?.length ? ` · ${groupTravel.audience(journey, segment)}` : ""}`;
     } else {
-      $("#replay-mode").textContent = journey.status === "planned" ? "Planned day" : "A chapter of the journey";
+      $("#replay-mode").textContent = journey.status === "planned" ? `Planned ${eventWord()}` : "A chapter of the journey";
       $("#replay-route").textContent = routeLabel(day);
     }
   }
@@ -1768,7 +1771,7 @@
     $('#album-title').textContent = `${journey.videos?.length ? 'Photos & videos' : 'All photos'} · ${orderedPhotos().length}`;
     $('#album-days').innerHTML = journey.days.map(day=>{
       const photos=photosForDay(day.id); const first=photos[0];
-      return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${first?photoImageMarkup(first,{sizes:'280px',targetWidth:480}):'<span class="album-text-scene">A page from the journey</span>'}<strong>Day ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?mediaUtils.label(photos):'Read the story'}</small></button>`;
+      return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${first?photoImageMarkup(first,{sizes:'280px',targetWidth:480}):'<span class="album-text-scene">A page from the journey</span>'}<strong>${eventWord('title')} ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?mediaUtils.label(photos):'Read the story'}</small></button>`;
     }).join('');
     window.JOURNEY_ATLAS_MOBILE_UI.presentOverlay('album-dialog'); prepareProgressiveImages($('#album-days'));
   }
@@ -1776,7 +1779,7 @@
     const intro=$('#trip-intro');
     if(location.hash || new URLSearchParams(location.search).has('day') || new URLSearchParams(location.search).has('photo') || ['places','comments'].includes(new URLSearchParams(location.search).get('experience'))) { intro.hidden=true; return; }
     const {photo,position}=window.JOURNEY_ATLAS_UTILS.resolveCover(journey,journey.photos);
-    intro.innerHTML=`<div class="intro-photo" style="--cover-position:${position}">${photo?photoImageMarkup(photo,{eager:true,sizes:'(max-width: 900px) 100vw, 60vw'}):'<div class="intro-text-art">A journey taking shape</div>'}</div><div class="intro-copy"><span>${escapeHtml(journey.dates)} · ${journey.days.length} days</span><h1>${escapeHtml(journey.title)}</h1><p>${escapeHtml(journey.subtitle)}</p><div><button id="intro-relive" type="button">Relive the trip</button><button id="intro-map" type="button">Explore the map</button></div></div>`;
+    intro.innerHTML=`<div class="intro-photo" style="--cover-position:${position}">${photo?photoImageMarkup(photo,{eager:true,sizes:'(max-width: 900px) 100vw, 60vw'}):'<div class="intro-text-art">A journey taking shape</div>'}</div><div class="intro-copy"><span>${escapeHtml(journey.dates)} · ${journey.days.length} ${eventWord('plural')}</span><h1>${escapeHtml(journey.title)}</h1><p>${escapeHtml(journey.subtitle)}</p><div><button id="intro-relive" type="button">Relive the trip</button><button id="intro-map" type="button">Explore the map</button></div></div>`;
     intro.hidden=false; document.body.classList.add('intro-open'); $('.atlas-shell').inert=true; $('.mobile-nav').inert=true;
     prepareProgressiveImages(intro);
     $('#intro-map').onclick=()=>{dismissIntroduction();setMobileTab('map');fitRoute();};
@@ -2012,7 +2015,7 @@
     else if (event.key === "ArrowRight") moveViewer(1);
   });
   window.JOURNEY_ATLAS_MOBILE_UI = window.JOURNEY_ATLAS_MOBILE.create({
-    day:activeDay, days:()=>journey.days, scope:()=>mapScope, title:()=>journey.title,
+    eventWord, day:activeDay, days:()=>journey.days, scope:()=>mapScope, title:()=>journey.title,
     dayInfo:day=>({route:routeLabel(day),tagline:day.tagline?.trim() || '',meta:[dayDistance(day)?formatDistance(dayDistance(day)):'',modeLabel(day),dayDuration(day)].filter(Boolean).join(' · '),count:photosForDay(day.id).length,hasVideos:photosForDay(day.id).some(mediaUtils.isVideo),albumHasVideos:orderedPhotos().some(mediaUtils.isVideo)}),
     selectDay:id=>setActiveDay(id,true), stepDay:moveActiveDay, tab:setMobileTab, preview:renderStoryMap,
     openDay:openDayViewer, move:moveViewer, selectPhoto:index=>{viewerPhotoIndex=index;updateViewer();},

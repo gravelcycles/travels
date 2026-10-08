@@ -29,7 +29,7 @@
     return `
     <a class="journey-card" href="./${escapeHtml(journey.slug)}">
       <div class="journey-card-media" style="--cover-position:${escapeHtml(position)}">
-        ${photo ? (window.JOURNEY_ATLAS_AUTH?.isProtected(photo) ? window.JOURNEY_ATLAS_AUTH.markup(photo,{eager:index<5}) : `<img src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.alt || '')}" loading="lazy" />`) : '<div class="journey-card-placeholder"><span>A JOURNEY TAKING SHAPE</span><strong>Places to go.<br>Days to make your own.</strong></div>'}
+        ${photo ? (window.JOURNEY_ATLAS_AUTH?.isProtected(photo) ? window.JOURNEY_ATLAS_AUTH.markup(photo,{eager:index<5}) : `<img src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.alt || '')}" loading="lazy" />`) : '<div class="journey-card-placeholder"><span>A JOURNEY TAKING SHAPE</span><strong>Places to go.<br>Memories to make your own.</strong></div>'}
       </div>
       <div class="journey-card-copy">
         <small>${escapeHtml(journey.kicker)}</small>
@@ -37,7 +37,7 @@
         <p>${escapeHtml(journey.subtitle)}</p>
         <div class="journey-card-meta">
           <span>${escapeHtml(journey.dates)}</span>
-          <span>${journey.days.length} days</span>
+          <span>${journey.days.length} ${window.JOURNEY_ATLAS_UTILS.eventWord(journey, "plural")}</span>
           <span>${journey.status === "planned" && !journey.segments.length ? "Route to plan" : `${Math.round(routeDistance(journey))} km`}</span>
         </div>
       </div>

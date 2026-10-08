@@ -302,5 +302,30 @@
   function prepareImageReveals(container) { (imageReveals ||= createImageReveals()).prepare(container); }
   function resetImageReveal(image) { (imageReveals ||= createImageReveals()).reset(image); }
 
-  root.JOURNEY_ATLAS_UTILS = { createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
+  // Calendar days remain the storage/URL IDs; city events span arrival–departure dates.
+  function eventWord(journey, form = 'singular') {
+    const city = journey?.eventMode === 'city';
+    return form === 'plural' ? (city ? 'stops' : 'days') : form === 'title' ? (city ? 'Stop' : 'Day') : form === 'upper' ? (city ? 'STOP' : 'DAY') : (city ? 'stop' : 'day');
+  }
+  function eventCopy(journey, text) {
+    if (journey?.eventMode !== 'city') return text;
+    return text.replace(/\b(DAYS|Days|days|DAY|Day|day)\b/g, word => ({DAYS:'STOPS',Days:'Stops',days:'stops',DAY:'STOP',Day:'Stop',day:'stop'}[word]));
+  }
+  function applyEventCopy(journey, container) {
+    container.querySelectorAll('[data-event-copy]').forEach(el => { el.textContent = eventCopy(journey, el.dataset.eventCopy); });
+    container.querySelectorAll('[data-event-aria]').forEach(el => { el.setAttribute('aria-label', eventCopy(journey, el.dataset.eventAria)); });
+  }
+  function eventContainsDate(journey, day, date) {
+    return journey?.eventMode === 'city' ? date >= day.calendarDate && date <= day.calendarEndDate : date === day.calendarDate;
+  }
+  function eventForDate(journey, date) {
+    // On a transfer date, default to the arriving city. Authoring can override it.
+    return [...journey.days].reverse().find(day => eventContainsDate(journey, day, date));
+  }
+  function eventDateLabel(start, end = start) {
+    const format = date => new Intl.DateTimeFormat('en-GB', {day:'numeric', month:'short', timeZone:'UTC'}).format(new Date(`${date}T00:00:00Z`));
+    return start === end ? format(start) : `${format(start)} – ${format(end)}`;
+  }
+
+  root.JOURNEY_ATLAS_UTILS = { eventWord, eventCopy, applyEventCopy, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

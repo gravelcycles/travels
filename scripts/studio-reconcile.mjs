@@ -69,11 +69,11 @@ export function conflictReview(conflicts, data, saved = {}) {
       for (const item of journey[key] || []) {
         owners.set(item.id, journey);
         const route = key === 'segments' ? `${journey.places.find(p => p.id === item.from)?.name} → ${journey.places.find(p => p.id === item.to)?.name}` : null;
-        names.set(item.id, key === 'days' ? `Day ${item.number} · ${saved.days?.[item.id]?.title || item.title}` : item.sourceFilename || item.name || item.title || route || item.caption || item.id);
+        names.set(item.id, key === 'days' ? `${globalThis.JOURNEY_ATLAS_UTILS.eventWord(journey,'title')} ${item.number} · ${saved.days?.[item.id]?.title || item.title}` : item.sourceFilename || item.name || item.title || route || item.caption || item.id);
       }
     }
   }
-  const labels = { state: 'Saved edits', plan: 'Trip plan', text: 'Day story', tagline: 'Tagline', photoId: 'Photo', focal: 'Crop position' };
+  const labels = { state: 'Saved edits', plan: 'Trip plan', text: 'Story', tagline: 'Tagline', photoId: 'Photo', focal: 'Crop position' };
   const label = key => names.get(key) || labels[key] || key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, c => c.toUpperCase());
   const display = value => value === null || value === '' ? 'Empty' : typeof value === 'string' ? names.get(value) || value : JSON.stringify(value, null, 2);
   const containers = new Set(['state','plan','days','photos','routes','segments','places','videos','travelers','routeGroups','replayMoments']);

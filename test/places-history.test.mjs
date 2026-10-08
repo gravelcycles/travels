@@ -1,3 +1,4 @@
+import '../dist/assets/atlas-utils.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -54,7 +55,7 @@ function historyFixture({ mobile = true, earlierPage = false, scope = 'day' } = 
     openDay() { controller.open(); node('#photo-dialog').showModal(); this.selectPhoto(selected); }
   };
   const context = vm.createContext({
-    window: { addEventListener: (name, listener) => events.set(name, listener) },
+    window: { JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS, addEventListener: (name, listener) => events.set(name, listener) },
     document: { querySelector: node, createElement: () => node(`image-${nodes.size}`) },
     history, location: { href: 'https://example.test/journey' },
     matchMedia: query => ({ matches: query.includes('900px') && mobile, addEventListener() {} }),
@@ -187,7 +188,7 @@ function placeHistoryFixture({ cameraReady = null } = {}) {
   };
   const point = { id: 'cafe', name: 'A café', summary: 'Lunch', category: 'food', status: 'visited', coordinates: [8, 47], dayIds: ['one'], sources: [], reviews: [], images: [{ src: 'https://example.test/photo.jpg', alt: 'A photo', credit: 'Us', sourceUrl: 'https://example.test/source', permission: 'owned' }] };
   const context = vm.createContext({
-    window: { addEventListener: (name, listener) => events.set(name, listener) }, document, history, URL,
+    window: { JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS, addEventListener: (name, listener) => events.set(name, listener) }, document, history, URL,
     FormData: class { constructor(form) { this.values = form.values || {}; } get(name) { return this.values[name]; } },
     location: { href: 'https://example.test/journey' }, matchMedia: () => ({ matches: false }),
     requestAnimationFrame() { return 1; }, cancelAnimationFrame() {}, setTimeout() {}, clearTimeout() {}

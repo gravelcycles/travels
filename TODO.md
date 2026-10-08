@@ -274,3 +274,12 @@ delight/day-experience prototypes are preserved on branches listed in
 - [ ] **W08 image intake:** further automate source/permission review and optimized
       derivatives if repeated prompt-based intake shows a need. Current intake is
       agent-operated; no Google Maps API or image scraping service is planned.
+
+### Heading East follow-up — 8 October 2026
+
+- Add the owner's photos and city stories when supplied; use the shared city
+  date-range importer and existing private-photo service.
+- Confirm personal train departures/diversions and the coach's station approaches
+  if tickets or tracks become available; current detailed geometry is explicitly
+  reconstructed. Extend Salzburg beyond the known 11 October arrival when known.
+- No separate city-trip implementation or framework fork is needed.

@@ -1,3 +1,4 @@
+import '../dist/assets/atlas-utils.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -8,7 +9,7 @@ function harness(){
   const days=[{id:'first',segmentIds:['a','b']},{id:'second',segmentIds:['c']},{id:'rest',segmentIds:[]}];
   const rows=days.map(day=>({dataset:{dayId:day.id},classes:new Set(),classList:{toggle(name,on){on?this.owner.classes.add(name):this.owner.classes.delete(name);}}}));rows.forEach(row=>row.classList.owner=row);
   const states=new Map(),timers=new Map(),previews=[];let timer=0;
-  const context=vm.createContext({previewSegmentId:null,previewDayIds:[],previewSource:null,previewShowCard:false,previewClearTimer:null,inspectedSegmentId:null,
+  const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),previewSegmentId:null,previewDayIds:[],previewSource:null,previewShowCard:false,previewClearTimer:null,inspectedSegmentId:null,
     window:{clearTimeout:id=>timers.delete(id),setTimeout:callback=>{timers.set(++timer,callback);return timer;}},
     dayById:id=>days.find(day=>day.id===id),dayForSegment:id=>days.find(day=>day.segmentIds.includes(id)),
     journey:{days,segments:['a','b','c'].map(id=>({id}))},mainMapReady:true,
@@ -74,7 +75,7 @@ test('route inspection connects to a day preview and uses a small pinned inspect
 
 test('route sources preserve textual segment IDs for MapLibre rendered feature state',()=>{
   const sources=new Map(),layers=[];
-  const context=vm.createContext({window:{JOURNEY_ATLAS_MAP_STYLE:{routeInsertionLayer:()=>undefined}},
+  const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),window:{JOURNEY_ATLAS_MAP_STYLE:{routeInsertionLayer:()=>undefined}},
     palette:{route:'#0072b2',casing:'#fff'},modeStyles:{train:{color:'#0072b2',width:5}},segmentCoordinates:()=>[[8,47],[7,47]]});
   vm.runInContext(fn('addSegmentLayer'),context);
   context.addSegmentLayer({addSource:(id,source)=>sources.set(id,source),addLayer:layer=>layers.push(layer)},

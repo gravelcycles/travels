@@ -15,6 +15,7 @@
   function panLimit(size, scale, viewport) { return Math.max(0, (size * scale - viewport) / 2); }
 
   function create(api) {
+    const eventWord = form => api.eventWord?.(form) || ({title:'Day',upper:'DAY',plural:'days'}[form] || 'day');
     const $ = selector => document.querySelector(selector);
     const media = matchMedia('(max-width: 900px)'), reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const dialog = $('#photo-dialog'), viewer = $('.photo-viewer'), stage = $('.photo-stage'), img = $('#modal-photo');
@@ -84,7 +85,7 @@
     }
     function replayControlsChanged({playing, completed, day}) {
       replayState = {playing, completed, day};
-      $('#replay-explore-day').textContent = `Explore Day ${day.number}`;
+      $('#replay-explore-day').textContent = `Explore ${eventWord('title')} ${day.number}`;
       if (enabled()) {
         const symbol = playing ? '<path d="M8 5v14M16 5v14" stroke-width="4"/>' : completed ? '<path d="M5 8a8 8 0 1 1-1 8M5 3v5h5"/>' : '<path d="m9 5 11 7-11 7Z" fill="currentColor" stroke="none"/>';
         $('#replay-toggle').innerHTML = `<svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false">${symbol}</svg>`;
@@ -98,7 +99,7 @@
     function renderDay() {
       const day = api.day(), info = api.dayInfo(day), index = api.days().findIndex(d => d.id === day.id);
       for (const prefix of ['mobile-day', 'mobile-story']) {
-        $(`#${prefix}-date`).textContent = prefix === 'mobile-day' ? day.date : `Day ${day.number} · ${day.date}`;
+        $(`#${prefix}-date`).textContent = prefix === 'mobile-day' ? day.date : `${eventWord('title')} ${day.number} · ${day.date}`;
         $(`#${prefix}-title`).textContent = day.title;
         $(`#${prefix}-tagline`).textContent = info.tagline || '';
         $(`#${prefix}-tagline`).hidden = !info.tagline;
@@ -110,22 +111,22 @@
       if(api.scope()==='journey') {
         $('#mobile-day-tagline').hidden=true;
         $('#mobile-day-date').textContent='The whole journey';$('#mobile-day-title').textContent=api.title();
-        $('#mobile-day-meta').textContent=`${api.days().length} days · Choose a day to explore its route`;
+        $('#mobile-day-meta').textContent=`${api.days().length} ${eventWord('plural')} · Choose a ${eventWord()} to explore its route`;
         $('#mobile-day-photos').textContent=info.albumHasVideos?'Photos & videos':'All photos';$('#mobile-day-photos').disabled=false;
       }
-      $('#mobile-day-details').textContent=api.scope()==='journey'?'Choose a day':'Day details';
+      $('#mobile-day-details').textContent=api.scope()==='journey'?`Choose a ${eventWord()}`:`${eventWord('title')} details`;
       $('#mobile-previous-day').disabled = index <= 0;
       $('#mobile-next-day').disabled = index >= api.days().length - 1;
-      $('#mobile-day-picker .button-label').textContent = `Day ${day.number} of ${api.days().length}`;
+      $('#mobile-day-picker .button-label').textContent = `${eventWord('title')} ${day.number} of ${api.days().length}`;
       $('.map-panel').style.setProperty('--day-summary-height', `${$('.mobile-day-summary').offsetHeight}px`);
       tabChanged();
     }
     function tabChanged() {
       const tab = $('.atlas-shell').dataset.mobileTab;
       $('.atlas-shell').dataset.mapScope = api.scope();
-      $('#mobile-back .button-label').textContent = tab === 'map' ? 'All days' : 'Day map';
+      $('#mobile-back .button-label').textContent = tab === 'map' ? `All ${eventWord('plural')}` : `${eventWord('title')} map`;
       $('#mobile-day-picker').setAttribute('aria-expanded', String(tab === 'route'));
-      $('#mobile-day-picker').setAttribute('aria-label', `${tab === 'route' ? 'Return to' : 'Choose a day, current'} Day ${api.day().number} of ${api.days().length}`);
+      $('#mobile-day-picker').setAttribute('aria-label', `${tab === 'route' ? 'Return to' : `Choose a ${eventWord()}, current`} ${eventWord('title')} ${api.day().number} of ${api.days().length}`);
       $('[data-journey-action=unlock]').hidden = Boolean(window.JOURNEY_ATLAS_AUTH?.unlocked);
       if (enabled() && tab === 'story') requestAnimationFrame(api.preview);
     }
@@ -234,9 +235,9 @@
       if (!enabled()) { save(); return; }
       pointers.clear(); gesture = pinch = null; zoom(1);
       panel.inert=!locationOpen||grid;panel.setAttribute('aria-hidden',String(!locationOpen||grid));strip.inert=!grid;
-      $('#mobile-photo-back .button-label').textContent = `Day ${data.day.number}`;
+      $('#mobile-photo-back .button-label').textContent = `${eventWord('title')} ${data.day.number}`;
       $('#mobile-photo-count').textContent = data.photos.length ? `${data.index + 1} of ${data.photos.length}` : 'No photos';
-      $('#mobile-grid-back .button-label').textContent = `Day ${data.day.number}`;
+      $('#mobile-grid-back .button-label').textContent = `${eventWord('title')} ${data.day.number}`;
       const videoCount = data.photos.filter(item => item.mediaType === 'video').length, photoCount = data.photos.length - videoCount;
       $('#mobile-grid-title').textContent = [photoCount ? `${photoCount} photo${photoCount === 1 ? '' : 's'}` : '', videoCount ? `${videoCount} video${videoCount === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ') || 'No photos or videos';
       const photo = data.photos[data.index];
@@ -247,7 +248,7 @@
       $('#mobile-photo-grid').disabled = !data.photos.length;
       $('#photo-location-title').textContent = photo?.locationLabel || (photo?.mediaType === 'video' ? 'Video location' : 'Photo location');
       $('#mobile-photo-location .location-hint').textContent = photo?.caption || photo?.description ? 'Details & location' : photo?.mediaType === 'video' ? 'Video location' : 'Photo location';
-      $('#photo-location-subtitle').textContent = Number.isFinite(photo?.lng) && Number.isFinite(photo?.lat) ? `Day ${data.day.number} · ${data.day.title}` : 'No exact location · showing the day’s route';
+      $('#photo-location-subtitle').textContent = Number.isFinite(photo?.lng) && Number.isFinite(photo?.lat) ? `${eventWord('title')} ${data.day.number} · ${data.day.title}` : `No exact location · showing the ${eventWord()}’s route`;
       neighbors.forEach(({node,delta}) => {
         const adjacent = data.photos[data.index + delta]; node.hidden = !adjacent;
         api.clearImage(node); node.removeAttribute('src');

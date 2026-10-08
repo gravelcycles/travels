@@ -41,14 +41,14 @@
     </header>
 
     <header class="mobile-header" aria-label="Mobile journey navigation">
-      <button id="mobile-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Day map</span></button>
+      <button id="mobile-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label" data-event-copy="Day map">Day map</span></button>
       <a href="./" class="mobile-brand">Journey Atlas</a>
       <button id="mobile-open-replay" type="button" aria-controls="replay-dialog" aria-haspopup="dialog"><svg class="ui-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="m8 5 11 7-11 7Z"/></svg><span>Replay</span></button>
     </header>
 
     <section id="trip-intro" class="trip-intro" aria-label="Journey introduction" hidden></section>
     <main class="atlas-shell" data-mobile-tab="map">
-      <aside class="route-panel" id="mobile-journey-panel" aria-label="Journey days">
+      <aside class="route-panel" id="mobile-journey-panel" data-event-aria="Journey days" aria-label="Journey days">
         <div class="panel-intro">
           <span class="panel-label">THE JOURNEY</span>
           <h2 class="journey-name" id="journey-name"></h2>
@@ -62,7 +62,7 @@
         <section id="travel-party" class="travel-party" aria-label="Travelers and routes" hidden></section>
 
         <div class="route-heading">
-          <span>THE DAYS</span>
+          <span data-event-copy="THE DAYS">THE DAYS</span>
           <small id="day-count"></small>
         </div>
         <div class="day-list" id="day-list"></div>
@@ -85,7 +85,7 @@
           </div>
           <div class="map-actions">
             <button id="open-replay" type="button" aria-label="Open Trip Replay">Trip replay</button>
-            <button id="focus-day" type="button" aria-label="Zoom to the selected day's complete route">Day close-up</button>
+            <button id="focus-day" type="button" data-event-aria="Zoom to the selected day's complete route" aria-label="Zoom to the selected day's complete route" data-event-copy="Day close-up">Day close-up</button>
             <button id="fit-route" type="button" aria-label="Fit the whole route on the map">Fit route</button>
             <button id="show-all-photos" type="button">All photos · <span id="photo-count"></span></button>
             <button id="open-places" type="button" aria-controls="places-panel" aria-expanded="false">Places · <span id="place-count">0</span></button>
@@ -93,9 +93,9 @@
         </div>
         <div id="map" aria-label="Map showing the selected journey"></div>
         <div class="day-navigator" id="day-navigator" hidden aria-live="polite">
-          <button id="previous-day" type="button" aria-label="Previous day">←</button>
+          <button id="previous-day" type="button" data-event-aria="Previous day" aria-label="Previous day">←</button>
           <span id="focused-day-label"></span>
-          <button id="next-day" type="button" aria-label="Next day">→</button>
+          <button id="next-day" type="button" data-event-aria="Next day" aria-label="Next day">→</button>
         </div>
         <div class="map-legend" id="map-legend"></div>
         <aside class="route-inspector" id="route-inspector" hidden aria-live="polite">
@@ -106,10 +106,10 @@
           <button id="return-to-journal" class="return-to-journal" type="button">Back to Journal</button>
         </aside>
         <div class="map-status" id="map-status" hidden></div>
-        <section class="mobile-day-summary" aria-label="Selected day">
+        <section class="mobile-day-summary" data-event-aria="Selected day" aria-label="Selected day">
           <button id="mobile-routes-action" type="button" hidden>Routes · Everyone</button>
           <span id="mobile-day-date"></span><h2 id="mobile-day-title"></h2><p id="mobile-day-tagline" hidden></p><p id="mobile-day-meta"></p>
-          <div><button id="mobile-day-details" type="button">Day details</button><button id="mobile-day-photos" type="button">Photos</button></div>
+          <div><button id="mobile-day-details" type="button" data-event-copy="Day details">Day details</button><button id="mobile-day-photos" type="button">Photos</button></div>
         </section>
 
       </section>
@@ -118,7 +118,7 @@
       <aside class="story-panel" aria-label="Journey details">
         <div class="mobile-story-heading"><span id="mobile-story-date"></span><h2 id="mobile-story-title"></h2><p id="mobile-story-tagline" hidden></p><p id="mobile-story-meta"></p></div>
         <div id="mobile-story-legend" class="mobile-story-legend" aria-label="Route key"></div>
-        <div class="mobile-story-map"><div id="story-map-preview" aria-label="Preview of this day's route"></div><button id="mobile-story-expand" type="button">Expand map ↗</button></div>
+        <div class="mobile-story-map"><div id="story-map-preview" data-event-aria="Preview of this day's route" aria-label="Preview of this day's route"></div><button id="mobile-story-expand" type="button">Expand map ↗</button></div>
         <div class="story-album-entry">
         <div class="story-media" id="story-media"></div>
         <button type="button" class="story-photo-action" id="story-view-photos" hidden></button>
@@ -126,7 +126,7 @@
         <div class="story-detail" id="story-detail"></div>
         <div class="photo-section">
           <div class="photo-heading">
-            <span>THIS DAY</span>
+            <span data-event-copy="THIS DAY">THIS DAY</span>
             <small>Open any photo or video full screen</small>
           </div>
           <div class="photo-strip" id="photo-strip"></div>
@@ -134,10 +134,10 @@
       </aside>
     </main>
 
-    <nav class="mobile-nav" aria-label="Change journey day">
-      <button id="mobile-previous-day" type="button" aria-label="Previous day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg></button>
-      <button id="mobile-day-picker" type="button" aria-controls="mobile-journey-panel" aria-expanded="false"><span class="button-label">Choose a day</span><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
-      <button id="mobile-next-day" type="button" aria-label="Next day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button>
+    <nav class="mobile-nav" data-event-aria="Change journey day" aria-label="Change journey day">
+      <button id="mobile-previous-day" type="button" data-event-aria="Previous day" aria-label="Previous day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg></button>
+      <button id="mobile-day-picker" type="button" aria-controls="mobile-journey-panel" aria-expanded="false"><span class="button-label" data-event-copy="Choose a day">Choose a day</span><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button>
+      <button id="mobile-next-day" type="button" data-event-aria="Next day" aria-label="Next day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button>
     </nav>
 
     <dialog class="notes-dialog" id="notes-dialog" aria-labelledby="notes-journey-title">
@@ -153,15 +153,15 @@
           </section>
           <section>
             <strong>2 · Every leg matters</strong>
-            <p>Travel legs appear in their planned or recorded order. Open any day to isolate its route.</p>
+            <p data-event-copy="Travel legs appear in their planned or recorded order. Open any day to isolate its route.">Travel legs appear in their planned or recorded order. Open any day to isolate its route.</p>
           </section>
           <section>
             <strong>3 · Plans can grow</strong>
-            <p>Days can start with a few notes. Destinations, routes, and photographs can be added as the journey takes shape.</p>
+            <p data-event-copy="Days can start with a few notes. Destinations, routes, and photographs can be added as the journey takes shape.">Days can start with a few notes. Destinations, routes, and photographs can be added as the journey takes shape.</p>
           </section>
           <section>
-            <strong>4 · Photos follow the day</strong>
-            <p>The full-screen viewer keeps each day's photographs together. Day controls move the route map and journal context with the images.</p>
+            <strong data-event-copy="4 · Photos follow the day">4 · Photos follow the day</strong>
+            <p data-event-copy="The full-screen viewer keeps each day's photographs together. Day controls move the route map and journal context with the images.">The full-screen viewer keeps each day's photographs together. Day controls move the route map and journal context with the images.</p>
           </section>
         </div>
         <div class="storage-note">
@@ -172,16 +172,16 @@
     </dialog>
 
     <dialog id="album-dialog" class="album-dialog" aria-labelledby="album-title"><div class="album-heading"><h2 id="album-title">All photographs</h2><button id="close-album" type="button" aria-label="Close album overview"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div id="album-days"></div></dialog>
-    <dialog class="photo-dialog" id="photo-dialog" aria-label="Journey photos and videos by day">
+    <dialog class="photo-dialog" id="photo-dialog" data-event-aria="Journey photos and videos by day" aria-label="Journey photos and videos by day">
       <div class="photo-viewer">
-        <header class="mobile-photo-header"><button id="mobile-photo-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Day</span></button><span id="mobile-photo-count" aria-live="polite"></span><button id="mobile-photo-grid" type="button" aria-label="Show this day's photos and videos"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6" height="6" rx="1.3"/><rect x="14" y="4" width="6" height="6" rx="1.3"/><rect x="4" y="14" width="6" height="6" rx="1.3"/><rect x="14" y="14" width="6" height="6" rx="1.3"/></svg></button></header>
+        <header class="mobile-photo-header"><button id="mobile-photo-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label" data-event-copy="Day">Day</span></button><span id="mobile-photo-count" aria-live="polite"></span><button id="mobile-photo-grid" type="button" data-event-aria="Show this day's photos and videos" aria-label="Show this day's photos and videos"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6" height="6" rx="1.3"/><rect x="14" y="4" width="6" height="6" rx="1.3"/><rect x="4" y="14" width="6" height="6" rx="1.3"/><rect x="14" y="14" width="6" height="6" rx="1.3"/></svg></button></header>
 
         <button class="photo-close" aria-label="Close photo and video viewer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
         <button id="open-photo-comments" class="open-photo-comments" type="button" aria-haspopup="dialog" aria-controls="comments-dialog" hidden>Comments · <span id="photo-comments-count">0</span></button>
         <section class="photo-stage" aria-live="polite">
           <button class="photo-nav photo-prev" type="button" aria-label="Previous photo or video">‹</button>
           <figure>
-            <div class="viewer-empty" id="viewer-empty" hidden><strong>No photographs</strong><span>Use the day arrows to keep exploring.</span></div>
+            <div class="viewer-empty" id="viewer-empty" hidden><strong>No photographs</strong><span data-event-copy="Use the day arrows to keep exploring.">Use the day arrows to keep exploring.</span></div>
             <div class="viewer-photo-frame" id="viewer-photo-frame"><img id="modal-photo" alt="" />
               <div id="viewer-video" class="viewer-video" hidden>
                 <video id="journey-video" controls playsinline preload="none"></video>
@@ -197,9 +197,9 @@
           <div id="photo-map" aria-label="Map following the current photo or video"></div>
           <div class="photo-context-copy">
             <div class="viewer-day-nav">
-              <button id="viewer-previous-day" type="button" aria-label="Previous photo day">←</button>
+              <button id="viewer-previous-day" type="button" data-event-aria="Previous photo day" aria-label="Previous photo day">←</button>
               <span id="viewer-day-label"></span>
-              <button id="viewer-next-day" type="button" aria-label="Next photo day">→</button>
+              <button id="viewer-next-day" type="button" data-event-aria="Next photo day" aria-label="Next photo day">→</button>
             </div>
             <span id="modal-progress"></span>
             <h2 id="modal-day-title"></h2>
@@ -212,8 +212,8 @@
           </div>
           </div>
           <button id="album-continue" class="album-continue" type="button" hidden></button>
-          <header class="mobile-grid-heading"><button id="mobile-grid-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Day</span></button><strong id="mobile-grid-title"></strong></header>
-          <div class="viewer-filmstrip" id="viewer-filmstrip" aria-label="Photos and videos from this day"></div>
+          <header class="mobile-grid-heading"><button id="mobile-grid-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label" data-event-copy="Day">Day</span></button><strong id="mobile-grid-title"></strong></header>
+          <div class="viewer-filmstrip" id="viewer-filmstrip" data-event-aria="Photos and videos from this day" aria-label="Photos and videos from this day"></div>
         </aside>
         <footer class="mobile-photo-footer"><time id="mobile-photo-time"></time><div><button id="mobile-photo-prev" type="button" aria-label="Previous photo or video"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg></button><button id="mobile-photo-location" type="button" aria-controls="photo-location-panel" aria-expanded="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 10c0 5-6 10-6 10S6 15 6 10a6 6 0 1 1 12 0Z"/><circle cx="12" cy="10" r="2"/></svg><span class="location-hint">Photo location</span><svg class="ui-icon location-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button><button id="mobile-photo-next" type="button" aria-label="Next photo or video"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button></div></footer>
       </div>
@@ -222,16 +222,16 @@
     <dialog class="replay-dialog" id="replay-dialog" aria-label="Trip Replay">
       <div class="replay-player">
         <header class="mobile-replay-header"><button id="mobile-replay-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span>Journey</span></button><strong>Trip Replay</strong></header>
-        <div id="replay-map" aria-label="Animated map replaying the journey day by day"></div>
+        <div id="replay-map" data-event-aria="Animated map replaying the journey day by day" aria-label="Animated map replaying the journey day by day"></div>
         <button class="replay-close" type="button" aria-label="Close Trip Replay"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
-        <div class="replay-map-error" id="replay-map-error" hidden><span>The map is unavailable. You can still browse the day’s story.</span><button id="replay-retry-map" type="button">Retry map</button></div>
+        <div class="replay-map-error" id="replay-map-error" hidden><span data-event-copy="The map is unavailable. You can still browse the day’s story.">The map is unavailable. You can still browse the day’s story.</span><button id="replay-retry-map" type="button">Retry map</button></div>
         <aside class="replay-story" aria-live="polite">
           <span class="replay-eyebrow" id="replay-eyebrow"></span>
           <div class="replay-mode" id="replay-mode"></div>
           <h2 id="replay-title"></h2>
           <p class="replay-route" id="replay-route"></p>
           <p class="replay-copy" id="replay-copy"></p>
-          <button class="replay-explore" id="replay-explore-day" type="button">Explore this day</button>
+          <button class="replay-explore" id="replay-explore-day" type="button" data-event-copy="Explore this day">Explore this day</button>
         </aside>
         <section class="replay-controls" aria-label="Trip Replay controls">
           <div class="replay-transport">
