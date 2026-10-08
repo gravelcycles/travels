@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="./assets/places-panel.css" />
     <link rel="stylesheet" href="./assets/photo-comments.css" />
     <link rel="stylesheet" href="./assets/photo-bubbles.css" />
+    <link rel="stylesheet" href="./assets/arrival-chapter.css" />
   </head>
   <body data-journey-id="{{id}}">
     <header class="site-header">
@@ -105,6 +106,11 @@
           <button id="next-day" type="button" data-event-aria="Next day" aria-label="Next day">→</button>
         </div>
         <div class="map-legend" id="map-legend"></div>
+        <section class="arrival-chapter" id="arrival-chapter" aria-label="Arrival and city chapter" hidden>
+          <div class="arrival-copy" aria-live="polite"><small id="arrival-eyebrow"></small><strong id="arrival-title"></strong></div>
+          <div class="arrival-actions"><button id="arrival-replay" type="button">Replay arrival</button><button id="arrival-city" type="button">Skip to city</button></div>
+          <div class="arrival-progress" aria-hidden="true"><i id="arrival-progress"></i></div>
+        </section>
         <aside class="route-inspector" id="route-inspector" hidden aria-live="polite">
           <button id="close-route-inspector" type="button" aria-label="Close route details"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
           <span id="route-inspector-meta"></span>
@@ -288,6 +294,7 @@
     <script src="./assets/trip-photos.js"></script>
     <script src="./assets/content-overrides.js"></script>
     <script src="./assets/replay-utils.js"></script>
+    <script src="./assets/arrival-chapter.js"></script>
     <script src="./assets/photo-service.js"></script>
     <script src="./assets/photo-auth.js"></script>
     <script src="./assets/atlas-utils.js"></script>

@@ -11,6 +11,7 @@ import { prepareJourneyPlan } from '../scripts/journey-planner.mjs';
 import { studioRouteAvailability, proposeStudioRoute } from '../scripts/studio-route-service.mjs';
 import { photoImportConfig } from '../scripts/photo-import-config.mjs';
 import '../dist/assets/replay-utils.js';
+import '../dist/assets/arrival-chapter.js';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/map-style.js';
 import { mapStyleHarness } from './map-style-harness.mjs';
@@ -41,6 +42,23 @@ function bundle(source, key) {
   return JSON.parse(JSON.stringify(context.window[key]));
 }
 const app = read(repo, 'dist/assets/app.js');
+
+test('arrival and stay controls inherit across reference, demo and fresh draft without new trip flags', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const {data,routes}=loadContent(root,{includeDrafts:true});
+  const family=data.journeys.find(j=>j.id==='switzerland-italy-family-2026');
+  for(const journey of [family,data.journeys.find(j=>j.kind==='demo'),draft]){
+    const html=renderJourneyPage(root,journey,{preview:true});
+    for(const id of ['arrival-chapter','arrival-replay','arrival-city']) assert.ok(ids(html).includes(id),journey.id);
+    assert.ok(assets(html).includes('arrival-chapter.js'));assert.ok(assets(html).includes('arrival-chapter.css'));
+    const day=journey.days.find(day=>day.segmentIds.length)||journey.days[0];
+    const segments=day.segmentIds.map(id=>journey.segments.find(s=>s.id===id)).filter(Boolean);
+    const coordinate=s=>s.geometry||routes[s.id]||[];
+    const plan=globalThis.JOURNEY_ATLAS_ARRIVAL.plan(segments,coordinate);
+    assert.ok(plan.legs.every(leg=>day.segmentIds.includes(leg.segment.id)));
+    if(journey===draft){assert.equal(plan.legs.length,0);assert.equal(globalThis.JOURNEY_ATLAS_ARRIVAL.destination(day,journey.places,segments,coordinate),null);}
+  }
+});
 
 test('Studio readiness uses the same validation for reference, demo and fresh empty drafts', t => {
   const root = fixture(t), draft = createJourney(root, input);
@@ -175,7 +193,7 @@ test('selecting a real, demo or fresh-draft day scrolls its newly selected row i
     const selected = journey.days[Math.min(10, journey.days.length - 1)];
     let renderedId, scrolled = false;
     const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form), journey, activeDayId: journey.days[0].id, prefersReducedMotion: () => false,
-      placesUI:null,photoBubbles:null,dayById: id => journey.days.find(day => day.id === id), clearSegmentInspection() {},
+      arrivalChapter:null,arrivalKey:day=>day.id,cancelArrival(){},placesUI:null,photoBubbles:null,dayById: id => journey.days.find(day => day.id === id), clearSegmentInspection() {},
       renderDays() { renderedId = context.activeDayId; }, renderStory() {}, drawMainMap() {},
       dayList: { clientHeight: 400, getBoundingClientRect: () => ({ top: 100, bottom: 500 }),
         querySelector: () => {

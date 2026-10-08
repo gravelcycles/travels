@@ -338,3 +338,13 @@ An undated TBD tail is validated without extending the known calendar. The viewe
 Studio, photo assignment and calendar moves retain the shared contracts. Heading
 East supplies the content instance; family/demo/fresh-draft tests cover inheritance.
 No separate trip implementation or framework migration is introduced.
+
+## Unpublished arrival/city prototype — 8 October 2026
+
+`codex/arrival-stay-demo` adds shared arrival playback and destination-focused
+stay/photo framing without new journey fields or trip-specific branches.
+`arrival-chapter.js` isolates the clock and cancellation from map rendering.
+The local review generator renders the shared template with explicitly synthetic
+media; original content and private services remain outside the fixture.
+Owner review of timing and station-based city framing is pending. Do not treat
+this prototype as authorization to publish. See [ARRIVAL_CITY_DEMO.md](ARRIVAL_CITY_DEMO.md).

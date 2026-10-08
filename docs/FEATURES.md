@@ -5,6 +5,11 @@ Applies to Switzerland–Italy, every sample,
 and every new journey. “Available” means the common implementation exists;
 actual content, reviewed geometry and photographs must be supplied per trip.
 
+Local branch prototype: [Arrival → city](ARRIVAL_CITY_DEMO.md) traces the incoming
+route before settling into a destination and keeping unlocated photos local.
+It reuses the shared page, gallery and route geometry. It is **not published**;
+the owner is reviewing this interaction before any production rollout.
+
 [WIP.md](../WIP.md) distinguishes delivered features from preserved prototypes,
 unpublished editorial work and remaining service/intake projects. In particular,
 Live Photos playback is still an investigation. Private-video intake and live

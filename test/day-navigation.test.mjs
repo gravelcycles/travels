@@ -20,6 +20,7 @@ function selection() {
   const days = [{ id: 'd1', number: 1, segmentIds: [] }, { id: 'd2', number: 2, segmentIds: [] }];
   const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),
     window: {}, clearDayPreview(){}, deferDayPreviewClear(){}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
+    arrivalChapter:null, arrivalKey:day=>day.id, cancelArrival(){}, settleAtCity(){}, startArrival(){}, mainMapReady:true,
     activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null,
     viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null, placesUI: null, photoBubbles: null,
     journey: { days, segments: [] }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],
@@ -99,7 +100,7 @@ test('returning to the mobile map positions day controls and frames the selected
     window: { setTimeout: fn => fn() },
     renderDayNavigator() { calls.push('controls'); },
     activeDay: () => ({ id: context.activeDayId }),
-    focusDay(day) { calls.push(day.id); }
+    restoreDayCamera() { calls.push(context.activeDayId); }
   });
   vm.runInContext(functionSource('setMobileTab'), context);
   vm.runInContext('setMobileTab("map")', context);
@@ -116,7 +117,7 @@ test('opening Places before a queued map return keeps place framing and clears t
     window: { setTimeout: fn => timers.push(fn) },
     renderDayNavigator() { calls.push('controls'); },
     activeDay: () => ({ id: context.activeDayId }),
-    focusDay(day) { calls.push(day.id); },
+    restoreDayCamera() { calls.push(context.activeDayId); },
     fitJourneyBounds() { calls.push('journey'); }
   });
   vm.runInContext(functionSource('setMobileTab'), context);
@@ -165,14 +166,24 @@ test('same-day viewer navigation does not rebuild background photos or redraw th
   vm.runInContext('updateViewer()',context);assert.deepEqual(calls,[]);
 });
 test('viewer route layers are reused within a day and rebuilt when the day changes',()=>{
- const calls=[];let day={id:'d1',segmentIds:['a']};
- const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerFeedback:null,window:{},mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,viewerMapReady:true,photoDialog:{open:true},viewerMap:{easeTo(){}},mapIsReady:()=>true,viewerDay:()=>day,
+ const calls=[],cameras=[];let day={id:'d1',segmentIds:['a']};
+ const context=vm.createContext({prefersReducedMotion:()=>false,eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerFeedback:null,cityCoordinate:()=>[12,45],window:{JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS},mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,viewerMapReady:true,photoDialog:{open:true},viewerMap:{easeTo:camera=>cameras.push(camera)},mapIsReady:()=>true,viewerDay:()=>day,
   viewerPhotoIndex:0,photosForDay:()=>[{id:'one'},{id:'two'}],viewerCameraPhoto:null,viewerTransition:{cancel(){}},viewerPhotoMarkers:[],viewerRouteKey:null,viewerDecorations:{},
   journey:{id:'trip',segments:[{id:'a'},{id:'b'}]},dayCoordinates:()=>[],
   clearDecorations:()=>calls.push('clear'),addSegmentLayer:()=>calls.push('route'),addDayStopMarkers:()=>calls.push('stops')});
  vm.runInContext(functionSource('syncViewerMap'),context);vm.runInContext('syncViewerMap()',context);
  assert.deepEqual(calls,['clear','route','route','stops']);context.viewerPhotoIndex=1;vm.runInContext('syncViewerMap()',context);assert.equal(calls.length,4);
+ assert.equal(cameras.length,1,'Unlocated photos in the same city leave its camera alone');
+ assert.equal(cameras[0].zoom,12.5);assert.deepEqual(Array.from(cameras[0].center),[12,45]);
  day={id:'d2',segmentIds:['b']};vm.runInContext('syncViewerMap()',context);assert.deepEqual(calls.slice(4),['clear','route','route','stops']);
+ assert.equal(cameras.length,2,'Changing cities frames the new destination');
+});
+
+test('mobile map loading retains a pending arrival instead of silently skipping it',()=>{
+  const context=selection();
+  Object.assign(context,{mainMapReady:false,pendingMapAction:'arrival',mainMap:{resize(){}},renderDayNavigator(){},window:{setTimeout:fn=>fn()}});
+  vm.runInContext(functionSource('setMobileTab'),context);context.setMobileTab('map');
+  assert.equal(context.pendingMapAction,'arrival');
 });
 
 test('a collapsed mobile location panel does not schedule hidden viewer map work',()=>{

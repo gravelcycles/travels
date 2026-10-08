@@ -57,6 +57,8 @@
   journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(groupTravel.projectJourney(sourceJourney, activeGroupId), showTbd);
   let activeDayId = journey.days[0].id;
   let mapScope = "journey";
+  let arrivalChapter, arrivalMarker;
+  let arrivalPlan = null;
   let mainMap;
   let viewerMap;
   let replayMap;
@@ -535,6 +537,7 @@
     return {layerIds:[], sourceIds:[], markers:[], hitLayerIds:[], routeLayers:[]};
   }
   function retryMainMap() {
+    cancelArrival();
     mainFeedback?.destroy(); locationLabels?.destroy(); locationLabels = null;
     mainDecorations = resetMapDecorations(mainDecorations);
     mainMap?.remove(); mainMap = null; mainMapReady = false; hasPlayedOpeningMove = false;
@@ -580,7 +583,7 @@
         },
         obstacles: () => {
           const mapRect = mainMap.getContainer().getBoundingClientRect();
-          return ['#day-navigator', '#map-legend', '#route-inspector', '.maplibregl-ctrl-top-right', '.maplibregl-ctrl-bottom-right']
+          return ['#day-navigator', '#map-legend', '#arrival-chapter', '#route-inspector', '.maplibregl-ctrl-top-right', '.maplibregl-ctrl-bottom-right']
             .map(selector => mainMap.getContainer().querySelector(selector) || $(selector))
             .filter(element => element && !element.hidden && element.getClientRects().length)
             .map(element => { const r = element.getBoundingClientRect(); return { left: r.left - mapRect.left, right: r.right - mapRect.left, top: r.top - mapRect.top, bottom: r.bottom - mapRect.top }; });
@@ -594,7 +597,10 @@
         window.requestAnimationFrame(() => {
           if (document.body.classList.contains('places-open') && sourceJourney.pointsOfInterest?.length) return;
           if(mapScope === 'day') {
-            if($('.map-panel').offsetParent !== null) { focusDay(activeDay()); pendingMapAction=null; }
+            if($('.map-panel').offsetParent !== null) {
+              if (pendingMapAction === 'arrival') startArrival(activeDay()); else showCity(activeDay(), 0);
+              pendingMapAction=null;
+            }
           } else fitJourneyBounds(prefersReducedMotion() ? 0 : 2500);
         });
       }
@@ -621,6 +627,11 @@
       mainMap.getCanvas().style.cursor = feature ? "pointer" : "";
       if (feature) inspectSegment(feature.properties.segmentId);
       else clearSegmentInspection();
+    });
+    mainMap.on('movestart', event => {
+      if (event.originalEvent && arrivalChapter?.phase === 'arrival') {
+        restoreArrivalLine(); arrivalChapter.explore();
+      }
     });
     mainMap.on("mouseleave", () => {
       mainMap.getCanvas().style.cursor = "";
@@ -840,6 +851,8 @@
     const navigator = $("#day-navigator");
     const dayIndex = journey.days.findIndex((day) => day.id === activeDayId);
     window.JOURNEY_ATLAS_MOBILE_UI?.renderDay();
+    $('#arrival-chapter').style.bottom = window.matchMedia('(max-width: 900px)').matches
+      ? `${$('.mobile-day-summary').offsetHeight + 12}px` : '18px';
     navigator.hidden = mapScope !== "day";
     navigator.style.top = `${$("#map").offsetTop + 14}px`;
     $("#focused-day-label").textContent = `${eventWord('title')} ${dayIndex + 1} · ${activeDay().title}`;
@@ -882,6 +895,7 @@
   }
 
   function fitRoute() {
+    cancelArrival();
     mapScope = "journey";
     drawMainMap(false);
     fitJourneyBounds();
@@ -899,6 +913,82 @@
     } else if (coordinates.length === 1) {
       mainMap.easeTo({ center: coordinates[0], zoom: 12, duration: 650 });
     } else mainMap.easeTo({center:[0,20], zoom:1.5, duration:0});
+  }
+
+  function arrivalKey(day) { return `${journey.id}:${day.id}`; }
+
+  function cityCoordinate(day) {
+    return window.JOURNEY_ATLAS_ARRIVAL.destination(day, journey.places, segmentsForDay(day), segmentCoordinates);
+  }
+
+  function restoreArrivalLine() {
+    arrivalMarker?.remove(); arrivalMarker = null;
+    if (mainMapReady) for (const leg of arrivalPlan?.legs || []) {
+      mainMap.getSource(`main-source-${leg.segment.id}`)?.setData({type:'Feature',id:leg.segment.id,properties:{segmentId:leg.segment.id},geometry:{type:'LineString',coordinates:leg.coordinates}});
+    }
+  }
+
+  function cancelArrival() {
+    restoreArrivalLine(); arrivalChapter?.cancel(); arrivalPlan = null;
+  }
+
+  function renderArrivalChapter(phase = arrivalChapter?.phase || 'idle') {
+    const panel = $('#arrival-chapter'), day = activeDay();
+    panel.hidden = mapScope !== 'day' || phase === 'idle';
+    panel.dataset.phase = phase;
+    if (panel.hidden) return;
+    const name = destinationForDay(day)?.name || day.title;
+    $('#arrival-eyebrow').textContent = phase === 'arrival' ? `Getting here · ${modeLabel(day)}` : `${day.date || 'City chapter'}${day.planningStatus === 'tbd' ? ' · TBD' : ''}`;
+    $('#arrival-title').textContent = phase === 'arrival' ? `On the way to ${name}` : phase === 'explore' ? `Explore ${name}` : `In ${name}`;
+    $('#arrival-replay').hidden = phase === 'arrival' || !segmentsForDay(day).length;
+    $('#arrival-city').textContent = phase === 'arrival' ? 'Skip to city' : phase === 'explore' ? 'Back to city' : photosForDay(day.id).length ? 'View photos' : 'Read story';
+  }
+
+  function showCity(day, duration = 1250) {
+    mapScope = 'day';
+    if (!mainMapReady) { pendingMapAction = 'city'; return; }
+    const center = cityCoordinate(day);
+    mainFeedback?.empty(!center);
+    for (const segment of segmentsForDay(day)) {
+      const id = `main-line-${segment.id}`;
+      if (mainMap.getLayer(id)) {
+        mainMap.setPaintProperty(id, 'line-opacity', ['case',['boolean',['feature-state','previewed'],false],1,0.3]);
+        mainMap.setPaintProperty(id, 'line-width', ['case',['boolean',['feature-state','previewed'],false],6,3]);
+        mainMap.setPaintProperty(`main-casing-${segment.id}`, 'line-opacity', 0.25);
+      }
+    }
+    if (center) mainMap.flyTo({center, zoom:12.5, padding:mapPadding(112), duration:prefersReducedMotion()?0:duration});
+    else mainMap.easeTo({center:[0,20],zoom:1.5,duration:0});
+    renderDayNavigator();
+    renderArrivalChapter('stay');
+  }
+
+  function settleAtCity(day = activeDay()) {
+    if (arrivalChapter?.key === arrivalKey(day)) arrivalChapter.stay();
+    else {
+      cancelArrival(); drawMainMap(false);
+      arrivalChapter.start(arrivalKey(day), {legs:[],duration:0}, {reducedMotion:true});
+    }
+  }
+
+  function startArrival(day) {
+    if (!mainMapReady) { pendingMapAction = 'arrival'; return; }
+    photoBubbles?.close();
+    cancelArrival();
+    focusDay(day);
+    arrivalPlan = window.JOURNEY_ATLAS_ARRIVAL.plan(segmentsForDay(day), segmentCoordinates);
+    for (const leg of arrivalPlan.legs) addSegmentLayer(mainMap, mainDecorations, leg.segment, {prefix:'arrival-guide',color:palette.muted,opacity:0.18,selected:false});
+    if (arrivalPlan.legs.length && !prefersReducedMotion()) {
+      const element = document.createElement('div'); element.className = 'arrival-position';
+      element.setAttribute('role','img'); element.setAttribute('aria-label','Journey progress');
+      element.textContent = '→';
+      arrivalMarker = new maplibregl.Marker({element,anchor:'center'}).setLngLat(arrivalPlan.legs[0].coordinates[0]).addTo(mainMap);
+    }
+    arrivalChapter.start(arrivalKey(day), arrivalPlan, {reducedMotion:prefersReducedMotion()});
+  }
+
+  function restoreDayCamera() {
+    if (arrivalChapter?.phase !== 'arrival') showCity(activeDay(), 0);
   }
 
   const eventWord = (form) => window.JOURNEY_ATLAS_UTILS.eventWord(journey, form);
@@ -1062,6 +1152,7 @@
   }
 
   function selectRouteGroup(id) {
+    cancelArrival();
     if (id && !sourceJourney.routeGroups?.some(group => group.id === id)) return;
     clearSegmentInspection(true); pauseReplay(); replayJourneyId = null;
     videoPlayer.stop(); if (photoDialog.open) photoDialog.close();
@@ -1105,8 +1196,10 @@
     if (top) dayList.scrollBy({ top, behavior: prefersReducedMotion() ? 'instant' : 'smooth' });
   }
 
-  function setActiveDay(id, focus, {preservePhotoSelection = false} = {}) {
+  function setActiveDay(id, focus, {preservePhotoSelection = false, animateArrival = true} = {}) {
     if (!dayById(id)) return;
+    const changed = id !== activeDayId || arrivalChapter?.key !== arrivalKey(dayById(id));
+    if (changed) cancelArrival();
     clearSegmentInspection(true);
     if (id !== activeDayId) { placesUI?.dayChanged(); if(!preservePhotoSelection)photoBubbles?.close(); }
     activeDayId = id;
@@ -1117,10 +1210,11 @@
     if (focus) {
       if ($(".map-panel").offsetParent === null) {
         mapScope = "day";
-        pendingMapAction = "focus";
+        pendingMapAction = animateArrival && changed ? "arrival" : "city";
         drawMainMap(false);
       } else {
-        focusDay(activeDay());
+        if (animateArrival && changed) startArrival(activeDay());
+        else if (arrivalChapter?.phase !== "arrival") settleAtCity();
       }
     } else {
       drawMainMap(false);
@@ -1128,15 +1222,18 @@
   }
 
   function setMobileTab(tab) {
+    if (tab === 'story') settleAtCity();
     $(".atlas-shell").dataset.mobileTab = tab;
     window.JOURNEY_ATLAS_MOBILE_UI?.tabChanged();
     if (tab === "map" && mainMap) {
       window.setTimeout(() => {
         mainMap.resize();
         renderDayNavigator();
+        if (!mainMapReady) return;
         if (placesUI?.isOpen()) { pendingMapAction = null; return; }
         if (pendingMapAction === "fit") fitJourneyBounds();
-        else if (pendingMapAction === "focus" || mapScope === "day") focusDay(activeDay());
+        else if (pendingMapAction === "arrival") startArrival(activeDay());
+        else if (mapScope === "day") restoreDayCamera();
         pendingMapAction = null;
       }, 80);
     }
@@ -1160,9 +1257,10 @@
       day.segmentIds.map(segmentById).filter(Boolean).forEach(segment => addSegmentLayer(storyMap,storyDecorations,segment,{prefix:'story',selected:true,opacity:1}));
       storyMapDay = day.id;
     }
-    const coordinates = dayCoordinates(day);
+    const destination = cityCoordinate(day);
+    const coordinates = destination ? [destination] : [];
     if (coordinates.length > 1) storyMap.fitBounds(boundsFromCoordinates(coordinates),{padding:{top:40,right:25,bottom:25,left:25},maxZoom:11,duration:0});
-    else if (coordinates.length) storyMap.jumpTo({center:coordinates[0],zoom:10});
+    else if (coordinates.length) storyMap.jumpTo({center:coordinates[0],zoom:12.5});
     else storyMap.jumpTo({center:[0,20],zoom:1.5});
     storyFeedback?.empty(!coordinates.length);
   }
@@ -1316,8 +1414,8 @@
     continuation.innerHTML = next ? `<strong>${photo ? `Next ${eventWord()}` : `Next ${eventWord()} with photos or videos`} <span aria-hidden="true">→</span></strong><small>${eventWord('title')} ${next.number} · ${escapeHtml(next.title)}</small>` : '<strong>Back to journey →</strong>';
     renderViewerFilmstrip(photos);
     window.JOURNEY_ATLAS_MOBILE_UI?.update({day, photos, index: viewerPhotoIndex});
-    if (dayChanged) setActiveDay(day.id, true);
-    else if (scopeChanged) drawMainMap(false);
+    if (dayChanged) setActiveDay(day.id, true, {animateArrival:false});
+    else if (scopeChanged) { drawMainMap(false); settleAtCity(day); }
     if (viewerMapReady) syncViewerMap();
     // Conversation context follows the newly selected image, including its auth state.
     if (typeof placesUI !== 'undefined') placesUI?.photoChanged(photo);
@@ -1340,7 +1438,8 @@
     viewerCameraPhoto = photo || null;
     viewerPhotoMarkers.forEach(marker => marker.remove());viewerPhotoMarkers = [];
     const routeKey = `${journey.id}:${day.id}`;
-    if (viewerRouteKey !== routeKey) {
+    const routeChanged = viewerRouteKey !== routeKey;
+    if (routeChanged) {
       clearDecorations(viewerMap, viewerDecorations);
       const selectedSegments = new Set(day.segmentIds);
       [...journey.segments]
@@ -1383,18 +1482,19 @@
       }
     } else {
       viewerTransition?.cancel();
-      const coordinates = dayCoordinates(day);
-      if (coordinates.length > 1) {
-        viewerMap.fitBounds(boundsFromCoordinates(coordinates), { padding: 45, maxZoom: 9, duration: prefersReducedMotion() ? 0 : 650 });
-      } else if (coordinates.length === 1) {
-        viewerMap.easeTo({ center: coordinates[0], zoom: 9, duration: prefersReducedMotion() ? 0 : 650 });
-      } else viewerMap.easeTo({center:[0,20],zoom:1.5,duration:0});
+      const center = cityCoordinate(day);
+      if (routeChanged || !previous || window.JOURNEY_ATLAS_UTILS.locatedPhoto(previous)) {
+        if (center) viewerMap.easeTo({center,zoom:12.5,duration:prefersReducedMotion()?0:650});
+        else viewerMap.easeTo({center:[0,20],zoom:1.5,duration:0});
+      }
     }
   }
 
   function openPhoto(photoId, { fullscreen = false } = {}) {
     const photo = photoById(photoId);
     if (!photo) return;
+    if (photo.dayId !== activeDayId) setActiveDay(photo.dayId, true, {animateArrival:false});
+    if (arrivalChapter?.phase !== "stay") settleAtCity();
     if (!fullscreen && !window.JOURNEY_ATLAS_MOBILE_UI?.enabled() && !mediaUtils.isVideo(photo)) {
       if (photo.dayId !== activeDayId) setActiveDay(photo.dayId, true);
       placesUI?.closeForPhotos();
@@ -1420,6 +1520,8 @@
   }
 
   function openDayViewer(dayId = activeDayId, options = {}) {
+    if (dayId !== activeDayId) setActiveDay(dayId, true, {animateArrival:false});
+    if (arrivalChapter?.phase !== "stay") settleAtCity();
     const first=photosForDay(dayId)[0];
     if (!window.JOURNEY_ATLAS_MOBILE_UI?.enabled() && first && !mediaUtils.isVideo(first)) { openPhoto(first.id); return; }
     viewerDayId = dayById(dayId)?.id || journey.days[0].id;
@@ -1755,6 +1857,7 @@
   }
 
   function openReplay() {
+    if (arrivalChapter?.phase === "arrival") settleAtCity();
     if (!replayUtils) return;
     pauseReplay();
     if (replayJourneyId !== journey.id) {
@@ -1855,6 +1958,7 @@
   document.addEventListener('visibilitychange', () => { if (document.hidden) videoPlayer.pause(); });
 
   $('#show-tbd').addEventListener('change', event => {
+    cancelArrival();
     clearSegmentInspection(true); clearDayPreview(); pauseReplay(); replayJourneyId = null;
     videoPlayer.stop(); if (photoDialog.open) photoDialog.close();
     showTbd = event.target.checked;
@@ -1869,6 +1973,7 @@
   $("#journey-select").addEventListener("change", (event) => {
     const nextJourney = availableJourneys.find((item) => item.id === event.target.value);
     if (!nextJourney) return;
+    cancelArrival();
     clearSegmentInspection(true);
     pauseReplay(); replayJourneyId = null; storyMapDay = null; viewerRouteKey = null;
     videoPlayer.stop(); if (photoDialog.open) photoDialog.close();
@@ -1953,7 +2058,13 @@
   }));
 
   $("#fit-route").addEventListener("click", fitRoute);
-  $("#focus-day").addEventListener("click", () => focusDay(activeDay()));
+  $("#focus-day").addEventListener("click", () => { cancelArrival(); focusDay(activeDay()); renderArrivalChapter('explore'); });
+  $('#arrival-replay').addEventListener('click', () => startArrival(activeDay()));
+  $('#arrival-city').addEventListener('click', () => {
+    if ($('#arrival-chapter').dataset.phase !== 'stay') settleAtCity();
+    else if (photosForDay(activeDayId).length) openDayPhotos(); else showJournal(true);
+  });
+  document.addEventListener('visibilitychange', () => { if (document.hidden && arrivalChapter?.phase === 'arrival') settleAtCity(); });
   $("#open-replay").addEventListener("click", openReplay);
   $("#previous-day").addEventListener("click", () => moveActiveDay(-1));
   $("#next-day").addEventListener("click", () => moveActiveDay(1));
@@ -2057,6 +2168,7 @@
   });
   window.JOURNEY_ATLAS_MOBILE_UI = window.JOURNEY_ATLAS_MOBILE.create({
     eventWord, day:activeDay, days:()=>journey.days, scope:()=>mapScope, title:()=>journey.title,
+    destinationName:day=>cityCoordinate(day) ? (destinationForDay(day)?.name || day.title) : '',
     dayInfo:day=>({route:routeLabel(day),tagline:day.tagline?.trim() || '',meta:[dayDistance(day)?formatDistance(dayDistance(day)):'',modeLabel(day),dayDuration(day)].filter(Boolean).join(' · '),count:photosForDay(day.id).length,hasVideos:photosForDay(day.id).some(mediaUtils.isVideo),albumHasVideos:orderedPhotos().some(mediaUtils.isVideo)}),
     selectDay:id=>setActiveDay(id,true), stepDay:moveActiveDay, tab:setMobileTab, preview:renderStoryMap,
     openDay:openDayViewer, move:moveViewer, selectPhoto:index=>{viewerPhotoIndex=index;updateViewer();},
@@ -2089,7 +2201,7 @@
     unlocked: () => window.JOURNEY_ATLAS_AUTH?.unlocked,
     unlock: () => window.JOURNEY_ATLAS_AUTH?.showPrompt(),
     explore: () => { dismissIntroduction(); setMobileTab('map'); },
-    restoreMap: () => mapScope === 'day' ? focusDay(activeDay()) : fitJourneyBounds(),
+    restoreMap: () => mapScope === 'day' ? restoreDayCamera() : fitJourneyBounds(),
     canRestoreMapCamera: () => mainMapReady && hasPlayedOpeningMove && !mainMap?.isMoving()
   });
   photoBubbles = window.JOURNEY_ATLAS_PHOTO_BUBBLES.create({
@@ -2098,8 +2210,19 @@
     photoUrl:preferredPhotoUrl, fullscreen:id=>openPhoto(id,{fullscreen:true}),
     explore:()=>{dismissIntroduction();clearSegmentInspection(true);if($('.atlas-shell').dataset.mobileTab!=='map')setMobileTab('map');},
     placesOpen:()=>placesUI.isOpen(), closePlaces:()=>placesUI.closeForPhotos(),openPlace:id=>placesUI.openPlace(id),
-    selectPhotoDay:id=>{if(id!==activeDayId)setActiveDay(id,true,{preservePhotoSelection:true});},
+    selectPhotoDay:id=>{if(id!==activeDayId)setActiveDay(id,true,{preservePhotoSelection:true,animateArrival:false});},
     photoChanged:photo=>placesUI.photoChanged(photo),comments:()=>placesUI.openComments(),commentsAvailable:()=>placesUI.commentsAvailable()
+  });
+  arrivalChapter = window.JOURNEY_ATLAS_ARRIVAL.create({
+    onState: renderArrivalChapter,
+    onFrame: (frame, current) => {
+      if (current.key !== arrivalKey(activeDay()) || !mainMapReady) return;
+      for (const line of frame.lines) mainMap.getSource(`main-source-${line.segment.id}`)?.setData({type:'Feature',id:line.segment.id,properties:{segmentId:line.segment.id},geometry:{type:'LineString',coordinates:line.coordinates}});
+      const line = frame.lines.find(line => line.segment.id === frame.active?.segment.id);
+      if (line) arrivalMarker?.setLngLat(line.coordinates.at(-1));
+      $('#arrival-progress').style.width = `${frame.progress * 100}%`;
+    },
+    onStay: current => { if (current.key !== arrivalKey(activeDay())) return; restoreArrivalLine(); showCity(activeDay()); }
   });
   renderAll({ fit: false });
   initMainMap();
