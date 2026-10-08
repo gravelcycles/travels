@@ -180,8 +180,8 @@
     const wideZoom = Math.min(from.zoom, route.zoom, context.zoom), moves = [];
     // Pull back around the old place before crossing, so its position is legible.
     if (from.zoom - wideZoom > 0.08) moves.push({center:from.center,zoom:wideZoom,duration:Math.min(950,Math.max(450,(from.zoom-wideZoom)*100))});
-    if (!sameCenter(from.center,context.center)) moves.push({center:context.center,zoom:wideZoom,duration:650});
-    if (route.zoom - wideZoom > 0.08 || !sameCenter(context.center,route.center)) moves.push({center:route.center,zoom:route.zoom,duration:450});
+    // Recenter and zoom together, without pausing at an intermediate wide view.
+    if (route.zoom - wideZoom > 0.08 || !sameCenter(from.center,route.center)) moves.push({center:route.center,zoom:route.zoom,duration:750});
     return moves;
   }
 

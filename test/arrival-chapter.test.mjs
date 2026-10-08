@@ -45,14 +45,15 @@ test('arrival waits for its camera to finish before drawing or starting its trav
   h.tick(6500);assert.deepEqual(h.stays,[]);h.tick(6750);assert.deepEqual(h.stays,['city']);
 });
 
-test('camera pulls back around the old place before crossing at a shared scale and settling',()=>{
+test('camera pulls back around the old place, then pans and zooms onto the route in one move',()=>{
   const from={center:[12,45],zoom:12.5},route={center:[11,47],zoom:8},context={center:[11.5,46],zoom:6};
   const moves=cameraMoves(from,route,context);
   assert.deepEqual(moves.map(({center,zoom})=>({center,zoom})),[
-    {center:from.center,zoom:6},{center:context.center,zoom:6},{center:route.center,zoom:8}
+    {center:from.center,zoom:6},{center:route.center,zoom:8}
   ]);
   assert.ok(moves.every(move=>move.duration>=450));
-  assert.equal(cameraMoves(from,context,context).length,2,'No redundant final zoom when the context already frames the route');
+  assert.equal(moves[1].duration,750);
+  assert.equal(cameraMoves(from,context,context).length,2,'A pan-only second stage still goes straight to the route');
   assert.deepEqual(cameraMoves(route,route,route),[],'An already-framed replay needs no camera drift');
 });
 
