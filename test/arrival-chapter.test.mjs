@@ -203,16 +203,16 @@ function drawingHarness(p){
   return {drawing,events,strokes,icons,canvas,base,get clears(){return clears;},get projects(){return projects;},get removed(){return removed;},get inserted(){return inserted;}};
 }
 
-test('canvas trail and icon paint together at display cadence without reprojecting the full route',()=>{
+test('canvas paints the route trail without a moving icon at display cadence without reprojecting the full route',()=>{
   const p=plan(legs,routes),h=drawingHarness(p);
   assert.equal(h.inserted,true);assert.equal(h.canvas.width,1600);assert.equal(h.canvas.height,1200);
   const initialProjects=h.projects;
   for(let index=0;index<=120;index++)h.drawing.draw(frame(p,index/120,{drawLines:false}));
   assert.equal(h.clears,121,'No 30 Hz cap: every new display-frame position is painted');
   assert.equal(h.projects-initialProjects,121,'Only the moving tip is projected per frame');
-  assert.equal(h.icons.length,121);
+  assert.equal(h.icons.length,0);
   const last=h.strokes.at(-1);
-  assert.deepEqual(last.points.at(-1).slice(1),h.icons.at(-1),'The trail reaches the icon in the same paint');
+  assert.deepEqual(last.points.at(-1).slice(1),legs.at(-1).geometry.at(-1).map(value=>value*10),'The trail reaches the destination');
   assert.deepEqual(last.dash,[12,12],'Bus dash styling survives the fast renderer');
   assert.deepEqual(last.points[0],['move',111,480],'Disconnected legs have separate paths');
   h.drawing.draw(frame(p,1,{drawLines:false}));assert.equal(h.clears,121,'The endpoint holds without repeated painting');

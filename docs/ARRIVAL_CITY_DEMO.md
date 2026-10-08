@@ -10,8 +10,8 @@ existing gallery. **Replay arrival** repeats the sequence; **Skip to city** ends
 it early. Dragging/zooming during arrival cancels the automatic camera and offers
 **Back to city**. Reduced motion and route-free stops go straight to the stay.
 
-The route trail and moving icon share a lightweight canvas and update together
-on every display frame, with no 30 Hz limit. Route projection and path prefixes
+The route trail uses a lightweight canvas and updates on every display frame,
+with no moving icon or 30 Hz limit. Route projection and path prefixes
 are cached; playback does not rebuild GeoJSON or send work to the map's route
 workers. The overlay respects train/bus/TBD styling and display pixel density,
 reprojects on resize, and restores the regular map layers when it ends.
@@ -24,7 +24,7 @@ the route's **From → To** title preserve orientation. A distinct previous city
 is labelled during the camera move when navigating from a close city view.
 
 Playback waits for all camera stages to finish, then plays for **1.5 seconds**
-(40% shorter than 2.5 seconds), holds the completed route and icon for **0.25
+(40% shorter than 2.5 seconds), holds the completed route for **0.25
 seconds**, and starts the city zoom. Framing time does not consume travel time.
 Travel itself remains linear.
 Replay uses the same preparation; reduced motion skips it. Changing stops,
@@ -34,7 +34,7 @@ The timing follows a simplified overhead outline in Mercator space, retaining
 bends greater than 2.5% of the leg's bounding-box diagonal. Progress projected
 along each outline span is linear with time: small switchbacks move faster than
 straight track. True backtracking gets 4% of that span's time to remain continuous
-rather than teleport. The original track is still drawn and the icon stays on it;
+rather than teleport. The original track is still drawn;
 the simplified outline is only a cached clock. Disconnected legs stay separate.
 
 The clock belongs to the selected event: navigation, whole-trip overview, hidden
