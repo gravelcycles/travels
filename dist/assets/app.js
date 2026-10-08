@@ -59,6 +59,7 @@
   let mapScope = "journey";
   let arrivalChapter, arrivalDrawing;
   let arrivalPlan = null;
+  let arrivalPlaceMarkers = [];
   let mainMap;
   let viewerMap;
   let replayMap;
@@ -923,6 +924,7 @@
 
   function restoreArrivalLine() {
     arrivalDrawing?.destroy(); arrivalDrawing = null;
+    arrivalPlaceMarkers.forEach(item => item.marker.remove()); arrivalPlaceMarkers = [];
     if (mainMapReady) for (const leg of arrivalPlan?.legs || []) {
       for (const part of ['line', 'casing']) {
         const id = `main-${part}-${leg.segment.id}`;
@@ -944,7 +946,7 @@
     const traveling = ['framing','arrival'].includes(phase);
     if (phase === 'framing') $('#arrival-progress').style.transform = 'scaleX(0)';
     $('#arrival-eyebrow').textContent = traveling ? `Getting here · ${modeLabel(day)}` : `${day.date || 'City chapter'}${day.planningStatus === 'tbd' ? ' · TBD' : ''}`;
-    $('#arrival-title').textContent = traveling ? `On the way to ${name}` : phase === 'explore' ? `Explore ${name}` : `In ${name}`;
+    $('#arrival-title').textContent = traveling ? routeLabel(day) : phase === 'explore' ? `Explore ${name}` : `In ${name}`;
     $('#arrival-replay').hidden = traveling || !segmentsForDay(day).length;
     $('#arrival-city').textContent = traveling ? 'Skip to city' : phase === 'explore' ? 'Back to city' : photosForDay(day.id).length ? 'View photos' : 'Read story';
   }
@@ -976,7 +978,7 @@
     }
   }
 
-  function startArrival(day) {
+  function startArrival(day, previousDay = day) {
     if (!mainMapReady) { pendingMapAction = 'arrival'; return; }
     photoBubbles?.close();
     cancelArrival();
@@ -984,12 +986,41 @@
     const reducedMotion = prefersReducedMotion();
     if (reducedMotion || !arrivalPlan.legs.length) drawMainMap(false);
     arrivalChapter.start(arrivalKey(day), arrivalPlan, { reducedMotion,
-      prepare: ready => window.JOURNEY_ATLAS_ARRIVAL.afterCamera(mainMap, eventData => focusDay(day, arrivalPlan.framingDuration, true, eventData), ready)
+      prepare: ready => prepareArrivalView(day, previousDay, ready)
     });
+  }
+
+  function prepareArrivalView(day, previousDay, ready) {
+    const from = {center:mainMap.getCenter().toArray(),zoom:mainMap.getZoom()};
+    const coordinates = arrivalPlan.legs.flatMap(leg => leg.coordinates);
+    const previous = from.zoom > 4 && previousDay && previousDay.id !== day.id ? cityCoordinate(previousDay) : null;
+    const padding = mapPadding(140);
+    const route = mainMap.cameraForBounds(boundsFromCoordinates(coordinates), {padding,maxZoom:12.5});
+    const context = mainMap.cameraForBounds(boundsFromCoordinates(coordinates.concat(from.zoom > 4 ? [from.center] : [], previous ? [previous] : [])), {padding,maxZoom:12.5});
+    mapScope = 'day'; drawMainMap(false);
+    const first = arrivalPlan.legs[0], last = arrivalPlan.legs.at(-1);
+    const places = [
+      {coordinate:first.coordinates[0],name:placeById(first.segment.from)?.name || 'Start',label:'Start'},
+      {coordinate:last.coordinates.at(-1),name:placeById(last.segment.to)?.name || day.title,label:'Arrive'}
+    ];
+    if (Math.hypot(places[0].coordinate[0]-places[1].coordinate[0],places[0].coordinate[1]-places[1].coordinate[1]) < 0.0001) { places[0].label = 'Start & finish'; places.pop(); }
+    if (previous && !places.some(place => Math.hypot(place.coordinate[0]-previous[0],place.coordinate[1]-previous[1]) < 0.001)) places.push({coordinate:previous,name:destinationForDay(previousDay)?.name || previousDay.title,label:'Previous view',contextOnly:true});
+    for (const place of places) {
+      const element = document.createElement('div'); element.className = 'arrival-place-label';
+      const label = document.createElement('small'); label.textContent = place.label;
+      const name = document.createElement('strong'); name.textContent = place.name;
+      element.append(label,name);
+      const marker = new maplibregl.Marker({element,anchor:'top',offset:[0,14]}).setLngLat(place.coordinate).addTo(mainMap);
+      arrivalPlaceMarkers.push({marker,contextOnly:place.contextOnly});
+    }
+    const moves = window.JOURNEY_ATLAS_ARRIVAL.cameraMoves(from, route, context);
+    return window.JOURNEY_ATLAS_ARRIVAL.afterCamera(mainMap, moves.map(camera => eventData => mainMap.easeTo({...camera,padding},eventData)), ready);
   }
 
   function drawArrival(current) {
     if (current.key !== arrivalKey(activeDay()) || !mainMapReady) return;
+    arrivalPlaceMarkers.filter(item => item.contextOnly).forEach(item => item.marker.remove());
+    arrivalPlaceMarkers = arrivalPlaceMarkers.filter(item => !item.contextOnly);
     for (const leg of arrivalPlan.legs) addSegmentLayer(mainMap, mainDecorations, leg.segment, {prefix:'arrival-guide',color:palette.muted,opacity:0.18,selected:false});
     if (arrivalPlan.legs.length && !prefersReducedMotion()) {
       arrivalDrawing = window.JOURNEY_ATLAS_ARRIVAL.createDrawing({ map: mainMap, plan: arrivalPlan, styleForSegment: segment => {
@@ -1211,6 +1242,7 @@
 
   function setActiveDay(id, focus, {preservePhotoSelection = false, animateArrival = true} = {}) {
     if (!dayById(id)) return;
+    const previousDay = dayById(activeDayId);
     const changed = id !== activeDayId || arrivalChapter?.key !== arrivalKey(dayById(id));
     if (changed) cancelArrival();
     clearSegmentInspection(true);
@@ -1226,7 +1258,7 @@
         pendingMapAction = animateArrival && changed ? "arrival" : "city";
         drawMainMap(false);
       } else {
-        if (animateArrival && changed) startArrival(activeDay());
+        if (animateArrival && changed) startArrival(activeDay(), previousDay);
         else if (!['framing','arrival'].includes(arrivalChapter?.phase)) settleAtCity();
       }
     } else {

@@ -16,10 +16,17 @@ are cached; playback does not rebuild GeoJSON or send work to the map's route
 workers. The overlay respects train/bus/TBD styling and display pixel density,
 reprojects on resize, and restores the regular map layers when it ends.
 
-Selecting a stop first eases the map to its full route in about **0.25 seconds**.
-Playback waits for that camera move to finish, then plays for **2.5 seconds**,
-holds the completed route and icon for **0.25 seconds**, and starts the city zoom.
-The framing time does not consume travel time. Travel itself remains linear.
+Selecting a stop pulls back around the current place, crosses a wider view that
+includes both the current location and the new route, then settles onto the route.
+The pullback takes 450–950 ms depending on zoom change, the pan 650 ms, and the
+final settle 450 ms; redundant stages are omitted. Named start/arrival pins and
+the route's **From → To** title preserve orientation. A distinct previous city
+is labelled during the camera move when navigating from a close city view.
+
+Playback waits for all camera stages to finish, then plays for **1.5 seconds**
+(40% shorter than 2.5 seconds), holds the completed route and icon for **0.25
+seconds**, and starts the city zoom. Framing time does not consume travel time.
+Travel itself remains linear.
 Replay uses the same preparation; reduced motion skips it. Changing stops,
 skipping, or dragging during preparation cancels the pending playback too.
 
@@ -61,9 +68,10 @@ journeys, samples and drafts. No journey ID check or new content flag is used.
 
 ## Review
 
-438 tests pass, including camera preparation/completion/cancellation, overhead pacing,
+441 tests pass, including camera-stage order/completion/cancellation, previous-view
+context, overhead pacing,
 switchbacks/backtracking, the exact
-2.5-second travel plus 250 ms hold, synchronized canvas painting and cleanup,
+1.5-second travel plus 250 ms hold, synchronized canvas painting and cleanup,
 sequence/cancellation/reduced-motion checks, city-camera
 fallback and shared template parity for Switzerland–Italy, Alpine Crossing and a
 fresh draft. The site build passes. Desktop and 390 px phone checks exercised
