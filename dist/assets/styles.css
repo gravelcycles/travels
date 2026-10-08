@@ -572,7 +572,7 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 
 /* Small anchored pins leave the landscape and its place names in charge. */
 .location-label-anchor { width:1px; height:1px; pointer-events:none; }
-.location-pin { --pin-fill:#426b73; --pin-ink:#fff; position:absolute; left:0; top:var(--pin-y,0); transform:translate(-50%,-50%); width:32px; height:var(--pin-height,32px); padding:0; border:0; border-radius:9px; background:transparent; color:var(--pin-ink); pointer-events:auto; cursor:pointer; transition:filter 140ms ease,opacity 140ms ease; }
+.location-pin { --pin-fill:#426b73; --pin-ink:#fff; position:absolute; left:50%; top:calc(50% + var(--pin-y,0px)); transform:translate(-50%,-50%); width:32px; height:var(--pin-height,32px); padding:0; border:0; border-radius:9px; background:transparent; color:var(--pin-ink); pointer-events:auto; cursor:pointer; transition:filter 140ms ease,opacity 140ms ease; }
 .location-pin-stem { pointer-events:none; position:absolute; left:calc(50% - 1px); top:calc(50% + var(--pin-body-y) + 10px); width:2px; height:var(--pin-stem-height); background:var(--pin-fill); }
 .location-pin-foot { pointer-events:none; position:absolute; left:50%; top:calc(50% + var(--pin-foot-y)); transform:translate(-50%,-50%); width:5px; height:5px; border:1px solid #fff; border-radius:50%; background:var(--pin-fill); }
 .location-pin-number { pointer-events:none; position:absolute; left:50%; top:calc(50% + var(--pin-body-y)); transform:translate(-50%,-50%); z-index:1; display:grid; place-items:center; width:22px; height:22px; border:2px solid #fff; border-radius:7px; background:var(--pin-fill); box-shadow:0 1px 4px #15323838; font:650 11px/1 Inter,ui-sans-serif,system-ui,sans-serif; font-variant-numeric:tabular-nums; }
@@ -580,6 +580,7 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 .location-pin.is-dot .location-pin-stem,.location-pin.is-dot .location-pin-foot,.location-pin.is-dot .location-pin-number { display:none; }
 .location-pin.is-dot { border-radius:50%; }
 .location-pin.is-dot .location-pin-dot { display:block; }
+.location-pin.has-endpoint .location-pin-foot,.location-pin.has-endpoint .location-pin-dot { display:none; }
 .location-pin.is-selected { --pin-fill:#153238; }
 .location-pin.is-preview { --pin-fill:#167e97; filter:drop-shadow(0 0 3px #167e9750); }
 .location-pin.is-preview .location-pin-dot,.location-pin.is-selected .location-pin-dot { width:18px; height:18px; }

@@ -8,7 +8,7 @@ import { readOverrides } from '../scripts/build-site.mjs';
 
 const root = new URL('../', import.meta.url).pathname;
 const source = fs.readFileSync(new URL('../dist/assets/app.js', import.meta.url), 'utf8');
-const names = ['railStopCoordinate', 'dayMapStops', 'addDayStopMarkers', 'revealStopsWithRoutes', 'clearDecorations', 'addSegmentLayer', 'syncViewerMap'];
+const names = ['railStopCoordinate', 'dayMapStops', 'addDayStopMarkers', 'revealStopsWithRoutes', 'clearDecorations', 'addSegmentLayer', 'syncViewerMap', 'drawMainMap'];
 const functions = names.map(name => {
   const start = source.indexOf(`  function ${name}(`);
   assert.ok(start >= 0, name);
@@ -105,9 +105,48 @@ function renderFixture(journey, prefix = 'main') {
     for(const segment of journey.segments)context.addSegmentLayer(map,decorations,segment,{prefix,selected:day.segmentIds.includes(segment.id),opacity:1});
     context.addDayStopMarkers(map,decorations,day);
   };
-  const trainRoutes = day=>decorations.routeLayers.filter(route=>day.segmentIds.includes(route.segmentId)&&journey.segments.find(s=>s.id===route.segmentId).mode==='train');
+  const trainRoutes = day=>decorations.routeLayers.filter(route=>(!day||day.segmentIds.includes(route.segmentId))&&journey.segments.find(s=>s.id===route.segmentId).mode==='train');
   return {context,map,decorations,markers,listeners,sources,draw,trainRoutes};
 }
+
+test('the full map restores only train endpoints and day switches replace them without stale reveals', () => {
+  for (const journey of data.journeys) {
+    const f = renderFixture(journey);
+    let labelledEndpoints;
+    Object.assign(f.context,{mainMap:f.map,mainMapReady:true,mainDecorations:f.decorations,mapScope:'journey',
+      activeDayId:journey.days[0].id,activeDay:()=>journey.days.find(day=>day.id===f.context.activeDayId),
+      mapIsReady:()=>true,renderLegend(){},clearDayPreview(){},renderDayNavigator(){},inspectedSegmentId:null,
+      activeGroupId:null,destinationForDay:()=>null,
+      locationLabels:{update:(groups,routes,endpoints)=>{labelledEndpoints=endpoints;}}});
+    f.context.window.JOURNEY_ATLAS_LOCATION_LABELS={groupsForJourney:()=>[]};
+    f.context.drawMainMap(false);
+    const expected = new Set(journey.segments.filter(segment=>segment.mode==='train').flatMap(segment=>{
+      const coordinates=f.context.segmentCoordinates(segment);
+      return [coordinates[0],coordinates.at(-1)].map(point=>point.map(value=>value.toFixed(7)).join(','));
+    }));
+    assert.deepEqual(new Set(f.decorations.markers.map(marker=>marker.coordinate.map(value=>value.toFixed(7)).join(','))),expected,journey.id);
+    assert.equal(labelledEndpoints.length,expected.size);
+    assert.ok(f.decorations.markers.every(marker=>marker.element.className.includes('route-endpoint-marker')));
+    if (!expected.size) { assert.equal(f.listeners.get('render')?.size||0,0); continue; }
+    const oldMarkers=[...f.decorations.markers], staleReveal=[...f.listeners.get('render')][0];
+    for(const route of f.trainRoutes(null)){f.sources.get(route.sourceId).loaded=true;f.map.rendered.add(route.lineId);}
+    f.map.emit('render');
+    assert.ok(oldMarkers.every(marker=>marker.element.style.visibility===''),'Overview dots wait for route rendering too');
+    f.context.mapScope='day';
+    f.context.activeDayId=journey.days.find(day=>day.segmentIds.some(id=>journey.segments.find(s=>s.id===id).mode==='train')).id;
+    f.context.drawMainMap(false); staleReveal();
+    assert.ok(oldMarkers.every(marker=>marker.removed));
+    assert.equal(f.decorations.markers.length,f.context.dayMapStops(f.map,f.context.activeDay()).length);
+    assert.ok(f.decorations.markers.every(marker=>marker.element.style.visibility==='hidden'));
+    for(const route of f.trainRoutes(f.context.activeDay())){f.sources.get(route.sourceId).loaded=true;f.map.rendered.add(route.lineId);}
+    f.map.emit('render');
+    assert.ok(f.decorations.markers.every(marker=>marker.element.style.visibility===''));
+    f.context.mapScope='journey'; f.context.drawMainMap(false);
+    assert.equal(f.decorations.markers.length,expected.size,'Returning to full view restores all endpoints');
+    f.context.mapScope='day'; f.map.emit('render');
+    assert.equal(f.listeners.get('render').size,0,'Changing scope cancels an overview reveal before the next redraw');
+  }
+});
 
 test('real and sample stop dots wait for a rendered train frame on both journey and photo maps', () => {
   for(const journey of data.journeys)for(const prefix of ['main','viewer']) {

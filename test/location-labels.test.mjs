@@ -71,6 +71,12 @@ test('signposts stay upright above their location with the complete marker insid
     const taller=placePin(point,{dot:false,targetSize,bounds,routes:crossing});
     assert.equal(taller.postHeight,22); assert.equal(taller.offset[0],0,'Clear nearby lines by extending upward only');
     assert.ok(taller.height>=targetSize);
+    const endpoint=placePin(point,{dot:false,endpoint:true,targetSize,bounds,routes});
+    assert.equal(endpoint.postHeight,25,'The board leaves room for the orange endpoint ring');
+    assert.ok(endpoint.box.top<=point.y-endpoint.postHeight-11);
+    assert.ok(endpoint.box.bottom>=point.y+7,'The whole endpoint fits in desktop and phone targets');
+    const endpointEdge=placePin({x:150,y:26},{dot:false,endpoint:true,targetSize,bounds});
+    assert.equal(endpointEdge.dot,true,'Endpoint posts retain the tight-edge fallback');
     const edge=placePin({x:150,y:26},{dot:false,targetSize,bounds});
     assert.equal(edge.dot,true,'Tight edges use a dot rather than a sideways or inverted post');
     assert.deepEqual(edge.offset,[0,0]);

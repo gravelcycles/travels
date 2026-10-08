@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 const code=fs.readFileSync(new URL('../dist/assets/location-labels.js',import.meta.url),'utf8');
-function fixture({routes=[]}={}){
+function fixture({routes=[],endpointCoordinates=[]}={}){
   const timers=new Map(),frames=[],markers=[],preview=[],selected=[];let timer=0;
   class Element {
     constructor(tag){this.tagName=tag;this.children=[];this.attrs={};this.listeners=new Map();this.dataset={};this.className='';this.style={setProperty(k,v){this[k]=v;}};this.clientWidth=800;this.clientHeight=600;this.offsetWidth=216;this.offsetHeight=110;this.isConnected=true;const classes=new Set();this.classList={toggle:(name,on)=>on?classes.add(name):classes.delete(name),contains:name=>classes.has(name)};}
@@ -26,11 +26,32 @@ function fixture({routes=[]}={}){
   controller=context.JOURNEY_ATLAS_LOCATION_LABELS.create({map,maplibregl,onSelectDay:id=>selected.push(id),onPreviewDays:ids=>{preview.push([...ids]);controller.setPreview(ids);}});
   const groups=[{key:'a',name:'A',coordinate:[200,200],selected:true,days:[{id:'day1',number:1,date:'1 May',title:'Arrival'}]},
     {key:'b',name:'B',coordinate:[500,300],selected:false,days:[{id:'day2',number:2,date:'2 May'},{id:'day3',number:3,date:'3 May'}]}];
-  controller.update(groups,routes);frames.shift()();
+  controller.update(groups,routes,endpointCoordinates);frames.shift()();
   const fire=(element,type,extra={})=>element.listeners.get(type)?.({target:element,pointerType:'mouse',stopPropagation(){},...extra});
   const flush=()=>{const pending=[...timers.values()];timers.clear();pending.forEach(fn=>fn());};
-  return {controller,document,container,markers,preview,selected,events,fire,flush,timers};
+  return {controller,document,container,markers,preview,selected,events,fire,flush,timers,groups,frames};
 }
+
+test('day stems meet the top of an endpoint and repeat-stop endpoints keep their day picker',()=>{
+  const f=fixture({endpointCoordinates:[[200,200],[500,300]]});
+  const button=f.markers[0].element.children[0],repeat=f.markers[1].element.children[0];
+  assert.ok(button.classList.contains('has-endpoint'));
+  const offset=parseFloat(button.style['--pin-y']),body=parseFloat(button.style['--pin-body-y']);
+  const stem=parseFloat(button.style['--pin-stem-height']);
+  assert.equal(offset+body+10+stem,-7,'Stem ends at the top of the 12 px dot plus its 1 px ring');
+  assert.ok(stem>0,'Keep a short visible stem above the dot');
+  const halfHeight=parseFloat(button.style['--pin-height'])/2;
+  assert.ok(offset-halfHeight<=offset+body-11 && offset+halfHeight>=7,'Complete board and endpoint fit inside the hit target');
+  assert.ok(repeat.classList.contains('has-endpoint'));
+  f.fire(repeat,'click');
+  assert.equal(f.container.querySelector('.map-place-visits').children.length,2);
+  const css=fs.readFileSync(new URL('../dist/assets/styles.css',import.meta.url),'utf8');
+  assert.match(css,/\.location-pin\.has-endpoint \.location-pin-foot,\.location-pin\.has-endpoint \.location-pin-dot \{ display:none; \}/,'No teal foot or repeat dot covers the orange endpoint');
+  f.controller.update(f.groups,[]); f.frames.shift()();
+  const plain=f.markers.at(-2).element.children[0];
+  assert.equal(plain.classList.contains('has-endpoint'),false,'A day without that endpoint gets its ordinary foot back');
+  assert.equal(parseFloat(plain.style['--pin-y'])+parseFloat(plain.style['--pin-body-y'])+10+parseFloat(plain.style['--pin-stem-height']),0);
+});
 
 test('pin hover previews immediately, opens one delayed card, and touch taps a single day directly',()=>{
   const f=fixture(),button=f.markers[0].element.children[0];
