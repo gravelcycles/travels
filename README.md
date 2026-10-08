@@ -253,9 +253,13 @@ using the same validated artifact. Successful and other live releases are
 preserved. Permission/content errors remain failures; a failed retry is cleaned
 up and the workflow stays red. See [the recovery runbook](docs/DEPLOYMENT.md).
 
-The project uses only relative browser paths, so its expected URL is:
+The project uses relative browser asset paths. Link-preview metadata uses the
+absolute public URL in `content/site.json`; the expected site URL is:
 
 `https://gravelcycles.github.io/travels/`
+
+The globe-pin icon and share card are common to every page. For source artwork,
+icon generation and preview checks, see [the brand workflow](docs/BRANDING.md).
 
 ## Low-discovery setup
 

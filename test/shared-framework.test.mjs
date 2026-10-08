@@ -38,6 +38,50 @@ function bundle(source, key) {
   return JSON.parse(JSON.stringify(context.window[key]));
 }
 const app = read(repo, 'dist/assets/app.js');
+
+test('catalog, real trips, demos and fresh drafts inherit the globe icon and public share image', async t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  buildSite(root);
+  const site = JSON.parse(read(root, 'content/site.json'));
+  const pages = ['index.html', 'switzerland-italy.html', 'demo.html'];
+  const preview = renderJourneyPage(root, { ...draft, title: 'A <new> trip & "friends"' }, { preview: true });
+  const sharp = (await import('sharp')).default;
+  for (const [name, width, height] of [['favicon-16.png', 16, 16], ['favicon-32.png', 32, 32], ['apple-touch-icon.png', 180, 180], ['share.png', 1200, 630]]) {
+    const output = fs.readFileSync(path.join(root, 'dist/assets/brand', name));
+    assert.deepEqual(output, fs.readFileSync(path.join(root, 'content/branding', name)));
+    const info = await sharp(output).metadata();
+    assert.equal(info.width, width); assert.equal(info.height, height);
+  }
+  let sharedImage;
+  for (const [file, html] of [...pages.map(file => [file, read(root, `dist/${file}`)]), ['preview', preview]]) {
+    const assetBase = file === 'preview' ? '/dist/assets/brand/' : './assets/brand/';
+    const icons = [...html.matchAll(/<link rel="(?:icon|apple-touch-icon)"[^>]*href="([^"]+)"/g)].map(match => match[1]);
+    assert.equal(icons.length, 4, file);
+    for (const href of icons) {
+      assert.ok(href.startsWith(assetBase), `${file}: correct base path`);
+      assert.match(href, /\?v=[a-f0-9]{12}$/);
+      assert.ok(fs.existsSync(path.join(root, 'dist/assets/brand', href.slice(assetBase.length).split('?')[0])));
+    }
+    const image = html.match(/property="og:image" content="([^"]+)"/)[1];
+    sharedImage ||= image;
+    assert.equal(image, sharedImage, 'Every page uses the same public brand image');
+    assert.equal(new URL(image).origin, new URL(site.url).origin);
+    assert.match(image, /\/travels\/assets\/brand\/share\.png\?v=[a-f0-9]{12}$/);
+    assert.ok(html.includes(`name="twitter:image" content="${image}"`));
+    assert.match(html, /name="twitter:card" content="summary_large_image"/);
+    assert.match(html, /property="og:image:alt" content="[^"]+"/);
+    assert.match(html, /<img class="brand-mark"[^>]*alt=""/);
+    assert.doesNotMatch(html, /\{\{siteHead\}\}/);
+    if (file === 'preview') {
+      assert.doesNotMatch(html, /property="og:url"/, 'A local draft must not claim a public URL');
+      assert.match(html, /property="og:title" content="A &lt;new&gt; trip &amp; &quot;friends&quot; · Journey Atlas"/);
+    } else {
+      assert.ok(html.includes(`property="og:url" content="${new URL(file === 'index.html' ? '' : file, site.url).href}"`));
+    }
+  }
+  assert.ok(!fs.existsSync(path.join(root, 'dist', draft.slug)), 'A brand update never publishes a draft');
+});
+
 function appFunction(name) {
   const start = app.indexOf(`  function ${name}(`);
   assert.ok(start >= 0, `Shared function ${name} exists`);

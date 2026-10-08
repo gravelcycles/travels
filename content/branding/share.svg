@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<rect width="1200" height="630" fill="#fbfaf6"/>
+<g fill="none" stroke="#006f92" stroke-opacity=".09" stroke-width="2">
+<circle cx="1090" cy="315" r="400"/><ellipse cx="1090" cy="315" rx="180" ry="400"/><ellipse cx="1090" cy="315" rx="330" ry="400"/>
+<path d="M690 315h800M706 203h770M706 427h770"/>
+</g>
+<g transform="translate(80 174) scale(4.4)">
+  <rect width="64" height="64" rx="14" fill="#006f92"/>
+  <path d="M32 57C27 51 11 38 11 28a21 21 0 0 1 42 0c0 10-16 23-21 29Z" fill="#d4512c"/>
+  <path d="M15.5 40C12.8 35.7 11 31.5 11 28a21 21 0 0 1 42 0c0 3.5-1.8 7.7-4.5 12Z" fill="#ffffff"/>
+  <circle cx="32" cy="28" r="15" fill="#006f92" stroke="#ffffff" stroke-width="2.5"/>
+  <g fill="none" stroke="#ffffff" stroke-width="2.5">
+    <ellipse cx="32" cy="28" rx="6" ry="15"/>
+    <path d="M17 28h30"/>
+  </g>
+
+</g>
+<text x="410" y="303" fill="#153238" font-family="Georgia, serif" font-weight="bold" font-size="80" letter-spacing="-2">Journey Atlas</text>
+<text x="414" y="364" fill="#39575c" font-family="Arial, sans-serif" font-size="29">We wander but aren’t lost...yet</text>
+<path d="M415 405h54" stroke="#d4512c" stroke-width="5"/>
+</svg>

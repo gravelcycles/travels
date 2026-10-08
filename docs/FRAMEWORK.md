@@ -93,6 +93,7 @@ password system.
 | `studio/plan-extras.js`, `scripts/studio-plan-sources.mjs` | Studio roster/group/overnight/meetup and hosted-video forms; source-preserving persistence of photo group assignments |
 | `scripts/journey-content.mjs`, `journey-planner.mjs`, `create-journey.mjs` | Loading, validation, planner rules, fresh-trip creation |
 | `scripts/build-site.mjs` | Public builds and local preview page/data generation |
+| `content/branding/`, `content/site.json`, `scripts/build-branding.mjs` | Shared globe-pin identity, reviewed icon/share rasters, public site URL and brand asset generation; see [BRANDING.md](BRANDING.md) |
 | `content/journeys/<id>.json` | Reviewed trip identity, calendar, places, legs, cover and Replay choices |
 | `content/route-geometry/`, `route-sources/`, `photo-manifests/` | Journey-specific reviewed assets and provenance |
 | `content/*-overrides.json` | Human edits, keyed by stable day/segment/photo IDs |
@@ -102,7 +103,8 @@ password system.
 Do not delete that directory or treat all its files as generated. Generated
 files are public HTML, `generated-pages.json`, and these data bundles:
 `journeys.js`, `route-geometry.js`, `trip-photos.js`, `content-overrides.js`, and
-`photo-service.js`. Edit their `content/` sources and rebuild. The build assigns
+`photo-service.js`. `dist/assets/brand/` is also generated: exact copies of the
+reviewed assets in `content/branding/`. Edit their `content/` sources and rebuild. The build assigns
 content hashes to public asset URLs; template authors do not maintain version
 strings. Studio serves live assets with no-store caching.
 
