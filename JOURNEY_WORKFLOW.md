@@ -664,6 +664,10 @@ checkpoint branches and the local day-experience review workflow.
 
 ## Places, meals and group memories
 
+The viewer shows its desktop and phone Places buttons only when the trip has
+at least one curated place. Studio's Places editor stays available to add the
+first place; an empty day or search result does not hide the viewer buttons.
+
 Use **Studio → Places** to add/edit/remove points in the journey's optional
 `pointsOfInterest` array, or ask the agent for researched content; supply a place name or Maps link, day(s), visited/saved
 status and the group's actual ratings and notes. Never invent a visit or import
