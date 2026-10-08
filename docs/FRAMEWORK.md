@@ -344,10 +344,12 @@ No separate trip implementation or framework migration is introduced.
 `codex/arrival-stay-demo` adds shared arrival playback and destination-focused
 stay/photo framing without new journey fields or trip-specific branches.
 `arrival-chapter.js` isolates the clock and cancellation from map rendering.
-It caches an overhead timing outline once per arrival, updates the subpixel
-marker every frame on the original track, and limits GeoJSON work to changed
-legs at 30 Hz. All routed events finish their linear playback in 2.5 seconds,
-then start the city zoom without an extra hold; empty/reduced-motion stays skip it.
+It caches an overhead timing outline and projected canvas paths once per arrival,
+then paints the route and icon together at display cadence without GeoJSON worker
+updates. All routed events play linearly for 2.5 seconds, hold for 250 ms, then
+start the city zoom; empty/reduced-motion stays skip playback and the hold.
+The overlay is transient shared rendering, with regular map layers restored on
+completion/cancellation and projection refreshed on resize.
 The local review generator renders the shared template with explicitly synthetic
 media; original content and private services remain outside the fixture.
 Owner review of timing and station-based city framing is pending. Do not treat

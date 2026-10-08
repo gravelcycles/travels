@@ -57,7 +57,7 @@
   journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(groupTravel.projectJourney(sourceJourney, activeGroupId), showTbd);
   let activeDayId = journey.days[0].id;
   let mapScope = "journey";
-  let arrivalChapter, arrivalMarker;
+  let arrivalChapter, arrivalDrawing;
   let arrivalPlan = null;
   let mainMap;
   let viewerMap;
@@ -922,9 +922,12 @@
   }
 
   function restoreArrivalLine() {
-    arrivalMarker?.remove(); arrivalMarker = null;
+    arrivalDrawing?.destroy(); arrivalDrawing = null;
     if (mainMapReady) for (const leg of arrivalPlan?.legs || []) {
-      mainMap.getSource(`main-source-${leg.segment.id}`)?.setData({type:'Feature',id:leg.segment.id,properties:{segmentId:leg.segment.id},geometry:{type:'LineString',coordinates:leg.coordinates}});
+      for (const part of ['line', 'casing']) {
+        const id = `main-${part}-${leg.segment.id}`;
+        if (mainMap.getLayer(id)) mainMap.setLayoutProperty(id, 'visibility', 'visible');
+      }
     }
   }
 
@@ -979,10 +982,11 @@
     arrivalPlan = window.JOURNEY_ATLAS_ARRIVAL.plan(segmentsForDay(day), segmentCoordinates);
     for (const leg of arrivalPlan.legs) addSegmentLayer(mainMap, mainDecorations, leg.segment, {prefix:'arrival-guide',color:palette.muted,opacity:0.18,selected:false});
     if (arrivalPlan.legs.length && !prefersReducedMotion()) {
-      const element = document.createElement('div'); element.className = 'arrival-position';
-      element.setAttribute('role','img'); element.setAttribute('aria-label','Journey progress');
-      element.textContent = '→';
-      arrivalMarker = new maplibregl.Marker({element,anchor:'center'}).setSubpixelPositioning(true).setLngLat(arrivalPlan.legs[0].coordinates[0]).addTo(mainMap);
+      arrivalDrawing = window.JOURNEY_ATLAS_ARRIVAL.createDrawing({ map: mainMap, plan: arrivalPlan, styleForSegment: segment => {
+        const style = modeStyles[segment.mode] || {color:palette.route,width:4.7};
+        return {color:style.color,width:style.width+1.4,casing:palette.casing,casingWidth:style.width+5.2,dash:segment.planningStatus==='tbd'?[1,1.4]:style.dash};
+      }});
+      if (arrivalDrawing) for (const leg of arrivalPlan.legs) for (const part of ['line','casing']) mainMap.setLayoutProperty(`main-${part}-${leg.segment.id}`, 'visibility', 'none');
     }
     arrivalChapter.start(arrivalKey(day), arrivalPlan, {reducedMotion:prefersReducedMotion()});
   }
@@ -2217,9 +2221,8 @@
     onState: renderArrivalChapter,
     onFrame: (frame, current) => {
       if (current.key !== arrivalKey(activeDay()) || !mainMapReady) return;
-      for (const line of frame.lines) mainMap.getSource(`main-source-${line.segment.id}`)?.setData({type:'Feature',id:line.segment.id,properties:{segmentId:line.segment.id},geometry:{type:'LineString',coordinates:line.coordinates}});
-      if (frame.position) arrivalMarker?.setLngLat(frame.position);
-      $('#arrival-progress').style.width = `${frame.progress * 100}%`;
+      arrivalDrawing?.draw(frame);
+      $('#arrival-progress').style.transform = `scaleX(${frame.progress})`;
     },
     onStay: current => { if (current.key !== arrivalKey(activeDay())) return; restoreArrivalLine(); showCity(activeDay()); }
   });

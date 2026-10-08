@@ -10,10 +10,15 @@ existing gallery. **Replay arrival** repeats the sequence; **Skip to city** ends
 it early. Dragging/zooming during arrival cancels the automatic camera and offers
 **Back to city**. Reduced motion and route-free stops go straight to the stay.
 
-The moving icon uses subpixel positioning on every animation frame. Each arrival
-frames the route immediately, plays for **2.5 seconds**, then starts the existing
-city zoom with no departure pause, arrival hold, or travel easing. Route source
-updates remain capped at 30 Hz and completed legs are sent only once.
+The route trail and moving icon share a lightweight canvas and update together
+on every display frame, with no 30 Hz limit. Route projection and path prefixes
+are cached; playback does not rebuild GeoJSON or send work to the map's route
+workers. The overlay respects train/bus/TBD styling and display pixel density,
+reprojects on resize, and restores the regular map layers when it ends.
+
+Each arrival frames the route immediately, plays for **2.5 seconds**, holds the
+completed route and icon for **0.25 seconds**, then starts the city zoom. Travel
+remains linear with no departure pause or easing.
 
 The timing follows a simplified overhead outline in Mercator space, retaining
 bends greater than 2.5% of the leg's bounding-box diagonal. Progress projected
@@ -53,8 +58,8 @@ journeys, samples and drafts. No journey ID check or new content flag is used.
 
 ## Review
 
-432 tests pass, including overhead pacing, switchbacks/backtracking, the exact
-2.5-second transition, independent marker/line cadence,
+435 tests pass, including overhead pacing, switchbacks/backtracking, the exact
+2.5-second travel plus 250 ms hold, synchronized canvas painting and cleanup,
 sequence/cancellation/reduced-motion checks, city-camera
 fallback and shared template parity for Switzerland–Italy, Alpine Crossing and a
 fresh draft. The site build passes. Desktop and 390 px phone checks exercised

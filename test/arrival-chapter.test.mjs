@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import '../dist/assets/replay-utils.js';
 import '../dist/assets/arrival-chapter.js';
-const {plan,frame,destination,create}=globalThis.JOURNEY_ATLAS_ARRIVAL;
+const {plan,frame,destination,create,createDrawing}=globalThis.JOURNEY_ATLAS_ARRIVAL;
 const legs=[{id:'rail',geometry:[[10,48],[11,48]]},{id:'bus',geometry:[[11.1,48],[11.2,48]]}];
 const routes=segment=>segment.geometry;
 
@@ -25,7 +25,7 @@ test('arrival completes once, can be skipped, and stale city callbacks cannot mo
   const h=harness(),p=plan(legs,routes);
   h.controller.start('first',p);const stale=[...h.queued.values()][0];
   h.controller.start('second',p);stale(50000);assert.deepEqual(h.stays,[]);
-  h.tick(0);h.tick(p.duration);assert.deepEqual(h.stays,['second']);assert.equal(h.queued.size,0);
+  h.tick(0);h.tick(p.duration+p.arrivalHold);assert.deepEqual(h.stays,['second']);assert.equal(h.queued.size,0);
   h.controller.start('third',p);h.controller.stay();assert.deepEqual(h.stays,['second','third']);assert.equal(h.queued.size,0);
 });
 test('panning cancels the automatic camera, while reduced motion and empty routes skip travel',()=>{
@@ -87,23 +87,74 @@ test('speed stays continuous across connected legs with different lengths',()=>{
   assert.deepEqual(frame(p,.4,{since:.3}).lines.map(line=>line.segment.id),['long'],'Completed legs are not sent to the map again');
 });
 
-test('every day travels linearly for exactly 2.5 seconds, then starts the city zoom without a pause',()=>{
+test('travel updates on every display frame for 2.5 seconds, then holds the endpoint for 250 ms',()=>{
   const h=harness(),p=plan([{id:'rail',geometry:[[0,0],[4,0]]}],routes);
   assert.equal(p.duration,2500);assert.equal(plan(legs,routes).duration,2500);
   h.controller.start('smooth',p);h.tick(0);
-  let lineUpdates=0,markerUpdates=0,previous=0;
+  let markerUpdates=0,previous=0;
   for(let timestamp=10;timestamp<=1010;timestamp+=10){
     h.tick(timestamp);const f=h.samples.at(-1);
     assert.equal(f.progress,timestamp/2500);
-    if(f.lines.length)lineUpdates++;
+    assert.deepEqual(f.lines,[],'The animation must not rebuild GeoJSON');
     if(f.progress>previous)markerUpdates++;
     previous=f.progress;
   }
   assert.equal(markerUpdates,101);
-  assert.ok(lineUpdates<=31,`${lineUpdates} updates exceeded 30 Hz over one second`);
   h.tick(2499);assert.equal(h.controller.phase,'arrival');assert.deepEqual(h.stays,[]);
   h.tick(2500);
   assert.deepEqual(h.samples.at(-1).position,[4,0]);
-  assert.deepEqual(h.samples.at(-1).lines[0].coordinates,[[0,0],[4,0]],'The final line is always flushed');
+  assert.deepEqual(h.stays,[]);assert.equal(h.controller.phase,'arrival');
+  h.tick(2749);assert.deepEqual(h.samples.at(-1).position,[4,0]);assert.deepEqual(h.stays,[]);
+  h.tick(2750);
   assert.deepEqual(h.stays,['smooth']);assert.equal(h.queued.size,0);
+});
+
+test('navigation and skip cancel the quarter-second hold without leaving a late zoom',()=>{
+  const h=harness(),p=plan(legs,routes);
+  h.controller.start('first',p);h.tick(0);h.tick(2500);const stale=[...h.queued.values()][0];
+  h.controller.start('second',p);stale(2750);assert.deepEqual(h.stays,[]);
+  h.tick(0);h.tick(2500);h.controller.stay();assert.deepEqual(h.stays,['second']);assert.equal(h.queued.size,0);
+});
+
+function drawingHarness(p){
+  const events=new Map(),strokes=[],icons=[];let clears=0,projects=0,removed=false,inserted=false;
+  class Path {
+    constructor(other){this.points=other?.points.slice()||[];}
+    moveTo(x,y){this.points.push(['move',x,y]);}
+    lineTo(x,y){this.points.push(['line',x,y]);}
+  }
+  const context={
+    clearRect(){clears++;},setTransform(){},setLineDash(dash){this.dash=dash;},
+    stroke(path){if(path)strokes.push({points:path.points.slice(),dash:this.dash.slice(),color:this.strokeStyle});},
+    save(){},restore(){},beginPath(){},arc(){},fill(){},fillText(text,x,y){icons.push([x,y]);}
+  };
+  const canvas={getContext:()=>context,setAttribute(){},remove(){removed=true;}};
+  const base={clientWidth:800,clientHeight:600,after(node){assert.equal(node,canvas);inserted=true;}};
+  const map={getCanvas:()=>base,project:([lng,lat])=>{projects++;return{x:lng*10,y:lat*10};},on:(name,callback)=>events.set(name,callback),off:name=>events.delete(name)};
+  const drawing=createDrawing({map,plan:p,document:{createElement:()=>canvas},Path,pixelRatio:()=>2,styleForSegment:s=>({color:s.id,casing:'#fff',width:6,casingWidth:10,dash:s.id==='bus'?[2,2]:null})});
+  return {drawing,events,strokes,icons,canvas,base,get clears(){return clears;},get projects(){return projects;},get removed(){return removed;},get inserted(){return inserted;}};
+}
+
+test('canvas trail and icon paint together at display cadence without reprojecting the full route',()=>{
+  const p=plan(legs,routes),h=drawingHarness(p);
+  assert.equal(h.inserted,true);assert.equal(h.canvas.width,1600);assert.equal(h.canvas.height,1200);
+  const initialProjects=h.projects;
+  for(let index=0;index<=120;index++)h.drawing.draw(frame(p,index/120,{drawLines:false}));
+  assert.equal(h.clears,121,'No 30 Hz cap: every new display-frame position is painted');
+  assert.equal(h.projects-initialProjects,121,'Only the moving tip is projected per frame');
+  assert.equal(h.icons.length,121);
+  const last=h.strokes.at(-1);
+  assert.deepEqual(last.points.at(-1).slice(1),h.icons.at(-1),'The trail reaches the icon in the same paint');
+  assert.deepEqual(last.dash,[12,12],'Bus dash styling survives the fast renderer');
+  assert.deepEqual(last.points[0],['move',111,480],'Disconnected legs have separate paths');
+  h.drawing.draw(frame(p,1,{drawLines:false}));assert.equal(h.clears,121,'The endpoint holds without repeated painting');
+});
+
+test('canvas reprojection handles resize and cleanup removes all animation drawing listeners',()=>{
+  const p=plan(legs,routes),h=drawingHarness(p);
+  h.drawing.draw(frame(p,.5,{drawLines:false}));h.base.clientWidth=400;h.events.get('resize')();
+  assert.equal(h.canvas.width,800);assert.equal(h.clears,2);
+  const stale=h.events.get('move');h.drawing.destroy();
+  assert.equal(h.removed,true);assert.equal(h.events.size,0);
+  stale();h.drawing.draw(frame(p,.9,{drawLines:false}));assert.equal(h.clears,2);
 });
