@@ -1,5 +1,9 @@
 # Project TODO
 
+The [current workstream checkpoint](WIP.md) records branch tips, preserved
+prototypes, saved trip edits and task context. This file remains the backlog;
+an unchecked item is not evidence of an existing implementation branch.
+
 Each unchecked top-level item is intended to be a separate agent task. Read
 `PROJECT_STATE.md`, `PRINCIPLES.md`, and `AGENT_HANDOFF.md`, then load only the
 references named by that task. All commands, servers, QA, commits, pushes, and
@@ -230,11 +234,24 @@ project-level status.
 
 ## UX proposals awaiting demo review — 12 September 2026
 
-The owner requested a demo of each proposed feature before it changes the live
-site: recovery drafts/conflict review; explicit sharing (without automatic
-reload persistence); batch photo editing; publication readiness/agent handoff;
-private video intake (W07); and a labeled map-only Replay timeline. These are
-pending review, not part of the 20 authorized bug fixes. Audit V1 stays excluded.
+The owner requested demos before the proposed features changed the live site.
+Studio recovery drafts, readable comparisons and save-conflict review were
+subsequently authorized and delivered on 14–15 September. Explicit sharing
+(without automatic visitor reload persistence), batch photo editing,
+publication readiness/agent handoff, private video intake (W07), and a labeled
+map-only Replay timeline remain proposals. The six-feature demo and separate
+delight/day-experience prototypes are preserved on branches listed in
+[WIP.md](WIP.md). Audit V1 stays excluded.
+
+## Live Photos intake — checkpointed 8 October 2026
+
+- [ ] **W09 — Verify paired Live Photo inputs and prototype playback.** The
+      September investigation found still metadata but no matching companion
+      movies; none of the six held MOV files matched. Await an unmodified paired
+      export from Photos/iCloud. Preserve ordinary still behavior, reuse W07's
+      private-media pipeline, and review the LIVE play/return interaction before
+      production implementation. Notes: `codex/live-photo-intake`,
+      `docs/workstreams/live-photo-intake.md`; see [WIP.md](WIP.md).
 
 
 ## Places and photo comments — updated 20 September 2026

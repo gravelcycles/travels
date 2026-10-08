@@ -222,12 +222,20 @@ membership. See W07 in TODO.md.
 
 ## UX review follow-up — 12 September 2026
 
-The audit's 20 authorized findings are addressed in shared code. URL/reload
-persistence (V1) is explicitly excluded. The six proposed capabilities are
-held for interactive local demo review before implementation or deployment;
-this includes explicit sharing, batch photo editing,
-publication readiness, private video intake (W07) and labeled Replay seeking.
-This review gate does not block delivery of the authorized bug fixes.
+The audit's 20 authorized findings are addressed in shared code. Visitor
+URL/reload persistence (V1) is explicitly excluded. Studio recovery and conflict
+review were subsequently authorized and delivered (see the follow-up below).
+Explicit sharing, batch photo editing, publication readiness, private video
+intake (W07) and labeled Replay seeking remain proposals requiring local demo
+review. This review gate does not block delivery of authorized bug fixes.
+
+The [8 October workstream checkpoint](../WIP.md) records the local day-experience
+prototype and two design demos on separate branches. They are review artifacts,
+not alternate production implementations. W04–W06 remain the migration backlog;
+W07/W08 remain private-media/live-comments service follow-ups. The newly recorded
+Live Photos investigation (W09) needs paired input and must reuse W07 rather
+than introducing a separate media/auth service. No new capability is introduced
+by this documentation checkpoint.
 
 ## Studio persistence follow-up — 15 September 2026
 

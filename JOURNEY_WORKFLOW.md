@@ -561,8 +561,11 @@ not invalidate a map-only chapter.
 Album, Replay, About and photo presentation participate in browser Back and
 Forward. Empty-media album days open their story. These history entries do
 not change the URL or restore the last selection on reload: the owner excluded
-that audit item. The six proposed new features require a local demo and owner
-review before implementation on the live site.
+that audit item. The proposed new features require a local demo and owner
+review before implementation on the live site. Studio draft recovery and save
+conflict handling were subsequently authorized and delivered; visitor reload
+behavior remains excluded. See [WIP.md](WIP.md) for current proposal status,
+checkpoint branches and the local day-experience review workflow.
 
 
 ## Places, meals and group memories

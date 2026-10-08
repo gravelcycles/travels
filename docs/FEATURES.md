@@ -1,8 +1,14 @@
 # Shared feature inventory
 
-Current contract: 12 September 2026. Applies to Switzerland–Italy, every sample,
+Inventory reconciled: 8 October 2026, including the 20 September release.
+Applies to Switzerland–Italy, every sample,
 and every new journey. “Available” means the common implementation exists;
 actual content, reviewed geometry and photographs must be supplied per trip.
+
+[WIP.md](../WIP.md) distinguishes delivered features from preserved prototypes,
+unpublished editorial work and remaining service/intake projects. In particular,
+Live Photos playback is still an investigation, and live comment writes and
+private-video intake remain unimplemented.
 
 | Capability | What carries over | Trip input / empty behavior | Main owner |
 | --- | --- | --- | --- |
