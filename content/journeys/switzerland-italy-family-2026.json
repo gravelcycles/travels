@@ -11,8 +11,14 @@
   "note": "David and Michelle traveled with her parents, using Luzern as home base except for three nights around Como.",
   "cover": "./assets/photos/train-window.webp",
   "overviewBounds": [
-    [5.9, 45.75],
-    [10.55, 47.85]
+    [
+      5.9,
+      45.75
+    ],
+    [
+      10.55,
+      47.85
+    ]
   ],
   "places": [
     {
@@ -1775,10 +1781,10 @@
     "idPrefix": "family"
   },
   "coverPhoto": {
-    "photoId": "family-img-2880",
+    "photoId": "family-img-1469",
     "focal": [
-      0,
-      45
+      64,
+      48
     ]
   },
   "replayMoments": [

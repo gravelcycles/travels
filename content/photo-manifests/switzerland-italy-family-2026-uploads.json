@@ -414,5 +414,36 @@
     "takenAt": "2026-08-25 · 20:25",
     "assetStatus": "published",
     "protected": true
+  },
+  {
+    "id": "switzerland-italy-family-2026-upload-720e515e95e64fea8985",
+    "dayId": "family-d2",
+    "src": "/private-photos/assets/v1/ccfa4ce34c33013e15bb602ad7273ed32849b5b70ebf113ab1b3655172e757ac.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/ce35bcd27c6681f90282c16b86a043637b8d3959580d5746b75783dd265a2ee5.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/1202f95b64a704a2e3b4a73b855ab54ffa769b65ebf7e2bf7cfe6c804569fe47.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/ccfa4ce34c33013e15bb602ad7273ed32849b5b70ebf113ab1b3655172e757ac.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "blur": "data:image/webp;base64,UklGRuIAAABXRUJQVlA4INYAAADwBgCdASogACsAPxmCtVMsqSUisBVYAZAjCUAWwoVPh4o8LCgnjKOvvLajNZOafgRwoLEy4hpS4ZoqAjofXNSgAOkclkC3hH/qq1sXT7shUQl99Ju9SS/xysK04r7QD8gjNesD3w783aHueReB+11fkk2LBGL6RIrKXUbsWMFZv+Nu4qgjOjEE2SU0hv3V3NZUBjxcN8ar7Ay5ETTLuuDjMzqf9354hKioNNcR9fOEnfkOKE/5uiB67z0GoJ3nGb1GD7x5JoBhHp2crMy2Kk6berNx/PAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 2",
+    "sourceFilename": "IMG_1471.heic",
+    "takenAt": "2026-08-14 · 13:32",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "720e515e95e64fea8985e66e8887ffb2e1ca28741e546d6ade9e06d1b0e0ad12"
   }
 ]

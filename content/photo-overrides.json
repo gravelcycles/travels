@@ -4,16 +4,15 @@
     "caption": "",
     "description": "Picking up the 'rents from the airport!",
     "alt": "Four family members smile together inside Zürich Airport.",
-    "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "privacyStatus": "approved-public",
     "locationLabel": "",
     "location": {
-      "lat": 47.460987,
-      "lng": 8.554782
+      "lat": 47.450922,
+      "lng": 8.562733
     },
-    "zoom": 14.26
+    "zoom": 11.74
   },
   "family-img-1426": {
     "dayId": "family-d1",
@@ -36,7 +35,6 @@
     "caption": "",
     "description": "",
     "alt": "Four family members pose in front of Luzern's carved Lion Monument at night.",
-    "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "privacyStatus": "approved-public",
@@ -45,14 +43,25 @@
       "lat": 47.058195,
       "lng": 8.310714
     },
-    "zoom": 14.38
+    "zoom": 14.18,
+    "mapFrame": {
+      "bounds": [
+        [
+          8.292738686389782,
+          47.03990307767944
+        ],
+        [
+          8.327703313608907,
+          47.06148073988868
+        ]
+      ]
+    }
   },
   "family-img-5032": {
     "dayId": "family-d1",
     "caption": "",
     "description": "",
     "alt": "Luzern old-town buildings and their evening lights reflect in the Reuss.",
-    "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "privacyStatus": "approved-public",
@@ -61,14 +70,25 @@
       "lat": 47.050805,
       "lng": 8.305291
     },
-    "zoom": 14.38
+    "zoom": 14.18,
+    "mapFrame": {
+      "bounds": [
+        [
+          8.29273868639146,
+          47.039915985588635
+        ],
+        [
+          8.327703313611067,
+          47.06146783719706
+        ]
+      ]
+    }
   },
   "family-img-2793": {
     "dayId": "family-d1",
     "caption": "",
     "description": "",
     "alt": "A warmly lit riverside building glows against the blue evening and is mirrored in the river.",
-    "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "privacyStatus": "approved-public",
@@ -77,14 +97,25 @@
       "lat": 47.050828,
       "lng": 8.305883
     },
-    "zoom": 14.38
+    "zoom": 14.18,
+    "mapFrame": {
+      "bounds": [
+        [
+          8.29273868639146,
+          47.039915985588635
+        ],
+        [
+          8.327703313611067,
+          47.06146783719706
+        ]
+      ]
+    }
   },
   "family-img-1463": {
     "dayId": "family-d1",
     "caption": "",
     "description": "",
     "alt": "Waterfront buildings and their lights reflect beneath Luzern's dark mountain skyline.",
-    "hidden": false,
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "privacyStatus": "approved-public",
@@ -93,7 +124,19 @@
       "lat": 47.051163,
       "lng": 8.309597
     },
-    "zoom": 14.38
+    "zoom": 14.18,
+    "mapFrame": {
+      "bounds": [
+        [
+          8.29273868639146,
+          47.039915985588635
+        ],
+        [
+          8.327703313611067,
+          47.06146783719706
+        ]
+      ]
+    }
   },
   "family-snapseed-camera-capture-20260814-122648-102": {
     "dayId": "family-d2",
@@ -799,7 +842,8 @@
       "lat": 46.705894,
       "lng": 7.923418
     },
-    "zoom": 11.28
+    "zoom": 11.28,
+    "trashed": true
   },
   "family-img-2883": {
     "dayId": "family-d6",
@@ -911,7 +955,8 @@
       "lat": 46.559967,
       "lng": 7.892726
     },
-    "zoom": 13.48
+    "zoom": 13.48,
+    "trashed": true
   },
   "family-img-5099": {
     "dayId": "family-d6",
@@ -1104,7 +1149,8 @@
       "lat": 47.051144,
       "lng": 8.312354
     },
-    "zoom": 16.03
+    "zoom": 16.03,
+    "trashed": true
   },
   "family-snapseed-camera-capture-20260819-202000-680": {
     "dayId": "family-d7",
