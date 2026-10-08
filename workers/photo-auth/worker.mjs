@@ -1,3 +1,4 @@
+import { community, validName } from './community.mjs';
 import { credentials, verifyPasswordProofs, issueToken, validateToken, random, REMEMBER_SECONDS } from './crypto.mjs';
 import { base64url } from './crypto.mjs';
 import { loginWindow } from './window.mjs';
@@ -27,10 +28,10 @@ async function boundedJson(request) {
 function bearer(request) { const value = request.headers.get('Authorization') || ''; return value.startsWith('Bearer ') ? value.slice(7) : ''; }
 function remembered(request) { const values = (request.headers.get('Cookie') || '').split(';').map(v => v.trim()).filter(v => v.startsWith(`${COOKIE}=`)); return values.length === 1 ? values[0].slice(COOKIE.length + 1) : ''; }
 const keyVersion = async env => base64url(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(env.SESSION_SIGNING_KEY)));
-async function grantCode(env, id, origin, challenge, rememberExpires) {
+async function grantCode(env, id, origin, challenge, rememberExpires, identity = {}) {
   if (!/^[A-Za-z0-9_-]{43}$/.test(challenge || '')) throw new Error('Invalid login challenge');
   const code = random();
-  const response = await env.AUTH_CODES.get(env.AUTH_CODES.idFromName(code)).fetch('https://code/create', { method: 'POST', body: JSON.stringify({ id, origin, challenge, rememberExpires, keyVersion: await keyVersion(env), exp: Math.floor(Date.now()/1000) + 120 }) });
+  const response = await env.AUTH_CODES.get(env.AUTH_CODES.idFromName(code)).fetch('https://code/create', { method: 'POST', body: JSON.stringify({ id, origin, challenge, rememberExpires, ...identity, keyVersion: await keyVersion(env), exp: Math.floor(Date.now()/1000) + 120 }) });
   if (!response.ok) throw new Error('Unable to create login grant');
   return { code };
 }
@@ -43,9 +44,10 @@ export default {
       corsOrigin = allowed.includes(origin) ? origin : null;
       if (request.method === 'OPTIONS') {
         const requested = (request.headers.get('Access-Control-Request-Headers') || '').toLowerCase().split(',').map(x => x.trim()).filter(Boolean);
-        if (!corsOrigin || !['GET', 'HEAD', 'POST'].includes(request.headers.get('Access-Control-Request-Method')) || requested.some(h => !['authorization', 'content-type', 'if-none-match'].includes(h)) || !(url.pathname.startsWith(`${PREFIX}assets/`) || url.pathname === `${PREFIX}auth/status` || url.pathname === `${PREFIX}auth/redeem`)) return json(403, { error: 'Not allowed' }, corsOrigin);
-        return new Response(null, { status: 204, headers: headers(corsOrigin, { 'Access-Control-Allow-Methods': 'GET, HEAD, POST', 'Access-Control-Allow-Headers': 'Authorization, Content-Type, If-None-Match', 'Access-Control-Max-Age': '86400' }) });
+        if (!corsOrigin || !['GET', 'HEAD', 'POST', 'PATCH', 'DELETE'].includes(request.headers.get('Access-Control-Request-Method')) || requested.some(h => !['authorization', 'content-type', 'if-none-match'].includes(h)) || !(url.pathname.startsWith('/community/') || url.pathname.startsWith(`${PREFIX}assets/`) || url.pathname === `${PREFIX}auth/status` || url.pathname === `${PREFIX}auth/redeem`)) return json(403, { error: 'Not allowed' }, corsOrigin);
+        return new Response(null, { status: 204, headers: headers(corsOrigin, { 'Access-Control-Allow-Methods': 'GET, HEAD, POST, PATCH, DELETE', 'Access-Control-Allow-Headers': 'Authorization, Content-Type, If-None-Match', 'Access-Control-Max-Age': '86400' }) });
       }
+      if (url.pathname.startsWith('/community/')) { stage = 'community'; return await community(request, env, corsOrigin, json); }
       if (url.pathname === `${PREFIX}auth/window` && request.method === 'GET') {
         let target; try { target = new URL(url.searchParams.get('returnTo')); } catch { return json(400, { error: 'Open this page from the atlas.' }, null); }
         if (!allowed.includes(url.searchParams.get('origin')) || target.origin !== url.searchParams.get('origin') || (target.origin === 'https://gravelcycles.github.io' && !target.pathname.startsWith('/travels/')) || !/^[A-Za-z0-9_-]{43}$/.test(url.searchParams.get('state') || '') || !/^[A-Za-z0-9_-]{43}$/.test(url.searchParams.get('challenge') || '') || !['login', 'logout', 'restore'].includes(url.searchParams.get('action') || 'login')) return json(400, { error: 'Open this page from the atlas.' }, null);
@@ -62,7 +64,7 @@ export default {
         if (!response.ok) return json(401, { error: 'Login expired. Please unlock again.' }, corsOrigin);
         const grant = await response.json();
         if (!credentials(env).some(c => c.id === grant.id) || grant.keyVersion !== await keyVersion(env) || grant.rememberExpires <= Math.floor(Date.now()/1000)) return json(401, { error: 'Photos are locked' }, corsOrigin);
-        return json(200, await issueToken(env, grant.id, corsOrigin, 'access', { expires: grant.rememberExpires }), corsOrigin);
+        return json(200, await issueToken(env, grant.id, corsOrigin, 'access', { expires: grant.rememberExpires, visitorId: grant.visitorId, displayName: grant.displayName }), corsOrigin);
       }
       if ([`${PREFIX}auth/login`, `${PREFIX}auth/session`, `${PREFIX}auth/logout`].includes(url.pathname)) {
         if (request.method !== 'POST') return json(405, { error: 'Method not allowed' }, corsOrigin, { Allow: 'POST' });
@@ -79,15 +81,20 @@ export default {
         if (url.pathname.endsWith('/session')) {
           const saved = await validateToken(remembered(request), env, ownOrigin, 'remember');
           if (!saved) return json(401, { error: 'Enter a photo password.' }, null);
-          return json(200, await grantCode(env, saved.id, body.origin, body.challenge, saved.exp), null);
+          const identity = { visitorId: saved.visitorId || random(), displayName: saved.displayName };
+          const renewed = await issueToken(env, saved.id, ownOrigin, 'remember', { expires: saved.exp, ...identity });
+          return json(200, await grantCode(env, saved.id, body.origin, body.challenge, saved.exp, identity), null, { 'Set-Cookie': cookie(renewed.token, Math.max(0, saved.exp - Math.floor(Date.now()/1000))) });
         }
         stage = 'password';
         const accepted = await verifyPasswordProofs(body.proofs, active);
         if (!accepted) return json(401, { error: 'That password did not work. Please try again.' }, null);
         stage = 'signing';
-        const remember = await issueToken(env, accepted.id, ownOrigin, 'remember');
+        const previous = await validateToken(remembered(request), env, ownOrigin, 'remember');
+        let name; try { name = body.displayName ? validName(body.displayName) : previous?.displayName; } catch { return json(400, { error: 'Choose a name of 1–40 characters.' }, null); }
+        const identity = { visitorId: previous?.visitorId || random(), displayName: name };
+        const remember = await issueToken(env, accepted.id, ownOrigin, 'remember', identity);
         stage = 'authorization-code';
-        const access = await grantCode(env, accepted.id, body.origin, body.challenge, remember.expiresAt);
+        const access = await grantCode(env, accepted.id, body.origin, body.challenge, remember.expiresAt, identity);
         return json(200, access, null, { 'Set-Cookie': cookie(remember.token, REMEMBER_SECONDS) });
       }
       if (url.pathname === `${PREFIX}auth/status` || url.pathname.startsWith(`${PREFIX}assets/`)) {

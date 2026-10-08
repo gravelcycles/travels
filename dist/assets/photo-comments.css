@@ -265,3 +265,5 @@
   .comments-dialog[data-keyboard=true] .comments-empty h3 { font-size:18px; }
   .comments-dialog[data-keyboard=true] .comments-empty p { display:none; }
 }
+
+.comments-load-more { align-self:center; border:1px solid var(--conversation-line,#cedbd7); border-radius:999px; padding:9px 16px; margin:0 20px 12px; background:transparent; color:inherit; font:inherit; cursor:pointer; }

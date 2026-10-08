@@ -1,6 +1,6 @@
 # Places and photo conversations
 
-Architecture and working UX previews, updated 20 September 2026.
+Architecture and implementation, updated 8 October 2026. Provisioning and production verification follow [COMMUNITY_OPERATIONS.md](COMMUNITY_OPERATIONS.md).
 
 The smallest useful extension is **curated place data in Git + live photo
 comments in the existing Cloudflare service**. Keep the shared map and viewer.
@@ -24,9 +24,9 @@ on every journey, with an empty state when no places have been authored.
 
 The `experience=places|comments` query opens a temporary review toolbar, a local
 group-review editor and a comments/unlock simulation in the existing shared
-template. It works on a real trip, sample or Studio draft; it is not a journey
-feature flag or separate application. Without it there are no comment/write
-controls. Remove this review entry point when the live flow replaces it.
+template. It is a review entry point within the shared sample template, not a separate application. The simulation is restricted to fictional demo journeys. Published real journeys
+show Comments directly and use the authenticated live service; they never write
+to the demo store. Local drafts remain ineligible until publication.
 
 Preview comments, reviews and unfinished drafts save in localStorage, scoped by
 journey and then place/photo ID. The local visitor ID survives closing a tab;
@@ -72,8 +72,9 @@ Short screens, reduced motion and keyboard focus have dedicated treatments.
 The code is shared across real journeys, samples and empty drafts. The
 `places-comments.js` coordinator owns the local persistence adapter;
 `places-panel.js` and `photo-comments.js` own focused interfaces, with matching
-stylesheets. Real trip photo authentication is unchanged. No backend has been
-provisioned as part of this UX work.
+stylesheets. Real photo authentication now also signs a separate remembered visitor identity.
+The Worker/D1 implementation is ready for the provisioning and deployment steps
+in the operations guide; backend availability is reported honestly in the UI.
 
 These are our own components and curated records. There is no Google logo,
 copied review feed, Maps API call or automatic opening-hours feed. The Google
@@ -89,8 +90,8 @@ are in [the UX acceptance record](PLACES_UX_REVIEW_2026-09-20.md).
 | Name, category, coordinates, day links, factual description | Journey JSON | Prompt the agent; review, validate and deploy |
 | Our visit notes and individual group ratings | Journey JSON initially | Supply the group's actual words/ratings to the agent |
 | Venue/landmark pictures | Reviewed local derivatives or approved HTTPS assets, with credit/source/permission basis | Agent researches candidates and imports approved assets |
-| Visitor comments on a trip photo | Proposed D1 database behind the existing photo Worker | Password-authorized browser requests; no site rebuild |
-| Visitor display name and hidden visitor ID | Proposed signed remembered session | Enter name when unlocking; no account provider |
+| Visitor comments on a trip photo | D1 database behind the existing photo Worker | Password-authorized browser requests; no site rebuild |
+| Visitor display name and hidden visitor ID | Signed remembered session | Enter name when unlocking; no account provider |
 
 GitHub Pages serves static HTML/JS/assets; it cannot itself persist visitor
 writes. The current photo Worker already checks credentials, signs short-lived
@@ -107,10 +108,10 @@ objects are not comment storage. A third-party commenting platform adds identity
 privacy and UI integration work without helping prompt-authored places.
 [D1 Worker binding API](https://developers.cloudflare.com/d1/worker-api/)
 
-## Proposed live unlock flow
+## Live unlock flow
 
 1. **Unlock photos** leads to the existing secure first-party login window.
-   Add **Display name** beside the shared password. Collect names there so
+   Offer optional **Display name** beside the shared password. Collect names there so
    credentials still stay on the Worker origin. No email, SSO or registration.
 2. After checking the password, create/reuse a random visitor ID distinct from
    the password credential ID. The current token `id` identifies a shared
@@ -134,15 +135,20 @@ demo shows the user's proposed combined unlock form.
 
 ## Minimal write API and storage
 
-Suggested endpoints on the photo service's origin:
+Implemented endpoints on the photo service's origin:
 
 ```text
 GET    /community/journeys/:journeyId/photos/:photoId/comments?after=cursor
 POST   /community/journeys/:journeyId/photos/:photoId/comments
+PATCH  /community/comments/:commentId
 DELETE /community/comments/:commentId
+POST   /community/comments/:commentId/restore
+GET/PATCH /community/profile
+GET    /community/admin/export
+PATCH  /community/admin/comments/:commentId
 ```
 
-All three require a valid access token and allowed Origin. Comments inherit the
+Visitor endpoints require a valid access token and allowed Origin. Comments inherit the
 photo's access boundary, including reads; private photo comments never enter
 public JavaScript bundles. Preserve CORS preflight, no-store responses, credential
 revocation and existing auth-restoration behavior. Do not trust an `unlocked`
@@ -220,10 +226,28 @@ reads better, whether comments should open as a panel, and whether readers must
 enter a name immediately or only when posting. This release uses individual
 ratings plus an average as the working assumption.
 
-Then implement live comments through the existing Worker/D1 boundary. Keep group
+Deploy and verify live comments through the existing Worker/D1 boundary using the operations guide. Keep group
 reviews prompt-authored until there is a specific need for in-browser editing.
 If those become live writes, add server-assigned traveler/editor authorization;
 the shared visitor password alone cannot distinguish the traveling group from
 friends visiting the site. Do not bolt unverified group membership onto the
 display-name form. Image intake remains agent-operated. Live service delivery and group authorization
 remain separate follow-up work; the local UX does not simulate trusted permissions.
+
+## Implemented service boundary — 8 October 2026
+
+The service uses a signed `visitorId` distinct from the shared credential `id`.
+Older remembered sessions upgrade automatically; access tokens without a visitor
+identity ask for a secure restoration before commenting. Names are optional at
+photo unlock and required when posting. A D1 profile holds future attribution;
+existing comments keep their original display-name snapshot. Names are not
+verified identities and cannot grant moderation or traveler permissions.
+
+Real comments are loaded on opening/navigation and after mutations. Requests
+fail closed without storage/configuration and preserve unfinished text. Posting
+reuses its client request ID after a timeout or reload. Reads page in groups of
+50, exports in groups of 100. Writes are limited per visitor and IP; photo
+removal immediately hides its discussion after the eligibility index deploys.
+Author deletion has a five-minute Undo window; moderator-hidden comments cannot
+be restored by their author. Retention/export/security details and exact
+provisioning commands are in [COMMUNITY_OPERATIONS.md](COMMUNITY_OPERATIONS.md).

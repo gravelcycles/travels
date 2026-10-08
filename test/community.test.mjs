@@ -1,0 +1,76 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { DatabaseSync } from 'node:sqlite';
+import worker from '../workers/photo-auth/worker.mjs';
+import { createCredential, issueToken, random } from '../workers/photo-auth/crypto.mjs';
+import index from '../workers/photo-auth/community-index.mjs';
+import { UNDO_MS } from '../workers/photo-auth/community.mjs';
+const origin = 'https://gravelcycles.github.io';
+const credential = await createCredential('test-visitor', 'test-only-private-password');
+const journey = Object.keys(index).find(id => index[id].length), photo = index[journey][0];
+const target = `/community/journeys/${journey}/photos/${photo}/comments`;
+function fixture(t) {
+  const db = new DatabaseSync(':memory:'); t.after(() => db.close());
+  db.exec(fs.readFileSync(new URL('../workers/photo-auth/migrations/0001_community.sql', import.meta.url), 'utf8'));
+  const binding = { prepare(sql) { return { bind(...args) { const statement = db.prepare(sql); return { first: async () => statement.get(...args) || null, all: async () => ({ results: statement.all(...args) }), run: async () => { const info = statement.run(...args); return { meta: { changes: info.changes } }; } }; } }; } };
+  const env = { COMMUNITY_DB: binding, COMMUNITY_ADMIN_KEY: random(), COMMUNITY_LIMITER: { limit: async () => ({ success: true }) }, PHOTO_CREDENTIALS: JSON.stringify({ version: 2, credentials: [credential] }), SESSION_SIGNING_KEY: random(), ALLOWED_ORIGINS: JSON.stringify([origin]) };
+  const token = (visitorId = random(), options = {}) => issueToken(env, credential.id, origin, 'access', { visitorId, displayName: 'Alex', ...options });
+  const request = (url, access, method = 'GET', body, caller = origin) => worker.fetch(new Request(`https://photos.example${url}`, { method, headers: { ...(caller ? { Origin: caller } : {}), Authorization: `Bearer ${access?.token || ''}`, ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}) }, ...(body !== undefined ? { body: JSON.stringify(body) } : {}) }), env, {});
+  return { db, env, token, request };
+}
+test('community authentication fails closed for expiry, revoked credential, origin and legacy identity', async t => {
+  const f = fixture(t), now = Math.floor(Date.now()/1000);
+  for (const token of [null, await f.token(random(), { now: now - 4000 })]) assert.equal((await f.request(target, token)).status, 401);
+  const access = await f.token();
+  assert.equal((await f.request(target, access, 'GET', undefined, 'https://other.example')).status, 403);
+  assert.equal((await f.request(target, await issueToken(f.env, credential.id, origin))).status, 409);
+  f.env.PHOTO_CREDENTIALS = JSON.stringify({ version: 2, credentials: [{ ...credential, id: 'changed' }] });
+  assert.equal((await f.request(target, access)).status, 401);
+  assert.equal(f.db.prepare('SELECT COUNT(*) AS n FROM comments').get().n, 0);
+});
+test('real SQL persistence ignores client author, retries safely and owns edit/delete/Undo', async t => {
+  const f = fixture(t), first = await f.token(), other = await f.token();
+  const input = { body: 'Hello <script>literal text</script>', clientRequestId: random(), visitorId: 'forged', displayName: 'Admin', createdAt: 1 };
+  const [a, b] = await Promise.all([f.request(target, first, 'POST', input), f.request(target, first, 'POST', input)]);
+  assert.equal(a.status, 200); assert.equal(b.status, 200);
+  const { comment } = await a.json(); assert.equal(comment.displayName, 'Alex'); assert.equal(comment.own, true); assert.equal(comment.visitorId, undefined); assert.ok(comment.createdAt > 1);
+  assert.equal((await b.json()).comment.id, comment.id);
+  assert.equal(f.db.prepare('SELECT COUNT(*) AS n FROM comments').get().n, 1);
+  assert.equal((await f.request(target, first, 'POST', { ...input, body: 'different' })).status, 409);
+  assert.equal((await f.request(`/community/comments/${comment.id}`, other, 'DELETE')).status, 404);
+  const edit = await f.request(`/community/comments/${comment.id}`, first, 'PATCH', { body: 'Edited' }); assert.equal(edit.status, 200); assert.equal((await edit.json()).comment.body, 'Edited');
+  await f.request('/community/profile', first, 'PATCH', { name: 'New name' });
+  const rows = (await (await f.request(target, other)).json()).comments; assert.equal(rows[0].displayName, 'Alex'); assert.equal(rows[0].own, false);
+  assert.equal((await f.request(`/community/comments/${comment.id}`, first, 'DELETE')).status, 200);
+  assert.equal((await (await f.request(target, first)).json()).comments.length, 0);
+  assert.equal((await f.request(`/community/comments/${comment.id}/restore`, first, 'POST', {})).status, 200);
+  await f.request(`/community/comments/${comment.id}`, first, 'DELETE');
+  f.db.prepare('UPDATE comments SET deleted_at = ?').run(Date.now() - UNDO_MS - 1000);
+  assert.equal((await f.request(`/community/comments/${comment.id}/restore`, first, 'POST', {})).status, 409);
+});
+test('pagination is stable, moderation stays separate, removed targets cannot be accessed', async t => {
+  const f = fixture(t), access = await f.token();
+  for (let i = 0; i < 53; i++) assert.equal((await f.request(target, access, 'POST', { body: `Comment ${i}`, clientRequestId: random() })).status, 200);
+  const first = await (await f.request(target, access)).json(), next = await (await f.request(`${target}?after=${first.next}`, access)).json();
+  assert.equal(first.comments.length, 50); assert.equal(next.comments.length, 3); assert.equal(new Set([...first.comments, ...next.comments].map(row => row.id)).size, 53);
+  assert.equal((await f.request('/community/admin/export', access)).status, 401);
+  const admin = { token: f.env.COMMUNITY_ADMIN_KEY }, id = first.comments[0].id;
+  assert.equal((await f.request(`/community/admin/comments/${id}`, admin, 'PATCH', { hidden: true }, null)).status, 200);
+  assert.equal((await f.request(`/community/comments/${id}/restore`, access, 'POST', {})).status, 404);
+  const exported = await f.request('/community/admin/export', admin, 'GET', undefined, null); assert.equal(exported.status, 200); assert.equal((await exported.json()).comments.length, 53);
+  assert.equal((await f.request(target.replace(photo, 'missing-photo'), access)).status, 404);
+  f.db.prepare('UPDATE comments SET photo_id = ? WHERE id = ?').run('trashed-photo', first.comments[1].id);
+  assert.equal((await f.request(`/community/comments/${first.comments[1].id}`, access, 'PATCH', { body: 'Cannot edit removed photo' })).status, 404);
+});
+test('community validates text/bodies, rate limits writes, and handles missing bindings privately', async t => {
+  const f = fixture(t), access = await f.token();
+  assert.equal((await f.request(target, access, 'POST', { body: 'x'.repeat(1001), clientRequestId: random() })).status, 400);
+  assert.equal((await f.request('/community/profile', access, 'PATCH', { name: 'x'.repeat(41) })).status, 400);
+  assert.equal((await f.request(target, access, 'POST', { body: 'x'.repeat(9000), clientRequestId: random() })).status, 400);
+  f.env.COMMUNITY_LIMITER.limit = async () => ({ success: false });
+  assert.equal((await f.request(target, access, 'POST', { body: 'hello', clientRequestId: random() })).status, 429);
+  assert.equal((await f.request(target, access)).status, 200);
+  f.env.COMMUNITY_DB = null;
+  const missing = await f.request(target, access); assert.equal(missing.status, 503); assert.equal(missing.headers.get('Cache-Control'), 'no-store');
+});

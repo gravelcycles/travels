@@ -182,3 +182,35 @@ test('browser revalidation reuses bytes only after successful authorization and 
   f.env.PHOTO_CREDENTIALS=JSON.stringify({version:2,credentials:[second]});
   assert.equal((await f.request(`assets/${key}`,{headers:{...headers,'If-None-Match':etag}})).status,401);
 });
+
+test('visitor identity is separate from shared credential and survives remembered restoration', async () => {
+  const f = fixture();
+  const login = await f.post('login', { password: 'fixture-only-family-password', displayName: 'Alex' });
+  const savedCookie = login.headers.get('set-cookie').split(';')[0];
+  const access = await (await f.redeem((await login.json()).code)).json();
+  const firstSession = await validateToken(access.token, f.env, origin);
+  assert.equal(firstSession.id, first.id); assert.equal(firstSession.displayName, 'Alex');
+  assert.match(firstSession.visitorId, /^[A-Za-z0-9_-]{43}$/); assert.notEqual(firstSession.visitorId, first.id);
+  const restore = await f.post('session', {}, savedCookie);
+  const restored = await (await f.redeem((await restore.json()).code)).json();
+  assert.equal((await validateToken(restored.token, f.env, origin)).visitorId, firstSession.visitorId);
+  const secondBrowser = await f.post('login', { password: 'fixture-only-family-password', displayName: 'Alex' });
+  const secondAccess = await (await f.redeem((await secondBrowser.json()).code)).json();
+  assert.notEqual((await validateToken(secondAccess.token, f.env, origin)).visitorId, firstSession.visitorId);
+  const oldCookie = await issueToken(f.env, first.id, host, 'remember');
+  const upgrade = await f.post('session', {}, `__Host-travel_photo_session=${oldCookie.token}`);
+  const newRemembered = await validateToken(upgrade.headers.get('set-cookie').split(';')[0].split('=')[1], f.env, host, 'remember');
+  assert.ok(newRemembered.visitorId); assert.equal(newRemembered.exp, oldCookie.expiresAt);
+  const upgradedAccess = await (await f.redeem((await upgrade.json()).code)).json();
+  assert.equal((await validateToken(upgradedAccess.token, f.env, origin)).visitorId, newRemembered.visitorId);
+});
+
+test('community CORS permits authenticated edit/delete but never credentialed browser requests', async () => {
+  const f = fixture();
+  for (const method of ['GET', 'POST', 'PATCH', 'DELETE']) {
+    const request = new Request(`${host}/community/profile`, { method: 'OPTIONS', headers: { Origin: origin, 'Access-Control-Request-Method': method, 'Access-Control-Request-Headers': 'authorization, content-type' } });
+    const response = await worker.fetch(request, f.env, f.ctx);
+    assert.equal(response.status, 204); assert.equal(response.headers.get('Access-Control-Allow-Credentials'), null);
+  }
+  assert.equal((await worker.fetch(new Request(`${host}/community/profile`, { method: 'OPTIONS', headers: { Origin: 'https://evil.example', 'Access-Control-Request-Method': 'PATCH' } }), f.env, f.ctx)).status, 403);
+});

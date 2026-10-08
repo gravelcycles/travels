@@ -853,3 +853,16 @@ test('batch photo editing uses the same state contract for family, demo and an e
     assert.deepEqual(state,{photos:{},days:{},routes:{}});
   }
 });
+
+test('community UI is inherited while eligibility includes only published real visible photos', async t => {
+  const { communityIndex } = await import('../scripts/build-community-index.mjs');
+  const root = fixture(t), draft = createJourney(root, input), { data } = loadContent(root, { includeDrafts: true });
+  const index = communityIndex(root), family = data.journeys.find(j => j.id === 'switzerland-italy-family-2026'), demo = data.journeys.find(j => j.kind === 'demo');
+  assert.ok(index[family.id].length > 0); assert.equal(index[demo.id], undefined); assert.equal(index[draft.id], undefined);
+  const overrides = readOverrides(root);
+  for (const id of index[family.id]) { assert.notEqual(overrides.photos[id]?.trashed, true); assert.notEqual(family.photos.find(p => p.id === id).assetStatus, 'local'); }
+  for (const journey of [family, demo, draft]) {
+    const html = renderJourneyPage(root, journey, { preview: !journey.published });
+    assert.match(html, /community-client\.js/); assert.match(html, /id="open-photo-comments"/);
+  }
+});

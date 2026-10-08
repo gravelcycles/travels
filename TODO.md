@@ -260,13 +260,14 @@ delight/day-experience prototypes are preserved on branches listed in
       credited images, source links, group review averages and saved-place state.
       Local UX previews exercise review writing and display-name/password/photo
       comments with own-comment deletion, empty states and storage errors.
-- [ ] **W08 live comments:** review the demos; extend the existing photo Worker
-      with signed visitor identities distinct from password IDs, authenticated
-      D1 reads/writes, eligible-photo indexing, idempotency, pagination, posting
-      limits, own-comment deletion, owner moderation and export. Implement and
-      test expiry/revocation/CORS and deployment as one service change. No SSO or
-      Google Maps API. Keep group reviews prompt-authored unless a later request
-      defines server-authorized group editing. See docs/PLACES_AND_COMMENTS.md.
+- [x] **W08 live implementation:** signed remembered visitor identity, D1 schema,
+      authenticated photo comments, eligible-target index, stable retry IDs,
+      pagination, own edit/delete with five-minute Undo, separate admin moderation
+      and private export. Shared UI and actual D1 runtime tests are included.
+- [ ] **W08 rollout:** provision the Free-plan D1 binding/migration and separate
+      administrator secret, deploy the Worker/index before Pages, verify public
+      authenticated flows. Follow docs/COMMUNITY_OPERATIONS.md. Group place reviews
+      remain prompt-authored; a photo password grants no traveler/editor role.
 - [x] **W08 UX polish:** preserved drafts and context, search/filter recovery,
       rating-only/editable reviews, full-screen galleries, photo conversations
       with name changes and edit/delete/Undo, POI clusters and coordinated Back.

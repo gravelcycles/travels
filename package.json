@@ -14,6 +14,8 @@
     "test": "node --test test/*.test.mjs",
     "journey:new": "node scripts/create-journey.mjs",
     "photos:publish": "node scripts/publish-photo-assets.mjs",
+    "community:admin": "node scripts/community-admin.mjs",
+    "community:index": "node scripts/build-community-index.mjs",
     "auth:manage": "node scripts/photo-auth-admin.mjs",
     "auth:credentials": "node scripts/photo-auth-credentials.mjs",
     "auth:test": "node --test test/photo-auth-worker.test.mjs test/photo-auth-loader.test.mjs",

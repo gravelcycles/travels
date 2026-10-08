@@ -237,7 +237,7 @@ there is no second photo manifest or persisted Undo store. This review gate does
 The [8 October workstream checkpoint](../WIP.md) records the local day-experience
 prototype and two design demos on separate branches. They are review artifacts,
 not alternate production implementations. W04–W06 remain the migration backlog;
-W07/W08 remain private-media/live-comments service follow-ups. The newly recorded
+W07 remains the private-media service follow-up; W08 has a community implementation and a separate provisioning/rollout checklist. The newly recorded
 Live Photos investigation (W09) needs paired input and must reuse W07 rather
 than introducing a separate media/auth service. No new capability is introduced
 by this documentation checkpoint.
@@ -266,17 +266,27 @@ name and tab session. Comments/unlock join the existing shared overlay history;
 parent photo dismissal unwinds nested layers. Places/gallery history preserves
 other atlas state. Pins cluster by rendered distance.
 
-The temporary `experience=places|comments` query is a UX entry point in the same
-shared template, not a general feature-flag system. Only this explicit preview
-exposes local review editing and the sample-password comment simulation.
-It is not a live write/auth implementation. The owner's 20 September request
-explicitly authorized completing this UX before backend work.
+The `experience=places|comments` query now exposes the local UX simulation only
+on fictional demos. Published real journeys show Comments without that query,
+using the existing photo access token, a server-signed visitor ID and D1. Curated
+place reviews remain prompt-authored public content: a visitor password does
+not confer traveler/editor permission. Empty drafts have the same shells but no
+eligible public target until promotion.
 
-Live comments, server-bound identities, moderation, eligible-photo validation,
-D1 provisioning and a production rollout remain W08 work in
-[PLACES_AND_COMMENTS.md](PLACES_AND_COMMENTS.md). Existing real photo auth is
-unchanged. Image intake remains agent-operated. The detailed UX verification
-record is [PLACES_UX_REVIEW_2026-09-20.md](PLACES_UX_REVIEW_2026-09-20.md).
+`community-client.js` is the asynchronous live adapter; `photo-comments.js`
+retains the shared presentation, draft recovery and overlay history. The Worker
+community helper enforces access on reads and writes, target eligibility, own
+edits/deletion, five-minute Undo, idempotent posts, cursor pagination and write
+limits. A separate administrator secret authorizes reversible moderation and
+private export. No database content is bundled into GitHub Pages.
+
+Builds deterministically regenerate `workers/photo-auth/community-index.mjs`
+from published real photos, excluding local and trashed items. CI checks its
+freshness. Deploy this index with the Worker before each Pages publication that
+changes photo eligibility. D1 provisioning and public rollout remain explicit
+operations in [COMMUNITY_OPERATIONS.md](COMMUNITY_OPERATIONS.md), alongside
+Free-plan limits and identity/retention behavior. Further image-intake automation
+and trusted group-review editing remain separate backlog items.
 
 ## City events — 8 October 2026
 

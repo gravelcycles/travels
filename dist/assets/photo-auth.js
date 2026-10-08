@@ -399,7 +399,16 @@
   for(const button of document.querySelectorAll('[data-unlock]'))button.addEventListener('click',()=>begin());
   dialog.querySelector('[data-dismiss]').addEventListener('click',closePrompt);
   dialog.addEventListener('close',()=>{if(!token)rememberGuest();lastFocus?.focus?.();});
-  window.JOURNEY_ATLAS_AUTH={isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets,selected(photo,width)].slice(-MAX_PREFETCH));},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
+  async function communityRequest(path, { method = 'GET', body } = {}) {
+    if (!/^\/community\/[a-zA-Z0-9_/?=&.%-]+$/.test(path) || !service) throw new Error('Comments are unavailable.');
+    if (!token || expiresAt <= Date.now()/1000) { if (token) expireAccess(); throw Object.assign(new Error('Unlock photos to read or leave comments.'), { status: 401 }); }
+    const epoch = generation;
+    const { response, data } = await requestJson(service + path, { method, credentials: 'omit', cache: 'no-store', headers: { Authorization: `Bearer ${token}`, ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}) }, ...(body !== undefined ? { body: JSON.stringify(body) } : {}) });
+    if (epoch !== generation) throw new Error('Photo access changed. Open comments again.');
+    if (!response.ok) { if (response.status === 401) expireAccess(); throw Object.assign(new Error(data.error || 'Comments could not be saved. Try again.'), { status: response.status, code: data.code }); }
+    return data;
+  }
+  window.JOURNEY_ATLAS_AUTH={communityRequest,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets,selected(photo,width)].slice(-MAX_PREFETCH));},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
 })();
