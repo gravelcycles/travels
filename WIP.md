@@ -37,22 +37,57 @@ identity limitations, moderation and retention are in
 
 The existing no-paid-services constraint remains in force. No plan was upgraded;
 private video reuses the existing R2 bucket and authentication. Group place
-reviews remain prompt-authored; a photo password grants no traveler/editor role.
+reviews are owner-curated through Studio or an agent; a photo password grants
+no traveler/editor role.
 
-## Photos + Places demo and Replay clarification
+## Photos + Places production release and Replay clarification
+
+The owner approved the combined demo for production, including the full owner
+editing experience and separate phone/desktop navigation. Implementation lives
+on local branch `codex/photos-places-production-20261008` and uses the shared
+journey template and browser modules for real trips, demos and new drafts.
+
+- Map photo bubbles expand when selected and keep their selected photo, group
+  and order through zooming. Ordinary selection preserves the map framing.
+- Desktop keeps the days on the left, the map in the middle and place or photo
+  details on the right. Full screen is an explicit photo action; there is no
+  desktop day picker. Phone keeps one compact day picker with the current title.
+- Places distinguish ordered, explicitly linked trip photos from computed
+  nearby photos within 150 metres. Nearby suggestions never save an association.
+  Trip-photo access and filters remain in force; venue imagery stays separate.
+- Studio **Places** edits names, descriptions, memories, category/status, days,
+  coordinates, sources, credited venue images, curated group reviews and ordered
+  photo links. Linked photos open the normal photo editor. Save, draft recovery,
+  review/discard, conflict handling and Ready to share use the existing pipeline.
+- Photo links survive Trash and local-only assets in source, while public output
+  omits ineligible links. Calendar changes reject removing a day still assigned
+  to a place until the owner updates its assignment.
+- The Alpine demo includes credited, explicitly illustrative photo placements.
+  No new family memories, associations or private media were invented/published.
+
+Browser checks cover 1440/1024 px desktop and 393 px phone layouts, the phone
+chooser, stable selection through zoom, day switching, photo/place navigation,
+Full screen/Back, and isolated Studio create/recover/save/reorder/photo-edit
+flows. The disposable QA draft and its edits remain outside the release tree.
+Implementation commit: `1c7dabe`. **416/416 tests pass**; the production build is
+reproducible with no generated-output differences. The real-photo eligibility
+index and Worker code are unchanged, so this release needs only Pages deployment.
+Open [the public Alpine example](https://gravelcycles.github.io/travels/demo.html?journey=alpine-crossing&day=alps-d1&view=map)
+or the local [Studio Places editor](http://127.0.0.1:4186/studio/).
 
 **Replay playback and its slider are already shipped.** The unfinished timeline
 proposal adds named stops and clearer seeking. The day-experience experiment
 separately compares camera framing; neither means Replay itself is unfinished.
 
-The requested combined **Photos + Places** scene is saved locally at
+The original combined **Photos + Places** prototype is preserved locally at
 `codex/day-experience-review` · `37a8b0a`. Open
 [the local demo](http://127.0.0.1:4175/?scene=places): photo bubbles sit alongside
 place pins, photos link to a nearby place, and places offer nearby trip photos.
 Phone/desktop views, a stable selected group through zooming, an empty nearby
 state and an unlocated album photo are included. All sample album placements are
 explicitly illustrative and retain image credits. The 150 m proximity rule saves
-no geographic association. Production adoption remains a separate shared change.
+no geographic association. The shared production implementation above supersedes
+this prototype; its demo-only injection code is not shipped.
 
 The prototype passed **369 repository + 11 prototype tests** and a build. Its
 source and run instructions are at
@@ -62,8 +97,8 @@ work only while the corresponding local servers are running.
 
 This section supersedes pending-status claims in the historical cleanup and
 family-publication checkpoints below. Remaining design work includes explicit
-sharing, named Replay timeline stops, the delight mockup and production adoption
-of photo bubbles. Framework W04–W06 and paired Live Photos W09 remain open.
+sharing, named Replay timeline stops and the delight mockup. Framework W04–W06
+and paired Live Photos W09 remain open.
 
 ## Publication update — 8 October 2026
 
