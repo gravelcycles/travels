@@ -241,20 +241,24 @@ check that credits stay closed after tiles load and can still be opened and
 closed with the info button; route framing needs no extra attribution margin.
 
 Upright destination signposts have a small foot at their mapped locations.
+At a visible rail endpoint, the orange dot replaces that foot and the short
+stem meets the top of its outer ring. Repeat-stop pickers keep their full hit
+target without covering the orange center with a teal dot.
 Select a numbered pin or choose a visit from a repeat-stop dot; journal/day navigation remains
 available. Check pin placement and rail stops at desktop and phone sizes after
 changing routes. Intermediate rail
 stops have small 5 px orange centers and 2 px white rims (9 px total). The orange
 sits inside the selected blue line; the white rims overlap the route's white
 casing and remain visible over the blue line. Both endpoints of every train
-leg use larger 12 px dots, 2 px white borders and orange outer rings, including
-transfer stations and turnaround points. Shared endpoints combine at the same
+leg use larger 12 px dots, 2 px white borders and orange outer rings in both
+full and day views, including transfer stations and turnaround points.
+Intermediate stops appear only in day maps. Shared endpoints combine at the same
 location and retain their endpoint style if another leg
 also lists that station as an intermediate stop. Intermediate display dots snap
 to that leg's line without changing source stop coordinates or reviewed
 geometry. Stop names and endpoint roles remain available on hover.
-Stop dots remain hidden until the selected train lines have rendered, including
-in the photo map. Switch days quickly during review: an abandoned day's pending
+Stop dots remain hidden until the displayed train lines have rendered, including
+in the photo map. Switch between full view and days quickly during review: an abandoned view's pending
 markers must never appear over the next day's routes. Slow basemap tiles do not
 delay stops once their train lines are visible.
 

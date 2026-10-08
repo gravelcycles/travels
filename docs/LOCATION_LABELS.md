@@ -49,6 +49,11 @@ focus to the selected pin after the camera settles, if that pin is visible.
 Signpost feet and dots use reviewed arrival coordinates (departure/place
 fallback for other days). The 22 px board has 7 px rounded corners and stays
 directly above its point. A 2 px vertical stem connects it to a 5 px foot.
+When that point is also a displayed rail endpoint, the orange 12 px dot and
+1 px outer ring replace the foot. Raise the board by 7 px and end its stem at
+the ring's top; no teal foot or repeat-stop dot covers the orange center.
+The full button still opens the day or repeat-stop picker. This applies in
+the full map and to the selected day's rail endpoints in day view.
 The board center sits 18 px above the point, or 22 px when that clears a nearby
 route better. It never moves sideways or flips below the location. Keep the
 complete board, stem and foot inside the measured hit target. Use an anchored

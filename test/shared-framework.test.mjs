@@ -315,6 +315,7 @@ test('a newly generated draft inherits large endpoints for every train leg as ro
   });
   vm.runInContext(appFunction('dayMapStops') + appFunction('railStopCoordinate'), context);
   assert.equal(context.dayMapStops(null,draft.days[0]).length,0, 'Empty drafts invent no endpoints');
+  assert.equal(context.dayMapStops(null,null).length,0, 'Empty overview maps invent no endpoints');
   draft.places.push({id:'new-start',name:'New start',lng:139.7,lat:35.6},{id:'new-arrival',name:'New arrival',lng:139.8,lat:35.7});
   draft.segments.push({id:'new-leg',mode:'train',from:'new-start',to:'new-arrival',geometry:[[139.7,35.6],[139.801,35.701]]});
   draft.days[0].placeId = 'new-arrival'; draft.days[0].segmentIds = ['new-leg'];
@@ -325,6 +326,7 @@ test('a newly generated draft inherits large endpoints for every train leg as ro
   draft.segments.push({id:'new-connection',mode:'train',from:'new-arrival',to:'new-finish',geometry:[[139.801,35.701],[139.9,35.8]]});
   draft.days[0].segmentIds.push('new-connection');
   assert.deepEqual(Array.from(context.dayMapStops(null,draft.days[0]),stop=>stop.endpoint),['Start','Start and end','End']);
+  assert.deepEqual(Array.from(context.dayMapStops(null,null),stop=>stop.endpoint),['Start','Start and end','End'],'A populated fresh draft inherits overview endpoints');
   vm.runInContext(appFunction('revealStopsWithRoutes'),context);
   const sources = new Map(draft.segments.map(segment=>[segment.id,{}])), listeners = new Map();
   const elements = [{style:{visibility:'hidden'}}];

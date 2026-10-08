@@ -717,7 +717,8 @@
   }
 
   function dayMapStops(map, day) {
-    const segments = segmentsForDay(day);
+    // The whole-trip view shows endpoints only; day maps also show rail stops.
+    const segments = day ? segmentsForDay(day) : journey.segments;
     const byLocation = new Map();
     const keyFor = coordinate => coordinate.map(value => value.toFixed(7)).join(',');
     segments.filter((segment) => segment.mode === "train").forEach((segment) => {
@@ -726,7 +727,7 @@
       const coordinates = segmentCoordinates(segment);
       const stops = [
         { name: from.name, coordinate: coordinates[0], endpoint: "Start" },
-        ...(segment.stops || []).map(stop => ({ ...stop, coordinate: railStopCoordinate(map, stop, coordinates) })),
+        ...(day ? segment.stops || [] : []).map(stop => ({ ...stop, coordinate: railStopCoordinate(map, stop, coordinates) })),
         { name: to.name, coordinate: coordinates.at(-1), endpoint: "End" }
       ];
       stops.forEach((stop) => {
@@ -744,7 +745,7 @@
   function revealStopsWithRoutes(map, decorations, day, elements, isCurrent = () => true) {
     decorations.cancelStopReveal?.();
     if (!elements.length) return;
-    const trainIds = new Set(segmentsForDay(day).filter(segment => segment.mode === "train").map(segment => segment.id));
+    const trainIds = new Set((day ? segmentsForDay(day) : journey.segments).filter(segment => segment.mode === "train").map(segment => segment.id));
     const routes = (decorations.routeLayers || []).filter(route => trainIds.has(route.segmentId))
       .map(route => ({ ...route, source: map.getSource(route.sourceId) }));
     if (!routes.length) return;
@@ -774,7 +775,8 @@
 
   function addDayStopMarkers(map, decorations, day, isCurrent) {
     const elements = [];
-    dayMapStops(map, day).forEach(stop => {
+    const stops = dayMapStops(map, day);
+    stops.forEach(stop => {
       const element = document.createElement("div");
       element.style.visibility = "hidden";
       element.className = `rail-stop-marker${stop.endpoint ? " route-endpoint-marker" : ""}`;
@@ -789,6 +791,7 @@
       elements.push(element);
     });
     revealStopsWithRoutes(map, decorations, day, elements, isCurrent);
+    return stops;
   }
 
   function drawMainMap(fit, attempt = 0) {
@@ -814,12 +817,15 @@
           opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.78)
         });
       });
-    if (mapScope === "day") addDayStopMarkers(mainMap, mainDecorations, activeDay(), day => mapScope === "day" && activeDayId === day.id);
+    const stopJourney = journey;
+    const stops = addDayStopMarkers(mainMap, mainDecorations, mapScope === "day" ? activeDay() : null,
+      day => journey === stopJourney && (day ? mapScope === "day" && activeDayId === day.id : mapScope !== "day"));
     if (inspectedSegmentId) setInspectedFeatureState(inspectedSegmentId, true);
     renderDayNavigator();
     locationLabels?.update(
       window.JOURNEY_ATLAS_LOCATION_LABELS.groupsForJourney(journey, { destinationForDay, segmentsForDay, segmentCoordinates, includeGroupPlaces: !activeGroupId }, activeDayId, 'journey'),
-      journey.segments.map(segment => ({ dayIds: journey.days.filter(day => day.segmentIds.includes(segment.id)).map(day => day.id), coordinates: segmentCoordinates(segment), padding: (modeStyles[segment.mode]?.width || 4.7) / 2 + 6 }))
+      journey.segments.map(segment => ({ dayIds: journey.days.filter(day => day.segmentIds.includes(segment.id)).map(day => day.id), coordinates: segmentCoordinates(segment), padding: (modeStyles[segment.mode]?.width || 4.7) / 2 + 6 })),
+      stops.filter(stop => stop.endpoint).map(stop => stop.coordinate)
     );
     if (fit) fitJourneyBounds();
   }
