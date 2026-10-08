@@ -15,6 +15,9 @@
 .arrival-progress i { display: block; height: 100%; background: #d4512c; width: 100%; transform: scaleX(0); transform-origin: left center; }
 .arrival-chapter[data-phase="framing"] .arrival-progress, .arrival-chapter[data-phase="stay"] .arrival-progress, .arrival-chapter[data-phase="explore"] .arrival-progress { display: none; }
 .arrival-trace { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.arrival-place-label { display: grid; gap: 2px; padding: 5px 8px; border: 1px solid #ccd4d1; border-radius: 4px; background: #fffdf7f2; color: #203b43; box-shadow: 0 2px 8px #203b4325; text-align: center; pointer-events: none; z-index: 5; white-space: nowrap; }
+.arrival-place-label small { font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: #657375; }
+.arrival-place-label strong { font-size: 12px; line-height: 1.2; }
 .map-panel:has(.arrival-chapter:not([hidden])) #map-legend { visibility: hidden; }
 @media (max-width: 900px) {
   .arrival-chapter { left: 12px; right: 12px; bottom: 180px; padding: 10px 12px; gap: 8px; }

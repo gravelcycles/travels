@@ -6,8 +6,8 @@ and every new journey. “Available” means the common implementation exists;
 actual content, reviewed geometry and photographs must be supplied per trip.
 
 Local branch prototype: [Arrival → city](ARRIVAL_CITY_DEMO.md) traces the incoming
-route and icon together at display cadence after a 0.25-second camera move to the
-selected route, with linear 2.5-second overhead
+route and icon together at display cadence after a contextual pullback, pan and
+settle, with named endpoints and linear 1.5-second overhead
 progression and a 0.25-second arrival pause before the destination zoom. Unlocated
 photos keep the local city view.
 It reuses the shared page, gallery and route geometry. It is **not published**;

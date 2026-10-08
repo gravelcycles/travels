@@ -78,7 +78,7 @@
     let start = 0;
     for (const leg of legs) { leg.start = start; leg.end = start += leg.weight / total; }
     if (legs.length) legs.at(-1).end = 1;
-    return { legs, framingDuration: 250, duration: 2500, arrivalHold: 250 };
+    return { legs, duration: 1500, arrivalHold: 250 };
   }
 
   // Interpolate by distance, with no route-wide measurements in the animation loop.
@@ -174,18 +174,33 @@
     return segments.slice().reverse().flatMap(segment => coordinates(segment).slice().reverse()).find(located) || null;
   }
 
+  function cameraMoves(from, route, context = route) {
+    const coordinates = center => Array.isArray(center) ? center : [center.lng, center.lat];
+    const sameCenter = (a, b) => coordinates(a).every((value, index) => Math.abs(value - coordinates(b)[index]) < 0.00001);
+    const wideZoom = Math.min(from.zoom, route.zoom, context.zoom), moves = [];
+    // Pull back around the old place before crossing, so its position is legible.
+    if (from.zoom - wideZoom > 0.08) moves.push({center:from.center,zoom:wideZoom,duration:Math.min(950,Math.max(450,(from.zoom-wideZoom)*100))});
+    if (!sameCenter(from.center,context.center)) moves.push({center:context.center,zoom:wideZoom,duration:650});
+    if (route.zoom - wideZoom > 0.08 || !sameCenter(context.center,route.center)) moves.push({center:route.center,zoom:route.zoom,duration:450});
+    return moves;
+  }
+
   function afterCamera(map, move, ready) {
     // Stop an older camera before listening for this move's completion.
     map.stop();
     let active = true;
-    const owner = {};
+    const moves = Array.isArray(move) ? move : [move];
+    let owner, index = 0;
     function finish(event) {
       if (!active || (event && event.arrivalCamera !== owner)) return;
-      active = false; map.off('moveend', finish); ready();
+      if (index === moves.length) { active = false; map.off('moveend', finish); ready(); return; }
+      const step = owner = {};
+      moves[index++]({ arrivalCamera: step });
+      // A no-op camera can complete synchronously; don't advance its successor twice.
+      if (active && owner === step && !map.isMoving()) finish({arrivalCamera:step});
     }
     map.on('moveend', finish);
-    move({ arrivalCamera: owner });
-    if (!map.isMoving()) finish();
+    finish();
     return () => {
       if (!active) return;
       active = false; map.off('moveend', finish); map.stop();
@@ -234,5 +249,5 @@
     function explore() { stop(); state('explore'); }
     return { start, stay, cancel, explore, get phase() { return phase; }, get key() { return current?.key; } };
   }
-  root.JOURNEY_ATLAS_ARRIVAL = { plan, frame, destination, create, createDrawing, afterCamera };
+  root.JOURNEY_ATLAS_ARRIVAL = { plan, frame, destination, create, createDrawing, cameraMoves, afterCamera };
 })(typeof window === 'undefined' ? globalThis : window);

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import '../dist/assets/replay-utils.js';
 import '../dist/assets/arrival-chapter.js';
-const {plan,frame,destination,create,createDrawing,afterCamera}=globalThis.JOURNEY_ATLAS_ARRIVAL;
+const {plan,frame,destination,create,createDrawing,cameraMoves,afterCamera}=globalThis.JOURNEY_ATLAS_ARRIVAL;
 const legs=[{id:'rail',geometry:[[10,48],[11,48]]},{id:'bus',geometry:[[11.1,48],[11.2,48]]}];
 const routes=segment=>segment.geometry;
 
@@ -37,12 +37,36 @@ function cameraHarness(){
 test('arrival waits for its camera to finish before drawing or starting its travel clock',()=>{
   const h=harness(),camera=cameraHarness(),p=plan(legs,routes);
   h.controller.start('city',p,{prepare:ready=>afterCamera(camera.map,camera.move,ready)});
-  assert.equal(p.framingDuration,250);assert.equal(h.controller.phase,'framing');
+  assert.equal(h.controller.phase,'framing');
   assert.equal(h.queued.size,0);assert.deepEqual(h.arrivals,[]);assert.deepEqual(h.frames,[]);
   camera.emit({arrivalCamera:{}});assert.equal(h.controller.phase,'framing','Unrelated map events cannot start playback');
   camera.finish();assert.equal(h.controller.phase,'arrival');assert.deepEqual(h.arrivals,['city']);assert.equal(camera.listeners.size,0);
   h.tick(5000);assert.equal(h.samples.at(-1).progress,0,'Framing time does not consume travel time');
-  h.tick(7500);assert.deepEqual(h.stays,[]);h.tick(7750);assert.deepEqual(h.stays,['city']);
+  h.tick(6500);assert.deepEqual(h.stays,[]);h.tick(6750);assert.deepEqual(h.stays,['city']);
+});
+
+test('camera pulls back around the old place before crossing at a shared scale and settling',()=>{
+  const from={center:[12,45],zoom:12.5},route={center:[11,47],zoom:8},context={center:[11.5,46],zoom:6};
+  const moves=cameraMoves(from,route,context);
+  assert.deepEqual(moves.map(({center,zoom})=>({center,zoom})),[
+    {center:from.center,zoom:6},{center:context.center,zoom:6},{center:route.center,zoom:8}
+  ]);
+  assert.ok(moves.every(move=>move.duration>=450));
+  assert.equal(cameraMoves(from,context,context).length,2,'No redundant final zoom when the context already frames the route');
+  assert.deepEqual(cameraMoves(route,route,route),[],'An already-framed replay needs no camera drift');
+});
+
+test('multi-stage camera preparation waits for all moves and cancels the remaining stages',()=>{
+  const h=harness(),camera=cameraHarness(),p=plan(legs,routes),events=[];
+  const move=data=>{events.push(data);camera.move(data);};
+  const prepare=ready=>afterCamera(camera.map,[()=>{},move,move,move],ready);
+  h.controller.start('first',p,{prepare});assert.equal(events.length,1);
+  camera.finish();assert.equal(events.length,2);assert.deepEqual(h.arrivals,[]);
+  camera.emit(events[0]);assert.equal(events.length,2,'A stale stage completion cannot advance the new stage');
+  camera.finish();assert.equal(events.length,3);assert.deepEqual(h.arrivals,[]);
+  camera.finish();assert.deepEqual(h.arrivals,['first']);
+  h.controller.start('second',p,{prepare});camera.finish();const count=events.length;
+  h.controller.cancel();camera.finish();assert.equal(events.length,count);assert.deepEqual(h.arrivals,['first']);assert.equal(camera.listeners.size,0);
 });
 
 test('new selections, skip and manual exploration cancel an unfinished camera preparation',()=>{
@@ -130,33 +154,33 @@ test('speed stays continuous across connected legs with different lengths',()=>{
   assert.deepEqual(frame(p,.4,{since:.3}).lines.map(line=>line.segment.id),['long'],'Completed legs are not sent to the map again');
 });
 
-test('travel updates on every display frame for 2.5 seconds, then holds the endpoint for 250 ms',()=>{
+test('travel takes 1.5 seconds, 40 percent less time, then holds the endpoint for 250 ms',()=>{
   const h=harness(),p=plan([{id:'rail',geometry:[[0,0],[4,0]]}],routes);
-  assert.equal(p.duration,2500);assert.equal(plan(legs,routes).duration,2500);
+  assert.equal(p.duration,1500);assert.equal(p.duration/2500,.6);assert.equal(plan(legs,routes).duration,1500);
   h.controller.start('smooth',p);h.tick(0);
   let markerUpdates=0,previous=0;
   for(let timestamp=10;timestamp<=1010;timestamp+=10){
     h.tick(timestamp);const f=h.samples.at(-1);
-    assert.equal(f.progress,timestamp/2500);
+    assert.equal(f.progress,timestamp/1500);
     assert.deepEqual(f.lines,[],'The animation must not rebuild GeoJSON');
     if(f.progress>previous)markerUpdates++;
     previous=f.progress;
   }
   assert.equal(markerUpdates,101);
-  h.tick(2499);assert.equal(h.controller.phase,'arrival');assert.deepEqual(h.stays,[]);
-  h.tick(2500);
+  h.tick(1499);assert.equal(h.controller.phase,'arrival');assert.deepEqual(h.stays,[]);
+  h.tick(1500);
   assert.deepEqual(h.samples.at(-1).position,[4,0]);
   assert.deepEqual(h.stays,[]);assert.equal(h.controller.phase,'arrival');
-  h.tick(2749);assert.deepEqual(h.samples.at(-1).position,[4,0]);assert.deepEqual(h.stays,[]);
-  h.tick(2750);
+  h.tick(1749);assert.deepEqual(h.samples.at(-1).position,[4,0]);assert.deepEqual(h.stays,[]);
+  h.tick(1750);
   assert.deepEqual(h.stays,['smooth']);assert.equal(h.queued.size,0);
 });
 
 test('navigation and skip cancel the quarter-second hold without leaving a late zoom',()=>{
   const h=harness(),p=plan(legs,routes);
-  h.controller.start('first',p);h.tick(0);h.tick(2500);const stale=[...h.queued.values()][0];
-  h.controller.start('second',p);stale(2750);assert.deepEqual(h.stays,[]);
-  h.tick(0);h.tick(2500);h.controller.stay();assert.deepEqual(h.stays,['second']);assert.equal(h.queued.size,0);
+  h.controller.start('first',p);h.tick(0);h.tick(1500);const stale=[...h.queued.values()][0];
+  h.controller.start('second',p);stale(1750);assert.deepEqual(h.stays,[]);
+  h.tick(0);h.tick(1500);h.controller.stay();assert.deepEqual(h.stays,['second']);assert.equal(h.queued.size,0);
 });
 
 function drawingHarness(p){

@@ -38,6 +38,15 @@ test('selecting a day leaves overview scope even when the mobile map is hidden',
   assert.equal(context.mapScope, 'day');
 });
 
+test('visible stop selection retains the previously viewed city for the orientation move',()=>{
+  const context=selection(),moves=[];
+  context.$('.map-panel').offsetParent={};
+  context.activeDay=()=>context.dayById(context.activeDayId);
+  context.startArrival=(day,previous)=>moves.push([day.id,previous.id]);
+  context.setActiveDay('d2',true);
+  assert.deepEqual(moves,[['d2','d1']]);
+});
+
 test('day-list scrolling reveals clipped rows without moving visible rows or hidden panels', () => {
   let rect = { top: 700, bottom: 780 }, height = 400, reduced = false;
   const calls = [];
