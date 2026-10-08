@@ -62,6 +62,39 @@ Do not run a full camera reimport to add or delete a photo. Pending uploads have
 `assetStatus: "local"`: Studio can review them, but production builds exclude
 them until asset publishing succeeds. This prevents broken live photo links.
 
+## Batch editing in Studio
+
+Choose **Photos → Select multiple** for a contact sheet. Search filenames,
+capture dates, captions, notes or locations, and use **Photos from** or
+**Show trash** to narrow the view. **Select all shown** changes only the visible
+selection. Changing filters keeps already-selected photos; the selection count
+explicitly reports photos outside the current filter. **Clear selection** starts
+over. Batch actions apply to every selected photo, including those outside the
+filter. **Done selecting** returns to individual photo and map editing.
+
+- **Assign to a day / stop** appends moved photos after the destination album's
+  existing photos. It retains each source album's order, regardless of click
+  order. Photos already assigned to that destination keep their place.
+- **Move to start of each album** puts selected photos first within each of their
+  current albums, preserving the relative order of selected and unselected photos.
+  Restore trashed photos before reordering them.
+- **Move to trash / Restore from trash** is the same recoverable deletion as the
+  individual editor. It keeps original files, captions, map pins and album order.
+  Legacy `hidden` flags stay untouched and ignored; batch editing does not restore
+  the retired Hide feature.
+
+Each operation validates the complete selection before changing any draft field.
+**Undo batch** reverses the latest batch in this tab while preserving unrelated
+later edits. If an affected field changed again, Undo refuses the whole reversal
+and points to **Review / discard draft**. Undo is available until reload or a
+journey switch; it is not a separate saved history. Reload still recovers batch
+changes through Studio's normal browser/disk draft autosave, and saved edits use
+the existing revision/conflict review. Switching journeys clears the selection.
+
+Use **Save locally** to apply the edited draft to the sources, then preview and
+publish through the normal agent workflow. Batch edits change overrides only;
+intake manifests, originals and publication status remain intact.
+
 ## Automated publishing after review
 
 The agent owns these commands; the user does not need a terminal. After the

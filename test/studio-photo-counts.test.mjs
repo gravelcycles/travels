@@ -3,14 +3,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import {uiHarness} from './studio-photo-batch-harness.mjs';
 const source = fs.readFileSync(new URL('../studio/studio.js', import.meta.url),'utf8');
 function fn(name) { const start=source.indexOf(`  function ${name}(`);return source.slice(start,source.indexOf('\n  function ',start+1)); }
 test('Photos from counts match the grid, including legacy hidden photos and the selected trash view', () => {
-  const nodes=new Map();
-  const $=key=>{ if(key === '#studio-photo-grid .active')return null; if(!nodes.has(key))nodes.set(key,{});return nodes.get(key); };
+  const state={photos:{},days:{},routes:{}};
+  const basePhotos=[{id:'hidden',dayId:'d8',hidden:true},{id:'trash',dayId:'d8',trashed:true}];
+  const ui=uiHarness({journey:{days:[{id:'d8',number:8,date:'20 Aug',title:'Como'}]},photos:basePhotos,state});
+  const $=ui.node;
   $('#photo-day-filter').value='d8'; $('#show-photo-trash').checked=false;
   const day={id:'d8',number:8,date:'20 Aug',title:'Como'};
-  const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),$,basePhotos:[{id:'hidden',dayId:'d8',hidden:true},{id:'trash',dayId:'d8',trashed:true}],state:{days:{}},
+  const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),$,basePhotos,state,photoBatch:ui.api,window:{JOURNEY_ATLAS_PHOTO_BATCH:globalThis.JOURNEY_ATLAS_PHOTO_BATCH},
     journey:{days:[day]},photoWithOverride:p=>p,escapeHtml:v=>v,dayById:()=>day,photoUrl:v=>v,selectedPhotoId:null});
   vm.runInContext(['photosForDay','photoBrowserPhotos','optionMarkup','renderPhotoGrid'].map(fn).join('\n'),context);
   for(const trashed of [false,true]){

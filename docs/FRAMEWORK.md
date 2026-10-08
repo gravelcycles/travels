@@ -227,9 +227,12 @@ membership. See W07 in TODO.md.
 The audit's 20 authorized findings are addressed in shared code. Visitor
 URL/reload persistence (V1) is explicitly excluded. Studio recovery and conflict
 review were subsequently authorized and delivered (see the follow-up below).
-Explicit sharing, batch photo editing, publication readiness, private video
+Explicit sharing, publication readiness, private video
 intake (W07) and labeled Replay seeking remain proposals requiring local demo
-review. This review gate does not block delivery of authorized bug fixes.
+review. Batch photo editing was subsequently authorized on 8 October and now uses
+a shared Studio transaction model and contact sheet for real trips, demos and
+fresh drafts. It changes overrides through the existing save/recovery pipeline;
+there is no second photo manifest or persisted Undo store. This review gate does not block delivery of authorized bug fixes.
 
 The [8 October workstream checkpoint](../WIP.md) records the local day-experience
 prototype and two design demos on separate branches. They are review artifacts,
