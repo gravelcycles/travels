@@ -18,6 +18,9 @@ to the public site. [TODO.md](TODO.md) remains the backlog;
 - Five focused workstream branches below preserve saved content, prototypes,
   and investigation notes. They start from the same public baseline and can be
   resumed independently. Their commits are checkpoints, not release approval.
+  Workstream and recovery branches are local; only the main documentation is
+  published remotely. Exporting the saved local snapshots requires explicit
+  owner approval. Branch/path references below identify files on those branches.
 - The exact original dirty working tree, both September safety snapshots, and
   all eight stashes are preserved on recovery branches. Original stashes and
   ignored private/local files are retained. Recovery branches are not candidates
@@ -38,7 +41,7 @@ to the public site. [TODO.md](TODO.md) remains the backlog;
 
 ### Saved Switzerland–Italy editorial work
 
-[Branch handoff](https://github.com/gravelcycles/travels/blob/codex/family-content-wip/docs/workstreams/family-content.md).
+Branch handoff: `codex/family-content-wip:docs/workstreams/family-content.md`.
 Five source files contain all the original saved Studio edits:
 
 - `content/day-overrides.json`: Day 1/2 titles and dates; Day 5 rain-day story;
@@ -70,7 +73,7 @@ No new private-media delivery or visual/geographic verification is claimed.
 
 ### Day-experience review prototype
 
-[Branch instructions](https://github.com/gravelcycles/travels/blob/codex/day-experience-review/experiments/day-experience/README.md).
+Branch instructions: `codex/day-experience-review:experiments/day-experience/README.md`.
 Recovered nine authored files from ignored `build/ux-review/` into
 `experiments/day-experience/`. Original local files remain intact.
 
@@ -114,8 +117,9 @@ publish the experimental snapshot as another journey implementation.
 
 ### Feature proposals and delight demos
 
-[Six-feature demo](https://github.com/gravelcycles/travels/blob/codex/ux-feature-previews/experiments/feature-previews/README.md)
-and [delight demo](https://github.com/gravelcycles/travels/blob/codex/delight-preview/experiments/delight-preview/README.md)
+The six-feature demo (`codex/ux-feature-previews`,
+`experiments/feature-previews/README.md`) and delight demo
+(`codex/delight-preview`, `experiments/delight-preview/README.md`)
 are now versioned outside `dist/`. Each has a self-contained `index.html` and
 handoff. They were copied byte-for-byte from the two pinned Travels task
 visualizations, and their inline JavaScript passes syntax checks. Their simulated
@@ -195,8 +199,8 @@ photo policy, timed captions/transcripts and Studio file intake. Per-day group
 membership changes remain a future data need. The six originally held MOV files
 remain private; the old decision not to publish them is not undone by a demo.
 
-W09's [Live Photos investigation](https://github.com/gravelcycles/travels/blob/codex/live-photo-intake/docs/workstreams/live-photo-intake.md)
-reported stills with Live Photo metadata but missing companion motion files;
+W09's Live Photos investigation (`codex/live-photo-intake`,
+`docs/workstreams/live-photo-intake.md`) reported stills with Live Photo metadata but missing companion motion files;
 none of the six held MOVs matched. The task awaits an unmodified paired export
 from Photos/iCloud. A small LIVE play/return-to-still control was proposed, not
 implemented. Verify real pairing before designing the optional shared contract;
