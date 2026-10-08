@@ -629,7 +629,7 @@
       else clearSegmentInspection();
     });
     mainMap.on('movestart', event => {
-      if (event.originalEvent && arrivalChapter?.phase === 'arrival') {
+      if (event.originalEvent && ['framing','arrival'].includes(arrivalChapter?.phase)) {
         restoreArrivalLine(); arrivalChapter.explore();
       }
     });
@@ -901,7 +901,7 @@
     fitJourneyBounds();
   }
 
-  function focusDay(day, duration = 650) {
+  function focusDay(day, duration = 650, linear = false, eventData) {
     mapScope = "day";
     renderLegend();
     if (!mainMapReady) { pendingMapAction="focus"; return; }
@@ -909,10 +909,10 @@
     const coordinates = dayCoordinates(day);
     mainFeedback?.empty(!coordinates.length);
     if (coordinates.length > 1) {
-      mainMap.fitBounds(boundsFromCoordinates(coordinates), { padding: mapPadding(112), maxZoom: 12.5, duration });
+      mainMap.fitBounds(boundsFromCoordinates(coordinates), { padding: mapPadding(112), maxZoom: 12.5, duration, linear }, eventData);
     } else if (coordinates.length === 1) {
-      mainMap.easeTo({ center: coordinates[0], zoom: 12, duration });
-    } else mainMap.easeTo({center:[0,20], zoom:1.5, duration:0});
+      mainMap.easeTo({ center: coordinates[0], zoom: 12, duration }, eventData);
+    } else mainMap.easeTo({center:[0,20], zoom:1.5, duration:0}, eventData);
   }
 
   function arrivalKey(day) { return `${journey.id}:${day.id}`; }
@@ -941,10 +941,12 @@
     panel.dataset.phase = phase;
     if (panel.hidden) return;
     const name = destinationForDay(day)?.name || day.title;
-    $('#arrival-eyebrow').textContent = phase === 'arrival' ? `Getting here · ${modeLabel(day)}` : `${day.date || 'City chapter'}${day.planningStatus === 'tbd' ? ' · TBD' : ''}`;
-    $('#arrival-title').textContent = phase === 'arrival' ? `On the way to ${name}` : phase === 'explore' ? `Explore ${name}` : `In ${name}`;
-    $('#arrival-replay').hidden = phase === 'arrival' || !segmentsForDay(day).length;
-    $('#arrival-city').textContent = phase === 'arrival' ? 'Skip to city' : phase === 'explore' ? 'Back to city' : photosForDay(day.id).length ? 'View photos' : 'Read story';
+    const traveling = ['framing','arrival'].includes(phase);
+    if (phase === 'framing') $('#arrival-progress').style.transform = 'scaleX(0)';
+    $('#arrival-eyebrow').textContent = traveling ? `Getting here · ${modeLabel(day)}` : `${day.date || 'City chapter'}${day.planningStatus === 'tbd' ? ' · TBD' : ''}`;
+    $('#arrival-title').textContent = traveling ? `On the way to ${name}` : phase === 'explore' ? `Explore ${name}` : `In ${name}`;
+    $('#arrival-replay').hidden = traveling || !segmentsForDay(day).length;
+    $('#arrival-city').textContent = traveling ? 'Skip to city' : phase === 'explore' ? 'Back to city' : photosForDay(day.id).length ? 'View photos' : 'Read story';
   }
 
   function showCity(day, duration = 1250) {
@@ -978,8 +980,16 @@
     if (!mainMapReady) { pendingMapAction = 'arrival'; return; }
     photoBubbles?.close();
     cancelArrival();
-    focusDay(day, 0);
     arrivalPlan = window.JOURNEY_ATLAS_ARRIVAL.plan(segmentsForDay(day), segmentCoordinates);
+    const reducedMotion = prefersReducedMotion();
+    if (reducedMotion || !arrivalPlan.legs.length) drawMainMap(false);
+    arrivalChapter.start(arrivalKey(day), arrivalPlan, { reducedMotion,
+      prepare: ready => window.JOURNEY_ATLAS_ARRIVAL.afterCamera(mainMap, eventData => focusDay(day, arrivalPlan.framingDuration, true, eventData), ready)
+    });
+  }
+
+  function drawArrival(current) {
+    if (current.key !== arrivalKey(activeDay()) || !mainMapReady) return;
     for (const leg of arrivalPlan.legs) addSegmentLayer(mainMap, mainDecorations, leg.segment, {prefix:'arrival-guide',color:palette.muted,opacity:0.18,selected:false});
     if (arrivalPlan.legs.length && !prefersReducedMotion()) {
       arrivalDrawing = window.JOURNEY_ATLAS_ARRIVAL.createDrawing({ map: mainMap, plan: arrivalPlan, styleForSegment: segment => {
@@ -988,11 +998,10 @@
       }});
       if (arrivalDrawing) for (const leg of arrivalPlan.legs) for (const part of ['line','casing']) mainMap.setLayoutProperty(`main-${part}-${leg.segment.id}`, 'visibility', 'none');
     }
-    arrivalChapter.start(arrivalKey(day), arrivalPlan, {reducedMotion:prefersReducedMotion()});
   }
 
   function restoreDayCamera() {
-    if (arrivalChapter?.phase !== 'arrival') showCity(activeDay(), 0);
+    if (!['framing','arrival'].includes(arrivalChapter?.phase)) showCity(activeDay(), 0);
   }
 
   const eventWord = (form) => window.JOURNEY_ATLAS_UTILS.eventWord(journey, form);
@@ -1218,7 +1227,7 @@
         drawMainMap(false);
       } else {
         if (animateArrival && changed) startArrival(activeDay());
-        else if (arrivalChapter?.phase !== "arrival") settleAtCity();
+        else if (!['framing','arrival'].includes(arrivalChapter?.phase)) settleAtCity();
       }
     } else {
       drawMainMap(false);
@@ -1861,7 +1870,7 @@
   }
 
   function openReplay() {
-    if (arrivalChapter?.phase === "arrival") settleAtCity();
+    if (['framing','arrival'].includes(arrivalChapter?.phase)) settleAtCity();
     if (!replayUtils) return;
     pauseReplay();
     if (replayJourneyId !== journey.id) {
@@ -2068,7 +2077,7 @@
     if ($('#arrival-chapter').dataset.phase !== 'stay') settleAtCity();
     else if (photosForDay(activeDayId).length) openDayPhotos(); else showJournal(true);
   });
-  document.addEventListener('visibilitychange', () => { if (document.hidden && arrivalChapter?.phase === 'arrival') settleAtCity(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden && ['framing','arrival'].includes(arrivalChapter?.phase)) settleAtCity(); });
   $("#open-replay").addEventListener("click", openReplay);
   $("#previous-day").addEventListener("click", () => moveActiveDay(-1));
   $("#next-day").addEventListener("click", () => moveActiveDay(1));
@@ -2219,6 +2228,7 @@
   });
   arrivalChapter = window.JOURNEY_ATLAS_ARRIVAL.create({
     onState: renderArrivalChapter,
+    onArrival: drawArrival,
     onFrame: (frame, current) => {
       if (current.key !== arrivalKey(activeDay()) || !mainMapReady) return;
       arrivalDrawing?.draw(frame);

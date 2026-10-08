@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import '../dist/assets/replay-utils.js';
 import '../dist/assets/arrival-chapter.js';
-const {plan,frame,destination,create,createDrawing}=globalThis.JOURNEY_ATLAS_ARRIVAL;
+const {plan,frame,destination,create,createDrawing,afterCamera}=globalThis.JOURNEY_ATLAS_ARRIVAL;
 const legs=[{id:'rail',geometry:[[10,48],[11,48]]},{id:'bus',geometry:[[11.1,48],[11.2,48]]}];
 const routes=segment=>segment.geometry;
 
@@ -16,11 +16,54 @@ test('arrival traces ordered legs separately, including a disconnected replaceme
 });
 
 function harness(){
-  const queued=new Map(),states=[],frames=[],stays=[],samples=[];let next=0;
-  const controller=create({onState:phase=>states.push(phase),onFrame:(f,c)=>{frames.push(c.key);samples.push(f);},onStay:c=>stays.push(c.key),requestFrame:cb=>{queued.set(++next,cb);return next;},cancelFrame:id=>queued.delete(id)});
+  const queued=new Map(),states=[],frames=[],stays=[],samples=[],arrivals=[];let next=0;
+  const controller=create({onState:phase=>states.push(phase),onArrival:c=>arrivals.push(c.key),onFrame:(f,c)=>{frames.push(c.key);samples.push(f);},onStay:c=>stays.push(c.key),requestFrame:cb=>{queued.set(++next,cb);return next;},cancelFrame:id=>queued.delete(id)});
   const tick=t=>{const [id,cb]=queued.entries().next().value;queued.delete(id);cb(t);};
-  return {controller,queued,states,frames,stays,samples,tick};
+  return {controller,queued,states,frames,stays,samples,arrivals,tick};
 }
+
+function cameraHarness(){
+  const listeners=new Set();let moving=false,eventData;
+  const emit=data=>{for(const listener of [...listeners])listener(data);};
+  const map={
+    stop(){const wasMoving=moving;moving=false;if(wasMoving)emit(eventData);},
+    on(name,listener){assert.equal(name,'moveend');listeners.add(listener);},
+    off(name,listener){assert.equal(name,'moveend');listeners.delete(listener);},
+    isMoving:()=>moving
+  };
+  return {map,listeners,emit,move:data=>{eventData=data;moving=true;},finish(){moving=false;emit(eventData);}};
+}
+
+test('arrival waits for its camera to finish before drawing or starting its travel clock',()=>{
+  const h=harness(),camera=cameraHarness(),p=plan(legs,routes);
+  h.controller.start('city',p,{prepare:ready=>afterCamera(camera.map,camera.move,ready)});
+  assert.equal(p.framingDuration,250);assert.equal(h.controller.phase,'framing');
+  assert.equal(h.queued.size,0);assert.deepEqual(h.arrivals,[]);assert.deepEqual(h.frames,[]);
+  camera.emit({arrivalCamera:{}});assert.equal(h.controller.phase,'framing','Unrelated map events cannot start playback');
+  camera.finish();assert.equal(h.controller.phase,'arrival');assert.deepEqual(h.arrivals,['city']);assert.equal(camera.listeners.size,0);
+  h.tick(5000);assert.equal(h.samples.at(-1).progress,0,'Framing time does not consume travel time');
+  h.tick(7500);assert.deepEqual(h.stays,[]);h.tick(7750);assert.deepEqual(h.stays,['city']);
+});
+
+test('new selections, skip and manual exploration cancel an unfinished camera preparation',()=>{
+  const h=harness(),camera=cameraHarness(),p=plan(legs,routes);
+  const prepare=ready=>afterCamera(camera.map,camera.move,ready);
+  h.controller.start('first',p,{prepare});const stale=[...camera.listeners][0];
+  h.controller.start('second',p,{prepare});stale();assert.deepEqual(h.arrivals,[]);
+  assert.equal(h.controller.key,'second');assert.equal(camera.listeners.size,1);
+  h.controller.stay();camera.finish();assert.deepEqual(h.stays,['second']);assert.deepEqual(h.arrivals,[]);assert.equal(camera.listeners.size,0);
+  h.controller.start('third',p,{prepare});h.controller.explore();camera.finish();assert.equal(h.controller.phase,'explore');assert.deepEqual(h.arrivals,[]);assert.equal(camera.listeners.size,0);
+});
+
+test('an already-framed camera starts once, while reduced-motion and empty days skip preparation',()=>{
+  const h=harness(),camera=cameraHarness(),p=plan(legs,routes);
+  h.controller.start('same view',p,{prepare:ready=>afterCamera(camera.map,()=>{},ready)});
+  assert.deepEqual(h.arrivals,['same view']);assert.equal(h.queued.size,1);assert.equal(camera.listeners.size,0);
+  const prepare=()=>{throw Error('Should not move the camera before a reduced-motion or empty stay');};
+  h.controller.start('reduced',p,{reducedMotion:true,prepare});
+  h.controller.start('empty',plan([],routes),{prepare});
+  assert.deepEqual(h.stays,['reduced','empty']);assert.equal(h.queued.size,0);
+});
 test('arrival completes once, can be skipped, and stale city callbacks cannot move the camera',()=>{
   const h=harness(),p=plan(legs,routes);
   h.controller.start('first',p);const stale=[...h.queued.values()][0];

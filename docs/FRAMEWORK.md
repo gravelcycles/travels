@@ -346,7 +346,9 @@ stay/photo framing without new journey fields or trip-specific branches.
 `arrival-chapter.js` isolates the clock and cancellation from map rendering.
 It caches an overhead timing outline and projected canvas paths once per arrival,
 then paints the route and icon together at display cadence without GeoJSON worker
-updates. All routed events play linearly for 2.5 seconds, hold for 250 ms, then
+updates. A cancellable 250 ms camera preparation waits for its own move-end event
+before starting playback, so route timing starts only at the correct framing.
+All routed events play linearly for 2.5 seconds, hold for 250 ms, then
 start the city zoom; empty/reduced-motion stays skip playback and the hold.
 The overlay is transient shared rendering, with regular map layers restored on
 completion/cancellation and projection refreshed on resize.

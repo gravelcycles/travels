@@ -56,6 +56,7 @@ test('arrival and stay controls inherit across reference, demo and fresh draft w
     const coordinate=s=>s.geometry||routes[s.id]||[];
     const plan=globalThis.JOURNEY_ATLAS_ARRIVAL.plan(segments,coordinate);
     assert.equal(plan.duration,2500,'Every journey inherits the same 2.5-second arrival');
+    assert.equal(plan.framingDuration,250,'Every journey inherits the short camera preparation');
     assert.equal(plan.arrivalHold,250,'Every journey inherits the quarter-second arrival pause');
     assert.ok(plan.legs.every(leg=>day.segmentIds.includes(leg.segment.id)));
     for(const progress of [0,.25,.5,.75,1]){
