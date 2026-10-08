@@ -76,6 +76,8 @@ password system.
 | --- | --- |
 | `content/templates/journey.html` | All journey DOM, dialogs, control IDs, scripts and styles; real, demo, preview |
 | `content/templates/catalog.html` | Public catalog shell |
+| `dist/assets/photo-places.js`, `photo-bubbles.js`, `photo-bubbles.css` | Shared Photos + Places associations, stable selected map groups, protected thumbnails and responsive photo detail browsing |
+| `studio/place-editor.js` | Owner Places, credited images, curated reviews and ordered trip-photo links through the existing plan/save/recovery flow |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction, Replay UI |
 | `dist/assets/location-labels.js` | Shared destination grouping, screen-space clusters, upright signposts, compact previews and accessible day selection |
 | `dist/assets/map-feedback.js`, `map-feedback.css` | Shared map loading, recovery, Retry and no-location feedback; used in Studio too |
@@ -265,7 +267,7 @@ itinerary `places`. `scripts/places-content.mjs` owns validation. Shared templat
 shells mount `places-panel.js` / `.css` and `photo-comments.js` / `.css`; the
 `places-comments.js` coordinator supplies the local UX persistence adapter.
 `journeys.js` carries curated records through the generated bundle. Ordinary
-Studio saves preserve them. Data and approved images are authored through chat;
+Studio saves preserve them. Data is authored in the shared Studio Places editor or through chat; approved image intake remains agent-operated;
 there are no concrete journey branches or Maps API calls in shared code.
 
 All journeys inherit the layer, search/filter/empty states, galleries and
@@ -297,7 +299,7 @@ freshness. Deploy this index with the Worker before each Pages publication that
 changes photo eligibility. D1 provisioning and public rollout remain explicit
 operations in [COMMUNITY_OPERATIONS.md](COMMUNITY_OPERATIONS.md), alongside
 Free-plan limits and identity/retention behavior. Further image-intake automation
-and trusted group-review editing remain separate backlog items.
+remains separate backlog work. Curated group reviews now have owner-only local Studio editing; visitor write authorization has not changed.
 
 ## City events — 8 October 2026
 
@@ -314,3 +316,15 @@ endpoints but not the actual coach streets. See `docs/HEADING_EAST.md`. No new
 framework migration is required for additional cities or later photo intake.
 
 Private video follow-ups: protected speech transcript/timed-caption delivery is pending; private clips reject those fields. Public-clip timed caption editing currently uses content/agent operations; Studio provides plain transcript editing. Per-day group membership and paired Live Photos remain separate follow-ups. Original held MOVs require clip-specific review/publication authorization.
+
+
+Photos + Places production follow-up (8 October): `point.photoIds` is the one
+optional association field, with an absent empty default and journey-local
+reference validation. Explicit order persists in journey JSON; a nearby radius
+is a view calculation, never written as a relationship. All pages load the same
+modules. Family, Alpine sample and a fresh blank draft have parity regressions;
+behavior tests cover source persistence, conflicts, eligibility, selected-group
+stability, cross-day navigation and auth image cleanup. No-coordinate places are
+not yet supported: unfinished Studio points require a known coordinate before
+Save, with recovery retaining the unfinished draft. Image-file intake/permission
+research remains agent-operated; the editor manages approved image references.

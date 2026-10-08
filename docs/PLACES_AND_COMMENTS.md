@@ -5,7 +5,7 @@ Architecture and implementation, updated 8 October 2026. Provisioning and produc
 The smallest useful extension is **curated place data in Git + live photo
 comments in the existing Cloudflare service**. Keep the shared map and viewer.
 No Google Maps API, API key, live place lookup, scraping service, SSO, or account
-registration is needed. Adding a place remains a conversation with the agent.
+registration is needed. Add or edit a place in Studio, or ask the agent to research its facts and imagery.
 
 ## Try the demos
 
@@ -87,8 +87,8 @@ are in [the UX acceptance record](PLACES_UX_REVIEW_2026-09-20.md).
 
 | Information | Owner and persistence | How it changes |
 | --- | --- | --- |
-| Name, category, coordinates, day links, factual description | Journey JSON | Prompt the agent; review, validate and deploy |
-| Our visit notes and individual group ratings | Journey JSON initially | Supply the group's actual words/ratings to the agent |
+| Name, category, coordinates, day links, factual description | Journey JSON | Studio Places or agent; review, validate and deploy |
+| Our visit notes and individual group ratings | Journey JSON | Owner editing in Studio Places, or supply actual words/ratings to the agent |
 | Venue/landmark pictures | Reviewed local derivatives or approved HTTPS assets, with credit/source/permission basis | Agent researches candidates and imports approved assets |
 | Visitor comments on a trip photo | D1 database behind the existing photo Worker | Password-authorized browser requests; no site rebuild |
 | Visitor display name and hidden visitor ID | Signed remembered session | Enter name when unlocking; no account provider |
@@ -192,7 +192,7 @@ These annotations and their reviews are shared across route-group filters.
 Each entry has a stable ID, `name`, `category` (`food`/`sight`), `[lng, lat]`
 `coordinates`, `locationAccuracy` (`approximate`/`verified`), `status`
 (`visited`/`saved`), `dayIds`, `summary`, and labeled HTTPS `sources`. Optional
-`note`, `address`, `mapsUrl`, `images`, `reviews` and `sample` supply content.
+`note`, `address`, `mapsUrl`, `images`, `reviews`, `photoIds` and `sample` supply content.
 Images need `src`, `alt`, `credit`, `sourceUrl`, optional HTTPS `licenseUrl`, and `permission` (`owned`,
 `permission`, `licensed`, `illustration`). Reviews need `authorId`, `authorName`,
 an integer `rating` 1–5, and `text` (empty for a rating-only review); one entry per author per place. The UI derives
@@ -226,9 +226,8 @@ reads better, whether comments should open as a panel, and whether readers must
 enter a name immediately or only when posting. This release uses individual
 ratings plus an average as the working assumption.
 
-Deploy and verify live comments through the existing Worker/D1 boundary using the operations guide. Keep group
-reviews prompt-authored until there is a specific need for in-browser editing.
-If those become live writes, add server-assigned traveler/editor authorization;
+Deploy and verify live comments through the existing Worker/D1 boundary using the operations guide. Group reviews can be edited by the owner in local Studio and published through
+the ordinary source-review workflow. If visitor browsers ever write them live, add server-assigned traveler/editor authorization;
 the shared visitor password alone cannot distinguish the traveling group from
 friends visiting the site. Do not bolt unverified group membership onto the
 display-name form. Image intake remains agent-operated. Live service delivery and group authorization
@@ -251,3 +250,39 @@ removal immediately hides its discussion after the eligibility index deploys.
 Author deletion has a five-minute Undo window; moderator-hidden comments cannot
 be restored by their author. Retention/export/security details and exact
 provisioning commands are in [COMMUNITY_OPERATIONS.md](COMMUNITY_OPERATIONS.md).
+
+
+## Photos + Places — 8 October 2026
+
+The production layer uses `photo-places.js` for explicit/proximity associations
+and stable screen-space grouping, with `photo-bubbles.js` for map/card lifecycle.
+No scene query or per-trip implementation is needed. A selected bubble retains
+its members, order and current photo during zoom/pan. Pins stay on actual photo
+coordinates. No-coordinate photos remain in albums and explicit place selections.
+Place pins coexist with bubbles on day maps. Route-group projection, hidden and
+trashed filtering apply before deriving associations or displaying a selection.
+
+Optional `point.photoIds` is an ordered list of unique photo IDs from that journey.
+Absent or `[]` means no explicit links, with nearby suggestions still available.
+A photo may be linked to more than one place. Sources retain IDs through Trash
+and local-only asset states; the public build filters ineligible IDs from its
+public bundle without modifying the source. Old records require no migration.
+Links do not imply GPS and proximity does not imply an owner-approved visit.
+
+**Studio → Places** edits records through the shared trip plan, autosave recovery,
+readable Review/Discard and three-way save reconciliation. Venue image fields
+include source, alt, photographer credit, source link, license and permission
+basis; the editor does not fetch or approve an image automatically. Public venue
+imagery must not reuse protected family derivatives. Curated group reviews are
+owner data in Git; visitor photo access still grants no editing permission.
+
+Desktop keeps days continuously on the left, map in the center and place/photo
+browsing on the right. Full screen remains an explicit photo action. Phones use
+one bottom day picker with the current day name. Back/Forward and comments use
+the same shared overlay history. Explicit groups that cross days follow the
+selected photo's real day while retaining the group's order.
+
+Alpine Crossing includes four clearly labeled sample album placements using its
+already approved, credited venue imagery. Three have illustrative coordinates;
+one deliberately has no location. These are fictional sample content and do
+not add visits, ratings, coordinates or photographs to a real journey.

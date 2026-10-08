@@ -117,7 +117,7 @@
       $('#mobile-day-details').textContent=api.scope()==='journey'?`Choose a ${eventWord()}`:`${eventWord('title')} details`;
       $('#mobile-previous-day').disabled = index <= 0;
       $('#mobile-next-day').disabled = index >= api.days().length - 1;
-      $('#mobile-day-picker .button-label').textContent = `${eventWord('title')} ${day.number} of ${api.days().length}`;
+      $('#mobile-day-picker .button-label').textContent = `${eventWord('title')} ${day.number} · ${day.title || day.date || ''}`;
       $('.map-panel').style.setProperty('--day-summary-height', `${$('.mobile-day-summary').offsetHeight}px`);
       tabChanged();
     }

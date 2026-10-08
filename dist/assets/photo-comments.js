@@ -140,6 +140,8 @@
     function syncThumbnail() {
       const image = $('#comments-photo-image'), photo = currentPhoto;
       if (!photo) return;
+      root.JOURNEY_ATLAS_AUTH?.clearImage(image);
+      if(options.protected(photo) && options.unlocked() && root.JOURNEY_ATLAS_AUTH?.setImage){image.hidden=false;root.JOURNEY_ATLAS_AUTH.setImage(image,photo,480);return;}
       let src = '';
       if (options.protected(photo)) {
         const visible = $('#modal-photo');
@@ -249,9 +251,10 @@
     unlock.addEventListener('cancel', event => { event.preventDefault(); afterUnlock = null; dismiss('experience-unlock'); });
     dialog.addEventListener('close', () => {
       if (dialog.open) return;
+      root.JOURNEY_ATLAS_AUTH?.clearImage($('#comments-photo-image'));$('#comments-photo-image').removeAttribute('src');
       persistComposer(); document.body.classList.remove('comments-open'); $('#open-photo-comments').setAttribute('aria-expanded', 'false');
       updateToolbar();
-      if (!unlock.open && $('#photo-dialog')?.open && photoOpener?.isConnected) photoOpener.focus({ preventScroll: true });
+      if (!unlock.open && photoOpener?.isConnected && photoOpener.getClientRects().length) photoOpener.focus({ preventScroll: true });
     });
     unlock.addEventListener('close', () => { if (!unlock.open) updateToolbar(); });
     dialog.addEventListener('keydown', event => {
@@ -384,6 +387,7 @@
     }
     return {
       update,
+      open:openComments, available:()=>enabled,
       photoChanged(photo) {
         const next = photo && !photo.mimeType ? photo : null;
         if (lastPhotoId !== next?.id) {

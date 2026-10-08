@@ -60,7 +60,7 @@ export function assessStudioReadiness(root, input) {
     const misplaced = base.photos.find(photo => state.photos?.[photo.id]?.dayId && !(input.changes.days || base.days).some(day => day.id === state.photos[photo.id].dayId));
     const item = misplaced ? { ...misplaced, mode: 'photos' } : [...base.photos.map(item => ({ ...item, mode: 'photos' })), ...base.segments.map(item => ({ ...item, mode: 'routes' })), ...base.days.map(item => ({ ...item, mode: 'days' }))]
       .find(item => error.message.includes(item.id));
-    add('invalid-draft', 'blocker', 'The current draft needs a correction', error.message, item ? { mode: item.mode, id: item.id, label: 'Open affected editor' } : planner);
+    add('invalid-draft', 'blocker', 'The current draft needs a correction', error.message, error.message.includes('pointsOfInterest') || error.message.includes('curated place') ? {mode:'places',label:'Open Places editor'} : item ? { mode: item.mode, id: item.id, label: 'Open affected editor' } : planner);
   }
   const sourceChanged = input.stateRevision !== savedStateRevision || input.revision !== savedPlanRevision;
   if (sourceChanged) add('source-changed', 'blocker', 'Saved sources changed or their baseline is missing', 'Save locally to reconcile your draft with the current files. Studio will show field choices if both versions changed the same field, then run this check again.', save);

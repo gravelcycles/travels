@@ -175,7 +175,7 @@ test('selecting a real, demo or fresh-draft day scrolls its newly selected row i
     const selected = journey.days[Math.min(10, journey.days.length - 1)];
     let renderedId, scrolled = false;
     const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form), journey, activeDayId: journey.days[0].id, prefersReducedMotion: () => false,
-      dayById: id => journey.days.find(day => day.id === id), clearSegmentInspection() {},
+      placesUI:null,photoBubbles:null,dayById: id => journey.days.find(day => day.id === id), clearSegmentInspection() {},
       renderDays() { renderedId = context.activeDayId; }, renderStory() {}, drawMainMap() {},
       dayList: { clientHeight: 400, getBoundingClientRect: () => ({ top: 100, bottom: 500 }),
         querySelector: () => {
@@ -897,4 +897,18 @@ test('private video contracts, intake controls and local-only exclusion are shar
     for(const key of ['transcript','captions']){const invalid=structuredClone(journey);invalid.videos[0][key]=key==='transcript'?'Private words':[{start:0,end:1,text:'Private words'}];assert.throws(()=>validateJourneyExtras(invalid),/private transcripts/);}
   }
   buildSite(root);const output=fs.readFileSync(path.join(root,'dist/assets/journeys.js'),'utf8');assert.doesNotMatch(output,/private-fixture/);
+});
+
+test('Photos + Places editing and rendering are inherited by family, sample and a fresh empty draft',async t=>{
+  await import('../dist/assets/photo-places.js');await import('../studio/place-editor.js');
+  const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root,{includeDrafts:true});
+  const family=data.journeys.find(j=>j.kind==='real'&&j.photos.length),demo=data.journeys.find(j=>j.kind==='demo'&&j.photos.length);
+  for(const journey of [family,demo,data.journeys.find(j=>j.id===draft.id)]){
+    const html=renderJourneyPage(root,journey,{preview:true});assert.match(html,/id="map-photo-card"/);assert.match(html,/assets\/photo-places.js/);assert.match(html,/assets\/photo-bubbles.js/);
+    const point={...globalThis.JOURNEY_ATLAS_PLACE_EDITOR.newPoint(journey),name:'A reviewed place',summary:'An owner-authored place',coordinates:[8,47],sources:[{label:'Official source',url:'https://example.test/place'}],dayIds:[journey.days[0].id],photoIds:journey.photos.slice(0,1).map(photo=>photo.id)};
+    const changed=prepareJourneyPlan(data,journey,{pointsOfInterest:[...(journey.pointsOfInterest||[]),point]},{photos:{},days:{},routes:{}}).journey;
+    assert.deepEqual(changed.pointsOfInterest.at(-1).photoIds,point.photoIds);
+    assert.deepEqual(globalThis.JOURNEY_ATLAS_PHOTO_PLACES.photosForPlace(point,journey.photos).linked.map(photo=>photo.id),point.photoIds);
+    assert.ok(Object.hasOwn(globalThis.JOURNEY_ATLAS_PLAN_EXTRAS.changes(changed),'pointsOfInterest'));
+  }
 });

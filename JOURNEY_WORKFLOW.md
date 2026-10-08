@@ -664,8 +664,8 @@ checkpoint branches and the local day-experience review workflow.
 
 ## Places, meals and group memories
 
-Ask the agent to add each point through the journey's optional
-`pointsOfInterest` array; supply a place name or Maps link, day(s), visited/saved
+Use **Studio → Places** to add/edit/remove points in the journey's optional
+`pointsOfInterest` array, or ask the agent for researched content; supply a place name or Maps link, day(s), visited/saved
 status and the group's actual ratings and notes. Never invent a visit or import
 Google's ratings as our group's opinions. The agent researches source links,
 reviews coordinates and attribution, proposes image candidates, and imports
@@ -677,14 +677,21 @@ These annotations do not alter route nodes or Replay. Their content and reviews
 are public; private original images do not belong in journey JSON. Record an
 image's source, credit and permission basis, with a license URL where applicable.
 The validated schema and reusable intake prompt are in [PLACES_AND_COMMENTS.md](docs/PLACES_AND_COMMENTS.md).
-Ordinary Studio itinerary edits retain these fields. Validate/build, check the
+The Places editor includes name, category, description, memory, visit status,
+known coordinates/accuracy, assigned days, fact sources, credited venue images,
+owner-authored group reviews and ordered trip-photo links. New unfinished places
+remain in draft recovery; Save requires a real known coordinate and source, with
+no invented `[0,0]` pin. Remove offers Undo; normal Review/Discard and three-way
+Save conflicts also cover these records. A calendar cannot drop an assigned day
+until its Places references are updated. Ordinary photo/itinerary saves preserve
+these fields and split photo-manifest layouts. Validate/build, check the
 map at desktop/phone sizes, then follow the normal publishing workflow.
 
 Use `demo.html?journey=alpine-crossing&experience=places` for the group review
 preview or `experience=comments` for the display-name/password/photo-comment
 preview. The sample password is `demo`. Preview reviews/comments stay in this
 browser; they are not authored trip data and do not synchronize to other
-visitors. Real shared comments require the proposed Worker/database extension.
+visitors. Real shared comments use the existing deployed Worker/D1 service.
 
 The place-card presentation follows a Maps-style list → detail →
 Overview/Reviews/Photos flow. The photo list tiles, star breakdown, quick actions

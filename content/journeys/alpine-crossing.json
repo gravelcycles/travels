@@ -1,11 +1,11 @@
 {
   "id": "alpine-crossing",
   "kind": "demo",
-  "label": "Across the Alps · Mixed demo",
+  "label": "Across the Alps \u00b7 Mixed demo",
   "title": "Across the Alps",
   "subtitle": "Ten days of lake mornings, high passes and the long road north",
-  "kicker": "MIXED JOURNEY · SWITZERLAND TO GERMANY",
-  "dates": "18–27 August 2026",
+  "kicker": "MIXED JOURNEY \u00b7 SWITZERLAND TO GERMANY",
+  "dates": "18\u201327 August 2026",
   "note": "Fictional sample journey; dates and locations illustrate the shared atlas. A mixed journey showing travel days, quiet days in one place, and several photographs attached to a single day.",
   "cover": "./assets/photos/alpine-route.webp",
   "places": [
@@ -94,7 +94,7 @@
       "to": "disentis",
       "mode": "bike",
       "distanceKm": 62,
-      "duration": "4–6 hrs",
+      "duration": "4\u20136 hrs",
       "via": [
         [
           46.658,
@@ -375,9 +375,9 @@
       "id": "pass-break",
       "dayId": "alps-d4",
       "src": "./assets/photos/bike-pass.webp",
-      "alt": "Loaded touring bicycle beside a mountain café",
+      "alt": "Loaded touring bicycle beside a mountain caf\u00e9",
       "caption": "Coffee at the top of the climb",
-      "takenAt": "21 Aug · 12:14",
+      "takenAt": "21 Aug \u00b7 12:14",
       "lat": 46.64,
       "lng": 8.61,
       "tags": [
@@ -392,7 +392,7 @@
       "src": "./assets/photos/alpine-route.webp",
       "alt": "Train, road and touring cyclist sharing an alpine valley",
       "caption": "Three ways through the same valley",
-      "takenAt": "22 Aug · 17:42",
+      "takenAt": "22 Aug \u00b7 17:42",
       "lat": 46.72,
       "lng": 8.92,
       "tags": [
@@ -407,7 +407,7 @@
       "src": "./assets/photos/train-window.webp",
       "alt": "Mountain lake and village seen through a train window",
       "caption": "The lake appeared between tunnels",
-      "takenAt": "22 Aug · 18:06",
+      "takenAt": "22 Aug \u00b7 18:06",
       "lat": 46.62,
       "lng": 9.48,
       "tags": [
@@ -552,7 +552,7 @@
         {
           "src": "./assets/places/taube-exterior.webp",
           "alt": "Outdoor tables beneath the Wirtshaus Taube sign in Lucerne",
-          "credit": "Wirtshaus Taube / Tavolago AG · resized for the atlas",
+          "credit": "Wirtshaus Taube / Tavolago AG \u00b7 resized for the atlas",
           "sourceUrl": "https://www.taube-luzern.ch/en/medien",
           "permission": "permission",
           "licenseUrl": "https://www.taube-luzern.ch/en/medien"
@@ -577,6 +577,9 @@
           "rating": 5,
           "text": "My favorite part was staying for one more drink and watching the river."
         }
+      ],
+      "photoIds": [
+        "alps-place-dinner"
       ]
     },
     {
@@ -594,7 +597,7 @@
         "alps-d2"
       ],
       "sample": true,
-      "summary": "The covered wooden bridge across the Reuss. A small detour through the city’s story.",
+      "summary": "The covered wooden bridge across the Reuss. A small detour through the city\u2019s story.",
       "note": "We crossed it three times, and somehow the light was different each time.",
       "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Chapel+Bridge+Lucerne",
       "sources": [
@@ -607,7 +610,7 @@
         {
           "src": "./assets/places/chapel-bridge.webp",
           "alt": "Chapel Bridge and the water tower across the Reuss in Lucerne",
-          "credit": "Ikiwaner · CC BY-SA 3.0 · resized to WebP",
+          "credit": "Ikiwaner \u00b7 CC BY-SA 3.0 \u00b7 resized to WebP",
           "sourceUrl": "https://commons.wikimedia.org/wiki/File:Luzern_Kapellbruecke.jpg",
           "permission": "licensed",
           "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
@@ -615,7 +618,7 @@
         {
           "src": "./assets/places/chapel-interior.webp",
           "alt": "The timber-covered walkway inside Chapel Bridge",
-          "credit": "Tisc5027 · CC BY-SA 4.0 · resized to WebP",
+          "credit": "Tisc5027 \u00b7 CC BY-SA 4.0 \u00b7 resized to WebP",
           "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kapellbr%C3%BCcke,_Luzern.png",
           "permission": "licensed",
           "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
@@ -634,6 +637,10 @@
           "rating": 4,
           "text": "Worth lingering over the painted panels instead of just walking through."
         }
+      ],
+      "photoIds": [
+        "alps-place-roof",
+        "alps-place-bridge"
       ]
     },
     {
@@ -662,13 +669,16 @@
         {
           "src": "./assets/places/musegg-wall.webp",
           "alt": "Musegg Wall and its towers above a green field in Lucerne",
-          "credit": "Paebi · CC BY-SA 3.0 · resized to WebP",
+          "credit": "Paebi \u00b7 CC BY-SA 3.0 \u00b7 resized to WebP",
           "sourceUrl": "https://commons.wikimedia.org/wiki/File:Museggmauer_Nord.JPG",
           "permission": "licensed",
           "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
         }
       ],
-      "reviews": []
+      "reviews": [],
+      "photoIds": [
+        "alps-place-unlocated"
+      ]
     }
   ]
 }

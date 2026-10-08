@@ -65,7 +65,7 @@ export function conflictReview(conflicts, data, saved = {}) {
   const names = new Map(), owners = new Map();
   for (const journey of data.journeys) {
     names.set(journey.id, journey.title);
-    for (const key of ['days', 'photos', 'segments', 'places', 'videos', 'travelers', 'routeGroups', 'replayMoments']) {
+    for (const key of ['days', 'photos', 'segments', 'places', 'pointsOfInterest', 'videos', 'travelers', 'routeGroups', 'replayMoments']) {
       for (const item of journey[key] || []) {
         owners.set(item.id, journey);
         const route = key === 'segments' ? `${journey.places.find(p => p.id === item.from)?.name} → ${journey.places.find(p => p.id === item.to)?.name}` : null;
@@ -76,7 +76,7 @@ export function conflictReview(conflicts, data, saved = {}) {
   const labels = { state: 'Saved edits', plan: 'Trip plan', text: 'Story', tagline: 'Tagline', photoId: 'Photo', focal: 'Crop position' };
   const label = key => names.get(key) || labels[key] || key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, c => c.toUpperCase());
   const display = value => value === null || value === '' ? 'Empty' : typeof value === 'string' ? names.get(value) || value : JSON.stringify(value, null, 2);
-  const containers = new Set(['state','plan','days','photos','routes','segments','places','videos','travelers','routeGroups','replayMoments']);
+  const containers = new Set(['state','plan','days','photos','routes','segments','places','pointsOfInterest','videos','travelers','routeGroups','replayMoments']);
   return conflicts.map(item => {
     const owner = owners.get(item.path.find(key => owners.has(key)));
     const parts = item.path.filter(key => !containers.has(key)).map(label);

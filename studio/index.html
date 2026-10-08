@@ -20,6 +20,7 @@
       <nav aria-label="Editor mode">
         <button class="active" data-mode="photos" type="button">Photos</button>
         <button data-mode="routes" type="button">Route drawing</button>
+        <button id="open-place-editor" type="button">Places</button>
         <button data-mode="planner" type="button">Trip plan & media</button>
         <button data-mode="days" type="button" data-event-copy="Day copy">Day copy</button>
       </nav>
@@ -251,6 +252,7 @@
         <label>Introduction<textarea id="plan-subtitle" rows="2"></textarea></label>
         <div class="plan-row"><label>Start date<input id="plan-start" type="date"></label><label>End date<input id="plan-end" type="date"></label><label>Photo time zone<input id="plan-timezone" placeholder="Europe/Berlin"></label></div>
         <label>When dates change<select id="plan-alignment"><option value="dates">Keep existing content on its calendar date</option><option value="itinerary">Move the itinerary to the new start date</option></select></label>
+        <details id="places-editor-section" open><summary>Places & trip photos</summary><div id="plan-points-of-interest"></div></details>
         <details open><summary>Travelers & route groups</summary><div id="plan-party"></div></details>
         <details><summary>Named places</summary><p>Enter reviewed longitude/latitude. Existing route geometry is preserved when a place changes.</p><div id="plan-places"></div><button id="plan-add-place" type="button">+ Named place</button></details>
         <details><summary data-event-copy="Days & ordered travel legs">Days & ordered travel legs</summary><p data-event-copy="Moving a day moves its story, routes and photos to the adjacent date. Photo capture timestamps remain unchanged.">Moving a day moves its story, routes and photos to the adjacent date. Photo capture timestamps remain unchanged.</p><button id="plan-add-stop" type="button" hidden>+ City stop</button><div id="plan-days"></div></details>
@@ -309,6 +311,8 @@
     <script src="/dist/assets/map-style.js"></script>
     <script src="/dist/assets/map-feedback.js"></script>
     <script src="/dist/assets/media-utils.js"></script>
+    <script src="/dist/assets/photo-places.js"></script>
+    <script src="/place-editor.js"></script>
     <script src="/plan-extras.js"></script>
     <script src="/studio-recovery.js"></script>
     <script src="/draft-review.js"></script>
