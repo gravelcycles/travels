@@ -5,28 +5,30 @@ const dateLabel = value => new Intl.DateTimeFormat('en-GB', { day:'numeric', mon
 export function resizeCalendar(journey, startDate, endDate, alignment = 'dates') {
   const start = calendarDate(startDate), end = calendarDate(endDate), count = (end-start)/86400000+1;
   if (count < 1 || count > 366) throw new Error('Choose a range of 1–366 calendar days');
+  const pending = journey.days.filter(day => day.planningStatus === 'tbd' && !day.calendarDate);
+  const dated = journey.days.filter(day => !pending.includes(day));
   if (journey.eventMode === 'city') {
     const shift = alignment === 'itinerary' ? start - calendarDate(journey.days[0].calendarDate) : 0;
     const move = date => new Date(+calendarDate(date) + shift).toISOString().slice(0,10);
-    const days = journey.days.map((day, i) => {
+    const days = dated.map((day, i) => {
       const arrival = i === 0 ? startDate : move(day.calendarDate);
-      const departure = i === journey.days.length - 1 ? endDate : move(day.calendarEndDate);
+      const departure = i === dated.length - 1 ? endDate : move(day.calendarEndDate);
       const automatic = day.date === globalThis.JOURNEY_ATLAS_UTILS.eventDateLabel(day.calendarDate, day.calendarEndDate);
       return {...day, calendarDate:arrival, calendarEndDate:departure, date:automatic ? globalThis.JOURNEY_ATLAS_UTILS.eventDateLabel(arrival, departure) : day.date};
     });
-    return {days, added:[], removed:[]};
+    return {days:[...days, ...pending], added:[], removed:[]};
   }
   const used = new Set(journey.days.map(d => d.id));
   const retained = new Set();
   const days = Array.from({length:count}, (_, i) => {
     const date = new Date(+start+i*86400000).toISOString().slice(0,10);
-    const existing = alignment === 'itinerary' ? journey.days[i] : journey.days.find(d => d.calendarDate === date);
+    const existing = alignment === 'itinerary' ? dated[i] : dated.find(d => d.calendarDate === date);
     if (existing) { retained.add(existing.id); return { ...existing, number:i+1, calendarDate:date, date:existing.calendarDate === date ? existing.date : dateLabel(date) }; }
     let serial = 1; while (used.has(`${journey.id}-d${serial}`)) serial++;
     const id = `${journey.id}-d${serial}`; used.add(id);
     return { id, number:i+1, calendarDate:date, date:dateLabel(date), title:'Day to plan', text:'', segmentIds:[] };
   });
-  return { days, removed:journey.days.filter(d => !retained.has(d.id)), added:days.filter(d => !journey.days.some(old => old.id === d.id)) };
+  return { days:[...days, ...pending.map((day, i) => ({...day, number:days.length+i+1}))], removed:dated.filter(d => !retained.has(d.id)), added:days.filter(d => !journey.days.some(old => old.id === d.id)) };
 }
 export function prepareJourneyPlan(data, base, changes, state, alignment = 'dates') {
   const allowed = ['eventMode','title','startDate','endDate','timeZone','places','segments','days','coverPhoto','replayMoments','subtitle','travelers','routeGroups','meetup','videos','pointsOfInterest','photoGroups'];
@@ -60,7 +62,7 @@ export function prepareJourneyPlan(data, base, changes, state, alignment = 'date
     if (journey.pointsOfInterest?.some(point=>point.dayIds.includes(day.id))) throw new Error(`Day ${day.number} is assigned to a curated place. Update its Journey days in Places before shortening the trip.`);
     if (day.text?.trim() || day.tagline?.trim() || !['Day to plan', 'City to plan'].includes(day.title) || day.segmentIds.length || state.days[day.id] || base.photos.some(p => (state.photos[p.id]?.dayId || p.dayId) === day.id) || base.videos?.some(video => video.dayId === day.id) || base.meetup?.dayId === day.id || base.replayMoments?.some(m => m.dayId === day.id)) throw new Error(`Day ${day.number} (${day.calendarDate}) has content. Keep it in the date range, or move the itinerary before shortening the trip.`);
   }
-  if (journey.startDate !== base.startDate || journey.endDate !== base.endDate) journey.dates = `${journey.startDate} – ${journey.endDate}`;
+  if (journey.startDate !== base.startDate || journey.endDate !== base.endDate) journey.dates = `${journey.startDate} – ${journey.endDate}${journey.days.some(day => !day.calendarDate && day.planningStatus === 'tbd') ? ' · onward dates TBD' : ''}`;
   if (journey.replayMoments) journey.replayMoments = journey.replayMoments.map(moment => {
     const order=journey.days.find(d=>d.id===moment.dayId)?.segmentIds || [];
     return moment.segmentIds ? {...moment,segmentIds:[...moment.segmentIds].sort((a,b)=>order.indexOf(a)-order.indexOf(b))} : moment;

@@ -715,3 +715,31 @@ leg `geometryStatus: "provisional"`. Never present endpoint guides as imported
 tracks. Use the existing roster/group assignments for separate arrivals and
 omit `groupIds` on shared cycling days. Missing origins stay in notes until
 known; dates follow the confirmed intake, with any inferred year documented.
+
+## TBD stops and legs
+
+Set optional day/stop `planningStatus: "tbd"` for a planned, unconfirmed event.
+All of that event's incoming legs inherit its status in the shared viewer.
+`"confirmed"` or an absent field keeps the existing presentation. This records
+itinerary confidence independently of `geometryStatus`: a TBD leg can and should
+have detailed, reviewed network geometry.
+
+Undated TBD entries omit both machine date fields, use `date: "TBD"`, and follow
+the dated itinerary. They retain ordinary stable IDs and consecutive numbers.
+The trip's `startDate`/`endDate` cover only its dated portion; describe the onward
+uncertainty in `dates`. Dated TBD entries are also supported, with the usual
+calendar continuity rules. Never invent stay dates to satisfy a calendar check.
+
+The viewer shows TBD stops by default, with badges, dotted mode-colored routes,
+explicit dates-to-decide copy and a shared **Show TBD stops** checkbox. Hiding
+them filters the map, stop list, albums and Replay together, without changing
+the source or renumbering retained stops. The control is hidden for journeys
+without TBD entries and disabled when every entry is TBD.
+
+Studio's Trip plan has **+ TBD stop**, a planning-status selector and **Dates
+TBD**. Add places/legs normally. Keep undated entries after the dated itinerary;
+Save validates the boundary. To confirm one, supply its arrival/departure dates,
+close the preceding stay, extend the trip range as needed, and set Confirmed.
+Calendar shifts leave undated TBD entries undated. Photo date matching never
+assigns an image automatically to an undated entry; manual assignment remains
+available. Route research and generated geometry follow the normal workflow.

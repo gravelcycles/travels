@@ -119,3 +119,116 @@ the Verona–Venice railway; raw tunnel metadata supports the long Brenner tunne
 vertices. All three new routes retain ordered station anchors and less than 1%
 simplification loss. The 390 px phone view exposes all eleven stops, the correct
 Venice date range and its incoming line. Replay reaches Venice at moment 15/15.
+
+## TBD extension — 8 October 2026
+
+The owner added eighteen **planned, unconfirmed** stays, without dates:
+Ljubljana → Lake Bled → Vienna → Wrocław → Warsaw → Kraków → Budapest →
+Oradea → Sibiu → Timișoara → Belgrade → Zagreb → Split → Dubrovnik → Sarajevo →
+Ohrid → Qeparo → Athens. Kraków appears once: it connects the typed list to the
+numbered image. Skopje and Tirana are transit points in that image. Novi Pazar,
+Lesce-Bled and Sarandë are researched transfer points, not extra stays.
+
+The original eleven stays and their dates remain unchanged. `endDate` still
+means the last supplied date, 23 October, rather than an invented Athens arrival.
+Every new stay has `planningStatus: "tbd"` and no machine dates. All incoming
+legs inherit that status through shared code. The viewer includes them by
+default and exposes **Show TBD stops**; hiding them returns to the dated route.
+No tickets, departures, overnight lengths or durations have been invented.
+
+| Incoming TBD stay | Candidate network corridor |
+| --- | --- |
+| Ljubljana | Rail from Venice via Trieste, Villa Opicina, Sežana, Divača and Postojna |
+| Lake Bled | Rail Ljubljana–Kranj–Lesce-Bled; local bus from the station to Bled |
+| Vienna | Bus back to Lesce-Bled; rail via Ljubljana, Zidani Most, Celje, Maribor, Graz and Semmering |
+| Wrocław | Rail via Břeclav, Bohumín, Racibórz and Opole |
+| Warsaw | Rail via Ostrów Wielkopolski, Kalisz, Łódź and Skierniewice |
+| Kraków | Rail on the Central Rail Line, via Włoszczowa and Miechów |
+| Budapest | Rail via Katowice, Bohumín, Břeclav, Bratislava, Štúrovo and Vác |
+| Oradea | Rail from Budapest Nyugati via Cegléd, Szolnok, Püspökladány and Biharkeresztes; changes may be needed |
+| Sibiu | Rail via Arad, Simeria and Vințu de Jos, avoiding the Oradea–Cluj works corridor |
+| Timișoara | Rail via Vințu de Jos, Simeria and Arad; proposed connection, works may require changes |
+| Belgrade | Bus via Moravița and Vršac |
+| Zagreb | Bus along the Belgrade–Batrovci–Zagreb motorway corridor |
+| Split | Rail via Karlovac, Oštarije, Gospić and Knin |
+| Dubrovnik | Bus via Ploče, the Pelješac bridge corridor and Ston |
+| Sarajevo | Bus via Neum, Metković, Mostar and Konjic |
+| Ohrid | Separate bus legs via Novi Pazar and Skopje; the middle leg goes via Ribariće, Mitrovica and Pristina |
+| Qeparo | Bus via Struga, Qafë Thanë and Elbasan to Tirana; onward via Vlorë, Dhërmi and Himarë |
+| Athens | Coastal bus to Sarandë; onward bus via Gjirokastër, Kakavia, Ioannina, Rio and Corinth |
+
+### Evidence and limitations
+
+- [SŽ's 2026 Ljubljana–Trieste leaflet](https://potniski.sz.si/wp-content/uploads/2026/05/Letak-Ljubljana%E2%80%93Trst-in-okolica-in-obratno.pdf)
+  supports the Italian/Slovenian rail connection. Venice–Trieste is the
+  connecting Italian regional corridor; no through service is claimed.
+- [SŽ's autumn works notice](https://potniski.sz.si/vecje-zapore-gorenjske-in-bohinjske-proge-v-septembru-in-oktobru/)
+  and the [Slovenian infrastructure notice](https://www.gov.si/novice/2026-09-04-popolna-zapora-odsekov-zelezniskih-prog-zaradi-nadgradnje-zelezniskega-vozlisca-jesenice/)
+  identify the Jesenice closure through 12 November, plus intermittent
+  Ljubljana–Lesce closures. The proposal uses Lesce-Bled and local buses,
+  then the [Vienna route via Maribor and Semmering](https://potniski.sz.si/wp-content/uploads/2026/05/Letak-Ljubljana%E2%80%93Dunaj-via-Maribor-in-obratno.pdf).
+  Travel dates must be checked against replacement buses. It does not claim
+  Bled Jezero–Jesenice trains operate during the closure.
+- [MÁV's Poland route table](https://www.mavcsoport.hu/sites/default/files/upload/page/nk_mnr_lengyel.pdf)
+  supports the Kraków–Bohumín–Břeclav–Budapest corridor. The Austrian/Polish
+  and domestic Polish lines are representative rail-network connections,
+  with no selected departure or claim that they are direct trains.
+- [CFR's current journey planner](https://bilete.cfrcalatori.ro/en-GB/Itineraries)
+  remains the date-specific authority for the Romanian connections.
+  [CFR's infrastructure works notices](https://www.cfrcalatori.ro/comunicate/page/3/)
+  document changing rail/bus arrangements around Arad and Timișoara; the
+  proposed rail alignments are not assurances of uninterrupted service.
+- [FlixBus's Belgrade–Timișoara route](https://www.flixbus.com/bus-routes/bus-belgrade-timisoara)
+  and [Belgrade bus station](https://www.bas.rs/en/bus-lines/belgrade-to-timisoara)
+  corroborate the road connection. Dates and terminal choices are TBD.
+- [HŽPP's coastal rail services](https://www.hzpp.hr/en/promotions-and-benefits/to-the-seaside-by-rail)
+  support Zagreb–Split. [Arriva's route list](https://www.arriva.com.hr/hr-hr/relacije)
+  includes Split–Dubrovnik and Dubrovnik–Sarajevo. The road lines are candidate
+  corridors; these pages do not certify each street or which bridge a bus uses.
+- [Balbuss Sarajevo–Novi Pazar](https://balbuss.rs/autobus/sarajevo-novi-pazar/)
+  supports the first connection toward Ohrid. The [Serbian international bus
+  route register](https://www.prevozputnika.rs/info/redovi/Makedonija.pdf), route
+  Z 2126, lists Novi Pazar–Ribariće–Mitrovica–Pristina–Skopje. It supports the
+  corridor but is not a guarantee that transfers connect on an unknown date.
+- The [North Macedonian bus-line allocation](https://portal.mdt.gov.mk/post-documents/preliminarna-raspredelba-na-avtobuski-linii-document-EjZp.pdf)
+  identifies Ohrid–Tirana. Tirana–Qeparo and Qeparo–Sarandë remain proposed
+  local bus corridors with unconfirmed operators, stops and frequencies.
+- [Saranda Express](https://saranda-express.com/) advertises Sarandë–Athens.
+  [Hellenic Train's passenger terms](https://www.hellenictrain.gr/sites/default/files/2025-07/2025.07.04-PASSENGER%20TERMS%20AND%20CONDITIONS-EN.pdf)
+  state that international rail services are suspended until further notice.
+  The Athens connection therefore uses roads through Kakavia and western
+  Greece, without inventing an Albania–Greece train.
+
+### Geometry review
+
+The extension has **24 detailed legs: 11 rail and 13 bus**, approximately
+6,888 km. Together with the original route there are 38 legs and 29 stays.
+All bus geometry comes from OSRM's full driving-network response, with ordered
+corridor anchors. It follows actual mapped streets and roads; it is not a
+straight line, Google Maps screenshot trace, booked bus service or coach GPS log.
+
+New rail geometry uses OpenRailRouting's standard-gauge profile, which includes
+unelectrified tracks. Independent station sections permit real reversals at
+transfer points; section joins differ by at most one metre. The hosted graph
+misrouted Postojna–Ljubljana around Austria and failed Arad–Timișoara. Both were
+replaced with paths through local OSM extracts using the repository graph tools.
+The Slovenian graph includes mapped `railway=construction, construction=rail`
+sections near Borovnica/Preserje: their physical corridor is known, while works
+and passenger operation remain date-dependent. Neither local graph needs gap
+welding. No long connector or guessed straight gap is inserted.
+
+All new endpoints lie within 72 m of their source anchors. Simplification at
+0.00003 and five decimal places changes each length by less than 0.35%. Preserve
+entries record exact requests, raw hashes, source dates, counts, lengths,
+endpoint offsets and local graph inputs. Original request-anchor offsets remain
+visible in the evidence; source `via` shaping points are moved onto the reviewed
+network and never asserted as passenger calls. Raw inputs are ignored under
+`build/route-inputs/backpacking-europe-heading-east/tbd/`.
+
+Validation: all 421 tests pass after integrating the latest shared Photos and
+Places changes; the production build and strict route-preservation build pass.
+Desktop review covered the Ljubljana rail approach and road-following Dubrovnik
+leg. At 390 px, the toggle changes 29 stops to the original eleven and retains a
+valid selected stop. Switzerland–Italy, the demo, and a freshly generated empty
+draft retain the shared viewer; the fresh draft also shows and hides an undated
+TBD entry without requiring route or photo content. QA fixtures are not published.

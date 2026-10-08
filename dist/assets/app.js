@@ -53,7 +53,8 @@
   let sourceJourney = journey;
   let activeGroupId = new URLSearchParams(location.search).get('group') || '';
   if (!sourceJourney.routeGroups?.some(group => group.id === activeGroupId)) activeGroupId = '';
-  journey = groupTravel.projectJourney(sourceJourney, activeGroupId);
+  let showTbd = true;
+  journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(groupTravel.projectJourney(sourceJourney, activeGroupId), showTbd);
   let activeDayId = journey.days[0].id;
   let mapScope = "journey";
   let mainMap;
@@ -319,7 +320,7 @@
               <li>
                 <${tag} class="leg-card" ${mobile ? 'type="button"' : 'tabindex="0" role="group"'} data-route-segment="${escapeHtml(segment.id)}" aria-label="${mobile ? "Explore" : "Highlight"} ${escapeHtml(labels[segment.mode] || segment.mode)} route from ${escapeHtml(from.name)} to ${escapeHtml(to.name)}">
                   <span class="leg-mode">${lineSwatch(segment.mode)}${escapeHtml(labels[segment.mode] || segment.mode)}</span>
-                  <strong>${journey.routeGroups?.length ? `<span class="leg-audience">${escapeHtml(groupTravel.audience(journey, segment))}</span>` : ""}${escapeHtml(from.name)} → ${escapeHtml(to.name)}</strong>
+                  <strong>${journey.routeGroups?.length ? `<span class="leg-audience">${escapeHtml(groupTravel.audience(journey, segment))}</span>` : ""}${segment.planningStatus === "tbd" ? '<span class="tbd-badge">TBD</span> ' : ""}${escapeHtml(from.name)} → ${escapeHtml(to.name)}</strong>
                   <small>${segment.distanceKm ? formatDistance(segment.distanceKm) : "Distance not added"}${segment.duration ? ` · ${escapeHtml(segment.duration)}` : ""}${segment.stops ? ` · ${stopCount} stops` : ""}${segment.geometryStatus === "provisional" ? " · Provisional route" : segment.geometryStatus === "reconstructed" ? " · Reconstructed corridor · service unconfirmed" : ""}</small>
                 </${tag}>
               </li>
@@ -482,7 +483,7 @@
     const from = placeById(segment.from);
     const to = placeById(segment.to);
     $("#route-inspector").hidden = !routeInspectionPinned;
-    $("#route-inspector-meta").textContent = `${eventWord('title')} ${day.number} · ${labels[segment.mode] || segment.mode}`;
+    $("#route-inspector-meta").textContent = `${eventWord('title')} ${day.number} · ${labels[segment.mode] || segment.mode}${segment.planningStatus === "tbd" ? " · TBD — unconfirmed" : ""}`;
     $("#route-inspector-title").textContent = `${from.name} → ${to.name}`;
     $("#route-inspector-story").textContent = conciseDayStory(day);
   }
@@ -680,7 +681,8 @@
       "line-width": ["case", ["any", ["boolean", ["feature-state", "inspected"], false], ["boolean", ["feature-state", "previewed"], false]], baseWidth + 3, baseWidth],
       "line-opacity": ["case", ["boolean", ["feature-state", "previewed"], false], 1, ["boolean", ["feature-state", "previewMuted"], false], 0.24, options.opacity]
     };
-    if (modeStyle.dash) paint["line-dasharray"] = modeStyle.dash;
+    if (segment.planningStatus === 'tbd') paint["line-dasharray"] = [1, 1.4];
+    else if (modeStyle.dash) paint["line-dasharray"] = modeStyle.dash;
     map.addLayer({
       id: lineId,
       type: "line",
@@ -923,7 +925,7 @@
     $("#fit-route").disabled = !journeyCoordinates().length;
     $("#journey-summary").innerHTML = `
       <div><strong>${escapeHtml(journey.dates)}</strong><span>TRAVEL DATES</span></div>
-      <div><strong>${journey.status === "planned" && !journey.segments.length ? "To plan" : (journey.segments.some(segment => Number.isFinite(segment.distanceKm)) ? formatDistance(totalDistance()) : "Distance pending")}</strong><span>${!activeGroupId && journey.routeGroups?.length > 1 ? "ALL ROUTES COMBINED" : "ROUTE LENGTH"}</span></div>
+      <div><strong>${journey.status === "planned" && !journey.segments.length ? "To plan" : (journey.segments.some(segment => Number.isFinite(segment.distanceKm)) ? formatDistance(totalDistance()) : "Distance pending")}</strong><span>${!activeGroupId && journey.routeGroups?.length > 1 ? "ALL ROUTES COMBINED" : journey.days.some(day => day.planningStatus === "tbd") ? "ROUTE LENGTH · INCLUDES TBD" : "ROUTE LENGTH"}</span></div>
       <div><strong>${journey.days.length}</strong><span>${eventWord('plural').toUpperCase()}</span></div>
     `;
   }
@@ -945,6 +947,7 @@
     }).join("");
     if (focused && journey.segments.some((segment) => !selectedSegments.has(segment.id))) markup += stateKey(`Other ${eventWord("plural")}`, palette.muted, 0.32);
     if (focused && modes.includes("train")) markup += '<span><i class="rail-stop-swatch" aria-hidden="true"></i>Rail stop</span>';
+    if (segments.some(segment => segment.planningStatus === 'tbd')) markup += '<span><i class="line-swatch tbd" aria-hidden="true"></i>TBD · unconfirmed</span>';
     $("#map-legend").innerHTML = markup;
   }
 
@@ -966,7 +969,7 @@
           <span class="day-index">${String(day.number).padStart(2, "0")}</span>
           <span class="day-copy">
             <small>${escapeHtml([day.date, modeLabel(day)].filter(Boolean).join(' · '))}</small>
-            <strong>${escapeHtml(day.title)}</strong>
+            <strong>${day.planningStatus === "tbd" ? '<span class="tbd-badge">TBD</span> ' : ""}${escapeHtml(day.title)}</strong>
             ${day.tagline?.trim() ? `<em>${escapeHtml(day.tagline)}</em>` : ""}
           </span>
           <span class="day-meta">${photos.length ? `${mediaUtils.label(photos)}` : ""}${pattern !== "stay" ? lineSwatch(pattern) : ""}</span>
@@ -978,7 +981,7 @@
   }
 
   function dayCopyMarkup(day) {
-    return `<h2>${escapeHtml(day.title)}</h2>
+    return `${day.planningStatus === 'tbd' ? '<p class="planning-note"><span class="tbd-badge">TBD</span> Planned · not confirmed</p>' : ''}<h2>${escapeHtml(day.title)}</h2>
       ${day.tagline?.trim() ? `<p class="place-line">${escapeHtml(day.tagline)}</p>` : ''}
       ${day.text?.trim() ? `<p class="day-story">${escapeHtml(day.text)}</p>` : ''}`;
   }
@@ -1048,9 +1051,9 @@
     if (panel.hidden) return;
     const selected = groups.find(group => group.id === activeGroupId);
     $('#mobile-routes-action').textContent = `Routes · ${selected?.label || 'Everyone'}`;
-    const meetup = sourceJourney.meetup;
-    const destination = sourceJourney.places.find(place => place.id === meetup?.placeId);
-    const day = sourceJourney.days.find(day => day.id === meetup?.dayId);
+    const meetup = journey.meetup;
+    const destination = journey.places.find(place => place.id === meetup?.placeId);
+    const day = journey.days.find(day => day.id === meetup?.dayId);
     panel.innerHTML = `<h3>${sourceJourney.travelers.length} travelers${groups.length ? ` · ${groups.length} routes` : ''}</h3>
       ${meetup ? `<p class="party-meetup"><strong>Meet in ${escapeHtml(destination.name)}</strong><span>${eventWord('title')} ${day.number} · ${escapeHtml(meetup.label)}</span></p>` : ''}
       ${groups.length ? `<button type="button" class="party-all" data-route-group="" aria-pressed="${!activeGroupId}">Everyone · all routes</button>` : ''}
@@ -1063,7 +1066,8 @@
     clearSegmentInspection(true); pauseReplay(); replayJourneyId = null;
     videoPlayer.stop(); if (photoDialog.open) photoDialog.close();
     activeGroupId = id;
-    journey = groupTravel.projectJourney(sourceJourney, id);
+    journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(groupTravel.projectJourney(sourceJourney, id), showTbd);
+    if (!dayById(activeDayId)) activeDayId = journey.days[0].id;
     storyMapDay = null; viewerRouteKey = null;
     const url = new URL(location.href);
     if (id) url.searchParams.set('group', id); else url.searchParams.delete('group');
@@ -1077,6 +1081,11 @@
 
   function renderAll(options) {
     renderParty();
+    const pendingCount = sourceJourney.days.filter(day => day.planningStatus === 'tbd').length;
+    $('#planning-filter').hidden = !pendingCount;
+    $('#show-tbd').checked = showTbd;
+    $('#show-tbd').disabled = pendingCount === sourceJourney.days.length;
+    $('#tbd-count').textContent = pendingCount ? `· ${pendingCount} unconfirmed` : '';
     renderJourneyIdentity();
     renderOverview();
     renderJourneyPicker();
@@ -1845,6 +1854,18 @@
   $('#mobile-routes-action').addEventListener('click', () => { setMobileTab('route'); $('#travel-party button')?.focus(); });
   document.addEventListener('visibilitychange', () => { if (document.hidden) videoPlayer.pause(); });
 
+  $('#show-tbd').addEventListener('change', event => {
+    clearSegmentInspection(true); clearDayPreview(); pauseReplay(); replayJourneyId = null;
+    videoPlayer.stop(); if (photoDialog.open) photoDialog.close();
+    showTbd = event.target.checked;
+    journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(groupTravel.projectJourney(sourceJourney, activeGroupId), showTbd);
+    if (!dayById(activeDayId)) activeDayId = journey.days.at(-1).id;
+    viewerDayId = activeDayId; storyMapDay = null; viewerRouteKey = null;
+    mapScope = 'journey';
+    renderAll({fit: false});
+    if ($('.map-panel').offsetParent === null) pendingMapAction = 'fit'; else fitJourneyBounds();
+  });
+
   $("#journey-select").addEventListener("change", (event) => {
     const nextJourney = availableJourneys.find((item) => item.id === event.target.value);
     if (!nextJourney) return;
@@ -1852,7 +1873,8 @@
     pauseReplay(); replayJourneyId = null; storyMapDay = null; viewerRouteKey = null;
     videoPlayer.stop(); if (photoDialog.open) photoDialog.close();
     sourceJourney = nextJourney; activeGroupId = '';
-    journey = nextJourney;
+    showTbd = true;
+    journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(nextJourney, showTbd);
     const url = new URL(location.href);
     url.searchParams.set('journey', journey.id); url.searchParams.delete('group');
     url.searchParams.delete('day'); url.searchParams.delete('photo'); url.hash = '';

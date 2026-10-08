@@ -601,3 +601,11 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 /* Map dismissal and navigation each keep their own hit area. */
 #photo-map .maplibregl-ctrl-top-right { top:64px; }
 .mobile-photo-caption { display:none; }
+
+.planning-filter { display:flex; gap:9px; align-items:center; padding:12px 18px; border-bottom:1px solid var(--line); font-size:13px; cursor:pointer; }
+.planning-filter[hidden] { display:none; }
+.planning-filter input { accent-color:#65507b; width:18px; height:18px; }
+.planning-filter small { color:var(--muted); }
+.tbd-badge { display:inline-block; border:1px solid #b5a4c3; border-radius:4px; padding:1px 5px; font:600 10px/1.5 system-ui,sans-serif; letter-spacing:.06em; color:#5f4776; background:#f2edf6; vertical-align:middle; }
+.planning-note { color:#5f4776; font-size:13px; }
+.line-swatch.tbd { background:none; border-top:3px dotted #65507b; }
