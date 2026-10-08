@@ -1,5 +1,5 @@
 /* Places shares the atlas's paper, ink and personal voice. */
-.pp-panel { --pp-ink:#153238; --pp-muted:#526967; --pp-line:#dfe4da; --pp-paper:#fbfaf6; --pp-accent:#315f52; --pp-tint:#e9eee6; --pp-gold:#ad7715; grid-column:1; grid-row:1; display:flex; flex-direction:column; min-width:0; min-height:0; height:100%; color:var(--pp-ink); background:var(--pp-paper); border-right:1px solid var(--pp-line); z-index:501; font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+.pp-panel { --pp-ink:#153238; --pp-muted:#526967; --pp-line:#dfe4da; --pp-paper:#fbfaf6; --pp-accent:#315f52; --pp-tint:#e9eee6; --pp-gold:#ad7715; grid-column:3; grid-row:1; display:flex; flex-direction:column; min-width:0; min-height:0; height:100%; color:var(--pp-ink); background:var(--pp-paper); border-right:1px solid var(--pp-line); z-index:501; font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
 .pp-panel[hidden],.pp-panel [hidden] { display:none!important; }
 .pp-panel *, .pp-gallery-dialog * { box-sizing:border-box; }
 .pp-panel button,.pp-panel input,.pp-panel textarea,.pp-gallery-dialog button { font:inherit; }
@@ -220,12 +220,10 @@
 .places-open .location-label-anchor { visibility:hidden; }
 .places-open .map-place-card { display:none!important; }
 @media(min-width:901px) {
-  .places-open .atlas-shell { grid-template-columns:400px minmax(0,1fr); }
-  .places-open .route-panel { display:none; }
   .places-open .map-panel { grid-column:2; grid-row:1; }
   .pp-panel { position:relative; }
 }
-@media(min-width:1500px) { .places-open .atlas-shell { grid-template-columns:430px minmax(0,1fr); } .pp-hero-media { height:235px; } }
+@media(min-width:1500px) { .pp-hero-media { height:235px; } }
 @media(max-width:900px) {
   .places-open .mobile-day-summary { visibility:hidden; }
   .pp-panel { position:fixed; inset:auto 0 calc(58px + env(safe-area-inset-bottom)); height:54dvh; min-height:260px; max-height:calc(100dvh - 120px - env(safe-area-inset-bottom)); border:1px solid #d7dfd0; border-bottom:0; border-radius:23px 23px 0 0; z-index:1100; box-shadow:0 -4px 30px #1b392822; overflow:hidden; }

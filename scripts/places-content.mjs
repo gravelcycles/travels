@@ -22,6 +22,7 @@ export function validatePointsOfInterest(journey) {
     if (point.sample != null && typeof point.sample !== 'boolean') fail(`${point.id} sample must be boolean`);
     if (point.mapsUrl != null && !https(point.mapsUrl)) fail(`${point.id} needs a safe maps link`);
     if (!Array.isArray(point.sources) || !point.sources.length || point.sources.some(source => !text(source.label, 120) || !https(source.url))) fail(`${point.id} needs labeled HTTPS sources`);
+    if (point.photoIds != null && (!Array.isArray(point.photoIds) || new Set(point.photoIds).size !== point.photoIds.length || point.photoIds.some(id => !journey.photos.some(photo => photo.id === id)))) fail(`${point.id} photoIds must be an ordered list of unique photos belonging to this journey`);
     if (!Array.isArray(point.images ?? []) || (point.images || []).length > 12) fail(`${point.id} has invalid images`);
     for (const picture of point.images || []) {
       if (picture?.licenseUrl != null && !https(picture.licenseUrl)) fail(`${point.id} image license needs a safe HTTPS URL`);

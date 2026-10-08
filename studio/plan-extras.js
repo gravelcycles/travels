@@ -3,7 +3,7 @@
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
   const publicUrl = value => { try { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password; } catch { return false; } };
   function changes(draft) {
-    const fields=['eventMode','title','startDate','endDate','timeZone','places','segments','days','coverPhoto','replayMoments','subtitle','travelers','routeGroups','meetup','videos'];
+    const fields=['eventMode','title','startDate','endDate','timeZone','places','segments','days','coverPhoto','replayMoments','subtitle','travelers','routeGroups','meetup','videos','pointsOfInterest'];
     return {...Object.fromEntries(fields.filter(key=>draft[key]!==undefined).map(key=>[key,draft[key]])),photoGroups:Object.fromEntries(draft.photos.map(photo=>[photo.id,photo.groupIds || null]))};
   }
   function nextId(draft, kind, items) { let n = 1; while (items.some(item => item.id === `${draft.id}-${kind}${n}`)) n++; return `${draft.id}-${kind}${n}`; }

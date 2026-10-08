@@ -59,7 +59,7 @@ test("build keeps drafts and draft edits out of all public data; repeat builds a
   const result = buildSite(root);
   assert.equal(result.drafts, 1);
   assert.match(fs.readFileSync(path.join(root, "dist/demo.html"), "utf8"), /assets\/trip-photos\.js/);
-  assert.equal(generated(root, "trip-photos", "JOURNEY_ATLAS_PHOTOS")["alpine-crossing"].length, 3);
+  assert.equal(generated(root, "trip-photos", "JOURNEY_ATLAS_PHOTOS")["alpine-crossing"].length, 7);
   const names = [...fs.readdirSync(path.join(root, "dist/assets")).filter(f => f.endsWith(".js")).map(f => `assets/${f}`), ...result.pages, "index.html", "demo.html"];
   const first = names.map(f => fs.readFileSync(path.join(root, "dist", f), "utf8"));
   for (const text of first) { assert.ok(!text.includes(j.id)); assert.ok(!text.includes("Private draft title")); }

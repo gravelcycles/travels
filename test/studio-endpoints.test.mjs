@@ -37,6 +37,8 @@ function editor(override = null, fetch = async () => ({ ok: true, json: async ()
   const source = fs.readFileSync(new URL('../studio/studio.js', import.meta.url), 'utf8');
   context.window.JOURNEY_ATLAS_PHOTO_BATCH = globalThis.JOURNEY_ATLAS_PHOTO_BATCH;
   vm.runInContext(fs.readFileSync(new URL('../studio/photo-batch-ui.js', import.meta.url), 'utf8'), context);
+  vm.runInContext(fs.readFileSync(new URL('../dist/assets/photo-places.js', import.meta.url), 'utf8'), context);
+  vm.runInContext(fs.readFileSync(new URL('../studio/place-editor.js', import.meta.url), 'utf8'), context);
   vm.runInContext(source.replace('  init();\n})();', `
     renderRouteList = () => {};
     clearActiveMap = () => {};

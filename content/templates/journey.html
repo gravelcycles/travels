@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="./assets/places-comments.css" />
     <link rel="stylesheet" href="./assets/places-panel.css" />
     <link rel="stylesheet" href="./assets/photo-comments.css" />
+    <link rel="stylesheet" href="./assets/photo-bubbles.css" />
   </head>
   <body data-journey-id="{{id}}">
     <header class="site-header">
@@ -96,7 +97,7 @@
         <div id="map" aria-label="Map showing the selected journey"></div>
         <div class="day-navigator" id="day-navigator" hidden aria-live="polite">
           <button id="previous-day" type="button" data-event-aria="Previous day" aria-label="Previous day">←</button>
-          <span id="focused-day-label"></span>
+          <button id="focused-day-label" type="button" data-event-aria="Choose a day" aria-label="Choose a day"></button>
           <button id="next-day" type="button" data-event-aria="Next day" aria-label="Next day">→</button>
         </div>
         <div class="map-legend" id="map-legend"></div>
@@ -116,6 +117,12 @@
 
       </section>
 
+      <aside id="map-photo-card" class="bubble-card" aria-label="Selected trip photos" hidden>
+        <div class="bubble-card-image"><img alt=""/><button type="button" data-bubble-unlock hidden>Unlock photos</button><div class="bubble-image-feedback"><span data-bubble-image-status role="status"></span><button type="button" data-bubble-retry hidden>Retry photo</button></div></div>
+        <div class="bubble-card-copy"><header><strong data-bubble-title></strong><button type="button" data-bubble-close aria-label="Close selected map photos">×</button></header><p data-bubble-day></p><p data-bubble-caption></p><p data-bubble-location></p><details data-bubble-notes hidden><summary>Notes & credits</summary><p data-bubble-description></p></details>
+        <div class="bubble-card-navigation"><button type="button" data-bubble-prev aria-label="Previous photo">←</button><span data-bubble-count aria-live="polite"></span><button type="button" data-bubble-next aria-label="Next photo">→</button></div>
+        <footer><button type="button" data-bubble-locate>Locate</button><button type="button" data-bubble-full>Full screen ↗</button></footer><button type="button" data-bubble-place hidden></button><button type="button" data-bubble-comments hidden>Comments</button></div>
+      </aside>
       <aside id="places-panel" class="places-panel" aria-label="Places we found" hidden></aside>
       <aside class="story-panel" aria-label="Journey details">
         <div class="mobile-story-heading"><span id="mobile-story-date"></span><h2 id="mobile-story-title"></h2><p id="mobile-story-tagline" hidden></p><p id="mobile-story-meta"></p></div>
@@ -129,7 +136,7 @@
         <div class="photo-section">
           <div class="photo-heading">
             <span data-event-copy="THIS DAY">THIS DAY</span>
-            <small>Open any photo or video full screen</small>
+            <small>Browse photos and videos</small>
           </div>
           <div class="photo-strip" id="photo-strip"></div>
         </div>
@@ -288,6 +295,8 @@
     <script src="./assets/location-labels.js"></script>
     <script src="./assets/community-client.js"></script>
     <script src="./assets/places-comments.js"></script>
+    <script src="./assets/photo-places.js"></script>
+    <script src="./assets/photo-bubbles.js"></script>
     <script src="./assets/places-panel.js"></script>
     <script src="./assets/photo-comments.js"></script>
     <script src="./assets/app.js"></script>

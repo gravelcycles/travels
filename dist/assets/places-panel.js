@@ -147,7 +147,12 @@
       panel.classList.add('pp-selected'); panel.setAttribute('aria-labelledby', 'place-detail-title');
       $('.pp-heading').hidden = true; $('.pp-browse-controls').hidden = true; $('.pp-detail-nav').hidden = false;
       $('.pp-detail-nav-name').textContent = point.name;
-      content.innerHTML = `${point.images?.length ? `<button class="pp-hero" data-open-gallery="0" aria-label="View photos of ${escape(point.name)}">${pictureHtml(point.images[0], { hero: true })}</button>` : ''}<header class="pp-identity"><div class="pp-card-kind">${icon(point.category)}${point.category === 'food' ? 'Food & drink' : 'Place of interest'}<span class="pp-visit-status">${point.status === 'visited' ? 'Visited' : 'Saved for later'}</span></div><h3 id="place-detail-title" tabindex="-1">${escape(point.name)}</h3><button class="pp-rating-link" data-show-place-tab="reviews">${score ? `<b>${score}</b>${ratingStars(score)}<span>${reviews.length} group ${reviews.length === 1 ? 'review' : 'reviews'}</span>` : '<span>No group reviews yet</span>'}${icon('next')}</button>${point.sample ? '<p class="pp-sample-note">Sample place · fictional group memories</p>' : ''}</header><div class="pp-tabs" role="tablist" aria-label="Place details">${tabs.map((name, i) => `<button type="button" role="tab" id="place-tab-${name}" data-place-tab="${name}" aria-controls="place-tab-panel-${name}" aria-selected="${tab === name}" tabindex="${tab === name ? 0 : -1}">${name[0].toUpperCase() + name.slice(1)}${name === 'photos' && point.images?.length ? ` <span>${point.images.length}</span>` : ''}</button>`).join('')}</div><section id="place-tab-panel-overview" role="tabpanel" aria-labelledby="place-tab-overview" data-place-tab-panel="overview"${tab === 'overview' ? '' : ' hidden'}><div class="pp-quick-actions"><button class="pp-primary" data-place-map>${icon('pin')}Show on map</button>${point.mapsUrl ? `<a class="pp-secondary" href="${escape(point.mapsUrl)}" target="_blank" rel="noopener noreferrer">Google Maps${icon('link')}</a>` : ''}</div><div class="pp-overview-copy"><p>${escape(point.summary)}</p>${point.note ? `<blockquote><span>Our memory</span>${escape(point.note)}</blockquote>` : ''}</div><div class="pp-facts">${point.address ? `<div>${icon('pin')}<span>${escape(point.address)}${point.locationAccuracy === 'approximate' ? '<small>Approximate map position</small>' : ''}</span></div>` : ''}${point.dayIds.length ? `<div>${icon('day')}<span>${point.dayIds.map(id => { const day = options.journey().days.find(day => day.id === id); return day ? `Day ${day.number} · ${escape(day.date || day.title)}` : ''; }).filter(Boolean).join('<br/>')}</span></div>` : ''}</div><details class="pp-sources"><summary>About this place & sources${icon('next')}</summary><p>Place details are collected for this journey.${!point.address && point.locationAccuracy === 'approximate' ? ' The map position is approximate.' : ''}</p>${(point.sources || []).map(source => `<a href="${escape(source.url)}" target="_blank" rel="noopener noreferrer">${icon('globe')}<span>${escape(source.label)}</span>${icon('link')}</a>`).join('')}</details></section><section id="place-tab-panel-reviews" role="tabpanel" aria-labelledby="place-tab-reviews" data-place-tab-panel="reviews"${tab === 'reviews' ? '' : ' hidden'}>${reviewHtml(point)}</section><section id="place-tab-panel-photos" role="tabpanel" aria-labelledby="place-tab-photos" data-place-tab-panel="photos"${tab === 'photos' ? '' : ' hidden'}><div class="pp-place-photos"><div class="pp-section-heading"><h4>A closer look</h4><span>${point.images?.length || 0} ${(point.images?.length || 0) === 1 ? 'photo' : 'photos'}</span></div>${point.images?.length ? `<div class="pp-photo-grid">${point.images.map((picture, index) => `<figure><button data-open-gallery="${index}" aria-label="Open photo ${index + 1}: ${escape(picture.alt)}">${pictureHtml(picture, { index })}</button><figcaption><span>${escape(picture.credit)}</span><a href="${escape(picture.sourceUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Source for photo ${index + 1}">Source${icon('link')}</a>${picture.licenseUrl ? `<a href="${escape(picture.licenseUrl)}" target="_blank" rel="noopener noreferrer">License${icon('link')}</a>` : ''}</figcaption></figure>`).join('')}</div>` : `<div class="pp-quiet-empty">${icon('photos')}<h5>A picture for another day.</h5><p>Photos of this place haven’t been added yet.</p></div>`}</div></section>`;
+      content.innerHTML = `${point.images?.length ? `<button class="pp-hero" data-open-gallery="0" aria-label="View photos of ${escape(point.name)}">${pictureHtml(point.images[0], { hero: true })}</button>` : ''}<header class="pp-identity"><div class="pp-card-kind">${icon(point.category)}${point.category === 'food' ? 'Food & drink' : 'Place of interest'}<span class="pp-visit-status">${point.status === 'visited' ? 'Visited' : 'Saved for later'}</span></div><h3 id="place-detail-title" tabindex="-1">${escape(point.name)}</h3><button class="pp-rating-link" data-show-place-tab="reviews">${score ? `<b>${score}</b>${ratingStars(score)}<span>${reviews.length} group ${reviews.length === 1 ? 'review' : 'reviews'}</span>` : '<span>No group reviews yet</span>'}${icon('next')}</button>${point.sample ? '<p class="pp-sample-note">Sample place · fictional group memories</p>' : ''}</header><div class="pp-tabs" role="tablist" aria-label="Place details">${tabs.map((name, i) => `<button type="button" role="tab" id="place-tab-${name}" data-place-tab="${name}" aria-controls="place-tab-panel-${name}" aria-selected="${tab === name}" tabindex="${tab === name ? 0 : -1}">${name[0].toUpperCase() + name.slice(1)}${name === 'photos' && point.images?.length ? ` <span>${point.images.length}</span>` : ''}</button>`).join('')}</div><section id="place-tab-panel-overview" role="tabpanel" aria-labelledby="place-tab-overview" data-place-tab-panel="overview"${tab === 'overview' ? '' : ' hidden'}><div class="pp-quick-actions"><button class="pp-primary" data-place-map>${icon('pin')}Show on map</button>${point.mapsUrl ? `<a class="pp-secondary" href="${escape(point.mapsUrl)}" target="_blank" rel="noopener noreferrer">Google Maps${icon('link')}</a>` : ''}</div><div class="pp-overview-copy"><p>${escape(point.summary)}</p>${point.note ? `<blockquote><span>Our memory</span>${escape(point.note)}</blockquote>` : ''}</div><div class="pp-facts">${point.address ? `<div>${icon('pin')}<span>${escape(point.address)}${point.locationAccuracy === 'approximate' ? '<small>Approximate map position</small>' : ''}</span></div>` : ''}${point.dayIds.length ? `<div>${icon('day')}<span>${point.dayIds.map(id => { const day = options.journey().days.find(day => day.id === id); return day ? `Day ${day.number} · ${escape(day.date || day.title)}` : ''; }).filter(Boolean).join('<br/>')}</span></div>` : ''}</div><details class="pp-sources"><summary>About this place & sources${icon('next')}</summary><p>Place details are collected for this journey.${!point.address && point.locationAccuracy === 'approximate' ? ' The map position is approximate.' : ''}</p>${(point.sources || []).map(source => `<a href="${escape(source.url)}" target="_blank" rel="noopener noreferrer">${icon('globe')}<span>${escape(source.label)}</span>${icon('link')}</a>`).join('')}</details></section><section id="place-tab-panel-reviews" role="tabpanel" aria-labelledby="place-tab-reviews" data-place-tab-panel="reviews"${tab === 'reviews' ? '' : ' hidden'}>${reviewHtml(point)}</section><section id="place-tab-panel-photos" role="tabpanel" aria-labelledby="place-tab-photos" data-place-tab-panel="photos"${tab === 'photos' ? '' : ' hidden'}><div class="pp-place-photos"><div class="pp-section-heading"><h4>Venue & landmark images</h4><span>${point.images?.length || 0} ${(point.images?.length || 0) === 1 ? 'photo' : 'photos'}</span></div>${point.images?.length ? `<div class="pp-photo-grid">${point.images.map((picture, index) => `<figure><button data-open-gallery="${index}" aria-label="Open photo ${index + 1}: ${escape(picture.alt)}">${pictureHtml(picture, { index })}</button><figcaption><span>${escape(picture.credit)}</span><a href="${escape(picture.sourceUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Source for photo ${index + 1}">Source${icon('link')}</a>${picture.licenseUrl ? `<a href="${escape(picture.licenseUrl)}" target="_blank" rel="noopener noreferrer">License${icon('link')}</a>` : ''}</figcaption></figure>`).join('')}</div>` : `<div class="pp-quiet-empty">${icon('photos')}<h5>A picture for another day.</h5><p>Photos of this place haven’t been added yet.</p></div>`}</div></section>`;
+      const related=root.JOURNEY_ATLAS_PHOTO_PLACES.photosForPlace(point,options.photos());
+      const section=document.createElement('section');section.className='pp-trip-photos';
+      section.innerHTML=`<h4>Photos from our trip</h4><p>Album photos stay separate from the credited venue images.</p>${related.linked.length?`<button type="button" class="pp-secondary" data-trip-photos="linked">Browse ${related.linked.length} linked ${related.linked.length===1?'photo':'photos'}</button>`:''}${related.nearby.length?`<button type="button" class="pp-secondary" data-trip-photos="nearby">Browse ${related.nearby.length} nearby ${related.nearby.length===1?'photo':'photos'}</button><p>Nearby means within 150 metres of this map position, not a confirmed visit.</p>`:''}${!related.linked.length&&!related.nearby.length?'<p>No linked or nearby trip photos in the selected route group.</p>':''}`;
+      section.querySelectorAll('[data-trip-photos]').forEach(button=>button.addEventListener('click',()=>{const list=related[button.dataset.tripPhotos];closeForPhotos();options.browsePhotos?.(list);}));
+      content.querySelector('[data-place-tab-panel="overview"]').append(section);
       wireImages(content); bindReviewForm(); content.scrollTop = scroll;
     }
     function bindReviewForm() {
@@ -224,8 +229,8 @@
     function scheduleMarkers() { if (markerFrame) return; markerFrame = requestAnimationFrame(() => { markerFrame = 0; renderMarkers(); }); }
     function renderMarkers() {
       markers.forEach(marker => marker.remove()); markers = [];
-      const map = options.map(); if (!visible || !map || !root.maplibregl) return;
-      const results = filtered(); if (current() && !results.includes(current())) results.push(current());
+      const map = options.map(); if ((!visible && options.mapScope?.() !== 'day') || !map || !root.maplibregl) return;
+      const results = visible ? filtered() : points().filter(point=>!point.dayIds.length || point.dayIds.includes(options.dayId())); if (visible && current() && !results.includes(current())) results.push(current());
       for (const group of clusterPoints(results, coordinates => map.project(coordinates), selectedId)) {
         const point = group.points[0], cluster = group.points.length > 1, button = document.createElement('button');
         button.type = 'button'; button.className = `pp-pin pp-pin-${cluster ? 'cluster' : point.category}${group.selected ? ' is-selected' : ''}`;
@@ -234,11 +239,11 @@
         if (!cluster) { const label = document.createElement('span'); label.className = 'pp-pin-label'; label.textContent = point.name; button.append(label); }
         button.addEventListener('click', event => {
           event.stopPropagation();
-          if (!cluster) { selectPlace(point.id, false); return; }
+          if (!cluster) { openPlace(point.id); return; }
           if (mobile()) { showNearby(group.points.map(point => point.id)); return; }
           closeCluster(); const chooser = document.createElement('div'); chooser.className = 'pp-cluster-chooser';
           chooser.innerHTML = `<strong>${group.points.length} places nearby</strong>${group.points.map(item => `<button data-cluster-place="${escape(item.id)}">${icon(item.category)}<span>${escape(item.name)}</span>${icon('next')}</button>`).join('')}`;
-          chooser.addEventListener('click', event => { const target = event.target.closest('[data-cluster-place]'); if (target) selectPlace(target.dataset.clusterPlace); });
+          chooser.addEventListener('click', event => { const target = event.target.closest('[data-cluster-place]'); if (target) openPlace(target.dataset.clusterPlace); });
           clusterPopup = new root.maplibregl.Popup({ offset: 28, closeButton: true, closeOnClick: true, className: 'pp-cluster-popup', maxWidth: '290px' }).setLngLat(point.coordinates).setDOMContent(chooser).addTo(map);
           chooser.querySelector('button')?.focus();
         });
@@ -296,7 +301,7 @@
       returnFocus = document.activeElement; options.explore(); visible = true; panel.hidden = false; document.body.classList.add('places-open');
       if (historyWrite) historyDepth = 0;
       for (const id of ['open-places', 'mobile-open-places']) document.getElementById(id)?.setAttribute('aria-expanded', 'true');
-      update(); selectedId ? renderDetail() : renderList(); setExpanded(expanded);
+      update(); selectedId ? renderDetail() : renderList(); setExpanded(expanded);options.onPlacesVisibility?.();
       if (historyWrite) rememberHistory(true);
       requestAnimationFrame(() => { options.map()?.resize(); renderMarkers(); if (!selectedId) fitPlaces(); else focusPlace(current()); });
       if (focus) (selectedId ? $('#places-back-to-list') : $('#places-title')).focus({ preventScroll: true });
@@ -306,6 +311,7 @@
       if (historyWrite && history.state?.atlasPlaces?.open) { history.go(-Math.max(1, history.state.atlasPlaces.depth || 1)); return; }
       if (!selectedId) { if (nearbyIds) nearbyScroll = content.scrollTop; else listScroll = content.scrollTop; }
       if (gallery.open) closeGallery(false); visible = false; historyDepth = 0; panel.hidden = true; document.body.classList.remove('places-open'); closeCluster(); renderMarkers();
+      options.onPlacesVisibility?.();
       for (const id of ['open-places', 'mobile-open-places']) document.getElementById(id)?.setAttribute('aria-expanded', 'false');
       const map = options.map(); map?.resize();
       if (savedCamera && savedCamera.dayId === options.dayId() && map?.jumpTo) {
@@ -331,11 +337,12 @@
       }
       if (changedDay && dayOnly) nearbyIds = null;
       if (visible && (changedJourney || (changedDay && dayOnly && !selectedId))) renderList();
-      if (visible && (changedJourney || changedDay)) scheduleMarkers();
+      if (visible && selectedId) renderDetail({preserveScroll:true});
+      scheduleMarkers();
     }
     function mapReady() {
       const map = options.map(); if (map && map !== markerMap) { markerMap?.off('moveend', scheduleMarkers); markerMap = map; map.on('moveend', scheduleMarkers); }
-      if (visible) { scheduleMarkers(); current() ? focusPlace(current()) : fitPlaces(); }
+      scheduleMarkers();if (visible) { current() ? focusPlace(current()) : fitPlaces(); }
     }
     for (const id of ['open-places', 'mobile-open-places']) document.getElementById(id)?.addEventListener('click', () => open());
     $('#places-title').tabIndex = -1;
@@ -414,7 +421,10 @@
       restoring = false;
     });
     update(); mapReady();
-    return { open, close, update, mapReady, showNearby, isOpen: () => visible };
+    function openPlace(id) { if(!points().some(point=>point.id===id))return;open({focus:false});selectPlace(id,true); }
+    function closeForPhotos() { close({historyWrite:false,focus:false});lastHistory=JSON.stringify(snapshot()); }
+    function dayChanged() { if(visible){closeForPhotos();rememberHistory();}selectedId='';nearbyIds=null; }
+    return { open, close, update, mapReady, showNearby, openPlace, closeForPhotos, dayChanged, isOpen: () => visible };
   }
   root.JOURNEY_ATLAS_PLACE_PANEL = { create, searchPlaces, nearbyPlaces, clusterPoints, mapInsets };
 })(typeof window === 'undefined' ? globalThis : window);

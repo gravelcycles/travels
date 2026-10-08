@@ -193,7 +193,7 @@ function placeHistoryFixture({ cameraReady = null } = {}) {
     location: { href: 'https://example.test/journey' }, matchMedia: () => ({ matches: false }),
     requestAnimationFrame() { return 1; }, cancelAnimationFrame() {}, setTimeout() {}, clearTimeout() {}
   });
-  for (const file of ['places-comments.js', 'places-panel.js']) vm.runInContext(fs.readFileSync(new URL(`../dist/assets/${file}`, import.meta.url), 'utf8'), context);
+  for (const file of ['photo-places.js','places-comments.js', 'places-panel.js']) vm.runInContext(fs.readFileSync(new URL(`../dist/assets/${file}`, import.meta.url), 'utf8'), context);
   const stored = new Map();
   const store = context.window.JOURNEY_ATLAS_PLACES.createDemoStore({ getItem: key => stored.get(key), setItem: (key, value) => stored.set(key, value) }, 'trip');
   const originalCamera = { center: [8.53, 47.38], zoom: 9, bearing: 30, pitch: 12, padding: { top: 10, right: 20, bottom: 30, left: 40 } };
@@ -206,7 +206,7 @@ function placeHistoryFixture({ cameraReady = null } = {}) {
   };
   const controller = context.window.JOURNEY_ATLAS_PLACE_PANEL.create({
     journey: () => ({ id: 'journey', days: [{ id: 'one', number: 1, date: 'Today' }], pointsOfInterest: [point] }),
-    preview: true, dayId: () => currentDay, store: () => store, explore() {}, map: () => map,
+    photos:()=>[],preview: true, dayId: () => currentDay, store: () => store, explore() {}, map: () => map,
     canRestoreMapCamera: () => cameraReady === true, restoreMap() { restoreCalls++; }
   });
   return {
@@ -307,4 +307,12 @@ test('nearby cluster choices stay in the expanded Places sheet and retain the or
   assert.equal(f.history.state.atlasPlaces.nearbyIds, null);
   assert.equal(content.scrollTop, 164);
   assert.doesNotMatch(content.innerHTML, /data-clear-nearby/);
+});
+
+test('Places to inline trip photos preserves Back and Forward to the original place detail',()=>{
+  const f=placeHistoryFixture();f.controller.openPlace('cafe');const detail=structuredClone(f.history.state);
+  f.controller.closeForPhotos();assert.equal(f.controller.isOpen(),false);
+  f.history.pushState({...detail,atlasPlaces:{...detail.atlasPlaces,open:false,depth:0},atlasPhotoBubble:{journeyId:'journey',dayId:'one',ids:['photo'],photoId:'photo'}});
+  f.history.back();f.flush();assert.equal(f.controller.isOpen(),true);assert.equal(f.history.state.atlasPlaces.selectedId,'cafe');
+  f.history.go(1);f.flush();assert.equal(f.controller.isOpen(),false);assert.equal(f.history.state.atlasPhotoBubble.photoId,'photo');
 });

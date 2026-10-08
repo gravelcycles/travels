@@ -1247,6 +1247,9 @@
   const extrasEditor = planExtras.create({container:$('#trip-planner'),getDraft:()=>planForJourney().draft,getPhotos:()=>planForJourney().draft.photos.map(photoWithOverride),
     onPhotoGroups:(id,groupIds)=>{planExtras.setAudience(planForJourney().draft.photos.find(photo=>photo.id===id),groupIds || []);},
     onChange:refresh=>{dirtyPlan();if(refresh)renderPlanner();},onStatus:message=>{$('#plan-status').textContent=message;},previewVideo:previewStudioVideo,importVideo:importPrivateVideo});
+  const placeEditor = window.JOURNEY_ATLAS_PLACE_EDITOR.create({container:$('#plan-points-of-interest'),getDraft:()=>planForJourney().draft,getPhotos:()=>basePhotos.map(photoWithOverride),photoUrl,
+    onChange:dirtyPlan,onStatus:message=>{$('#plan-status').textContent=message;},onEditPhoto:id=>{setMode('photos');selectPhoto(id,true);}});
+  $('#open-place-editor').addEventListener('click',()=>{setMode('planner');$('#places-editor-section').open=true;$('#places-editor-section').scrollIntoView({block:'start'});$('#plan-points-of-interest select').focus();});
   function uniquePlanId(kind, items) { let n=1; while (items.some(item => item.id === `${journey.id}-${kind}${n}`)) n++; return `${journey.id}-${kind}${n}`; }
   function newPlaceCanBeRemoved(draft, id) {
     return !journey.places.some(place => place.id === id)
@@ -1274,7 +1277,7 @@
     $('#cover-picker').value = draft.coverPhoto?.photoId || '';
     $('#cover-x').value = draft.coverPhoto?.focal?.[0] ?? 50; $('#cover-y').value = draft.coverPhoto?.focal?.[1] ?? 50;
     $('#cover-thumbnails').innerHTML = visible.map(p=>`<button type="button" data-pick-cover="${escapeHtml(p.id)}" aria-label="Use ${escapeHtml(p.caption || p.id)} as trip cover" aria-pressed="${draft.coverPhoto?.photoId===p.id}"><img loading="lazy" src="${escapeHtml(photoUrl(p.srcset?.[0]?.src || p.src))}" alt="${escapeHtml(p.caption || '')}"></button>`).join('');
-    renderCoverPreviews(); renderMomentEditor(); extrasEditor.render();
+    renderCoverPreviews(); renderMomentEditor(); extrasEditor.render(); placeEditor.render();
     $('#plan-save').disabled = savingState;
     $('#plan-alignment').value = plan.alignment || 'dates';
   }
@@ -1413,6 +1416,7 @@
       return { journeyId:journey.id, state, stateRevision:savedStateRevision, revision:plan.revision, changes:planChanges(plan.draft), alignment:plan.alignment || 'dates' };
     },
     openEditor: action => {
+      if (action.mode === 'places') { $('#open-place-editor').click(); return; }
       if (action.mode === 'save') { $('#save-all').focus(); return; }
       if (action.mode === 'media') {
         setMode('planner');

@@ -21,7 +21,7 @@ function selection() {
   const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),
     window: {}, clearDayPreview(){}, deferDayPreviewClear(){}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
     activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null,
-    viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null, placesUI: null,
+    viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null, placesUI: null, photoBubbles: null,
     journey: { days, segments: [] }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],
     photosForDay: () => [], routeLabel: () => '', escapeHtml: value => value || '',
     refreshPreloads() {}, renderDays() {}, scrollActiveDayIntoView() {}, renderStory() {}, drawMainMap() {}, renderViewerFilmstrip() {}, clearSegmentInspection() {}

@@ -1,8 +1,8 @@
 # iPhone photo workflow
 
 The atlas can use an iPhone photo's capture time and GPS position to associate
-it with a day and show its location in the photo viewer. The journey map has
-no photo thumbnails. Preserve the original metadata during
+it with a day and show its location in the photo viewer. Day maps show sparse thumbnail bubbles alongside curated Places pins. Selecting
+a bubble keeps its photo group and current photo stable while panning or zooming. Preserve the original metadata during
 transfer, then publish a separate web-sized copy.
 
 ## Upload and delete in Studio
@@ -407,3 +407,27 @@ Phone photo captions appear in **Details & location**. Grids defer full photos
 until selection; swipe neighbors use the full-photo cache without promoting
 speculative work to a foreground download. Public-photo Retry uses the public
 loader and never asks for private-photo access.
+
+
+## Link photos to Places
+
+Open **Studio → Places**, choose a place, then use **Trip photo links**. Link
+existing photos, unlink them, or move them earlier/later in the place's selection.
+Use **Edit photo** for the ordinary caption, day, location, map frame and Trash
+controls. These remain the same photos and keep their original privacy policy.
+A link never assigns GPS. Unlocated linked photos remain browseable; Locate is
+disabled until a known photo location exists. Trashed photos retain their saved
+links and return when restored, but never appear in the public selection.
+
+The viewer distinguishes explicit links from **nearby photos** within 150 metres
+of a place's coordinate on its assigned days. Proximity is computed, never saved
+as a relationship, and does not prove a visit. Venue/landmark imagery has its own
+public credits and source links, separate from the trip album. Moving a photo to
+another day or changing its group automatically updates eligible nearby results;
+explicit place membership and order remain owner-controlled.
+
+Desktop days stay on the left; normal photo browsing opens on the right beside
+the map, with Comments, Locate, About this place and an explicit Full screen
+control. Phones keep one named day picker at the bottom and a compact selected
+photo card below the map. Auth expiry clears protected photo pixels from bubbles
+and the card; unlock uses the existing photo service.

@@ -242,9 +242,10 @@ have shared implementations. Explicit sharing (without automatic visitor reload
 persistence) and named stops on the map-only Replay timeline remain proposals.
 Replay playback and its slider are already shipped. The six-feature demo and
 separate delight/day-experience prototypes are preserved on branches listed in
-[WIP.md](WIP.md). Audit V1 stays excluded. The Photos + Places scene on the local
-day-experience branch demonstrates nearby photo discovery; adoption in shared
-production code remains pending.
+[WIP.md](WIP.md). Audit V1 stays excluded. The accepted Photos + Places scene has been implemented in shared production
+modules, including the full owner editor, persistent desktop day rail/right
+detail pane and one named phone day picker. The original prototype is retained
+as a local review artifact; unrelated Replay experiments remain separate.
 
 - [x] **Ready to share — 8 October:** shared read-only Studio review of the
       current draft, saved sources, private derivative availability and explicit
@@ -281,11 +282,15 @@ production code remains pending.
       administrator secret; deployed and checked the Worker before Pages.
       Actual runtime covers writes/Undo; production checks are read-only to avoid
       fabricated memories. Follow docs/COMMUNITY_OPERATIONS.md. Group place reviews
-      remain prompt-authored; a photo password grants no traveler/editor role.
+      are owner-authored in Studio or through chat; a photo password grants no traveler/editor role.
 - [x] **W08 UX polish:** preserved drafts and context, search/filter recovery,
       rating-only/editable reviews, full-screen galleries, photo conversations
       with name changes and edit/delete/Undo, POI clusters and coordinated Back.
       See docs/PLACES_UX_REVIEW_2026-09-20.md for verification evidence.
+- [x] **Photos + Places owner editing — 8 October:** shared stable map bubbles,
+      explicit ordered links and honest nearby suggestions; add/edit/remove
+      places, sources, credited venue images and group reviews through Studio
+      recovery/review/save. Photos preserve their existing protection.
 - [ ] **W08 image intake:** further automate source/permission review and optimized
       derivatives if repeated prompt-based intake shows a need. Current intake is
       agent-operated; no Google Maps API or image scraping service is planned.

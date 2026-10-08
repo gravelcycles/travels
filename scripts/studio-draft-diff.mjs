@@ -2,6 +2,7 @@ const equal = (a,b) => JSON.stringify(a) === JSON.stringify(b);
 const object = value => value && typeof value === 'object' && !Array.isArray(value);
 const title = value => value?.sourceFilename || value?.name || value?.title || value?.label || value?.caption || value?.id || '';
 const labels = {
+  pointsOfInterest:'Places',photoIds:'Linked photo order',dayIds:'Journey days',summary:'Description',note:'Memory',coordinates:'Map position',
   tagline:'Tagline', text:'Day story', description:'Notes', caption:'Caption', alt:'Image description', title:'Title', date:'Display date',
   dayId:'Journey day', locationLabel:'Exact place', location:'Photo location', zoom:'Map zoom', mapFrame:'Map frame',
   leadPhotoId:'Lead photo', photoOrder:'Album order', trashed:'Trash', reviewed:'Review status',
@@ -17,7 +18,7 @@ const label = key => labels[key] || String(key).replace(/([a-z])([A-Z])/g,'$1 $2
 const textFields = new Set(['tagline','text','description','caption','alt','locationLabel','subtitle']);
 const atomic = new Set(['location','geometry','controlPoints','mapFrame','center','routing','source']);
 const references = new Set(['dayId','leadPhotoId','photoId','placeId','destinationId','from','to']);
-const collections = {days:'Day',photos:'Photo',segments:'Route',places:'Place',replayMoments:'Replay chapter',travelers:'Traveler',routeGroups:'Travel group',videos:'Video'};
+const collections = {days:'Day',photos:'Photo',segments:'Route',places:'Place',pointsOfInterest:'Place',replayMoments:'Replay chapter',travelers:'Traveler',routeGroups:'Travel group',videos:'Video'};
 
 export function studioDraftDiff(data, saved, draft, routes = {}) {
   const changes=[];
@@ -103,8 +104,8 @@ export function studioDraftDiff(data, saved, draft, routes = {}) {
   for (const [id,plan] of draft.plans || []) {
     const journey=data.journeys.find(j=>j.id===id);
     if (!journey) { compare('Trip plan',context(plan.draft),[],null,plan.draft,plan.draft); continue; }
-    for (const key of ['title','subtitle','startDate','endDate','timeZone','places','segments','days','coverPhoto','replayMoments','travelers','routeGroups','meetup','videos']) {
-      compare('Trip plan',context(journey),[key],journey[key],plan.draft[key],journey);
+    for (const key of ['title','subtitle','startDate','endDate','timeZone','places','segments','days','coverPhoto','replayMoments','travelers','routeGroups','meetup','videos','pointsOfInterest']) {
+      compare('Trip plan',context(journey),[key],key==='pointsOfInterest' ? journey[key] || [] : journey[key],key==='pointsOfInterest' ? plan.draft[key] || [] : plan.draft[key],journey);
     }
     for (const photo of plan.draft.photos || []) {
       const base=journey.photos.find(item=>item.id===photo.id);

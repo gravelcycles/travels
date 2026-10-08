@@ -29,7 +29,7 @@ export function resizeCalendar(journey, startDate, endDate, alignment = 'dates')
   return { days, removed:journey.days.filter(d => !retained.has(d.id)), added:days.filter(d => !journey.days.some(old => old.id === d.id)) };
 }
 export function prepareJourneyPlan(data, base, changes, state, alignment = 'dates') {
-  const allowed = ['eventMode','title','startDate','endDate','timeZone','places','segments','days','coverPhoto','replayMoments','subtitle','travelers','routeGroups','meetup','videos','photoGroups'];
+  const allowed = ['eventMode','title','startDate','endDate','timeZone','places','segments','days','coverPhoto','replayMoments','subtitle','travelers','routeGroups','meetup','videos','pointsOfInterest','photoGroups'];
   for (const key of Object.keys(changes)) if (!allowed.includes(key)) throw new Error(`Cannot change ${key} in the planner`);
   const {photoGroups, ...fields} = structuredClone(changes);
   let journey = { ...structuredClone(base), ...fields };
@@ -57,6 +57,7 @@ export function prepareJourneyPlan(data, base, changes, state, alignment = 'date
   for (const p of base.places) if (!journey.places.some(next => next.id === p.id)) throw new Error(`Cannot remove an existing place: ${p.id}`);
   // No silent deletion of notes, route/photo associations or editorial overrides.
   for (const day of removed) {
+    if (journey.pointsOfInterest?.some(point=>point.dayIds.includes(day.id))) throw new Error(`Day ${day.number} is assigned to a curated place. Update its Journey days in Places before shortening the trip.`);
     if (day.text?.trim() || day.tagline?.trim() || !['Day to plan', 'City to plan'].includes(day.title) || day.segmentIds.length || state.days[day.id] || base.photos.some(p => (state.photos[p.id]?.dayId || p.dayId) === day.id) || base.videos?.some(video => video.dayId === day.id) || base.meetup?.dayId === day.id || base.replayMoments?.some(m => m.dayId === day.id)) throw new Error(`Day ${day.number} (${day.calendarDate}) has content. Keep it in the date range, or move the itinerary before shortening the trip.`);
   }
   if (journey.startDate !== base.startDate || journey.endDate !== base.endDate) journey.dates = `${journey.startDate} – ${journey.endDate}`;

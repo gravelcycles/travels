@@ -113,7 +113,7 @@ test('the full map restores only train endpoints and day switches replace them w
   for (const journey of data.journeys) {
     const f = renderFixture(journey);
     let labelledEndpoints;
-    Object.assign(f.context,{mainMap:f.map,mainMapReady:true,mainDecorations:f.decorations,mapScope:'journey',
+    Object.assign(f.context,{photoBubbles:null,mainMap:f.map,mainMapReady:true,mainDecorations:f.decorations,mapScope:'journey',
       activeDayId:journey.days[0].id,activeDay:()=>journey.days.find(day=>day.id===f.context.activeDayId),
       mapIsReady:()=>true,renderLegend(){},clearDayPreview(){},renderDayNavigator(){},inspectedSegmentId:null,
       activeGroupId:null,destinationForDay:()=>null,

@@ -121,6 +121,8 @@
     return {
       update, isOpen: () => places.isOpen(), mapReady: () => places.mapReady(), photoChanged: photo => comments.photoChanged(photo),
       restoreOverlay: id => comments.restore?.(id),
+      openPlace: id => places.openPlace(id), closeForPhotos:()=>places.closeForPhotos(),dayChanged:()=>places.dayChanged(),
+      openComments:()=>comments.open(),commentsAvailable:()=>comments.available(),
       start() { comments.start(); if (preview && new URLSearchParams(location.search).get('experience') === 'places') places.open(); }
     };
   }
