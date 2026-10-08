@@ -408,7 +408,23 @@
     if (!response.ok) { if (response.status === 401) expireAccess(); throw Object.assign(new Error(data.error || 'Comments could not be saved. Try again.'), { status: response.status, code: data.code }); }
     return data;
   }
-  window.JOURNEY_ATLAS_AUTH={communityRequest,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets,selected(photo,width)].slice(-MAX_PREFETCH));},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
+  async function videoSource(src) {
+    if (!/^\/private-videos\/assets\/v1\/[a-f0-9]{64}\.mp4$/.test(src || '')) throw new Error('Invalid private video');
+    if (local) return `/build/private-video-assets/${src.slice('/private-videos/assets/'.length)}`;
+    if (!token || expiresAt<=Date.now()/1000) {if(token)expireAccess();showPrompt();throw new Error('Unlock photos to watch this video.');}
+    const epoch=generation;
+    const {response,data}=await requestJson(`${service}/private-photos/video-access`,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({src}),credentials:'omit',cache:'no-store'});
+    if(epoch!==generation)throw new Error('Video access changed. Try again.');
+    if(response.status===401){expireAccess();throw new Error('Unlock photos to watch this video.');}
+    if(!response.ok||typeof data?.grant!=='string'||data.grant.length>2048||!/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(data.grant)||!Number.isInteger(data.expiresAt)||data.expiresAt<=Date.now()/1000||data.expiresAt>Math.min(expiresAt,Date.now()/1000+630))throw new Error('Private video access is unavailable. Try again.');
+    return `${service}${src}?grant=${encodeURIComponent(data.grant)}`;
+  }
+  async function acquirePoster(src) {
+    const entry=await fetchPhoto(src,0),lease={};entry.refs.add(lease);
+    let released=false;
+    return {url:entry.url,release(){if(released)return;released=true;entry.refs.delete(lease);prune();}};
+  }
+  window.JOURNEY_ATLAS_AUTH={communityRequest,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets,selected(photo,width)].slice(-MAX_PREFETCH));},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
 })();

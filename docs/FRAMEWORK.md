@@ -210,10 +210,12 @@ preservation and template inheritance. Day details derive each group's roster,
 route and overnight from the source itinerary, even while a group is selected.
 Videos now use the existing photo viewer and all album/grid entry points.
 
-Remaining work before private trip video intake: transcode reviewed derivatives
-and posters, deliver authenticated byte ranges under the existing photo access
-policy, add timed captions/transcripts and Studio file-based video intake. Public sample
-playback does not make the current image-only Worker a private video service.
+Private video intake was implemented on 8 October: bounded local FFmpeg
+derivatives/posters, source-preserving Studio intake, authenticated native byte
+ranges under the existing photo policy, public-clip transcripts/timed captions, and
+checksum-verified publication. No family footage was uploaded as part of the
+implementation. The Worker streams from the same private R2 bucket. See
+`PHOTO_WORKFLOW.md` for asset status, grant scope and the storage ceiling.
 Studio now edits rosters, membership, leg/photo/video assignments, group
 overnights, meetup and hosted public video entries through the validated
 planner. Photo assignments retain their canonical manifest layout; checks are
@@ -227,12 +229,12 @@ membership. See W07 in TODO.md.
 The audit's 20 authorized findings are addressed in shared code. Visitor
 URL/reload persistence (V1) is explicitly excluded. Studio recovery and conflict
 review were subsequently authorized and delivered (see the follow-up below).
-Explicit sharing, publication readiness, private video
-intake (W07) and labeled Replay seeking remain proposals requiring local demo
-review. Batch photo editing was subsequently authorized on 8 October and now uses
-a shared Studio transaction model and contact sheet for real trips, demos and
-fresh drafts. It changes overrides through the existing save/recovery pipeline;
-there is no second photo manifest or persisted Undo store. This review gate does not block delivery of authorized bug fixes.
+Explicit sharing, publication readiness and labeled Replay seeking were proposed
+in that review. Batch photo editing and private video intake were subsequently
+authorized on 8 October. Batch uses one shared Studio transaction model and
+contact sheet for real trips, demos and fresh drafts through existing
+save/recovery. Private video uses the same protected media service as photos.
+This review gate does not block delivery of authorized changes.
 
 The [8 October workstream checkpoint](../WIP.md) records the local day-experience
 prototype and two design demos on separate branches. They are review artifacts,
@@ -301,3 +303,5 @@ Remaining route evidence: personal departures and historical diversions are
 unconfirmed; the DB Monday notice establishes the probable replacement-bus
 endpoints but not the actual coach streets. See `docs/HEADING_EAST.md`. No new
 framework migration is required for additional cities or later photo intake.
+
+Private video follow-ups: protected speech transcript/timed-caption delivery is pending; private clips reject those fields. Public-clip timed caption editing currently uses content/agent operations; Studio provides plain transcript editing. Per-day group membership and paired Live Photos remain separate follow-ups. Original held MOVs require clip-specific review/publication authorization.

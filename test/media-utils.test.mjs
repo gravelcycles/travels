@@ -49,3 +49,14 @@ test('thumbnail failures clean up, leave playback available and can retry', asyn
   assert.equal(f.videos[0].src,undefined); assert.equal(f.videos[0].pauseCount,1);
   await loader.get(item); assert.equal(f.videos.length,2);
 });
+
+test('private playback waits for authorization and drops late grants/poster leases when closed',async()=>{
+ const node=()=>({hidden:true,listeners:{},addEventListener(k,fn){this.listeners[k]=fn;},setAttribute(){},removeAttribute(k){delete this[k];},textContent:''});
+ const video={...node(),playCount:0,pause(){},load(){},play(){this.playCount++;return Promise.resolve();}};
+ let sourceResolve,posterResolve,released=0;
+ const options={video,shell:node(),play:node(),status:node(),retry:node(),sourceLink:node(),posters:{acquire:()=>new Promise(resolve=>posterResolve=resolve)},privateSource:()=>new Promise(resolve=>sourceResolve=resolve)};
+ const player=globalThis.JOURNEY_ATLAS_MEDIA.createVideoPlayer(options),item={id:'private',title:'Private clip',protected:true,videoSrc:`/private-videos/assets/v1/${'a'.repeat(64)}.mp4`};
+ player.show(item);assert.equal(video.src,undefined);const started=options.play.listeners.click();assert.equal(video.playCount,0);
+ player.stop();sourceResolve('https://service.example/one-scoped-grant');posterResolve({url:'blob:private-poster',release(){released++;}});await started;await Promise.resolve();assert.equal(video.src,undefined);assert.equal(video.playCount,0);assert.equal(released,1);
+ assert.match(globalThis.JOURNEY_ATLAS_MEDIA.captionVtt([{start:0,end:1.2,text:'<script>supplied words</script>'}]),/00:00:00.000 --> 00:00:01.200/);assert.doesNotMatch(globalThis.JOURNEY_ATLAS_MEDIA.captionVtt([{start:0,end:1,text:'<script>'}]),/<script>/);
+});

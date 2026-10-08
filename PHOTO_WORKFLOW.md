@@ -330,17 +330,69 @@ Nine to Como example uses the public [MDN video test](https://developer.mozilla.
 with attribution and explicit test labeling; it is not actual trip footage.
 No video binary or new photo binary is committed or republished.
 
-The photo importer, private image derivative builder, image cache and photo
-auth Worker remain image-specific. Do not upload videos through the photo
-intake, or place a private video URL into a public manifest. Video transcoding,
-private byte-range delivery under the existing access policy, captions and
-Studio file-based video intake remain follow-up work before using private trip
-clips. Hosted public video links are now editable in **Trip plan & media →
-Videos**, including preview, duration, day/group assignment, title/caption,
-poster, credit and publication controls. **Photo route groups** edits existing
-photos' group assignments in their original manifests without changing image
-files, other metadata, order or visibility. See `JOURNEY_WORKFLOW.md`.
+The ordinary photo importer still rejects videos. Use **Trip plan & media →
+Videos → Add a private video** for local clips. Private delivery now shares the
+existing photo password policy and R2 bucket, using a separate range-aware video
+route; public MDN playback is unchanged. **Photo route groups** continues to edit
+existing photo assignments without changing their files.
 
+## Private video intake and publishing — 8 October 2026
+
+Install FFmpeg/ffprobe (`brew install ffmpeg` on macOS; `apt-get install ffmpeg`
+on Linux). `ATLAS_FFMPEG` and `ATLAS_FFPROBE` may specify executable paths. The
+build itself never transcodes existing assets. Tests use generated color/motion
+and sine-wave footage, not family originals; CI ensures FFmpeg is available.
+
+Studio requires a file, title and journey day. It accepts MOV/MP4/M4V/WebM up to
+250 MiB and five minutes. FFmpeg prepares one fast-start H.264/AAC MP4, at most
+1280 pixels on either edge, 30 fps, with bounded video/audio rates. It drops
+metadata, chapters, subtitles/data tracks and prepares a metadata-stripped WebP
+opening-frame poster. Original bytes and full probe metadata stay under ignored
+`photos/studio-video-uploads/<journey>/`; derivatives stay under ignored
+`build/private-video-assets/v1/` and `build/private-photo-assets/v1/`.
+Private speech transcripts and timed captions are rejected until protected text
+delivery is available. Titles and brief editorial notes remain public journey
+text, like existing photo captions. Public videos may use supplied transcripts
+and timed captions. Repeated imports preserve existing days and edits. A failed conversion leaves
+journey sources unchanged. Source revisions, local draft recovery and backups
+preserve editorial work during later saves.
+
+Preview locally before publishing. Six previously held family MOVs remain held:
+implementing this pipeline does not authorize publishing those clips. For a
+specific reviewed clip, run a dry run and then the explicitly authorized upload:
+
+```sh
+npm run videos:publish -- --journey <id> --video <video-id>
+npm run videos:publish -- --journey <id> --video <video-id> --publish
+```
+
+Dry run checks local hashes, sizes, metadata and encoding with no network writes.
+Publish first verifies public bucket access is disabled and reads account-wide
+R2 metrics. It stops if usage is unavailable or projected payload/metadata usage
+would exceed a conservative 9 GB ceiling. This leaves headroom below Standard's
+10 GB-month allowance, but is not an account-wide billing cap; concurrent usage,
+monthly operations and analytics lag still require review. No paid plan or media
+service is introduced. The R2 [account metrics endpoint](https://developers.cloudflare.com/api/resources/r2/)
+is the preflight source.
+
+Upload writes only missing immutable objects, checks every remote byte against
+SHA-256, and never replaces an existing object on mismatch. Only then does the
+exact verified video/poster pair become `assetStatus: "published"`; failures keep
+local status so reruns are safe. The public build excludes local/hidden clips.
+Commit the reviewed source/generated output and deploy the shared Worker/site
+normally. MP4 objects use `video/v1/<hash>.mp4` in the existing private bucket;
+posters use `v1/<hash>.webp`. Nothing uploads original footage.
+
+Native playback requests a scoped grant using the current photo bearer in a POST
+header. Its URL contains a separate grant for one immutable MP4, one allowed
+origin, and at most ten minutes or the remaining photo session, whichever is
+shorter. Every range/HEAD request checks signature, expiry, active credential and
+signing key before touching R2. Signing-key rotation or credential removal revokes
+it. Grants cannot authorize other videos or photos. The Worker streams ranges
+without buffering clips, returns 206/416 correctly, and sends no-store/no-referrer
+headers. Client locking stops playback; a paused clip whose grant expires can be
+retried to obtain fresh access. The gateway and R2 remain on the existing plan;
+video reads perform one HEAD plus a bounded GET and count against usage limits.
 
 ## Editing reliability — 12 September 2026
 

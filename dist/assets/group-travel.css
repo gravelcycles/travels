@@ -42,6 +42,9 @@
 .story-media .media-video-badge { top: 12px; bottom: auto; }
 .viewer-video { position: absolute; inset: 0; display: grid; place-items: center; background: #061113; }
 .viewer-video[hidden] { display: none; }
+.video-transcript { position: absolute; top: 64px; left: 12px; max-width: min(34em, calc(100% - 24px)); max-height: 55%; overflow: auto; padding: 8px 12px; border-radius: 8px; color: #fff; background: #102629ed; font-size: .9375rem; z-index: 2; }
+.video-transcript summary { cursor: pointer; }
+.video-transcript p { white-space: pre-wrap; line-height: 1.5; }
 .viewer-video video { display: block; width: 100%; height: 100%; max-height: 100%; object-fit: contain; }
 .viewer-video-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: flex; gap: 12px; align-items: center; padding: 17px 22px; border: 1px solid #ffffffa0; border-radius: 40px; background: #17383bea; color: #fff; font: 600 1rem sans-serif; cursor: pointer; box-shadow: 0 6px 30px #0005; }
 .viewer-video-play[hidden] { display: none; }

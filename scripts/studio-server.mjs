@@ -7,6 +7,8 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import http from "node:http";
 import { importStudioPhoto, MAX_PHOTO_BYTES } from "./studio-photo-service.mjs";
+import { importStudioVideo, MAX_VIDEO_BYTES } from './studio-video-service.mjs';
+import { byteRange } from '../workers/photo-auth/video-service.mjs';
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { prepareJourneyPlan, journeyRevision } from "./journey-planner.mjs";
@@ -33,6 +35,7 @@ const mimeTypes = {
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".webp": "image/webp"
+  ,".mp4": "video/mp4"
 };
 
 function readJson(filename) {
@@ -163,6 +166,7 @@ function reconcileSave(input, data, journey) {
   return { state: state.value, changes: plan.value };
 }
 let photoImportBusy = false;
+let videoImportBusy = false;
 const server = http.createServer((request, response) => {
   const localPort = request.socket.localPort;
   const remote = request.socket.remoteAddress;
@@ -171,6 +175,29 @@ const server = http.createServer((request, response) => {
   const url = new URL(request.url, `http://127.0.0.1:${localPort}`);
   // Only same-origin browser writes may reach the loopback editor.
   if (!["GET", "HEAD"].includes(request.method) && request.headers.origin && request.headers.origin !== `http://127.0.0.1:${localPort}` && request.headers.origin !== `http://localhost:${localPort}`) return send(response, 403, "Unexpected origin");
+  if (['GET','HEAD'].includes(request.method) && /^\/build\/private-video-assets\/v1\/[a-f0-9]{64}\.mp4$/.test(url.pathname)) {
+    const filename=path.join(repoRoot,url.pathname.slice(1));
+    if (!fs.existsSync(filename)) return send(response,404,'Video not found');
+    const size=fs.statSync(filename).size, range=byteRange(request.headers.range,size);
+    if (range===false) {response.writeHead(416,{'Content-Range':`bytes */${size}`,'Cache-Control':'no-store'});return response.end();}
+    response.writeHead(range?206:200,{'Content-Type':'video/mp4','Content-Length':range?.length||size,'Cache-Control':'no-store','Accept-Ranges':'bytes',...(range?{'Content-Range':`bytes ${range.offset}-${range.end}/${size}`}:{})});
+    if (request.method==='HEAD') return response.end();
+    return fs.createReadStream(filename,range?{start:range.offset,end:range.end}:undefined).pipe(response);
+  }
+  if (request.method==='POST' && url.pathname==='/api/videos/import') {
+    if (videoImportBusy) return send(response,409,JSON.stringify({ok:false,error:'Another video is processing. Try again shortly.'}),'application/json');
+    videoImportBusy=true;const chunks=[];let size=0,tooLarge=false,processing=false;
+    const release=()=>{if(!processing)videoImportBusy=false;};
+    request.on('aborted',release);request.on('error',release);
+    request.on('data',chunk=>{size+=chunk.length;if(size>MAX_VIDEO_BYTES){if(!tooLarge)send(response,413,JSON.stringify({ok:false,error:'Videos must be 250 MB or smaller.'}),'application/json');tooLarge=true;chunks.length=0;}else if(!tooLarge)chunks.push(chunk);});
+    request.on('end',async()=>{
+      processing=true;
+      try {if(tooLarge)return;const result=await importStudioVideo(repoRoot,{journeyId:url.searchParams.get('journeyId'),dayId:url.searchParams.get('dayId'),filename:url.searchParams.get('filename'),title:url.searchParams.get('title'),bytes:Buffer.concat(chunks)});send(response,201,JSON.stringify({ok:true,...result}),'application/json');}
+      catch(error){send(response,400,JSON.stringify({ok:false,error:error.message}),'application/json');}
+      finally{videoImportBusy=false;}
+    });
+    return;
+  }
   if (request.method === "POST" && url.pathname === "/api/draft-diff") {
     let body="";
     request.setEncoding("utf8");

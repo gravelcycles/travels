@@ -7,6 +7,10 @@ import crypto from 'node:crypto';
 export function writePlanSources(root, base, journey) {
   const sourcePath = path.join(root, `content/${base.published ? 'journeys' : 'drafts'}/${base.id}.json`);
   const source = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
+  for (const video of journey.videos || []) if (video.visibility==='private') {
+    const original=source.videos?.find(item=>item.id===video.id);
+    if (!original || ['src','poster','mimeType','visibility','protected','assetStatus','width','height','bytes','posterBytes','sourceHash','durationSeconds'].some(key=>JSON.stringify(video[key])!==JSON.stringify(original[key]))) throw new Error('Private video assets and publication status are managed by import/publish. Reload the saved video and keep your editorial edits.');
+  }
   const byId = new Map(journey.photos.map(photo => [photo.id, photo]));
   const groupsOnly = photos => photos.map(photo => {
     const next = byId.get(photo.id); if (!next) return photo;
