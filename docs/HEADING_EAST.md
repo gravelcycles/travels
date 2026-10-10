@@ -232,3 +232,63 @@ leg. At 390 px, the toggle changes 29 stops to the original eleven and retains a
 valid selected stop. Switzerland–Italy, the demo, and a freshly generated empty
 draft retain the shared viewer; the fresh draft also shows and hides an undated
 TBD entry without requiring route or photo content. QA fixtures are not published.
+
+## Saved places — 10 October 2026
+
+The owner supplied [The Best of Europe](https://maps.app.goo.gl/T9fLzATAEPPBb7k78),
+a shared Google Maps list containing 41 entries, and requested places near this
+trip's cities. The list opened without sign-in after reloading. Twenty entries
+are in seven existing city stays, approximately 0.3–6.9 km in a straight line
+from their itinerary station anchors. This is a city-only selection, not a
+claim about walking distance or journey time. All 29 confirmed/TBD stays were
+considered; transit-only towns were not treated as stays.
+
+| Assigned city | Saved places |
+| --- | --- |
+| Luzern | Barbès; Abi’s Luzern |
+| Freiburg | bis POWI; Yomy’s – Arepas & Food; Origin Coffee Stories; Café August; Tibet Kailash Gartencafé |
+| Hamburg | Jill – Neapolitanische Pizza; Isabella Glutenfree Pasteries (Alter Wall) |
+| Köln | Freddy Schilling – Die Hamburger Manufaktur (Eigelstein) |
+| Düsseldorf | Zurheide Feine Kost – EDEKA Frischecenter (Berliner Allee) |
+| Berlin | AERA (Rosenthaler Straße); Magic John’s Pizza (Oranienburger Straße); Oshione Glutenfree (Weichselstraße) |
+| Prague | Bassotto – Kavárna – Vinárna; Naše maso; Antonínovo pekařství (Náměstí Míru); Popocafepetl – Michalska; Restaurace U Agamy; Alriso Risotteria Italiana |
+
+Each source record retains the exact saved venue's address, Maps link and list
+link. Coordinates are the list's venue pins, rounded to seven decimal places and
+marked `approximate`, not surveyed entrance points. Short factual descriptions
+link to venue/operator or local tourism sources; Yomy’s is supported by its
+individual Maps listing because no official website was found. Branches were
+matched by address. bis POWi uses the operator's current name rather than older
+tourism copy referring to La Cornerie. Dietary descriptions reflect the venues'
+own descriptions; there is no inferred dietary guarantee, opening-hours feed or
+copied rating.
+
+Every entry has `status: "saved"` and its existing city `dayIds`. Past itinerary
+dates and list membership do not prove a visit. No list-author personal reminders,
+Google reviews, ratings or photographs were republished. Empty images/reviews
+use the shared viewer's normal states. Route nodes, dates, geometry and Replay
+are unchanged; the shared Places control appears because the trip now has data.
+
+The other 21 entries are excluded as separate detours, approximately 50.8–290.6 km
+from the nearest city-stay anchor. They remain available in the source list:
+
+| Area | Omitted entries |
+| --- | --- |
+| Trento / Cavedine | MaTì bakery; Casa del Caffè; Fior di Gusto Trento; Laghetto Piazza Dante; Agricamping Agritur Bauer; Lido Paradise Lago di Cavedine |
+| Verona / Isola della Scala | Gli Sglutinati; Camping Castel San Pietro; Zeno Ice Cream And Chocolate; Risotteria Melotti Isola della Scala |
+| Maggia | Cascata del Salto |
+| Lake Como | Gelateria Anakena (Gravedona); Sorgente del Fiumelatte; WOLFOX Coffee Roasters (Como); Green Enoteca Bistrot and Green Village Accommodations (Colico); Ristorante da Michele (Como) |
+| Other cities | L’Angolo Di Napoli (Milan); ZeroG (Genoa); Sgrano (Florence); Gelateria Sorbetteria 5 Terre (Manarola) |
+
+Trento lies along the planned Bolzano–Venice corridor, but is not an authored city
+stay. Its entries can be added later as explicitly labelled excursion ideas if
+the owner wants a wider selection. This intake uses only trip content and the
+existing shared Places feature; no new ingestion service or account is needed.
+
+Validation: all 422 tests and the production build pass. The Places tests now
+select their explicit Alpine Crossing fixture, so adding real place data cannot
+silently substitute a different trip for the demo. Shared checks cover the
+family reference, demo, fresh draft and published real places. Browser review
+confirmed 20 desktop entries, six entries under Prague's stop filter, the saved
+status/address/Maps link, and detail-sheet expansion at 390 px. Local UI review
+used the existing local-photo mode; no private photographs were needed.
