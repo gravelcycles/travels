@@ -204,13 +204,15 @@ function placeHistoryFixture({ cameraReady = null } = {}) {
     getContainer: () => ({ getBoundingClientRect: () => ({ left: 0, top: 0, right: 1000, bottom: 800 }) }),
     jumpTo: camera => cameraJumps.push(structuredClone(camera))
   };
+  let journey = { id: 'journey', days: [{ id: 'one', number: 1, date: 'Today' }], pointsOfInterest: [point] };
   const controller = context.window.JOURNEY_ATLAS_PLACE_PANEL.create({
-    journey: () => ({ id: 'journey', days: [{ id: 'one', number: 1, date: 'Today' }], pointsOfInterest: [point] }),
+    journey: () => journey,
     photos:()=>[],preview: true, dayId: () => currentDay, store: () => store, explore() {}, map: () => map,
     canRestoreMapCamera: () => cameraReady === true, restoreMap() { restoreCalls++; }
   });
   return {
-    controller, history, node, mobileState, store, originalCamera, cameraJumps,
+    controller, history, node, mobileState, store, originalCamera, cameraJumps, journey,
+    setJourney(value) { journey = value; controller.update(); },
     get restoreCalls() { return restoreCalls; }, setDay(id) { currentDay = id; },
     click(id, dataset = {}, attributes = []) {
       const target = { id, dataset, hasAttribute: name => attributes.includes(name) };
@@ -220,6 +222,24 @@ function placeHistoryFixture({ cameraReady = null } = {}) {
     flush() { let count = 0; while (queue.length) { assert.ok(++count < 30, 'Place history must settle'); queue.shift()(); } }
   };
 }
+
+test('Places buttons follow trip content, including empty trips and switching back to populated trips', () => {
+  const f = placeHistoryFixture();
+  const assertButtons = hidden => {
+    for (const id of ['open-places', 'mobile-open-places', 'experience-places']) assert.equal(f.node(`#${id}`).hidden, hidden, id);
+  };
+  assertButtons(false);
+  f.setDay('two'); f.controller.update();
+  assertButtons(false); // A day without places is still part of a trip with places.
+  for (const pointsOfInterest of [undefined, []]) {
+    f.setJourney({ id:'empty', days:f.journey.days, pointsOfInterest });
+    assertButtons(true);
+    assert.equal(f.node('#place-count').textContent, '0');
+    f.setJourney(f.journey);
+    assertButtons(false);
+    assert.equal(f.node('#place-count').textContent, '1');
+  }
+});
 
 test('closing and reopening a remembered place never consumes an earlier unrelated page', () => {
   const f = placeHistoryFixture();

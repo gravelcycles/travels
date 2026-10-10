@@ -6,7 +6,7 @@ import '../dist/assets/places-comments.js';
 
 const { average, ratingSummary, filterPlaces, validateComment, createDemoStore } = globalThis.JOURNEY_ATLAS_PLACES;
 const memory = () => { const values = new Map(); return { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value) }; };
-const example = () => structuredClone(loadContent(new URL('..', import.meta.url).pathname).data.journeys.find(journey => journey.pointsOfInterest?.length));
+const example = () => structuredClone(loadContent(new URL('..', import.meta.url).pathname).data.journeys.find(journey => journey.id === 'alpine-crossing'));
 
 test('group rating summaries retain empty states and count every star level accurately', () => {
   const reviews = [{ rating: 5 }, { rating: 4 }, { rating: 5 }, { rating: 1 }];

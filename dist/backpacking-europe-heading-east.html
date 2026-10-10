@@ -95,7 +95,7 @@
         <nav id="mobile-journey-actions" class="mobile-journey-actions" aria-label="Explore the journey">
           <button data-journey-action="overview" type="button">Whole trip map</button>
           <button data-journey-action="photos" type="button">All photos</button>
-          <button id="mobile-open-places" type="button" aria-controls="places-panel">Places we found</button>
+          <button id="mobile-open-places" type="button" aria-controls="places-panel" hidden>Places we found</button>
           <button data-journey-action="unlock" type="button">Unlock photos</button>
           <button data-journey-action="about" type="button">About this atlas</button>
           <a href="./">All journeys</a>
@@ -114,7 +114,7 @@
             <button id="focus-day" type="button" data-event-aria="Zoom to the selected day's complete route" aria-label="Zoom to the selected day's complete route" data-event-copy="Day close-up">Day close-up</button>
             <button id="fit-route" type="button" aria-label="Fit the whole route on the map">Fit route</button>
             <button id="show-all-photos" type="button">All photos · <span id="photo-count"></span></button>
-            <button id="open-places" type="button" aria-controls="places-panel" aria-expanded="false">Places · <span id="place-count">0</span></button>
+            <button id="open-places" type="button" aria-controls="places-panel" aria-expanded="false" hidden>Places · <span id="place-count">0</span></button>
           </div>
         </div>
         <div id="map" aria-label="Map showing the selected journey"></div>
@@ -307,7 +307,7 @@
     <dialog id="comments-dialog" class="comments-dialog" aria-labelledby="comments-title"></dialog>
 
     <script src="./assets/vendor/maplibre-5.24.0/maplibre-gl.js"></script>
-    <script src="./assets/journeys.js?v=e9a63b322829"></script>
+    <script src="./assets/journeys.js?v=d078d4fa49db"></script>
     <script src="./assets/route-geometry.js?v=3ec02caaed24"></script>
     <script src="./assets/trip-photos.js?v=7197e388c5ff"></script>
     <script src="./assets/content-overrides.js?v=0b5cfc43ecd1"></script>
@@ -326,7 +326,7 @@
     <script src="./assets/places-comments.js?v=b5d038fa8f81"></script>
     <script src="./assets/photo-places.js?v=21c47e9dbd38"></script>
     <script src="./assets/photo-bubbles.js?v=65f922679b84"></script>
-    <script src="./assets/places-panel.js?v=c66ab1a6ba4d"></script>
+    <script src="./assets/places-panel.js?v=a5b753d7675e"></script>
     <script src="./assets/photo-comments.js?v=bcdeb2a1f2cc"></script>
     <script src="./assets/app.js?v=b3c6e44d81c1"></script>
   </body>

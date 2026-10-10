@@ -1664,5 +1664,663 @@
       ]
     }
   ],
-  "photos": []
+  "photos": [],
+  "pointsOfInterest": [
+    {
+      "id": "eastbound-barbes-luzern",
+      "name": "Barbès",
+      "category": "food",
+      "coordinates": [
+        8.3074896,
+        47.046036
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-luzern-stay"
+      ],
+      "summary": "Moroccan restaurant serving mezze in Luzern’s Neustadt.",
+      "address": "Winkelriedstrasse 62, 6003 Luzern, Switzerland",
+      "mapsUrl": "https://www.google.com/maps?cid=16125963387945779590",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=16125963387945779590"
+        },
+        {
+          "label": "Place information",
+          "url": "https://www.barbes.ch/en"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-abis-luzern",
+      "name": "Abi’s Luzern",
+      "category": "food",
+      "coordinates": [
+        8.3069504,
+        47.0498475
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-luzern-stay"
+      ],
+      "summary": "Restaurant on Theaterstrasse, a short walk from Luzern station.",
+      "address": "Theaterstrasse 13, 6003 Luzern, Switzerland",
+      "mapsUrl": "https://www.google.com/maps?cid=15529514893100716300",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=15529514893100716300"
+        },
+        {
+          "label": "Place information",
+          "url": "https://abis-luzern.ch/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-bis-powi-freiburg",
+      "name": "bis POWI",
+      "category": "food",
+      "coordinates": [
+        7.8397904,
+        47.9940764
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-freiburg-stay"
+      ],
+      "summary": "Café at Grünhof on Belfortstraße, continuing the former Café POW as bis POWi.",
+      "address": "Belfortstraße 52, 79098 Freiburg im Breisgau, Germany",
+      "mapsUrl": "https://www.google.com/maps?cid=6498010164340217696",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=6498010164340217696"
+        },
+        {
+          "label": "Place information",
+          "url": "https://gruenhof.org/hospitality/bis-powi/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-yomys-freiburg",
+      "name": "Yomy’s - Arepas & Food",
+      "category": "food",
+      "coordinates": [
+        7.8432895,
+        47.9946884
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-freiburg-stay"
+      ],
+      "summary": "Arepas restaurant on Moltkestraße in Freiburg. Saved from the shared Google Maps list.",
+      "address": "Moltkestraße 17, 79098 Freiburg im Breisgau, Germany",
+      "mapsUrl": "https://www.google.com/maps?cid=1844216897905265411",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=1844216897905265411"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-origin-coffee-freiburg",
+      "name": "Origin Coffee Stories",
+      "category": "food",
+      "coordinates": [
+        7.852708,
+        47.9946037
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-freiburg-stay"
+      ],
+      "summary": "Specialty-coffee café in Freiburg’s Old Town, near the cathedral.",
+      "address": "Schusterstraße 34, 79098 Freiburg im Breisgau, Germany",
+      "mapsUrl": "https://www.google.com/maps?cid=6958176209244448247",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=6958176209244448247"
+        },
+        {
+          "label": "Place information",
+          "url": "https://visit.freiburg.de/en/origin-coffee-stories"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-cafe-august-freiburg",
+      "name": "Café August",
+      "category": "food",
+      "coordinates": [
+        7.8512953,
+        47.9935044
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-freiburg-stay"
+      ],
+      "summary": "Café on Augustinerplatz in Freiburg’s Old Town, serving coffee made with its own Schwarzwild espresso blend.",
+      "address": "Gerberau 11, 79098 Freiburg im Breisgau, Germany",
+      "mapsUrl": "https://www.google.com/maps?cid=848650922156654261",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=848650922156654261"
+        },
+        {
+          "label": "Place information",
+          "url": "https://cafe-august.com/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-tibet-kailash-gartencafe",
+      "name": "Tibet Kailash Gartencafé",
+      "category": "food",
+      "coordinates": [
+        7.8513937,
+        47.9919665
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-freiburg-stay"
+      ],
+      "summary": "Seasonal garden café at Tibet Kailash Haus on Wallstraße in Freiburg.",
+      "address": "Wallstraße 8, 79098 Freiburg im Breisgau, Germany",
+      "mapsUrl": "https://www.google.com/maps?cid=12371196722211877568",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=12371196722211877568"
+        },
+        {
+          "label": "Place information",
+          "url": "https://tibet-kailash-haus.de/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-jill-hamburg",
+      "name": "Jill - Neapolitanische Pizza",
+      "category": "food",
+      "coordinates": [
+        9.9649364,
+        53.562021
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-hamburg-stay"
+      ],
+      "summary": "Neapolitan pizzeria on Bartelsstraße in Hamburg’s Sternschanze district.",
+      "address": "Bartelsstraße 12, 20357 Altona, Germany",
+      "mapsUrl": "https://www.google.com/maps?cid=17253943189929416404",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=17253943189929416404"
+        },
+        {
+          "label": "Place information",
+          "url": "https://www.jill.hamburg/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-isabella-alter-wall",
+      "name": "Isabella Glutenfree Pasteries",
+      "category": "food",
+      "coordinates": [
+        9.9912165,
+        53.5508664
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-hamburg-stay"
+      ],
+      "summary": "Gluten-free patisserie and café at Alter Wall, with pastries and breakfast.",
+      "address": "Alter Wall 12, 20457 Hamburg, Germany",
+      "mapsUrl": "https://www.google.com/maps?cid=4995283276993570196",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=4995283276993570196"
+        },
+        {
+          "label": "Place information",
+          "url": "https://www.isabella-patisserie.de/en/pages/cafes-hamburg-alter-wall"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-freddy-schilling-eigelstein",
+      "name": "Freddy Schilling – Die Hamburger Manufaktur",
+      "category": "food",
+      "coordinates": [
+        6.956628,
+        50.949866
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-koln-stay"
+      ],
+      "summary": "The Eigelstein branch of Freddy Schilling’s burger restaurants in Köln.",
+      "address": "Eigelstein 147, 50668 Köln, Germany",
+      "mapsUrl": "https://www.google.com/maps?cid=4971431618725339451",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=4971431618725339451"
+        },
+        {
+          "label": "Place information",
+          "url": "https://www.koelntourismus.de/essen-trinken/gastronomie/freddy-schilling"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-zurheide-berliner-allee",
+      "name": "Zurheide Feine Kost - EDEKA Frischecenter",
+      "category": "food",
+      "coordinates": [
+        6.7825323,
+        51.2193699
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-dusseldorf-stay"
+      ],
+      "summary": "Zurheide Feine Kost’s EDEKA food market on Berliner Allee in central Düsseldorf.",
+      "address": "Berliner Allee 52, 40212 Düsseldorf, Germany",
+      "mapsUrl": "https://www.google.com/maps?cid=15130151849040446874",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=15130151849040446874"
+        },
+        {
+          "label": "Place information",
+          "url": "https://www.edeka.de/maerkte/072322/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-aera-rosenthaler",
+      "name": "AERA",
+      "category": "food",
+      "coordinates": [
+        13.4019281,
+        52.5294154
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-berlin-stay"
+      ],
+      "summary": "Gluten-free bakery on Rosenthaler Straße, specialising in naturally fermented sourdough bread and baked goods.",
+      "address": "Rosenthaler Str. 72, 10119 Berlin, Germany",
+      "mapsUrl": "https://www.google.com/maps?cid=8236745865218767966",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=8236745865218767966"
+        },
+        {
+          "label": "Place information",
+          "url": "https://aerabread.com/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-magic-johns-oranienburger",
+      "name": "Magic John’s Pizza",
+      "category": "food",
+      "coordinates": [
+        13.3889664,
+        52.5261429
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-berlin-stay"
+      ],
+      "summary": "The Oranienburger Straße branch of Magic John’s, serving New York-style and Detroit deep-dish pizza.",
+      "address": "Oranienburger Str. 48, 10117 Berlin, Germany",
+      "mapsUrl": "https://www.google.com/maps?cid=7606982733095285902",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=7606982733095285902"
+        },
+        {
+          "label": "Place information",
+          "url": "https://www.magicjohns.com/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-oshione-weichselstrasse",
+      "name": "Oshione Glutenfree",
+      "category": "food",
+      "coordinates": [
+        13.468276,
+        52.5105736
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-berlin-stay"
+      ],
+      "summary": "The Weichselstraße branch of Oshione’s gluten-free bakery in Berlin.",
+      "address": "Weichselstraße 25, 10247 Berlin, Germany",
+      "mapsUrl": "https://www.google.com/maps?cid=14961653352041018538",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=14961653352041018538"
+        },
+        {
+          "label": "Place information",
+          "url": "https://oshione.de/pages/uber-uns"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-bassotto-prague",
+      "name": "Bassotto - Kavárna - Vinárna",
+      "category": "food",
+      "coordinates": [
+        14.4163963,
+        50.0778861
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-prague-stay"
+      ],
+      "summary": "Gluten-free pizzeria, bakery and pastry shop on Pštrossova in Prague’s New Town.",
+      "address": "Pštrossova 1926/4, 110 00 Nové Město, Czechia",
+      "mapsUrl": "https://www.google.com/maps?cid=15799969528588616118",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=15799969528588616118"
+        },
+        {
+          "label": "Place information",
+          "url": "https://bassotto.choiceqr.com/online-menu"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-nase-maso-prague",
+      "name": "Naše maso",
+      "category": "food",
+      "coordinates": [
+        14.4268789,
+        50.0908655
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-prague-stay"
+      ],
+      "summary": "Butcher shop on Dlouhá selling Czech meat and house-made sausages, with food to eat on site.",
+      "address": "Dlouhá 727/39, 110 00 Staré Město, Czechia",
+      "mapsUrl": "https://www.google.com/maps?cid=6156858937695005815",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=6156858937695005815"
+        },
+        {
+          "label": "Place information",
+          "url": "https://prague.eu/cs/objevujte/nase-maso/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-antoninovo-namesti-miru",
+      "name": "Antonínovo pekařství",
+      "category": "food",
+      "coordinates": [
+        14.4377229,
+        50.0749053
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-prague-stay"
+      ],
+      "summary": "Bakery and café at Náměstí Míru in Vinohrady, with bread and sweet and savoury pastries.",
+      "address": "Náměstí Míru 585/11, 120 00 Praha 2-Vinohrady, Czechia",
+      "mapsUrl": "https://www.google.com/maps?cid=6109106007297954516",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=6109106007297954516"
+        },
+        {
+          "label": "Place information",
+          "url": "https://www.antoninovopekarstvi.cz/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-popocafepetl-michalska",
+      "name": "Popocafepetl - Michalska",
+      "category": "food",
+      "coordinates": [
+        14.4198768,
+        50.0853483
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-prague-stay"
+      ],
+      "summary": "Bar and music club on Michalská in Prague’s Old Town.",
+      "address": "Michalská 15, 110 00 Staré Město, Czechia",
+      "mapsUrl": "https://www.google.com/maps?cid=9373007424242475411",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=9373007424242475411"
+        },
+        {
+          "label": "Place information",
+          "url": "https://popocafepetl.sluzby.cz/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-u-agamy-prague",
+      "name": "Restaurace U Agamy - gluten free",
+      "category": "food",
+      "coordinates": [
+        14.4530325,
+        50.0852009
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-prague-stay"
+      ],
+      "summary": "Žižkov restaurant specialising in gluten-free versions of traditional Czech dishes.",
+      "address": "35, Štítného 202, 130 00 Praha 3, Czechia",
+      "mapsUrl": "https://www.google.com/maps?cid=3556088654138590447",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=3556088654138590447"
+        },
+        {
+          "label": "Place information",
+          "url": "https://restauraceuagamy.cz/en/location"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-alriso-prague",
+      "name": "Alriso Risotteria Italiana",
+      "category": "food",
+      "coordinates": [
+        14.4168454,
+        50.0839232
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-prague-stay"
+      ],
+      "summary": "Italian restaurant on Betlémské náměstí with risotto, pasta and Italian main courses.",
+      "address": "Betlémské nám. 11/259, 110 00 Staré Město, Czechia",
+      "mapsUrl": "https://www.google.com/maps?cid=13524212967538539244",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=13524212967538539244"
+        },
+        {
+          "label": "Place information",
+          "url": "https://www.alriso.cz/en/full-menu/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    }
+  ]
 }

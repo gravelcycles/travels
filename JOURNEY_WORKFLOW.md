@@ -668,6 +668,10 @@ checkpoint branches and the local day-experience review workflow.
 
 ## Places, meals and group memories
 
+The viewer shows its desktop and phone Places buttons only when the trip has
+at least one curated place. Studio's Places editor stays available to add the
+first place; an empty day or search result does not hide the viewer buttons.
+
 Use **Studio → Places** to add/edit/remove points in the journey's optional
 `pointsOfInterest` array, or ask the agent for researched content; supply a place name or Maps link, day(s), visited/saved
 status and the group's actual ratings and notes. Never invent a visit or import
@@ -681,6 +685,15 @@ These annotations do not alter route nodes or Replay. Their content and reviews
 are public; private original images do not belong in journey JSON. Record an
 image's source, credit and permission basis, with a license URL where applicable.
 The validated schema and reusable intake prompt are in [PLACES_AND_COMMENTS.md](docs/PLACES_AND_COMMENTS.md).
+
+For a shared Maps list, match the exact saved branch and its coordinates to the
+journey's city stays, including TBD stays; passing through a city does not create
+a stay. Record the selection boundary and omitted detours in the trip's intake
+document. Keep the source list and individual Maps links, add factual venue
+sources where available, and default imported suggestions to `status: "saved"`.
+List membership alone does not establish a visit, a group rating or permission
+to reuse photographs. Heading East's [list intake](docs/HEADING_EAST.md#saved-places--10-october-2026)
+demonstrates this using the existing Places fields.
 The Places editor includes name, category, description, memory, visit status,
 known coordinates/accuracy, assigned days, fact sources, credited venue images,
 owner-authored group reviews and ordered trip-photo links. New unfinished places
