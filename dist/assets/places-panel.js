@@ -329,7 +329,11 @@
         if (history.state?.atlasPlaces?.open) rememberHistory();
       }
       $('#places-event-only-label').textContent = `This ${eventWord()} only`;
-      lastDay = options.dayId(); const count = document.getElementById('place-count'); if (count) count.textContent = String(points().length);
+      lastDay = options.dayId(); const placeCount = points().length;
+      const count = document.getElementById('place-count'); if (count) count.textContent = String(placeCount);
+      for (const id of ['open-places', 'mobile-open-places', 'experience-places']) {
+        const button = document.getElementById(id); if (button) button.hidden = placeCount === 0;
+      }
       if (reset) {
         for (const key of memoryDrafts.keys()) if (key.startsWith(`${journeyId}:`)) memoryDrafts.delete(key);
         undo = null; clearTimeout(toastTimer); $('.pp-toast').hidden = true;

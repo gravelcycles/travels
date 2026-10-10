@@ -256,6 +256,9 @@ test('one template supplies every control and asset to real trips, all samples, 
     assert.deepEqual(ids(preview), ids(reference), journey.id);
     assert.deepEqual(assets(preview), assets(reference), journey.id);
     assert.match(preview, /\/api\/preview-assets\/journeys.js/);
+    for (const id of ['open-places', 'mobile-open-places']) {
+      assert.match(preview, new RegExp(`<button[^>]*id="${id}"[^>]* hidden[ >]`), `${journey.id}: Places stays hidden until its content is loaded`);
+    }
   }
   assert.deepEqual(ids(read(root, 'dist/demo.html')), ids(reference));
   assert.deepEqual(assets(read(root, 'dist/demo.html')), assets(reference));
@@ -828,7 +831,7 @@ test('days without travel omit automatic stay labels across real, demo and fresh
 test('places are data-only annotations inherited by real, demo and fresh-draft journeys', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const { data } = loadContent(root, { includeDrafts: true });
-  const targets = [data.journeys.find(j => j.kind === 'real'), data.journeys.find(j => j.pointsOfInterest?.length), data.journeys.find(j => j.id === draft.id)];
+  const targets = [data.journeys.find(j => j.id === 'switzerland-italy-family-2026'), data.journeys.find(j => j.id === 'alpine-crossing'), ...data.journeys.filter(j => j.kind === 'real' && j.pointsOfInterest?.length), data.journeys.find(j => j.id === draft.id)];
   for (const journey of targets) {
     const before = structuredClone({ days: journey.days, places: journey.places, segments: journey.segments });
     if (!journey.pointsOfInterest) {
@@ -844,7 +847,10 @@ test('places are data-only annotations inherited by real, demo and fresh-draft j
   }
   buildSite(root);
   const output = bundle(read(root, 'dist/assets/journeys.js'), 'JOURNEY_ATLAS_DATA');
-  assert.equal(output.journeys.find(j => j.pointsOfInterest?.length).pointsOfInterest.length, 3);
+  assert.equal(output.journeys.find(j => j.id === 'alpine-crossing').pointsOfInterest.length, 3);
+  for (const journey of loadContent(root).data.journeys.filter(j => j.kind === 'real' && j.pointsOfInterest?.length)) {
+    assert.deepEqual(output.journeys.find(j => j.id === journey.id).pointsOfInterest, journey.pointsOfInterest, 'Published real places retain their saved status, sources and city assignments');
+  }
   assert.ok(!output.journeys.some(j => j.id === draft.id), 'Fresh local data stays unpublished');
 });
 
