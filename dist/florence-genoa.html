@@ -49,6 +49,7 @@
     <link rel="stylesheet" href="./assets/places-panel.css?v=1" />
     <link rel="stylesheet" href="./assets/photo-comments.css?v=1bc0107734b4" />
     <link rel="stylesheet" href="./assets/photo-bubbles.css?v=414395f91e29" />
+    <link rel="stylesheet" href="./assets/arrival-chapter.css?v=10a0891e32d5" />
   </head>
   <body data-journey-id="florence-genoa">
     <header class="site-header">
@@ -123,6 +124,11 @@
           <button id="next-day" type="button" data-event-aria="Next day" aria-label="Next day">→</button>
         </div>
         <div class="map-legend" id="map-legend"></div>
+        <section class="arrival-chapter" id="arrival-chapter" aria-label="Arrival and city chapter" hidden>
+          <div class="arrival-copy" aria-live="polite"><small id="arrival-eyebrow"></small><strong id="arrival-title"></strong></div>
+          <div class="arrival-actions"><button id="arrival-replay" type="button">Replay arrival</button><button id="arrival-city" type="button">Skip to city</button></div>
+          <div class="arrival-progress" aria-hidden="true"><i id="arrival-progress"></i></div>
+        </section>
         <aside class="route-inspector" id="route-inspector" hidden aria-live="polite">
           <button id="close-route-inspector" type="button" aria-label="Close route details"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
           <span id="route-inspector-meta"></span>
@@ -301,17 +307,18 @@
     <dialog id="comments-dialog" class="comments-dialog" aria-labelledby="comments-title"></dialog>
 
     <script src="./assets/vendor/maplibre-5.24.0/maplibre-gl.js"></script>
-    <script src="./assets/journeys.js?v=e9a63b322829"></script>
+    <script src="./assets/journeys.js?v=97b712a7700c"></script>
     <script src="./assets/route-geometry.js?v=3ec02caaed24"></script>
     <script src="./assets/trip-photos.js?v=7197e388c5ff"></script>
     <script src="./assets/content-overrides.js?v=0b5cfc43ecd1"></script>
     <script src="./assets/replay-utils.js?v=3affec64ef97"></script>
+    <script src="./assets/arrival-chapter.js?v=42202fd9f7a3"></script>
     <script src="./assets/photo-service.js?v=7cf17f81b44e"></script>
     <script src="./assets/photo-auth.js?v=443935094484"></script>
-    <script src="./assets/atlas-utils.js?v=f4fe5c66292d"></script>
+    <script src="./assets/atlas-utils.js?v=ab82062aab92"></script>
     <script src="./assets/map-style.js?v=e5948bb6f50c"></script>
     <script src="./assets/map-feedback.js?v=ecf2650f2582"></script>
-    <script src="./assets/mobile-ux.js?v=4df271b0491f"></script>
+    <script src="./assets/mobile-ux.js?v=f018c0ff04e2"></script>
     <script src="./assets/group-travel.js?v=55518f719e29"></script>
     <script src="./assets/media-utils.js?v=2970f736e03b"></script>
     <script src="./assets/location-labels.js?v=a88e1624d879"></script>
@@ -321,6 +328,6 @@
     <script src="./assets/photo-bubbles.js?v=65f922679b84"></script>
     <script src="./assets/places-panel.js?v=a5b753d7675e"></script>
     <script src="./assets/photo-comments.js?v=bcdeb2a1f2cc"></script>
-    <script src="./assets/app.js?v=ef960accb561"></script>
+    <script src="./assets/app.js?v=ec5eec3e518e"></script>
   </body>
 </html>

@@ -1,5 +1,9 @@
 # Project TODO
 
+- [x] Arrival → city: reviewed playback approved for deployment on 10 October
+  2026, with a contextual camera move, 1.5-second route trace, plain orange
+  tracking circle and destination framing. See [details](docs/ARRIVAL_CITY_DEMO.md).
+
 The [current workstream checkpoint](WIP.md) records branch tips, preserved
 prototypes, saved trip edits and task context. This file remains the backlog;
 an unchecked item is not evidence of an existing implementation branch.

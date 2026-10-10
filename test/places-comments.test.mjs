@@ -6,7 +6,7 @@ import '../dist/assets/places-comments.js';
 
 const { average, ratingSummary, filterPlaces, validateComment, createDemoStore } = globalThis.JOURNEY_ATLAS_PLACES;
 const memory = () => { const values = new Map(); return { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value) }; };
-const example = () => structuredClone(loadContent(new URL('..', import.meta.url).pathname).data.journeys.find(journey => journey.pointsOfInterest?.length));
+const example = () => structuredClone(loadContent(new URL('..', import.meta.url).pathname).data.journeys.find(journey => journey.id === 'alpine-crossing'));
 
 test('group rating summaries retain empty states and count every star level accurately', () => {
   const reviews = [{ rating: 5 }, { rating: 4 }, { rating: 5 }, { rating: 1 }];
@@ -59,6 +59,18 @@ test('place sources reject unsafe assets, bad references, missing attribution an
   assert.doesNotThrow(() => validatePointsOfInterest(ratingOnly));
   const duplicate = example(); duplicate.pointsOfInterest.push(duplicate.pointsOfInterest[0]);
   assert.throws(() => validatePointsOfInterest(duplicate), /unique stable IDs/);
+});
+
+test('linked place photos retain source provenance without claiming a reuse license', () => {
+  const journey = example(), picture = journey.pointsOfInterest[0].images[0];
+  Object.assign(picture, { src: 'https://images.example.test/venue.jpg', permission: 'linked' });
+  delete picture.licenseUrl;
+  assert.doesNotThrow(() => validatePointsOfInterest(journey));
+  picture.licenseUrl = 'https://example.test/license';
+  assert.throws(() => validatePointsOfInterest(journey), /cannot assert a license/);
+  delete picture.licenseUrl;
+  picture.src = './assets/places/copied.jpg';
+  assert.throws(() => validatePointsOfInterest(journey), /externally hosted/);
 });
 
 test('local comment simulation scopes journeys/photos and author deletion, retaining literal text', () => {

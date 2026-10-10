@@ -1,5 +1,21 @@
 # Building a journey atlas
 
+For local arrival/city interaction checks, use the shared-template
+[local demo workflow](docs/ARRIVAL_CITY_DEMO.md). Its labelled placeholder media
+stays in ignored preview files. The shared arrival experience was approved for
+deployment on 10 October 2026; production uses each journey's own content.
+
+City framing fits geotagged photos inside the destination's optional
+`places[].cityBoundary` or within five miles of that boundary, and all marked
+places assigned to the stop (including excursions). Nearby marked places also
+count. Missing boundaries use five miles from the destination coordinate.
+`cityBoundary` is GeoJSON Polygon/MultiPolygon geometry with closed rings,
+`sourceUrl` (HTTPS) and `retrievedAt` (YYYY-MM-DD); it is content, never hardcoded
+in the viewer. Use reviewed municipal boundaries, retain attribution, and do not
+substitute a search bounding box for city limits. The camera fits actual content,
+not the whole municipality, and caps close-up zoom at 12.5. Location-less photos
+retain this city view; individual located-photo views keep their normal framing.
+
 Start with [the framework contract](docs/FRAMEWORK.md) and
 [feature inventory](docs/FEATURES.md). Use [the new-trip prompt](docs/AGENT_PROMPTS.md)
 for a fresh agent. Create a data instance with Studio or `journey:new`; never
@@ -674,13 +690,26 @@ status and the group's actual ratings and notes. Never invent a visit or import
 Google's ratings as our group's opinions. The agent researches source links,
 reviews coordinates and attribution, proposes image candidates, and imports
 approved derivatives. Google Maps is an optional outbound reference; there is
-no Maps API or automatic photo scraper. Use our own, permission-backed or
-licensed imagery; retain links and an empty image slot when reuse is unclear.
+no Maps API or automatic photo scraper. Prefer our own, permission-backed or
+licensed imagery for local copies. When the owner explicitly requests public
+source-hosted photos, use `permission: "linked"`, an HTTPS image URL, the displayed
+contributor credit and the original source link. This records an external
+reference, not ownership or a reuse license; do not give it a `licenseUrl` or
+copy it into local public assets. Check every selected photo and exact branch.
 
 These annotations do not alter route nodes or Replay. Their content and reviews
 are public; private original images do not belong in journey JSON. Record an
 image's source, credit and permission basis, with a license URL where applicable.
 The validated schema and reusable intake prompt are in [PLACES_AND_COMMENTS.md](docs/PLACES_AND_COMMENTS.md).
+
+For a shared Maps list, match the exact saved branch and its coordinates to the
+journey's city stays, including TBD stays; passing through a city does not create
+a stay. Record the selection boundary and omitted detours in the trip's intake
+document. Keep the source list and individual Maps links, add factual venue
+sources where available, and default imported suggestions to `status: "saved"`.
+List membership alone does not establish a visit, a group rating or permission
+to reuse photographs. Heading East's [list intake](docs/HEADING_EAST.md#saved-places--10-october-2026)
+demonstrates this using the existing Places fields.
 The Places editor includes name, category, description, memory, visit status,
 known coordinates/accuracy, assigned days, fact sources, credited venue images,
 owner-authored group reviews and ordered trip-photo links. New unfinished places

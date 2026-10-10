@@ -25,8 +25,9 @@ export function validatePointsOfInterest(journey) {
     if (point.photoIds != null && (!Array.isArray(point.photoIds) || new Set(point.photoIds).size !== point.photoIds.length || point.photoIds.some(id => !journey.photos.some(photo => photo.id === id)))) fail(`${point.id} photoIds must be an ordered list of unique photos belonging to this journey`);
     if (!Array.isArray(point.images ?? []) || (point.images || []).length > 12) fail(`${point.id} has invalid images`);
     for (const picture of point.images || []) {
+      if (picture?.permission === 'linked' && (!https(picture.src) || picture.licenseUrl != null)) fail(`${point.id} linked image must remain externally hosted and cannot assert a license`);
       if (picture?.licenseUrl != null && !https(picture.licenseUrl)) fail(`${point.id} image license needs a safe HTTPS URL`);
-      if (!picture || !(https(picture.src) || /^\.\/assets\/(?:photos|places)\/[a-z0-9-]+\.(?:webp|jpg|png)$/.test(picture.src)) || !text(picture.alt, 300) || !text(picture.credit, 300) || !https(picture.sourceUrl) || !['owned', 'permission', 'licensed', 'illustration'].includes(picture.permission)) fail(`${point.id} image needs a safe source, alt, credit, source URL and permission basis`);
+      if (!picture || !(https(picture.src) || /^\.\/assets\/(?:photos|places)\/[a-z0-9-]+\.(?:webp|jpg|png)$/.test(picture.src)) || !text(picture.alt, 300) || !text(picture.credit, 300) || !https(picture.sourceUrl) || !['owned', 'permission', 'licensed', 'illustration', 'linked'].includes(picture.permission)) fail(`${point.id} image needs a safe source, alt, credit, source URL and image provenance`);
     }
     if (!Array.isArray(point.reviews ?? []) || (point.reviews || []).length > 50) fail(`${point.id} has invalid reviews`);
     const reviewers = new Set();
