@@ -1,7 +1,8 @@
-# Arrival → city demo
+# Arrival → city experience
 
-Local review only, requested 8 October 2026. Branch `codex/arrival-stay-demo` is
-isolated from main. The owner explicitly requested **no publication**.
+Reviewed locally on 8 October 2026 and approved for deployment by the owner on
+10 October 2026. The shared experience applies to real journeys, samples and
+drafts. The synthetic review fixtures below remain local only.
 
 Selecting a new stop frames its incoming route, draws each leg in order, then
 flies into the destination. The normal story remains alongside the map. At the
@@ -45,6 +46,15 @@ use the destination at city scale and retain that view between pictures; existin
 geotagged-photo camera behavior is retained. Unknown destinations fall back to
 the final available route endpoint, or the existing empty-map state.
 
+The destination camera fits all geotagged photos in the city boundary or within
+five miles (8.04672 km) of it, plus all marked places assigned to the stop and
+nearby marked places. Hidden/trashed or unlocated photos and distant travel shots
+do not expand the city view. Without a saved boundary it uses five miles from
+the destination. The camera has room for controls and a maximum zoom of 12.5;
+the city outline and buffer themselves do not force a wider view. Empty city
+albums retain the destination view. The same fit is used for unlocated-photo
+fallback and returning to the city.
+
 ## Run locally
 
 From this worktree:
@@ -69,7 +79,7 @@ journeys, samples and drafts. No journey ID check or new content flag is used.
 
 ## Review
 
-441 tests pass, including camera-stage order/completion/cancellation, previous-view
+Regression checks cover camera-stage order/completion/cancellation, previous-view
 context, overhead pacing,
 switchbacks/backtracking, the exact
 1.5-second travel plus 250 ms hold, synchronized canvas painting and cleanup,
@@ -78,6 +88,9 @@ fallback and shared template parity for Switzerland–Italy, Alpine Crossing and
 fresh draft. The site build passes. Desktop and 390 px phone checks exercised
 Venice arrival, skip/replay, the destination view, and gallery navigation.
 
-Before any proposed production rollout, review the pacing and city framing with
-the owner. This demo uses station/destination coordinates at zoom 12.5 rather
-than authored city boundaries. No photographs or personal stories are fabricated.
+The owner approved the pacing, camera sequence and plain orange tracking circle
+for deployment on 10 October 2026, then requested photo/place-aware city framing.
+Optional city boundaries are stored with source attribution in journey data;
+the browser never sends photo locations to a geocoding service. The local fixtures
+contain labelled placeholders; production continues to use each journey's own
+photos and stories.

@@ -7,6 +7,16 @@ to the public site. [TODO.md](TODO.md) remains the backlog;
 [docs/FEATURES.md](docs/FEATURES.md) describes implemented capabilities;
 [docs/FRAMEWORK.md](docs/FRAMEWORK.md) defines the shared-code contract.
 
+## Arrival → city release — 10 October 2026
+
+The owner approved the locally reviewed arrival experience for deployment.
+Shared playback pulls back around the previous view, combines the pan and zoom
+onto the next route, traces it over 1.5 seconds with a plain orange tracking
+circle, pauses for 250 ms and settles on the destination. City framing fits nearby
+photos (city limits plus five miles) and marked places. Existing trip content
+and saved places are retained. Synthetic photo fixtures remain ignored/local.
+See [arrival behavior and checks](docs/ARRIVAL_CITY_DEMO.md).
+
 ## Four implemented workstreams — 8 October 2026
 
 The owner requested four parallel implementation agents after reviewing the demos.

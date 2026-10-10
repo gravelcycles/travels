@@ -64,6 +64,53 @@
       && b[0][1] >= -85.051129 && b[1][1] <= 85.051129 && b[1][1] > b[0][1];
   }
 
+  const cityPoint = p => Array.isArray(p) && p.length === 2 && p.every(Number.isFinite) && Math.abs(p[0]) <= 180 && Math.abs(p[1]) <= 90;
+  const cityPolygons = boundary => boundary?.type === 'Polygon' ? [boundary.coordinates] : boundary?.type === 'MultiPolygon' ? boundary.coordinates : [];
+  function validCityBoundary(boundary) {
+    const polygons = cityPolygons(boundary);
+    return Array.isArray(polygons) && polygons.length > 0 && polygons.every(polygon => Array.isArray(polygon) && polygon.length > 0 && polygon.every(ring =>
+      Array.isArray(ring) && ring.length >= 4 && ring.every(cityPoint) && ring[0].every((n,i) => n === ring.at(-1)[i]))) && polygons.flat(2).length <= 50000;
+  }
+  const radians = degrees => degrees * Math.PI / 180;
+  function cityAngle(a, b) {
+    const h = Math.sin(radians(b[1]-a[1])/2)**2 + Math.cos(radians(a[1]))*Math.cos(radians(b[1]))*Math.sin(radians(b[0]-a[0])/2)**2;
+    return 2*Math.asin(Math.sqrt(Math.max(0,Math.min(1,h))));
+  }
+  function cityBearing(a,b) {
+    const d = radians(b[0]-a[0]), latA = radians(a[1]), latB = radians(b[1]);
+    return Math.atan2(Math.sin(d)*Math.cos(latB), Math.cos(latA)*Math.sin(latB)-Math.sin(latA)*Math.cos(latB)*Math.cos(d));
+  }
+  function cityEdgeDistance(point,a,b) {
+    const angle = cityAngle(a,point), direction = cityBearing(a,point)-cityBearing(a,b);
+    const along = Math.atan2(Math.sin(angle)*Math.cos(direction),Math.cos(angle));
+    return 6371*(along >= 0 && along <= cityAngle(a,b) ? Math.abs(Math.asin(Math.max(-1,Math.min(1,Math.sin(angle)*Math.sin(direction))))) : Math.min(angle,cityAngle(b,point)));
+  }
+  function insideCityRing(point,ring) {
+    // Keep the whole ring on one longitude branch, including dateline cities.
+    const relative = lng => ((lng-ring[0][0]+540)%360)-180;
+    const x = relative(point[0]);
+    let inside = false;
+    for (let i=0,j=ring.length-1;i<ring.length;j=i++) {
+      const [ax,ay] = [relative(ring[i][0]),ring[i][1]], [bx,by] = [relative(ring[j][0]),ring[j][1]];
+      if ((ay>point[1]) !== (by>point[1]) && x < (bx-ax)*(point[1]-ay)/(by-ay)+ax) inside = !inside;
+    }
+    return inside;
+  }
+  function cityFrameCoordinates({center,boundary,photos=[],places=[],dayId}) {
+    const polygons = validCityBoundary(boundary) ? cityPolygons(boundary) : [];
+    const nearby = point => {
+      if (!cityPoint(point)) return false;
+      if (cityPoint(center) && cityAngle(center,point)*6371 <= 8.04672) return true;
+      if (polygons.some(polygon => insideCityRing(point,polygon[0]) && !polygon.slice(1).some(ring => insideCityRing(point,ring)))) return true;
+      return polygons.some(polygon => polygon.some(ring => ring.some((a,i) => i>0 && cityEdgeDistance(point,ring[i-1],a) <= 8.04672)));
+    };
+    const coordinates = cityPoint(center) ? [center] : [];
+    for (const photo of photos) if (!photo.trashed && !photo.hidden && photo.mediaType !== 'video' && nearby([photo.lng,photo.lat])) coordinates.push([photo.lng,photo.lat]);
+    // All places assigned to this stop count, including deliberate out-of-town trips.
+    for (const place of places) if (cityPoint(place.coordinates) && (place.dayIds?.includes(dayId) || nearby(place.coordinates))) coordinates.push(place.coordinates);
+    return [...new Map(coordinates.map(point => [point.join(','),point])).values()];
+  }
+
   function frameContainsPhoto(frame, photo) {
     if (!validPhotoFrame(frame) || !locatedPhoto(photo)) return false;
     const [[west, south], [east, north]] = frame.bounds;
@@ -346,5 +393,5 @@
     return start === end ? format(start) : `${format(start)} – ${format(end)}`;
   }
 
-  root.JOURNEY_ATLAS_UTILS = { projectPlanning, eventWord, eventCopy, applyEventCopy, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
+  root.JOURNEY_ATLAS_UTILS = { validCityBoundary, cityFrameCoordinates, projectPlanning, eventWord, eventCopy, applyEventCopy, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

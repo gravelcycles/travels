@@ -57,6 +57,11 @@ test('arrival and stay controls inherit across reference, demo and fresh draft w
     const plan=globalThis.JOURNEY_ATLAS_ARRIVAL.plan(segments,coordinate);
     assert.equal(plan.duration,1500,'Every journey inherits the same 1.5-second arrival');
     assert.equal(plan.arrivalHold,250,'Every journey inherits the quarter-second arrival pause');
+    const place=journey.places.find(p=>p.id===(day.destinationId||day.placeId));
+    const center=place?[place.lng,place.lat]:null;
+    const cityPoints=globalThis.JOURNEY_ATLAS_UTILS.cityFrameCoordinates({center,photos:center?[{lng:center[0]+.01,lat:center[1]}]:[],places:[{coordinates:[12,45],dayIds:[day.id]}],dayId:day.id});
+    assert.ok(cityPoints.some(point=>point[0]===12&&point[1]===45),'Marked places inherit in family, demo and fresh drafts');
+    if(center) assert.ok(cityPoints.some(point=>point[0]===center[0]+.01),'Nearby photos inherit without boundary configuration');
     assert.ok(plan.legs.every(leg=>day.segmentIds.includes(leg.segment.id)));
     for(const progress of [0,.25,.5,.75,1]){
       const animated=globalThis.JOURNEY_ATLAS_ARRIVAL.frame(plan,progress,{drawLines:false});
@@ -69,6 +74,18 @@ test('arrival and stay controls inherit across reference, demo and fresh draft w
     }
     if(journey===draft){assert.equal(plan.legs.length,0);assert.equal(globalThis.JOURNEY_ATLAS_ARRIVAL.destination(day,journey.places,segments,coordinate),null);}
   }
+});
+
+test('city boundaries are optional, validated geometry with source attribution',t=>{
+  const root=fixture(t),{data}=loadContent(root);
+  const place=data.journeys[0].places[0];
+  place.cityBoundary={type:'Polygon',coordinates:[[[0,0],[1,0],[1,1],[0,0]]],sourceUrl:'https://www.openstreetmap.org/relation/62422',retrievedAt:'2026-10-10'};
+  assert.doesNotThrow(()=>validateJourneys(data));
+  delete place.cityBoundary.sourceUrl;
+  assert.throws(()=>validateJourneys(data),/city boundary/);
+  place.cityBoundary.sourceUrl='https://www.openstreetmap.org/relation/62422';
+  place.cityBoundary.coordinates[0][0]=[181,0];
+  assert.throws(()=>validateJourneys(data),/city boundary/);
 });
 
 test('Studio readiness uses the same validation for reference, demo and fresh empty drafts', t => {
