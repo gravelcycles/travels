@@ -922,6 +922,16 @@
     return window.JOURNEY_ATLAS_ARRIVAL.destination(day, journey.places, segmentsForDay(day), segmentCoordinates);
   }
 
+  function cityCamera(map, day, padding = 32) {
+    const coordinates = window.JOURNEY_ATLAS_UTILS.cityFrameCoordinates({
+      center:cityCoordinate(day), boundary:destinationForDay(day)?.cityBoundary,
+      photos:mediaUtils.items(journey), places:journey.pointsOfInterest || [], dayId:day.id
+    });
+    if (!coordinates.length) return null;
+    const unwrapped = coordinates.map(([lng,lat]) => [lng+360*Math.round((coordinates[0][0]-lng)/360),lat]);
+    return coordinates.length > 1 ? map.cameraForBounds(boundsFromCoordinates(unwrapped), {padding,maxZoom:12.5}) : {center:coordinates[0],zoom:12.5};
+  }
+
   function restoreArrivalLine() {
     arrivalDrawing?.destroy(); arrivalDrawing = null;
     arrivalPlaceMarkers.forEach(item => item.marker.remove()); arrivalPlaceMarkers = [];
@@ -954,8 +964,8 @@
   function showCity(day, duration = 1250) {
     mapScope = 'day';
     if (!mainMapReady) { pendingMapAction = 'city'; return; }
-    const center = cityCoordinate(day);
-    mainFeedback?.empty(!center);
+    const padding = mapPadding(112), camera = cityCamera(mainMap,day,padding);
+    mainFeedback?.empty(!camera);
     for (const segment of segmentsForDay(day)) {
       const id = `main-line-${segment.id}`;
       if (mainMap.getLayer(id)) {
@@ -964,7 +974,7 @@
         mainMap.setPaintProperty(`main-casing-${segment.id}`, 'line-opacity', 0.25);
       }
     }
-    if (center) mainMap.flyTo({center, zoom:12.5, padding:mapPadding(112), duration:prefersReducedMotion()?0:duration});
+    if (camera) mainMap.flyTo({...camera, padding, duration:prefersReducedMotion()?0:duration});
     else mainMap.easeTo({center:[0,20],zoom:1.5,duration:0});
     renderDayNavigator();
     renderArrivalChapter('stay');
@@ -1527,9 +1537,9 @@
       }
     } else {
       viewerTransition?.cancel();
-      const center = cityCoordinate(day);
       if (routeChanged || !previous || window.JOURNEY_ATLAS_UTILS.locatedPhoto(previous)) {
-        if (center) viewerMap.easeTo({center,zoom:12.5,duration:prefersReducedMotion()?0:650});
+        const camera = cityCamera(viewerMap,day);
+        if (camera) viewerMap.easeTo({...camera,duration:prefersReducedMotion()?0:650});
         else viewerMap.easeTo({center:[0,20],zoom:1.5,duration:0});
       }
     }

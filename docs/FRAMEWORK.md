@@ -339,9 +339,9 @@ Studio, photo assignment and calendar moves retain the shared contracts. Heading
 East supplies the content instance; family/demo/fresh-draft tests cover inheritance.
 No separate trip implementation or framework migration is introduced.
 
-## Unpublished arrival/city prototype — 8 October 2026
+## Arrival/city playback — approved 10 October 2026
 
-`codex/arrival-stay-demo` adds shared arrival playback and destination-focused
+The reviewed `codex/arrival-stay-demo` work adds shared arrival playback and destination-focused
 stay/photo framing without new journey fields or trip-specific branches.
 `arrival-chapter.js` isolates the clock and cancellation from map rendering.
 It caches an overhead timing outline and projected canvas paths once per arrival,
@@ -357,5 +357,9 @@ The overlay is transient shared rendering, with regular map layers restored on
 completion/cancellation and projection refreshed on resize.
 The local review generator renders the shared template with explicitly synthetic
 media; original content and private services remain outside the fixture.
-Owner review of timing and station-based city framing is pending. Do not treat
-this prototype as authorization to publish. See [ARRIVAL_CITY_DEMO.md](ARRIVAL_CITY_DEMO.md).
+The owner approved deployment on 10 October 2026, including timing and
+photo/place-aware city framing. See [ARRIVAL_CITY_DEMO.md](ARRIVAL_CITY_DEMO.md).
+The follow-up city fit uses shared geometry helpers in `atlas-utils.js` to include
+photos inside or within five miles of optional sourced `places[].cityBoundary`
+geometry, plus marked places. Without boundaries, proximity uses the destination
+coordinate. No network calls or trip ID branches are needed at playback time.

@@ -1,8 +1,20 @@
 # Building a journey atlas
 
-For the unpublished arrival/city interaction review, use the shared-template
+For local arrival/city interaction checks, use the shared-template
 [local demo workflow](docs/ARRIVAL_CITY_DEMO.md). Its labelled placeholder media
-stays in ignored preview files, and the owner has explicitly deferred publishing.
+stays in ignored preview files. The shared arrival experience was approved for
+deployment on 10 October 2026; production uses each journey's own content.
+
+City framing fits geotagged photos inside the destination's optional
+`places[].cityBoundary` or within five miles of that boundary, and all marked
+places assigned to the stop (including excursions). Nearby marked places also
+count. Missing boundaries use five miles from the destination coordinate.
+`cityBoundary` is GeoJSON Polygon/MultiPolygon geometry with closed rings,
+`sourceUrl` (HTTPS) and `retrievedAt` (YYYY-MM-DD); it is content, never hardcoded
+in the viewer. Use reviewed municipal boundaries, retain attribution, and do not
+substitute a search bounding box for city limits. The camera fits actual content,
+not the whole municipality, and caps close-up zoom at 12.5. Location-less photos
+retain this city view; individual located-photo views keep their normal framing.
 
 Start with [the framework contract](docs/FRAMEWORK.md) and
 [feature inventory](docs/FEATURES.md). Use [the new-trip prompt](docs/AGENT_PROMPTS.md)

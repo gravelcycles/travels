@@ -5,13 +5,16 @@ Applies to Switzerland–Italy, every sample,
 and every new journey. “Available” means the common implementation exists;
 actual content, reviewed geometry and photographs must be supplied per trip.
 
-Local branch prototype: [Arrival → city](ARRIVAL_CITY_DEMO.md) traces the incoming
+Shared [Arrival → city](ARRIVAL_CITY_DEMO.md) playback traces the incoming
 route with a plain orange tracking circle at display cadence after a contextual pullback and a
 combined pan/zoom, with named endpoints and linear 1.5-second overhead
 progression and a 0.25-second arrival pause before the destination zoom. Unlocated
-photos keep the local city view.
-It reuses the shared page, gallery and route geometry. It is **not published**;
-the owner is reviewing this interaction before any production rollout.
+photos keep the local city view. City zoom fits photo locations inside or within
+five miles of the city boundary, plus the stop's marked places. Missing boundary
+data uses a five-mile radius from the destination; all marked excursions remain
+included. Optional sourced Polygon/MultiPolygon data lives on journey places.
+It reuses the shared page, gallery and route geometry. The owner approved
+deployment on 10 October 2026 after reviewing the local demo.
 
 [WIP.md](../WIP.md) distinguishes delivered features from preserved prototypes,
 unpublished editorial work and remaining service/intake projects. In particular,

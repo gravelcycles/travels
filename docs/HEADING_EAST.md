@@ -292,3 +292,15 @@ family reference, demo, fresh draft and published real places. Browser review
 confirmed 20 desktop entries, six entries under Prague's stop filter, the saved
 status/address/Maps link, and detail-sheet expansion at 390 px. Local UI review
 used the existing local-photo mode; no private photographs were needed.
+# City framing boundaries — 10 October 2026
+
+The destination view fits geotagged photos inside the municipal boundary or
+within five miles of it, plus marked places associated with the stop. Sourced
+OpenStreetMap Polygon/MultiPolygon boundaries are saved on 28 destination places
+as `cityBoundary`; each retains its relation URL and retrieval date. Geometry
+was retrieved once through [Nominatim polygon output](https://nominatim.org/release-docs/latest/api/Search/#polygon-output)
+with a 0.0002-degree simplification tolerance (about 22 metres north/south).
+Attribution: © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright),
+ODbL. Playback uses the saved geometry and sends no photo locations to geocoders.
+Qeparo returned village points without a boundary polygon, so its view uses
+the shared five-mile destination-radius fallback plus all marked stop places.

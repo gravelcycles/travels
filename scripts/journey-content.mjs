@@ -94,7 +94,12 @@ export function validateJourneys(data) {
     }
 
     const places = new Set(j.places.map(p => p.id)), segments = new Set(j.segments.map(s => s.id)), days = new Set(j.days.map(d => d.id));
-    for (const p of j.places) if (!p.name || !validCoordinate([p.lng, p.lat])) fail(`${p.id}: invalid place coordinates or name`);
+    for (const p of j.places) {
+      if (!p.name || !validCoordinate([p.lng, p.lat])) fail(`${p.id}: invalid place coordinates or name`);
+      if (p.cityBoundary != null && (!globalThis.JOURNEY_ATLAS_UTILS.validCityBoundary(p.cityBoundary)
+        || typeof p.cityBoundary.sourceUrl !== 'string' || !/^https:\/\//.test(p.cityBoundary.sourceUrl)
+        || !/^\d{4}-\d{2}-\d{2}$/.test(p.cityBoundary.retrievedAt || ''))) fail(`${p.id}: invalid city boundary geometry or provenance`);
+    }
     for (const s of j.segments) {
       if (!places.has(s.from) || !places.has(s.to)) fail(`${s.id}: unknown route endpoint`);
       if (!["train", "boat", "bus", "gondola", "walk", "car", "bike"].includes(s.mode)) fail(`${s.id}: unsupported mode`);

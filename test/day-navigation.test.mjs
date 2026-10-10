@@ -176,7 +176,7 @@ test('same-day viewer navigation does not rebuild background photos or redraw th
 });
 test('viewer route layers are reused within a day and rebuilt when the day changes',()=>{
  const calls=[],cameras=[];let day={id:'d1',segmentIds:['a']};
- const context=vm.createContext({prefersReducedMotion:()=>false,eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerFeedback:null,cityCoordinate:()=>[12,45],window:{JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS},mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,viewerMapReady:true,photoDialog:{open:true},viewerMap:{easeTo:camera=>cameras.push(camera)},mapIsReady:()=>true,viewerDay:()=>day,
+ const context=vm.createContext({prefersReducedMotion:()=>false,eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerFeedback:null,cityCamera:()=>({center:[12,45],zoom:12.5}),window:{JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS},mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,viewerMapReady:true,photoDialog:{open:true},viewerMap:{easeTo:camera=>cameras.push(camera)},mapIsReady:()=>true,viewerDay:()=>day,
   viewerPhotoIndex:0,photosForDay:()=>[{id:'one'},{id:'two'}],viewerCameraPhoto:null,viewerTransition:{cancel(){}},viewerPhotoMarkers:[],viewerRouteKey:null,viewerDecorations:{},
   journey:{id:'trip',segments:[{id:'a'},{id:'b'}]},dayCoordinates:()=>[],
   clearDecorations:()=>calls.push('clear'),addSegmentLayer:()=>calls.push('route'),addDayStopMarkers:()=>calls.push('stops')});
