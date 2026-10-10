@@ -131,12 +131,16 @@ test('slow-connection publishing serializes requests and rejects unsafe concurre
   const manifestFile = path.join(root, `content/photo-manifests/${journeyId}.json`);
   atomicJson(manifestFile, readJson(manifestFile).map(photo => ({ ...photo, assetStatus: 'published' })));
   await importStudioPhoto(root, { journeyId, dayId: 'family-d1', filename: 'serial.jpg', bytes: await photoBytes(1500) });
-  const stored = new Map(); let active = 0, maximum = 0;
+  const stored = new Map(); let active = 0, maximum = 0, uploads = 0;
   const remote = async (resource, options = {}) => {
     active++; maximum = Math.max(maximum, active);
     try {
       await new Promise(resolve => setTimeout(resolve, 5));
-      if (options.method === 'PUT') { stored.set(resource, options.body); return new Response(null, { status: 200 }); }
+      if (options.method === 'PUT') {
+        stored.set(resource, options.body); uploads++;
+        if (uploads === 1) throw new TypeError('Connection lost after upload');
+        return new Response(null, { status: 200 });
+      }
       return stored.has(resource) ? new Response(stored.get(resource)) : new Response(null, { status: 404 });
     } finally { active--; }
   };
@@ -144,6 +148,7 @@ test('slow-connection publishing serializes requests and rejects unsafe concurre
   assert.equal(maximum, 0);
   const result = await publishPhotoAssets(root, journeyId, { publish: true, concurrency: 1, remote });
   assert.equal(result.assets, 3); assert.equal(stored.size, 3); assert.equal(maximum, 1);
+  assert.equal(uploads, 3, 'An uncertain successful upload is verified and reused without a second PUT');
   assert.equal(result.published, true);
 });
 

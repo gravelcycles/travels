@@ -26,10 +26,21 @@ export async function publishPhotoAssets(root,journeyId,{publish=false,all=false
  let completed=0;
  // A small pool keeps upload/checksum verification bounded and retryable.
  const queue=[...assets.values()];
- await Promise.all(Array.from({length:Math.min(concurrency,queue.length)},async()=>{while(queue.length){const asset=queue.shift(),resource=`${bucket}/objects/${asset.key}`;let response=await api(resource);
-  if(response.status===404){const uploaded=await api(resource,{method:'PUT',headers:{'Content-Type':'image/webp','Cache-Control':'no-store'},body:fs.readFileSync(asset.filename)});if(!uploaded.ok)throw new Error(`Photo upload failed (${uploaded.status}).`);response=await api(resource);}
-  if(!response.ok)throw new Error(`Photo verification failed (${response.status}).`);
-  const bytes=Buffer.from(await response.arrayBuffer());if(bytes.length!==asset.size||crypto.createHash('sha256').update(bytes).digest('hex')!==asset.digest)throw new Error('Remote photo checksum mismatch; existing objects are never overwritten.');
+ await Promise.all(Array.from({length:Math.min(concurrency,queue.length)},async()=>{while(queue.length){const asset=queue.shift(),resource=`${bucket}/objects/${asset.key}`;
+  for(let attempt=1;attempt<=3;attempt++){
+   try{
+    let response=await api(resource);
+    if(response.status===404){const uploaded=await api(resource,{method:'PUT',headers:{'Content-Type':'image/webp','Cache-Control':'no-store'},body:fs.readFileSync(asset.filename)});if(!uploaded.ok)throw new Error(`Photo upload failed (${uploaded.status}).`);response=await api(resource);}
+    if(!response.ok)throw new Error(`Photo verification failed (${response.status}).`);
+    const bytes=Buffer.from(await response.arrayBuffer());if(bytes.length!==asset.size||crypto.createHash('sha256').update(bytes).digest('hex')!==asset.digest)throw new Error('Remote photo checksum mismatch; existing objects are never overwritten.');
+    break;
+   }catch(error){
+    if(attempt===3||!['TypeError','TimeoutError','AbortError'].includes(error.name))throw error;
+    // A PUT may have succeeded before the connection broke: always check the
+    // object again, and never overwrite an existing checksum mismatch.
+    await new Promise(resolve=>setTimeout(resolve,1000*attempt));
+   }
+  }
   progress(++completed,assets.size);
  }}));
  const ids=new Set(photos.map(p=>p.id));for(const file of files)atomicJson(file,readJson(file).map(p=>ids.has(p.id)?{...p,assetStatus:'published'}:p));

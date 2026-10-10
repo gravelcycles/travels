@@ -151,6 +151,9 @@ On a slow or unreliable connection, append `--concurrency 1` to upload and
 verify one derivative at a time, with progress after every verified file. The
 default remains four parallel files; allowed values are 1–4. A retry checks and
 reuses existing matching objects before uploading missing ones.
+Each file gets up to three attempts after a network failure or timeout. An
+uncertain upload is re-read and checksum-verified before any further upload;
+authentication, HTTP failures and checksum mismatches still stop publication.
 
 Studio protects saves with a revision of the saved overrides. If another tab or
 an agent changes the files, a stale save fails while retaining the current form.
