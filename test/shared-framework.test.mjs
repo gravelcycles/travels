@@ -954,12 +954,14 @@ test('private video contracts, intake controls and local-only exclusion are shar
 test('Photos + Places editing and rendering are inherited by family, sample and a fresh empty draft',async t=>{
   await import('../dist/assets/photo-places.js');await import('../studio/place-editor.js');
   const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root,{includeDrafts:true});
-  const family=data.journeys.find(j=>j.kind==='real'&&j.photos.length),demo=data.journeys.find(j=>j.kind==='demo'&&j.photos.length);
+  const family=data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),demo=data.journeys.find(j=>j.kind==='demo'&&j.photos.length);
   for(const journey of [family,demo,data.journeys.find(j=>j.id===draft.id)]){
     const html=renderJourneyPage(root,journey,{preview:true});assert.match(html,/id="map-photo-card"/);assert.match(html,/assets\/photo-places.js/);assert.match(html,/assets\/photo-bubbles.js/);
     const point={...globalThis.JOURNEY_ATLAS_PLACE_EDITOR.newPoint(journey),name:'A reviewed place',summary:'An owner-authored place',coordinates:[8,47],sources:[{label:'Official source',url:'https://example.test/place'}],dayIds:[journey.days[0].id],photoIds:journey.photos.slice(0,1).map(photo=>photo.id)};
+    point.images=[{src:'https://images.example.test/venue.jpg',alt:'The venue',credit:'Venue contributor via source',sourceUrl:'https://example.test/place',permission:'linked'}];
     const changed=prepareJourneyPlan(data,journey,{pointsOfInterest:[...(journey.pointsOfInterest||[]),point]},{photos:{},days:{},routes:{}}).journey;
     assert.deepEqual(changed.pointsOfInterest.at(-1).photoIds,point.photoIds);
+    assert.deepEqual(changed.pointsOfInterest.at(-1).images,point.images);
     assert.deepEqual(globalThis.JOURNEY_ATLAS_PHOTO_PLACES.photosForPlace(point,journey.photos).linked.map(photo=>photo.id),point.photoIds);
     assert.ok(Object.hasOwn(globalThis.JOURNEY_ATLAS_PLAN_EXTRAS.changes(changed),'pointsOfInterest'));
   }
