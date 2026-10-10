@@ -36,6 +36,14 @@ filename in **Select multiple**, or select the matching photograph individually
 to add its map location. Original filenames remain available in Studio; only
 derivatives are served as images, never the original files.
 
+All 132 metadata-stripped WebP objects were uploaded sequentially to the
+existing private R2 bucket and downloaded for SHA-256 verification (57,993,024
+bytes total). The full-size DNG derivatives are 1.66–2.10 MiB, at most 3200 px on
+the longest edge. Original checksums match the supplied files. Album counts are
+Luzern 1, Freiburg 7, Hamburg 10, Köln 4, Düsseldorf 1, Berlin 7 and Prague 14.
+Desktop/390 px phone previews and Studio confirm photos, real capture dates,
+GPS location controls and blank locations for the five owner-review items.
+
 | City event | Arrival–departure / last known date | Incoming travel |
 | --- | --- | --- |
 | Luzern | 1 September departure | Origin; no earlier stay dates supplied |
