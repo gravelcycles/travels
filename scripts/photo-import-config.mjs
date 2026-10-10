@@ -16,6 +16,7 @@ export function photoImportConfig(root, data, options = {}) {
   new Intl.DateTimeFormat("en", { timeZone });
   const daysByDate = new Map();
   for (const day of journey.days) {
+    if (day.planningStatus === 'tbd' && day.calendarDate == null) continue;
     const start = calendarDate(day.calendarDate), end = calendarDate(journey.eventMode === 'city' ? day.calendarEndDate : day.calendarDate);
     if (end < start || end - start > 366 * 86400000) throw new Error('Invalid photo calendar range');
     for (let time = +start; time <= +end; time += 86400000) {

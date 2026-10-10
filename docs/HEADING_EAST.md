@@ -2,7 +2,39 @@
 
 Intake and research: 8 October 2026. The owner confirmed 2026 and corrected the
 Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 October.
-Each city is one event. Photos, taglines and stories are deliberately empty.
+Each city is one event. Taglines and stories are deliberately empty; the first
+photo intake is recorded below.
+
+## Photo intake — 10 October 2026
+
+The owner requested all 44 stills from ignored `photos/euro-eastbound/`:
+39 HEIC, two JPEG and three DNG originals, captured 1 September–10 October.
+All are included with blank traveler captions/notes, actual capture dates,
+chronological city albums and protected WebP derivatives. Originals and full
+camera metadata remain private; no image binaries are committed.
+
+39 photos contain camera GPS. The owner requested their locations; these pins
+retain the recorded coordinates. GPS corrects transfer-date assignments:
+`IMG_3095` belongs to Luzern, `IMG_3429` to Hamburg, and `IMG_3442`, `IMG_3444`,
+`IMG_3448` and the 30 September Snapseed photo to Köln. The two Dresden photos
+remain in the Prague arrival album with their actual Dresden coordinates.
+No route or city-stay dates change.
+
+Five photos have no GPS. The owner will locate them in Studio later; they
+remain included in Freiburg's album without invented pins:
+
+| Original filename | Owner review cue |
+| --- | --- |
+| `14958536-E214-4631-A39C-56DAAD35E9D6.DNG` | 1 September, backpack on a street |
+| `BED4A0A8-76CD-4410-A3C0-F8DED20FEC54.DNG` | 1 September, second backpack photograph |
+| `34D92B6E-8842-43D9-994C-1F59AF75A0CB.DNG` | 4 September, hillside view over Freiburg |
+| `D8FAA1C1-CF77-4D26-84F6-B48BE7D8E63E.JPG` | 6 September, Biosk kiosk |
+| `77C09C57-D680-425D-A2A2-43D5FCA96C57.JPG` | 12 September, garden café with prayer flags |
+
+Studio **Photos → Photos from → Freiburg** shows all five. Search the source
+filename in **Select multiple**, or select the matching photograph individually
+to add its map location. Original filenames remain available in Studio; only
+derivatives are served as images, never the original files.
 
 | City event | Arrival–departure / last known date | Incoming travel |
 | --- | --- | --- |

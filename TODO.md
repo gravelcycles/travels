@@ -12,6 +12,10 @@ commands.
 
 ## Independent project workstreams
 
+- [ ] **Owner review — five Heading East photo locations.** The owner will place
+      the five missing-GPS Freiburg photographs in Studio. Keep them included
+      without guessed pins; [filenames and visual cues](docs/HEADING_EAST.md#photo-intake--10-october-2026).
+
 These larger projects have their own source briefs and sit outside the P0–P3
 backlog. Keep the detailed plans in those files and use this list only for
 project-level status.

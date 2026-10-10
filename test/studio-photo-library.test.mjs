@@ -70,6 +70,21 @@ test('bad image and foreign day fail without replacing an existing album or leav
   assert.equal(fs.readdirSync(path.join(root, 'build')).filter(f => f.startsWith('photo-upload-')).length, 0);
 });
 
+test('camera GPS is retained privately for review with signed hemisphere coordinates', async t => {
+  const root = fixture(t);
+  const bytes = await sharp({ create: { width: 480, height: 320, channels: 3, background: '#537b9e' } }).jpeg().withExif({
+    IFD2: { DateTimeOriginal: '2026:08:13 12:00:00' },
+    IFD3: { GPSLatitudeRef: 'S', GPSLatitude: '34/1 30/1 0/1', GPSLongitudeRef: 'W', GPSLongitude: '58/1 18/1 0/1' }
+  }).toBuffer();
+  const { photo, warnings } = await importStudioPhoto(root, { journeyId, filename: 'gps-fixture.jpg', bytes });
+  const metadata = readJson(path.join(root, 'photos/studio-uploads', journeyId, `${photo.sourceHash}.json`));
+  assert.deepEqual(metadata.candidateLocation, { lat: -34.5, lng: -58.3 });
+  assert.ok(warnings.some(message => message.includes('GPS')));
+  assert.equal(photo.lat, undefined); assert.equal(photo.lng, undefined); assert.equal(photo.location, undefined);
+  const derivative = await sharp(privatePhotoFile(root, photo.src)).metadata();
+  assert.equal(derivative.exif, undefined);
+});
+
 test('publishing is preview-only by default and retryable; failed verification keeps photos local', async t => {
   const root = fixture(t), bytes = await photoBytes(200);
   // Existing local assets belong to other authoring sessions; this fixture
@@ -109,6 +124,27 @@ test('trash excludes photos from public data even without hidden; restoring pres
   state[id].trashed = false; atomicJson(filename, state); buildSite(root);
   assert.ok(publicPhotos(root).some(p => p.id === id));
   delete state[id].trashed; assert.deepEqual(state[id], previous);
+});
+
+test('slow-connection publishing serializes requests and rejects unsafe concurrency values', async t => {
+  const root = fixture(t);
+  const manifestFile = path.join(root, `content/photo-manifests/${journeyId}.json`);
+  atomicJson(manifestFile, readJson(manifestFile).map(photo => ({ ...photo, assetStatus: 'published' })));
+  await importStudioPhoto(root, { journeyId, dayId: 'family-d1', filename: 'serial.jpg', bytes: await photoBytes(1500) });
+  const stored = new Map(); let active = 0, maximum = 0;
+  const remote = async (resource, options = {}) => {
+    active++; maximum = Math.max(maximum, active);
+    try {
+      await new Promise(resolve => setTimeout(resolve, 5));
+      if (options.method === 'PUT') { stored.set(resource, options.body); return new Response(null, { status: 200 }); }
+      return stored.has(resource) ? new Response(stored.get(resource)) : new Response(null, { status: 404 });
+    } finally { active--; }
+  };
+  for (const concurrency of [0, 5, 1.5]) await assert.rejects(publishPhotoAssets(root, journeyId, { publish: true, concurrency, remote }), /concurrency/);
+  assert.equal(maximum, 0);
+  const result = await publishPhotoAssets(root, journeyId, { publish: true, concurrency: 1, remote });
+  assert.equal(result.assets, 3); assert.equal(stored.size, 3); assert.equal(maximum, 1);
+  assert.equal(result.published, true);
 });
 
 test('the upload UI retains successful files when a batch also contains a failure', async () => {

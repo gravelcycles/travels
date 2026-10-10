@@ -62,7 +62,7 @@ export async function importStudioPhoto(root, { journeyId, dayId = 'auto', filen
   const warnings = [];
   try {
     let metadata = {};
-    try { metadata = await exifr.parse(source, { reviveValues: false, pick: ['DateTimeOriginal', 'CreateDate', 'OffsetTimeOriginal', 'OffsetTimeDigitized', 'latitude', 'longitude', 'Orientation'] }) || {}; }
+    try { metadata = await exifr.parse(source, { reviveValues: false, pick: ['DateTimeOriginal', 'CreateDate', 'OffsetTimeOriginal', 'OffsetTimeDigitized', 'GPSLatitude', 'GPSLongitude', 'GPSLatitudeRef', 'GPSLongitudeRef', 'Orientation'] }) || {}; }
     catch { warnings.push('Camera metadata could not be read.'); }
     const assignment = assignPhotoDay(journey, metadata, dayId);
     const { day, captured } = assignment;
