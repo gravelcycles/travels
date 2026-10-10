@@ -71,7 +71,10 @@ facts arrive; no feature porting is required.
 Heading East includes 20 saved food/drink places matched from a shared Google
 Maps list to seven existing city stays. Addresses, approximate venue pins,
 branch-specific Maps links and factual sources use the existing Places contract;
-no visit, group rating or image reuse is inferred. The [intake record](HEADING_EAST.md#saved-places--10-october-2026)
+no visit or group rating is inferred. Each now has one owner-requested Google
+Maps photo, displayed from its original host with contributor credit and a source
+link. Shared image provenance supports externally hosted references (`linked`)
+without labelling them owned or licensed. The [intake record](HEADING_EAST.md#saved-places--10-october-2026)
 documents the city-only selection and excluded detours.
 
 Nine to Como demonstrates nine travelers, three group routes, a validated Como

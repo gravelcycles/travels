@@ -690,8 +690,12 @@ status and the group's actual ratings and notes. Never invent a visit or import
 Google's ratings as our group's opinions. The agent researches source links,
 reviews coordinates and attribution, proposes image candidates, and imports
 approved derivatives. Google Maps is an optional outbound reference; there is
-no Maps API or automatic photo scraper. Use our own, permission-backed or
-licensed imagery; retain links and an empty image slot when reuse is unclear.
+no Maps API or automatic photo scraper. Prefer our own, permission-backed or
+licensed imagery for local copies. When the owner explicitly requests public
+source-hosted photos, use `permission: "linked"`, an HTTPS image URL, the displayed
+contributor credit and the original source link. This records an external
+reference, not ownership or a reuse license; do not give it a `licenseUrl` or
+copy it into local public assets. Check every selected photo and exact branch.
 
 These annotations do not alter route nodes or Replay. Their content and reviews
 are public; private original images do not belong in journey JSON. Record an

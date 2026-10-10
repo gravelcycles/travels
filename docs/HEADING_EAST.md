@@ -265,8 +265,8 @@ copied rating.
 
 Every entry has `status: "saved"` and its existing city `dayIds`. Past itinerary
 dates and list membership do not prove a visit. No list-author personal reminders,
-Google reviews, ratings or photographs were republished. Empty images/reviews
-use the shared viewer's normal states. Route nodes, dates, geometry and Replay
+Google reviews or ratings were imported. Reviews use the shared viewer's empty
+state. Photos were added in the follow-up described below. Route nodes, dates, geometry and Replay
 are unchanged; the shared Places control appears because the trip now has data.
 
 The other 21 entries are excluded as separate detours, approximately 50.8–290.6 km
@@ -292,6 +292,37 @@ family reference, demo, fresh draft and published real places. Browser review
 confirmed 20 desktop entries, six entries under Prague's stop filter, the saved
 status/address/Maps link, and detail-sheet expansion at 390 px. Local UI review
 used the existing local-photo mode; no private photographs were needed.
+
+
+### Place photos — 10 October 2026
+
+The owner explicitly requested at least one Google Maps photo for each of the
+20 saved places. Each place has one reviewed image from its exact branch's
+public listing, with a short visual description, the contributor's displayed
+name and an outbound source link. Venue-uploaded images are preferred when
+available. The existing factual venue descriptions remain in place.
+
+Images load from Google's public image host and use `permission: "linked"`.
+This is provenance for an external reference; it does not claim that an image
+is owned, licensed for reuse or part of the travelers' personal photographs.
+No venue-photo binaries are published in this repository. Temporary downloaded
+previews were used to review all 20 images; the browser galleries keep the
+original composition. Availability depends on the source host, with the shared
+viewer’s existing unavailable-image and retry states.
+
+The shared validator and Studio preserve this provenance for real trips,
+samples and new drafts. A linked image must use HTTPS and cannot declare a
+local public asset or a reuse-license URL. Credits are listed in
+[the place photo attribution record](../dist/assets/places/ATTRIBUTION.md).
+
+
+Validation after integrating the concurrent arrival/city-framing release: all
+448 tests and the production build pass. All 20 source images
+were retrieved successfully and visually reviewed. Browser QA confirmed 20
+image-bearing cards, a complete portrait image with attribution on desktop,
+and a complete landscape image with contributor/source on a 390 × 844 phone
+viewport. The existing shared unavailable-image fallback remains in place.
+
 # City framing boundaries — 10 October 2026
 
 The destination view fits geotagged photos inside the municipal boundary or

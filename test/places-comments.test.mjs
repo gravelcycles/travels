@@ -61,6 +61,18 @@ test('place sources reject unsafe assets, bad references, missing attribution an
   assert.throws(() => validatePointsOfInterest(duplicate), /unique stable IDs/);
 });
 
+test('linked place photos retain source provenance without claiming a reuse license', () => {
+  const journey = example(), picture = journey.pointsOfInterest[0].images[0];
+  Object.assign(picture, { src: 'https://images.example.test/venue.jpg', permission: 'linked' });
+  delete picture.licenseUrl;
+  assert.doesNotThrow(() => validatePointsOfInterest(journey));
+  picture.licenseUrl = 'https://example.test/license';
+  assert.throws(() => validatePointsOfInterest(journey), /cannot assert a license/);
+  delete picture.licenseUrl;
+  picture.src = './assets/places/copied.jpg';
+  assert.throws(() => validatePointsOfInterest(journey), /externally hosted/);
+});
+
 test('local comment simulation scopes journeys/photos and author deletion, retaining literal text', () => {
   const storage = memory(), trip = createDemoStore(storage, 'trip-a'), other = createDemoStore(storage, 'trip-b');
   const visitor = { id: 'visitor-one', name: ' Alex ' };
