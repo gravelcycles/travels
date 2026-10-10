@@ -47,7 +47,7 @@ test('owner link/unlink/reorder edits explicit references without changing photo
  assert.throws(()=>editor.linkPhoto(item,'foreign',true,photos),/journey/);const draft={id:'blank'};assert.deepEqual(editor.newPoint(draft).coordinates,[],'An unfinished place never gets [0,0]');
 });
 test('place association validation rejects missing, foreign and duplicate photo references',()=>{
- const journey=structuredClone(loadContent(path.resolve(import.meta.dirname,'..')).data.journeys.find(j=>j.pointsOfInterest?.length));
+ const journey=structuredClone(loadContent(path.resolve(import.meta.dirname,'..')).data.journeys.find(j=>j.id==='alpine-crossing'));
  assert.doesNotThrow(()=>validatePointsOfInterest(journey));
  for(const photoIds of [['foreign'],[journey.photos[0].id,journey.photos[0].id],'not-an-array']){const changed=structuredClone(journey);changed.pointsOfInterest[0].photoIds=photoIds;assert.throws(()=>validatePointsOfInterest(changed),/photoIds/);}
 });
