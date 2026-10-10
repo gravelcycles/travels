@@ -248,7 +248,7 @@
       $('#mobile-photo-grid').disabled = !data.photos.length;
       $('#photo-location-title').textContent = photo?.locationLabel || (photo?.mediaType === 'video' ? 'Video location' : 'Photo location');
       $('#mobile-photo-location .location-hint').textContent = photo?.caption || photo?.description ? 'Details & location' : photo?.mediaType === 'video' ? 'Video location' : 'Photo location';
-      $('#photo-location-subtitle').textContent = Number.isFinite(photo?.lng) && Number.isFinite(photo?.lat) ? `${eventWord('title')} ${data.day.number} · ${data.day.title}` : `No exact location · showing the ${eventWord()}’s route`;
+      $('#photo-location-subtitle').textContent = Number.isFinite(photo?.lng) && Number.isFinite(photo?.lat) ? `${eventWord('title')} ${data.day.number} · ${data.day.title}` : api.destinationName?.(data.day) ? `No exact photo location · showing ${api.destinationName(data.day)}` : 'No saved photo location';
       neighbors.forEach(({node,delta}) => {
         const adjacent = data.photos[data.index + delta]; node.hidden = !adjacent;
         api.clearImage(node); node.removeAttribute('src');

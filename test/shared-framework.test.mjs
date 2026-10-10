@@ -11,6 +11,7 @@ import { prepareJourneyPlan } from '../scripts/journey-planner.mjs';
 import { studioRouteAvailability, proposeStudioRoute } from '../scripts/studio-route-service.mjs';
 import { photoImportConfig } from '../scripts/photo-import-config.mjs';
 import '../dist/assets/replay-utils.js';
+import '../dist/assets/arrival-chapter.js';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/map-style.js';
 import { mapStyleHarness } from './map-style-harness.mjs';
@@ -57,6 +58,51 @@ test('photo intake skips undated TBD entries for the reference, demo and a fresh
   assert.equal(config.daysByDate.size, 53);
   assert.equal(config.daysByDate.get('2026-09-30').title, 'Düsseldorf');
   assert.equal(config.daysByDate.has('2026-10-24'), false);
+});
+
+test('arrival and stay controls inherit across reference, demo and fresh draft without new trip flags', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const {data,routes}=loadContent(root,{includeDrafts:true});
+  const family=data.journeys.find(j=>j.id==='switzerland-italy-family-2026');
+  for(const journey of [family,data.journeys.find(j=>j.kind==='demo'),draft]){
+    const html=renderJourneyPage(root,journey,{preview:true});
+    for(const id of ['arrival-chapter','arrival-replay','arrival-city']) assert.ok(ids(html).includes(id),journey.id);
+    assert.ok(assets(html).includes('arrival-chapter.js'));assert.ok(assets(html).includes('arrival-chapter.css'));
+    const day=journey.days.find(day=>day.segmentIds.length)||journey.days[0];
+    const segments=day.segmentIds.map(id=>journey.segments.find(s=>s.id===id)).filter(Boolean);
+    const coordinate=s=>s.geometry||routes[s.id]||[];
+    const plan=globalThis.JOURNEY_ATLAS_ARRIVAL.plan(segments,coordinate);
+    assert.equal(plan.duration,1500,'Every journey inherits the same 1.5-second arrival');
+    assert.equal(plan.arrivalHold,250,'Every journey inherits the quarter-second arrival pause');
+    const place=journey.places.find(p=>p.id===(day.destinationId||day.placeId));
+    const center=place?[place.lng,place.lat]:null;
+    const cityPoints=globalThis.JOURNEY_ATLAS_UTILS.cityFrameCoordinates({center,photos:center?[{lng:center[0]+.01,lat:center[1]}]:[],places:[{coordinates:[12,45],dayIds:[day.id]}],dayId:day.id});
+    assert.ok(cityPoints.some(point=>point[0]===12&&point[1]===45),'Marked places inherit in family, demo and fresh drafts');
+    if(center) assert.ok(cityPoints.some(point=>point[0]===center[0]+.01),'Nearby photos inherit without boundary configuration');
+    assert.ok(plan.legs.every(leg=>day.segmentIds.includes(leg.segment.id)));
+    for(const progress of [0,.25,.5,.75,1]){
+      const animated=globalThis.JOURNEY_ATLAS_ARRIVAL.frame(plan,progress,{drawLines:false});
+      assert.deepEqual(animated.lines,[],'The icon can move independently of map source updates');
+      if(plan.legs.length){
+        assert.ok(animated.position.every(Number.isFinite),journey.id);
+        const drawn=globalThis.JOURNEY_ATLAS_ARRIVAL.frame(plan,progress);
+        assert.deepEqual(animated.position,drawn.lines.find(line=>line.segment.id===animated.active.segment.id).coordinates.at(-1));
+      }else assert.equal(animated.position,undefined);
+    }
+    if(journey===draft){assert.equal(plan.legs.length,0);assert.equal(globalThis.JOURNEY_ATLAS_ARRIVAL.destination(day,journey.places,segments,coordinate),null);}
+  }
+});
+
+test('city boundaries are optional, validated geometry with source attribution',t=>{
+  const root=fixture(t),{data}=loadContent(root);
+  const place=data.journeys[0].places[0];
+  place.cityBoundary={type:'Polygon',coordinates:[[[0,0],[1,0],[1,1],[0,0]]],sourceUrl:'https://www.openstreetmap.org/relation/62422',retrievedAt:'2026-10-10'};
+  assert.doesNotThrow(()=>validateJourneys(data));
+  delete place.cityBoundary.sourceUrl;
+  assert.throws(()=>validateJourneys(data),/city boundary/);
+  place.cityBoundary.sourceUrl='https://www.openstreetmap.org/relation/62422';
+  place.cityBoundary.coordinates[0][0]=[181,0];
+  assert.throws(()=>validateJourneys(data),/city boundary/);
 });
 
 test('Studio readiness uses the same validation for reference, demo and fresh empty drafts', t => {
@@ -192,7 +238,7 @@ test('selecting a real, demo or fresh-draft day scrolls its newly selected row i
     const selected = journey.days[Math.min(10, journey.days.length - 1)];
     let renderedId, scrolled = false;
     const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form), journey, activeDayId: journey.days[0].id, prefersReducedMotion: () => false,
-      placesUI:null,photoBubbles:null,dayById: id => journey.days.find(day => day.id === id), clearSegmentInspection() {},
+      arrivalChapter:null,arrivalKey:day=>day.id,cancelArrival(){},placesUI:null,photoBubbles:null,dayById: id => journey.days.find(day => day.id === id), clearSegmentInspection() {},
       renderDays() { renderedId = context.activeDayId; }, renderStory() {}, drawMainMap() {},
       dayList: { clientHeight: 400, getBoundingClientRect: () => ({ top: 100, bottom: 500 }),
         querySelector: () => {
@@ -819,7 +865,7 @@ test('days without travel omit automatic stay labels across real, demo and fresh
 test('places are data-only annotations inherited by real, demo and fresh-draft journeys', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const { data } = loadContent(root, { includeDrafts: true });
-  const targets = [data.journeys.find(j => j.kind === 'real'), data.journeys.find(j => j.pointsOfInterest?.length), data.journeys.find(j => j.id === draft.id)];
+  const targets = [data.journeys.find(j => j.id === 'switzerland-italy-family-2026'), data.journeys.find(j => j.id === 'alpine-crossing'), ...data.journeys.filter(j => j.kind === 'real' && j.pointsOfInterest?.length), data.journeys.find(j => j.id === draft.id)];
   for (const journey of targets) {
     const before = structuredClone({ days: journey.days, places: journey.places, segments: journey.segments });
     if (!journey.pointsOfInterest) {
@@ -835,7 +881,10 @@ test('places are data-only annotations inherited by real, demo and fresh-draft j
   }
   buildSite(root);
   const output = bundle(read(root, 'dist/assets/journeys.js'), 'JOURNEY_ATLAS_DATA');
-  assert.equal(output.journeys.find(j => j.pointsOfInterest?.length).pointsOfInterest.length, 3);
+  assert.equal(output.journeys.find(j => j.id === 'alpine-crossing').pointsOfInterest.length, 3);
+  for (const journey of loadContent(root).data.journeys.filter(j => j.kind === 'real' && j.pointsOfInterest?.length)) {
+    assert.deepEqual(output.journeys.find(j => j.id === journey.id).pointsOfInterest, journey.pointsOfInterest, 'Published real places retain their saved status, sources and city assignments');
+  }
   assert.ok(!output.journeys.some(j => j.id === draft.id), 'Fresh local data stays unpublished');
 });
 
@@ -922,12 +971,14 @@ test('private video contracts, intake controls and local-only exclusion are shar
 test('Photos + Places editing and rendering are inherited by family, sample and a fresh empty draft',async t=>{
   await import('../dist/assets/photo-places.js');await import('../studio/place-editor.js');
   const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root,{includeDrafts:true});
-  const family=data.journeys.find(j=>j.kind==='real'&&j.photos.length),demo=data.journeys.find(j=>j.kind==='demo'&&j.photos.length);
+  const family=data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),demo=data.journeys.find(j=>j.kind==='demo'&&j.photos.length);
   for(const journey of [family,demo,data.journeys.find(j=>j.id===draft.id)]){
     const html=renderJourneyPage(root,journey,{preview:true});assert.match(html,/id="map-photo-card"/);assert.match(html,/assets\/photo-places.js/);assert.match(html,/assets\/photo-bubbles.js/);
     const point={...globalThis.JOURNEY_ATLAS_PLACE_EDITOR.newPoint(journey),name:'A reviewed place',summary:'An owner-authored place',coordinates:[8,47],sources:[{label:'Official source',url:'https://example.test/place'}],dayIds:[journey.days[0].id],photoIds:journey.photos.slice(0,1).map(photo=>photo.id)};
+    point.images=[{src:'https://images.example.test/venue.jpg',alt:'The venue',credit:'Venue contributor via source',sourceUrl:'https://example.test/place',permission:'linked'}];
     const changed=prepareJourneyPlan(data,journey,{pointsOfInterest:[...(journey.pointsOfInterest||[]),point]},{photos:{},days:{},routes:{}}).journey;
     assert.deepEqual(changed.pointsOfInterest.at(-1).photoIds,point.photoIds);
+    assert.deepEqual(changed.pointsOfInterest.at(-1).images,point.images);
     assert.deepEqual(globalThis.JOURNEY_ATLAS_PHOTO_PLACES.photosForPlace(point,journey.photos).linked.map(photo=>photo.id),point.photoIds);
     assert.ok(Object.hasOwn(globalThis.JOURNEY_ATLAS_PLAN_EXTRAS.changes(changed),'pointsOfInterest'));
   }

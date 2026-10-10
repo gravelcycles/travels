@@ -5,6 +5,17 @@ Applies to Switzerland–Italy, every sample,
 and every new journey. “Available” means the common implementation exists;
 actual content, reviewed geometry and photographs must be supplied per trip.
 
+Shared [Arrival → city](ARRIVAL_CITY_DEMO.md) playback traces the incoming
+route with a plain orange tracking circle at display cadence after a contextual pullback and a
+combined pan/zoom, with named endpoints and linear 1.5-second overhead
+progression and a 0.25-second arrival pause before the destination zoom. Unlocated
+photos keep the local city view. City zoom fits photo locations inside or within
+five miles of the city boundary, plus the stop's marked places. Missing boundary
+data uses a five-mile radius from the destination; all marked excursions remain
+included. Optional sourced Polygon/MultiPolygon data lives on journey places.
+It reuses the shared page, gallery and route geometry. The owner approved
+deployment on 10 October 2026 after reviewing the local demo.
+
 [WIP.md](../WIP.md) distinguishes delivered features from preserved prototypes,
 unpublished editorial work and remaining service/intake projects. In particular,
 Live Photos playback is still an investigation. Private-video intake and live
@@ -56,6 +67,15 @@ The family trip’s chosen photos, composed cover, fourteen Replay chapters and
 reviewed Swiss/Italian routes are content instances. New trips start with empty
 photos/routes and automatic Replay. The agent adds the equivalent inputs as
 facts arrive; no feature porting is required.
+
+Heading East includes 20 saved food/drink places matched from a shared Google
+Maps list to seven existing city stays. Addresses, approximate venue pins,
+branch-specific Maps links and factual sources use the existing Places contract;
+no visit or group rating is inferred. Each now has one owner-requested Google
+Maps photo, displayed from its original host with contributor credit and a source
+link. Shared image provenance supports externally hosted references (`linked`)
+without labelling them owned or licensed. The [intake record](HEADING_EAST.md#saved-places--10-october-2026)
+documents the city-only selection and excluded detours.
 
 Nine to Como demonstrates nine travelers, three group routes, a validated Como
 meetup, and a public MDN test video. Its lines are provisional endpoint guides.

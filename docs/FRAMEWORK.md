@@ -338,3 +338,28 @@ An undated TBD tail is validated without extending the known calendar. The viewe
 Studio, photo assignment and calendar moves retain the shared contracts. Heading
 East supplies the content instance; family/demo/fresh-draft tests cover inheritance.
 No separate trip implementation or framework migration is introduced.
+
+## Arrival/city playback — approved 10 October 2026
+
+The reviewed `codex/arrival-stay-demo` work adds shared arrival playback and destination-focused
+stay/photo framing without new journey fields or trip-specific branches.
+`arrival-chapter.js` isolates the clock and cancellation from map rendering.
+It caches an overhead timing outline and projected canvas paths once per arrival,
+then paints the route and a plain orange tracking circle at display cadence
+without GeoJSON worker updates. The circle contains no arrow or symbol.
+Cancellable camera stages pull back around the previous view, then pan
+and zoom onto the selected route in one continuous move. Named endpoint pins and
+the route title retain geographic context. Each stage waits for its own move-end
+event before playback. All routed events play linearly for 1.5 seconds (40%
+shorter than the previous 2.5 seconds), hold for 250 ms, then
+start the city zoom; empty/reduced-motion stays skip playback and the hold.
+The overlay is transient shared rendering, with regular map layers restored on
+completion/cancellation and projection refreshed on resize.
+The local review generator renders the shared template with explicitly synthetic
+media; original content and private services remain outside the fixture.
+The owner approved deployment on 10 October 2026, including timing and
+photo/place-aware city framing. See [ARRIVAL_CITY_DEMO.md](ARRIVAL_CITY_DEMO.md).
+The follow-up city fit uses shared geometry helpers in `atlas-utils.js` to include
+photos inside or within five miles of optional sourced `places[].cityBoundary`
+geometry, plus marked places. Without boundaries, proximity uses the destination
+coordinate. No network calls or trip ID branches are needed at playback time.

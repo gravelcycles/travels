@@ -6,7 +6,7 @@ const source=fs.readFileSync(new URL('../dist/assets/app.js',import.meta.url),'u
 function fn(name){const start=source.indexOf(`  function ${name}(`);return source.slice(start,source.indexOf('\n  function ',start+1));}
 function fixture(){
  const timers=new Map(),elements=new Map();let id=0,frames=0;
- const context=vm.createContext({replayAutoplayTimer:null,replayPlaying:false,replayFrame:null,replayLastTimestamp:null,replayCompleted:false,
+ const context=vm.createContext({arrivalChapter:null,replayAutoplayTimer:null,replayPlaying:false,replayFrame:null,replayLastTimestamp:null,replayCompleted:false,
   replayTimeline:[{id:'d'}],replayJourneyId:'trip',journey:{id:'trip'},replayUtils:{},document:{hidden:false},
   replayDialog:{open:false,showModal(){this.open=true;}},replayMomentDay:()=>({id:'d'}),updateReplayControls(){},renderReplayMoment(){},initReplayMap(){},replayTick(){},refreshPreloads(){},
   $:selector=>{if(!elements.has(selector))elements.set(selector,{focus(){}});return elements.get(selector);},
