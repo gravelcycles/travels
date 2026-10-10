@@ -45,5 +45,5 @@ test('Heading East preserves corrected city order and the researched train–bus
  assert.equal(j.places.find(p=>p.id===legs[1].to).name,'Ústí nad Labem hl. n.');
  assert.equal(j.segments.filter(s=>s.mode==='bus' && j.days.slice(0,11).some(d=>d.segmentIds.includes(s.id))).length,1);
  assert.ok(j.segments.every(s=>routes[s.id].length>20&&s.geometryStatus==='reconstructed'));
- assert.ok(j.days.every(d=>d.text===''));assert.equal(j.photos.length,0);
+ assert.ok(j.days.every(d=>d.text===''));
 });

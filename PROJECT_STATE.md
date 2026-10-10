@@ -1,5 +1,15 @@
 # Project state
 
+## Heading East photo intake — 10 October 2026
+
+All 44 supplied photos are added to seven city albums, with 39 reviewed camera
+GPS pins. Five Freiburg photographs lack GPS; the owner will place them later
+in Studio. Their filenames and review cues are in [the trip record](docs/HEADING_EAST.md#photo-intake--10-october-2026).
+The three DNG originals become bounded WebP derivatives, like HEIC/JPEG;
+originals remain ignored and private. Captions/notes remain blank. Shared intake
+now accepts DNG for macOS bulk imports, reads GPS tags correctly, retains actual
+capture dates within city stays, and skips undated TBD stops.
+
 ## Workstream checkpoint — 8 October 2026
 
 [WIP.md](WIP.md) is the current cross-workstream handoff: saved family content,

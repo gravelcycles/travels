@@ -42,6 +42,23 @@ function bundle(source, key) {
 }
 const app = read(repo, 'dist/assets/app.js');
 
+test('photo intake skips undated TBD entries for the reference, demo and a fresh draft', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const { data } = loadContent(root, { includeDrafts: true });
+  for (const journey of [data.journeys.find(j => j.id === 'switzerland-italy-family-2026'), data.journeys.find(j => j.kind === 'demo'), data.journeys.find(j => j.id === draft.id)]) {
+    const before = photoImportConfig(root, data, { journey: journey.id });
+    journey.days.push({ id: `${journey.id}-future`, number: journey.days.length + 1, planningStatus: 'tbd', date: 'TBD', segmentIds: [] });
+    const after = photoImportConfig(root, data, { journey: journey.id });
+    assert.deepEqual([...after.daysByDate], [...before.daysByDate]);
+    assert.ok(![...after.daysByDate.values()].some(day => day.id.endsWith('-future')));
+  }
+  const city = data.journeys.find(j => j.id === 'backpacking-europe-heading-east');
+  const config = photoImportConfig(root, data, { journey: city.id });
+  assert.equal(config.daysByDate.size, 53);
+  assert.equal(config.daysByDate.get('2026-09-30').title, 'Düsseldorf');
+  assert.equal(config.daysByDate.has('2026-10-24'), false);
+});
+
 test('Studio readiness uses the same validation for reference, demo and fresh empty drafts', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const { data } = loadContent(root, { includeDrafts:true }), state = readOverrides(root);

@@ -147,6 +147,11 @@ Retries reuse matching objects. Use `--all` for a complete reviewed migration;
 the default selects pending local photos. Both bulk imports and Studio share
 this publisher and two-size pipeline. Credentials never enter the atlas page.
 
+On a slow or unreliable connection, append `--concurrency 1` to upload and
+verify one derivative at a time, with progress after every verified file. The
+default remains four parallel files; allowed values are 1–4. A retry checks and
+reuses existing matching objects before uploading missing ones.
+
 Studio protects saves with a revision of the saved overrides. If another tab or
 an agent changes the files, a stale save fails while retaining the current form.
 Keep any unsaved notes before reloading that tab to get the current album.
@@ -246,6 +251,17 @@ Failed/empty imports retain the previous manifest and derivative directory;
 successful replacements keep a local backup. Review results, then run
 `npm run build` to generate the public bundle. Original HEIC decoding still
 uses macOS Quick Look; JPEG/PNG imports use Sharp directly.
+
+Bulk intake also accepts DNG stills through macOS Quick Look, preserving the
+untouched RAW originals privately. Capture labels retain the actual ISO date
+and local time, including within multi-day city albums. Undated TBD stops are
+skipped during date matching, so a planned onward itinerary does not block
+imports into its dated portion. On transfer dates, review camera GPS and move
+departure-city photos back to that city's album when needed. GPS pins require
+review; missing GPS stays unlocated until the owner places it in Studio.
+Both intake paths read the raw GPS coordinate/reference tags before converting
+them to signed coordinates; GPS candidates stay in the private report until
+reviewed location overrides are saved.
 
 The importer treats naive EXIF timestamps as journey-local camera time; the
 computer host time zone never participates. Review camera-clock mistakes manually.

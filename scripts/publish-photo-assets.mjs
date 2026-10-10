@@ -5,7 +5,8 @@ import {readOverrides,buildSite} from './build-site.mjs';
 import {atomicJson} from './studio-photo-service.mjs';
 import {privatePhotoFile,isPrivatePhotoUrl,PRIVATE_PREFIX} from './photo-variants.mjs';
 import {cloudflareClient} from './cloudflare-client.mjs';
-export async function publishPhotoAssets(root,journeyId,{publish=false,all=false,remote,progress=()=>{}}={}){
+export async function publishPhotoAssets(root,journeyId,{publish=false,all=false,concurrency=4,remote,progress=()=>{}}={}){
+ if(!Number.isInteger(concurrency)||concurrency<1||concurrency>4)throw new Error('Photo upload concurrency must be 1–4.');
  const journey=loadJourneys(root,{includeDrafts:true}).journeys.find(j=>j.id===journeyId);
  if(!journey)throw new Error('Choose a known journey.');if(!journey.published&&publish)throw new Error('Draft journeys stay private.');
  const files=['','-uploads'].map(suffix=>path.join(root,journey.published?`content/photo-manifests/${journeyId}${suffix}.json`:`build/draft-assets/${journeyId}/${suffix?'uploads':'photos'}.json`)).filter(f=>fs.existsSync(f));
@@ -25,7 +26,7 @@ export async function publishPhotoAssets(root,journeyId,{publish=false,all=false
  let completed=0;
  // A small pool keeps upload/checksum verification bounded and retryable.
  const queue=[...assets.values()];
- await Promise.all(Array.from({length:Math.min(4,queue.length)},async()=>{while(queue.length){const asset=queue.shift(),resource=`${bucket}/objects/${asset.key}`;let response=await api(resource);
+ await Promise.all(Array.from({length:Math.min(concurrency,queue.length)},async()=>{while(queue.length){const asset=queue.shift(),resource=`${bucket}/objects/${asset.key}`;let response=await api(resource);
   if(response.status===404){const uploaded=await api(resource,{method:'PUT',headers:{'Content-Type':'image/webp','Cache-Control':'no-store'},body:fs.readFileSync(asset.filename)});if(!uploaded.ok)throw new Error(`Photo upload failed (${uploaded.status}).`);response=await api(resource);}
   if(!response.ok)throw new Error(`Photo verification failed (${response.status}).`);
   const bytes=Buffer.from(await response.arrayBuffer());if(bytes.length!==asset.size||crypto.createHash('sha256').update(bytes).digest('hex')!==asset.digest)throw new Error('Remote photo checksum mismatch; existing objects are never overwritten.');
@@ -35,6 +36,9 @@ export async function publishPhotoAssets(root,journeyId,{publish=false,all=false
  buildSite(root);return {...result,published:true};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
- const args=process.argv.slice(2);if(args[0]!=='--journey'||!args[1]||args.slice(2).some(a=>!['--publish','--all'].includes(a)))throw new Error('Usage: npm run photos:publish -- --journey <id> [--all] [--publish]');
- try{console.log(await publishPhotoAssets(path.resolve(import.meta.dirname,'..'),args[1],{publish:args.includes('--publish'),all:args.includes('--all'),progress:(done,total)=>{if(done%20===0||done===total)console.log(`Verified ${done}/${total} private objects`);}}));}catch(error){console.error(error.message);process.exitCode=1;}
+ const args=process.argv.slice(2);let concurrency=4;
+ const usage='Usage: npm run photos:publish -- --journey <id> [--all] [--publish] [--concurrency 1–4]';
+ if(args[0]!=='--journey'||!args[1])throw new Error(usage);
+ for(let i=2;i<args.length;i++){if(['--publish','--all'].includes(args[i]))continue;if(args[i]==='--concurrency'&&/^[1-4]$/.test(args[i+1]||'')){concurrency=Number(args[++i]);continue;}throw new Error(usage);}
+ try{console.log(await publishPhotoAssets(path.resolve(import.meta.dirname,'..'),args[1],{publish:args.includes('--publish'),all:args.includes('--all'),concurrency,progress:(done,total)=>{if(concurrency===1||done%20===0||done===total)console.log(`Verified ${done}/${total} private objects`);}}));}catch(error){console.error(error.message);process.exitCode=1;}
 }

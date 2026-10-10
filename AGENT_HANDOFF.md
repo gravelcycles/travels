@@ -1,5 +1,16 @@
 # Next-agent handoff
 
+## Heading East photos — 10 October 2026
+
+The owner requested all 44 files in `photos/euro-eastbound/`, including three
+DNGs. The content manifest contains optimized protected derivatives; 39 camera
+GPS locations are reviewed overrides. Keep the five missing-GPS photographs
+unlocated until the owner edits them in Studio. See [the exact filenames and
+album assignments](docs/HEADING_EAST.md#photo-intake--10-october-2026).
+Future additions should use append-only Studio intake; do not replace this
+reviewed bulk manifest. New photo IDs require the Worker eligibility-index
+deployment before Pages, as described in the community operations guide.
+
 ## Florence–Genoa cycling-only trip — 20 September 2026
 
 The owner removed the arrival day and all train/bus travel. The real

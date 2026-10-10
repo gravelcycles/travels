@@ -14,6 +14,9 @@
   "startDate": "2026-09-01",
   "endDate": "2026-10-23",
   "timeZone": "Europe/Berlin",
+  "photoImport": {
+    "sourceDirectory": "photos/euro-eastbound"
+  },
   "note": "City stops span arrival to departure, with the itinerary supplied through Venice on 23 October. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed. The onward itinerary from Ljubljana to Athens is planned, not confirmed; dates, bookings and transfers remain TBD. Dotted routes mark these proposed legs. Rail is preferred where available; bus lines follow reconstructed road corridors, not operator GPS tracks. Lake Bled uses Lesce-Bled and a local bus; the onward railway via Ljubljana and Maribor avoids the autumn Jesenice closure. Recheck travel dates for replacement buses. Skopje, Tirana, Novi Pazar and Sarandë are transfer points, not extra stays.",
   "cover": "",
   "places": [

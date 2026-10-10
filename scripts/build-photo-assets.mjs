@@ -29,7 +29,7 @@ function slugFor(filename) {
 
 const temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "travels-photos-"));
 const files = fs.readdirSync(sourceDirectory)
-  .filter((filename) => /\.(heic|heif|jpe?g|png)$/i.test(filename))
+  .filter((filename) => /\.(heic|heif|dng|jpe?g|png)$/i.test(filename))
   .sort((a, b) => a.localeCompare(b));
 const videos = fs.readdirSync(sourceDirectory).filter((filename) => /\.mov$/i.test(filename)).sort();
 const photos = [];
@@ -45,7 +45,7 @@ try {
     try {
       const metadata = await exifr.parse(sourcePath, {
         reviveValues: false,
-        pick: ["DateTimeOriginal", "CreateDate", "OffsetTimeOriginal", "OffsetTimeDigitized", "latitude", "longitude", "Orientation"]
+        pick: ["DateTimeOriginal", "CreateDate", "OffsetTimeOriginal", "OffsetTimeDigitized", "GPSLatitude", "GPSLongitude", "GPSLatitudeRef", "GPSLongitudeRef", "Orientation"]
       }) || {};
       const local = captureDateParts(metadata, timeZone);
       const day = daysByDate.get(local.date);
@@ -58,7 +58,10 @@ try {
       if (photoIds.has(slug)) throw new Error(`Duplicate photo filename slug: ${slug}`);
       photoIds.add(slug);
       const temporaryImage = path.join(temporaryDirectory, `${filename}.png`);
-      if (/\.(heic|heif)$/i.test(filename)) execFileSync("/usr/bin/qlmanage", ["-t", "-s", "3200", "-o", temporaryDirectory, sourcePath], { stdio: "ignore" });
+      if (/\.(heic|heif|dng)$/i.test(filename)) {
+        if (process.platform !== "darwin") throw new Error("HEIC/DNG conversion requires macOS Quick Look");
+        execFileSync("/usr/bin/qlmanage", ["-t", "-s", "3200", "-o", temporaryDirectory, sourcePath], { stdio: "ignore", timeout: 60000 });
+      }
       else await sharp(sourcePath).rotate().png().toFile(temporaryImage);
       const decoded = await sharp(temporaryImage).metadata();
       const displayWidth = decoded.autoOrient?.width || decoded.width;
@@ -88,7 +91,7 @@ try {
         caption: "",
         description: "",
         captionSource: "camera-import",
-        takenAt: `${day.date} · ${local.time}`,
+        takenAt: `${local.date} · ${local.time}`,
         sourceFilename: filename,
         protected: true,
         assetStatus: "local",
