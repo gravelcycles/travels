@@ -48,7 +48,7 @@
     <link rel="stylesheet" href="./assets/places-comments.css?v=10c8ea2e1474" />
     <link rel="stylesheet" href="./assets/places-panel.css?v=1" />
     <link rel="stylesheet" href="./assets/photo-comments.css?v=1bc0107734b4" />
-    <link rel="stylesheet" href="./assets/photo-bubbles.css?v=414395f91e29" />
+    <link rel="stylesheet" href="./assets/photo-bubbles.css?v=356de9587007" />
     <link rel="stylesheet" href="./assets/arrival-chapter.css?v=10a0891e32d5" />
   </head>
   <body data-journey-id="florence-genoa">
@@ -145,12 +145,6 @@
 
       </section>
 
-      <aside id="map-photo-card" class="bubble-card" aria-label="Selected trip photos" hidden>
-        <div class="bubble-card-image"><img alt=""/><button type="button" data-bubble-unlock hidden>Unlock photos</button><div class="bubble-image-feedback"><span data-bubble-image-status role="status"></span><button type="button" data-bubble-retry hidden>Retry photo</button></div></div>
-        <div class="bubble-card-copy"><header><strong data-bubble-title></strong><button type="button" data-bubble-close aria-label="Close selected map photos">×</button></header><p data-bubble-day></p><p data-bubble-caption></p><p data-bubble-location></p><details data-bubble-notes hidden><summary>Notes & credits</summary><p data-bubble-description></p></details>
-        <div class="bubble-card-navigation"><button type="button" data-bubble-prev aria-label="Previous photo">←</button><span data-bubble-count aria-live="polite"></span><button type="button" data-bubble-next aria-label="Next photo">→</button></div>
-        <footer><button type="button" data-bubble-locate>Locate</button><button type="button" data-bubble-full>Full screen ↗</button></footer><button type="button" data-bubble-place hidden></button><button type="button" data-bubble-comments hidden>Comments</button></div>
-      </aside>
       <aside id="places-panel" class="places-panel" aria-label="Places we found" hidden></aside>
       <aside class="story-panel" aria-label="Journey details">
         <div class="mobile-story-heading"><span id="mobile-story-date"></span><h2 id="mobile-story-title"></h2><p id="mobile-story-tagline" hidden></p><p id="mobile-story-meta"></p></div>
@@ -159,6 +153,12 @@
         <div class="story-album-entry">
         <div class="story-media" id="story-media"></div>
         <button type="button" class="story-photo-action" id="story-view-photos" hidden></button>
+          <section id="map-photo-card" class="bubble-card" aria-label="Selected trip photos" hidden>
+            <div class="bubble-card-image"><img alt=""/><button type="button" data-bubble-unlock hidden>Unlock photos</button><div class="bubble-image-feedback"><span data-bubble-image-status role="status"></span><button type="button" data-bubble-retry hidden>Retry photo</button></div></div>
+            <div class="bubble-card-copy"><header><strong data-bubble-title></strong><button type="button" data-bubble-close aria-label="Close selected map photos">×</button></header><p data-bubble-day></p><p data-bubble-caption></p><p data-bubble-location></p><details data-bubble-notes hidden><summary>Notes & credits</summary><p data-bubble-description></p></details>
+            <div class="bubble-card-navigation"><button type="button" data-bubble-prev aria-label="Previous photo">←</button><span data-bubble-count aria-live="polite"></span><button type="button" data-bubble-next aria-label="Next photo">→</button></div>
+            <footer><button type="button" data-bubble-locate>Locate</button><button type="button" data-bubble-full>Full screen ↗</button></footer><button type="button" data-bubble-place hidden></button><button type="button" data-bubble-comments hidden>Comments</button></div>
+          </section>
         </div>
         <div class="story-detail" id="story-detail"></div>
         <div class="photo-section">
@@ -325,9 +325,9 @@
     <script src="./assets/community-client.js?v=f7c657e09c6d"></script>
     <script src="./assets/places-comments.js?v=b5d038fa8f81"></script>
     <script src="./assets/photo-places.js?v=21c47e9dbd38"></script>
-    <script src="./assets/photo-bubbles.js?v=65f922679b84"></script>
+    <script src="./assets/photo-bubbles.js?v=90e2c19fa778"></script>
     <script src="./assets/places-panel.js?v=a5b753d7675e"></script>
     <script src="./assets/photo-comments.js?v=bcdeb2a1f2cc"></script>
-    <script src="./assets/app.js?v=ec5eec3e518e"></script>
+    <script src="./assets/app.js?v=de2139446015"></script>
   </body>
 </html>

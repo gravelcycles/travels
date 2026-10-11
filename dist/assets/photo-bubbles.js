@@ -26,7 +26,7 @@
       const shown=Boolean(selection && !options.placesOpen());
       card.hidden=!shown;document.body.classList.toggle('bubble-card-open',shown);
       if(phone())document.querySelector('.mobile-day-summary').before(card);
-      else document.querySelector('.atlas-shell').append(card);
+      else document.querySelector('.story-album-entry').append(card);
       requestAnimationFrame(()=>options.map()?.resize());
     }
     function clearMarkers(){for(const marker of markers){marker.getElement().querySelectorAll('img').forEach(clearImage);marker.remove();}markers=[];}
@@ -39,6 +39,7 @@
       const ids=items.filter(model.visible).map(photo=>photo.id); if(!ids.length)return;
       const push=!selection || Boolean(history.state?.atlasPlaces?.open);selection={journeyId:options.journey().id,dayId:options.dayId(),ids,photoId:ids.includes(photoId)?photoId:ids[0]};
       options.explore();update();if(write)historyWrite(push);schedule();
+      if(!phone())document.querySelector('.story-panel').scrollTop=0;
       $('[data-bubble-close]').focus({preventScroll:true});
     }
     function update() {
