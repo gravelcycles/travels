@@ -15,6 +15,7 @@ import '../dist/assets/arrival-chapter.js';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/map-style.js';
 import { mapStyleHarness } from './map-style-harness.mjs';
+import { photoBubbleFixture } from './photo-bubble-harness.mjs';
 import '../dist/assets/group-travel.js';
 import '../dist/assets/media-utils.js';
 import '../dist/assets/places-comments.js';
@@ -42,6 +43,37 @@ function bundle(source, key) {
   return JSON.parse(JSON.stringify(context.window[key]));
 }
 const app = read(repo, 'dist/assets/app.js');
+
+test('reference, demo and fresh-draft photo cards keep visible copy separate from accessibility text', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const { data } = loadContent(root, { includeDrafts: true });
+  for (const journey of [data.journeys.find(j => j.id === 'switzerland-italy-family-2026'), data.journeys.find(j => j.kind === 'demo'), draft]) {
+    const point = { id: 'unrelated-cafe', name: 'Unrelated cafe', coordinates: [8,47], dayIds: [journey.days[0].id], photoIds: [] };
+    const f = photoBubbleFixture({...journey, pointsOfInterest: [point]});
+    const photo = { id: `${journey.id}-copy-fixture`, dayId: journey.days[0].id, lat: 47, lng: 8, caption: '', description: '', alt: 'Accessible scene description', takenAt: '2028-02-28 · 12:34' };
+    f.setPhotos([photo]); f.controller.open([photo]);
+    assert.equal(f.node('[data-bubble-caption]').textContent, '');
+    assert.equal(f.node('[data-bubble-caption]').hidden, true);
+    assert.equal(f.node('[data-bubble-description]').hidden, true);
+    assert.equal(f.node('[data-bubble-title]').textContent, photo.takenAt);
+    assert.equal(f.node('[data-bubble-place]').hidden, true, 'Identical coordinates do not produce an About place button');
+    assert.equal(f.node('img').alt, photo.alt, 'Alt text remains available to screen readers');
+    point.photoIds = [photo.id]; f.controller.refresh();
+    assert.equal(f.node('[data-bubble-title]').textContent, `At ${point.name}`);
+    assert.equal(f.node('[data-bubble-place]').hidden, false, 'An owner-saved link remains available');
+    assert.equal(f.node('[data-bubble-place]').textContent, `About ${point.name} →`);
+    point.photoIds = []; f.controller.refresh();
+    assert.equal(f.node('[data-bubble-title]').textContent, photo.takenAt);
+    assert.equal(f.node('[data-bubble-place]').hidden, true, 'Removing a link clears the association');
+    Object.assign(photo, { caption: 'Our lunch together', description: 'A note from the traveler', locationLabel: 'My chosen place label' });
+    f.controller.refresh();
+    assert.equal(f.node('[data-bubble-caption]').textContent, photo.caption);
+    assert.equal(f.node('[data-bubble-caption]').hidden, false);
+    assert.equal(f.node('[data-bubble-description]').textContent, photo.description);
+    assert.equal(f.node('[data-bubble-description]').hidden, false);
+    assert.equal(f.node('[data-bubble-title]').textContent, photo.locationLabel);
+  }
+});
 
 test('photo intake skips undated TBD entries for the reference, demo and a fresh draft', t => {
   const root = fixture(t), draft = createJourney(root, input);

@@ -52,7 +52,7 @@
       const ratio=Number(photo.width)/Number(photo.height);
       card.style.setProperty('--selected-photo-ratio',Number.isFinite(ratio)&&ratio>0?String(ratio):'1');
       loadImage(image,photo,1280);
-      $('[data-bubble-title]').textContent=place ? `${place.explicit?'At':'Near'} ${place.point.name}` : (photo.locationLabel || photo.takenAt || 'Photo');
+      $('[data-bubble-title]').textContent=place ? `At ${place.point.name}` : (photo.locationLabel || photo.takenAt || 'Photo');
       const day=options.journey().days.find(day=>day.id===photo.dayId);$('[data-bubble-day]').textContent=day ? `${root.JOURNEY_ATLAS_UTILS.eventWord(options.journey(),'title')} ${day.number} · ${day.title}` : '';
       $('[data-bubble-caption]').textContent=photo.caption || '';$('[data-bubble-caption]').hidden=!photo.caption?.trim();
       $('[data-bubble-description]').textContent=photo.description || ''; $('[data-bubble-description]').hidden=!photo.description;

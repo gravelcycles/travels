@@ -320,9 +320,9 @@ Private video follow-ups: protected speech transcript/timed-caption delivery is 
 
 Photos + Places production follow-up (8 October): `point.photoIds` is the one
 optional association field, with an absent empty default and journey-local
-reference validation. Explicit order persists in journey JSON; a nearby radius
-is a view calculation, never written as a relationship. All pages load the same
-modules. Family, Alpine sample and a fresh blank draft have parity regressions;
+reference validation. Explicit order persists in journey JSON. Only owner-saved
+links associate photos with places; GPS proximity does not generate labels, About
+buttons or nearby-photo suggestions. All pages load the same modules. Family, Alpine sample and a fresh blank draft have parity regressions;
 behavior tests cover source persistence, conflicts, eligibility, selected-group
 stability, cross-day navigation and auth image cleanup. No-coordinate places are
 not yet supported: unfinished Studio points require a known coordinate before

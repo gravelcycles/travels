@@ -1838,7 +1838,7 @@
   "backpacking-europe-heading-east-img-3095": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Luzern · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 47.0624916666667,
       "lng": 8.31594166666667
@@ -1866,7 +1866,7 @@
   "backpacking-europe-heading-east-snapseed-camera-capture-20260905-150143-459": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Freiburg · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 47.9954944444444,
       "lng": 7.85201944444444
@@ -1876,7 +1876,7 @@
   "backpacking-europe-heading-east-snapseed-camera-capture-20260905-195510-463-2": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Freiburg · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 47.9963416666667,
       "lng": 7.83940277777778
@@ -1898,7 +1898,7 @@
   "backpacking-europe-heading-east-img-3389": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Hamburg · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 53.5981444444444,
       "lng": 10.0353861111111
@@ -1908,7 +1908,7 @@
   "backpacking-europe-heading-east-snapseed-camera-capture-20260926-145129-729": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Hamburg · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 53.5902027777778,
       "lng": 10.0450166666667
@@ -1918,7 +1918,7 @@
   "backpacking-europe-heading-east-snapseed-camera-capture-20260926-162050-471": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Hamburg · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 53.542275,
       "lng": 9.99045833333333
@@ -1928,7 +1928,7 @@
   "backpacking-europe-heading-east-snapseed-camera-capture-20260926-162059-473": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Hamburg · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 53.5422694444444,
       "lng": 9.99045277777778
@@ -1938,7 +1938,7 @@
   "backpacking-europe-heading-east-snapseed-camera-capture-20260926-164234-715": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Hamburg · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 53.5403777777778,
       "lng": 9.99952777777778
@@ -1948,7 +1948,7 @@
   "backpacking-europe-heading-east-snapseed-camera-capture-20260926-180426-392": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Hamburg · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 53.5749055555556,
       "lng": 10.0071222222222
@@ -1958,7 +1958,7 @@
   "backpacking-europe-heading-east-img-3412": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Hamburg · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 53.5752833333333,
       "lng": 10.0060777777778
@@ -1968,7 +1968,7 @@
   "backpacking-europe-heading-east-img-3419": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Hamburg · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 53.5874527777778,
       "lng": 10.0167777777778
@@ -1978,7 +1978,7 @@
   "backpacking-europe-heading-east-snapseed-camera-capture-20260927-180659-416": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Hamburg · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 53.558725,
       "lng": 9.96461111111111
@@ -1988,7 +1988,7 @@
   "backpacking-europe-heading-east-img-3429": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Hamburg · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 53.5414861111111,
       "lng": 10.0123861111111
@@ -1998,7 +1998,7 @@
   "backpacking-europe-heading-east-img-3442": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Köln · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.9412472222222,
       "lng": 6.95623611111111
@@ -2008,7 +2008,7 @@
   "backpacking-europe-heading-east-img-3444": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Köln · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.94075,
       "lng": 6.95662222222222
@@ -2018,7 +2018,7 @@
   "backpacking-europe-heading-east-snapseed-camera-capture-20260930-144641-400": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Köln · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.9421166666667,
       "lng": 6.95760277777778
@@ -2028,7 +2028,7 @@
   "backpacking-europe-heading-east-img-3448": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Köln · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.9422333333333,
       "lng": 6.95781666666667
@@ -2038,7 +2038,7 @@
   "backpacking-europe-heading-east-img-3450": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Near Düsseldorf · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 51.2036138888889,
       "lng": 6.68487777777778
@@ -2048,7 +2048,7 @@
   "backpacking-europe-heading-east-img-3456": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Berlin · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 52.5225194444444,
       "lng": 13.4127166666667
@@ -2058,7 +2058,7 @@
   "backpacking-europe-heading-east-img-3460": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Berlin · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 52.5024944444444,
       "lng": 13.4460472222222
@@ -2068,7 +2068,7 @@
   "backpacking-europe-heading-east-img-3465": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Berlin · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 52.5024722222222,
       "lng": 13.4460527777778
@@ -2078,7 +2078,7 @@
   "backpacking-europe-heading-east-img-3469": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Berlin · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 52.51625,
       "lng": 13.3782083333333
@@ -2088,7 +2088,7 @@
   "backpacking-europe-heading-east-img-3473": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Berlin · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 52.5143472222222,
       "lng": 13.4055194444444
@@ -2098,7 +2098,7 @@
   "backpacking-europe-heading-east-img-3476": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Berlin · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 52.5050805555556,
       "lng": 13.3188972222222
@@ -2108,7 +2108,7 @@
   "backpacking-europe-heading-east-img-3478": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Berlin · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 52.5144083333333,
       "lng": 13.3516416666667
@@ -2118,7 +2118,7 @@
   "backpacking-europe-heading-east-img-3480": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Dresden · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 51.0489166666667,
       "lng": 13.7353861111111
@@ -2128,7 +2128,7 @@
   "backpacking-europe-heading-east-img-3481": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Dresden · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 51.0533861111111,
       "lng": 13.7411138888889
@@ -2138,7 +2138,7 @@
   "backpacking-europe-heading-east-snapseed-camera-capture-20261006-150136-391": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Prague · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.0867694444444,
       "lng": 14.4203333333333
@@ -2148,7 +2148,7 @@
   "backpacking-europe-heading-east-img-3492": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Prague · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.0872083333333,
       "lng": 14.4069805555556
@@ -2158,7 +2158,7 @@
   "backpacking-europe-heading-east-img-3502": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Prague · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.1004305555556,
       "lng": 14.4331861111111
@@ -2168,7 +2168,7 @@
   "backpacking-europe-heading-east-img-3504": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Prague · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.091025,
       "lng": 14.4021138888889
@@ -2178,7 +2178,7 @@
   "backpacking-europe-heading-east-img-3505": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Prague · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.0896722222222,
       "lng": 14.3983388888889
@@ -2188,7 +2188,7 @@
   "backpacking-europe-heading-east-img-3506": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Prague · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.0812944444444,
       "lng": 14.4497472222222
@@ -2198,7 +2198,7 @@
   "backpacking-europe-heading-east-img-3507": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Prague · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.081525,
       "lng": 14.4518611111111
@@ -2208,7 +2208,7 @@
   "backpacking-europe-heading-east-img-3517": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Prague · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.0947138888889,
       "lng": 14.4167861111111
@@ -2218,7 +2218,7 @@
   "backpacking-europe-heading-east-img-3520": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Prague · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.0960777777778,
       "lng": 14.4254722222222
@@ -2228,7 +2228,7 @@
   "backpacking-europe-heading-east-img-3528": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Prague · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.0802,
       "lng": 14.4284805555556
@@ -2238,7 +2238,7 @@
   "backpacking-europe-heading-east-img-3532": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Prague · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.0810777777778,
       "lng": 14.4260555555556
@@ -2248,7 +2248,7 @@
   "backpacking-europe-heading-east-img-3535": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
-    "locationLabel": "Prague · camera GPS",
+    "locationLabel": "",
     "location": {
       "lat": 50.0774833333333,
       "lng": 14.4189
