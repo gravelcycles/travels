@@ -49,9 +49,9 @@
       const photo=current();if(card.dataset.photoId!==photo.id){exact?.remove();exact=null;}if(photo.dayId!==options.dayId()){selection.dayId=photo.dayId;options.selectPhotoDay?.(photo.dayId);}
       const list=members(), index=list.indexOf(photo), place=model.placeForPhoto(photo,options.journey().pointsOfInterest || []);
       loadImage(image,photo,720);
-      $('[data-bubble-title]').textContent=place ? `${place.explicit?'At':'Near'} ${place.point.name}` : (photo.locationLabel || 'From the journey');
+      $('[data-bubble-title]').textContent=place ? `At ${place.point.name}` : (photo.locationLabel || photo.takenAt || 'Photo');
       const day=options.journey().days.find(day=>day.id===photo.dayId);$('[data-bubble-day]').textContent=day ? `${root.JOURNEY_ATLAS_UTILS.eventWord(options.journey(),'title')} ${day.number} · ${day.title}` : '';
-      $('[data-bubble-caption]').textContent=photo.caption || photo.alt || '';
+      $('[data-bubble-caption]').textContent=photo.caption || ''; $('[data-bubble-caption]').hidden=!photo.caption;
       $('[data-bubble-description]').textContent=photo.description || ''; $('[data-bubble-notes]').hidden=!photo.description;
       $('[data-bubble-count]').textContent=`${index+1} of ${list.length}`;
       $('[data-bubble-prev]').disabled=index===0;$('[data-bubble-next]').disabled=index===list.length-1;

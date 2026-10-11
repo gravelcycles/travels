@@ -29,7 +29,7 @@ results; a failed file does not undo successful imports. Repeating identical
 uploaded bytes returns the existing photo and preserves its day and edits.
 
 The importer automatically rotates the image, makes the source-supported
-small (up to 1280 px wide) and big (up to 3200 px longest-edge) WebPs without enlarging small images, and creates
+thumbnail (up to 480 px wide), preview (up to 1280 px wide) and full (up to 3200 px longest-edge) WebPs without enlarging small images, and creates
 a tiny blurred preview. It strips EXIF/XMP from derivatives. Untouched originals,
 camera timestamps, and candidate GPS stay under ignored
 `photos/studio-uploads/<journey-id>/`. GPS is never turned into a public pin
@@ -37,8 +37,13 @@ without a manual location edit. HEIC uses macOS Quick Look; other still formats
 use Sharp. Video and animated/multipage images are rejected.
 
 **Your caption** and **Your notes** start blank. They are optional and contain
-only the traveler's words. Do not generate descriptive prose or substitute alt
-text into these fields. Resizing, metadata extraction, asset upload, and manifest
+only the traveler's words. Place labels are optional traveler-written text too;
+do not generate photo names, scene descriptions, city/GPS labels, or substitute
+alt text or filenames into visible copy. Blank captions remain blank in both the
+selected-photo card and full viewer. An unlabeled card uses the capture date/time
+as its heading unless it has an owner-saved Place link. Keep capture timestamps,
+reviewed pins and source filenames for identification in Studio. Resizing,
+metadata extraction, asset upload, and manifest
 updates are deterministic code tasks; no LLM or API key is needed. Accessibility
 alt text is a separate field; new uploads use a neutral day-based label.
 
@@ -149,7 +154,7 @@ its manifest published. It skips trash, refuses draft publication, and
 never uploads originals, overwrites mismatched objects, commits or pushes.
 Retries reuse matching objects. Use `--all` for a complete reviewed migration;
 the default selects pending local photos. Both bulk imports and Studio share
-this publisher and two-size pipeline. Credentials never enter the atlas page.
+this publisher and three-size pipeline. Credentials never enter the atlas page.
 
 On a slow or unreliable connection, append `--concurrency 1` to upload and
 verify one derivative at a time, with progress after every verified file. The
@@ -297,7 +302,7 @@ For each photo:
 
 1. Confirm or change its journey day.
 2. Click the map at the actual viewpoint, then drag the pin if needed.
-3. Name the exact place. Pan and zoom, then choose **Use current map frame**
+3. Optionally supply your own place label. Pan and zoom, then choose **Use current map frame**
    to save the visible area independently of the photo’s pin. **Show saved frame**
    restores it; **Reset frame to pin** uses the saved 2–20 zoom around the pin.
    Existing photos infer their frame automatically from their pin and zoom.
@@ -319,10 +324,11 @@ with a 40 ms apex pause. Replay continues to frame its routes and days.
 
 ## Generated image sizes and private publishing
 
-See [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md) for the implemented two-size
-policy, authenticated loading, password maintenance and remaining cutover.
-Unloaded photos use embedded 32 px blur placeholders; no third hosted image is
-needed. Derivatives use content hashes and identical bytes reuse one object.
+The shared pipeline makes up to three sizes: 480 px thumbnails, 1280 px previews
+and full photos capped at a 3200 px longest edge, without upscaling. Unloaded
+photos use embedded 32 px blur placeholders. See
+[PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md) for authenticated loading and
+password maintenance. Derivatives use content hashes and identical bytes reuse one object.
 Only immediate full-screen neighbors preload, after authentication.
 
 The old public GitHub Release publisher is retired. Do not create or repopulate
@@ -442,17 +448,16 @@ A link never assigns GPS. Unlocated linked photos remain browseable; Locate is
 disabled until a known photo location exists. Trashed photos retain their saved
 links and return when restored, but never appear in the public selection.
 
-The viewer distinguishes explicit links from **nearby photos** within 150 metres
-of a place's coordinate on its assigned days. Proximity is computed, never saved
-as a relationship, and does not prove a visit. Venue/landmark imagery has its own
-public credits and source links, separate from the trip album. Moving a photo to
-another day or changing its group automatically updates eligible nearby results;
-explicit place membership and order remain owner-controlled.
+Only explicitly saved links associate photos with Places. GPS proximity never
+creates a photo label, an About button or a nearby-photo suggestion, even when a
+photo and venue share coordinates. Venue/landmark imagery has its own public
+credits and source links, separate from the trip album. Place membership and
+order remain owner-controlled.
 
 Desktop days stay on the left; map bubbles, album thumbnails and linked Places
 photos select a photo inside the existing right journal/photo sidebar. The day
 details and thumbnail strip remain available, with the current photo marked.
-Comments, Locate, About this place and an explicit Full screen control accompany
+Comments, Locate, About this place (only for an owner-saved link) and an explicit Full screen control accompany
 the selected photo; closing it restores the ordinary day preview. Phones keep one named day picker at the bottom and a compact selected
 photo card below the map. Auth expiry clears protected photo pixels from bubbles
 and the card; unlock uses the existing photo service.

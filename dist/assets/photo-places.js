@@ -2,18 +2,15 @@
   'use strict';
   const located = photo => Number.isFinite(photo?.lng) && Number.isFinite(photo?.lat) && Math.abs(photo.lng) <= 180 && Math.abs(photo.lat) <= 90;
   const visible = photo => !photo.hidden && !photo.trashed && photo.mediaType !== 'video';
-  // Explicit membership is editorial. Proximity is only a suggestion in this view.
-  function photosForPlace(point, photos, radius = .15) {
+  // Only the owner's saved links associate a photo with a place.
+  function photosForPlace(point, photos) {
     const eligible = photos.filter(visible), byId = new Map(eligible.map(photo => [photo.id, photo]));
-    const linked = (point.photoIds || []).map(id => byId.get(id)).filter(Boolean), ids = new Set(linked.map(photo => photo.id));
-    const nearby = eligible.filter(photo => !ids.has(photo.id) && (!point.dayIds.length || point.dayIds.includes(photo.dayId)) && distanceKm(photo, point.coordinates) <= radius);
-    return {linked, nearby};
+    const linked = (point.photoIds || []).map(id => byId.get(id)).filter(Boolean);
+    return {linked};
   }
-  function placeForPhoto(photo, points, radius = .15) {
+  function placeForPhoto(photo, points) {
     const explicit = points.find(point => point.photoIds?.includes(photo.id));
-    if (explicit) return {point:explicit, explicit:true};
-    const nearest = points.filter(point => !point.dayIds.length || point.dayIds.includes(photo.dayId)).map(point => ({point,distance:distanceKm(photo,point.coordinates)})).sort((a,b)=>a.distance-b.distance)[0];
-    return nearest?.distance <= radius ? {...nearest,explicit:false} : null;
+    return explicit ? {point:explicit} : null;
   }
   function retainedSelection(selection, photos) {
     if (!selection) return null;
@@ -38,12 +35,6 @@
     const order = new Map(photos.map((p,i)=>[p.id,i]));
     return groups.map(g=>({...g,photos:g.photos.sort((a,b)=>order.get(a.id)-order.get(b.id))}));
   }
-  function distanceKm(photo, coordinate) {
-    if(!photo||!Array.isArray(coordinate)||coordinate.length!==2||![photo.lng,photo.lat,...coordinate].every(Number.isFinite)||Math.abs(photo.lat)>90||Math.abs(photo.lng)>180)return Infinity;
-    const rad=Math.PI/180,a=photo.lat*rad,b=coordinate[1]*rad,dlat=(coordinate[1]-photo.lat)*rad,dlng=(coordinate[0]-photo.lng)*rad;
-    const h=Math.sin(dlat/2)**2+Math.cos(a)*Math.cos(b)*Math.sin(dlng/2)**2;
-    return 12742*Math.atan2(Math.sqrt(h),Math.sqrt(Math.max(0,1-h)));
-  }
   function bubblePlacement(point,size,viewport,obstacles=[],routePoints=[]) {
     const radius=size/2,pad=6,offsets=[[0,-size/2-12],[size/2+14,-20],[-size/2-14,-20],[0,size/2+14],[size/2+20,size/2+16],[-size/2-20,size/2+16],[size+15,0],[-size-15,0]];
     let best=null;
@@ -58,5 +49,5 @@
     return groups;
   }
   function bubbleSize(zoom,selected=false) {return selected?64:Math.round(40+8*Math.max(0,Math.min(1,(zoom-9)/3)));}
-  root.JOURNEY_ATLAS_PHOTO_PLACES = {located,visible,photosForPlace,placeForPhoto,retainedSelection,groupPhotos,distanceKm,bubblePlacement,bubbleGroups,bubbleSize};
+  root.JOURNEY_ATLAS_PHOTO_PLACES = {located,visible,photosForPlace,placeForPhoto,retainedSelection,groupPhotos,bubblePlacement,bubbleGroups,bubbleSize};
 })(typeof window === 'undefined' ? globalThis : window);

@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import vm from 'node:vm';
 import '../dist/assets/atlas-utils.js';
-export function fixture({ready=false,journey=null,initialPhotos=null,width=800,height=600}={}){
+export function photoBubbleFixture({ready=false,journey=null,initialPhotos=null,width=800,height=600}={}){
  const nodes=new Map(),events=new Map(),mapEvents=new Map(),frames=[],stack=[{}],cleared=[],loaded=[],markers=[];let moving=false,scope='day',obstacles=[];let cursor=0,unlocked=true,phone=false,placesOpen=false,day='one',points=[],photos=[{id:'a',dayId:'one',lat:47,lng:8,protected:true},{id:'b',dayId:'one',lat:47,lng:8.001,protected:true},{id:'c',dayId:'two',lat:48,lng:9}];
  if(initialPhotos)photos=initialPhotos;if(journey)day=journey.days[0].id;
  function node(key){if(nodes.has(key))return nodes.get(key);const listeners=new Map(),value={tagName:key==='img'?'IMG':'DIV',children:[],dataset:{},style:{setProperty(name,value){this[name]=value;}},hidden:false,src:'',isConnected:true,clientWidth:width,clientHeight:height,

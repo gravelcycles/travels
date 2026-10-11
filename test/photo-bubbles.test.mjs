@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { fixture } from './photo-bubbles-harness.mjs';
+import { photoBubbleFixture as fixture } from './photo-bubble-harness.mjs';
 
 test('stationary refreshes keep bubble focus, decoded pixels and pending image requests',()=>{
  const f=fixture({ready:true});f.controller.mapReady();f.flush();
