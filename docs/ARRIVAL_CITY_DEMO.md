@@ -11,6 +11,11 @@ existing gallery. **Replay arrival** repeats the sequence; **Skip to city** ends
 it early. Dragging/zooming during arrival cancels the automatic camera and offers
 **Back to city**. Reduced motion and route-free stops go straight to the stay.
 
+On phones, arrival is a state of the existing event card: route and Skip during
+travel, then one date/title and Photos action with secondary Replay arrival.
+Contextual Places appears only when this event has places. There is no second
+resting arrival card repeating the same city.
+
 The route trail and a plain orange tracking circle share a lightweight canvas
 and update on every display frame, with no 30 Hz limit. The circle has a white
 rim and no arrow or symbol inside. Route projection and path prefixes

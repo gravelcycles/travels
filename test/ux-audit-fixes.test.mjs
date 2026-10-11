@@ -80,7 +80,7 @@ test('round trips render from known endpoints without an optional destination',(
 test('public image Retry uses the public loader regardless of private access',()=>{
   const start=app.indexOf("  $('#viewer-photo-retry').addEventListener('click',"),end=app.indexOf('\n  $(".photo-close")',start);
   for(const unlocked of [false,true]) {
-    let retry,publicLoads=0;const context=vm.createContext({$:()=>({addEventListener:(_n,fn)=>retry=fn}),viewerImage:{},viewerDay:()=>({id:'day'}),viewerPhotoIndex:0,photosForDay:()=>[{id:'public'}],setPublicFullImage:()=>publicLoads++,window:{JOURNEY_ATLAS_AUTH:{unlocked,isProtected:()=>false,showPrompt:()=>assert.fail('Public photos never require authentication'),setImage:()=>assert.fail('Public URL cannot enter private loader')}}});
+    let retry,publicLoads=0;const context=vm.createContext({$:()=>({addEventListener:(_n,fn)=>retry=fn}),viewerImage:{},viewerDay:()=>({id:'day'}),viewerPhotoIndex:0,viewerPhotos:()=>[{id:'public'}],setPublicFullImage:()=>publicLoads++,window:{JOURNEY_ATLAS_AUTH:{unlocked,isProtected:()=>false,showPrompt:()=>assert.fail('Public photos never require authentication'),setImage:()=>assert.fail('Public URL cannot enter private loader')}}});
     vm.runInContext(app.slice(start,end),context);retry();assert.equal(publicLoads,1);
   }
 });

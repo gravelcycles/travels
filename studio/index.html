@@ -18,16 +18,15 @@
         <h1>Atlas Studio</h1>
       </div>
       <nav aria-label="Editor mode">
-        <button class="active" data-mode="photos" type="button">Photos</button>
-        <button data-mode="routes" type="button">Route drawing</button>
-        <button id="open-place-editor" type="button">Places</button>
-        <button data-mode="planner" type="button">Trip plan & media</button>
-        <button data-mode="days" type="button" data-event-copy="Day copy">Day copy</button>
+        <button data-mode="planner" type="button">Trip</button>
+        <button class="active" data-mode="photos" type="button">Media</button>
+        <button id="open-place-editor" data-mode="places" type="button">Places</button>
+        <button data-mode="routes" type="button">Routes</button>
       </nav>
       <div class="studio-actions">
         <a id="preview-journey" href="/preview/switzerland-italy.html?photoSource=local" target="_blank" rel="noreferrer">Preview atlas</a>
         <button id="save-all" type="button" disabled>Save locally</button>
-        <button id="ready-to-share" type="button" disabled>Ready to share</button>
+        <button id="ready-to-share" type="button" disabled>Review for sharing</button>
       </div>
     </header>
     <div class="studio-feedback">
@@ -47,33 +46,40 @@
     </dialog>
 
     <dialog id="ready-share-dialog" aria-labelledby="ready-share-title">
-      <div class="ready-share-heading"><div><h2 id="ready-share-title">Ready to share</h2><p id="ready-share-journey"></p></div><button id="ready-share-close" type="button">Keep editing</button></div>
+      <div class="ready-share-heading"><div><h2 id="ready-share-title">Review for sharing</h2><p id="ready-share-journey"></p></div><button id="ready-share-close" type="button">Keep editing</button></div>
       <p id="ready-share-status" role="status" aria-live="polite"></p>
-      <p>A review of this journey’s current draft and local sources. Publishing stays with the agent; checking or preparing a handoff does not save, upload or deploy.</p>
-      <div id="ready-share-sources"></div>
+      <p id="ready-share-progress"></p>
+      <p class="ready-share-help">Review your draft, then prepare a handoff for publishing. Your public version is not verified yet.</p>
+      <details class="ready-share-source-details"><summary>What was checked</summary><div id="ready-share-sources"></div></details>
       <div class="ready-share-actions"><button id="ready-share-check" type="button">Check again</button><button id="ready-share-prepare" type="button" disabled>Prepare publishing handoff</button></div>
-      <ul id="ready-share-items"></ul>
-      <div id="ready-share-brief" hidden><label for="ready-share-text">Publishing handoff — includes unresolved items</label><textarea id="ready-share-text" readonly rows="12"></textarea><button id="ready-share-copy" type="button" disabled>Copy handoff</button></div>
+      <div id="ready-share-items"></div>
+      <div id="ready-share-brief" hidden><label for="ready-share-text">Publishing handoff and technical checks</label><textarea id="ready-share-text" readonly rows="12"></textarea><button id="ready-share-copy" type="button" disabled>Copy handoff</button></div>
     </dialog>
 
+    <div id="video-import-progress" class="video-import-progress" role="status" aria-live="polite" hidden><progress aria-label="Video preparation"></progress><span></span><button id="show-video-import" type="button">View in Media</button></div>
     <main class="studio-shell" data-mode="photos">
       <aside class="browser-panel">
         <div class="studio-journey-picker">
           <label for="studio-journey">Journey</label>
           <select id="studio-journey"></select>
           <button id="new-trip" type="button">+ New trip</button>
+          <nav class="workspace-subnav" aria-label="Trip workspace" data-workspace="trip"><button type="button" data-open-workspace="planner">Overview</button><button type="button" data-open-workspace="days">Stories</button></nav>
+          <nav class="workspace-subnav" aria-label="Media library" data-workspace="media"><button type="button" data-open-workspace="photos">Photos</button><button type="button" data-open-workspace="videos">Videos</button></nav>
           <p id="journey-draft-note" class="editor-note" hidden data-event-copy="Local draft · Start with day titles and notes. Destinations and routes can come later.">Local draft · Start with day titles and notes. Destinations and routes can come later.</p>
         </div>
         <section class="photo-browser" data-panel="photos">
-          <label for="photo-day-filter">Photos from</label>
+          <div class="photo-filter-bar"><label for="photo-day-filter" class="visually-hidden">Photos from</label>
           <select id="photo-day-filter"></select>
           <label class="checkbox"><input id="show-photo-trash" type="checkbox" /> Show trash</label>
-          <label for="photo-search">Find photos</label>
+          <label for="photo-search" class="visually-hidden">Find photos</label>
           <input id="photo-search" type="search" placeholder="Filename, capture date or caption" />
-          <div class="photo-batch-entry"><button id="photo-batch-toggle" type="button" aria-pressed="false">Select multiple</button></div>
+          <div class="photo-batch-entry"><button id="photo-batch-toggle" type="button" aria-pressed="false">Select multiple</button><button type="button" data-add-photos>Add photos</button></div></div>
+          <div class="photo-grid" id="studio-photo-grid"></div>
           <div id="photo-batch-tools" hidden>
             <div class="photo-batch-selection">
               <strong id="photo-batch-count" role="status" aria-live="polite">0 selected</strong>
+              <button id="photo-batch-inspect" type="button" hidden aria-pressed="false">Show selected</button>
+              <button id="photo-batch-clear-hidden" type="button" hidden>Clear outside filter</button>
               <button id="photo-batch-all" type="button">Select all shown</button>
               <button id="photo-batch-clear" type="button" disabled>Clear selection</button>
             </div>
@@ -102,7 +108,6 @@
             <div id="photo-upload-status" role="status" aria-live="polite"></div>
             <div id="photo-upload-review"></div>
           </details>
-          <div class="photo-grid" id="studio-photo-grid"></div>
         </section>
         <section class="route-browser" data-panel="routes" hidden>
           <label for="route-day-filter">Routes from</label>
@@ -245,23 +250,25 @@
         </form>
       </aside>
 
-      <section id="trip-planner" data-panel="planner" hidden aria-label="Trip structure, travelers, media and Replay editor">
-        <h2>Shape the journey</h2>
-        <p>Edits autosave as an unpublished local draft. Save locally applies them to the atlas; checking changes is optional.</p>
+      <section id="trip-planner" data-panel="planner" hidden aria-label="Journey editor">
+        <div data-plan-workspace="planner"><h2>Shape the journey</h2>
+        <div id="trip-first-actions" hidden><p>Your journey is taking shape. Start with a stop, some photographs or your first story.</p><div class="plan-row"><button type="button" data-first-stop>Add a stop</button><button type="button" data-add-photos>Add photos</button><button type="button" data-open-workspace="days">Write a story</button></div></div>
+        <p>Draft changes are recovered automatically. Use Save locally when you’re ready.</p>
         <label>Trip title<input id="plan-title" maxlength="160"></label>
         <label>Introduction<textarea id="plan-subtitle" rows="2"></textarea></label>
         <div class="plan-row"><label>Start date<input id="plan-start" type="date"></label><label>End date<input id="plan-end" type="date"></label><label>Photo time zone<input id="plan-timezone" placeholder="Europe/Berlin"></label></div>
         <label>When dates change<select id="plan-alignment"><option value="dates">Keep existing content on its calendar date</option><option value="itinerary">Move the itinerary to the new start date</option></select></label>
-        <details id="places-editor-section" open><summary>Places & trip photos</summary><div id="plan-points-of-interest"></div></details>
-        <details open><summary>Travelers & route groups</summary><div id="plan-party"></div></details>
-        <details><summary>Named places</summary><p>Enter reviewed longitude/latitude. Existing route geometry is preserved when a place changes.</p><div id="plan-places"></div><button id="plan-add-place" type="button">+ Named place</button></details>
-        <details><summary data-event-copy="Days & ordered travel legs">Days & ordered travel legs</summary><p data-event-copy="Moving a day moves its story, routes and photos to the adjacent date. Photo capture timestamps remain unchanged.">Moving a day moves its story, routes and photos to the adjacent date. Photo capture timestamps remain unchanged.</p><button id="plan-add-stop" type="button" hidden>+ City stop</button><button id="plan-add-tbd" type="button">+ TBD stop</button><div id="plan-days"></div></details>
-        <details><summary>Shared meetup</summary><div id="plan-meetup"></div></details>
-        <details open><summary>Videos</summary><p>Prepare a private clip or add a hosted public MP4 or WebM link. Videos appear alongside photos in the shared viewer.</p><div id="plan-videos"></div><button type="button" data-add-video>+ Hosted public video</button></details>
-        <details><summary>Photo route groups</summary><p>Assign photos to routes without changing their captions, order or source images.</p><div id="plan-photo-groups"></div></details>
-        <details open><summary>Journey cover</summary><p data-event-copy="One photograph for the catalog and trip opening. Day previews use the first visible photo in album order.">One photograph for the catalog and trip opening. Day previews use the first visible photo in album order.</p><label>Cover photo<select id="cover-picker"></select></label><div id="cover-thumbnails" aria-label="Cover photo choices"></div><div class="plan-row"><label>Horizontal focal point<input id="cover-x" type="range" min="0" max="100"></label><label>Vertical focal point<input id="cover-y" type="range" min="0" max="100"></label></div><div id="cover-previews"></div></details>
-        <details><summary>Curated Replay moments</summary><p data-event-copy="Use short, factual captions. A moment's duration is editorial pacing. Replay follows the map and the day's travel legs; photographs stay in the albums.">Use short, factual captions. A moment's duration is editorial pacing. Replay follows the map and the day's travel legs; photographs stay in the albums.</p><div id="plan-moments"></div><button type="button" id="plan-add-moment">+ Replay moment</button></details>
-        <div class="plan-save-bar"><button type="button" id="plan-preview">Check changes (optional)</button><button type="button" id="plan-save" disabled>Save trip plan locally</button><p id="plan-status" role="status"></p></div>
+        </div>
+        <section id="places-editor-section" data-plan-workspace="places"><h2>Saved places</h2><p>Collect places, memories and the trip photos you choose to link.</p><div id="plan-points-of-interest"></div></section>
+        <details data-plan-workspace="planner"><summary>Travelers & route groups</summary><div id="plan-party"></div></details>
+        <details id="route-destinations" data-plan-workspace="planner"><summary>Route destinations</summary><p>Enter reviewed longitude/latitude. Existing route geometry is preserved when a place changes.</p><div id="plan-places"></div><button id="plan-add-place" type="button">+ Named place</button></details>
+        <details id="trip-stops" data-plan-workspace="planner"><summary data-event-copy="Days & ordered travel legs">Days & ordered travel legs</summary><p data-event-copy="Moving a day moves its story, routes and photos to the adjacent date. Photo capture timestamps remain unchanged.">Moving a day moves its story, routes and photos to the adjacent date. Photo capture timestamps remain unchanged.</p><button id="plan-add-stop" type="button" hidden>+ City stop</button><button id="plan-add-tbd" type="button">+ TBD stop</button><div id="plan-days"></div></details>
+        <details data-plan-workspace="planner"><summary>Shared meetup</summary><div id="plan-meetup"></div></details>
+        <section data-plan-workspace="videos"><h2>Videos</h2><p>Prepare a private clip or add a hosted public MP4 or WebM link. Videos appear alongside photos in the shared viewer.</p><div id="plan-videos"></div><button type="button" data-add-video>+ Hosted public video</button></section>
+        <details data-plan-workspace="videos planner"><summary>Photo route groups</summary><p>Assign photos to routes without changing their captions, order or source images.</p><div id="plan-photo-groups"></div></details>
+        <details data-plan-workspace="planner" open><summary>Journey cover</summary><p data-event-copy="One photograph for the catalog and trip opening. Day previews use the first visible photo in album order.">One photograph for the catalog and trip opening. Day previews use the first visible photo in album order.</p><label hidden>Cover photo<select id="cover-picker"></select></label><label>Find a cover photograph<input id="cover-search" type="search" placeholder="Caption, stop, capture date or filename"></label><button type="button" id="cover-auto">Use first visible photo</button><div id="cover-thumbnails" aria-label="Cover photo choices"></div><p>Tap a preview to position the photograph. Fine-tune with the sliders.</p><div class="plan-row"><label>Horizontal focal point<input id="cover-x" type="range" min="0" max="100"></label><label>Vertical focal point<input id="cover-y" type="range" min="0" max="100"></label></div><div id="cover-previews"></div></details>
+        <details data-plan-workspace="planner"><summary>Curated Replay moments</summary><p data-event-copy="Use short, factual captions. A moment's duration is editorial pacing. Replay follows the map and the day's travel legs; photographs stay in the albums.">Use short, factual captions. A moment's duration is editorial pacing. Replay follows the map and the day's travel legs; photographs stay in the albums.</p><div id="plan-moments"></div><button type="button" id="plan-add-moment">+ Replay moment</button></details>
+        <div class="plan-save-bar"><button type="button" id="plan-preview">Check changes (optional)</button><button type="button" id="plan-save" disabled hidden>Save locally</button><p id="plan-status" role="status"></p></div>
       </section>
     </main>
 
@@ -319,6 +326,7 @@
     <script src="/photo-batch.js"></script>
     <script src="/photo-batch-ui.js"></script>
     <script src="/ready-to-share.js"></script>
+    <script src="/video-import.js"></script>
     <script src="/studio.js?v=20260909-optional-day-copy"></script>
   </body>
 </html>

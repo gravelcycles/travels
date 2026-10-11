@@ -80,11 +80,11 @@ them until asset publishing succeeds. This prevents broken live photo links.
 
 ## Batch editing in Studio
 
-Choose **Photos → Select multiple** for a contact sheet. Search filenames,
+Choose **Media → Photos → Select multiple** for a contact sheet. Search filenames,
 capture dates, captions, notes or locations, and use **Photos from** or
 **Show trash** to narrow the view. **Select all shown** changes only the visible
 selection. Changing filters keeps already-selected photos; the selection count
-explicitly reports photos outside the current filter. **Clear selection** starts
+explicitly reports photos outside the current filter, with **Show selected** to inspect them. The contact sheet comes first; batch actions stay in the bottom action bar. **Clear selection** starts
 over. Batch actions apply to every selected photo, including those outside the
 filter. **Done selecting** returns to individual photo and map editing.
 
@@ -373,8 +373,7 @@ Nine to Como example uses the public [MDN video test](https://developer.mozilla.
 with attribution and explicit test labeling; it is not actual trip footage.
 No video binary or new photo binary is committed or republished.
 
-The ordinary photo importer still rejects videos. Use **Trip plan & media →
-Videos → Add a private video** for local clips. Private delivery now shares the
+The ordinary photo importer still rejects videos. Use **Media → Videos → Add a private video** for local clips. Private delivery now shares the
 existing photo password policy and R2 bucket, using a separate range-aware video
 route; public MDN playback is unchanged. **Photo route groups** continues to edit
 existing photo assignments without changing their files.
@@ -399,6 +398,13 @@ text, like existing photo captions. Public videos may use supplied transcripts
 and timed captions. Repeated imports preserve existing days and edits. A failed conversion leaves
 journey sources unchanged. Source revisions, local draft recovery and backups
 preserve editorial work during later saves.
+
+The upload reports measured transfer progress, then an indeterminate preparing
+stage while FFmpeg runs. Cancel is available during transfer only; it cannot
+promise to stop a conversion already accepted by the server. A persistent status
+and View in Media action retain access across workspaces. Journey switching is
+blocked during the import, and reload/close uses an unload guard. Connection
+failure explains how to retry; checksum deduplication prevents duplicate clips.
 
 Preview locally before publishing. Six previously held family MOVs remain held:
 implementing this pipeline does not authorize publishing those clips. For a
@@ -468,17 +474,19 @@ photo and venue share coordinates. Venue/landmark imagery has its own public
 credits and source links, separate from the trip album. Place membership and
 order remain owner-controlled.
 
-Desktop days stay on the left; map bubbles, album thumbnails and linked Places
-photos select a photo inside the existing right journal/photo sidebar. The image
-fits uncropped inside a fixed-height frame that adapts only to the viewport,
-keeping the controls and thumbnails stationary when browsing portrait and
-landscape photos. Clicking it (or pressing Enter/Space) opens the full viewer.
-An About place action appears only for an owner-saved link. One compact row groups photo arrows,
-selection count, Locate and Comments. Only supplied captions appear; metadata is
-under **Photo details**, and the day's thumbnail strip sits immediately below.
-**Day/Stop details** expands the itinerary without taking space from the photo.
-Closing the selection restores the ordinary journal layout. Phones retain the
-compact card below the map; tapping opens full screen while swiping only browses.
+Desktop days stay on the left, the map in the center and the journal/photo
+sidebar on the right. Clicking or keyboard-activating an actual photo on any
+surface opens full screen immediately: a map bubble (including a cluster),
+sidebar image, album thumbnail or explicitly linked Places photo. There is no
+intermediate photo-selection panel. The fullscreen collection retains the entry
+surface's order and count; comments, arrows and phone grids use that same scope.
+A fresh day-album entry restores its own collection.
+
+The existing sidebar frame remains uncropped and stable across portrait and
+landscape photos, with adjacent thumbnails and expandable day details. Only
+traveler-supplied captions appear. An About-place action requires an explicit
+saved link. Phone map screens have one date/title block and Photos action,
+contextual Places and secondary arrival controls, plus one bottom event picker.
 
 Map bubbles retain their representative image at its actual location. Album and
 Places browsing do not regroup map bubbles; only a clicked map group retains its

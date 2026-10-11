@@ -45,10 +45,6 @@
 .bubble-card [data-bubble-location]:empty { display:none; }
 .bubble-fallback { position:absolute;inset:0;display:grid;place-items:center;font-size:22px;line-height:1; }
 .sidebar-day-details>summary { display:none; }
-.pp-trip-photos { padding:20px 24px;border-top:1px solid var(--line); }
-.pp-trip-photos h4 { margin:0 0 8px;font-size:15px; }
-.pp-trip-photos p { color:var(--muted);font-size:12px;line-height:1.5; }
-.pp-trip-photos button { width:100%;margin-top:8px; }
 @media(min-width:901px) {
  .day-navigator { display:none!important; }
  .atlas-shell,.places-open .atlas-shell { grid-template-columns:minmax(230px, .8fr) minmax(340px, 1.55fr) minmax(290px, 1fr); }

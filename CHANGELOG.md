@@ -4,6 +4,22 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — direct photo opening and coherent UX flows
+
+- Open actual photos full screen in one activation from map clusters, albums,
+  sidebar and linked places; preserve the exact collection through comments,
+  grids and Back/Forward, including responsive deep-link navigation.
+- Consolidate phone arrival/event controls, quiet desktop tools, scope Places,
+  remove empty review detours and preserve explicit photo links and blank copy.
+- Add named map-only Replay seeking, content-aware empty states and truthful
+  planned/TBD/partial-distance labels without changing reviewed motion timing.
+- Organize Studio around Trip / Media / Places / Routes and one save action;
+  put contact sheets first, use visual media choices and direct cover framing.
+- Report real video transfer/preparation states with interruption safeguards;
+  group sharing checks into required fixes and revision-bound choices.
+- Preserve concurrent content edits using an isolated checkout. No new personal
+  media or invented trip content is included in this release.
+
 ## 11 October 2026 — carry owner corrections into every atlas
 
 - Audit available project conversations and committed corrections; distinguish

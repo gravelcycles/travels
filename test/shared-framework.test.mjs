@@ -15,6 +15,7 @@ import '../dist/assets/arrival-chapter.js';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/map-style.js';
 import { mapStyleHarness } from './map-style-harness.mjs';
+import { photoEntryFixture } from './viewer-flow-harness.mjs';
 import { photoBubbleFixture } from './photo-bubble-harness.mjs';
 import '../dist/assets/group-travel.js';
 import '../dist/assets/media-utils.js';
@@ -429,13 +430,13 @@ test('the same introduction opens for real trips, samples and empty drafts; deep
     const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form), $, isDemoPage, location: { hash: '', search: '' }, URLSearchParams,
       journey: { title: 'New trip', subtitle: '', dates: 'Tomorrow', days: [{}], photos: hasPhoto ? [{ id: 'photo' }] : [] },
       document: { body: { classList: { add() {} } } }, window: { JOURNEY_ATLAS_UTILS: globalThis.JOURNEY_ATLAS_UTILS },
-      escapeHtml: value => value, photoImageMarkup: () => '<img alt="Sample" />', prepareProgressiveImages() {}
+      escapeHtml: value => value, photoImageMarkup: () => '<img alt="Sample" />', orderedPhotos: () => hasPhoto ? [{id:'photo'}] : [], prepareProgressiveImages() {}
     });
     vm.runInContext(appFunction('renderIntroduction') + '\nrenderIntroduction()', context);
     assert.equal($('#trip-intro').hidden, false);
     assert.equal($('.atlas-shell').inert, true);
-    assert.match($('#trip-intro').innerHTML, /Relive the trip/);
-    assert.match($('#trip-intro').innerHTML, /Explore the map/);
+    assert.match($('#trip-intro').innerHTML, hasPhoto ? /Explore the journey/ : /View days/);
+    assert.match($('#trip-intro').innerHTML, /id="intro-map" type="button" hidden>Whole trip map/, 'An unmapped draft does not offer an empty map action');
     if (!hasPhoto) assert.match($('#trip-intro').innerHTML, /A journey taking shape/);
     for (const [hash, search] of [['#day=d1', ''], ['', '?photo=p1']]) {
       context.location = { hash, search };
@@ -1065,5 +1066,31 @@ test('TBD planning is shared by the family, demo and fresh draft without inventi
     delete pending.calendarEndDate;
     journey.days.push({...pending,id:`${journey.id}-bad-after`,number:pending.number+1,planningStatus:'confirmed',segmentIds:[]});
     assert.throws(() => validateJourneys(record), /undated TBD entries/);
+  }
+});
+
+
+test('reference, demo and independently populated city draft inherit direct fullscreen and named collection boundaries', t => {
+  const root = fixture(t), draft = createJourney(root, {...input, eventMode:'city'});
+  const {data} = loadContent(root, {includeDrafts:true});
+  for (const source of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'), data.journeys.find(j=>j.kind==='demo'), draft]) {
+    const journey = structuredClone(source);
+    // Independent fixtures: no family photo, caption, date or itinerary is copied.
+    journey.photos = [{id:`${source.id}-qa-first`,dayId:journey.days[0].id,caption:'',alt:'Accessibility only'},
+      {id:`${source.id}-qa-second`,dayId:journey.days[0].id,caption:'Traveler supplied words'}];
+    const f=photoEntryFixture(journey);
+    f.open(journey.photos[1].id);
+    assert.equal(f.context.photoDialog.open,true,source.id);
+    assert.equal(f.events.includes('intermediate-photo-panel'),false,source.id);
+    assert.equal(f.context.viewerPhotoIndex,1);
+    f.open(journey.photos[0].id,{photos:[journey.photos[1],journey.photos[0]],collectionLabel:'Explicit linked photos'});
+    assert.deepEqual(f.photos().map(photo=>photo.id),[journey.photos[1].id,journey.photos[0].id]);
+    assert.equal(f.context.viewerPhotoIndex,1);
+    f.context.moveViewer(1);
+    assert.equal(f.context.viewerPhotoIndex,1,'Collection boundary stays fixed');
+    assert.equal(globalThis.JOURNEY_ATLAS_UTILS.journeyPresentation(journey).hasMedia,true);
+    const html=renderJourneyPage(root,journey,{preview:true});
+    assert.ok(ids(html).includes('replay-chapter'),source.id);
+    assert.ok(ids(html).includes('mobile-day-places'),source.id);
   }
 });

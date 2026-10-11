@@ -14,10 +14,6 @@
       .replaceAll("'", "&#039;");
   }
 
-  function routeDistance(journey) {
-    return journey.segments.reduce((total, segment) => total + (segment.distanceKm || 0), 0);
-  }
-
   if (!realJourneys.length) {
     catalog.innerHTML = '<div class="catalog-empty">The next mapped journey will appear here.</div>';
     return;
@@ -38,7 +34,7 @@
         <div class="journey-card-meta">
           <span>${escapeHtml(journey.dates)}</span>
           <span>${journey.days.length} ${window.JOURNEY_ATLAS_UTILS.eventWord(journey, "plural")}</span>
-          <span>${journey.status === "planned" && !journey.segments.length ? "Route to plan" : `${Math.round(routeDistance(journey))} km`}</span>
+          <span>${escapeHtml(window.JOURNEY_ATLAS_UTILS.journeyPresentation(journey, photos).distanceLabel)}</span>
         </div>
       </div>
     </a>

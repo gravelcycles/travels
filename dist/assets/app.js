@@ -93,6 +93,7 @@
   let routeInspectionPinned = false;
   let viewerDayId = activeDayId;
   let viewerPhotoIndex = 0;
+  let viewerCollection = null;
   let swipeStartX = null;
   let storyMap, storyMapReady = false;
   let storyMapDay = null;
@@ -272,7 +273,7 @@
     if (replayDialog.open || window.JOURNEY_ATLAS_MOBILE_UI?.gridVisible()) { applyPreloads([]);return; }
     const days = journey.days.map(day => ({id:day.id, photos:photosForDay(day.id).filter(photo => photo.mediaType !== "video")}));
     if (photoDialog.open) {
-      const photo = photosForDay(viewerDay().id)[viewerPhotoIndex];
+      const photo = viewerPhotos()[viewerPhotoIndex];
       if (!photo || photo.mediaType === 'video') { applyPreloads([]);return; }
       const all = orderedPhotos().filter(photo => photo.mediaType !== "video"), previous = all.findIndex(item => item.id === preloadSelection), current = all.findIndex(item => item.id === photo.id);
       if (previous >= 0 && previous !== current) preloadDirection = current > previous ? 1 : -1;
@@ -949,8 +950,14 @@
 
   function renderArrivalChapter(phase = arrivalChapter?.phase || 'idle') {
     const panel = $('#arrival-chapter'), day = activeDay();
+    const phone = window.matchMedia('(max-width: 900px)').matches;
+    const summary = $('.mobile-day-summary');
+    // Arrival is a state of the selected stop, not a second stop card.
+    if (phone && panel.parentElement !== summary) summary.append(panel);
+    else if (!phone && panel.parentElement !== $('.map-panel')) $('#route-inspector').before(panel);
     panel.hidden = mapScope !== 'day' || phase === 'idle';
     panel.dataset.phase = phase;
+    summary.dataset.arrivalTraveling = String(!panel.hidden && ['framing','arrival'].includes(phase));
     if (panel.hidden) return;
     const name = destinationForDay(day)?.name || day.title;
     const traveling = ['framing','arrival'].includes(phase);
@@ -958,7 +965,7 @@
     $('#arrival-eyebrow').textContent = traveling ? `Getting here · ${modeLabel(day)}` : `${day.date || 'City chapter'}${day.planningStatus === 'tbd' ? ' · TBD' : ''}`;
     $('#arrival-title').textContent = traveling ? routeLabel(day) : phase === 'explore' ? `Explore ${name}` : `In ${name}`;
     $('#arrival-replay').hidden = traveling || !segmentsForDay(day).length;
-    $('#arrival-city').textContent = traveling ? 'Skip to city' : phase === 'explore' ? 'Back to city' : photosForDay(day.id).length ? 'View photos' : 'Read story';
+    $('#arrival-city').textContent = traveling ? 'Skip to city' : phase === 'explore' ? 'Back to city' : photosForDay(day.id).length ? 'View photos' : day.text?.trim() ? 'Read story' : `View ${eventWord()}`;
   }
 
   function showCity(day, duration = 1250) {
@@ -1064,7 +1071,13 @@
     $('#show-all-photos').innerHTML = `${hasVideos ? 'Photos & videos' : 'All photos'} · <span id="photo-count">${album.length}</span>`;
     $('#show-all-photos').disabled = !album.length;
     $('[data-journey-action="photos"]').textContent = hasVideos ? 'Photos & videos' : 'All photos';
-    $("#open-replay").disabled = !replayUtils || journey.days.length === 0;
+    $('[data-journey-action="photos"]').disabled = !album.length;
+    const presentation = window.JOURNEY_ATLAS_UTILS.journeyPresentation(journey, album);
+    $('[data-journey-action="overview"]').disabled = !presentation.hasMap;
+    $("#open-replay").disabled = !replayUtils || !presentation.hasReplay;
+    $('#mobile-open-replay').disabled = $('#open-replay').disabled;
+    $('#open-replay').title = $('#open-replay').disabled ? 'Add a place, route or story to begin Replay' : '';
+    $('#mobile-open-replay').title = $('#open-replay').title;
     $("#focus-day").disabled = !dayCoordinates(activeDay()).length;
     $("#fit-route").disabled = !journeyCoordinates().length;
     $("#journey-summary").innerHTML = `
@@ -1369,6 +1382,12 @@
     if (activeThumb) activeThumb.scrollIntoView({ block: "nearest", inline: "center" });
   }
 
+  function viewerPhotos() {
+    if (!viewerCollection) return photosForDay(viewerDay().id);
+    const visible = new Map(orderedPhotos().map(photo => [photo.id, photo]));
+    return viewerCollection.ids.map(id => visible.get(id)).filter(Boolean);
+  }
+
   function viewerDay() {
     return dayById(viewerDayId) || activeDay();
   }
@@ -1382,12 +1401,13 @@
   }
 
   function updateViewer() {
+    const photos = viewerPhotos();
+    viewerPhotoIndex = Math.max(0, Math.min(photos.length - 1, viewerPhotoIndex));
+    const photo = photos[viewerPhotoIndex];
+    if (photo) viewerDayId = photo.dayId;
     const day = viewerDay();
     const dayChanged = activeDayId !== day.id;
     const scopeChanged = mapScope !== "day";
-    const photos = photosForDay(day.id);
-    viewerPhotoIndex = Math.max(0, Math.min(photos.length - 1, viewerPhotoIndex));
-    const photo = photos[viewerPhotoIndex];
     // setActiveDay must see the previous day so it clears its Places/photo selection.
     if (!dayChanged) mapScope = "day";
     const modalPhoto = $("#modal-photo");
@@ -1458,17 +1478,19 @@
     $("#viewer-day-label").textContent = `${eventWord('title')} ${day.number} · ${day.date}`;
     $("#viewer-day-label").setAttribute("aria-label", `${eventWord('title')} ${day.number} of ${journey.days.length} · ${day.date}`);
     const dayIndex = journey.days.findIndex((item) => item.id === day.id);
-    $("#viewer-previous-day").disabled = dayIndex <= 0;
-    $("#viewer-next-day").disabled = dayIndex >= journey.days.length - 1;
+    $("#viewer-previous-day").disabled = Boolean(viewerCollection) || dayIndex <= 0;
+    $("#viewer-next-day").disabled = Boolean(viewerCollection) || dayIndex >= journey.days.length - 1;
+    $(".viewer-day-nav").hidden = Boolean(viewerCollection);
+    $("#viewer-filmstrip").setAttribute('aria-label', viewerCollection?.label || `Photos and videos from ${day.title}`);
     $(".photo-prev").disabled = !photo || viewerPhotoIndex === 0;
     $(".photo-next").disabled = !photo || viewerPhotoIndex === photos.length - 1;
     const next = photo ? journey.days[dayIndex+1] : journey.days.slice(dayIndex+1).find(d => photosForDay(d.id).length);
     const continuation = $("#album-continue");
-    continuation.hidden = Boolean(photo && viewerPhotoIndex < photos.length-1);
+    continuation.hidden = Boolean(viewerCollection || photo && viewerPhotoIndex < photos.length-1);
     continuation.dataset.day = next?.id || '';
     continuation.innerHTML = next ? `<strong>${photo ? `Next ${eventWord()}` : `Next ${eventWord()} with photos or videos`} <span aria-hidden="true">→</span></strong><small>${eventWord('title')} ${next.number} · ${escapeHtml(next.title)}</small>` : '<strong>Back to journey →</strong>';
     renderViewerFilmstrip(photos);
-    window.JOURNEY_ATLAS_MOBILE_UI?.update({day, photos, index: viewerPhotoIndex});
+    window.JOURNEY_ATLAS_MOBILE_UI?.update({day, photos, index: viewerPhotoIndex, collectionLabel: viewerCollection?.label});
     if (dayChanged) setActiveDay(day.id, true, {animateArrival:false});
     else if (scopeChanged) { drawMainMap(false); settleAtCity(day); }
     if (viewerMapReady) syncViewerMap();
@@ -1486,7 +1508,7 @@
       return;
     }
     const day = viewerDay();
-    const photo = photosForDay(day.id)[viewerPhotoIndex];
+    const photo = viewerPhotos()[viewerPhotoIndex];
     const previous = viewerCameraPhoto;
     const photoChanged = previous?.id !== photo?.id;
     if (photoChanged) viewerTransition?.cancel();
@@ -1545,20 +1567,21 @@
     }
   }
 
-  function openPhoto(photoId, { fullscreen = false } = {}) {
+  function openPhoto(photoId, { photos: collection, collectionLabel = '', preserveCollection = false } = {}) {
     const photo = photoById(photoId);
     if (!photo) return;
-    if (photo.dayId !== activeDayId) setActiveDay(photo.dayId, true, {animateArrival:false});
-    if (arrivalChapter?.phase !== "stay") settleAtCity();
-    if (!fullscreen && !window.JOURNEY_ATLAS_MOBILE_UI?.enabled() && !mediaUtils.isVideo(photo)) {
-      if (photo.dayId !== activeDayId) setActiveDay(photo.dayId, true);
-      placesUI?.closeForPhotos();
-      photoBubbles.open(photosForDay(photo.dayId).filter(photo=>!mediaUtils.isVideo(photo)),photo.id);
-      return;
+    // Every actual photograph opens the same full viewer in one action. A
+    // deliberate map/place collection keeps its order through Comments and Back.
+    if (!preserveCollection || !photoDialog.open) {
+      viewerCollection = collection?.some(item => item.id === photoId)
+        ? { ids: [...new Set(collection.map(item => item.id))], label: collectionLabel }
+        : null;
     }
+    if (photo.dayId !== activeDayId) setActiveDay(photo.dayId, true, {animateArrival:false});
+    if (['framing','arrival'].includes(arrivalChapter?.phase)) settleAtCity();
     viewerDayId = photo.dayId;
-    const photos = photosForDay(viewerDayId);
-    const index = photos.findIndex((photo) => photo.id === photoId);
+    const photos = viewerPhotos();
+    const index = photos.findIndex(photo => photo.id === photoId);
     viewerPhotoIndex = index >= 0 ? index : 0;
     window.JOURNEY_ATLAS_MOBILE_UI?.open();
     if (!photoDialog.open) photoDialog.showModal();
@@ -1567,7 +1590,7 @@
   }
 
   function moveViewer(delta) {
-    const photos = photosForDay(viewerDay().id);
+    const photos = viewerPhotos();
     const next = Math.max(0, Math.min(photos.length - 1, viewerPhotoIndex + delta));
     if (next === viewerPhotoIndex) return;
     viewerPhotoIndex = next;
@@ -1575,10 +1598,9 @@
   }
 
   function openDayViewer(dayId = activeDayId, options = {}) {
+    viewerCollection = options.collection || null;
     if (dayId !== activeDayId) setActiveDay(dayId, true, {animateArrival:false});
     if (arrivalChapter?.phase !== "stay") settleAtCity();
-    const first=photosForDay(dayId)[0];
-    if (!window.JOURNEY_ATLAS_MOBILE_UI?.enabled() && first && !mediaUtils.isVideo(first)) { openPhoto(first.id); return; }
     viewerDayId = dayById(dayId)?.id || journey.days[0].id;
     viewerPhotoIndex = 0;
     window.JOURNEY_ATLAS_MOBILE_UI?.open(options);
@@ -1593,6 +1615,7 @@
   }
 
   function moveViewerDay(delta) {
+    if (viewerCollection) return;
     const currentIndex = journey.days.findIndex((day) => day.id === viewerDay().id);
     const nextDay = journey.days[currentIndex + delta];
     if (!nextDay) return;
@@ -1737,7 +1760,16 @@
     timeline.max = Math.max(0, replayTimeline.length - 1);
     timeline.value = replayMomentIndex;
     timeline.setAttribute("aria-valuetext", `Moment ${replayMomentIndex+1} of ${replayTimeline.length}, ${eventWord('title')} ${day.number}: ${day.title}`);
-    $("#replay-day-label").textContent = `${replayMomentIndex+1} / ${replayTimeline.length} · ${eventWord('title')} ${day.number}`;
+    $("#replay-day-label").textContent = `${replayMomentIndex+1} / ${replayTimeline.length}`;
+    const chapterPicker = $('#replay-chapter');
+    const chapterOptions = replayTimeline.map((moment,index) => {
+      const chapterDay = replayMomentDay(moment), leg = moment.segmentId ? segmentById(moment.segmentId) : null;
+      const detail = moment.caption || (leg ? `${placeById(leg.from)?.name || ''} → ${placeById(leg.to)?.name || ''}` : '');
+      return `<option value="${index}">${escapeHtml(`${eventWord('title')} ${chapterDay.number} · ${chapterDay.title}${detail ? ` — ${detail}` : ''}`)}</option>`;
+    }).join('');
+    if (chapterPicker.innerHTML !== chapterOptions) chapterPicker.innerHTML = chapterOptions;
+    chapterPicker.value = replayMomentIndex;
+    timeline.setAttribute('aria-label', `Journey timeline: ${day.title}`);
     $("#replay-previous-day").disabled = replayMomentIndex <= 0;
     $("#replay-next-day").disabled = replayMomentIndex >= replayTimeline.length - 1;
     $("#replay-toggle").textContent = (replayPlaying || replayAutoplayTimer !== null) ? "Pause" : (replayCompleted ? "Replay" : "Play");
@@ -1957,7 +1989,7 @@
     $('#album-title').textContent = `${journey.videos?.length ? 'Photos & videos' : 'All photos'} · ${orderedPhotos().length}`;
     $('#album-days').innerHTML = journey.days.map(day=>{
       const photos=photosForDay(day.id); const first=photos[0];
-      return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${first?photoImageMarkup(first,{sizes:'280px',targetWidth:480}):'<span class="album-text-scene">A page from the journey</span>'}<strong>${eventWord('title')} ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?mediaUtils.label(photos):'Read the story'}</small></button>`;
+      return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${first?photoImageMarkup(first,{sizes:'280px',targetWidth:480}):`<span class="album-text-scene">${day.text?.trim() ? 'From the journal' : `View ${eventWord()}`}</span>`}<strong>${eventWord('title')} ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?mediaUtils.label(photos):day.text?.trim()?'Read the story':`View ${eventWord()}`} </small></button>`;
     }).join('');
     window.JOURNEY_ATLAS_MOBILE_UI.presentOverlay('album-dialog'); prepareProgressiveImages($('#album-days'));
   }
@@ -1965,11 +1997,12 @@
     const intro=$('#trip-intro');
     if(location.hash || new URLSearchParams(location.search).has('day') || new URLSearchParams(location.search).has('photo') || ['places','comments'].includes(new URLSearchParams(location.search).get('experience'))) { intro.hidden=true; return; }
     const {photo,position}=window.JOURNEY_ATLAS_UTILS.resolveCover(journey,journey.photos);
-    intro.innerHTML=`<div class="intro-photo" style="--cover-position:${position}">${photo?photoImageMarkup(photo,{eager:true,sizes:'(max-width: 900px) 100vw, 60vw'}):'<div class="intro-text-art">A journey taking shape</div>'}</div><div class="intro-copy"><span>${escapeHtml(journey.dates)} · ${journey.days.length} ${eventWord('plural')}</span><h1>${escapeHtml(journey.title)}</h1><p>${escapeHtml(journey.subtitle)}</p><div><button id="intro-relive" type="button">Relive the trip</button><button id="intro-map" type="button">Explore the map</button></div></div>`;
+    const presentation=window.JOURNEY_ATLAS_UTILS.journeyPresentation(journey,orderedPhotos());
+    intro.innerHTML=`<div class="intro-photo" style="--cover-position:${position}">${photo?photoImageMarkup(photo,{eager:true,sizes:'(max-width: 900px) 100vw, 60vw'}):'<div class="intro-text-art">A journey taking shape</div>'}</div><div class="intro-copy"><span>${escapeHtml(journey.dates)} · ${journey.days.length} ${eventWord('plural')}</span><h1>${escapeHtml(journey.title)}</h1><p>${escapeHtml(presentation.introduction)}</p><div><button id="intro-relive" type="button">${presentation.entryLabel}</button><button id="intro-map" type="button"${presentation.hasMap ? '' : ' hidden'}>Whole trip map</button></div></div>`;
     intro.hidden=false; document.body.classList.add('intro-open'); $('.atlas-shell').inert=true; $('.mobile-nav').inert=true;
     prepareProgressiveImages(intro);
     $('#intro-map').onclick=()=>{dismissIntroduction();setMobileTab('map');fitRoute();};
-    $('#intro-relive').onclick=()=>{dismissIntroduction();openReplay();};
+    $('#intro-relive').onclick=()=>{dismissIntroduction();if(!presentation.hasContent){setMobileTab('route');dayList.querySelector('button')?.focus();}else{setMobileTab('map');setActiveDay(activeDayId,true,{animateArrival:false});}};
   }
   function dismissIntroduction() { document.body.classList.remove('intro-open'); $('#trip-intro').hidden=true; $('.atlas-shell').inert=false; $('.mobile-nav').inert=false; }
   function handleDeepLink() {
@@ -1981,7 +2014,7 @@
   window.addEventListener('hashchange',handleDeepLink);
   window.addEventListener('atlas-photos-unlocked',refreshPreloads);
   window.addEventListener('atlas-photos-renewing',()=>{
-    const photo=photoDialog.open?photosForDay(viewerDay().id)[viewerPhotoIndex]:null;
+    const photo=photoDialog.open?viewerPhotos()[viewerPhotoIndex]:null;
     const params=new URLSearchParams(photo?{photo:photo.id}:{day:activeDayId});
     history.replaceState(history.state,'',location.pathname+location.search+'#'+params);
   });
@@ -2139,7 +2172,7 @@
     $('#viewer-photo-retry').textContent=state==='locked'?'Unlock photos':'Retry photo';
   });
   $('#viewer-photo-retry').addEventListener('click', () => {
-    const photo = photosForDay(viewerDay().id)[viewerPhotoIndex];
+    const photo = viewerPhotos()[viewerPhotoIndex];
     if (!photo) return;
     if (!window.JOURNEY_ATLAS_AUTH?.isProtected(photo)) setPublicFullImage(viewerImage, photo);
     else if (!window.JOURNEY_ATLAS_AUTH.unlocked) window.JOURNEY_ATLAS_AUTH.showPrompt();
@@ -2166,6 +2199,7 @@
     updateReplayControls(replayMomentDay());
   });
   $("#replay-timeline").addEventListener("input", (event) => jumpReplayToMoment(Number(event.target.value)));
+  $('#replay-chapter').addEventListener('change', event => jumpReplayToMoment(Number(event.target.value)));
   $("#replay-explore-day").addEventListener("click", exploreReplayDay);
   $("#replay-again").addEventListener("click", startReplay);
   $("#replay-explore-journey").addEventListener("click", exploreReplayJourney);
@@ -2224,8 +2258,9 @@
   window.JOURNEY_ATLAS_MOBILE_UI = window.JOURNEY_ATLAS_MOBILE.create({
     eventWord, day:activeDay, days:()=>journey.days, scope:()=>mapScope, title:()=>journey.title,
     destinationName:day=>cityCoordinate(day) ? (destinationForDay(day)?.name || day.title) : '',
-    dayInfo:day=>({route:routeLabel(day),tagline:day.tagline?.trim() || '',meta:[dayDistance(day)?formatDistance(dayDistance(day)):'',modeLabel(day),dayDuration(day)].filter(Boolean).join(' · '),count:photosForDay(day.id).length,hasVideos:photosForDay(day.id).some(mediaUtils.isVideo),albumHasVideos:orderedPhotos().some(mediaUtils.isVideo)}),
+    dayInfo:day=>({route:routeLabel(day),tagline:day.tagline?.trim() || '',meta:[dayDistance(day)?formatDistance(dayDistance(day)):'',modeLabel(day),dayDuration(day)].filter(Boolean).join(' · '),count:photosForDay(day.id).length,hasVideos:photosForDay(day.id).some(mediaUtils.isVideo),albumCount:orderedPhotos().length,albumHasVideos:orderedPhotos().some(mediaUtils.isVideo)}),
     selectDay:id=>setActiveDay(id,true), stepDay:moveActiveDay, tab:setMobileTab, preview:renderStoryMap,
+    collection:()=>viewerCollection,
     openDay:openDayViewer, move:moveViewer, selectPhoto:index=>{viewerPhotoIndex=index;updateViewer();},
     overview:fitRoute, album:openAlbum, replay:openReplay,
     restoreOverlay:id=>{if(id==='album-dialog')openAlbum();else if(id==='replay-dialog')openReplay();else if(['comments-dialog','experience-unlock'].includes(id))placesUI?.restoreOverlay(id);else window.JOURNEY_ATLAS_MOBILE_UI.presentOverlay(id);},
@@ -2243,13 +2278,16 @@
     if (viewerMap && photoDialog.open) viewerMap.resize();
     if (replayMap && replayDialog.open) { replayMap.resize(); fitReplayMoment(currentReplayMoment()); }
     renderDayNavigator();
+    renderArrivalChapter();
   });
 
   $('#focused-day-label').addEventListener('click',()=>$('#mobile-day-picker').click());
   placesUI = window.JOURNEY_ATLAS_PLACES.create({
     journey: () => sourceJourney, dayId: () => activeDayId, map: () => mainMap,
+    resolvedDay: dayById, visibleDayIds: () => journey.days.map(day => day.id),
+    photoCollection: () => photoDialog.open ? {photos:viewerPhotos(),label:viewerCollection?.label || viewerDay().title} : photoBubbles?.collection() || {photos:photosForDay(activeDayId),label:activeDay().title},
     photos: () => orderedPhotos().filter(photo => !mediaUtils.isVideo(photo)), openPhoto, photoUrl:preferredPhotoUrl,
-    browsePhotos: photos => { if (!photos.length) return; photoBubbles.open(photos,photos[0].id); },
+    browsePhotos: (photos, collectionLabel = '') => { if (photos.length) openPhoto(photos[0].id,{photos,collectionLabel}); },
     onPlacesVisibility: () => photoBubbles?.placesChanged(),
     mapScope: () => mapScope,
     protected: photo => window.JOURNEY_ATLAS_AUTH?.isProtected(photo),
@@ -2262,11 +2300,14 @@
   photoBubbles = window.JOURNEY_ATLAS_PHOTO_BUBBLES.create({
     journey:()=>sourceJourney, dayId:()=>activeDayId, photos:()=>orderedPhotos().filter(photo=>!mediaUtils.isVideo(photo)),
     map:()=>mainMap, ready:()=>mainMapReady, scope:()=>mapScope,
-    photoUrl:preferredPhotoUrl, fullscreen:id=>openPhoto(id,{fullscreen:true}),
+    photoUrl:preferredPhotoUrl, fullscreen:(id,photos)=>openPhoto(id,{photos,collectionLabel:'Map photos'}),
     explore:()=>{dismissIntroduction();clearSegmentInspection(true);if($('.atlas-shell').dataset.mobileTab!=='map')setMobileTab('map');},
     placesOpen:()=>placesUI.isOpen(), closePlaces:()=>placesUI.closeForPhotos(),openPlace:id=>placesUI.openPlace(id),
     selectPhotoDay:id=>{if(id!==activeDayId)setActiveDay(id,true,{preservePhotoSelection:true,animateArrival:false});},
     photoChanged:photo=>{
+      // The modal viewer owns selection while it is open. Background map
+      // refreshes must not move Comments back to the map anchor photograph.
+      if (photoDialog.open) return;
       for(const button of photoStrip.querySelectorAll('[data-open-photo]')) {
         if(button.dataset.openPhoto===photo?.id){
           button.setAttribute('aria-current','true');

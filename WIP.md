@@ -9,6 +9,17 @@ to the public site. [TODO.md](TODO.md) remains the backlog;
 [docs/FEATURES.md](docs/FEATURES.md) describes implemented capabilities;
 [docs/FRAMEWORK.md](docs/FRAMEWORK.md) defines the shared-code contract.
 
+## UX flow review implementation — 11 October 2026
+
+The owner authorized all U01–U16 findings and direct one-click fullscreen.
+Three parallel workstreams cover viewer/navigation, Places/conversations and
+Studio; the integration also simplifies sharing readiness. Existing floated
+populated conversations, exact image reveal/arrival timing, sidebar structure,
+private media and recovery remain intact. The photo-entry correction supersedes
+the intermediate selection step described in earlier photo-sidebar checkpoints.
+Validation: **500 tests passed**, production build successful; desktop/phone and
+independently populated city-draft browser checks completed. See [the audit and delivery record](docs/UX_REVIEW_2026-10-11.md).
+
 ## Atlas continuity and October corrections — 11 October 2026
 
 The [continuity audit](docs/ATLAS_CONTINUITY_AUDIT_2026-10-11.md) reconciles
@@ -103,9 +114,9 @@ index and Worker code are unchanged, so this release needs only Pages deployment
 Open [the public Alpine example](https://gravelcycles.github.io/travels/demo.html?journey=alpine-crossing&day=alps-d1&view=map)
 or the local [Studio Places editor](http://127.0.0.1:4186/studio/).
 
-**Replay playback and its slider are already shipped.** The unfinished timeline
-proposal adds named stops and clearer seeking. The day-experience experiment
-separately compares camera framing; neither means Replay itself is unfinished.
+**Replay playback, slider and named chapter seeking are implemented.** Named
+seeking was authorized in the 11 October UX fixes. The older day-experience
+experiment separately compares camera framing; it is not the current player.
 
 The superseded combined **Photos + Places** prototype is preserved locally at
 `codex/day-experience-review` · `37a8b0a`. Open
@@ -127,7 +138,7 @@ work only while the corresponding local servers are running.
 
 This section supersedes pending-status claims in the historical cleanup and
 family-publication checkpoints below. Remaining design work includes explicit
-sharing, named Replay timeline stops and the delight mockup. Framework W04–W06
+sharing and the delight mockup; named Replay seeking was implemented on 11 October. Framework W04–W06
 and paired Live Photos W09 remain open.
 
 ## Publication update — 8 October 2026

@@ -4,7 +4,7 @@
   color: #203b43; background: #fffdf7; border: 1px solid #d8dfd9;
   box-shadow: 0 5px 22px #142a3620;
 }
-.arrival-chapter[hidden] { display: none; }
+.arrival-chapter[hidden] { display: none!important; }
 .arrival-copy { flex: 1; min-width: 0; }
 .arrival-copy small { display: block; color: #657375; font-size: 10px; letter-spacing: .12em; font-weight: 700; text-transform: uppercase; }
 .arrival-copy strong { display: block; font-family: Georgia, serif; font-size: 21px; margin-top: 3px; line-height: 1.15; }
@@ -25,4 +25,18 @@
   .arrival-copy small { font-size: 9px; letter-spacing: .09em; }
   .arrival-actions { gap: 5px; }
   .arrival-actions button { padding: 8px 9px; min-height: 44px; font-size: 11px; }
+}
+
+/* One phone stop card owns both travel progress and the resting city actions. */
+@media (max-width:900px) {
+  .mobile-day-summary .arrival-chapter { position:relative; inset:auto!important; margin:0; padding:0; gap:10px; border:0; box-shadow:none; background:none; }
+  .mobile-day-summary .arrival-chapter[data-phase="stay"],.mobile-day-summary .arrival-chapter[data-phase="explore"] { display:block; }
+  .mobile-day-summary .arrival-chapter[data-phase="stay"] .arrival-copy,.mobile-day-summary .arrival-chapter[data-phase="explore"] .arrival-copy { display:none; }
+  .mobile-day-summary .arrival-chapter[data-phase="stay"] #arrival-city { display:none; }
+  .mobile-day-summary .arrival-actions { justify-content:flex-end; }
+  .mobile-day-summary .arrival-actions button { color:var(--muted); font-size:12px; padding:0 10px; background:none; border:0; min-height:36px; }
+  .mobile-day-summary .arrival-actions #arrival-city { color:var(--ink); }
+  .mobile-day-summary .arrival-chapter[data-phase="arrival"],.mobile-day-summary .arrival-chapter[data-phase="framing"] { padding-block:12px; }
+  .mobile-day-summary[data-arrival-traveling="true"] > span,.mobile-day-summary[data-arrival-traveling="true"] > h2,.mobile-day-summary[data-arrival-traveling="true"] > p,.mobile-day-summary[data-arrival-traveling="true"] > div { display:none!important; }
+  .mobile-day-summary[data-arrival-traveling="true"] .arrival-actions button { min-height:44px; }
 }

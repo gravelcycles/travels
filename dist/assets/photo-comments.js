@@ -15,7 +15,16 @@
   }
   function photoNavigation(photos, id) {
     const index = photos.findIndex(photo => photo.id === id);
-    return { index, count: photos.length, previous: index > 0 ? photos[index - 1] : null, next: index >= 0 ? photos[index + 1] || null : null };
+    const photograph = photo => !photo.mimeType && photo.mediaType !== 'video';
+    return { index, count: photos.length, previous: index > 0 ? photos.slice(0, index).reverse().find(photograph) || null : null, next: index >= 0 ? photos.slice(index + 1).find(photograph) || null : null };
+  }
+  function photoTitle(photo, day = {}) {
+    // Accessibility descriptions are not captions. Keep owner-written text and
+    // the same capture-time fallback as the presenting viewer.
+    return root.JOURNEY_ATLAS_UTILS?.photoCaption?.(photo || {}, day) || photo?.caption || photo?.takenAt || 'Photograph';
+  }
+  function photoCollection(value, fallback = []) {
+    return Array.isArray(value) ? { photos: value, label: '' } : value && Array.isArray(value.photos) ? { photos: value.photos, label: value.label || '' } : { photos: fallback, label: '' };
   }
   // The visitor's stable local identity survives a session; demo access does not.
   // Neither record is a private-photo credential or changes the real auth service.
@@ -139,7 +148,7 @@
       $('#open-photo-comments').setAttribute('aria-label', `Comments${count ? `, ${count} ${count === 1 ? 'comment' : 'comments'}` : ''}`);
       $('#comments-count').textContent = `${count}${live && store?.hasMore(currentPhoto?.id) ? '+' : ''} ${count === 1 ? 'comment' : 'comments'}`;
     }
-    function photoTitle(photo) { return photo?.caption || photo?.alt || 'A moment from the journey'; }
+    const collection = () => photoCollection(options.photoCollection?.(), options.photos());
     function syncThumbnail() {
       const image = $('#comments-photo-image'), photo = currentPhoto;
       if (!photo) return;
@@ -157,9 +166,10 @@
       if (src) { image.src = src; image.hidden = false; } else { image.removeAttribute('src'); image.hidden = true; }
     }
     function renderPhotoContext() {
-      $('#comments-photo-title').textContent = photoTitle(currentPhoto);
-      const navigation = photoNavigation(options.photos(), currentPhoto?.id);
-      $('#comments-photo-position').textContent = navigation.index >= 0 ? `Photo ${navigation.index + 1} of ${navigation.count}` : '';
+      $('#comments-photo-title').textContent = photoTitle(currentPhoto, options.resolvedDay?.(currentPhoto?.dayId));
+      const presenting = collection(), navigation = photoNavigation(presenting.photos, currentPhoto?.id);
+      const kind = presenting.photos.some(photo => photo.mimeType || photo.mediaType === 'video') ? 'Item' : 'Photo';
+      $('#comments-photo-position').textContent = navigation.index >= 0 ? `${kind} ${navigation.index + 1} of ${navigation.count}${presenting.label ? ` · ${presenting.label}` : ''}` : '';
       $('#comments-previous-photo').disabled = !navigation.previous;
       $('#comments-next-photo').disabled = !navigation.next;
       syncThumbnail();
@@ -371,9 +381,9 @@
     });
     $('#comment-undo-dismiss').addEventListener('click', clearUndo);
     for (const [id, direction] of [['comments-previous-photo', 'previous'], ['comments-next-photo', 'next']]) $(`#${id}`).addEventListener('click', () => {
-      const photo = photoNavigation(options.photos(), currentPhoto?.id)[direction]; if (!photo) return;
+      const presenting = collection(), photo = photoNavigation(presenting.photos, currentPhoto?.id)[direction]; if (!photo) return;
       if (options.protected(photo) && !options.unlocked()) { options.unlock(); return; }
-      options.openPhoto(photo.id); $(`#${id}`).focus();
+      options.openPhoto(photo.id, { photos: presenting.photos, collectionLabel: presenting.label, preserveCollection: true }); $(`#${id}`).focus();
     });
     $('#experience-places').addEventListener('click', () => { options.onPlaces?.(); updateToolbar(); });
     $('#experience-comments').addEventListener('click', startComments);
@@ -415,7 +425,7 @@
           $('#comment-body').value = next ? readDraft(draftKey()) : ''; status(); $('#comment-undo').hidden = !deleted || deleted.photoId !== next?.id;
           if (dialog.open && next) { loadState = live && !store.hasLoaded(next.id) ? 'loading' : 'idle'; if (live) refreshComments(); renderComments(); updateComposer(); persistComposer(); $('#comments-list').scrollTop = 0; }
           else if (dialog.open && !next) dismiss('comments-dialog');
-        } else currentPhoto = next;
+        } else { currentPhoto = next; if (dialog.open && next) renderPhotoContext(); }
         $('#open-photo-comments').hidden = !enabled || !currentPhoto; refreshCounts();
       },
       restore(id) {
@@ -426,5 +436,5 @@
       start() { update(); if (!preview) return; bar.hidden = false; updateViewport(); if (new URLSearchParams(location.search).get('experience') === 'comments') startComments(); }
     };
   }
-  root.JOURNEY_ATLAS_PHOTO_COMMENTS = { displayName, initials, commentState, photoNavigation, createIdentityStore, create };
+  root.JOURNEY_ATLAS_PHOTO_COMMENTS = { displayName, initials, commentState, photoNavigation, photoTitle, photoCollection, createIdentityStore, create };
 })(typeof window === 'undefined' ? globalThis : window);

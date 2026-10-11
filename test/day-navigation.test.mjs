@@ -22,12 +22,12 @@ function selection() {
     window: {}, clearDayPreview(){}, deferDayPreviewClear(){}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
     arrivalChapter:null, arrivalKey:day=>day.id, cancelArrival(){}, settleAtCity(){}, startArrival(){}, mainMapReady:true,
     activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null,
-    viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null, placesUI: null, photoBubbles: null,
+    viewerCollection:null,viewerDayId:'d2',viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null, placesUI: null, photoBubbles: null,
     journey: { days, segments: [] }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],
     photosForDay: () => [], routeLabel: () => '', escapeHtml: value => value || '',
     refreshPreloads() {}, renderDays() {}, scrollActiveDayIntoView() {}, renderStory() {}, drawMainMap() {}, renderViewerFilmstrip() {}, clearSegmentInspection() {}
   });
-  vm.runInContext(`${functionSource('setActiveDay')}\n${functionSource('updateViewer')}`, context);
+  vm.runInContext(`${functionSource('setActiveDay')}\n${functionSource('viewerPhotos')}\n${functionSource('updateViewer')}`, context);
   return context;
 }
 
@@ -177,7 +177,7 @@ test('same-day viewer navigation does not rebuild background photos or redraw th
 test('viewer route layers are reused within a day and rebuilt when the day changes',()=>{
  const calls=[],cameras=[];let day={id:'d1',segmentIds:['a']};
  const context=vm.createContext({prefersReducedMotion:()=>false,eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerFeedback:null,cityCamera:()=>({center:[12,45],zoom:12.5}),window:{JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS},mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,viewerMapReady:true,photoDialog:{open:true},viewerMap:{easeTo:camera=>cameras.push(camera)},mapIsReady:()=>true,viewerDay:()=>day,
-  viewerPhotoIndex:0,photosForDay:()=>[{id:'one'},{id:'two'}],viewerCameraPhoto:null,viewerTransition:{cancel(){}},viewerPhotoMarkers:[],viewerRouteKey:null,viewerDecorations:{},
+  viewerPhotoIndex:0,viewerPhotos:()=>[{id:'one'},{id:'two'}],viewerCameraPhoto:null,viewerTransition:{cancel(){}},viewerPhotoMarkers:[],viewerRouteKey:null,viewerDecorations:{},
   journey:{id:'trip',segments:[{id:'a'},{id:'b'}]},dayCoordinates:()=>[],
   clearDecorations:()=>calls.push('clear'),addSegmentLayer:()=>calls.push('route'),addDayStopMarkers:()=>calls.push('stops')});
  vm.runInContext(functionSource('syncViewerMap'),context);vm.runInContext('syncViewerMap()',context);

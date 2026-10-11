@@ -57,6 +57,7 @@ function appPlan(mode){
   photoDialog:{open:mode==='viewer'||mode==='video'},replayDialog:{open:mode==='replay'},viewerPhotoIndex:2,viewerDay:()=>journalDays[0],
   photosForDay:id=>journalDays.find(day=>day.id===id).photos.map((photo,index)=>mode==='video'&&index===2?{...photo,mediaType:'video'}:photo),orderedPhotos:()=>days.flatMap(day=>day.photos),
   window:{JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS},applyPreloads:requests=>{result=requests;}});
+ context.viewerPhotos=()=>context.photosForDay(context.viewerDay().id);
  vm.runInContext(refreshSource+'\nrefreshPreloads()',context);return result;
 }
 for(const mode of ['journal','viewer'])test(`${mode} keeps immediate full photos ahead of day covers and upcoming strips`,()=>{

@@ -75,3 +75,16 @@ test('an existing preview visitor migrates without losing ownership of earlier l
   assert.equal(visitor.allowed(), true);
   assert.equal(createIdentityStore(storage, memory()).get().id, 'original-visitor');
 });
+
+test('mixed-media conversations preserve viewer positions while photo arrows skip videos', () => {
+  const photos = [{id:'a'}, {id:'clip',mimeType:'video/mp4'}, {id:'b'}];
+  assert.deepEqual(photoNavigation(photos,'a'), {index:0,count:3,previous:null,next:photos[2]});
+  assert.deepEqual(photoNavigation(photos,'b'), {index:2,count:3,previous:photos[0],next:null});
+});
+
+test('blank captions stay blank in meaning instead of exposing accessibility text or inventing a memory', () => {
+  const {photoTitle}=globalThis.JOURNEY_ATLAS_PHOTO_COMMENTS;
+  assert.equal(photoTitle({caption:'Written title',alt:'Accessibility text',takenAt:'7 Oct · 18:01'}),'Written title');
+  assert.equal(photoTitle({caption:'',alt:'Trip photograph from Prague',takenAt:'7 Oct · 18:01'}),'7 Oct · 18:01');
+  assert.equal(photoTitle({caption:'',alt:'Trip photograph from Prague'}),'Photograph');
+});

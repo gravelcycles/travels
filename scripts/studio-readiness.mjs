@@ -26,15 +26,16 @@ export function assessReadinessMedia(root, journey, state, add) {
   const visiblePhotos = journey.photos.map(photo => globalThis.JOURNEY_ATLAS_UTILS.resolvePhoto(photo, state.photos[photo.id] || {})).filter(photo => !photo.trashed);
   const visibleVideos = (journey.videos || []).filter(video => !video.hidden);
   const dayIds = new Set(journey.days.map(day => day.id));
+  const event = globalThis.JOURNEY_ATLAS_UTILS.eventWord(journey);
   for (const [kind, media] of [['photo', visiblePhotos], ['video', visibleVideos]]) for (const item of media) {
     const action = { mode: kind === 'photo' ? 'photos' : 'media', id: item.id, label: kind === 'photo' ? 'Review photo' : 'Review video' };
-    if (!dayIds.has(item.dayId)) add(`day:${item.id}`, 'blocker', `${named(item)} has no valid day`, 'Assign this item to a day in this journey.', action);
+    if (!dayIds.has(item.dayId)) add(`day:${item.id}`, 'blocker', `${named(item)} has no valid ${event}`, `Assign this item to a ${event} in this journey.`, action);
     if (item.assetStatus === 'local') {
       const urls = kind === 'photo' ? [...new Set([item.src, ...(item.srcset || []).map(variant => variant.src)])] : [item.src, item.poster];
       const missing = urls.filter(url => !localAssetExists(root, url)).length;
       add(`asset:${item.id}`, 'blocker', `${named(item)} is only stored locally`, missing ? `${missing} required ${kind === 'video' ? 'video/poster' : 'photo'} derivative${missing === 1 ? ' is' : 's are'} missing or empty. Restore or regenerate them before the agent publishes this item.` : 'Local derivatives are present. The agent must publish and verify the protected assets before deploying the journey.', action);
     } else if (!item.src) add(`source:${item.id}`, 'blocker', `${named(item)} has no media source`, 'Supply a usable source or remove this item from the published selection.', action);
-    if (kind === 'photo' && (!Number.isFinite(item.lat) || !Number.isFinite(item.lng))) add(`location:${item.id}`, 'review', `${named(item)} has no exact map location`, 'Keep it in the day album without an exact pin, or add a location you know. No coordinate is inferred.', action);
+    if (kind === 'photo' && (!Number.isFinite(item.lat) || !Number.isFinite(item.lng))) add(`location:${item.id}`, 'review', `${named(item)} has no exact map location`, `Keep it in the ${event} album without an exact pin, or add a location you know. No coordinate is inferred.`, action);
   }
   return { visiblePhotos, visibleVideos };
 }
@@ -47,7 +48,9 @@ export function assessStudioReadiness(root, input) {
   const saved = readOverrides(root), savedStateRevision = journeyRevision(saved), savedPlanRevision = journeyRevision(base);
   const items = [];
   const add = (id, severity, title, detail, action) => items.push({ id, severity, title, detail, action });
-  const planner = { mode: 'planner', label: 'Open trip plan & media' };
+  const planner = { mode: 'planner', label: 'Open trip overview' };
+  const event = globalThis.JOURNEY_ATLAS_UTILS.eventWord(base);
+  const events = globalThis.JOURNEY_ATLAS_UTILS.eventWord(base, 'plural');
   const save = { mode: 'save', label: 'Return to Save locally' };
   const manifest = readJson(path.join(root, `content/route-sources/${base.id}.json`), {});
   const savedRoutesRevision = journeyRevision({ routes: Object.fromEntries(base.segments.map(segment => [segment.id, routes[segment.id] || null])), manifest });
@@ -81,8 +84,8 @@ export function assessStudioReadiness(root, input) {
       if (provisional || !source) add(`route:${segment.id}`, 'review', `${routeName}: ${provisional ? 'provisional route' : 'route evidence needs review'}`, provisional ? 'This line remains an approximate guide. Review its source and keep that provenance, or replace it with reviewed geometry. Acknowledgement does not certify the route.' : 'Detailed geometry is present, but this check found no recorded source. Review and retain the evidence before publishing.', { mode: 'routes', id: segment.id, label: 'Review route' });
     }
     const noDestination = journey.days.filter(day => !day.placeId && !day.destinationId && !day.segmentIds.length && !Object.values(day.groupPlaces || {}).length);
-    if (noDestination.length) add('day-context', 'review', `${noDestination.length} day${noDestination.length === 1 ? ' has' : 's have'} no mapped destination`, 'An empty or photo-only day is valid. Keep its map empty, or add known destinations in the trip plan; stories and routes are optional.', planner);
-    if (!visiblePhotos.length && !visibleVideos.length && !journey.segments.length) add('empty-content', 'review', 'This is a story-only or empty journey', 'It can be shared intentionally as it stands. Check its title and days; photos, routes and story paragraphs are optional.', { mode: 'days', id: journey.days[0]?.id, label: 'Review days' });
+    if (noDestination.length) add('day-context', 'review', `${noDestination.length} ${noDestination.length === 1 ? event + ' has' : events + ' have'} no mapped destination`, `An empty or photo-only ${event} is valid. Keep its map empty, or add known destinations in the trip plan; stories and routes are optional.`, planner);
+    if (!visiblePhotos.length && !visibleVideos.length && !journey.segments.length) add('empty-content', 'review', 'This is a story-only or empty journey', `It can be shared intentionally as it stands. Check its title and ${events}; photos, routes and story paragraphs are optional.`, { mode: 'days', id: journey.days[0]?.id, label: `Review ${events}` });
     if (visiblePhotos.length || visibleVideos.length) add('media-selection', 'review', 'Review the selected photos and videos', `${visiblePhotos.length} photo${visiblePhotos.length === 1 ? '' : 's'} and ${visibleVideos.length} video${visibleVideos.length === 1 ? '' : 's'} are included. Confirm the selection and access expectations. Trashed photos and hidden videos are excluded; blank captions are valid.`, visiblePhotos.length ? { mode: 'photos', label: 'Review photo selection' } : { mode: 'media', label: 'Review video selection' });
   }
   if (!base.published) add('draft-promotion', 'blocker', 'This journey is still a local draft', 'The agent must review and promote its sources into the public build before deployment. This panel never promotes or publishes a draft.', planner);

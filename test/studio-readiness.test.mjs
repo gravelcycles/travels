@@ -13,7 +13,7 @@ import '../studio/ready-to-share.js';
 
 const repo = path.resolve(import.meta.dirname, '..');
 const changes = globalThis.JOURNEY_ATLAS_PLAN_EXTRAS.changes;
-const { createSession, handoff } = globalThis.JOURNEY_ATLAS_READINESS;
+const { createSession, handoff, presentation } = globalThis.JOURNEY_ATLAS_READINESS;
 function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'atlas-readiness-'));
   t.after(() => fs.rmSync(root, { recursive:true, force:true }));
@@ -135,4 +135,33 @@ test('readiness endpoint is read-only, same-origin and bounded', {timeout:30000}
   assert.equal((await post(' '.repeat(5_000_001))).status,413);
   assert.equal((await post('{}')).status,400);
   assert.deepEqual(contentSnapshot(root),before);assert.equal(fs.existsSync(path.join(root,'build')),false);
+});
+
+
+test('sharing review groups choices without hiding blockers or treating deliberate omissions as errors', () => {
+  const report = { items: [
+    { id:'asset:clip', severity:'blocker', title:'A video needs publishing' },
+    { id:'unsaved', severity:'blocker', title:'Save your changes' },
+    { id:'location:photo-one', severity:'review' },
+    { id:'media-selection', severity:'review' },
+    { id:'cover', severity:'review' },
+    { id:'route:train', severity:'review' },
+    { id:'day-context', severity:'review' },
+  ] };
+  const reviewed = new Set(['location:photo-one', 'route:train', 'not-in-this-draft']);
+  const view = presentation(report, reviewed);
+  assert.deepEqual(view.required.map(item => item.id), ['asset:clip','unsaved']);
+  assert.deepEqual(view.groups.map(group => [group.id,group.items.map(item => item.id)]), [
+    ['media',['location:photo-one','media-selection','cover']], ['routes',['route:train']], ['trip',['day-context']],
+  ]);
+  assert.equal(view.summary,'2 things to resolve before sharing');
+  assert.equal(view.progress,'2 of 5 choices reviewed');
+  assert.equal(view.remaining,3);
+  const local = {items:report.items.filter(item => item.severity==='review')};
+  assert.equal(presentation(local,reviewed).summary,'Local checks passed');
+  const complete = presentation(local,new Set(local.items.map(item=>item.id)));
+  assert.equal(complete.summary,'Ready for publishing review');
+  assert.equal(complete.remaining,0);
+  assert.deepEqual(presentation({items:[]}).groups,[]);
+  assert.equal(presentation({items:[]}).progress,'No choices left to review');
 });

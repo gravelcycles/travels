@@ -189,3 +189,14 @@
  .photo-location-panel .mobile-photo-caption:empty { display:none; }
  .photo-location-panel .photo-context-copy { max-height:110px; }
 }
+
+@media (max-width:900px) {
+ .mobile-day-summary > div { grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:6px; }
+ .mobile-day-summary #mobile-day-places { background:var(--panel-cool);color:var(--ink); }
+ .mobile-day-summary button[hidden] { display:none; }
+ .mobile-photo-header .button-label,.mobile-grid-heading .button-label { display:block;max-width:36vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+ .replay-timeline-row { flex-wrap:wrap;gap:4px 10px; }
+ .replay-timeline-row #replay-chapter { flex:0 0 100%;width:100%;max-width:100%;min-height:36px;color:inherit;background:#ffffff12;border:1px solid #ffffff25;border-radius:8px;padding:6px 10px; }
+ .replay-timeline-row #replay-timeline { flex:1; }
+ .replay-timeline-row label[for="replay-chapter"] { display:none; }
+}

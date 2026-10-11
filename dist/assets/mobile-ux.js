@@ -34,7 +34,7 @@
     const enabled = () => media.matches;
     function snapshot() {
       return {overlay, overlayDepth, dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
-        viewerDay: current.day?.id, index: current.index, scope:api.scope(), depth:dialog.open?viewerDepth:0, fromAlbum, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
+        viewerDay: current.day?.id, collection: dialog.open ? api.collection?.() || null : null, index: current.index, scope:api.scope(), depth:dialog.open?viewerDepth:0, fromAlbum, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
     }
     function save(push = false) {
       if (restoring) return;
@@ -112,7 +112,7 @@
         $('#mobile-day-tagline').hidden=true;
         $('#mobile-day-date').textContent='The whole journey';$('#mobile-day-title').textContent=api.title();
         $('#mobile-day-meta').textContent=`${api.days().length} ${eventWord('plural')} · Choose a ${eventWord()} to explore its route`;
-        $('#mobile-day-photos').textContent=info.albumHasVideos?'Photos & videos':'All photos';$('#mobile-day-photos').disabled=false;
+        $('#mobile-day-photos').textContent=info.albumHasVideos?'Photos & videos':'All photos';$('#mobile-day-photos').disabled=info.albumCount === 0;
       }
       $('#mobile-day-details').textContent=api.scope()==='journey'?`Choose a ${eventWord()}`:`${eventWord('title')} details`;
       $('#mobile-previous-day').disabled = index <= 0;
@@ -120,6 +120,10 @@
       $('#mobile-day-picker .button-label').textContent = `${eventWord('title')} ${day.number} · ${day.title || day.date || ''}`;
       $('.map-panel').style.setProperty('--day-summary-height', `${$('.mobile-day-summary').offsetHeight}px`);
       tabChanged();
+      // Deep links and desktop day selection use the same renderer. Keep the
+      // current entry in sync before another surface (for example Places)
+      // inherits it, so its Back action cannot resurrect the initial stop.
+      save();
     }
     function tabChanged() {
       const tab = $('.atlas-shell').dataset.mobileTab;
@@ -235,17 +239,18 @@
       if (!enabled()) { save(); return; }
       pointers.clear(); gesture = pinch = null; zoom(1);
       panel.inert=!locationOpen||grid;panel.setAttribute('aria-hidden',String(!locationOpen||grid));strip.inert=!grid;
-      $('#mobile-photo-back .button-label').textContent = `${eventWord('title')} ${data.day.number}`;
+      $('#mobile-photo-back .button-label').textContent = data.day.title || `${eventWord('title')} ${data.day.number}`;
       $('#mobile-photo-count').textContent = data.photos.length ? `${data.index + 1} of ${data.photos.length}` : 'No photos';
-      $('#mobile-grid-back .button-label').textContent = `${eventWord('title')} ${data.day.number}`;
+      $('#mobile-grid-back .button-label').textContent = data.day.title || `${eventWord('title')} ${data.day.number}`;
       const videoCount = data.photos.filter(item => item.mediaType === 'video').length, photoCount = data.photos.length - videoCount;
-      $('#mobile-grid-title').textContent = [photoCount ? `${photoCount} photo${photoCount === 1 ? '' : 's'}` : '', videoCount ? `${videoCount} video${videoCount === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ') || 'No photos or videos';
+      $('#mobile-grid-title').textContent = (data.collectionLabel ? `${data.collectionLabel} · ` : '') + [photoCount ? `${photoCount} photo${photoCount === 1 ? '' : 's'}` : '', videoCount ? `${videoCount} video${videoCount === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ') || 'No photos or videos';
       const photo = data.photos[data.index];
       $('#mobile-photo-time').textContent = photo?.mediaType === 'video' ? photo.title || photo.caption : photo?.takenAt || data.day.date;
       $('#mobile-photo-prev').disabled = data.index <= 0;
       $('#mobile-photo-next').disabled = data.index >= data.photos.length - 1;
       $('#mobile-photo-location').disabled = !photo;
       $('#mobile-photo-grid').disabled = !data.photos.length;
+      $('#mobile-photo-grid').setAttribute('aria-label', data.collectionLabel ? `Show ${data.collectionLabel} collection` : `Show this ${eventWord()}'s photos and videos`);
       $('#photo-location-title').textContent = photo?.locationLabel || (photo?.mediaType === 'video' ? 'Video location' : 'Photo location');
       $('#mobile-photo-location .location-hint').textContent = photo?.caption || photo?.description ? 'Details & location' : photo?.mediaType === 'video' ? 'Video location' : 'Photo location';
       $('#photo-location-subtitle').textContent = Number.isFinite(photo?.lng) && Number.isFinite(photo?.lat) ? `${eventWord('title')} ${data.day.number} · ${data.day.title}` : api.destinationName?.(data.day) ? `No exact photo location · showing ${api.destinationName(data.day)}` : 'No saved photo location';
@@ -281,17 +286,23 @@
       // Leave its camera and focused input alone; that surface restores itself.
       if (JSON.stringify(state) === JSON.stringify(previousState) && !afterDismiss) return;
       const old = previousState; restoring = true;
+      const collectionChanged = JSON.stringify(api.collection?.() || null) !== JSON.stringify(state.collection || null);
+      // A conversation can browse an explicit collection across days. Closing
+      // it reveals the current photograph, not the image saved before opening.
+      const returningFromViewerOverlay = Boolean(old?.viewer && state.viewer && old.overlay && !collectionChanged);
       viewerDepth = state.depth || 0; overlayDepth = state.overlayDepth || 0;
       const oldOverlay = overlay; overlay = state.overlay || null;
       if (oldOverlay && oldOverlay !== overlay) $(`#${oldOverlay}`).close();
-      const targetDay = old?.viewer && !state.viewer ? current.day?.id || state.dayId : state.dayId;
+      const targetDay = old?.viewer && !state.viewer || returningFromViewerOverlay ? current.day?.id || state.dayId : state.dayId;
       if(api.day().id !== targetDay || state.scope === 'day' && api.scope() !== 'day') api.selectDay(targetDay);
       const targetTab = !state.viewer && (exitingToDay || old?.viewer) ? 'map' : state.tab;
       if ($('.atlas-shell').dataset.mobileTab !== targetTab) api.tab(targetTab);
       if(!state.viewer && state.scope === 'journey' && !old?.viewer)api.overview();
       if (state.viewer) {
-        if (!dialog.open || current.day?.id !== state.viewerDay) api.openDay(state.viewerDay, {grid:state.layer === 'grid'});
-        if (!(old?.viewer && old.viewerDay === state.viewerDay)) api.selectPhoto(state.index || 0);
+        if (!returningFromViewerOverlay) {
+          if (!dialog.open || current.day?.id !== state.viewerDay || collectionChanged) api.openDay(state.viewerDay, {grid:state.layer === 'grid',collection:state.collection});
+          if (collectionChanged || !(old?.viewer && old.viewerDay === state.viewerDay)) api.selectPhoto(state.index || 0);
+        }
         if (enabled()) { setLocation(state.layer === 'location', false); setGrid(state.layer === 'grid', false); }
       } else if (dialog.open) { dialog.close(); fromAlbum=false; }
       if (overlay) api.restoreOverlay(overlay);

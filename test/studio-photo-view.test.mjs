@@ -147,3 +147,14 @@ test('a pin adjustment records the retained working zoom for the viewer, and ano
   ed.select('tomorrow');
   assert.deepEqual(ed.camera, { center: [10,49], zoom: 12 });
 });
+
+test('clearing the selected photo clears publication feedback and prior photo actions', () => {
+  const ed=editor();
+  assert.match(ed.nodes.get('#photo-asset-status').textContent,/Photo assets published/);
+  ed.api.selectPhoto(null,false);
+  assert.equal(ed.nodes.get('#photo-asset-status').textContent,'');
+  assert.equal(ed.nodes.get('#photo-order-status').textContent,'No photo selected.');
+  assert.equal(ed.nodes.get('#photo-move-earlier').disabled,true);
+  assert.equal(ed.nodes.get('#photo-move-later').disabled,true);
+  assert.equal(ed.nodes.get('#photo-form').inert,true);
+});

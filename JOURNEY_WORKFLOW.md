@@ -60,9 +60,17 @@ Never invent a stop, exact timetable, photo coordinate, or route. Record what
 is approximate. Exact dates, personal references, and precise photo locations
 need a privacy review before broader sharing.
 
+## Studio navigation
+
+Trip contains Overview and Stories; Media contains Photos and Videos. Places
+and Routes open their existing editors directly. Save locally is one shared
+action across all workspaces and preserves the existing recovery and conflict
+flow. Cover and linked-photo choices use searchable visual grids with capture
+metadata; crop framing supports direct selection and keyboard position controls.
+
 ## Ready to share review
 
-In Studio, **Ready to share** checks the selected journey's current draft and
+In Studio, **Review for sharing** checks the selected journey's current draft and
 trip plan without saving it. It separately reports unsaved draft edits, the
 current source files on disk, and the public version. The public version is
 **unverified**: a saved file, `published: true`, an uploaded derivative, or a
@@ -75,13 +83,14 @@ are called out. Trashed photos and hidden videos are excluded from this check.
 The panel never uploads, changes the trip's publication status or modifies sources.
 
 Review the actual selected media, missing photo pins, empty/photo-only days,
-cover fallback, and provisional route evidence. **Reviewed — keep as described**
+cover fallback, and provisional route evidence. Required fixes are shown first;
+choices are grouped into Photos and videos, Routes and Trip details. **Keep this choice**
 records an explicit choice for this exact assessment. It does not certify a
 provisional line or invent a location. Blank captions and optional stories are
 valid; empty drafts need no copied itinerary. A local draft does still need the
 agent's normal source promotion before it can enter a public build.
 
-**Prepare publishing handoff** rechecks the current draft and saved files and
+**Prepare publishing handoff** (or **Prepare handoff with open items**) rechecks the current draft and saved files and
 produces a copyable brief, including unresolved blockers, chosen review items,
 the draft/source/route fingerprints and the publishing checklist. **Copy handoff**
 also rechecks. An edit, journey switch, source change or changed asset finding
@@ -206,7 +215,7 @@ an unknown destination.
 
 The agent can do the same with `npm run journey:new -- --title "Trip name"
 --slug stable-url --start YYYY-MM-DD --end YYYY-MM-DD --timezone Area/City`.
-Studio **Trip plan & media** now handles later title/date/time-zone changes,
+Studio **Trip → Overview** handles later title/date/time-zone changes,
 named places, day insertion/reordering, and ordered leg creation. Choose whether
 a date change keeps content on its calendar date or shifts the full itinerary.
 Preview shows added/removed dates before saving; a shortened range cannot
@@ -619,7 +628,7 @@ plans stay visible; **Show this route** selects its map/legs/media. Rest days
 show where each group stays. These details derive from the same itinerary and
 roster, with no duplicate editorial fields.
 
-Studio **Trip plan & media → Travelers & route groups** adds, renames and removes
+Studio **Trip → Overview → Travelers & route groups** adds, renames and removes
 travelers/groups and assigns each traveler to one group. Create the groups,
 then use **Days & ordered travel legs** to choose which groups took each leg
 and set group overnight places. No groups checked means everyone shares the
@@ -644,7 +653,7 @@ route selection in a shared link. No per-trip page or application is copied.
 
 ## Day videos
 
-Studio **Trip plan & media → Videos** adds, edits, reorders and removes hosted
+Studio **Media → Videos** adds, edits, reorders and removes hosted
 clips. Fill in the title, public MP4/WebM link, day and optional opening-frame
 image/caption. **Preview video** opens the shared native player and fills an
 empty duration from the clip's metadata; duration can also be entered manually.

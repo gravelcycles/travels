@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 
-function fixture() {
+function fixture({ photos, collection, selectedId } = {}) {
   const nodes=new Map(),calls=[],pending=[];let visitor=null,rows=[],loaded=false;
   function node(selector) {
     if(nodes.has(selector))return nodes.get(selector);
@@ -24,9 +24,9 @@ function fixture() {
   };
   const context=vm.createContext({window:{JOURNEY_ATLAS_AUTH:{clearImage(){}},addEventListener(){}},document,location:{href:'https://example.test/'},URL,URLSearchParams,innerHeight:720,requestAnimationFrame:fn=>fn(),MutationObserver:class{observe(){}}});
   vm.runInContext(fs.readFileSync(new URL('../dist/assets/photo-comments.js',import.meta.url),'utf8'),context);
-  const photo={id:'photo',src:'https://example.test/photo.jpg'},controller=context.window.JOURNEY_ATLAS_PHOTO_COMMENTS.create({live:true,store:()=>store,journey:()=>({id:'trip'}),photos:()=>[photo],protected:()=>false,unlocked:()=>true});
-  controller.update();controller.photoChanged(photo);
-  return {controller,node,calls,pending};
+  const photo={id:'photo',src:'https://example.test/photo.jpg'}; photos ||= [photo]; const openedPhotos=[]; const controller=context.window.JOURNEY_ATLAS_PHOTO_COMMENTS.create({live:true,store:()=>store,journey:()=>({id:'trip'}),photos:()=>photos,photoCollection:()=>collection,openPhoto:(id, options)=>{openedPhotos.push({id,options});controller.photoChanged(photos.find(photo=>photo.id===id));},protected:()=>false,unlocked:()=>true});
+  controller.update();controller.photoChanged(photos.find(photo=>photo.id===selectedId) || photo);
+  return {controller,node,calls,pending,openedPhotos};
 }
 
 test('photo comments appear immediately and profile/comments load together without blocking drafting',async()=>{
@@ -69,4 +69,30 @@ test('reading does not require a name, and adding a name enables an existing dra
   await f.node('#experience-unlock').fire('submit',{preventDefault(){}});
   assert.equal(f.node('#comment-submit').disabled,false);
   assert.equal(f.node('#comment-body').value,'Ready to post');
+});
+
+test('conversation arrows retain the presenting collection, selection order, boundary and each photo draft', async () => {
+  const photos = ['a','b','c','d'].map(id=>({id,src:`https://example.test/${id}.jpg`,alt:'Accessibility text',caption:'',takenAt:'7 Oct · 18:01'}));
+  const collection = {photos:[photos[2],photos[0],photos[1]],label:'Prague'};
+  const f=fixture({photos,collection,selectedId:'a'}), opening=f.controller.open();
+  f.pending[0].resolve({id:'signed',name:'Alex'}); f.pending[1].resolve([]); await opening;
+  assert.equal(f.node('#comments-photo-position').textContent, 'Photo 2 of 3 · Prague');
+  assert.equal(f.node('#comments-photo-title').textContent, '7 Oct · 18:01');
+  f.node('#comment-body').value='A draft for a';f.node('#comment-body').fire('input');
+  f.node('#comments-next-photo').fire('click');
+  assert.equal(f.openedPhotos.at(-1).id,'b');
+  assert.equal(f.openedPhotos.at(-1).options.photos,collection.photos);
+  assert.equal(f.openedPhotos.at(-1).options.preserveCollection,true,'Comment navigation retains the presenting viewer mode as well as its members');
+  assert.equal(f.node('#comments-photo-position').textContent,'Photo 3 of 3 · Prague');
+  assert.equal(f.node('#comments-next-photo').disabled,true);
+  f.node('#comment-body').value='A draft for b';f.node('#comment-body').fire('input');
+  f.node('#comments-next-photo').fire('click');
+  assert.equal(f.openedPhotos.length,1,'A synthetic click cannot escape the final item boundary');
+  f.node('#comments-previous-photo').fire('click');
+  assert.equal(f.node('#comment-body').value,'A draft for a');
+  assert.equal(f.node('#comments-photo-position').textContent,'Photo 2 of 3 · Prague');
+  f.node('#comments-next-photo').fire('click');
+  assert.equal(f.node('#comment-body').value,'A draft for b');
+  collection.photos=[photos[1]];f.controller.photoChanged(photos[1]);
+  assert.equal(f.node('#comments-photo-position').textContent,'Photo 1 of 1 · Prague','Changing a collection around the same photograph refreshes its context');
 });

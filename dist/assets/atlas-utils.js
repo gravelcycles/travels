@@ -368,6 +368,24 @@
     };
   }
 
+  // Presentation reflects saved content and planning flags, never an inferred visit.
+  function journeyPresentation(journey, media = journey.photos || []) {
+    const days = journey.days || [], segments = journey.segments || [];
+    const visibleMedia = [...media, ...(journey.videos || []).map(video => ({...video,mediaType:'video'}))].filter(item => !item.trashed && !(item.mediaType === 'video' && item.hidden) && !item.localOnly);
+    const hasStory = days.some(day => Boolean(day.text?.trim() || day.tagline?.trim()));
+    const hasMap = segments.length > 0 || [...(journey.places || []),...(journey.pointsOfInterest || [])].some(locatedPhoto) || visibleMedia.some(locatedPhoto);
+    const hasMedia = visibleMedia.length > 0;
+    const hasContent = hasMap || hasStory || hasMedia;
+    const uncertain = days.some(day => day.planningStatus === 'tbd');
+    const planned = journey.status === 'planned';
+    const distance = segments.reduce((total, segment) => total + (Number.isFinite(segment.distanceKm) ? segment.distanceKm : 0), 0);
+    const distanceLabel = !segments.length ? 'Route to plan' : !segments.some(segment => Number.isFinite(segment.distanceKm)) ? 'Distance pending'
+      : `${Math.round(distance).toLocaleString('en-GB')} km${segments.some(segment => !Number.isFinite(segment.distanceKm)) ? ' + distance pending' : ''}${uncertain ? ' · includes TBD' : planned ? ' planned' : ''}`;
+    return {hasContent,hasMap,hasReplay:hasMap || hasStory,hasMedia,distanceLabel,
+      entryLabel:hasContent ? 'Explore the journey' : `View ${eventWord(journey,'plural')}`,
+      introduction:hasContent ? journey.subtitle || '' : 'Your journey is taking shape.'};
+  }
+
   // Calendar days remain the storage/URL IDs; city events span arrival–departure dates.
   function eventWord(journey, form = 'singular') {
     const city = journey?.eventMode === 'city';
@@ -393,5 +411,5 @@
     return start === end ? format(start) : `${format(start)} – ${format(end)}`;
   }
 
-  root.JOURNEY_ATLAS_UTILS = { validCityBoundary, cityFrameCoordinates, projectPlanning, eventWord, eventCopy, applyEventCopy, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
+  root.JOURNEY_ATLAS_UTILS = { journeyPresentation, validCityBoundary, cityFrameCoordinates, projectPlanning, eventWord, eventCopy, applyEventCopy, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

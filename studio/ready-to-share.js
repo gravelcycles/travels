@@ -22,6 +22,20 @@
       '- Report the deployed commit, deployment result and public URL. Until then the public version remains unverified.',
     ].join('\n');
   }
+  function presentation(report, acknowledged = new Set()) {
+    const required = report.items.filter(item => item.severity === 'blocker');
+    const decisions = report.items.filter(item => item.severity === 'review');
+    const remaining = decisions.filter(item => !acknowledged.has(item.id)).length;
+    const groups = [
+      { id: 'media', title: 'Photos and videos', items: decisions.filter(item => /^(location:|media-selection$|cover$)/.test(item.id)) },
+      { id: 'routes', title: 'Routes', items: decisions.filter(item => item.id.startsWith('route:')) },
+      { id: 'trip', title: 'Trip details', items: decisions.filter(item => !/^(location:|media-selection$|cover$|route:)/.test(item.id)) },
+    ].filter(group => group.items.length);
+    return { required, decisions, remaining, groups,
+      summary: required.length ? `${required.length} thing${required.length === 1 ? '' : 's'} to resolve before sharing` : remaining ? 'Local checks passed' : 'Ready for publishing review',
+      progress: decisions.length ? `${decisions.length - remaining} of ${decisions.length} choices reviewed` : 'No choices left to review',
+    };
+  }
   function createSession({ getInput, request }) {
     let sequence = 0, fingerprint = null, report = null, acknowledged = new Set();
     const current = () => report && fingerprint === JSON.stringify(getInput());
@@ -59,42 +73,79 @@
     function invalidate() {
       session.invalidate(); clearBrief(); $('ready-share-items').replaceChildren(); $('ready-share-sources').replaceChildren();
       $('ready-share-journey').textContent = getInput().changes.title || 'Current journey';
+      $('ready-share-progress').textContent = '';
       $('ready-share-prepare').disabled = true;
-      if (dialog.open) status.textContent = 'The draft or journey changed. Check again; earlier acknowledgements no longer apply.';
+      if (dialog.open) status.textContent = 'Your draft changed. Check again to review the latest version.';
+    }
+    function updateSummary() {
+      const report = session.report;
+      if (!report) return;
+      const view = presentation(report, session.acknowledged);
+      status.textContent = view.summary;
+      $('ready-share-progress').textContent = view.progress;
+      $('ready-share-prepare').textContent = view.required.length || view.remaining ? 'Prepare handoff with open items' : 'Prepare publishing handoff';
+      for (const group of view.groups) {
+        const count = document.getElementById(`ready-group-count-${group.id}`);
+        if (count) {
+          const left = group.items.filter(item => !session.acknowledged.has(item.id)).length;
+          count.textContent = left ? `${left} to review` : 'Reviewed';
+        }
+      }
     }
     function render() {
       const report = session.report;
       if (!report) { invalidate(); return; }
+      const view = presentation(report, session.acknowledged);
       $('ready-share-journey').textContent = report.journey.title;
-      const blockers = report.items.filter(item => item.severity === 'blocker').length;
-      const pending = report.items.filter(item => item.severity === 'review' && !session.acknowledged.has(item.id)).length;
-      status.textContent = blockers ? `${blockers} blocker${blockers === 1 ? '' : 's'} before publishing · ${pending} review item${pending === 1 ? '' : 's'} left` : pending ? `Local checks passed · ${pending} review item${pending === 1 ? '' : 's'} left` : 'Ready for agent publishing review · public version still unverified';
+      updateSummary();
       const sources = $('ready-share-sources'); sources.replaceChildren();
       for (const [title, text] of [
-        ['Current draft', report.draft.unsaved ? 'Includes edits not yet saved to sources.' : 'Matches the saved local sources.'],
-        ['Saved sources', report.draft.sourceChanged ? 'Changed since this editor loaded. Save locally to reconcile.' : 'Compared with current files on disk.'],
-        ['Public version', report.public.message],
+        ['Current draft', report.draft.unsaved ? 'Has unsaved edits.' : 'Matches your saved files.'],
+        ['Saved files', report.draft.sourceChanged ? 'Changed since this editor opened. Save locally to reconcile.' : 'Checked against this draft.'],
+        ['Public version', 'Unverified. Publishing and a live check happen after this review.'],
       ]) { const box = document.createElement('div'), heading = document.createElement('strong'), copy = document.createElement('p'); heading.textContent = title; copy.textContent = text; box.append(heading, copy); sources.append(box); }
       const list = $('ready-share-items'); list.replaceChildren();
-      for (const item of report.items) {
+      function appendItem(item, target) {
         const card = document.createElement('li'); card.dataset.severity = item.severity;
-        const title = document.createElement('strong'); title.textContent = `${item.severity === 'blocker' ? 'Resolve' : 'Review'} · ${item.title}`;
+        const title = document.createElement('strong'); title.textContent = item.title;
         const detail = document.createElement('p'); detail.textContent = item.detail;
         const edit = document.createElement('button'); edit.type = 'button'; edit.textContent = item.action.label;
         edit.addEventListener('click', () => { dialog.close(); openEditor(item.action); }); card.append(title, detail, edit);
         if (item.severity === 'review') {
-          const label = document.createElement('label'), check = document.createElement('input'); check.type = 'checkbox'; check.checked = session.acknowledged.has(item.id); check.id = `ready-ack-${item.id}`;
-          check.addEventListener('change', () => { session.acknowledge(item.id, check.checked); clearBrief(); render(); $(check.id)?.focus(); });
-          label.append(check, document.createTextNode('Reviewed — keep as described')); card.append(label);
+          const label = document.createElement('label'), check = document.createElement('input'); check.type = 'checkbox'; check.checked = session.acknowledged.has(item.id); check.id = `ready-ack-${item.id}`; check.setAttribute('aria-label', `Keep this choice: ${item.title}`);
+          check.addEventListener('change', () => {
+            if (!session.acknowledge(item.id, check.checked)) { invalidate(); return; }
+            card.dataset.reviewed = String(check.checked); clearBrief(); updateSummary();
+          });
+          card.dataset.reviewed = String(check.checked);
+          label.append(check, document.createTextNode('Keep this choice')); card.append(label);
         }
-        list.append(card);
+        target.append(card);
       }
+      if (view.required.length) {
+        const section = document.createElement('section'), heading = document.createElement('h3'), items = document.createElement('ul');
+        heading.textContent = 'Before sharing'; section.append(heading, items); list.append(section);
+        view.required.forEach(item => appendItem(item, items));
+      }
+      if (view.decisions.length) {
+        const heading = document.createElement('h3'), help = document.createElement('p');
+        heading.textContent = 'Your choices'; help.textContent = 'Missing locations and approximate routes can be intentional. Review each choice and keep it or edit it.';
+        list.append(heading, help);
+        view.groups.forEach((group, index) => {
+          const section = document.createElement('details'), heading = document.createElement('summary'), label = document.createElement('span'), count = document.createElement('span'), items = document.createElement('ul');
+          section.open = !view.required.length && index === 0;
+          label.textContent = group.title; count.id = `ready-group-count-${group.id}`; heading.append(label, count); section.append(heading, items); list.append(section);
+          group.items.forEach(item => appendItem(item, items));
+        });
+      }
+      if (!report.items.length) { const message = document.createElement('p'); message.textContent = 'This draft has no outstanding local checks.'; list.append(message); }
+      updateSummary();
       $('ready-share-prepare').disabled = false;
     }
     async function check() {
       if (busy) return null;
       busy = true; $('ready-share-check').disabled = true; $('ready-share-prepare').disabled = true; $('ready-share-copy').disabled = true;
-      status.textContent = 'Checking the current draft, saved files and local assets…';
+      status.textContent = 'Checking your draft…';
       try { const report = await session.check(); if (report) render(); else { invalidate(); status.textContent = 'The journey changed while checking. Check again.'; } return report; }
       catch (error) { invalidate(); status.textContent = `Check unavailable: ${error.message}`; return null; }
       finally { busy = false; $('ready-share-check').disabled = false; }
@@ -105,6 +156,7 @@
     async function prepare() {
       clearBrief(); if (!await check()) return false;
       $('ready-share-text').value = session.brief(); $('ready-share-brief').hidden = false; $('ready-share-copy').disabled = false;
+      $('ready-share-brief').scrollIntoView?.({ block: 'nearest' });
       return true;
     }
     $('ready-share-prepare').addEventListener('click', prepare);
@@ -115,5 +167,5 @@
     });
     return { invalidate };
   }
-  root.JOURNEY_ATLAS_READINESS = { create, createSession, handoff };
+  root.JOURNEY_ATLAS_READINESS = { create, createSession, handoff, presentation };
 })(typeof window === 'undefined' ? globalThis : window);

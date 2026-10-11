@@ -85,7 +85,7 @@ password system.
 | --- | --- |
 | `content/templates/journey.html` | All journey DOM, dialogs, control IDs, scripts and styles; real, demo, preview |
 | `content/templates/catalog.html` | Public catalog shell |
-| `dist/assets/photo-places.js`, `photo-bubbles.js`, `photo-bubbles.css` | Shared Photos + Places associations, stable selected map groups, protected thumbnails and photo selection inside the existing desktop journal sidebar / compact phone card, image-button full-screen entry and stable location thumbnails independent of album browsing |
+| `dist/assets/photo-places.js`, `photo-bubbles.js`, `photo-bubbles.css` | Shared Photos + Places associations, stable selected map groups, protected thumbnails and direct fullscreen photo entry with exact source collections, while retaining the existing desktop journal sidebar and consolidated phone event card and stable location thumbnails independent of album browsing |
 | `studio/place-editor.js` | Owner Places, credited images, curated reviews and ordered trip-photo links through the existing plan/save/recovery flow |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction, Replay UI |
 | `dist/assets/location-labels.js` | Shared destination grouping, screen-space clusters, upright signposts, compact previews and accessible day selection |
@@ -390,3 +390,20 @@ The follow-up city fit uses shared geometry helpers in `atlas-utils.js` to inclu
 photos inside or within five miles of optional sourced `places[].cityBoundary`
 geometry, plus marked places. Without boundaries, proximity uses the destination
 coordinate. No network calls or trip ID branches are needed at playback time.
+
+
+## UX flow corrections — 11 October 2026
+
+The owner authorized the complete sixteen-item [UX review](UX_REVIEW_2026-10-11.md)
+and direct one-click photo opening. Shared changes consolidate the phone event
+card, quiet desktop chrome, scope Places, preserve exact photo/comment collections,
+use current event labels and deliberate empty states, and add named map-only
+Replay seeking. Studio task navigation, visual media choices, batch contact sheets,
+truthful video progress and a grouped sharing review retain existing persistence
+and access services. Approved arrival and image reveal timing is unchanged.
+
+Behavior regressions cover direct fullscreen, collection/history boundaries,
+deep-link responsive Back, reference/demo/independently populated fresh-draft
+inheritance, sharing choices, batch edits, visual metadata and upload interruption.
+W10 remains the broader browser/accessibility continuity backlog; this release
+does not claim device, screen-reader or every service-failure certification.

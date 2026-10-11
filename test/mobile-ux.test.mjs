@@ -301,3 +301,48 @@ test('opening a desktop photo keeps its map and caption controls interactive',()
   f.history.back();assert.equal(f.node('#photo-dialog').open,false);
   f.history.go(1);assert.equal(f.node('#photo-dialog').open,true);
 });
+
+test('Back and Forward restore the selected index when two collections share the same day',()=>{
+  const f=viewerFixture();let collection={ids:['p0','p1','p2'],label:'Day photos'};
+  f.api.collection=()=>collection;
+  const openDay=f.api.openDay;
+  f.api.openDay=(id,options)=>{if(options?.collection)collection=options.collection;openDay(id,options);};
+  f.api.openDay();f.api.selectPhoto(2);
+  const saved=structuredClone(f.history.state);
+  collection={ids:['p2','p0'],label:'Map photos'};f.api.selectPhoto(1);
+  f.history.pushState(saved);f.history.go(-1);f.history.go(1);
+  assert.deepEqual(collection,{ids:['p0','p1','p2'],label:'Day photos'});
+  assert.equal(f.index,2,'Restoring a collection cannot silently return to its first photo');
+});
+
+test('deep-link and desktop day rendering update the snapshot inherited by Places history',()=>{
+  const f=viewerFixture();f.api.selectDay('two');f.controller.renderDay();
+  assert.equal(f.history.state.mobileAtlas.dayId,'two');
+  const list={...structuredClone(f.history.state),atlasPlaces:{open:true,placeId:'',depth:1}};
+  f.history.pushState(list);
+  f.history.pushState({...structuredClone(list),atlasPlaces:{open:true,placeId:'venue',depth:2}});
+  f.resize(false);f.resize(true);f.history.back();
+  assert.equal(f.api.day().id,'two');
+  assert.equal(f.history.state.mobileAtlas.dayId,'two');
+});
+
+test('closing an explicit collection returns to the map without leaving a collection on that history entry',()=>{
+  const f=viewerFixture();f.api.collection=()=>({ids:['p0','p2'],label:'Map photos'});
+  f.api.openDay();f.api.selectPhoto(1);
+  f.click('#mobile-photo-back');
+  assert.equal(f.node('#photo-dialog').open,false);
+  assert.equal(f.history.state.mobileAtlas.viewer,false);
+  assert.equal(f.history.state.mobileAtlas.collection,null);
+  assert.equal(f.node('.atlas-shell').dataset.mobileTab,'map');
+});
+
+test('closing Comments after browsing a cross-day collection keeps the current photo and day',()=>{
+  const f=viewerFixture();f.api.collection=()=>({ids:['p0','p1','p2'],label:'Linked place photos'});
+  f.api.openDay('one');f.api.selectPhoto(1);f.controller.presentOverlay('comments-dialog');
+  f.api.selectDay('two');f.api.selectPhoto(2);
+  f.controller.dismissOverlay('comments-dialog');
+  assert.equal(f.node('#photo-dialog').open,true);
+  assert.equal(f.node('#comments-dialog').open,false);
+  assert.equal(f.api.day().id,'two');
+  assert.equal(f.index,2);
+});

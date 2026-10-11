@@ -123,18 +123,23 @@ the saved album order, so entry starts at photo 1. Travel details starts as a
 compact expandable row. Descriptions and taglines may stay blank; no generated
 stay labels or placeholder prose appear.
 
-Sparse photo bubbles coexist with Places pins on day/stop maps. Desktop map,
-album and linked-Place selections use the existing right journal/photo sidebar,
-with a large uncropped image in a stable-height frame, compact controls,
-thumbnails and expandable details. Click the image for full screen. Browsing
-does not replace an unrelated map bubble's image; changing days clears the old
-selection. Only saved links connect photos to venues. The current thumbnail has
-an orange selection outline, with no Selected badge. Phone Photos opens the
-event's grid and retains its own shared navigation/gesture flow.
+Sparse photo bubbles coexist with Places pins on day/stop maps. Desktop keeps
+days left, map center and the existing journal/photo sidebar right. Every actual
+photo opens full screen in one click, including clustered map thumbnails, albums
+and linked Places images. The entry collection's order/count stays intact in
+comments and phone grids. Sidebar imagery remains large, uncropped and stable in
+height. Browsing does not replace an unrelated bubble's image; changing days
+clears the old selection. Only saved links connect photos to venues.
 
-Photo comments and place reviews open floating cards with soft shadows while
-keeping sidebar context visible. Comments open immediately, reuse recent data
-and offer inline retry without losing drafts.
+Phone Photos opens the event grid; one event card contains its title/date,
+Photos, contextual Places and secondary arrival controls. Photo comments and
+populated place reviews float above their context with immediate opening,
+cached reads and inline retry. Saved places have no empty-review modal detour.
+
+Studio uses Trip / Media / Places / Routes, with Photos and Videos under Media,
+visual photo choices, a contact sheet before batch actions and one Save locally.
+Review for sharing groups required fixes and optional choices; it prepares a
+handoff without claiming the draft is live. Replay includes named chapter seeking.
 
 When both photo pins are already in view, the viewer map stays still. Nearby
 moves go directly to the next view; longer moves use a parabolic zoom arc with

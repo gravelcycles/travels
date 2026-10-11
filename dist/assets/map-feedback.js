@@ -10,7 +10,7 @@
     let loaded = false, failed = false, empty = false, disposed = false;
     function render() {
       panel.hidden = loaded && !failed && !empty;
-      message.textContent = failed ? 'Map unavailable. Please try again.' : empty ? 'No location added for this day.' : 'Loading map…';
+      message.textContent = failed ? 'Map unavailable. Please try again.' : empty ? 'No location added yet.' : 'Loading map…';
       button.hidden = !failed;
     }
     function ready() { if (disposed) return; loaded = true; failed = false; clearTimeout(timer); render(); }

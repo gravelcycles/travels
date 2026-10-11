@@ -264,7 +264,8 @@ Studio recovery drafts, readable comparisons and save-conflict review were
 subsequently authorized and delivered on 14–15 September. Batch editing,
 private video intake and Ready to share were authorized on 8 October and now
 have shared implementations. Explicit sharing (without automatic visitor reload
-persistence) and named stops on the map-only Replay timeline remain proposals.
+persistence) remains a proposal. Named stops on the map-only Replay timeline
+were authorized with the 11 October UX fixes and now use the shared player.
 Replay playback and its slider are already shipped. The six-feature demo and
 separate delight/day-experience prototypes are preserved on branches listed in
 [WIP.md](WIP.md). Audit V1 stays excluded. The accepted Photos + Places scene has been implemented in shared production
@@ -337,3 +338,10 @@ as a local review artifact; unrelated Replay experiments remain separate.
       album-start placement, recoverable Trash/Restore and guarded last-batch Undo.
       Uses existing autosaved draft recovery, Save and conflict review. No Hide
       feature or source-manifest rewrite; see PHOTO_WORKFLOW.md.
+
+
+- [x] **11 October UX flow review U01–U16:** one-click fullscreen, exact photo
+  collections, consolidated phone card, scoped Places, current labels, empty
+  states, Studio task navigation/visual pickers/batch flow, sharing review and
+  video lifecycle feedback. Approved arrival/reveal timing is retained; populated
+  conversations still float per O04. See docs/UX_REVIEW_2026-10-11.md.

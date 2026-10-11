@@ -289,15 +289,24 @@ basis; the editor does not fetch or approve an image automatically. Public venue
 imagery must not reuse protected family derivatives. Curated group reviews are
 owner data in Git; visitor photo access still grants no editing permission.
 
-Desktop keeps days continuously on the left, map in the center and photo
-browsing inside the existing right journal sidebar. A large uncropped photo uses
-a stable-height frame, opens full screen on click/keyboard activation and keeps
-thumbnails adjacent; day details collapse while browsing. Album navigation does
-not regroup map bubbles or replace their own thumbnails. Stationary refreshes
-retain bubble nodes/image loads; day changes clear the old selection. Phones use
-one bottom day picker with the current day name. Back/Forward and comments use
-the same shared overlay history. Explicit groups that cross days follow the
-selected photo's real day while retaining the group's order.
+Desktop keeps days continuously on the left, map in the center and the existing
+journal/photo sidebar on the right. Any actual photo click opens full screen
+directly, including map clusters, album thumbnails and linked Places photos.
+The existing sidebar image stays uncropped with a stable-height frame. Album
+navigation does not regroup map bubbles or replace their own thumbnails.
+Stationary refreshes retain bubble nodes/image loads; day changes clear the old
+selection. Phones use one bottom event picker and a consolidated current-event
+card with contextual Places. Back/Forward and comments use shared overlay history.
+Comments, fullscreen arrows and grids retain the entry collection's count/order;
+explicit groups that cross days follow the selected photo's real day.
+
+Places initially uses the selected day/stop (all places from a whole-trip view).
+Deliberate search, category and scope changes persist while browsing and reopening;
+an empty local result offers All places. Overview and Photos remain actual tabs;
+populated group reviews float from an explicit Group reviews action. Empty saved
+places have a quiet inline review state, with no empty review-modal detour.
+Recenter is a small map action, venue credit stays separate, and empty linked-photo
+boilerplate is omitted. Day/Stop wording and edited titles follow the journey.
 
 Alpine Crossing includes four clearly labeled sample album placements using its
 already approved, credited venue imagery. Three have illustrative coordinates;

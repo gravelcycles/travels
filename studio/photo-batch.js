@@ -15,15 +15,37 @@
   }
 
   function filterPhotos(photos, journey, {query = '', dayId = 'all', trash = false} = {}) {
-    const terms = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
-    const days = new Map(journey.days.map(day => [day.id, day]));
-    return photos.filter(photo => {
-      if (Boolean(photo.trashed) !== trash || dayId !== 'all' && photo.dayId !== dayId) return false;
-      const day = days.get(photo.dayId);
-      const haystack = [photo.id, photo.sourceFilename, photo.takenAt, photo.caption, photo.description, photo.locationLabel,
-        day?.date, day?.calendarDate, day?.title, `day ${day?.number}`, `stop ${day?.number}`].join(' ').toLocaleLowerCase();
-      return terms.every(term => haystack.includes(term));
-    });
+    return photos.filter(photo => Boolean(photo.trashed) === trash && (dayId === 'all' || photo.dayId === dayId) && matchesPhoto(photo, journey, query));
+  }
+
+  function resolvedJourney(journey, state = {}) {
+    return {...journey, days:journey.days.map(day => ({...day, ...(state.days?.[day.id] || {})}))};
+  }
+
+  function captureLabel(photo) {
+    const match = String(photo.takenAt || '').match(/^(\d{4})[:-](\d{2})[:-](\d{2})(?:[T\s·]+(\d{2}):(\d{2}))?/);
+    if (!match) return photo.takenAt || '';
+    const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+    return `${date.toLocaleDateString('en-GB', {day:'numeric', month:'short', timeZone:'UTC'})}${match[4] ? ` · ${match[4]}:${match[5]}` : ''}`;
+  }
+
+  function photoMetadata(photo, journey) {
+    const day = journey.days.find(day => day.id === photo.dayId);
+    return {title:photo.caption || captureLabel(photo) || 'Photograph',
+      detail:[day?.title || `${root.JOURNEY_ATLAS_UTILS.eventWord(journey, 'title')} ${day?.number || ''}`, photo.caption ? captureLabel(photo) : ''].filter(Boolean).join(' · ')};
+  }
+
+  function matchesPhoto(photo, journey, query = '') {
+    const day = journey.days.find(day => day.id === photo.dayId), metadata = photoMetadata(photo, journey);
+    const haystack = [photo.id, photo.sourceFilename, photo.takenAt, photo.caption, photo.description, photo.locationLabel,
+      day?.date, day?.calendarDate, day?.title, `day ${day?.number}`, `stop ${day?.number}`, metadata.title, metadata.detail].join(' ').toLocaleLowerCase();
+    return query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean).every(term => haystack.includes(term));
+  }
+
+  function focalFromPoint({x, y, width, height, naturalWidth, naturalHeight, focal = [50, 50]}) {
+    if (!(width > 0 && height > 0 && naturalWidth > 0 && naturalHeight > 0)) return focal;
+    const scale = Math.max(width / naturalWidth, height / naturalHeight), w = naturalWidth * scale, h = naturalHeight * scale;
+    return [(x + (w - width) * focal[0] / 100) / w, (y + (h - height) * focal[1] / 100) / h].map(value => Math.round(Math.max(0, Math.min(1, value)) * 100));
   }
 
   function toggleVisible(selectedIds, visibleIds) {
@@ -86,5 +108,5 @@
     return next;
   }
 
-  root.JOURNEY_ATLAS_PHOTO_BATCH = {orderedPhotos, filterPhotos, toggleVisible, applyBatch, undoBatch};
+  root.JOURNEY_ATLAS_PHOTO_BATCH = {orderedPhotos, filterPhotos, resolvedJourney, captureLabel, photoMetadata, matchesPhoto, focalFromPoint, toggleVisible, applyBatch, undoBatch};
 })(typeof window === 'undefined' ? globalThis : window);

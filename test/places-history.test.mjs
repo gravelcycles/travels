@@ -154,12 +154,12 @@ test('place-only history changes do not refit an unchanged whole-journey map', (
   assert.equal(f.overviewCalls, 0, 'Independent places navigation cannot reset its camera through the mobile controller');
 });
 
-function placeHistoryFixture({ cameraReady = null } = {}) {
+function placeHistoryFixture({ cameraReady = null, scope = 'journey', photos = [], visibleDayIds } = {}) {
   const nodes = new Map(), events = new Map(), queue = [];
   const mobileState = { viewer: false, dayId: 'one', scope: 'journey', tab: 'map' };
   const stack = [{ priorPage: true }, { mobileAtlas: mobileState }];
   let cursor = 1, restoreCalls = 0, currentDay = 'one';
-  const cameraJumps = [];
+  const cameraJumps = [], openedPhotos = [];
   function node(selector) {
     if (nodes.has(selector)) return nodes.get(selector);
     const listeners = new Map(), classes = new Set();
@@ -207,11 +207,11 @@ function placeHistoryFixture({ cameraReady = null } = {}) {
   let journey = { id: 'journey', days: [{ id: 'one', number: 1, date: 'Today' }], pointsOfInterest: [point] };
   const controller = context.window.JOURNEY_ATLAS_PLACE_PANEL.create({
     journey: () => journey,
-    photos:()=>[],preview: true, dayId: () => currentDay, store: () => store, explore() {}, map: () => map,
+    photos:()=>photos, preview: true, mapScope:()=>scope, visibleDayIds:()=>visibleDayIds, openPhoto:(id, options)=>openedPhotos.push({id, options}), dayId: () => currentDay, store: () => store, explore() {}, map: () => map,
     canRestoreMapCamera: () => cameraReady === true, restoreMap() { restoreCalls++; }
   });
   return {
-    controller, history, node, mobileState, store, originalCamera, cameraJumps, journey,
+    controller, history, node, mobileState, store, originalCamera, cameraJumps, journey, openedPhotos,
     setJourney(value) { journey = value; controller.update(); },
     get restoreCalls() { return restoreCalls; }, setDay(id) { currentDay = id; },
     click(id, dataset = {}, attributes = []) {
@@ -351,4 +351,70 @@ test('place reviews float over the current detail and Back/Forward restore only 
   assert.equal(f.controller.isOpen(),true);
   f.history.go(1);f.flush();assert.equal(f.node('#place-reviews-dialog').open,true);
   f.controller.close();f.flush();assert.equal(f.node('#place-reviews-dialog').open,false);
+});
+
+test('Places opens in the current stop and preserves a deliberate whole-trip scope through detail history and reopening', () => {
+  const f = placeHistoryFixture({ scope: 'day' });
+  const one = f.journey.pointsOfInterest[0], two = { ...one, id: 'other', name: 'Another city café', dayIds: ['two'] };
+  f.setJourney({ ...f.journey, eventMode: 'city', days: [{ id:'one', number:7, title:'Prague', date:'6–11 Oct' }, { id:'two', number:8, title:'Brno' }], pointsOfInterest: [one, two] });
+  f.controller.open();
+  assert.equal(f.history.state.atlasPlaces.dayOnly, true);
+  assert.match(f.node('#places-content').innerHTML, /A café/);
+  assert.doesNotMatch(f.node('#places-content').innerHTML, /Another city café/);
+  assert.equal(f.node('#places-event-only-label').textContent, 'Prague');
+  assert.equal(f.node('#mobile-day-places').textContent, 'Places · 1');
+  f.click('', { placeScope: 'all' });
+  f.node('#places-content').scrollTop = 120; f.node('#places-content').fire('scroll', {});
+  f.click('', { placeId: 'other' });
+  f.history.back(); f.flush();
+  assert.match(f.node('#places-content').innerHTML, /Another city café/);
+  assert.equal(f.node('#places-content').scrollTop, 120);
+  f.controller.close(); f.flush(); f.controller.open();
+  assert.equal(f.history.state.atlasPlaces.dayOnly, false);
+  assert.equal(f.history.state.atlasPlaces.scopeChoice, 'all');
+  f.node('#mobile-day-places').fire('click');
+  assert.equal(f.history.state.atlasPlaces.dayOnly, true, 'The explicit stop action can intentionally narrow a remembered all-place list');
+});
+
+test('an empty focused stop offers all places, and saved venue details do not invent a visit or an empty review dialog', () => {
+  const f = placeHistoryFixture({ scope: 'day' });
+  const point = { ...f.journey.pointsOfInterest[0], status: 'saved', note: 'Try next time' };
+  f.setJourney({ ...f.journey, eventMode: 'city', days: [{id:'one', number:7, title:'Prague', date:'6–11 Oct'}, {id:'two', number:8, title:'Brno'}], pointsOfInterest:[point] });
+  f.setDay('two'); f.controller.update(); f.controller.open();
+  assert.match(f.node('#places-content').innerHTML, /No places found/);
+  assert.match(f.node('#places-content').innerHTML, /See all places/);
+  f.click('', {}, ['data-clear-filters']); f.click('', { placeId:'cafe' });
+  const html = f.node('#places-content').innerHTML;
+  assert.match(html, /Stop 7 · Prague/);
+  assert.match(html, /Saved note/);
+  assert.match(html, /Venue photos/);
+  assert.doesNotMatch(html, /Day 7|Our memory|route group|No linked trip|data-show-place-tab="reviews"|pp-trip-photos/);
+  f.click('', {showPlaceTab:'reviews'});
+  assert.equal(f.node('#place-reviews-dialog').open, false, 'A saved, unreviewed place never opens an empty review modal');
+  f.controller.close();f.flush();f.controller.open();
+  assert.equal(f.history.state.atlasPlaces.scopeChoice, 'all', 'See all places is an explicit remembered scope choice');
+});
+
+test('a manually linked trip-photo thumbnail opens the ordered linked collection directly', () => {
+  const photos = [{id:'a', alt:'Accessibility description'}, {id:'b'}, {id:'unlinked'}];
+  const f = placeHistoryFixture({photos});
+  f.setJourney({...f.journey, pointsOfInterest:[{...f.journey.pointsOfInterest[0], photoIds:['b','a']}]});
+  f.controller.openPlace('cafe');
+  assert.match(f.node('#places-content').innerHTML, /data-trip-photo="b"/);
+  assert.doesNotMatch(f.node('#places-content').innerHTML, /data-trip-photo="unlinked"/);
+  f.click('', {tripPhoto:'a'});
+  assert.equal(f.controller.isOpen(), false);
+  assert.equal(f.openedPhotos.length, 1);
+  assert.equal(f.openedPhotos[0].id, 'a');
+  assert.deepEqual(Array.from(f.openedPhotos[0].options.photos, photo=>photo.id), ['b','a']);
+  assert.equal(f.openedPhotos[0].options.collectionLabel, 'A café');
+});
+
+test('Places respects the visible itinerary when TBD stops are excluded', () => {
+  const f = placeHistoryFixture({visibleDayIds:['one']});
+  const point = f.journey.pointsOfInterest[0];
+  f.setJourney({...f.journey, pointsOfInterest:[point,{...point,id:'tbd',name:'Later city',dayIds:['two']}]});
+  f.controller.open();
+  assert.doesNotMatch(f.node('#places-content').innerHTML, /Later city/);
+  assert.equal(f.node('#places-all-count').textContent, '1');
 });

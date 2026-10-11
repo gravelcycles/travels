@@ -7,7 +7,7 @@
     average: average(reviews), count: reviews.length,
     distribution: [5, 4, 3, 2, 1].map(stars => ({ stars, count: reviews.filter(review => review.rating === stars).length }))
   });
-  const placeTabs = ['overview', 'reviews', 'photos'];
+  const placeTabs = ['overview', 'photos'];
   function validateComment(name, body) {
     if (typeof name !== 'string' || !name.trim() || name.trim().length > 40) throw new Error('Choose a display name of 1–40 characters.');
     if (typeof body !== 'string' || !body.trim() || body.trim().length > 1000) throw new Error('Write a comment of 1–1,000 characters.');

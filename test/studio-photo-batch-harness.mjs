@@ -15,5 +15,5 @@ export function uiHarness(f) {
   let api,selectedPhotoId=null;
   const render=()=>api.render(batch.orderedPhotos(f.journey,f.photos,f.state),selectedPhotoId);
   api=context.window.JOURNEY_ATLAS_PHOTO_BATCH_UI.create({getContext:()=>f,replaceState:state=>{f.state=state;render();},redraw:render,selectPhoto:id=>{selectedPhotoId=id;render();},resizeMap(){},photoUrl:x=>x||'',escapeHtml:x=>String(x??'')});
-  render();return {api,node,render,f};
+  render();return {api,node,render,f,get selectedPhotoId(){return selectedPhotoId;}};
 }
