@@ -75,6 +75,11 @@ content-only; see [its intake and route evidence](HEADING_EAST.md).
 
 ## Features versus editorial content
 
+Heading East's second camera batch uses the existing incremental photo importer
+and private publisher. Its per-file location review list is in
+[the second-batch report](HEADING_EAST_PHOTO_LOCATIONS_BATCH_2.md); original
+checksums identify exact repeats without replacing reviewed photos.
+
 The family trip’s chosen photos, composed cover, fourteen Replay chapters and
 reviewed Swiss/Italian routes are content instances. New trips start with empty
 photos/routes and automatic Replay. The agent adds the equivalent inputs as

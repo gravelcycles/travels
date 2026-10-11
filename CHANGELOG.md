@@ -4,6 +4,24 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — Heading East second photo batch
+
+- Add 76 new photos from `euro-eastbound-2` through the incremental upload
+  manifest; skip two exact duplicates without changing the original 44 photos.
+- Keep captions, notes and location labels blank, retain capture timestamps,
+  and use only the one recorded GPS location. List the other 75 original
+  filenames by album for the owner's map editing.
+- Apply the owner's assignments: nine August photos in Luzern and six
+  30 September photos in Köln, with itinerary dates and routes unchanged.
+- Publish 228 protected WebP derivatives (117,715,732 bytes), capped at 3200 px
+  on the longest edge. Document duplicate checks and missing-location reporting
+  in the photo workflow and README.
+- Validate the populated target on desktop and a 390 px phone, including
+  blank-copy portrait/landscape viewing, real August dates, the Hamburg GPS pin,
+  unlocated city context, album counts and return to the existing sidebar.
+- Validation: 518 tests pass, production build succeeds, all original source
+  checksums are unchanged and all uploaded objects pass remote SHA-256 checks.
+
 ## 11 October 2026 — keep agent guidance live after every correction
 
 - Make ongoing documentation upkeep a standing owner priority and a task

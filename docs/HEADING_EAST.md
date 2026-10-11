@@ -5,6 +5,54 @@ Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 
 Each city is one event. Taglines and stories are deliberately empty; the first
 photo intake is recorded below.
 
+## Second photo batch — 11 October 2026
+
+The owner requested intake of `photos/euro-eastbound-2/` and a list of photos
+without locations. The folder contains 78 stills (77 HEIC and one JPEG).
+Two original SHA-256 hashes match photos already in the first batch:
+`snapseed_camera_capture_20260926_162059_473.HEIC` and
+`snapseed_camera_capture_20260926_180426_392.HEIC`. Keep their existing IDs and
+edits; add the remaining 76 through the separate incremental upload manifest.
+
+Only `IMG_3388.HEIC` among the new files has camera GPS, in Hamburg. The other
+75 have no GPS; keep them unlocated. The owner-facing
+[filename and capture-date checklist](HEADING_EAST_PHOTO_LOCATIONS_BATCH_2.md)
+groups them by album for Studio review. Do not infer precise locations from
+other photographs, filenames or nearby venues.
+
+Nine photographs predate the trip calendar (28–30 August). The owner explicitly
+answered **“Add them to Luzern”** on 11 October. Assign those to the existing
+Luzern album, preserve their actual timestamps, and leave itinerary dates and
+route geometry unchanged. The owner also confirmed **“Put all six in Köln”**
+for the unlocated 30 September photos, overriding the calendar's Düsseldorf
+arrival assignment. Other photos follow the capture-date calendar.
+
+All captions, notes and location labels stay blank. Preserve the original
+44 photos, their edited pins, frames, order and cover. New derivatives use the
+existing private 480/1280/full-size WebP pipeline, capped at a 3200 px longest
+edge. The original files and complete metadata remain ignored/private.
+
+Intake verification accounts for all 78 unchanged source checksums, 76 new IDs
+and two exact duplicates. New photos append within their assigned albums in
+capture order, preserving the existing first photos and cover. Combined album
+counts are Luzern 10, Freiburg 18, Hamburg 17, Köln 10, Düsseldorf 1, Berlin 21
+and Prague 43 (120 total).
+
+Applicable inheritance checks: O01/O02/O05/O10/O11/O14 preserve blank optional
+copy, capture times, unset unknown pins, explicit-only venue links and private
+media. O03's existing sidebar/fullscreen boundary remains intact. Desktop and
+390 px phone checks on the populated target confirm portrait/landscape images,
+the actual August timestamps, the new Hamburg GPS pin, unlocated city context,
+grid navigation and return to the selected sidebar photo. Studio filename
+search finds the new originals with empty location and editorial fields where
+appropriate. Shared runtime, trip dates, routes, places and cover are unchanged.
+
+The owner approved this batch's existing private Cloudflare destination on
+11 October. All 228 metadata-stripped WebP objects (117,715,732 bytes) were
+uploaded one at a time and downloaded for SHA-256 verification before the
+76 new manifest entries were marked published. The eligible-photo index
+contains all 120 trip photo IDs.
+
 ## Photo intake — 10 October 2026
 
 The owner requested all 44 stills from ignored `photos/euro-eastbound/`:

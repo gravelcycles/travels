@@ -16,6 +16,25 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Heading East second photo batch — 11 October 2026
+
+Authorized: process `photos/euro-eastbound-2/`, add new photos to Heading East,
+and report filenames without GPS. The owner assigned the nine 28–30 August
+photos to Luzern and all six 30 September photos to Köln while retaining their
+actual timestamps. Intake has 78 files, two exact repeats, 76 new photos and
+75 new photos without GPS. See
+[the intake record](docs/HEADING_EAST.md#second-photo-batch--11-october-2026)
+and [location checklist](docs/HEADING_EAST_PHOTO_LOCATIONS_BATCH_2.md).
+
+Work is isolated on `codex/eastbound-batch-two` to preserve existing unsaved
+photo-pin and documentation edits in the main checkout. Conversion and image
+review are complete; all 228 WebP derivatives (117,715,732 bytes) were uploaded
+sequentially and downloaded for checksum verification. The owner explicitly
+approved this batch's private Cloudflare upload and trip publication on
+11 October. Remaining: deploy the eligible-photo index and Pages, check the
+public trip, then integrate the import without overwriting local edits.
+No shared runtime change is needed.
+
 ## UX flow review implementation — 11 October 2026
 
 The owner authorized all U01–U16 findings and direct one-click fullscreen, then

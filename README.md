@@ -257,8 +257,11 @@ npm run photos:build -- --journey <journey-id> --source photos/<folder>
 3. Preview through Studio using local derivatives. Preserve existing day/order,
    pins, frames, cover and traveler-written edits. Bulk import replaces the
    journey manifest; use Studio's incremental upload for later additions, and
-   edit overrides directly for text-only cleanup. Do not rebuild or re-upload
-   image files just to change captions.
+   edit overrides directly for text-only cleanup. Check original file hashes
+   against both manifests before adding a later batch, and report exact repeats
+   separately. Give the traveler a filename/date checklist for missing GPS;
+   confirm album assignments for photos outside the calendar. Do not rebuild or
+   re-upload image files just to change captions.
 4. Dry-run the private publisher, then upload and verify the reviewed assets:
 
    ```sh

@@ -78,6 +78,14 @@ Do not run a full camera reimport to add or delete a photo. Pending uploads have
 `assetStatus: "local"`: Studio can review them, but production builds exclude
 them until asset publishing succeeds. This prevents broken live photo links.
 
+For another camera-folder batch, compare original SHA-256 hashes against both
+the base and upload manifests before calling the incremental importer. An exact
+repeat keeps its existing photo ID, day, edits and location. Record every supplied
+file as imported, already present, or held for a stated reason. Give the owner
+a filename/date list of new photos without GPS; leave their pins unset. Dates
+outside the itinerary require an owner-selected album while retaining the real
+capture date. No full reimport is needed.
+
 ## Batch editing in Studio
 
 Choose **Media → Photos → Select multiple** for a contact sheet. Search filenames,
