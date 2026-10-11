@@ -16,6 +16,14 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Café August outside-only correction — 11 October 2026
+
+Content correction complete: Café August’s gallery contains three visually
+verified outdoor photographs, including the credited replacement terrace image.
+The other 19 places and personal photo content are unchanged. All 518 tests,
+the production build and local gallery checks pass; no content work remains.
+The scoped rule and validation live in [Heading East's image record](docs/HEADING_EAST.md#place-image-refresh--11-october-2026).
+
 ## Heading East second photo batch — 11 October 2026
 
 Authorized: process `photos/euro-eastbound-2/`, add new photos to Heading East,

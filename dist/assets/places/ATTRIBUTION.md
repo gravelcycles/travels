@@ -68,7 +68,7 @@ atmosphere reference, not evidence of current prices or decor.
 | [Origin Coffee Stories](https://www.google.com/maps?cid=6958176209244448247) | 3 | Peter Lewald · Google Maps | `CIABIhA2hb1h8jDj1oxNWz1KX680` |
 | [Café August](https://www.google.com/maps?cid=848650922156654261) | 1 | Café August · Google Maps | `CIHM0ogKEICAgICvqdut0AE` |
 | [Café August](https://www.google.com/maps?cid=848650922156654261) | 2 | Christian G. · Google Maps | `CIABIhAWWmBK6tUllWwVACOoHfUV` |
-| [Café August](https://www.google.com/maps?cid=848650922156654261) | 3 | Gabriel Schreiber · Google Maps | `CIABIhA9u5V5yCnCsqFCIUe9Wd8n` |
+| [Café August](https://www.google.com/maps?cid=848650922156654261) | 3 | Georgia Syrrou Ohmygourd · Google Maps | `CIABIhBC4kRCGgtZJ1Jq5zIp0WEu` |
 | [Tibet Kailash Gartencafé](https://www.google.com/maps?cid=12371196722211877568) | 1 | Erik Vloeberghs · Google Maps | `CIABIhBun3nGCIfwpuj7wfY-IHp4` |
 | [Tibet Kailash Gartencafé](https://www.google.com/maps?cid=12371196722211877568) | 2 | Christina Kyle · Google Maps | `CIHM0ogKEICAgIDJhfXahwE` |
 | [Tibet Kailash Gartencafé](https://www.google.com/maps?cid=12371196722211877568) | 3 | Nancy Springer · Google Maps | `CIABIhCl-12zSnPxMbGhvQuGA5Vg` |

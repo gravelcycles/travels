@@ -120,7 +120,8 @@ explicitly linked Places viewer entry are not redefined by this clarification.
   descriptions does not authorize personal photo captions or invented visits.
   Its [11 October image selection](HEADING_EAST.md#place-image-refresh--11-october-2026)
   preserves the exact Barbès/Abi’s photos and the food/atmosphere mix with bakery
-  counters for the remaining places. The requested counts and replacements are
+  counters for the remaining places, with the later outside-only correction for
+  Café August. The requested counts and replacements are
   scoped to that selection, not a new global three-image requirement.
 - Shared branding follows [BRANDING.md](BRANDING.md); an old logo option or
   demo screenshot is not authority to replace the reviewed artwork.

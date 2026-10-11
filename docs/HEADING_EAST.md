@@ -469,6 +469,19 @@ the other 18 saved places now has three distinct photographs, for 56 total.
 The requested mix is food and two atmosphere views, preferably outdoors;
 the owner's follow-up specifically includes the counter for bakeries.
 
+**Café August correction, 11 October:** the owner clarified, “for cafe august,
+we want only outside photos.” Keep all three Café August images outdoors,
+including any food photograph; no interior dining-room or counter views. This
+supersedes the earlier indoor fallback for this venue only. Preserve the other
+19 places' selections. Acceptance: visually inspect all three images and verify
+the live gallery contains no interior photograph. The indoor image was replaced
+with Georgia Syrrou Ohmygourd’s terrace photograph from Google Maps
+(`CIABIhBC4kRCGgtZJ1Jq5zIp0WEu`); the credit and exterior scene were checked in
+the Maps viewer. All three selected photographs were visually reviewed and show
+outdoor scenes. All 518 tests and the production build pass; local browser QA
+confirmed all three images load, show their credits and open in the gallery.
+A source comparison confirms only Café August’s third image changed.
+
 The selected sets include street fronts, terraces and courtyards where suitable
 images were available. Isabella, AERA, Oshione and Antonínovo include their
 display counters. Indoor dining/shop views complete sets without a suitable

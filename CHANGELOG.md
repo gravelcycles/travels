@@ -4,6 +4,15 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — Café August outside photos
+
+- Replace Café August’s indoor photograph with a credited Google Maps terrace
+  view, retaining the other two outdoor images and the three-photo gallery.
+- Record the owner’s outside-only preference in the trip guidance and update
+  attribution. Preserve the other 19 places and all personal photo content.
+- Validation: 518 tests and the production build pass; all three outdoor images
+  load and open in the gallery with the correct source credits.
+
 ## 11 October 2026 — additional shared photo passwords
 
 - Add two owner-selected credentials through the existing Cloudflare password
@@ -16,6 +25,7 @@ This file records dated changes, not current instructions. Use
   credentials pass live login, PKCE, remembered access and protected-image
   checksum checks; existing signed access remains valid, while anonymous image
   requests and the superseded password values are rejected.
+
 
 ## 11 October 2026 — publish Heading East location review
 
