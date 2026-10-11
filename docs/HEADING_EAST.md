@@ -66,7 +66,8 @@ This is a content-only update through the shared story renderer. Photo
 locations, Trash, assets, routes, saved places and the opening description
 retain their existing sources. No image upload or Worker change is needed.
 
-Validation: all **524 tests passed** and the production build succeeded. Each
+Validation after integrating current main: all **539 tests passed** and the
+production build succeeded. Each
 of the seven generated day overrides matches the owner-saved source exactly;
 all other day overrides remain unchanged.
 
