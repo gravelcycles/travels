@@ -52,7 +52,7 @@
     function removeMarker(key,entry){clearImage(entry.thumbnail);entry.marker.remove();markers.delete(key);}
     function clearMarkers(){for(const [key,entry] of markers)removeMarker(key,entry);}
     function close({write=true,focus=false}={}) {
-      const anchor=selection?.ids[0];selection=null;selectionLayer=null;exact?.remove();exact=null;clearImage(image);syncVisibility();schedule();
+      const anchor=selection?.groupIds?.[0] || selection?.ids[0];selection=null;selectionLayer=null;exact?.remove();exact=null;clearImage(image);syncVisibility();schedule();
       if(write)historyWrite();options.photoChanged?.(null);
       if(focus)requestAnimationFrame(()=>document.querySelector(`[data-bubble-anchor="${CSS.escape(anchor || '')}"]`)?.focus({preventScroll:true}));
     }

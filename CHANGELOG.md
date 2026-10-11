@@ -8,7 +8,7 @@
 - Preserve the selected photo across fullscreen/Comments/Back and keep explicit
   Places galleries scoped. Retain the existing sidebar/photo-entry boundary.
 - Record the desktop follow-up in O03 and the photo/journey/Places contracts.
-- Validation: 576 passing tests, clean production build and target/reference/
+- Validation: 577 passing tests, clean production build and target/reference/
   demo/independent-draft browser checks, including cross-day Comments return.
 
 ## 11 October 2026 — opening action always visible

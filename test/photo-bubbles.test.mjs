@@ -183,3 +183,10 @@ test('journey sidebar retains a cross-city fullscreen or Comments selection on B
  assert.equal(f.node('[data-bubble-prev]').disabled,false);
  f.history.back();assert.equal(f.controller.isOpen(),false);
 });
+
+
+test('closing trip browsing returns keyboard focus to the clicked cluster, not the trip first photo',()=>{
+ const f=fixture();f.controller.open([f.photos[1]],'b',{mapGroup:true,browseJourney:true});
+ f.controller.close({focus:true});f.flush();
+ assert.equal(f.activeElement,f.node('[data-bubble-anchor="b"]'));
+});

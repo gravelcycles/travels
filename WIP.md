@@ -25,7 +25,7 @@ map groups geographical, local event reels, explicit Places scope and the
 existing photo-entry boundary. Comments dismissal also retains the current city
 and selected image. Isolated branch `codex/desktop-photo-navigation`.
 
-Validation: all **576 tests** and the production build pass. Browser checks cover
+Validation: all **577 tests** and the production build pass. Browser checks cover
 Heading East's real six-photo Berlin cluster → other city photos → Prague,
 fullscreen/Back with the current image, Switzerland–Italy's day boundary,
 a mixed photo/video demo and its cross-day Comments return, and an independent
