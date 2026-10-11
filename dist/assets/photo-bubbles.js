@@ -4,7 +4,7 @@
   function create(options) {
     const card = document.getElementById('map-photo-card'), image = card.querySelector('img');
     const $ = selector => card.querySelector(selector), auth = () => root.JOURNEY_ATLAS_AUTH;
-    let selection = null, markers = [], markerMap = null, frame = 0, exact = null, gesture = null;
+    let selection = null, markers = [], markerMap = null, frame = 0, exact = null, gesture = null, suppressPhotoClick = false, sidebarPhotoMode = false;
     const phone = () => matchMedia('(max-width:900px)').matches;
     const photos = () => options.photos().filter(model.visible);
     const selected = () => selection ? model.retainedSelection(selection,photos()) : null;
@@ -19,7 +19,7 @@
       node.hidden=Boolean(auth()?.isProtected(photo) && !auth()?.unlocked);
       if(node===image){$('[data-bubble-image-status]').textContent=node.hidden?'':'Loading photo…';$('[data-bubble-retry]').hidden=true;}
       if(node.hidden)return;
-      node.onerror=()=>{node.hidden=true;if(node===image){$('[data-bubble-image-status]').textContent='This photo could not load.';$('[data-bubble-retry]').hidden=false;}}; node.onload=()=>{node.hidden=false;if(node===image){$('[data-bubble-image-status]').textContent='';$('[data-bubble-retry]').hidden=true;}};
+      node.onerror=()=>{node.hidden=true;if(node===image){$('[data-bubble-image-status]').textContent='This photo could not load.';$('[data-bubble-retry]').hidden=false;}}; node.onload=()=>{node.hidden=false;if(node===image){if(node.naturalWidth>0&&node.naturalHeight>0)card.style.setProperty('--selected-photo-ratio',String(node.naturalWidth/node.naturalHeight));$('[data-bubble-image-status]').textContent='';$('[data-bubble-retry]').hidden=true;}};
       if(auth()?.isProtected(photo))auth().setImage(node,photo,width);else node.src=options.photoUrl(photo,width);
     }
     function syncVisibility() {
@@ -27,6 +27,9 @@
       card.hidden=!shown;document.body.classList.toggle('bubble-card-open',shown);
       if(phone())document.querySelector('.mobile-day-summary').before(card);
       else document.querySelector('.story-album-entry').append(card);
+      const desktopSelection=shown&&!phone(),details=document.getElementById('sidebar-day-details'),strip=document.querySelector('.photo-section');
+      if(desktopSelection)details.before(strip);else details.after(strip);
+      if(desktopSelection!==sidebarPhotoMode){details.open=!desktopSelection;sidebarPhotoMode=desktopSelection;}
       requestAnimationFrame(()=>options.map()?.resize());
     }
     function clearMarkers(){for(const marker of markers){marker.getElement().querySelectorAll('img').forEach(clearImage);marker.remove();}markers=[];}
@@ -35,23 +38,27 @@
       if(write)historyWrite();options.photoChanged?.(null);
       if(focus)requestAnimationFrame(()=>document.querySelector(`[data-bubble-anchor="${CSS.escape(anchor || '')}"]`)?.focus({preventScroll:true}));
     }
-    function open(items,photoId=items[0]?.id,{write=true}={}) {
+    function open(items,photoId=items[0]?.id,{write=true,mapGroup=false}={}) {
       const ids=items.filter(model.visible).map(photo=>photo.id); if(!ids.length)return;
-      const push=!selection || Boolean(history.state?.atlasPlaces?.open);selection={journeyId:options.journey().id,dayId:options.dayId(),ids,photoId:ids.includes(photoId)?photoId:ids[0]};
+      const push=!selection || Boolean(history.state?.atlasPlaces?.open);selection={journeyId:options.journey().id,dayId:options.dayId(),ids,mapGroup,photoId:ids.includes(photoId)?photoId:ids[0]};
       options.explore();update();if(write)historyWrite(push);schedule();
       if(!phone())document.querySelector('.story-panel').scrollTop=0;
-      $('[data-bubble-close]').focus({preventScroll:true});
+      $('[data-bubble-full]').focus({preventScroll:true});
     }
     function update() {
       selection=selected();syncVisibility();if(!selection){exact?.remove();exact=null;clearImage(image);options.photoChanged?.(null);return;}
       const photo=current();if(card.dataset.photoId!==photo.id){exact?.remove();exact=null;}if(photo.dayId!==options.dayId()){selection.dayId=photo.dayId;options.selectPhotoDay?.(photo.dayId);}
       const list=members(), index=list.indexOf(photo), place=model.placeForPhoto(photo,options.journey().pointsOfInterest || []);
-      loadImage(image,photo,720);
-      $('[data-bubble-title]').textContent=place ? `${place.explicit?'At':'Near'} ${place.point.name}` : (photo.locationLabel || 'From the journey');
+      const ratio=Number(photo.width)/Number(photo.height);
+      card.style.setProperty('--selected-photo-ratio',Number.isFinite(ratio)&&ratio>0?String(ratio):'1');
+      loadImage(image,photo,1280);
+      $('[data-bubble-title]').textContent=place ? `${place.explicit?'At':'Near'} ${place.point.name}` : (photo.locationLabel || photo.takenAt || 'Photo');
       const day=options.journey().days.find(day=>day.id===photo.dayId);$('[data-bubble-day]').textContent=day ? `${root.JOURNEY_ATLAS_UTILS.eventWord(options.journey(),'title')} ${day.number} · ${day.title}` : '';
-      $('[data-bubble-caption]').textContent=photo.caption || photo.alt || '';
-      $('[data-bubble-description]').textContent=photo.description || ''; $('[data-bubble-notes]').hidden=!photo.description;
-      $('[data-bubble-count]').textContent=`${index+1} of ${list.length}`;
+      $('[data-bubble-caption]').textContent=photo.caption || '';$('[data-bubble-caption]').hidden=!photo.caption?.trim();
+      $('[data-bubble-description]').textContent=photo.description || ''; $('[data-bubble-description]').hidden=!photo.description;
+      $('[data-bubble-count]').textContent=`${index+1} / ${list.length}`;
+      $('[data-bubble-count]').setAttribute('aria-label',`Photo ${index+1} of ${list.length} in this selection`);
+      document.getElementById('sidebar-day-summary').textContent=day?`${root.JOURNEY_ATLAS_UTILS.eventWord(options.journey(),'title')} details · ${day.title}`:'Day details';
       $('[data-bubble-prev]').disabled=index===0;$('[data-bubble-next]').disabled=index===list.length-1;
       $('[data-bubble-locate]').disabled=!model.located(photo);
       $('[data-bubble-location]').textContent=model.located(photo)?'':'No saved photo location. It remains in the album.';
@@ -75,9 +82,9 @@
       if(options.scope()!=='day')return;
       const viewport={width:map.getContainer().clientWidth,height:map.getContainer().clientHeight};
       const visible=photos().filter(photo=>photo.dayId===options.dayId()&&model.located(photo)).filter(photo=>{const point=map.project([photo.lng,photo.lat]);return point.x>=0&&point.y>=0&&point.x<=viewport.width&&point.y<=viewport.height;});
-      const picked=members().filter(model.located),groups=model.bubbleGroups(visible,picked,p=>map.project(p),map.getZoom()>=10?106:78,phone()?4:6),boxes=obstacles(map);
+      const picked=selection?.mapGroup?members().filter(photo=>photo.dayId===options.dayId()&&model.located(photo)):[],groups=model.bubbleGroups(visible,picked,p=>map.project(p),map.getZoom()>=10?106:78,phone()?4:6),boxes=obstacles(map);
       for(const group of groups){
-        const anchor=group.photos[0],active=selection?.ids.includes(anchor.id),point=map.project([anchor.lng,anchor.lat]);
+        const anchor=group.photos[0],active=group.photos.some(photo=>photo.id===selection?.photoId),point=map.project([anchor.lng,anchor.lat]);
         let size=model.bubbleSize(map.getZoom(),active),placement=model.bubblePlacement(point,size,viewport,boxes);
         if(!placement){size=40;placement=model.bubblePlacement(point,size,viewport,boxes);}if(!placement)continue;boxes.push(placement.box);
         const node=document.createElement('div');node.className=`bubble-anchor${active?' is-selected':''}`;
@@ -85,8 +92,8 @@
         const button=document.createElement('button');button.type='button';button.className='photo-bubble';button.dataset.bubbleAnchor=anchor.id;button.setAttribute('aria-label',`Browse ${group.photos.length} ${group.photos.length===1?'photo':'photos'}`);button.setAttribute('aria-pressed',String(Boolean(active)));
         const thumbnail=document.createElement('img'),fallback=document.createElement('span');fallback.className='bubble-fallback';fallback.textContent='▧';fallback.setAttribute('aria-hidden','true');button.append(fallback,thumbnail);
         if(group.photos.length>1){const count=document.createElement('span');count.className='bubble-count';count.textContent=group.photos.length;button.append(count);}node.append(button);
-        button.onclick=event=>{event.stopPropagation();options.closePlaces();open(group.photos,active?selection.photoId:anchor.id);};
-        const marker=new root.maplibregl.Marker({element:node,anchor:'center',offset:placement.offset}).setLngLat([anchor.lng,anchor.lat]).addTo(map);markers.push(marker);loadImage(thumbnail,active?current():anchor,160);
+        button.onclick=event=>{event.stopPropagation();options.closePlaces();open(group.photos,active?selection.photoId:anchor.id,{mapGroup:true});};
+        const marker=new root.maplibregl.Marker({element:node,anchor:'center',offset:placement.offset}).setLngLat([anchor.lng,anchor.lat]).addTo(map);markers.push(marker);loadImage(thumbnail,anchor,160);
       }
       if(focusId)document.querySelector(`[data-bubble-anchor="${CSS.escape(focusId)}"]`)?.focus({preventScroll:true});
     }
@@ -94,15 +101,30 @@
     function mapReady(){const map=options.map();if(map===markerMap)return;markerMap?.off('moveend',schedule);markerMap?.off('resize',schedule);markerMap=map;map?.on('moveend',schedule);map?.on('resize',schedule);schedule();}
     $('[data-bubble-close]').onclick=()=>{if(history.state?.atlasPhotoBubble && !options.placesOpen())history.back();else close({focus:true});};
     $('[data-bubble-prev]').onclick=()=>step(-1);$('[data-bubble-next]').onclick=()=>step(1);
-    $('[data-bubble-full]').onclick=()=>current()&&options.fullscreen(current().id);
+    $('[data-bubble-full]').onclick=event=>{
+      const suppress=event.detail>0&&suppressPhotoClick;suppressPhotoClick=false;
+      if(suppress){event.preventDefault();return;}
+      const photo=current();if(!photo)return;
+      if(auth()?.isProtected(photo)&&!auth()?.unlocked)auth()?.showPrompt();
+      else options.fullscreen(photo.id);
+    };
     $('[data-bubble-place]').onclick=()=>options.openPlace($('[data-bubble-place]').dataset.placeId);
-    $('[data-bubble-retry]').onclick=()=>{if(current())loadImage(image,current(),720);};
+    $('[data-bubble-retry]').onclick=()=>{if(current())loadImage(image,current(),1280);};
     $('[data-bubble-comments]').onclick=()=>options.comments?.();
     $('[data-bubble-unlock]').onclick=()=>auth()?.showPrompt();
     $('[data-bubble-locate]').onclick=()=>{const photo=current(),map=options.map();if(!photo||!model.located(photo)||!options.ready())return;exact?.remove();const node=document.createElement('div');node.className='bubble-exact-pin';node.setAttribute('role','img');node.setAttribute('aria-label','Saved photo location');exact=new root.maplibregl.Marker({element:node}).setLngLat([photo.lng,photo.lat]).addTo(map);map.easeTo({center:[photo.lng,photo.lat],duration:matchMedia('(prefers-reduced-motion: reduce)').matches?0:300});};
-    const stage=$('.bubble-card-image');
-    stage.addEventListener('pointerdown',event=>{if(event.isPrimary!==false)gesture={x:event.clientX,y:event.clientY,id:event.pointerId};});
-    stage.addEventListener('pointerup',event=>{if(gesture?.id!==event.pointerId)return;const dx=event.clientX-gesture.x,dy=event.clientY-gesture.y;gesture=null;if(Math.abs(dx)>28&&Math.abs(dx)>Math.abs(dy)*1.25)step(dx<0?1:-1);});stage.addEventListener('pointercancel',()=>gesture=null);
+    const stage=$('[data-bubble-full]');
+    stage.addEventListener('pointerdown',event=>{
+      if(event.isPrimary===false)return;
+      suppressPhotoClick=false;gesture={x:event.clientX,y:event.clientY,id:event.pointerId};
+    });
+    stage.addEventListener('pointerup',event=>{
+      if(gesture?.id!==event.pointerId)return;
+      const dx=event.clientX-gesture.x,dy=event.clientY-gesture.y;gesture=null;
+      suppressPhotoClick=Math.hypot(dx,dy)>8;
+      if(Math.abs(dx)>28&&Math.abs(dx)>Math.abs(dy)*1.25)step(dx<0?1:-1);
+    });
+    stage.addEventListener('pointercancel',()=>{gesture=null;suppressPhotoClick=true;});
     card.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();event.stopPropagation();step(event.key==='ArrowLeft'?-1:1);}if(event.key==='Escape'){event.preventDefault();event.stopPropagation();$('[data-bubble-close]').click();}});
     window.addEventListener('atlas-photos-locked',()=>{exact?.remove();exact=null;update();schedule();});window.addEventListener('atlas-photos-unlocked',()=>{update();schedule();});
     window.addEventListener('resize',()=>{syncVisibility();schedule();});

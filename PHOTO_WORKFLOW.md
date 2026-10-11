@@ -446,9 +446,18 @@ another day or changing its group automatically updates eligible nearby results;
 explicit place membership and order remain owner-controlled.
 
 Desktop days stay on the left; map bubbles, album thumbnails and linked Places
-photos select a photo inside the existing right journal/photo sidebar. The day
-details and thumbnail strip remain available, with the current photo marked.
-Comments, Locate, About this place and an explicit Full screen control accompany
-the selected photo; closing it restores the ordinary day preview. Phones keep one named day picker at the bottom and a compact selected
-photo card below the map. Auth expiry clears protected photo pixels from bubbles
-and the card; unlock uses the existing photo service.
+photos select a photo inside the existing right journal/photo sidebar. The image
+uses its own proportions with a viewport height limit, and clicking it (or
+pressing Enter/Space) opens the full viewer. One compact row groups photo arrows,
+selection count, Locate and Comments. Only supplied captions appear; metadata is
+under **Photo details**, and the day's thumbnail strip sits immediately below.
+**Day/Stop details** expands the itinerary without taking space from the photo.
+Closing the selection restores the ordinary journal layout. Phones retain the
+compact card below the map; tapping opens full screen while swiping only browses.
+
+Map bubbles retain their representative image at its actual location. Album and
+Places browsing do not regroup map bubbles; only a clicked map group retains its
+membership while zooming. Cross-day selections draw only that day's members, and
+changing days in full screen clears the previous day's map selection. Auth expiry
+clears protected photo pixels from bubbles and the card; unlock uses the existing
+photo service.

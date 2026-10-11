@@ -253,3 +253,13 @@ test('route inspection is suppressed on phones while desktop retains its tooltip
     assert.equal(context.routeInspectionPinned,!mobile);
   }
 });
+
+test('changing the full-screen viewer day clears the previous day photo selection and Places before drawing',()=>{
+ const context=selection(),cleared=[];
+ context.photoBubbles={close:()=>cleared.push('photos')};
+ context.placesUI={dayChanged:()=>cleared.push('places'),photoChanged(){}};
+ context.updateViewer();
+ assert.equal(context.activeDayId,'d2');
+ assert.deepEqual(cleared,['places','photos']);
+ context.updateViewer();assert.equal(cleared.length,2,'Same-day browsing must not clear the map selection again');
+});

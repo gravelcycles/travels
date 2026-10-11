@@ -1388,8 +1388,8 @@
     const photos = photosForDay(day.id);
     viewerPhotoIndex = Math.max(0, Math.min(photos.length - 1, viewerPhotoIndex));
     const photo = photos[viewerPhotoIndex];
-    activeDayId = day.id;
-    mapScope = "day";
+    // setActiveDay must see the previous day so it clears its Places/photo selection.
+    if (!dayChanged) mapScope = "day";
     const modalPhoto = $("#modal-photo");
     window.JOURNEY_ATLAS_UTILS?.resetImageReveal?.(modalPhoto);
     const photoStage = modalPhoto.closest('.photo-stage');
@@ -2268,7 +2268,11 @@
     selectPhotoDay:id=>{if(id!==activeDayId)setActiveDay(id,true,{preservePhotoSelection:true,animateArrival:false});},
     photoChanged:photo=>{
       for(const button of photoStrip.querySelectorAll('[data-open-photo]')) {
-        if(button.dataset.openPhoto===photo?.id)button.setAttribute('aria-current','true');
+        if(button.dataset.openPhoto===photo?.id){
+          button.setAttribute('aria-current','true');
+          const box=button.getBoundingClientRect(),strip=photoStrip.getBoundingClientRect();
+          if(box.left<strip.left||box.right>strip.right)photoStrip.scrollLeft+=box.left-strip.left-(strip.width-box.width)/2;
+        }
         else button.removeAttribute('aria-current');
       }
       placesUI.photoChanged(photo);
