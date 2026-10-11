@@ -1,5 +1,21 @@
 # Changelog
 
+This file records dated changes, not current instructions. Use
+[AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
+[feature inventory](docs/FEATURES.md) when starting or changing an atlas.
+
+## 11 October 2026 — carry owner corrections into every atlas
+
+- Audit available project conversations and committed corrections; distinguish
+  shared preferences, trip facts, proposals and superseded decisions.
+- Add a mandatory owner-decision record, consistent agent reading order and
+  populated-new-atlas acceptance checks for editorial, route and interaction quality.
+- Reconcile current README, journey/photo/Places workflows and prompts; mark
+  historical handoffs explicitly. Remove obsolete guidance on Replay photos,
+  public photo Releases, proximity links, daily lead selection and hidden photos.
+- Keep all runtime and trip content unchanged; track remaining browser-level
+  continuity coverage separately in W10.
+
 ## 10 September 2026 — map-only Replay
 
 - Remove Replay images, the Map/Photos switch, photo feedback and related

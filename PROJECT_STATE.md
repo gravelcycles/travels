@@ -1,5 +1,14 @@
 # Project state
 
+> **Historical checkpoint log, not the current specification.** Use
+> [AGENTS.md](AGENTS.md)'s reading order and
+> [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) for standing choices;
+> [FEATURES.md](docs/FEATURES.md) and [WIP.md](WIP.md) own current capability and
+> workstream status. “Current behavior”, “Known issues” and deployment claims
+> below belong to their dated checkpoints. They include superseded public-photo,
+> Replay, lead-photo, Hide and map-marker behavior. Do not use them as a new-atlas
+> recipe or infer today's live deployment from an old receipt.
+
 ## Heading East photo intake — 10 October 2026
 
 All 44 supplied photos are added to seven city albums, with 39 reviewed camera

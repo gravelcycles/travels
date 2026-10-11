@@ -1,12 +1,15 @@
 # Prompts for future agents
 
 These prompts are copyable task briefs. Repository `AGENTS.md` applies even
-when a prompt omits a detail. The user supplies facts and editorial choices;
+when a prompt omits a detail. Read [OWNER_DECISIONS.md](OWNER_DECISIONS.md) and
+[PRINCIPLES.md](../PRINCIPLES.md) first; no prompt resets prior corrections.
+The user supplies facts and editorial choices;
 the agent operates Studio, commands, QA and publishing.
 
 ## Start a new trip
 
-> Read AGENTS.md, docs/FRAMEWORK.md, docs/FEATURES.md and JOURNEY_WORKFLOW.md.
+> Follow AGENTS.md's reading order, including docs/OWNER_DECISIONS.md,
+> PRINCIPLES.md, the framework/feature guides and JOURNEY_WORKFLOW.md.
 > Create a new trip named [title], from [start date] through [end date], using
 > time zone [IANA zone] and stable URL name [slug]. Use Studio’s + New trip or
 > journey:new to create an ignored local draft. If the identity/calendar is
@@ -18,10 +21,17 @@ the agent operates Studio, commands, QA and publishing.
 > legs, map focus/inspection, albums, photo viewer, protected photo loading,
 > Replay, mobile/direct entry and Studio editing. Add actual places, routes,
 > photos and editorial choices as provided; do not invent precision or prose.
+> Choose calendar days or city stays from the request. Read PHOTO_WORKFLOW.md
+> before either bulk or Studio intake and ROUTE_GEOMETRY_WORKFLOW.md before
+> route construction. Keep captions/notes/labels blank unless supplied; do not
+> associate photos with venues by proximity. Complete authorized route research
+> and network geometry with honest provenance, rather than stopping at guides.
 > Use automatic Replay until there are reviewed reasons to curate chapters.
 >
-> Preview this draft through Studio’s normal shared page. Check blank-day,
-> no-route and no-photo states, then the supplied content. For a missing
+> Preview this draft through Studio’s normal shared page. Complete the workflow's
+> inheritance checklist for blank states and the supplied content, including the
+> actual event model. Compare the established photo/sidebar/map/mobile behavior
+> with the reference; shared code alone is not sufficient acceptance. For a missing
 > capability, implement it once in shared code, following the framework rules,
 > and verify the existing family trip and a sample too. Keep IDs and the slug
 > stable. Record what is ready and what inputs remain. Keep the draft local
@@ -29,13 +39,14 @@ the agent operates Studio, commands, QA and publishing.
 > deliver completed authorized shared changes using the standing deployment
 > rules. Do not publish invented content or private originals.
 
-The tomorrow intake can start with just a name and date range. Set the photo
+New-trip intake can start with just a name and date range. Set the photo
 time zone from confirmed trip facts before importing images. The CLI's UTC
 fallback is not evidence about where the traveler was.
 
 ## Add or change a feature
 
-> Read AGENTS.md and the framework/feature guides. Implement [requested
+> Follow AGENTS.md's reading order and identify the OWNER_DECISIONS requirements
+> that this change must preserve. Implement [requested
 > behavior] in the shared template or runtime so existing journeys, samples,
 > and newly created trips inherit it. First locate the common implementation
 > and describe what is trip data versus reusable behavior. Do not branch on a
@@ -45,8 +56,9 @@ fallback is not evidence about where the traveler was.
 >
 > Preserve concurrent edits and the Switzerland–Italy experience. Verify the
 > affected behavior on that trip, a sample and a fresh data-only draft. Add a
-> meaningful regression for the behavior or contract, update docs/FEATURES.md
-> and the relevant workflow, run tests/build and commit regenerated outputs.
+> meaningful regression for the behavior or contract, update docs/FEATURES.md,
+> the relevant workflow and any changed owner decision. Reconcile contradictory
+> quickstarts/handoffs, run tests/build and commit regenerated outputs.
 > Fetch/integrate latest main, deploy, verify Pages and inspect fresh public
 > content. Report the delivered behavior and any material limitation.
 
@@ -56,8 +68,11 @@ fallback is not evidence about where the traveler was.
 > editorial overrides. Preserve stable IDs and reviewed unrelated content.
 > Use the shared authoring/build flow; no trip-specific code path. If the
 > correction reveals a framework bug, fix the reusable behavior and cover a
-> second trip. Rebuild, validate ownership/references, update provenance where
-> needed, and deliver under AGENTS.md.
+> reference trip, demo and fresh draft as appropriate. Capture a reusable
+> preference in docs/OWNER_DECISIONS.md; keep a specific fact in this trip's provenance.
+> Record superseded choices and reconcile conflicting instructions; do not just
+> append another handoff entry. Rebuild, validate ownership/references, update
+> provenance where needed, and deliver under AGENTS.md.
 
 ## Continue the framework cleanup
 
@@ -68,3 +83,15 @@ fallback is not evidence about where the traveler was.
 > Use family/demo/new-draft regression coverage before and after extraction,
 > update source ownership documentation, and deploy only the completed,
 > checked migration. Leave later stages explicitly tracked.
+
+## Import photos or curated places
+
+> Follow AGENTS.md, docs/OWNER_DECISIONS.md and the photo/Places workflows before
+> touching [journey]'s content. Inventory supplied files/links and preserve saved
+> edits. Use reviewed private derivatives, actual capture times and reviewed pins;
+> leave missing GPS unset and photo copy blank unless the traveler supplied it.
+> Venue research may add sourced factual descriptions when requested, never
+> invented visits, ratings or automatic photo links. Compare every affected
+> entry point with the standing decisions, including blank-copy rendering and
+> explicit-link-only behavior. Update trip provenance and the applicable current
+> guides, then complete authorized publishing and public verification.

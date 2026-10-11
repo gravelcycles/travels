@@ -1,5 +1,12 @@
 # iPhone photo workflow
 
+Read [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and
+[PRINCIPLES.md](PRINCIPLES.md) before any photo intake or editing. The same
+blank-copy, preserved-edit, reviewed-location and private-publication rules
+apply to bulk imports, Studio uploads, manual manifests and every new atlas.
+The [inheritance checklist](JOURNEY_WORKFLOW.md#new-atlas-inheritance-checklist)
+includes visible-copy and sidebar checks after content is populated.
+
 The atlas can use an iPhone photo's capture time and GPS position to associate
 it with a day and show its location in the photo viewer. Day maps show sparse thumbnail bubbles alongside curated Places pins. Selecting
 a bubble keeps its photo group and current photo stable while panning or zooming.
@@ -61,7 +68,7 @@ photo falls back to another visible photo. There is no separate Hide checkbox.
 Trash is recoverable album deletion: originals and already-hosted private R2
 objects remain. Permanent erasure requires checking every journey reference,
 removing the exact unreferenced objects, and verifying their authenticated URLs.
-Historical public Releases also require explicit retirement during cutover;
+The historical public Releases were retired during cutover;
 see [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md).
 
 Uploads are saved immediately in an append-only intake manifest separate from
@@ -164,9 +171,11 @@ Each file gets up to three attempts after a network failure or timeout. An
 uncertain upload is re-read and checksum-verified before any further upload;
 authentication, HTTP failures and checksum mismatches still stop publication.
 
-Studio protects saves with a revision of the saved overrides. If another tab or
-an agent changes the files, a stale save fails while retaining the current form.
-Keep any unsaved notes before reloading that tab to get the current album.
+Studio retains draft recovery and saved baselines. Independent disk/draft edits
+merge; conflicting fields require a saved/draft choice checked against the
+current revision. Reload restores the unpublished draft, not permission to
+overwrite newer work. Failed saves retain edits. See
+[editing and regeneration](JOURNEY_WORKFLOW.md#editing-and-regeneration).
 
 ## Removal of generated copy · 9 September 2026
 
@@ -179,6 +188,9 @@ alt text remains separate. A private pre-migration snapshot is in
 removed prose. Future imports leave both visible text fields blank.
 
 ## Historical public Studio upload · 9 September 2026
+
+Historical record only: the public Releases described here were subsequently
+retired during the private-media cutover. Use the private publisher above.
 
 The traveler approved 13 new photos and saved location/visibility edits for
 public publication. Their 48 optimized WebP derivatives are in the
@@ -280,12 +292,12 @@ computer host time zone never participates. Review camera-clock mistakes manuall
 
 ## Video and fallback-media decisions
 
-The six held MOV files remain private and are not part of the public atlas.
-There is no reviewed story moment that currently warrants the privacy,
-transcoding, poster-frame, responsive-loading, captioning, and Release
-publishing surface of a separate video pipeline. If a specific clip is approved
-later, design and review that pipeline before generating or publishing any
-derivative; do not pass a MOV through the still-photo workflow.
+The six held family MOV files remain private and are not part of the public
+atlas. Private-video intake and protected delivery were implemented on
+8 October; use the documented Studio video workflow when a clip is authorized.
+Do not redesign a pipeline that already exists or pass MOV files through the
+still-photo importer. Existing held footage still needs clip-specific review
+and publication authorization.
 
 Days without a visible family photograph use an intentional empty state, with
 no stock or third-party fallback images. Day headings, routes and navigation
@@ -329,16 +341,18 @@ and full photos capped at a 3200 px longest edge, without upscaling. Unloaded
 photos use embedded 32 px blur placeholders. See
 [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md) for authenticated loading and
 password maintenance. Derivatives use content hashes and identical bytes reuse one object.
-Only immediate full-screen neighbors preload, after authentication.
+The shared loader prioritizes visible media and bounded full-screen neighbors,
+then warms event previews/thumbnails within its cache/request limits after
+authentication. Replay performs no photo preloading.
 
 The old public GitHub Release publisher is retired. Do not create or repopulate
-`trip-photos-v1` or `<journey-id>-uploads-v1`. Those historical Releases still need
-removal during the verified privacy cutover. The historical import figures above
+`trip-photos-v1` or `<journey-id>-uploads-v1`. Both historical Releases were
+removed during the verified privacy cutover. The historical import figures above
 record earlier work; they are not instructions for future publishing.
 
 Keep originals private. Review day/location assignments, strip derivative
 metadata, upload through the private publisher, then deploy the matching manifest.
-Hiding or trashing alone is not permanent media erasure.
+Trashing alone is not permanent media erasure; the old Hide feature is retired.
 
 ## Apple references
 

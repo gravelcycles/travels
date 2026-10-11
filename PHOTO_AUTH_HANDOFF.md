@@ -1,3 +1,12 @@
+# Private media operations and implementation history
+
+Read [AGENTS.md](AGENTS.md) and [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md)
+first. [PHOTO_WORKFLOW.md](PHOTO_WORKFLOW.md) owns current intake, image sizes
+and publication; [COMMUNITY_OPERATIONS.md](docs/COMMUNITY_OPERATIONS.md) owns
+comments/eligibility rollout. The dated receipts below are history, not proof
+of today's deployed state. Earlier two-size, photo-Replay, no-blur and all-image
+no-store descriptions were superseded. Do not use them to revert current UX.
+
 ## Photo conversations implementation — 8 October 2026
 
 The existing Worker now supports signed remembered visitor identities and the
@@ -10,7 +19,7 @@ limitations. New or removed photos require deploying the generated Worker
 eligibility index before the corresponding Pages update. Local runtime tests
 exercise real D1 persistence as well as existing photo auth/cache behavior.
 
-# Private photo access — implementation handoff
+## Private photo access — implementation handoff
 
 ## Quiet restoration — 10 September 2026
 
@@ -339,8 +348,9 @@ JavaScript-readable, so same-origin script security remains part of the trust
 boundary. Expired/revoked cached tokens never authorize images.
 
 Every image GET/HEAD checks token signature, audience, lifetime and active
-credential before touching R2. Requests use Authorization headers, credentials
-omitted, and no-store responses. The browser displays fetched WebP blobs through
+credential before touching R2. Requests use Authorization headers and credentials
+omitted. Successful image responses use `private, no-cache` with ETag revalidation;
+authentication and error responses remain `no-store`. The browser displays WebP blobs through
 object URLs. No public image fallback or signed image URLs. Production CORS
 allows only https://gravelcycles.github.io; scripts across that origin share
 its security boundary. Return navigation is restricted to /travels/.
@@ -355,20 +365,22 @@ Previously saved or screenshotted photographs cannot be recalled.
 
 ## Image sizes and deduplication
 
-`photo-variants.mjs` is shared by Studio and bulk imports. At most two WebPs:
-small up to 1280 pixels wide; big up to 3200 pixels on the longest edge. No
-upscaling; identical sizes collapse. Metadata is stripped. Existing photos
-retain their 1280 and largest derivatives without another lossy recompression.
+`photo-variants.mjs` is shared by Studio and bulk imports. Up to three WebPs:
+480 px thumbnails, 1280 px previews and full photos capped at a 3200 px longest
+edge. No upscaling; duplicate sizes collapse. Metadata is stripped. Follow
+[PHOTO_WORKFLOW.md](PHOTO_WORKFLOW.md#generated-image-sizes-and-private-publishing)
+for current intake; do not recompress existing derivatives for a copy-only edit.
 
 Names are SHA-256 hashes of derivative bytes under `v1/<hash>.webp`. Identical
 outputs reuse one object even across journeys. Studio also detects repeated
 source uploads. Visually similar but different photos still require editorial
 review; no perceptual duplicate deletion is automated. Embedded 32-pixel blur
-is an unloaded state, with no third hosted file. Compared with 344 visible
-legacy derivatives, this uses 42% fewer files and 21% fewer bytes.
+is an unloaded state, with no separate hosted placeholder file. The original
+two-size migration's object/byte savings are historical, not current totals.
 
-Small serves covers, day photos and Replay. Big serves the full-screen viewer
-and its immediate neighbors. The loader deduplicates fetches and bounds unused
+Thumbnails serve strips/grids and previews serve covers/journal images. Full
+photos serve the full-screen viewer and its immediate neighbors. Replay is
+map-only and requests no photos. The loader deduplicates fetches and bounds unused
 blob cache entries. Local Studio can read ignored derivatives; the local-only
 `?photoSource=local` preview bypass never works on GitHub Pages.
 

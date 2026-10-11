@@ -1,11 +1,20 @@
 # One framework, many trips
 
-Current contract and audit: 10 September 2026. The owner’s guiding principle is
+Architecture audit: 10 September 2026; continuity guidance reconciled
+11 October 2026. Read [OWNER_DECISIONS.md](OWNER_DECISIONS.md) and
+[PRINCIPLES.md](../PRINCIPLES.md) before implementation or content intake.
+Sharing a renderer does not ensure that an importer preserves blank copy or a
+new panel preserves an established flow. The
+[continuity audit](ATLAS_CONTINUITY_AUDIT_2026-10-11.md) explains the gaps and
+the [journey checklist](../JOURNEY_WORKFLOW.md#new-atlas-inheritance-checklist)
+defines acceptance for populated atlases.
+
+The owner’s guiding principle is
 99% shared behavior. That is a design target, not a measured percentage of lines
 of code. Switzerland–Italy is the reference experience; each trip is content
 rendered by the same application.
 
-## What the audit found
+## What the September architecture audit found
 
 We were already close in architecture, but had weak protection against drift.
 There were five journey data records (one real, four fictional), one shared
@@ -128,7 +137,9 @@ strings. Studio serves live assets with no-store caching.
    cloned HTML, or copied application bundles. Do not invent a general plugin
    framework or a set of feature flags before a concrete feature requires it.
 6. Update [FEATURES.md](FEATURES.md), the relevant workflow and tests in the same
-   change. Use [AGENT_PROMPTS.md](AGENT_PROMPTS.md) to brief the next agent.
+   change. Capture reusable owner corrections and superseded choices in
+   [OWNER_DECISIONS.md](OWNER_DECISIONS.md); reconcile contrary current guidance.
+   Use [AGENT_PROMPTS.md](AGENT_PROMPTS.md) to brief the next agent.
 
 A custom fourteen-chapter Replay is trip data. Replay playback, camera movement
 and controls are shared behavior; Replay presents maps and stories without photos.
@@ -159,8 +170,11 @@ Location-label checks also exercise complete route strokes at desktop/phone size
 Existing tests cover routing/GPX, planner preservation, photo auth/load/cache,
 viewer camera, Replay camera/timing, mobile day navigation and Studio editing.
 These are focused automated checks, not proof that every browser interaction
-is pixel-identical. For UI changes, check the affected flow on the family trip,
-a demo and a new draft, at desktop/phone sizes as appropriate. A map/photo
+is pixel-identical or every intake path preserves editorial decisions. For UI
+changes, check the affected flow on the family trip, a demo and a fresh draft
+both empty and populated with independent fixtures, plus the actual target
+trip/event model, at desktop/phone sizes as appropriate. Use owner-decision
+acceptance checks for observable behavior, not just matching controls. A map/photo
 service outage must not be confused with a template mismatch.
 
 Pages CI runs the suite and build, then rejects uncommitted output differences
@@ -200,6 +214,18 @@ Routing-data intake remains agent-operated: empty journeys show an actionable
 setup state until their own mode network has been prepared. A guided retrieval
 flow with access/direction-aware routing is future work (W06); the present local
 graph reconstructs historical routes and is not turn-by-turn navigation.
+
+## Remaining continuity work
+
+The documentation audit closes the missing reading order, decision/supersession
+record and new-atlas acceptance gaps. It does not provide automated visual or
+end-to-end proof of every decision. Existing helper/controller and template
+tests should remain; add focused browser coverage when the next related runtime
+change warrants it, covering bulk and Studio intake through blank-copy rendering,
+daily/city albums, sidebar/fullscreen/day changes and save/reload recovery.
+Assertions must verify user-visible outcomes and preserved edits, not merely
+source snippets. Tracked as W10 in [TODO.md](../TODO.md). Do not gate the present
+documentation delivery on a speculative test-framework rewrite.
 
 ## Group routes and video follow-up — 10 September 2026
 

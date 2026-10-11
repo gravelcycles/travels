@@ -1,9 +1,16 @@
 # Shared feature inventory
 
-Inventory reconciled: 8 October 2026, including the 20 September release.
+Inventory reconciled: 11 October 2026.
 Applies to Switzerland–Italy, every sample,
 and every new journey. “Available” means the common implementation exists;
 actual content, reviewed geometry and photographs must be supplied per trip.
+
+Feature availability is only part of inheritance. Read
+[OWNER_DECISIONS.md](OWNER_DECISIONS.md) for editorial defaults, interaction
+requirements and rejected/superseded choices. Complete the
+[new-atlas checks](../JOURNEY_WORKFLOW.md#new-atlas-inheritance-checklist) for
+content quality as well as shared controls. See the
+[continuity audit](ATLAS_CONTINUITY_AUDIT_2026-10-11.md) for the documentation gaps.
 
 Shared [Arrival → city](ARRIVAL_CITY_DEMO.md) playback traces the incoming
 route with a plain orange tracking circle at display cadence after a contextual pullback and a
@@ -93,8 +100,10 @@ to duplicate and they do not certify route or photo-location accuracy.
 - [TRAIN_ROUTE_WORKFLOW.md](../TRAIN_ROUTE_WORKFLOW.md): local railway network research and generation.
 - [FRAMEWORK.md](FRAMEWORK.md): source ownership, exceptions and remaining migration.
 
-When changing a feature, update its row and the applicable workflow. A dated
-changelog entry alone does not update this contract. Record supported optional
+When changing a feature, update its row and the applicable workflow. Record
+reusable owner corrections and supersession in OWNER_DECISIONS.md and reconcile
+conflicting entry points. A dated changelog entry alone does not update this
+contract. Record supported optional
 fields and their defaults with the feature; do not silently add a per-trip flag.
 
 

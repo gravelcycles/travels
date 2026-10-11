@@ -1,6 +1,9 @@
 # Places and photo conversations
 
-Architecture and implementation, updated 8 October 2026. Provisioning and production verification follow [COMMUNITY_OPERATIONS.md](COMMUNITY_OPERATIONS.md).
+Architecture and implementation, reconciled 11 October 2026. Read
+[OWNER_DECISIONS.md](OWNER_DECISIONS.md) before intake or UX changes, especially
+O01–O04 on copy, explicit links and sidebar continuity. Provisioning and
+production verification follow [COMMUNITY_OPERATIONS.md](COMMUNITY_OPERATIONS.md).
 
 The smallest useful extension is **curated place data in Git + live photo
 comments in the existing Cloudflare service**. Keep the shared map and viewer.
@@ -19,8 +22,9 @@ the comment preview can be opened.
 
 Places supports food/sight filters, this-day filtering, map pins, source links,
 image credits, a photo gallery, group averages and individual reviews. A saved
-but unvisited place has no reviews. The normal shared Places control is available
-on every journey, with an empty state when no places have been authored.
+but unvisited place has no reviews. The viewer hides Places controls when the
+whole trip has no curated places; Studio still supports adding the first one.
+An empty filtered day/search result does not hide those viewer controls.
 
 The `experience=places|comments` query opens a temporary review toolbar, a local
 group-review editor and a comments/unlock simulation in the existing shared
@@ -257,22 +261,26 @@ be restored by their author. Retention/export/security details and exact
 provisioning commands are in [COMMUNITY_OPERATIONS.md](COMMUNITY_OPERATIONS.md).
 
 
-## Photos + Places — 8 October 2026
+## Photos + Places — current contract
 
-The production layer uses `photo-places.js` for explicit/proximity associations
+Reconciled 11 October 2026; supersedes the 8 October proximity prototype/release.
+
+The production layer uses `photo-places.js` for explicit saved associations
 and stable screen-space grouping, with `photo-bubbles.js` for map/card lifecycle.
 No scene query or per-trip implementation is needed. A selected bubble retains
 its members, order and current photo during zoom/pan. Pins stay on actual photo
 coordinates. No-coordinate photos remain in albums and explicit place selections.
-Place pins coexist with bubbles on day maps. Route-group projection, hidden and
-trashed filtering apply before deriving associations or displaying a selection.
+Place pins coexist with bubbles on day maps. Route-group projection and
+local/trashed eligibility apply before displaying a selection. Legacy photo
+`hidden` flags remain ignored; do not revive Hide through Places.
 
 Optional `point.photoIds` is an ordered list of unique photo IDs from that journey.
-Absent or `[]` means no explicit links, with nearby suggestions still available.
+Absent or `[]` means no links. GPS proximity creates no suggestions, venue
+labels or About-place action. Do not fill these fields based on distance.
 A photo may be linked to more than one place. Sources retain IDs through Trash
 and local-only asset states; the public build filters ineligible IDs from its
 public bundle without modifying the source. Old records require no migration.
-Links do not imply GPS and proximity does not imply an owner-approved visit.
+Links do not imply GPS, a visit or a rating. Keep those facts independently sourced.
 
 **Studio → Places** edits records through the shared trip plan, autosave recovery,
 readable Review/Discard and three-way save reconciliation. Venue image fields
@@ -281,8 +289,12 @@ basis; the editor does not fetch or approve an image automatically. Public venue
 imagery must not reuse protected family derivatives. Curated group reviews are
 owner data in Git; visitor photo access still grants no editing permission.
 
-Desktop keeps days continuously on the left, map in the center and place/photo
-browsing on the right. Full screen remains an explicit photo action. Phones use
+Desktop keeps days continuously on the left, map in the center and photo
+browsing inside the existing right journal sidebar. A large uncropped photo uses
+a stable-height frame, opens full screen on click/keyboard activation and keeps
+thumbnails adjacent; day details collapse while browsing. Album navigation does
+not regroup map bubbles or replace their own thumbnails. Stationary refreshes
+retain bubble nodes/image loads; day changes clear the old selection. Phones use
 one bottom day picker with the current day name. Back/Forward and comments use
 the same shared overlay history. Explicit groups that cross days follow the
 selected photo's real day while retaining the group's order.

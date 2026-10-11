@@ -1,5 +1,12 @@
 # Journey Atlas — UX and Trip Replay handoff
 
+> **Historical design brief.** Read [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md),
+> [PRINCIPLES.md](PRINCIPLES.md) and [FEATURES.md](docs/FEATURES.md) for current
+> behavior. Later corrections made Replay map-only, previews follow album order,
+> travel details compact/expandable and photo copy traveler-only. This brief's
+> old photo-Replay and independent daily-cover proposals are not new work to
+> implement. Preserve this file as rationale, not a second operative specification.
+
 Date: 8 September 2026
 
 Audience: family and friends. Aim for an inviting, personal travel story with a detailed atlas available throughout.

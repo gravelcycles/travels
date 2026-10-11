@@ -8,13 +8,29 @@ The [current workstream checkpoint](WIP.md) records branch tips, preserved
 prototypes, saved trip edits and task context. This file remains the backlog;
 an unchecked item is not evidence of an existing implementation branch.
 
-Each unchecked top-level item is intended to be a separate agent task. Read
-`PROJECT_STATE.md`, `PRINCIPLES.md`, and `AGENT_HANDOFF.md`, then load only the
-references named by that task. All commands, servers, QA, commits, pushes, and
+Each unchecked top-level item is intended to be a separate task. Follow
+`AGENTS.md`'s current reading order, including `docs/OWNER_DECISIONS.md`, then
+load the references named by that task. Historical handoffs are evidence, not
+startup instructions. All commands, servers, QA, commits, pushes, and
 deployment checks are agent-owned; never ask the user to run npm or terminal
 commands.
 
 ## Independent project workstreams
+
+- [x] **Atlas continuity guidance — 11 October 2026.** Audit available owner
+      corrections; require a shared decision/supersession record and area
+      workflows before content intake; reconcile current quickstarts and mark
+      historical handoffs; add populated-new-atlas acceptance checks. See
+      [the audit](docs/ATLAS_CONTINUITY_AUDIT_2026-10-11.md) and
+      [standing decisions](docs/OWNER_DECISIONS.md). No runtime/content changes.
+- [ ] **W10 — Extend observed continuity coverage with related feature work.**
+      Existing shared-framework/helper tests do not prove every end-to-end or
+      visual outcome. As the affected runtime changes, add focused browser
+      regressions for bulk/Studio intake through blank-copy rendering, daily/city
+      albums, photo sidebar/fullscreen/day transitions and editor save/reload.
+      Check independent fresh-draft fixtures, authored edits and blank defaults;
+      do not replace behavior assertions with Markdown/source-string snapshots.
+      [Framework scope](docs/FRAMEWORK.md#remaining-continuity-work).
 
 - [ ] **Owner review — five Heading East photo locations.** The owner will place
       the five missing-GPS Freiburg photographs in Studio. Keep them included
@@ -46,8 +62,9 @@ project-level status.
       [`PHOTO_AUTH_HANDOFF.md`](PHOTO_AUTH_HANDOFF.md). One successful unlock
       with any active shared password must grant that browser access to every
       protected image across the site. The confirmed scope keeps the site on
-      GitHub Pages and puts only photos/auth on Cloudflare, without a domain
-      purchase. Retain two image sizes and remember access for 30 days.
+      GitHub Pages and uses Cloudflare for protected media/auth, without a domain
+      purchase. Remember access for 30 days. The initial two-size design was
+      superseded by the current three-size pipeline in PHOTO_WORKFLOW.md.
       Deployed and verified on Workers Free with the owner-selected initial
       credential, 198 private objects, and all 404 old public asset URLs removed. Account steps: [`CLOUDFLARE_SETUP.md`](CLOUDFLARE_SETUP.md).
 - [x] **W02 — UX and storytelling.** Reconcile and deliver

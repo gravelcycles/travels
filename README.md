@@ -7,8 +7,11 @@ at `switzerland-italy.html`. Fictional viewer examples live separately at
 
 ## Project guide
 
-Read [WIP.md](WIP.md) for current workstreams, checkpoint branches, review
-decisions, task context and recovery references before starting new work.
+Start with [AGENTS.md](AGENTS.md),
+[standing owner decisions](docs/OWNER_DECISIONS.md) and
+[design principles](PRINCIPLES.md). Then use the current framework/feature
+guides and the relevant [WIP.md](WIP.md) entry. Prior corrections apply to
+content imports and new atlases as well as code changes.
 
 Trips are instances of one shared framework. New features belong in its shared
 template or runtime and carry into existing trips, samples, and new drafts.
@@ -21,6 +24,7 @@ not another copy of the application.
 - [New-trip and shared-feature prompts for agents](docs/AGENT_PROMPTS.md)
 - [Step-by-step trip creation and publishing](JOURNEY_WORKFLOW.md)
 - [Standing agent rules](AGENTS.md)
+- [Why lessons failed to carry forward, and the repairs](docs/ATLAS_CONTINUITY_AUDIT_2026-10-11.md)
 
 These guides describe current contracts. Dated handoffs, audits, and changelog
 entries record history and may describe behavior that has since changed.
@@ -32,7 +36,7 @@ appear; demo journeys remain separate. The family trip is titled
 
 ## Private photographs
 
-The photo-only Cloudflare implementation supports multiple shared passwords and
+The shared Cloudflare media service supports multiple shared passwords and
 30-day remembered access. Private WebP thumbnails, previews and full photos replace originals; tiny
 embedded blurs remain public. The site address stays on GitHub Pages.
 **Password protection is live, and both historical public photo Releases have
@@ -57,9 +61,11 @@ exports, manifest setup, generation, overrides, and close-zoom review.
 
 ## Start a future trip
 
-The agent opens Atlas Studio. Choose **+ New trip**, give it a name and start/end
-dates, and choose **Create trip**. Every calendar day is ready immediately in
-**Day copy**; places, routes, and photos can follow later. **Preview atlas** opens
+The agent reads the [new-atlas inheritance checklist](JOURNEY_WORKFLOW.md#new-atlas-inheritance-checklist)
+and opens Atlas Studio. Choose **+ New trip**, give it a name and start/end dates,
+and choose calendar days or **City stay** as appropriate. Calendar mode prepares
+every day in **Day copy**; city mode uses stays rather than empty daily entries.
+Places, routes, and photos can follow later. **Preview atlas** opens
 that selected trip, including a draft with no destinations yet. On phones, the
 day editor comes before the map and the preview/save status remain available.
 
@@ -111,13 +117,24 @@ for the full agent-operated flow and what Trash does to existing hosted assets.
 
 ## Browse photos
 
-Open a day's album with **View photos** directly below its first photo, or use
+Open a day's album with **View photos** beside its preview, or use
 **All photos** to choose a day. Day previews use the first visible photo in
-the saved album order, so clicking them opens photo 1. Travel legs are always expanded below the day
-heading. Daily descriptions can be left blank; no placeholder prose is shown.
-Photo thumbnails and groups are no longer displayed on the journey map.
-Saved photo locations remain available in Studio and the photo viewer. The
-current viewer thumbnail has an orange outline, with no Selected text badge.
+the saved album order, so entry starts at photo 1. Travel details starts as a
+compact expandable row. Descriptions and taglines may stay blank; no generated
+stay labels or placeholder prose appear.
+
+Sparse photo bubbles coexist with Places pins on day/stop maps. Desktop map,
+album and linked-Place selections use the existing right journal/photo sidebar,
+with a large uncropped image in a stable-height frame, compact controls,
+thumbnails and expandable details. Click the image for full screen. Browsing
+does not replace an unrelated map bubble's image; changing days clears the old
+selection. Only saved links connect photos to venues. The current thumbnail has
+an orange selection outline, with no Selected badge. Phone Photos opens the
+event's grid and retains its own shared navigation/gesture flow.
+
+Photo comments and place reviews open floating cards with soft shadows while
+keeping sidebar context visible. Comments open immediately, reuse recent data
+and offer inline retry without losing drafts.
 
 When both photo pins are already in view, the viewer map stays still. Nearby
 moves go directly to the next view; longer moves use a parabolic zoom arc with
@@ -136,12 +153,11 @@ at that speed. The 1× timing is unchanged. It includes
 play/pause, half/normal/double speed, day
 step buttons, a day timeline, keyboard controls, and a completion state.
 
-During travel, Replay frames each active route leg even when a chapter displays
-a photograph. The accompanying photo's zoom cannot override route framing.
-The player displays each day's reviewed lead photo when available. A photo with
-reviewed coordinates becomes its own replay pause and moves the map to that
-saved location and zoom; unlocated photos are shown without inventing a map
-position. With reduced motion enabled at the operating-system level, legs and
+Replay is map-only: ordered route travel and event stories, without photographs,
+photo pauses or image preloads. It frames the active route leg; legacy photo
+choices in saved chapters are ignored. Browse photographs in the day/stop albums.
+The separate [Arrival → city flow](docs/ARRIVAL_CITY_DEMO.md) shows an incoming
+route before settling on the destination. With reduced motion enabled, legs and
 camera changes update without animation while timing and manual controls remain
 available.
 
@@ -179,9 +195,10 @@ keeps the reviewed line. For a bicycle or walking leg, **Traveler GPX track**
 checks a private local file for travel order, endpoint alignment, large gaps,
 distance, and meaningful turns before offering a simplified line for explicit
 acceptance. The source GPX is never copied into the repository. In **Photo
-locations**, keyboard-accessible controls set the album order and a separate
-lead photo for each day. In **Day copy**, edit date labels, titles, and
-descriptions.
+locations**, keyboard-accessible controls set album order; its first visible
+photo is the day preview. Choose the journey cover separately. In **Day copy**
+(**Stop copy** for city stays), edit date labels, titles, optional taglines and
+stories. Blank fields remain blank, and story paragraphs are preserved.
 
 **Save locally** writes reviewable source data to
 `content/photo-overrides.json`, `content/route-overrides.json`, and
@@ -191,7 +208,10 @@ binds only to the loopback interface and is not part of the published site.
 
 ## Add trip photos
 
-Start with `TRIP_CONTENT.md`. Journey source data lives in
+Read [the owner decisions](docs/OWNER_DECISIONS.md) and
+[PHOTO_WORKFLOW.md](PHOTO_WORKFLOW.md) before either bulk or Studio intake.
+`TRIP_CONTENT.md` is the original family-trip intake, not a new-trip template.
+Journey source data lives in
 `content/journeys/<journey-id>.json`. Private originals go in ignored `photos/`; the
 checked-in manifest references protected WebPs in private Cloudflare R2.
 
@@ -265,16 +285,17 @@ Each journey contains:
   not been reviewed yet
 - named `stops` that draw and mark each scheduled rail stop in a close-up
 - a `destinationId` so base-based day trips are labeled by destination
-- calendar days, including non-travel days
+- calendar days including non-travel days, or city-stay events
 - optional photographs linked to days
 - optional photo overrides with exact coordinates, street-level zoom, caption,
-  description, review state, day reassignment, or a hidden flag
+  traveler-written notes, review state, day reassignment or recoverable Trash;
+  legacy photo `hidden` flags are ignored
 - optional day overrides for date labels, titles, descriptions, explicit photo
-  order, and a separate lead-photo ID
+  order and optional taglines; legacy lead-photo IDs do not override album order
 
 The first real trip combines train, boat, bus, gondola, bicycle, and walking
-segments. Sample data remains in the shared content file but is only exposed by
-the separate demo page.
+segments. Sample records live in `content/journeys/` alongside real journeys
+but are presented through the separate demo page.
 
 ## Publish with GitHub Pages
 

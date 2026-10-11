@@ -1,5 +1,14 @@
 # Next-agent handoff
 
+> **Historical checkpoint log, not current instructions.** Start with
+> [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md),
+> [PRINCIPLES.md](PRINCIPLES.md), [FEATURES.md](docs/FEATURES.md) and the
+> relevant [WIP.md](WIP.md) entry. Dated sections below retain evidence; headings
+> such as “Current pass”, “Next” and “Acceptance checks” describe their original
+> checkpoint. Public photo Releases, Replay photos, daily lead pickers, Hide,
+> generated copy and old map/sidebar experiments must not be restored from here.
+> Update operative workflows and the decision record for future corrections.
+
 ## Heading East photos — 10 October 2026
 
 The owner requested all 44 files in `photos/euro-eastbound/`, including three

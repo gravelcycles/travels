@@ -1,5 +1,9 @@
 # Project principles
 
+Read these with [the standing owner decisions](docs/OWNER_DECISIONS.md).
+They apply to new atlases and content intake as well as shared implementation.
+Specific current decisions and their supersessions are recorded there.
+
 - Build each feature once in the shared framework; trips are data instances.
   The guiding target is 99% shared behavior. Switzerland–Italy, samples, and
   fresh drafts use the same page template and runtime. See
@@ -7,9 +11,13 @@
 - A trip is a standalone story; real and demo content use separate pages.
 - The root is an atlas of real journeys; each real journey has a stable,
   shareable detail URL.
-- The calendar day is the main unit and may contain any number of ordered modes.
+- An event is a calendar day by default or a city stay when requested. Either
+  may contain any number of ordered modes; keep the shared data/viewer contract.
 - For a base-based trip, label the meaningful destination rather than the base.
 - Keep map, segment order, title, prose, stops, and photos consistent.
+- Leave optional photo copy and stories blank unless supplied by the traveler.
+  Do not turn alt text, filenames, GPS or a nearby venue into personal meaning.
+  Research requested venue facts separately from traveler memories and reviews.
 - Stops describe meaning; detailed geometry describes the line's actual shape.
 - Store new geometry in GeoJSON order: `[longitude, latitude]`.
 - Do not invent precision; mark representative schedules and routes honestly.
@@ -49,9 +57,15 @@ care, while retaining the atlas's personal character. This means:
 - Give each screen a clear primary action; reveal secondary actions where they
   are needed. Keep implementation and prototype explanations out of the story.
 - Make Back go one level up, Close dismiss the current surface, and Undo recover
-  a recent removal. Browser history must agree with those visible controls.
+  a recent removal according to the documented surface-specific flow. The phone
+  photo Day/Stop control returns to its map. Browser history must agree with
+  those visible controls and preserve the presenting album where applicable.
 - Keep the map and photograph as context. A panel must make the next action
   obvious without covering the content that explains it.
+- Keep desktop photo browsing in the existing right sidebar with a large,
+  uncropped, stable-height frame, adjacent thumbnails and compact details.
+  Conversations float above it while retaining context. A new feature extends
+  these established surfaces instead of silently replacing them.
 - Use warm paper, restrained color, clear type, generous touch targets and
   short interruptible transitions. Respect reduced motion and keyboard use.
 - Design incomplete, empty, loading and failed states as carefully as success.
@@ -59,6 +73,7 @@ care, while retaining the atlas's personal character. This means:
 - Keep a self-chosen display name separate from ownership. A name change is
   a small edit, not a new account or another password ceremony.
 
-See [the UX acceptance record](docs/PLACES_UX_REVIEW_2026-09-20.md) for this
-feature's review matrix and [the earlier UX audit](docs/UX_AUDIT_2026-09-12.md)
-for the established reliability and visual principles.
+Use [the owner-decision checks](docs/OWNER_DECISIONS.md) for current acceptance.
+The [Places UX record](docs/PLACES_UX_REVIEW_2026-09-20.md) and
+[earlier UX audit](docs/UX_AUDIT_2026-09-12.md) provide historical evidence;
+later explicit corrections take precedence over their proposals.

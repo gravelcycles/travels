@@ -1,11 +1,29 @@
 # Current workstreams
 
-Status checkpoint: **8 October 2026**. Start here before resuming work.
+Status checkpoint reconciled: **11 October 2026**. Start with
+[AGENTS.md](AGENTS.md) and [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md), then
+read the relevant workstream here before resuming it.
 This reconciles Git branches, stashes, ignored local prototypes, project docs,
 and the relevant Travels tasks. It records unfinished work without promoting it
 to the public site. [TODO.md](TODO.md) remains the backlog;
 [docs/FEATURES.md](docs/FEATURES.md) describes implemented capabilities;
 [docs/FRAMEWORK.md](docs/FRAMEWORK.md) defines the shared-code contract.
+
+## Atlas continuity and October corrections — 11 October 2026
+
+The [continuity audit](docs/ATLAS_CONTINUITY_AUDIT_2026-10-11.md) reconciles
+available owner corrections with the current docs. Mandatory startup guidance,
+the owner-decision/supersession record and a populated-new-atlas acceptance
+checklist replace reliance on historical handoffs. Current quickstarts now agree
+on blank photo copy, explicit photo/place links, the existing photo sidebar,
+map-only Replay, compact travel details, Trash and private media publication.
+
+Already delivered runtime corrections through `a69515f`: restored and enlarged
+clickable sidebar photos with a stable-height frame; stable location-based map
+bubbles; blank photo labels; removal of automatic nearby-place associations;
+and floating photo comments/place reviews with immediate opening and cached reads.
+These later decisions supersede incompatible behavior in the preserved prototypes
+below. The documentation audit itself changes no trip content or runtime.
 
 ## Arrival → city release — 10 October 2026
 
@@ -62,9 +80,9 @@ journey template and browser modules for real trips, demos and new drafts.
 - Desktop keeps the days on the left, the map in the middle and place or photo
   details on the right. Full screen is an explicit photo action; there is no
   desktop day picker. Phone keeps one compact day picker with the current title.
-- Places distinguish ordered, explicitly linked trip photos from computed
-  nearby photos within 150 metres. Nearby suggestions never save an association.
-  Trip-photo access and filters remain in force; venue imagery stays separate.
+- Places use ordered, explicitly linked trip photos. On 11 October the owner
+  rejected proximity suggestions and automatic venue labels; `3d88dd7` removed
+  them. Trip-photo access and filters remain in force; venue imagery stays separate.
 - Studio **Places** edits names, descriptions, memories, category/status, days,
   coordinates, sources, credited venue images, curated group reviews and ordered
   photo links. Linked photos open the normal photo editor. Save, draft recovery,
@@ -89,15 +107,17 @@ or the local [Studio Places editor](http://127.0.0.1:4186/studio/).
 proposal adds named stops and clearer seeking. The day-experience experiment
 separately compares camera framing; neither means Replay itself is unfinished.
 
-The original combined **Photos + Places** prototype is preserved locally at
+The superseded combined **Photos + Places** prototype is preserved locally at
 `codex/day-experience-review` · `37a8b0a`. Open
 [the local demo](http://127.0.0.1:4175/?scene=places): photo bubbles sit alongside
 place pins, photos link to a nearby place, and places offer nearby trip photos.
 Phone/desktop views, a stable selected group through zooming, an empty nearby
 state and an unlocated album photo are included. All sample album placements are
 explicitly illustrative and retain image credits. The 150 m proximity rule saves
-no geographic association. The shared production implementation above supersedes
-this prototype; its demo-only injection code is not shipped.
+no geographic association, but was still rejected for the current product on
+11 October. Do not restore it or the old separate photo card from this prototype.
+The shared production implementation and OWNER_DECISIONS supersede this
+prototype; its demo-only injection code is not shipped.
 
 The prototype passed **369 repository + 11 prototype tests** and a build. Its
 source and run instructions are at

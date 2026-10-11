@@ -1,5 +1,11 @@
 # Building a journey atlas
 
+Before intake, follow [AGENTS.md](AGENTS.md)'s reading order and read
+[OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and [PRINCIPLES.md](PRINCIPLES.md).
+New trips inherit these editorial and interaction decisions, not just the
+template. Use the [inheritance checklist](#new-atlas-inheritance-checklist)
+before calling a new trip or content import complete.
+
 For local arrival/city interaction checks, use the shared-template
 [local demo workflow](docs/ARRIVAL_CITY_DEMO.md). Its labelled placeholder media
 stays in ignored preview files. The shared arrival experience was approved for
@@ -496,33 +502,83 @@ must never overwrite user anchors.
 
 Keep original photos and generated binaries out of Git. Follow
 `PHOTO_WORKFLOW.md` for metadata-preserving intake, derivative generation,
-privacy review, GitHub Release publishing, and Studio annotation. Use a unique
-immutable Release tag or asset filename when replacing published media.
+location review, private Cloudflare R2 publishing, and Studio annotation.
+Derivatives use immutable content-hash paths. The old public GitHub Release
+publisher is retired. Captions, notes and place labels remain blank unless
+traveler-supplied; alt text, filenames and nearby venues are not copy fallbacks.
+Review both bulk import and Studio uploads against the same rules. Preserve
+actual capture timestamps, album order, pins, frames, cover and authored edits.
 
 ## Agent-owned implementation flow
 
 For each new journey, the agent should:
 
-1. Read `PROJECT_STATE.md`, `PRINCIPLES.md`, `AGENT_HANDOFF.md`, this file, and
-   `PHOTO_WORKFLOW.md`.
-2. Turn the intake into stable places, ordered segments, and calendar days.
+1. Follow `AGENTS.md`'s reading order and the target trip's intake/provenance.
+   Read the route/photo/Places workflow before work in that area. Historical
+   handoffs are evidence only; current owner decisions govern the experience.
+2. Turn the intake into stable places, ordered segments, and calendar days or
+   city stays as requested. Keep unknown dates/locations explicit.
 3. Research and cite routes; generate or import mode-correct geometry.
 4. Launch Atlas Studio for any user review that benefits from the map or photo
    interface, then save the resulting overrides.
 5. Build all generated assets and keep source data separate from outputs.
-6. Test the atlas index and every affected trip page on desktop and 390 px
-   mobile, including day close-ups, labels, route hover/touch behavior, photo
-   loading, empty days, and exact photo zoom.
+6. Complete the inheritance checklist below and the affected owner-decision
+   checks on the target atlas. Shared changes also need the reference, a demo
+   and a fresh empty-then-populated draft using independent fixture content.
 7. Review the Git diff for private originals, sensitive metadata, generated
    binaries, or unintended changes.
-8. Commit, push, wait for GitHub Pages, and verify a cache-fresh public URL.
-9. Update `PROJECT_STATE.md`, `AGENT_HANDOFF.md`, `TODO.md`, and route/photo
-   provenance so the next agent does not need chat history.
+8. Fetch/integrate remote main, run `npm test` and `npm run build`, commit source
+   and regenerated output, push, verify GitHub Pages and a fresh public URL.
+9. Update trip provenance, the applicable current workflow and feature inventory;
+   capture reusable corrections in `docs/OWNER_DECISIONS.md`. Update WIP/TODO for
+   changed status and CHANGELOG for the delivered change. Reconcile conflicting
+   entry points; do not make another historical handoff the only record.
+
+## New-atlas inheritance checklist
+
+Record observed results and any unavailable checks in the trip's intake/delivery
+notes. Apply relevant checks to the actual new atlas even for content-only work.
+For shared implementation changes, also exercise Switzerland–Italy, a demo and
+a fresh draft, first empty and then populated with independent synthetic data.
+Use local labelled fixtures when real media is unavailable; never publish them.
+
+- [ ] **Decisions:** Identify the applicable owner-decision IDs and any explicit
+  trip-specific exceptions. Carry forward the latest choices, including removal
+  decisions; no copied family itinerary, prose, photos or frames.
+- [ ] **Event/content model:** Use the requested daily or city-stay model, stable
+  IDs, actual dates/time zone and ordered legs. Check transfer dates and TBD
+  stops when present. Empty stories/taglines/media remain valid and free of filler.
+- [ ] **Routes:** Inspect the rendered geometry, including overrides, at close
+  zoom for every supplied leg. Network reconstruction and booking certainty are
+  separately described. Reviewed anchors survive regeneration; guides are not
+  passed off as completed routes. Unknown destinations have no invented pins.
+- [ ] **Photo intake:** Account for all supplied files; preserve actual timestamps
+  and reviewed pins, leave missing GPS unset. Blank captions/notes/place labels
+  stay blank through import, save and public rendering; preserve authored text.
+  Check album order and first-photo entry, with cover chosen separately.
+- [ ] **Photo/Places interaction:** Test map bubble → existing sidebar → image
+  click/fullscreen → close, album entry and a day switch. Try portrait and
+  landscape images, an unlocated image and a blank-caption image. Layout and
+  map thumbnails remain stable. Nearby but unlinked photos get no venue label
+  or About button; saved links work. No curated places means no viewer Places
+  button, while Studio still supports adding the first one.
+- [ ] **Phone/map/motion:** Check desktop and 390 px phone; use 320 px/landscape
+  for changed overlays/gestures. Verify visible map context, labels/mode key,
+  day/stop list selection, grid, location close/swipe, Back/Forward and reduced
+  motion. Replay stays map-only; arrival/city framing uses this trip's content.
+- [ ] **Loading/save:** Check cold and cached photo loads without flashes or
+  unnecessary refetches; retry without losing selection/text. For editor changes,
+  check save → preview → reload recovery, readable diff and conflict handling.
+- [ ] **Delivery:** Verify protected derivatives and eligible IDs before site
+  publication; run tests/build, review the diff, integrate remote main and verify
+  Pages plus fresh public content. Record route/media limitations and remaining
+  user inputs. A local preview, uploaded file or green build alone is not live.
 
 ## Definition of done for a new trip
 
 - The root atlas links to a stable trip-detail URL.
-- Every calendar day exists, including rest days.
+- Daily trips include every calendar day, including rest days; city trips use
+  contiguous confirmed stays and explicitly undated TBD entries where needed.
 - Legs are ordered correctly and use visually distinct mode styling.
 - Detailed lines follow the intended physical network at close zoom.
 - Day markers and routes do not obscure essential place labels.
@@ -530,6 +586,8 @@ For each new journey, the agent should:
 - Photos are responsive, progressively loaded, day-linked, and privacy-reviewed.
 - Desktop/mobile and deployed-page checks pass without browser errors.
 - All sources, limitations, and remaining review items are in Markdown.
+- Applicable inheritance checks above have observed results, and reusable
+  corrections are in current guidance rather than only chat/history.
 
 ## Travelers taking different routes
 

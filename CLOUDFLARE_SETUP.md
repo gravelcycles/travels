@@ -1,5 +1,12 @@
 # Cloudflare setup for private atlas photos
 
+This is the original account/setup record plus later operational notes. Read
+[OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and
+[PHOTO_WORKFLOW.md](PHOTO_WORKFLOW.md) for current media rules; use
+[COMMUNITY_OPERATIONS.md](docs/COMMUNITY_OPERATIONS.md) for comments and video
+service rollout. The existing free-service constraint still applies; old counts
+and dated pricing notes below are not a current usage/billing measurement.
+
 Updated 9 September 2026. Account, R2 subscription, and Wrangler authorization
 are complete. The private bucket and Worker are deployed. The owner-selected initial test credential is configured and verified.
 The protected Pages site is live and both old public photo Releases are removed.
@@ -43,7 +50,8 @@ and add/revoke operations are implemented.
 ## Completed implementation
 
 - Private R2 bucket, photo/auth Worker, rate limiting, CORS, and secrets.
-- Multiple-password login, authenticated image loading, two sizes, and local originals.
+- Multiple-password login, authenticated image loading, optimized derivatives
+  and private local originals. The current pipeline makes up to three sizes.
 - Browser and runtime verification of login, revocation, direct URLs, and caches.
 - Updating the Pages photo manifest/frontend and retiring both public photo
   Releases after verification. Pages and the source repository stay in place.
@@ -64,7 +72,7 @@ See [Workers pricing](https://developers.cloudflare.com/workers/platform/pricing
 
 ## What can start before account setup
 
-Local Worker development/security tests, the two-size image pipeline, and
+Local Worker development/security tests, the shared image pipeline, and
 frontend preparation need no Cloudflare account or payment information. Account
 activation and browser authorization are needed only for remote upload and
 deployment. This account setup and the private-photo cutover are complete.
