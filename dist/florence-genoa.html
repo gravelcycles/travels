@@ -41,8 +41,8 @@
       rel="stylesheet"
       href="./assets/vendor/maplibre-5.24.0/maplibre-gl.css"
     />
-    <link rel="stylesheet" href="./assets/styles.css?v=30eb3644503e" />
-    <link rel="stylesheet" href="./assets/mobile.css?v=c9212de341bd" />
+    <link rel="stylesheet" href="./assets/styles.css?v=8340f5ea8ce4" />
+    <link rel="stylesheet" href="./assets/mobile.css?v=f6f3cdbae452" />
     <link rel="stylesheet" href="./assets/group-travel.css?v=832960325138" />
     <link rel="stylesheet" href="./assets/map-feedback.css?v=31eb86c9e975" />
     <link rel="stylesheet" href="./assets/places-comments.css?v=4722d9f0f6fa" />
@@ -70,7 +70,13 @@
       <button class="trip-notifications-button" data-trip-notifications type="button" aria-label="Notifications" title="Most recent comments" aria-controls="trip-notifications-dialog" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="comment-count-badge" data-notifications-count aria-hidden="true" hidden></span></button>
     </header>
 
-    <section id="trip-intro" class="trip-intro" aria-label="Journey introduction" hidden></section>
+    <section id="trip-intro" class="trip-intro" aria-label="Journey introduction" hidden>
+      <div class="intro-scroll" tabindex="0" role="region" aria-label="Journey introduction details">
+        <div class="intro-photo"></div>
+        <div class="intro-copy"></div>
+      </div>
+      <div class="intro-actions"><button id="intro-relive" type="button">Explore the journey</button></div>
+    </section>
     <main class="atlas-shell" data-mobile-tab="map">
       <aside class="route-panel" id="mobile-journey-panel" data-event-aria="Journey days" aria-label="Journey days">
         <div class="panel-intro">
@@ -376,6 +382,6 @@
     <script src="./assets/places-panel.js?v=176f65940ea3"></script>
     <script src="./assets/photo-comments.js?v=523cebb02fcc"></script>
     <script src="./assets/trip-notifications.js?v=1"></script>
-    <script src="./assets/app.js?v=b3f4c3ed2067"></script>
+    <script src="./assets/app.js?v=880587d34cda"></script>
   </body>
 </html>

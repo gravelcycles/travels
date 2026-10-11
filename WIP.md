@@ -60,6 +60,27 @@ Fresh public HTML for all four journey/demo pages and `app.js`, `mobile-ux.js`
 and `mobile.css` matched the tested release byte-for-byte. No mobile
 implementation or delivery work remains; no media/content changed in this fix.
 
+## Opening action stays visible — 11 October 2026
+
+The owner approved a persistent opening action after reporting that long copy
+hid it on first load. [O06](docs/OWNER_DECISIONS.md) and the
+[journey workflow](JOURNEY_WORKFLOW.md#start-small-as-a-local-draft) own the
+shared contract. Implementation in `codex/visible-opening-action` separates the
+full scrollable introduction from the bottom action row; phones scroll the
+photo with the text, while desktop retains its full-height cover. Traveler
+content and map/list entry behavior remain intact.
+
+Validation: all 570 tests and the production build pass. Browser checks cover
+Heading East, Switzerland–Italy, the Nine to Como demo and an empty then
+independently populated city draft. The button remains visible at 320/390px,
+short desktop and landscape sizes, including a 9,389-character introduction
+and 200% root text. Keyboard and pointer scrolling reach the final line without
+covering it; Tab reaches the action. Map entry still shows the whole journey,
+and the empty draft enters its stop list. Local photo mode used existing blur
+previews because protected derivatives are outside this isolated checkout.
+The shared deep-link bypass regression passes. Next: integrate current main,
+deploy Pages and verify fresh public output.
+
 ## Opening screen and Heading East description — 11 October 2026
 
 Authorized: one Explore the journey button opening the whole-trip map; remove

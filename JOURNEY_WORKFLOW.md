@@ -228,7 +228,13 @@ The opening has one **Explore the journey** button that enters the whole-trip
 map, without focusing a day or playing its arrival. Do not restore the separate
 Whole trip map button. Unmapped drafts retain a single day/stop-list entry;
 direct day/photo links bypass the opening. Journey `subtitle` supplies the
-opening description and stays traveler-authored (O06/O10).
+opening description and stays traveler-authored (O06/O10). Keep the action in
+its own bottom row, visible from first load regardless of description length.
+On desktop the cover fills the left side and the text scrolls above the action;
+on phones the photo/title/full description scroll together above a full-width
+button with safe-area padding. The scroll region is keyboard-accessible. Check
+long text, 320/390px phones, short landscape and enlarged text; preserve full
+copy and direct-entry behavior in reference, demo and fresh-draft checks.
 
 The editor stores `coverPhoto: { photoId, focal: [xPercent, yPercent] }` for the
 catalog and opening, with visible-photo/text fallback. Full-trip Replay is

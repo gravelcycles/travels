@@ -52,7 +52,13 @@
       <button class="trip-notifications-button" data-trip-notifications type="button" aria-label="Notifications" title="Most recent comments" aria-controls="trip-notifications-dialog" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="comment-count-badge" data-notifications-count aria-hidden="true" hidden></span></button>
     </header>
 
-    <section id="trip-intro" class="trip-intro" aria-label="Journey introduction" hidden></section>
+    <section id="trip-intro" class="trip-intro" aria-label="Journey introduction" hidden>
+      <div class="intro-scroll" tabindex="0" role="region" aria-label="Journey introduction details">
+        <div class="intro-photo"></div>
+        <div class="intro-copy"></div>
+      </div>
+      <div class="intro-actions"><button id="intro-relive" type="button">Explore the journey</button></div>
+    </section>
     <main class="atlas-shell" data-mobile-tab="map">
       <aside class="route-panel" id="mobile-journey-panel" data-event-aria="Journey days" aria-label="Journey days">
         <div class="panel-intro">

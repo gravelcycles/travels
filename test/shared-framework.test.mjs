@@ -526,7 +526,7 @@ test('a fresh trip inherits ordered travel, albums, cover selection and automati
 test('the same introduction opens for real trips, samples and empty drafts; deep links retain direct entry', () => {
   for (const isDemoPage of [false, true]) for (const hasPhoto of [false, true]) {
     const nodes = new Map();
-    const $ = selector => { if (!nodes.has(selector)) nodes.set(selector, { hidden: true, inert: false }); return nodes.get(selector); };
+    const $ = selector => { if (!nodes.has(selector)) nodes.set(selector, { hidden: true, inert: false, style: { setProperty() {} } }); return nodes.get(selector); };
     const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form), $, isDemoPage, location: { hash: '', search: '' }, URLSearchParams,
       journey: { title: 'New trip', subtitle: '', dates: 'Tomorrow', days: [{}], photos: hasPhoto ? [{ id: 'photo' }] : [] },
       document: { body: { classList: { add() {} } } }, window: { JOURNEY_ATLAS_UTILS: globalThis.JOURNEY_ATLAS_UTILS },
@@ -535,10 +535,9 @@ test('the same introduction opens for real trips, samples and empty drafts; deep
     vm.runInContext(appFunction('renderIntroduction') + '\nrenderIntroduction()', context);
     assert.equal($('#trip-intro').hidden, false);
     assert.equal($('.atlas-shell').inert, true);
-    assert.match($('#trip-intro').innerHTML, hasPhoto ? /Explore the journey/ : /View days/);
-    assert.equal(($('#trip-intro').innerHTML.match(/<button\b/g)||[]).length,1, 'The opening has exactly one action');
-    assert.doesNotMatch($('#trip-intro').innerHTML, /id="intro-map"/);
-    if (!hasPhoto) assert.match($('#trip-intro').innerHTML, /A journey taking shape/);
+    assert.match($('#intro-relive').textContent, hasPhoto ? /Explore the journey/ : /View days/);
+    if (!hasPhoto) assert.match($('.intro-photo').innerHTML, /A journey taking shape/);
+    assert.equal($('.intro-scroll').scrollTop,0,'Each introduction starts at its beginning');
     for (const [hash, search] of [['#day=d1', ''], ['', '?photo=p1']]) {
       context.location = { hash, search };
       vm.runInContext('renderIntroduction()', context);
@@ -552,7 +551,7 @@ test('one opening action reaches the whole-trip map for reference, Heading East,
   const populated={...draft,places:[{id:'qa-stay',name:'A new stay',lng:139.8,lat:35.7}],days:draft.days.map(day=>({...day,placeId:'qa-stay'}))};
   for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo'),draft,populated]) {
     const nodes=new Map(), calls=[];
-    const $=selector=>{if(!nodes.has(selector))nodes.set(selector,{hidden:true,inert:false});return nodes.get(selector);};
+    const $=selector=>{if(!nodes.has(selector))nodes.set(selector,{hidden:true,inert:false,style:{setProperty(){}}});return nodes.get(selector);};
     const context=vm.createContext({journey,$,location:{hash:'',search:''},URLSearchParams,
       eventWord:form=>globalThis.JOURNEY_ATLAS_UTILS.eventWord(journey,form),
       window:{JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS},document:{body:{classList:{add(){},remove(){}}}},
@@ -562,9 +561,14 @@ test('one opening action reaches the whole-trip map for reference, Heading East,
       dayList:{querySelector:()=>({focus:()=>calls.push('day-list-focus')})}
     });
     vm.runInContext(appFunction('renderIntroduction')+'\n'+appFunction('dismissIntroduction')+'\nrenderIntroduction()',context);
-    const html=$('#trip-intro').innerHTML;
+    const html=renderJourneyPage(root,journey,{preview:true}).match(/<section id="trip-intro"[\s\S]*?<\/section>/)[0];
     assert.equal((html.match(/<button\b/g)||[]).length,1,journey.id);
     assert.doesNotMatch(html,/id="intro-map"/);
+    assert.match(html,/<div class="intro-scroll" tabindex="0" role="region" aria-label="Journey introduction details">[\s\S]*?<div class="intro-copy"><\/div>\s*<\/div>\s*<div class="intro-actions">/, 'The keyboard-scrollable content and action are siblings');
+    const longIntroduction='An independently authored introduction. '.repeat(200);
+    context.journey={...journey,subtitle:longIntroduction};
+    vm.runInContext('renderIntroduction()',context);
+    assert.ok($('.intro-copy').innerHTML.includes(globalThis.JOURNEY_ATLAS_UTILS.journeyPresentation(context.journey).introduction),'Long descriptions remain complete; empty drafts retain their deliberate fallback');
     $('#intro-relive').onclick();
     assert.equal($('#trip-intro').hidden,true);assert.equal($('.atlas-shell').inert,false);
     const mapped=globalThis.JOURNEY_ATLAS_UTILS.journeyPresentation(journey).hasMap;

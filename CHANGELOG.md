@@ -1,5 +1,13 @@
 # Changelog
 
+## 11 October 2026 — opening action always visible
+
+- Reserve a bottom action row in every journey introduction so long descriptions
+  cannot push Explore the journey off-screen. Keep complete copy scrollable,
+  with a full-width phone button and safe-area spacing.
+- Preserve desktop cover framing, keyboard scrolling and the single whole-trip
+  map entry (or the unmapped draft list fallback); update O06 and the workflow.
+
 ## 11 October 2026 — trip comment notifications
 
 - Add a top-right recent-comments bell and unread-number badges on photo

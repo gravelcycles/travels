@@ -2143,7 +2143,11 @@
     if(location.hash || new URLSearchParams(location.search).has('day') || new URLSearchParams(location.search).has('photo') || ['places','comments'].includes(new URLSearchParams(location.search).get('experience'))) { intro.hidden=true; return; }
     const {photo,position}=window.JOURNEY_ATLAS_UTILS.resolveCover(journey,journey.photos);
     const presentation=window.JOURNEY_ATLAS_UTILS.journeyPresentation(journey,orderedPhotos());
-    intro.innerHTML=`<div class="intro-photo" style="--cover-position:${position}">${photo?photoImageMarkup(photo,{eager:true,sizes:'(max-width: 900px) 100vw, 60vw'}):'<div class="intro-text-art">A journey taking shape</div>'}</div><div class="intro-copy"><span>${escapeHtml(journey.dates)} · ${journey.days.length} ${eventWord('plural')}</span><h1>${escapeHtml(journey.title)}</h1><p>${escapeHtml(presentation.introduction)}</p><div><button id="intro-relive" type="button">${presentation.entryLabel}</button></div></div>`;
+    $('.intro-photo').style.setProperty('--cover-position',position);
+    $('.intro-photo').innerHTML=photo?photoImageMarkup(photo,{eager:true,sizes:'(max-width: 900px) 100vw, 60vw'}):'<div class="intro-text-art">A journey taking shape</div>';
+    $('.intro-copy').innerHTML=`<span>${escapeHtml(journey.dates)} · ${journey.days.length} ${eventWord('plural')}</span><h1>${escapeHtml(journey.title)}</h1><p>${escapeHtml(presentation.introduction)}</p>`;
+    $('#intro-relive').textContent=presentation.entryLabel;
+    $('.intro-scroll').scrollTop=0;
     intro.hidden=false; document.body.classList.add('intro-open'); $('.atlas-shell').inert=true; $('.mobile-nav').inert=true;
     prepareProgressiveImages(intro);
     $('#intro-relive').onclick=()=>{dismissIntroduction();if(!presentation.hasMap){setMobileTab('route');dayList.querySelector('button')?.focus();}else{setMobileTab('map');fitRoute();}};

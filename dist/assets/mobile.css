@@ -127,7 +127,7 @@
  #mobile-day-picker { gap:8px; font-weight:600; }
  #mobile-day-picker .ui-icon { width:14px; }
  #mobile-day-picker[aria-expanded="true"] .ui-icon { transform:rotate(180deg); }
- .mobile-day-summary button,.intro-copy button { border-radius:24px; }
+ .mobile-day-summary button,.intro-actions button { border-radius:24px; }
  .mobile-photo-header { grid-template-columns:minmax(80px,1fr) auto minmax(80px,1fr); gap:4px; }
  .mobile-photo-header button { border-radius:50%; background:#ffffff0d; }
  #mobile-photo-back { border-radius:24px; padding:7px 11px 7px 5px; justify-self:start; font-size:14px; white-space:nowrap; background:transparent; max-width:100%; min-width:0; }

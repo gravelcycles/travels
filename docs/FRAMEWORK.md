@@ -27,7 +27,7 @@ trip; no application rewrite or feature-copy exercise is needed tomorrow.
 | --- | --- | --- |
 | Real trips and local draft previews | One `journey.html` template | Retained as the single journey page template |
 | Sample page | Separately maintained 215-line HTML document | Generated from the same template as real trips |
-| Cover introduction | Explicitly skipped for demos in `app.js` | Same introduction and single whole-trip-map entry for demos, real trips, and drafts; unmapped drafts enter the day/stop list |
+| Cover introduction | Explicitly skipped for demos in `app.js` | Same introduction and single whole-trip-map entry for demos, real trips, and drafts; the template separates scrollable content from the persistent action row; unmapped drafts enter the day/stop list |
 | Catalog | Build read and rewrote the existing output HTML | Generated from `content/templates/catalog.html` |
 | Demo calendars | All four lacked machine dates/time zones; the rail example skipped calendar days | Complete dated calendars and time zones usable by Studio and photo intake |
 | Editorial examples | No explicit cover configuration or curated Replay example | All demos have cover choices; saved chapters remain compatible, but full-trip Replay is disabled (O09) |
