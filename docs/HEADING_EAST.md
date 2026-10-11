@@ -31,6 +31,14 @@ comment checks. Generated data matches every saved photo override, includes
 119 located photos, and excludes the trashed photo from both the public gallery
 and comments index.
 
+Publication verified: release `f30c96f` passed
+[GitHub Pages deployment](https://github.com/gravelcycles/travels/actions/runs/38137058086).
+A fresh public journey page and both photo-data bundles were fetched after
+completion; their SHA-256 hashes match the release output, all 119 visible
+photos have locations, and the trashed ID is absent. Private Worker version
+`fbf39667-85d1-498b-8244-990752fb8c3a` was deployed before Pages with the reduced
+comments index; anonymous comments access still returns HTTP 401.
+
 ## Second photo batch — 11 October 2026
 
 The owner requested intake of `photos/euro-eastbound-2/` and a list of photos

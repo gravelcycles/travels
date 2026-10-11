@@ -39,8 +39,10 @@ Later on 11 October the owner completed Studio location review and requested
 publication. All 119 visible photos now have valid pins; `IMG_3388.HEIC` is in
 recoverable Trash. This resolves all 75 second-batch and five first-batch missing
 locations. The saved pin/label/frame edits and generated comments eligibility
-index are prepared for release. All 518 tests, the production build and
-Worker runtime checks passed; deployment verification is pending. See the [current photo review](docs/HEADING_EAST.md#owner-reviewed-photo-locations--11-october-2026).
+index are published in `f30c96f`. All 518 tests, the production build and
+Worker runtime checks passed. Pages succeeded; fresh public assets match the
+release and contain all 119 located photos. The updated private Worker was
+deployed before Pages and still rejects anonymous access. See the [current photo review](docs/HEADING_EAST.md#owner-reviewed-photo-locations--11-october-2026).
 
 ## UX flow review implementation — 11 October 2026
 
