@@ -52,6 +52,12 @@ Published in `e58f939`; [Pages deployment](https://github.com/gravelcycles/trave
 succeeded, and freshly fetched public HTML plus all five changed browser assets
 match the tested release byte-for-byte.
 
+The compact-row follow-up passed all 524 tests, the production build and desktop/
+320/390px browser checks, including synchronized filtering from either location.
+Published as `6073b0c`; [Pages deployment](https://github.com/gravelcycles/travels/actions/runs/38150899171)
+succeeded, and fresh public Heading East HTML and shared CSS match the tested
+release byte-for-byte.
+
 ## Owner-reviewed photo locations — 11 October 2026
 
 After editing the locations in Studio, the owner requested **“ok i updated all
