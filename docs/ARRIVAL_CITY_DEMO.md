@@ -130,3 +130,9 @@ city draft. Desktop, 390/320 px portrait and 844 × 390 landscape retained the
 full line and marker; ordinary playback, skip and rapid navigation were checked.
 The discovered missing-layer error and delayed full-stroke redraw have focused
 regressions. Synthetic fixtures and diagnostics remain unpublished.
+
+Published as `ad55da8`; [Pages deployment](https://github.com/gravelcycles/travels/actions/runs/38151311374)
+succeeded. Fresh public target/reference/demo pages and the three changed
+runtime assets match the tested local production build. The live browser
+auth redirect was blocked by automatic approval review; public HTTP verification
+accessed no private photos.

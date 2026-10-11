@@ -198,9 +198,13 @@ same north–south leg on desktop and 390/320 px phones, landscape, the wide Alp
 demo route, reference multi-leg routes and an independent populated city draft.
 Skip/rapid navigation and ordinary timed playback were checked; the final phone
 arrival shows the departing circle clear of labels without false map errors.
-The release includes the latest opening, day filters and mobile camera-roll
-changes. Next: publish the tested integration and verify Pages/public output.
-Synthetic fixtures remain local only.
+Deployed as `ad55da8`, including the latest opening, day filters, mobile
+camera roll and city stories. [Pages run 38151311374](https://github.com/gravelcycles/travels/actions/runs/38151311374)
+succeeded. Fresh public target/reference/demo HTML and all three changed runtime
+assets match the tested build byte-for-byte. Desktop/phone visual checks used
+the local production build; automatic approval review blocked the live browser
+auth redirect, so public verification used HTTP without private-photo access.
+No implementation or deployment work remains; synthetic fixtures stay local.
 
 ## Arrival → city release — 10 October 2026
 
