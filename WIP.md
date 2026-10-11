@@ -42,12 +42,14 @@ HTML/assets; no media/content changes are required.
 Authorized: one Explore the journey button opening the whole-trip map; remove
 the secondary map action. Replace Heading East's subtitle with the owner's exact
 paragraph beginning “After a summer in Switzerland”. Current guidance is O06
-and [the trip record](docs/HEADING_EAST.md). Work is isolated on
-`codex/intro-whole-trip-map`; concurrent edits remain in the original checkout.
+and [the trip record](docs/HEADING_EAST.md). Implemented in `f488be8` and deployed as `841bc0f`; concurrent edits remain
+in the original checkout.
 Implementation and shared introduction regressions pass all **524 tests** and
 the production build. Heading East desktop/390px checks confirm the exact copy,
 one button and whole-trip map entry; reference/demo/populated-draft checks
-cover inheritance. Next: integrate latest main, deploy and verify public content.
+cover inheritance. [Pages run 38150354580](https://github.com/gravelcycles/travels/actions/runs/38150354580)
+succeeded. Fresh public Heading East HTML and the opening runtime match the
+tested release byte-for-byte. No implementation or delivery work remains.
 
 ## Heading East day visibility — 11 October 2026
 
