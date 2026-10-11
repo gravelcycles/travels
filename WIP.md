@@ -27,8 +27,10 @@ draft; synchronized desktop/390px controls, 320px and landscape, filtered
 navigation and complete incoming routes. Private images were omitted in local
 map QA. Current main, including Replay disablement and anonymous credential
 documentation, is integrated. The merged browser check confirms both filters
-and absent full-trip Replay. Next: deploy and verify a fresh public page; public
-delivery remains pending.
+and absent full-trip Replay. Deployed as `e58f939` via successful
+[Pages run 38149951215](https://github.com/gravelcycles/travels/actions/runs/38149951215).
+Fresh public Heading East HTML and all five changed browser assets match the
+release byte-for-byte. No filter implementation or delivery work remains.
 
 ## Full-trip Replay disabled — 11 October 2026
 
