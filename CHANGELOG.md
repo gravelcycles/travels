@@ -27,6 +27,15 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — steady sidebar photo hover
+
+- Keep the selected sidebar photo’s blue frame visible on hover by correcting
+  the image button’s CSS priority over the general pale toolbar hover style.
+- Preserve photo selection, fullscreen activation, image reveals and keyboard
+  focus; carry the no-flash requirement into O03 and the photo workflow.
+- Validation: all 520 tests and production build pass; browser checks cover the
+  reference, demo and a fresh city draft with portrait/landscape photos.
+
 ## 11 October 2026 — disable full-trip Replay
 
 - Remove desktop/phone Replay entry and paused-return actions across the shared
