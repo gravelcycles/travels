@@ -4,6 +4,9 @@ Read these with [the standing owner decisions](docs/OWNER_DECISIONS.md).
 They apply to new atlases and content intake as well as shared implementation.
 Specific current decisions and their supersessions are recorded there.
 
+- Keep the docs as a live artifact for future agents. Capturing each new owner
+  correction and reconciling superseded guidance is part of the same task, even
+  for a small follow-up. Follow [the ongoing update procedure](docs/OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task).
 - Build each feature once in the shared framework; trips are data instances.
   The guiding target is 99% shared behavior. Switzerland–Italy, samples, and
   fresh drafts use the same page template and runtime. See

@@ -536,12 +536,16 @@ For each new journey, the agent should:
    and a fresh empty-then-populated draft using independent fixture content.
 7. Review the Git diff for private originals, sensitive metadata, generated
    binaries, or unintended changes.
-8. Fetch/integrate remote main, run `npm test` and `npm run build`, commit source
-   and regenerated output, push, verify GitHub Pages and a fresh public URL.
-9. Update trip provenance, the applicable current workflow and feature inventory;
-   capture reusable corrections in `docs/OWNER_DECISIONS.md`. Update WIP/TODO for
-   changed status and CHANGELOG for the delivered change. Reconcile conflicting
-   entry points; do not make another historical handoff the only record.
+8. Complete the [live-documentation check](docs/OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task)
+   before publishing. Capture corrections throughout intake/review, including
+   later follow-ups, in trip provenance or the shared owner decision as scoped.
+   Update the applicable current workflow and feature inventory; reconcile
+   conflicting entry points. Update WIP/TODO for changed status and CHANGELOG
+   for the change. Docs and implementation belong in the same delivery.
+9. Fetch/integrate remote main, reread affected guidance changed by concurrent
+   work, run `npm test` and `npm run build`, commit source, current docs and
+   regenerated output, push, verify GitHub Pages and a fresh public URL.
+   Record the observed delivery result without claiming unfinished work is live.
 
 ## New-atlas inheritance checklist
 
@@ -596,7 +600,8 @@ Use local labelled fixtures when real media is unavailable; never publish them.
 - Desktop/mobile and deployed-page checks pass without browser errors.
 - All sources, limitations, and remaining review items are in Markdown.
 - Applicable inheritance checks above have observed results, and reusable
-  corrections are in current guidance rather than only chat/history.
+  corrections and scoped trip refinements are in their current records. The
+  live-documentation check includes all follow-ups, not only the initial brief.
 
 ## Travelers taking different routes
 

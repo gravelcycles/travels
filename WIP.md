@@ -9,6 +9,13 @@ to the public site. [TODO.md](TODO.md) remains the backlog;
 [docs/FEATURES.md](docs/FEATURES.md) describes implemented capabilities;
 [docs/FRAMEWORK.md](docs/FRAMEWORK.md) defines the shared-code contract.
 
+Maintain this checkpoint when work or authorization changes. Follow the
+[live-documentation procedure](docs/OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task):
+capture accepted corrections in their canonical home during the task; if work
+is unfinished, record the exact next action, source/branch state and missing
+checks here. A completed audit does not end this duty. New or resumed tasks
+must read current files and reconcile any later corrections before continuing.
+
 ## UX flow review implementation — 11 October 2026
 
 The owner authorized all U01–U16 findings and direct one-click fullscreen, then
@@ -41,6 +48,13 @@ the owner-decision/supersession record and a populated-new-atlas acceptance
 checklist replace reliance on historical handoffs. Current quickstarts now agree
 on blank photo copy, explicit photo/place links, the existing photo sidebar,
 map-only Replay, compact travel details, Trash and private media publication.
+
+The owner's later 11 October clarification makes ongoing documentation upkeep
+a standing priority (O16). AGENTS and every reusable prompt require the same
+read/update/check loop. The journey and deployment workflows now place current
+doc updates before publication. The latest photo-entry correction remains in
+O03/O07; Heading East's exact venue images and bakery-counter follow-up remain
+in its scoped [image record](docs/HEADING_EAST.md#place-image-refresh--11-october-2026).
 
 Already delivered runtime corrections through `a69515f`: restored and enlarged
 clickable sidebar photos with a stable-height frame; stable location-based map

@@ -6,9 +6,17 @@ when a prompt omits a detail. Read [OWNER_DECISIONS.md](OWNER_DECISIONS.md) and
 The user supplies facts and editorial choices;
 the agent operates Studio, commands, QA and publishing.
 
+Every brief also includes maintaining the docs as a live artifact. Follow the
+[correction update procedure](OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task):
+capture follow-up direction during the task, update its shared or trip-specific
+home, reconcile superseded instructions and complete the documentation check
+before delivery. A copied prompt is an entry point into current guidance, not
+a frozen version of it. Include this obligation when writing any new brief.
+
 ## Start a new trip
 
-> Follow AGENTS.md's reading order, including docs/OWNER_DECISIONS.md,
+> Follow the current AGENTS.md's reading order and live-documentation completion
+> rule, including docs/OWNER_DECISIONS.md,
 > PRINCIPLES.md, the framework/feature guides and JOURNEY_WORKFLOW.md.
 > Create a new trip named [title], from [start date] through [end date], using
 > time zone [IANA zone] and stable URL name [slug]. Use Studio’s + New trip or
@@ -45,7 +53,8 @@ fallback is not evidence about where the traveler was.
 
 ## Add or change a feature
 
-> Follow AGENTS.md's reading order and identify the OWNER_DECISIONS requirements
+> Follow the current AGENTS.md's reading order and live-documentation completion
+> rule. Identify the OWNER_DECISIONS requirements
 > that this change must preserve. Implement [requested
 > behavior] in the shared template or runtime so existing journeys, samples,
 > and newly created trips inherit it. First locate the common implementation
@@ -64,7 +73,8 @@ fallback is not evidence about where the traveler was.
 
 ## Correct one trip’s content
 
-> Apply [correction] to [journey ID] in its journey/route/photo sources or
+> Follow the current AGENTS.md's reading order and live-documentation completion
+> rule. Apply [correction] to [journey ID] in its journey/route/photo sources or
 > editorial overrides. Preserve stable IDs and reviewed unrelated content.
 > Use the shared authoring/build flow; no trip-specific code path. If the
 > correction reveals a framework bug, fix the reusable behavior and cover a
@@ -76,7 +86,8 @@ fallback is not evidence about where the traveler was.
 
 ## Continue the framework cleanup
 
-> Read the audit and staged plan in docs/FRAMEWORK.md and W04/W05 in TODO.md.
+> Follow the current AGENTS.md's reading order and live-documentation completion
+> rule. Read the audit and staged plan in docs/FRAMEWORK.md and W04/W05 in TODO.md.
 > Take only [named stage/module] as the current task. Preserve public URLs,
 > journey schemas, private assets and behavior. Reuse existing module
 > boundaries; do not replace the working app just to adopt a framework.
@@ -86,7 +97,8 @@ fallback is not evidence about where the traveler was.
 
 ## Import photos or curated places
 
-> Follow AGENTS.md, docs/OWNER_DECISIONS.md and the photo/Places workflows before
+> Follow the current AGENTS.md's reading order and live-documentation completion
+> rule, docs/OWNER_DECISIONS.md and the photo/Places workflows before
 > touching [journey]'s content. Inventory supplied files/links and preserve saved
 > edits. Use reviewed private derivatives, actual capture times and reviewed pins;
 > leave missing GPS unset and photo copy blank unless the traveler supplied it.

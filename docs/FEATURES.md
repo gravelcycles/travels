@@ -12,6 +12,10 @@ requirements and rejected/superseded choices. Complete the
 [new-atlas checks](../JOURNEY_WORKFLOW.md#new-atlas-inheritance-checklist) for
 content quality as well as shared controls. See the
 [continuity audit](ATLAS_CONTINUITY_AUDIT_2026-10-11.md) for the documentation gaps.
+This inventory is maintained with each relevant change. O16 requires agents to
+capture new corrections during the task and reconcile current docs before
+delivery; use the [live update procedure](OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task).
+Accepted work still pending belongs in WIP, not among delivered capabilities.
 
 Shared [Arrival → city](ARRIVAL_CITY_DEMO.md) playback traces the incoming
 route with a plain orange tracking circle at display cadence after a contextual pullback and a

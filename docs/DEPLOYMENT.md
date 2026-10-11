@@ -1,5 +1,12 @@
 # GitHub Pages deployment and recovery
 
+Before committing, complete the
+[live-documentation check](OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task).
+Include new corrections and their current guidance with the implementation;
+after integrating remote `main`, reread and reconcile any concurrent guidance
+changes relevant to the task. Do not leave documentation updates until after
+publication or require a separate owner request.
+
 Run `npm test` and `npm run build`, commit regenerated `dist/` output, fetch and
 integrate the latest remote `main`, then push without force. The workflow builds
 and validates the exact commit, checks `git diff --exit-code -- dist/`, uploads

@@ -139,7 +139,10 @@ strings. Studio serves live assets with no-store caching.
 6. Update [FEATURES.md](FEATURES.md), the relevant workflow and tests in the same
    change. Capture reusable owner corrections and superseded choices in
    [OWNER_DECISIONS.md](OWNER_DECISIONS.md); reconcile contrary current guidance.
-   Use [AGENT_PROMPTS.md](AGENT_PROMPTS.md) to brief the next agent.
+   Its [live update procedure](OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task)
+   applies during the task and before delivery, including short follow-ups.
+   Use [AGENT_PROMPTS.md](AGENT_PROMPTS.md) to brief the next agent with links
+   to current guidance and any unfinished work, not a frozen copy of the rules.
 
 A custom fourteen-chapter Replay is trip data. Replay playback, camera movement
 and controls are shared behavior; Replay presents maps and stories without photos.

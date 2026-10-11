@@ -1,5 +1,10 @@
 # Atlas continuity audit — 11 October 2026
 
+This is the original audit snapshot. Subsequent corrections and their ongoing
+maintenance belong in the live [owner-decision record](OWNER_DECISIONS.md),
+including O16's [update procedure](OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task).
+Completing this audit does not freeze guidance or replace that process.
+
 The gap was larger than feature inheritance. Shared code was largely in place,
 but editorial decisions, interaction quality and reversals were not consistently
 part of the required new-trip process. A generic shared renderer could therefore

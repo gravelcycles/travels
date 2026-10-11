@@ -1,12 +1,15 @@
 # Owner decisions that every atlas inherits
 
-Reconciled 11 October 2026, including the later photo-entry and map-popup
-clarification, against available project conversations, committed corrections
-and current shared behavior. Read this before creating a trip,
+This is the live owner-decision record. Initially reconciled 11 October 2026
+against available project conversations and committed corrections; maintained
+with every subsequent correction, including the later photo-entry, map-popup
+and documentation-lifecycle clarifications. Read this before creating a trip,
 importing content, changing UX or resuming a workstream. These are product and
 editorial requirements, not optional polish. [AGENTS.md](../AGENTS.md) defines
 the reading order and update process; [the audit](ATLAS_CONTINUITY_AUDIT_2026-10-11.md)
-records the evidence and gaps. Technical contracts remain in the linked workflows.
+records the evidence and gaps at that audit's checkpoint. Technical contracts
+remain in the linked workflows. The update procedure below is ongoing; the
+completed audit does not freeze these decisions or finish their maintenance.
 
 ## What carries forward
 
@@ -43,6 +46,7 @@ choice supersedes which; ask only if a consequential ambiguity remains.
 | O13 · Trip structure and empty data | Calendar days and city stays are supported by the same viewer. Preserve confirmed dates and stable IDs; TBD is itinerary uncertainty, separate from route accuracy. Videos belong in the existing gallery/player; group travel belongs in the existing day details and Studio. | Choose the event model from the request; test actual city-stay/transfer/TBD inputs when relevant. Hide viewer Places actions only when the whole trip has no curated places; Studio still adds the first one. Do not hide capabilities merely because a trip is new. |
 | O14 · Media and access | Originals stay private; publish optimized, metadata-stripped derivatives through the existing private Cloudflare pipeline. Photo passwords are shared across the site with remembered access, not per-trip accounts/SSO. Keep services free unless the owner changes that constraint. | Count all supplied stills, including bulk DNG imports; review GPS/date matching, checksum-verify uploads, use resumable single-file transfers on poor Wi-Fi. Show non-trashed photos while preserving deletions. Never recreate retired public photo Releases. [Photo workflow](../PHOTO_WORKFLOW.md), [service operations](COMMUNITY_OPERATIONS.md). |
 | O15 · Delivery and proposals | The agent operates tools, Studio, assets, tests, Git and deployment. Completed authorized work deploys by default after integrating current main and verifying Pages/public content. A request for ideas or a local demo remains that scope until implementation/publication is authorized. | Retain existing authorization; do not ask the owner to run commands or approve already approved work again. Preserve other work, local prototypes and unpublished media. A commit/build alone is not a deployment receipt. [Deployment](DEPLOYMENT.md), [WIP](../WIP.md). |
+| O16 · Living documentation | Every agent reads and maintains the current docs as part of the task. New corrections, preferences and follow-up clarifications become durable guidance in the same change, without another owner request. This is a standing owner priority, explicitly reaffirmed 11 October 2026. | Before delivery or handoff, reconcile all new owner direction with the correct shared decision or trip record, replace superseded current guidance, and record any implementation still pending. A fresh task must be able to continue from the repository without the previous chat. Follow the [update procedure](#record-the-next-correction-before-closing-the-task). |
 
 “Apple-like” means these observable qualities: stable layout, clear hierarchy,
 large useful imagery, restrained copy, continuous geographic context, responsive
@@ -113,22 +117,71 @@ explicitly linked Places viewer entry are not redefined by this clarification.
   boundaries, saved venues and unresolved five photo pins remain in
   [its intake record](HEADING_EAST.md). A request for light factual venue
   descriptions does not authorize personal photo captions or invented visits.
+  Its [11 October image selection](HEADING_EAST.md#place-image-refresh--11-october-2026)
+  preserves the exact Barbès/Abi’s photos and the food/atmosphere mix with bakery
+  counters for the remaining places. The requested counts and replacements are
+  scoped to that selection, not a new global three-image requirement.
 - Shared branding follows [BRANDING.md](BRANDING.md); an old logo option or
   demo screenshot is not authority to replace the reviewed artwork.
 
 ## Record the next correction before closing the task
 
-1. Identify the decision above, or add one if the correction is new. Record its
-   date, scope, intended behavior and the older choice it replaces. For a trip
-   fact, update that trip's source/provenance instead of creating a global rule.
-2. Fix the source behavior/data when that is the task. Update the applicable
-   workflow and [feature inventory](FEATURES.md) in the same change. Search
-   README, prompts, WIP and handoff entry points for contrary instructions;
-   replace current guidance and mark historical alternatives as superseded.
-3. Add a behavior regression when implementation changes warrant one, and
-   compare the affected flow with the reference, a demo and a fresh draft
-   populated with independent fixtures. Include the actual target trip/data
-   shape. Template/asset equality alone cannot verify UX or content quality.
-4. Record the checks and unresolved work. Update WIP/TODO only where status
-   changes; append a dated changelog entry. Do not append a second “current”
-   rule to an old handoff and leave the operative workflow contradictory.
+Owner direction, 11 October 2026: “any new corrections are also carried forward”
+and new chats must know how to keep the docs “as a live artifact for future
+agents.” Apply this to every task, not just documentation audits or new atlases.
+
+### During the task
+
+1. Read the current checkout's guidance in [AGENTS.md](../AGENTS.md) order.
+   Identify the applicable decision IDs and trip record. On resumption or after
+   integrating another task's changes, reread relevant changed guidance; a saved
+   prompt or chat summary may predate the latest correction.
+2. Capture durable owner direction when it arrives, before moving on to dependent
+   work. Small follow-ups count: a bakery-counter refinement and a later change
+   to the fullscreen boundary both need recording. Do not wait for another
+   audit, another atlas or an instruction to “update the docs.” If interrupted,
+   leave the accepted direction and remaining action in WIP before handing off.
+3. Update the existing decision or trip record in place. Include the date,
+   source (a short faithful owner quote or dated task/commit reference), scope,
+   requested outcome, what it supersedes and an observable acceptance check.
+   Add a decision ID only for a genuinely new shared requirement; preserve
+   stable existing IDs. Keep proposed/inferred choices separate from accepted
+   direction. A request scoped to one trip does not silently become universal.
+4. Use the ownership map below. Keep the full rule in its owning document and
+   link from entry points. Search the affected terms and earlier behavior with
+   `rg` across current Markdown, prompts and historical entry points. Replace
+   conflicting current instructions; retain useful history with an explicit
+   supersession and link. Keep raw transcripts and private attachments out of
+   the repository.
+
+| What changed | Durable home | Other updates when affected |
+| --- | --- | --- |
+| Shared UX, editorial or operating preference | The existing decision here, or a new stable decision ID | Relevant workflow; FEATURES for implemented behavior; PRINCIPLES only if a general principle changed |
+| Trip fact, selected image, itinerary or scoped editorial choice | Trip source/overrides and its intake/provenance record | Attribution and trip status as needed; no global rule for a one-trip choice |
+| Technical contract or authoring/delivery process | FRAMEWORK or the applicable workflow | FEATURES when capability changes; AGENTS/AGENT_PROMPTS/README when entry instructions change |
+| Accepted work still unfinished or a task handoff | WIP: accepted direction, canonical links, exact next action, source/branch state and checks still needed | TODO for remaining work; label required behavior separately from implemented behavior |
+| Completed change and evidence | Dated CHANGELOG entry and relevant delivery/provenance notes | Link to the current rule; historical records never become a second current specification |
+
+### Before delivery or handoff
+
+- Revisit all owner messages since the last documentation checkpoint, including
+  follow-ups after a prior final response. Every durable change must have a
+  current home above. If no rule changed, retain the existing rule; do not
+  manufacture an entry or rewrite unaffected docs for a status reply.
+- Read the resulting guidance as a future agent without this chat: it must say
+  what to preserve/change, why, where the source lives, how to check it and what
+  remains unfinished. An accepted requirement is not proof of implementation;
+  record observed checks and limitations honestly.
+- Fix the authorized behavior/data, and add meaningful behavior regressions when
+  warranted. For shared behavior changes, check the reference, a demo and an
+  independently populated fresh draft, including the actual target event model.
+  Markdown string tests cannot prove agents followed the rule or UX is correct.
+- Complete the documentation edits before the implementation commit and
+  publication, not as a later cleanup task. Include source, relevant current
+  guidance and generated output together. After integrating remote main,
+  reconcile concurrent corrections as well as code; then follow the existing
+  test/build/deployment checks. A docs-only task needs no unrelated runtime edits.
+- Briefly identify the updated decision/workflow or trip record in the final
+  response. For unfinished work, leave a usable WIP checkpoint and report the
+  limitation rather than declaring the correction complete. Routine maintenance
+  within the authorized task does not require separate permission.

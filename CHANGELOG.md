@@ -4,6 +4,21 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — keep agent guidance live after every correction
+
+- Make ongoing documentation upkeep a standing owner priority and a task
+  completion requirement, including small follow-ups and post-release reversals.
+- Give new and resumed tasks a current-file reading rule and one canonical
+  capture/update/check procedure with document ownership, scoped decisions,
+  supersession, implementation status and actionable unfinished-work handoffs.
+- Require current documentation in the same delivery as implementation; move
+  the journey workflow's doc step before publication and carry this obligation
+  into every reusable agent brief. Keep the latest shared photo-entry correction
+  and Heading East's image/bakery choices in their existing scoped records.
+- Validation: all 518 tests pass; the production build leaves checked-in public
+  output unchanged. Added Markdown links and heading targets resolve. No runtime
+  or trip content changed in this documentation update.
+
 ## 11 October 2026 — refresh Heading East place photographs
 
 - Use the owner's exact Barbès and Abi’s images and curate three images for

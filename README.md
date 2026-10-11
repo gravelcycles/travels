@@ -13,6 +13,13 @@ Start with [AGENTS.md](AGENTS.md),
 guides and the relevant [WIP.md](WIP.md) entry. Prior corrections apply to
 content imports and new atlases as well as code changes.
 
+These are live documents. Every agent must capture new owner direction and
+reconcile the current guidance in the same change, before delivery or handoff;
+the owner should not have to request another docs audit. Use the
+[correction update procedure](docs/OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task)
+for where each decision belongs and the final continuity check. Read from the
+current checkout; an earlier chat summary or copied prompt may be stale.
+
 Trips are instances of one shared framework. New features belong in its shared
 template or runtime and carry into existing trips, samples, and new drafts.
 Switzerland–Italy is the reference experience; starting another trip adds data,

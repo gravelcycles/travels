@@ -15,6 +15,10 @@ startup instructions. All commands, servers, QA, commits, pushes, and
 deployment checks are agent-owned; never ask the user to run npm or terminal
 commands.
 
+Every task includes [live documentation maintenance](docs/OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task)
+before delivery or handoff. The completed audit below is a checkpoint, not a
+completed obligation to capture future corrections.
+
 ## Independent project workstreams
 
 - [x] **Atlas continuity guidance — 11 October 2026.** Audit available owner

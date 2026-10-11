@@ -1,5 +1,13 @@
 # Start every task here
 
+- Keeping the docs live is a standing owner priority (11 October 2026).
+  Every agent owns both reading and maintaining them. A correction is not
+  complete until the applicable current guidance is updated in the same change;
+  the owner must not have to request a separate documentation pass.
+- At each new task or resumption, read this file and the current guidance from
+  the working checkout. Do not rely only on an injected instruction snapshot,
+  chat memory, a task summary or an older branch. After integrating concurrent
+  work, reread any changed guidance relevant to the task.
 - Read `docs/OWNER_DECISIONS.md` and `PRINCIPLES.md` before any content intake,
   trip creation, feature work or UX change. Prior corrections and style choices
   carry forward to every atlas, not only to the trip where they were discovered.
@@ -24,12 +32,17 @@
   image loading and creator recovery flows when extending them. Use the concrete
   acceptance checks in `docs/OWNER_DECISIONS.md`, not a new interpretation of
   "Apple-like" on each task.
-- For each correction, classify it as a shared requirement or a trip fact.
-  Update `docs/OWNER_DECISIONS.md` for reusable decisions (date, scope, behavior,
-  superseded choice); keep trip-specific facts in that trip's sources/provenance.
-  Update the applicable workflow and feature inventory in the same change.
-  Search README, prompts, WIP and historical entry points for contrary advice;
-  replace current instructions and explicitly mark superseded history.
+- Capture each new correction, preference, rejection and clarification as it
+  arrives, including short follow-ups and reversals after an earlier release.
+  Follow `docs/OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task`
+  for scope, source, supersession, documentation ownership and completion checks.
+  Update the existing rule in place; keep trip-specific facts in trip sources
+  and provenance. Chat, a changelog or a completed audit alone is not the record.
+- Before a handoff or final response, check all owner messages since the last
+  checkpoint against the current docs. Record unfinished implementation in
+  `WIP.md` with the accepted direction, exact next action and verification state;
+  distinguish required behavior from what is actually delivered. Keep the docs
+  concise and linked rather than copying the same rule into every Markdown file.
 - Before completing a new trip or content import, run the inheritance checklist
   in `JOURNEY_WORKFLOW.md`. An empty draft or identical control IDs cannot prove
   the populated experience is correct. Include the actual target trip/event
@@ -76,6 +89,9 @@
 
 # Delivery
 
+- Complete the live-documentation check before committing/publishing. Include
+  the correction's current guidance with its implementation, then report the
+  updated decision/workflow or trip record briefly in the delivery summary.
 - Deploy completed user-requested changes by default after the appropriate
   checks pass. The owner explicitly requested this standing preference on
   9 September 2026; a local preview alone does not complete delivery.
