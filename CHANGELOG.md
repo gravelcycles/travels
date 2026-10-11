@@ -1,5 +1,12 @@
 # Changelog
 
+## 11 October 2026 — Heading East city stories
+
+- Publish the owner's seven saved city descriptions, from Luzern through
+  Prague, preserving their exact wording and blank optional taglines.
+- Update the trip record so future edits preserve the authored stories instead
+  of treating those stops as deliberately blank. Shared behavior is unchanged.
+
 ## 11 October 2026 — Compact day visibility row
 
 - Place the three day-visibility toggles in one horizontal row in the Days/Stops

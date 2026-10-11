@@ -2,8 +2,8 @@
 
 Intake and research: 8 October 2026. The owner confirmed 2026 and corrected the
 Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 October.
-Each city is one event. Taglines and stories are deliberately empty; the first
-photo intake is recorded below.
+Each city is one event. Taglines remain blank; the owner added the first seven
+city stories in Studio on 11 October. The photo intake is recorded below.
 
 ## Owner-supplied opening description — 11 October 2026
 
@@ -51,6 +51,31 @@ remains disabled under O09. Private images were omitted in local map QA.
 Published in `e58f939`; [Pages deployment](https://github.com/gravelcycles/travels/actions/runs/38149951215)
 succeeded, and freshly fetched public HTML plus all five changed browser assets
 match the tested release byte-for-byte.
+
+The compact-row follow-up passed all 524 tests, the production build and desktop/
+320/390px browser checks, including synchronized filtering from either location.
+Published as `6073b0c`; [Pages deployment](https://github.com/gravelcycles/travels/actions/runs/38150899171)
+succeeded, and fresh public Heading East HTML and shared CSS match the tested
+release byte-for-byte.
+
+## Owner-written city stories — 11 October 2026
+
+The owner saved descriptions in Studio and requested their publication:
+“ok saved some chagnes pls publish them. mostly content changes”. Seven
+city stories now live in `content/day-overrides.json`: Luzern, Freiburg,
+Hamburg, Köln, Düsseldorf, Berlin and Prague. Preserve the saved wording
+exactly, including its informal voice; this supersedes the earlier blank-story
+state for those stops. The owner's blank taglines and all later stop stories
+remain blank. Existing date labels and city titles are retained.
+
+This is a content-only update through the shared story renderer. Photo
+locations, Trash, assets, routes, saved places and the opening description
+retain their existing sources. No image upload or Worker change is needed.
+
+Validation after integrating current main: all **539 tests passed** and the
+production build succeeded. Each
+of the seven generated day overrides matches the owner-saved source exactly;
+all other day overrides remain unchanged.
 
 ## Owner-reviewed photo locations — 11 October 2026
 
