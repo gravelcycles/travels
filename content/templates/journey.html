@@ -70,10 +70,10 @@
         </div>
         <fieldset class="planning-filter" id="planning-filter" hidden>
           <legend class="visually-hidden" data-event-copy="Show days">Show days</legend>
-          <label><input type="checkbox" id="show-past" data-planning-category="past" checked><span>Past</span><small data-planning-count="past"></small></label>
-          <label><input type="checkbox" id="show-locked" data-planning-category="locked" checked><span>Future locked in</span><small data-planning-count="locked"></small></label>
-          <label><input type="checkbox" id="show-tbd" data-planning-category="tbd" checked><span>Future TBD</span><small data-planning-count="tbd"></small></label>
-          <p>Past includes today and ongoing stays.</p>
+          <label title="Past includes today and ongoing stays"><input type="checkbox" id="show-past" aria-describedby="planning-help" data-planning-category="past" checked><span>Past</span><small data-planning-count="past"></small></label>
+          <label><input type="checkbox" id="show-locked" data-planning-category="locked" checked><span><span class="visually-hidden">Future </span>Locked in</span><small data-planning-count="locked"></small></label>
+          <label><input type="checkbox" id="show-tbd" data-planning-category="tbd" checked><span><span class="visually-hidden">Future </span>TBD</span><small data-planning-count="tbd"></small></label>
+          <p class="visually-hidden" id="planning-help">Past includes today and ongoing stays.</p>
         </fieldset>
         <div class="day-list" id="day-list"></div>
         <nav id="mobile-journey-actions" class="mobile-journey-actions" aria-label="Explore the journey">
@@ -105,10 +105,10 @@
           <summary id="map-planning-summary">Filter days · All</summary>
           <fieldset class="planning-filter">
             <legend class="visually-hidden" data-event-copy="Show days on the map">Show days on the map</legend>
-          <label><input type="checkbox" id="map-show-past" data-planning-category="past" checked><span>Past</span><small data-planning-count="past"></small></label>
-          <label><input type="checkbox" id="map-show-locked" data-planning-category="locked" checked><span>Future locked in</span><small data-planning-count="locked"></small></label>
-          <label><input type="checkbox" id="map-show-tbd" data-planning-category="tbd" checked><span>Future TBD</span><small data-planning-count="tbd"></small></label>
-            <p>Past includes today and ongoing stays.</p>
+          <label title="Past includes today and ongoing stays"><input type="checkbox" id="map-show-past" aria-describedby="map-planning-help" data-planning-category="past" checked><span>Past</span><small data-planning-count="past"></small></label>
+          <label><input type="checkbox" id="map-show-locked" data-planning-category="locked" checked><span><span class="visually-hidden">Future </span>Locked in</span><small data-planning-count="locked"></small></label>
+          <label><input type="checkbox" id="map-show-tbd" data-planning-category="tbd" checked><span><span class="visually-hidden">Future </span>TBD</span><small data-planning-count="tbd"></small></label>
+            <p class="visually-hidden" id="map-planning-help">Past includes today and ongoing stays.</p>
           </fieldset>
         </details>
         <div class="day-navigator" id="day-navigator" hidden aria-live="polite">
