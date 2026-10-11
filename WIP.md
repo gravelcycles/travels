@@ -117,12 +117,30 @@ and floating photo comments/place reviews with immediate opening and cached read
 These later decisions supersede incompatible behavior in the preserved prototypes
 below. The documentation audit itself changes no trip content or runtime.
 
+## Day/stop travel camera correction — 11 October 2026
+
+Accepted: replace awkward zooming between days/stops and keep the moving train
+position visible, especially on north–south routes. Scope is ordinary stop
+navigation; Trip Replay is unchanged. See O09 and the arrival workflow.
+Implemented on `codex/place-zoom-20261011` in
+`/private/tmp/travels-place-zoom-release`, integrated onto sanitized main:
+one route ease, single-applied padding, resize-before-fit, measured card/label
+clearance, unobstructed north–south endpoint labels, temporarily hidden
+signposts and guarded late route redraws. Full-trip Replay remains disabled.
+All **525 tests** and the production build pass. Browser comparisons cover the
+same north–south leg on desktop and 390/320 px phones, landscape, the wide Alpine
+demo route, reference multi-leg routes and an independent populated city draft.
+Skip/rapid navigation and ordinary timed playback were checked; the final phone
+arrival shows the departing circle clear of labels without false map errors.
+Next: fetch/integrate current main, commit scoped code/docs/generated pages,
+deploy and verify Pages/public output. Synthetic fixtures remain local only.
+
 ## Arrival → city release — 10 October 2026
 
 The owner approved the locally reviewed arrival experience for deployment.
-Shared playback pulls back around the previous view, combines the pan and zoom
-onto the next route, traces it over 1.5 seconds with a plain orange tracking
-circle, pauses for 250 ms and settles on the destination. City framing fits nearby
+The original two-stage camera preparation is superseded by the 11 October
+correction above. Playback traces the route over 1.5 seconds with a plain orange
+tracking circle, pauses for 250 ms and settles on the destination. City framing fits nearby
 photos (city limits plus five miles) and marked places. Existing trip content
 and saved places are retained. Synthetic photo fixtures remain ignored/local.
 See [arrival behavior and checks](docs/ARRIVAL_CITY_DEMO.md).

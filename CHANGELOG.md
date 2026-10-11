@@ -4,6 +4,23 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — clear day/stop travel on desktop and phone
+
+- Replace the separate pullback/re-zoom and destination flight arc with direct
+  route/city eases; keep the route camera stationary during travel and arrival.
+- Fix double-applied bounds padding that pushed north–south routes toward the
+  top edge. Resize after the phone card changes, fit the complete incoming route,
+  and clear endpoint labels and the desktop overlay without counting the phone
+  card twice. Preserve shared line/marker sizes and the 1.5 s / 250 ms timing.
+- Move north–south endpoint labels outside the travel path and preserve the
+  quiet guide through delayed route loading; prevent false map-error overlays.
+- Record the owner's desktop/mobile clarity requirement in O09 and the arrival
+  workflow. Trip Replay remains unchanged.
+- Validation: all 525 tests and the production build pass. Camera regressions
+  cover reference, demo, actual city stops and a populated draft, plus late
+  route loading. Browser checks compare the same legs on desktop, 390/320 px
+  phones and landscape, plus ordinary playback, skipping and rapid navigation.
+
 ## 11 October 2026 — disable full-trip Replay
 
 - Remove desktop/phone Replay entry and paused-return actions across the shared

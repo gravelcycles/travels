@@ -173,15 +173,23 @@
     return segments.slice().reverse().flatMap(segment => coordinates(segment).slice().reverse()).find(located) || null;
   }
 
-  function cameraMoves(from, route, context = route) {
+  function routePadding(mapRect, panelRect) {
+    const side = Math.min(64, Math.max(48, mapRect.width * 0.08));
+    const overlap = panelRect && panelRect.top < mapRect.bottom && panelRect.bottom > mapRect.top
+      ? mapRect.bottom - Math.max(mapRect.top, panelRect.top) : 0;
+    // Leave room for the circle and the endpoint label below it. On phones the
+    // arrival card sits outside the map, so it must not shrink the route twice.
+    return { top: Math.min(64, mapRect.height / 3), right: side,
+      bottom: Math.min(overlap + 64, mapRect.height * 0.45), left: side };
+  }
+
+  function cameraMoves(from, route) {
     const coordinates = center => Array.isArray(center) ? center : [center.lng, center.lat];
     const sameCenter = (a, b) => coordinates(a).every((value, index) => Math.abs(value - coordinates(b)[index]) < 0.00001);
-    const wideZoom = Math.min(from.zoom, route.zoom, context.zoom), moves = [];
-    // Pull back around the old place before crossing, so its position is legible.
-    if (from.zoom - wideZoom > 0.08) moves.push({center:from.center,zoom:wideZoom,duration:Math.min(950,Math.max(450,(from.zoom-wideZoom)*100))});
-    // Recenter and zoom together, without pausing at an intermediate wide view.
-    if (route.zoom - wideZoom > 0.08 || !sameCenter(from.center,route.center)) moves.push({center:route.center,zoom:route.zoom,duration:750});
-    return moves;
+    if (Math.abs(from.zoom - route.zoom) < 0.001 && sameCenter(from.center, route.center)) return [];
+    // One direct pan/zoom to the fitted route, without a separate pullback or
+    // flight arc. The travel clock starts only after this view is stationary.
+    return [{ ...route, duration: 850 }];
   }
 
   function afterCamera(map, move, ready) {
@@ -248,5 +256,5 @@
     function explore() { stop(); state('explore'); }
     return { start, stay, cancel, explore, get phase() { return phase; }, get key() { return current?.key; } };
   }
-  root.JOURNEY_ATLAS_ARRIVAL = { plan, frame, destination, create, createDrawing, cameraMoves, afterCamera };
+  root.JOURNEY_ATLAS_ARRIVAL = { plan, frame, destination, create, createDrawing, routePadding, cameraMoves, afterCamera };
 })(typeof window === 'undefined' ? globalThis : window);

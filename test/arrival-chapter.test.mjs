@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import '../dist/assets/replay-utils.js';
 import '../dist/assets/arrival-chapter.js';
-const {plan,frame,destination,create,createDrawing,cameraMoves,afterCamera}=globalThis.JOURNEY_ATLAS_ARRIVAL;
+const {plan,frame,destination,create,createDrawing,routePadding,cameraMoves,afterCamera}=globalThis.JOURNEY_ATLAS_ARRIVAL;
 const legs=[{id:'rail',geometry:[[10,48],[11,48]]},{id:'bus',geometry:[[11.1,48],[11.2,48]]}];
 const routes=segment=>segment.geometry;
 
@@ -45,16 +45,26 @@ test('arrival waits for its camera to finish before drawing or starting its trav
   h.tick(6500);assert.deepEqual(h.stays,[]);h.tick(6750);assert.deepEqual(h.stays,['city']);
 });
 
-test('camera pulls back around the old place, then pans and zooms onto the route in one move',()=>{
-  const from={center:[12,45],zoom:12.5},route={center:[11,47],zoom:8},context={center:[11.5,46],zoom:6};
-  const moves=cameraMoves(from,route,context);
-  assert.deepEqual(moves.map(({center,zoom})=>({center,zoom})),[
-    {center:from.center,zoom:6},{center:route.center,zoom:8}
-  ]);
-  assert.ok(moves.every(move=>move.duration>=450));
-  assert.equal(moves[1].duration,750);
-  assert.equal(cameraMoves(from,context,context).length,2,'A pan-only second stage still goes straight to the route');
-  assert.deepEqual(cameraMoves(route,route,route),[],'An already-framed replay needs no camera drift');
+test('arrival uses one direct route fit without zooming out then back in',()=>{
+  const from={center:[12,45],zoom:12.5},route={center:[11,47],zoom:8,bearing:0};
+  assert.deepEqual(cameraMoves(from,route),[{...route,duration:850}]);
+  assert.deepEqual(cameraMoves(route,from),[{...from,duration:850}]);
+  assert.equal(cameraMoves({...route,center:[12,47]},route).length,1,'Pan-only navigation still moves');
+  assert.deepEqual(cameraMoves(route,route),[],'An already-framed arrival needs no drift');
+});
+
+test('arrival padding clears the overlay and endpoint labels without counting the phone card twice',()=>{
+  const desktop={top:150,bottom:720,width:600,height:570};
+  const p=routePadding(desktop,{top:620,bottom:702});
+  assert.equal(p.bottom,164);
+  assert.equal(desktop.bottom-p.bottom+54,610,'The label below the south endpoint clears the card');
+  for(const [width,height] of [[390,540],[320,360],[700,190]]){
+    const rect={top:54,bottom:54+height,width,height};
+    const phone=routePadding(rect,{top:rect.bottom,bottom:rect.bottom+130});
+    assert.equal(phone.bottom,64,'The external card costs no map space');
+    assert.ok(height-phone.top-phone.bottom>=60);
+    assert.ok(width-phone.left-phone.right>=224);
+  }
 });
 
 test('multi-stage camera preparation waits for all moves and cancels the remaining stages',()=>{
