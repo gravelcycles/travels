@@ -38,8 +38,8 @@ choice supersedes which; ask only if a consequential ambiguity remains.
 | O05 · Photo camera | Keep the exact pin separate from its saved map frame. Do not move the photo map when successive pins already fit. Nearby moves are direct; longer moves preserve geographic context. Studio keeps the same-day working frame until deliberately changed. | Browse nearby/distant/unlocated photos; pan manually; check a saved off-center frame on desktop and phone. Unknown locations use event/city context, not a fabricated viewpoint. |
 | O06 · Map hierarchy | The map is the main experience. Keep terrain legible but routes dominant; preserve transport colors/patterns during selection and match the key. Settlement labels stay readable above routes; road labels/shields stay below. Credits start collapsed but remain accessible. | Inspect intersections, overview and close zoom; desktop travel-row hover/focus highlights only that leg without a click action, popup or camera jump. Phone route taps select without desktop tooltips. [Journey workflow](../JOURNEY_WORKFLOW.md#map-location-labels). |
 | O07 · Map markers | Use the reviewed upright signposts, quiet grouped/repeat dots and compact linked hover/focus previews. Before switching the displayed day/stop, close its map popups and hover previews and cancel pending opens; an old popup must not remain over the next map. No sideways/upside-down balloons or large leader-line clutter. Intermediate rail dots are small; each train leg's endpoints are larger. Overview shows endpoints, not intermediate stations. Signpost stems meet the orange endpoint ring's top. | Open a map popup, switch day/stop through the day list, previous/next and photo navigation, and check that it closes before the new map appears. Rapid transitions must not reopen stale previews. Check route/label/control collisions; dots appear after their route lines and stale pending markers cannot leak into another view. [Location labels](LOCATION_LABELS.md). |
-| O08 · Phone navigation | Keep the map-led day/stop screen, persistent header/Replay access and one bottom event picker. Use one resting date/title card with one Photos action and contextual Places; arrival controls belong in that card. Photos opens that event's grid; the Day/Stop control returns to its map. Large photos, responsive swipe/pinch, animated double-tap and deliberate pull-up location follow the established phone flow. | Closing location stays closed through swipes/grid round trips; zoomed drags pan the photo. Check All days, Back/Forward, Escape, 320/390 px and landscape. Desktop retains its left list, without a second day picker. No stray orange pointer-focus rings; keyboard focus stays visible. |
-| O09 · Replay and arrival | Replay is map-only: routes, stories and controls, with no photographs, photo pauses or preloads. Keep its two-second autoplay delay, default 2× and readable rest-day holds; a named chapter selector seeks the existing timeline. Arrival → city is a separate reviewed flow: contextual pullback, combined pan/zoom, 1.5-second trace, plain orange circle, 0.25-second arrival hold, then city framing. | Check a rest event and a complex multi-leg event. Manual navigation/movement cancels stale animation; reduced motion works. City framing includes nearby photos and assigned marked places using the documented boundary/radius rules. [Arrival contract](ARRIVAL_CITY_DEMO.md). |
+| O08 · Phone navigation | Keep the map-led day/stop screen, persistent header access and one bottom event picker. Use one resting date/title card with one Photos action and contextual Places; arrival controls belong in that card. Photos opens that event's grid; the Day/Stop control returns to its map. Large photos, responsive swipe/pinch, animated double-tap and deliberate pull-up location follow the established phone flow. | Closing location stays closed through swipes/grid round trips; zoomed drags pan the photo. Check All days, Back/Forward, Escape, 320/390 px and landscape. Desktop retains its left list, without a second day picker. No stray orange pointer-focus rings; keyboard focus stays visible. |
+| O09 · Replay and arrival | Full-trip Replay is disabled across every atlas, demo and draft, on desktop and phone (owner, 11 October 2026). Remove its entry/resume actions and keep the player and Studio chapter editor inaccessible; retain existing chapter data. Arrival → city remains the normal map flow: contextual pullback, combined pan/zoom, 1.5-second trace, plain orange circle, 0.25-second arrival hold, then city framing. | No full-trip Replay action or playback through navigation/history, and no Replay map/autoplay initialization. Day/stop navigation and Replay arrival still work for a rest event and a multi-leg event, with cancellation and reduced motion. City framing includes nearby photos and assigned marked places using the documented boundary/radius rules. [Arrival contract](ARRIVAL_CITY_DEMO.md). |
 | O10 · Editorial restraint | Blank stories/taglines are valid. No generated “stayed here” or “In one place” filler. Optional authored taglines are italic; story paragraphs survive saving. First album photo is the event preview; journey cover is a separate choice. Keep technical/prototype explanations out of the story. | Preview deliberately blank and authored fields after save/rebuild; opening a day's lead starts at photo 1. Do not revive the retired independent daily lead picker. Keep research/uncertainty in provenance with only useful factual context in public copy. |
 | O11 · Creator safety | Save locally works without a required Preview/Check step. Unpublished drafts autosave and recover after reload; saved/draft differences are readable, discard is recoverable, and real conflicts require field choices. Do not lose edits to background updates. All non-trashed photos show; there is no Hide feature. | Test reload recovery, save, preview, independent/concurrent edits and failed save. Trash stays deleted until an explicit restore; never interpret removal of Hide as restoring Trash. New editable features use this same recovery/save flow. |
 | O12 · Route quality | Follow the mode's physical network, using GPX when available and reviewed reconstruction otherwise. Straight lines are temporary guides, not completed route work. Exact network alignment does not prove a booked service. Preserve reviewed overrides and durable anchors; endpoint-only edits preserve the rest of the line. | Inspect every supplied leg at close zoom, regenerate without losing edits, and prepare local mode data for Studio proposals. Missing sources stay explicit; do authorized research instead of returning a finished-looking endpoint sketch. [Route workflow](../ROUTE_GEOMETRY_WORKFLOW.md). |
@@ -62,9 +62,10 @@ implementation interpreted that as direct fullscreen from every photo surface.
 bubbles and the right-hand reel select in the existing sidebar; the large
 selected/lead image opens fullscreen. The desktop day/map/journal structure
 and its stable, uncropped selected-photo frame remain. Reviewed image
-reveals, floating populated conversations, arrival timing and map-only Replay
-remain in force. Named Replay seeking is now authorized; visitor reload
-persistence and explicit sharing remain outside this change.
+reveals, floating populated conversations and arrival timing remain in force.
+Named Replay seeking was authorized here, then superseded by the full-trip
+Replay disablement below. Visitor reload persistence and explicit sharing
+remain outside this change.
 
 Studio uses Trip / Media / Places / Routes with Photos and Videos under Media,
 one Save locally action, a contact sheet before batch controls, visual cover and
@@ -88,6 +89,18 @@ map bubbles select the existing compact card and its large image opens fullscree
 the established album grid, swipe and Back flow stays intact. Album/grid and
 explicitly linked Places viewer entry are not redefined by this clarification.
 
+## Full-trip Replay disabled — 11 October 2026
+
+The owner requested: “let's disable the full trip replay animation”, explaining
+that its features now exist in the other view and it is redundant. This applies
+to the shared viewer, including all journeys, demos, drafts and phone layouts.
+It supersedes full-trip Replay availability, autoplay and named chapter seeking,
+including the earlier same-day UX approval. The separate arrival animation and
+normal map/day/photo experience remain. Saved `replayMoments` are retained;
+disablement does not authorize deleting traveler editorial data. O09 owns the
+acceptance checks. The dormant player shell and helpers are retained because
+arrival uses shared route interpolation; the Studio chapter editor stays hidden.
+
 ## Reversals that must not be undone accidentally
 
 | Earlier direction | Latest applicable decision | Evidence |
@@ -96,7 +109,7 @@ explicitly linked Places viewer entry are not redefined by this clarification.
 | Photo landmarks removed on 9 September | Sparse Photos + Places bubbles authorized on 8 October; existing sidebar restored and refined 11 October | `147229b` → `1c7dabe` → `ed7f106`, `7f962ff`, `b80ed36`, `8b6fbc9` |
 | All-photo fullscreen interpretation in the initial 11 October UX implementation | Map circles and right reel thumbnails select in the existing sidebar/card; only the large selected/lead image opens fullscreen within that map/sidebar flow. Close old map popups before switching days. | Later owner clarification, 11 October; quoted above; O03/O07 |
 | Nearby-photo suggestions in the Photos + Places prototype/release | Explicit links only; remove geographic venue guesses | 11 October; `3d88dd7` |
-| Photos inside Replay | Map-only Replay across desktop/phone | 10 September; `bcfc91f` |
+| Photos inside Replay, followed by map-only playback and named seeking | Full-trip Replay disabled; arrival playback in the normal map remains | 11 October owner request below; O09 |
 | Always-expanded travel details, generated stay labels | Compact expandable details, authored optional taglines, no stay filler | 15 September; `df5740d`, `7e26085` |
 | Separate daily lead-photo selection | Album order determines first photo; journey cover remains independent | 9–12 September; `6bc0561`, `f6790e4` |
 | Hide-from-atlas and restore-all ambiguity | Show non-trashed photos; preserve deletions | Owner clarification 14 September; `06f5d63` |

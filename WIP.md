@@ -16,6 +16,20 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Full-trip Replay disabled — 11 October 2026
+
+Authorized: disable the redundant full-trip animation across the shared viewer;
+preserve arrival/city playback and chapter source data. [O09](docs/OWNER_DECISIONS.md)
+supersedes earlier Replay availability/seeking and prototype adoption guidance.
+Implementation is on `codex/disable-full-trip-replay` in an isolated checkout:
+entry/resume actions removed, player/history guarded and Studio editor hidden.
+Validation: all **520 tests** and the production build pass, including
+reference/demo/independently populated city-draft arrival preservation and stale
+history checks. Browser checks confirmed the Alpine multi-leg arrival on desktop
+and the reference phone map/arrival controls at 390 px; the reference used the
+documented local photo mode (private media was not copied into this checkout).
+Next: integrate latest main, deploy and verify fresh public content.
+
 ## Café August outside-only correction — 11 October 2026
 
 Content correction complete: Café August’s gallery contains three visually
@@ -177,9 +191,9 @@ index and Worker code are unchanged, so this release needs only Pages deployment
 Open [the public Alpine example](https://gravelcycles.github.io/travels/demo.html?journey=alpine-crossing&day=alps-d1&view=map)
 or the local [Studio Places editor](http://127.0.0.1:4186/studio/).
 
-**Replay playback, slider and named chapter seeking are implemented.** Named
-seeking was authorized in the 11 October UX fixes. The older day-experience
-experiment separately compares camera framing; it is not the current player.
+**Full-trip Replay is disabled by the later 11 October owner request (O09).**
+The earlier playback/seeking implementation and camera prototypes remain historical;
+do not reactivate them. Arrival/city playback remains available in the main map.
 
 The superseded combined **Photos + Places** prototype is preserved locally at
 `codex/day-experience-review` · `37a8b0a`. Open
@@ -355,7 +369,7 @@ for demos before putting the proposed new features on the live site.
 | Batch photo editing / larger contact sheet | Demo only. Existing single-photo edits and album ordering are already delivered. |
 | Publishing readiness / agent handoff | Demo only. Keep local/saved/live distinctions explicit; publishing remains agent-operated. |
 | Private video intake | Demo only; see W07 below. Hosted public video playback already works. |
-| Labeled Replay seeking/timeline | Demo only. Shared Replay remains map-only. |
+| Labeled Replay seeking/timeline | Superseded: full-trip Replay disabled on 11 October (O09). |
 
 The delight review additionally proposes personal memory entry points, direct
 media browsing, in-context day editing, visual authoring and group storytelling.

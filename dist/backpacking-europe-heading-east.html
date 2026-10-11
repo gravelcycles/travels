@@ -65,7 +65,6 @@
     <header class="mobile-header" aria-label="Mobile journey navigation">
       <button id="mobile-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label" data-event-copy="Day map">Day map</span></button>
       <a href="./" class="mobile-brand">Journey Atlas</a>
-      <button id="mobile-open-replay" type="button" aria-controls="replay-dialog" aria-haspopup="dialog"><svg class="ui-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="m8 5 11 7-11 7Z"/></svg><span>Replay</span></button>
     </header>
 
     <section id="trip-intro" class="trip-intro" aria-label="Journey introduction" hidden></section>
@@ -110,7 +109,6 @@
             <p id="journey-subtitle"></p>
           </div>
           <div class="map-actions">
-            <button id="open-replay" type="button" aria-label="Open Trip Replay">Trip replay</button>
             <button id="focus-day" type="button" data-event-aria="Zoom to the selected day's complete route" aria-label="Zoom to the selected day's complete route" data-event-copy="Day close-up">Day close-up</button>
             <button id="fit-route" type="button" aria-label="Fit the whole route on the map">Fit route</button>
             <button id="show-all-photos" type="button">All photos · <span id="photo-count"></span></button>
@@ -274,7 +272,8 @@
       </div>
     </dialog>
 
-    <dialog class="replay-dialog" id="replay-dialog" aria-label="Trip Replay">
+    <!-- Full-trip Replay is disabled; retain its dormant shell and saved chapters. -->
+    <dialog class="replay-dialog" id="replay-dialog" aria-label="Trip Replay" hidden inert>
       <div class="replay-player">
         <header class="mobile-replay-header"><button id="mobile-replay-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span>Journey</span></button><strong>Trip Replay</strong></header>
         <div id="replay-map" data-event-aria="Animated map replaying the journey day by day" aria-label="Animated map replaying the journey day by day"></div>
@@ -339,7 +338,7 @@
     <script src="./assets/atlas-utils.js?v=ff9f20b83dc6"></script>
     <script src="./assets/map-style.js?v=e5948bb6f50c"></script>
     <script src="./assets/map-feedback.js?v=326752babbcc"></script>
-    <script src="./assets/mobile-ux.js?v=147546f15196"></script>
+    <script src="./assets/mobile-ux.js?v=aab8f4c9383f"></script>
     <script src="./assets/group-travel.js?v=55518f719e29"></script>
     <script src="./assets/media-utils.js?v=2970f736e03b"></script>
     <script src="./assets/location-labels.js?v=4e14f0fc2e80"></script>
@@ -349,6 +348,6 @@
     <script src="./assets/photo-bubbles.js?v=b85730794412"></script>
     <script src="./assets/places-panel.js?v=176f65940ea3"></script>
     <script src="./assets/photo-comments.js?v=2660aa2bee66"></script>
-    <script src="./assets/app.js?v=9f800eb08e31"></script>
+    <script src="./assets/app.js?v=e0ed2652e61a"></script>
   </body>
 </html>

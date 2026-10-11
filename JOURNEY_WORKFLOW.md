@@ -136,7 +136,7 @@ Optional `overviewBounds: [[west, south], [east, north]]` adds geographic contex
 to the full-trip map. Use valid longitude/latitude corners with positive area;
 the viewer includes these bounds together with every route and place, so they
 cannot crop travel. Without the field, framing uses route/place bounds as before;
-empty drafts retain their empty map. Day, photo and Replay cameras are unaffected.
+empty drafts retain their empty map. Day and photo cameras are unaffected.
 Switzerland–Italy uses `[[5.9, 45.75], [10.55, 47.85]]` to show all of Switzerland
 around its itinerary. Keep such editorial coordinates in the journey source.
 
@@ -147,7 +147,7 @@ Choose **City stay** in Studio's New trip form, or pass `--events city` to
 absent) or `city`. City journeys reuse the same `days`, `dayId`, photo overrides,
 route ownership and deep links; do not build another viewer or expand a stay
 into empty daily events. Public controls say Stop/Stops throughout the map,
-journal, albums and Replay. Existing trips retain Day/Days.
+journal and albums. Existing trips retain Day/Days.
 
 In city mode, each entry has an arrival `calendarDate` and a departure or last
 known `calendarEndDate`, both ISO dates. End cannot precede start; consecutive
@@ -174,7 +174,7 @@ arrive. Do not invent photos, stay descriptions or exact services.
 ## Map location labels
 
 Basemap typography and layer order live in `dist/assets/map-style.js` and apply
-to all journeys, photo maps, Replay, mobile previews and Studio. City, town and
+to all journeys, photo maps, mobile previews and Studio. City, town and
 village names use regular charcoal text and a compact opaque warm-white halo;
 city names cap at 15 px, towns at 13 px and villages at 11.5 px, with a small
 upward offset to clear nearby stop dots. Only these settlement labels sit above
@@ -224,20 +224,14 @@ stable. Default day date labels follow moves; custom date labels and photo
 capture timestamps remain editorial data. Existing reviewed geometry is retained;
 new legs start as explicitly provisional endpoint guides and need route review.
 
-The same editor stores `coverPhoto: { photoId, focal: [xPercent, yPercent] }` and
-an ordered `replayMoments` list in the journey source. Cover choices apply to the
-catalog and opening, with visible-photo/text fallback. Replay moments contain
-stable IDs, day IDs, ordered segment IDs, captions, durations in seconds, and
-optional reviewed camera targets. Replay is map-only: existing optional photo
-IDs remain compatible with saved sources but are ignored by the player. Travel
-scenes enforce a distance-based minimum per leg, including a brief
-camera-settling pause; longer editorial durations slow the travel proportionally.
-Changing geometry point density does not change the pacing. The family journey
-uses 2.4-second rest-day scenes and approximately 50 seconds for the nine-leg
-Mürren day. Replay frames each active leg and preserves reduced-motion controls.
-Invalid editorial references fail validation. Reviewed camera targets can frame
-rest-day locations. Empty moment lists retain automatic route/day Replay for
-other journeys. Save the plan directly; checking changes is optional. The editor checks the source
+The editor stores `coverPhoto: { photoId, focal: [xPercent, yPercent] }` for the
+catalog and opening, with visible-photo/text fallback. Full-trip Replay is
+disabled across all viewers and its Studio chapter editor is hidden (O09,
+11 October 2026). Existing ordered `replayMoments` remain source-compatible:
+preserve their IDs, day/segment references, captions, timing, optional photo IDs
+and reviewed camera targets when saving. Do not add chapters for new trips or
+reactivate the player. Shared route helpers remain for normal arrival playback.
+Save the plan directly; checking changes is optional. The editor checks the source
 revision to avoid overwriting a trip changed in another session.
 
 Source/output structure:
@@ -309,7 +303,7 @@ not automatically more accurate; the important thing is using the correct
 network and enough meaningful anchors to disambiguate it.
 
 Map credits start collapsed behind the info button in every shared map,
-including photo, Replay, day preview and Studio maps. During desktop/phone QA,
+including photo, day preview and Studio maps. During desktop/phone QA,
 check that credits stay closed after tiles load and can still be opened and
 closed with the info button; route framing needs no extra attribution margin.
 
@@ -405,8 +399,8 @@ be mixed into the two-dimensional map coordinate array.
 ## Mobile review
 
 The shared day map keeps a persistent compact header with the Journey Atlas
-link and a labeled Replay button. Replay opens directly from the map, day
-picker or details header. Below the map are the compact date/title, Day details
+link. Full-trip Replay has no entry action; the normal map retains arrival
+playback. Below the map are the compact date/title, Day details
 and Photos, plus the bottom Day N of M picker and previous/next arrows. The
 picker lists all days and the other journey-wide actions
 (whole map, all photos, unlock and about). Its Day button also returns to the current map. Transport
@@ -578,7 +572,7 @@ Use local labelled fixtures when real media is unavailable; never publish them.
 - [ ] **Phone/map/motion:** Check desktop and 390 px phone; use 320 px/landscape
   for changed overlays/gestures. Verify visible map context, labels/mode key,
   day/stop list selection, grid, location close/swipe, Back/Forward and reduced
-  motion. Replay stays map-only; arrival/city framing uses this trip's content.
+  motion. Full-trip Replay stays disabled; arrival/city framing uses this trip's content.
 - [ ] **Loading/save:** Check cold and cached photo loads without flashes or
   unnecessary refetches; retry without losing selection/text. For editor changes,
   check save → preview → reload recovery, readable diff and conflict handling.
@@ -621,10 +615,10 @@ rest day) must end there. Omit all of these fields for a single-party trip.
 No existing trip needs migration or a feature flag.
 
 The group selector shows the roster and meetup and projects the map, ordered
-legs, photos, day videos and Replay from the original data. Shared legs/media
+legs, photos and day videos from the original data. Shared legs/media
 remain visible in every group. Unfiltered distance totals mean all routes
 combined, not distance traveled by each person. Transport colors still indicate
-transport mode; cards and Replay identify the route group in text.
+transport mode; cards identify the route group in text.
 
 Day details also show every group's members, route endpoints, transport modes,
 leg count and overnight place. The meetup day names the shared arrival. These
@@ -683,7 +677,7 @@ Optional `groupIds` use the same audience rule as legs/photos. `hidden: true`
 and `assetStatus: "local"` entries are omitted from public bundles. Omitted
 videos preserve the ordinary photo-only experience. A day containing only
 video still has a working gallery. Existing photo order is preserved, followed
-by videos in source order; Replay remains the route-only player.
+by videos in source order; full-trip Replay stays disabled.
 
 Use a reviewed MP4 (H.264/AAC is the intended intake format), a poster, and a
 useful caption/transcript where needed. Thumbnail tiles show the opening frame,
@@ -740,7 +734,7 @@ Replay's retired Photograph picker and the retired daily lead-photo control
 are removed; legacy values remain readable, and moving a legacy photo does
 not invalidate a map-only chapter.
 
-Album, Replay, About and photo presentation participate in browser Back and
+Album, About and photo presentation participate in browser Back and
 Forward. Empty-media album days open their story. These history entries do
 not change the URL or restore the last selection on reload: the owner excluded
 that audit item. The proposed new features require a local demo and owner
@@ -769,7 +763,7 @@ contributor credit and the original source link. This records an external
 reference, not ownership or a reuse license; do not give it a `licenseUrl` or
 copy it into local public assets. Check every selected photo and exact branch.
 
-These annotations do not alter route nodes or Replay. Their content and reviews
+These annotations do not alter route nodes or saved chapter data. Their content and reviews
 are public; private original images do not belong in journey JSON. Record an
 image's source, credit and permission basis, with a license URL where applicable.
 The validated schema and reusable intake prompt are in [PLACES_AND_COMMENTS.md](docs/PLACES_AND_COMMENTS.md).
@@ -837,7 +831,7 @@ calendar continuity rules. Never invent stay dates to satisfy a calendar check.
 
 The viewer shows TBD stops by default, with badges, dotted mode-colored routes,
 explicit dates-to-decide copy and a shared **Show TBD stops** checkbox. Hiding
-them filters the map, stop list, albums and Replay together, without changing
+them filters the map, stop list and albums together, without changing
 the source or renumbering retained stops. The control is hidden for journeys
 without TBD entries and disabled when every entry is TBD.
 

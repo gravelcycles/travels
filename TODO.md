@@ -19,6 +19,12 @@ Every task includes [live documentation maintenance](docs/OWNER_DECISIONS.md#rec
 before delivery or handoff. The completed audit below is a checkpoint, not a
 completed obligation to capture future corrections.
 
+Full-trip Replay and its proposed refinements below are superseded by the
+11 October 2026 disablement in [O09](docs/OWNER_DECISIONS.md). Preserve chapter
+data and arrival/city playback; do not treat historical Replay tasks as pending
+activation work.
+
+
 ## Independent project workstreams
 
 - [x] **Atlas continuity guidance — 11 October 2026.** Audit available owner

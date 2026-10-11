@@ -4,6 +4,19 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — disable full-trip Replay
+
+- Remove desktop/phone Replay entry and paused-return actions across the shared
+  viewer; keep the retained player hidden/inert and block stale history,
+  playback and Replay-map initialization. Hide Studio's chapter editor while
+  preserving saved chapter data and shared route helpers.
+- Keep arrival/city animation, Replay arrival and ordinary map/day/photo
+  navigation. Update O09, the feature inventory, framework and journey guidance
+  to supersede the earlier full-trip Replay/seeking requirement.
+- Validation: 520 tests pass and the production build succeeds; reference/demo/
+  populated-city-draft regressions and desktop/phone browser checks preserve
+  arrival playback while full-trip Replay remains inaccessible.
+
 ## 11 October 2026 — Café August outside photos
 
 - Replace Café August’s indoor photograph with a credited Google Maps terrace

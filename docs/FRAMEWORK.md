@@ -30,7 +30,7 @@ trip; no application rewrite or feature-copy exercise is needed tomorrow.
 | Cover introduction | Explicitly skipped for demos in `app.js` | Same introduction and entry actions for demos, real trips, and drafts |
 | Catalog | Build read and rewrote the existing output HTML | Generated from `content/templates/catalog.html` |
 | Demo calendars | All four lacked machine dates/time zones; the rail example skipped calendar days | Complete dated calendars and time zones usable by Studio and photo intake |
-| Editorial examples | No explicit cover configuration or curated Replay example | All demos have cover choices; Alpine Crossing demonstrates curated chapters; other demos demonstrate automatic Replay |
+| Editorial examples | No explicit cover configuration or curated Replay example | All demos have cover choices; saved chapters remain compatible, but full-trip Replay is disabled (O09) |
 | Feature inheritance | Mostly true, but no dedicated page-parity contract | Regression suite compares controls/assets and exercises a fresh data-only trip |
 | Agent guidance | Scattered workflows and historical notes; AGENTS only covered delivery | Standing shared-first rules, feature inventory, task prompts, and this migration plan |
 
@@ -53,6 +53,18 @@ network geometry, explicit provenance, geometric review and static preservation.
 An unresolved original track can have a clearly labeled reconstruction; the
 shared endpoint fallback is not a substitute for completing authorized route work.
 
+## Full-trip Replay disablement — 11 October 2026
+
+[O09](OWNER_DECISIONS.md) supersedes the Replay availability described in the
+September audit and earlier UX notes. Every generated viewer removes the
+full-trip entry/resume controls. Its retained dialog is hidden and inert;
+opening, playback and map initialization reject the inert player, and overlay
+history cannot reopen it. Studio hides the chapter editor without changing
+source serialization. Existing `replayMoments`, compatibility tests and dormant
+player code remain. `replay-utils.js` still supplies route interpolation to the
+separate arrival/city view, which remains available with its reviewed timing.
+No per-trip switch or new data field is introduced.
+
 ## The model
 
 ```text
@@ -67,7 +79,7 @@ Trip facts + routes + photos + editorial overrides
                       |
        journey.html + shared JS/CSS
                       |
-          map / journal / albums / Replay
+          map / arrival / journal / albums
 ```
 
 Studio checks local routing readiness for every selected leg. Reviewed-preserve
@@ -87,7 +99,7 @@ password system.
 | `content/templates/catalog.html` | Public catalog shell |
 | `dist/assets/photo-places.js`, `photo-bubbles.js`, `photo-bubbles.css` | Shared Photos + Places associations, stable selected map groups, protected thumbnails and selection through the existing desktop sidebar/phone compact card; map bubbles and right-hand reel thumbnails select, the large selected/lead image opens fullscreen with its exact collection; close old map popups before day changes and keep location thumbnails independent of album browsing |
 | `studio/place-editor.js` | Owner Places, credited images, curated reviews and ordered trip-photo links through the existing plan/save/recovery flow |
-| `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction, Replay UI |
+| `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction; dormant full-trip Replay UI |
 | `dist/assets/location-labels.js` | Shared destination grouping, screen-space clusters, upright signposts, compact previews and accessible day selection |
 | `dist/assets/map-feedback.js`, `map-feedback.css` | Shared map loading, recovery, Retry and no-location feedback; used in Studio too |
 | `dist/assets/vendor/maplibre-5.24.0/` | Pinned MapLibre browser JS/CSS and license, served from the site |
@@ -127,7 +139,7 @@ strings. Studio serves live assets with no-store caching.
    exception. Put content changes in that trip’s JSON/overrides.
 2. Add generally useful behavior to shared code/template. Default it on for all
    applicable data; a sample or new trip must not need a special enablement step.
-3. Prefer existing data customization: `coverPhoto`, `replayMoments`, photo/day
+3. Prefer existing data customization: `coverPhoto`, photo/day
    overrides and routing manifests already provide per-trip editorial choices.
 4. If one trip really needs new behavior, add the smallest named optional data
    field and a shared renderer/helper. Validate its type and references, define
@@ -144,8 +156,8 @@ strings. Studio serves live assets with no-store caching.
    Use [AGENT_PROMPTS.md](AGENT_PROMPTS.md) to brief the next agent with links
    to current guidance and any unfinished work, not a frozen copy of the rules.
 
-A custom fourteen-chapter Replay is trip data. Replay playback, camera movement
-and controls are shared behavior; Replay presents maps and stories without photos.
+Saved fourteen-chapter Replay metadata remains trip data. Full-trip playback
+and its controls are disabled globally; arrival/city animation remains shared behavior.
 The same distinction applies
 to a chosen cover versus the introduction component, and a drawn ferry route
 versus map rendering.
@@ -160,7 +172,9 @@ versus map rendering.
   editing generated HTML cannot create an independent implementation.
 - Each demo’s calendar and photo-import configuration use the normal planner.
 - A newly created trip can add ordered mixed-mode legs, photo ordering, cover
-  choices and automatic/curated Replay through data, then build a public page.
+  choices and preserved chapter data, then build a public page.
+- Full-trip Replay stays inaccessible without interrupting normal arrival playback,
+  including stale overlay history on desktop and phone.
 - Shared introduction behavior with/without photos and direct day/photo entry.
 - No literal known trip IDs/URLs in shared browser code or page templates.
 
@@ -337,7 +351,7 @@ The shared event contract now supports `eventMode: "city"` and per-event
 `calendarEndDate`, with the existing `days`/`dayId` storage and URL IDs retained.
 Daily calendars remain the absent default. Creation, validation, planner edits,
 photo capture-date assignment, catalog, journal, location labels, mobile controls,
-albums and Replay inherit it. Heading East is a data instance with eleven city
+albums inherit it; saved Replay metadata remains compatible. Heading East is a data instance with eleven city
 stops and fourteen reconstructed legs through Venice, not another page implementation.
 
 Remaining route evidence: personal departures and historical diversions are
@@ -405,8 +419,8 @@ selected/lead image opens fullscreen. Phone grid/swipe and existing album/linked
 Places entry are retained. Close old map popups and pending hover previews before
 switching days/stops. These boundaries live in O03/O07. Shared changes consolidate the phone event
 card, quiet desktop chrome, scope Places, preserve exact photo/comment collections,
-use current event labels and deliberate empty states, and add named map-only
-Replay seeking. Studio task navigation, visual media choices, batch contact sheets,
+use current event labels and deliberate empty states. Named map-only Replay
+seeking was added here, then superseded by full-trip disablement (O09). Studio task navigation, visual media choices, batch contact sheets,
 truthful video progress and a grouped sharing review retain existing persistence
 and access services. Approved arrival and image reveal timing is unchanged.
 

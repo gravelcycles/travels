@@ -27,14 +27,14 @@ a frozen version of it. Include this obligation when writing any new brief.
 > Treat the trip as data for the existing shared framework. It must inherit
 > the Switzerland–Italy experience: opening, calendar/journal, ordered transport
 > legs, map focus/inspection, albums, photo viewer, protected photo loading,
-> Replay, mobile/direct entry and Studio editing. Add actual places, routes,
+> arrival/city playback, mobile/direct entry and Studio editing. Add actual places, routes,
 > photos and editorial choices as provided; do not invent precision or prose.
 > Choose calendar days or city stays from the request. Read PHOTO_WORKFLOW.md
 > before either bulk or Studio intake and ROUTE_GEOMETRY_WORKFLOW.md before
 > route construction. Keep captions/notes/labels blank unless supplied; do not
 > associate photos with venues by proximity. Complete authorized route research
 > and network geometry with honest provenance, rather than stopping at guides.
-> Use automatic Replay until there are reviewed reasons to curate chapters.
+> Keep full-trip Replay disabled (O09); preserve any existing saved chapters.
 >
 > Preview this draft through Studio’s normal shared page. Complete the workflow's
 > inheritance checklist for blank states and the supplied content, including the
