@@ -37,6 +37,9 @@ phone checks verify synchronized controls and the actual 8 past/current, 3 locke
 and 18 TBD stays on 11 October. The reference, demo and independent city draft
 retain shared behavior, including 320px and landscape checks. Full-trip Replay
 remains disabled under O09. Private images were omitted in local map QA.
+Published in `e58f939`; [Pages deployment](https://github.com/gravelcycles/travels/actions/runs/38149951215)
+succeeded, and freshly fetched public HTML plus all five changed browser assets
+match the tested release byte-for-byte.
 
 ## Owner-reviewed photo locations — 11 October 2026
 
