@@ -2,7 +2,11 @@
 
 The atlas can use an iPhone photo's capture time and GPS position to associate
 it with a day and show its location in the photo viewer. Day maps show sparse thumbnail bubbles alongside curated Places pins. Selecting
-a bubble keeps its photo group and current photo stable while panning or zooming. Preserve the original metadata during
+a bubble keeps its photo group and current photo stable while panning or zooming.
+Stationary refreshes retain the bubble and its thumbnail load. A group can anchor
+to another visible member if its first photo is offscreen or crowded by a place
+pin, without reordering the album. Groups fully outside the view or without room
+remain available in the album. Preserve the original metadata during
 transfer, then publish a separate web-sized copy.
 
 ## Upload and delete in Studio

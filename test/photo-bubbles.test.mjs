@@ -1,6 +1,41 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { photoBubbleFixture as fixture } from './photo-bubble-harness.mjs';
+
+test('stationary refreshes keep bubble focus, decoded pixels and pending image requests',()=>{
+ const f=fixture({ready:true});f.controller.mapReady();f.flush();
+ const marker=f.liveMarkers()[0],button=marker.element.children[0],thumbnail=button.children[1];
+ button.focus();const initialLoads=f.loaded.length,initialClears=f.cleared.length;
+ for(let i=0;i<3;i++){f.mapEvent('resize');f.mapEvent('moveend');f.controller.refresh();f.flush();}
+ assert.equal(f.liveMarkers()[0],marker,'Keep the marker and focused button attached');
+ assert.equal(thumbnail.src,'blob:a');assert.equal(f.loaded.length,initialLoads,'Do not restart thumbnail downloads');
+ assert.equal(f.cleared.length,initialClears,'Do not release decoded pixels on an unchanged view');
+ f.lock();f.flush();assert.equal(thumbnail.hidden,true);assert.equal(thumbnail.src,undefined);
+ f.unlock();f.flush();assert.equal(thumbnail.hidden,false);assert.equal(thumbnail.src,'blob:a');
+ f.setScope('journey');f.controller.refresh();f.flush();assert.equal(f.liveMarkers().length,0);assert.equal(thumbnail.src,undefined);
+});
+
+test('selected groups stay visible when their first photo is offscreen without reordering the album',()=>{
+ const f=fixture({ready:true});f.controller.mapReady();f.controller.open(f.photos.slice(0,2),'b',{mapGroup:true});f.flush();
+ f.map.project=([lng])=>({x:lng===8?-20:200,y:200});f.mapEvent('moveend');f.flush();
+ assert.equal(f.liveMarkers().length,1);assert.deepEqual([...f.liveMarkers()[0].coordinate],[8.001,47]);
+ assert.equal(f.node('[data-bubble-count]').textContent,'2 / 2');assert.equal(f.node('map-photo-card').dataset.photoId,'b');
+ f.node('[data-bubble-prev]').onclick();f.flush();assert.equal(f.node('map-photo-card').dataset.photoId,'a');
+ assert.equal(f.liveMarkers().length,1,'An offscreen current photo still has its visible group');
+ f.map.project=()=>({x:-20,y:200});f.mapEvent('moveend');f.flush();assert.equal(f.liveMarkers().length,0);
+});
+
+test('a crowded first anchor does not hide a photo group with another usable location',()=>{
+ const f=fixture({ready:true});f.controller.mapReady();
+ f.map.project=([lng])=>({x:lng===8?100:300,y:200});
+ f.setObstacles([{left:0,top:80,right:200,bottom:320}]);
+ f.controller.open(f.photos.slice(0,2),'b',{mapGroup:true});f.flush();
+ assert.equal(f.liveMarkers().length,1);assert.deepEqual([...f.liveMarkers()[0].coordinate],[8.001,47]);
+ assert.equal(f.node('[data-bubble-count]').textContent,'2 / 2');
+ const marker=f.liveMarkers()[0];f.setMoving(true);f.map.project=()=>({x:-200,y:-200});f.controller.refresh();f.flush();
+ assert.equal(f.liveMarkers()[0],marker,'Intermediate camera positions must not cull the group');
+ f.setMoving(false);f.mapEvent('moveend');f.flush();assert.equal(f.liveMarkers().length,0);
+});
 test('real bubble controller preserves selection across refresh and restores previous history on close',()=>{
  const f=fixture();f.controller.open(f.photos.slice(0,2),'b');assert.equal(f.node('map-photo-card').dataset.photoId,'b');assert.equal(f.node('[data-bubble-count]').textContent,'2 / 2');
  f.controller.refresh();assert.equal(f.node('map-photo-card').dataset.photoId,'b');f.node('[data-bubble-prev]').onclick();assert.equal(f.node('map-photo-card').dataset.photoId,'a');
@@ -64,18 +99,18 @@ test('portraits use their own proportions and blank captions never repeat access
  assert.equal(f.node('[data-bubble-caption]').textContent,'');assert.equal(f.node('[data-bubble-caption]').hidden,true);
 });
 test('browsing a selection keeps each map thumbnail tied to its anchor and filters cross-day members',()=>{
- const f=fixture();f.controller.open(f.photos.slice(0,2));
+ const f=fixture();f.controller.open(f.photos.slice(0,2),undefined,{mapGroup:true});
  let markers=f.draw();assert.equal(markers.length,1);
  assert.equal(markers[0].element.children[0].children[1].src,'blob:a');
  f.node('[data-bubble-next]').onclick();markers=f.draw();
  assert.equal(markers[0].element.children[0].children[1].src,'blob:a','The map anchor must not turn into the currently browsed photo');
- f.controller.open([f.photos[0],f.photos[2]]);f.node('[data-bubble-next]').onclick();markers=f.draw();
- assert.equal(markers.length,1);assert.deepEqual(Array.from(markers[0].position),[9,48]);
+ f.controller.open([f.photos[0],f.photos[2]],undefined,{mapGroup:true});f.node('[data-bubble-next]').onclick();markers=f.draw();
+ assert.equal(markers.length,1);assert.deepEqual(Array.from(markers[0].coordinate),[9,48]);
  assert.equal(markers[0].element.children[0].children[1].src,'c.jpg');
 });
 
 test('album browsing does not collapse the day map into a selected bubble',()=>{
- const f=fixture();f.setPhotos([...f.photos,{id:'d',dayId:'one',lng:8.4,lat:47}]);
+ const f=fixture();f.map.project=([lng,lat])=>({x:200+(lng-8)*1000,y:200+(lat-47)*1000});f.setPhotos([...f.photos,{id:'d',dayId:'one',lng:8.4,lat:47}]);
  assert.equal(f.draw().length,2);
  f.controller.open(f.photos.filter(photo=>photo.dayId==='one'),'d');
  const markers=f.draw();assert.equal(markers.length,2);

@@ -44,12 +44,25 @@ function bundle(source, key) {
 }
 const app = read(repo, 'dist/assets/app.js');
 
+test('stationary photo bubbles stay attached for reference, demo and freshly generated draft',t=>{
+  const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root);
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'),draft]){
+    for(const [width,height] of [[800,600],[360,400]]){
+      const f=photoBubbleFixture({ready:true,journey,initialPhotos:[],width,height});
+      f.controller.mapReady();f.flush();assert.equal(f.liveMarkers().length,0,'Empty trips have no invented photo markers');
+      f.setPhotos([{id:`${journey.id}-fixture-photo`,dayId:journey.days[0].id,lat:47,lng:8}]);
+      f.controller.refresh();f.flush();const marker=f.liveMarkers()[0];assert.ok(marker,journey.id);
+      f.mapEvent('resize');f.controller.refresh();f.flush();assert.equal(f.liveMarkers()[0],marker,journey.id);
+    }
+  }
+});
+
 test('reference, demo and fresh-draft photo cards keep visible copy separate from accessibility text', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const { data } = loadContent(root, { includeDrafts: true });
   for (const journey of [data.journeys.find(j => j.id === 'switzerland-italy-family-2026'), data.journeys.find(j => j.kind === 'demo'), draft]) {
     const point = { id: 'unrelated-cafe', name: 'Unrelated cafe', coordinates: [8,47], dayIds: [journey.days[0].id], photoIds: [] };
-    const f = photoBubbleFixture({...journey, pointsOfInterest: [point]});
+    const f = photoBubbleFixture({journey:{...journey, pointsOfInterest: [point]}});
     const photo = { id: `${journey.id}-copy-fixture`, dayId: journey.days[0].id, lat: 47, lng: 8, caption: '', description: '', alt: 'Accessible scene description', takenAt: '2028-02-28 · 12:34' };
     f.setPhotos([photo]); f.controller.open([photo]);
     assert.equal(f.node('[data-bubble-caption]').textContent, '');
