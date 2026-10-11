@@ -692,3 +692,23 @@ stash refs, all 32 merged tips, commit references and local doc links were check
 The documentation release's Pages verification accompanies the cleanup delivery.
 No new prototype behavior or unpublished family edits are deployed by this
 documentation release.
+
+## Credential documentation privacy — 11 October 2026
+
+The owner required removing identifying credential labels and password hints
+from both Markdown and Git history. Current guidance follows O14. The affected
+remote branch/tag history and local branches, worktree indexes, recovery refs
+and reflogs were sanitized; all eight stash entries and concurrent work were
+preserved. The old offending local commit object was pruned. Historical scans
+found no identifying labels, and the sanitized release passed all 518 tests,
+the production build and Pages deployment.
+
+GitHub still serves an obsolete commit by its old hash. This is a remaining
+server-side cache-purge request, not completed erasure. The prepared support
+request is private and ignored at
+`build/password-update-20261011/github-support-request.txt` in the primary
+checkout. Next action: obtain explicit authorization to submit it to GitHub
+Support, then verify the obsolete cached content is unavailable. Do not merge
+pre-cleanup histories or restore their Markdown. All other tasks are unblocked;
+this follow-up creates no shared checkout or deployment hold. The ignored local commit map
+is `build/password-update-20261011/history-commit-map.txt`.

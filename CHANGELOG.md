@@ -114,6 +114,10 @@ This file records dated changes, not current instructions. Use
 
 ## 11 October 2026 — keep password documentation anonymous
 
+- At the owner’s explicit request, sanitize affected Git history and local
+  recovery refs while preserving concurrent work. GitHub’s remaining obsolete
+  commit cache requires a separate support purge; tracked in WIP.
+
 - Remove identifying credential labels and password hints from Markdown,
   including historical records and command examples.
 - Record the owner's correction in O14 and the password-maintenance workflow:
