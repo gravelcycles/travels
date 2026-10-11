@@ -571,8 +571,10 @@ Use local labelled fixtures when real media is unavailable; never publish them.
   button, while Studio still supports adding the first one.
 - [ ] **Phone/map/motion:** Check desktop and 390 px phone; use 320 px/landscape
   for changed overlays/gestures. Verify visible map context, labels/mode key,
-  day/stop list selection, grid, location close/swipe, Back/Forward and reduced
-  motion. Full-trip Replay stays disabled; arrival/city framing uses this trip's content.
+  day/stop list selection, event grid → continuous camera roll, cross-event
+  photo swipes/event jumps, same-event map zoom preservation on close,
+  location close/swipe, Back/Forward and reduced motion. Full-trip Replay stays
+  disabled; arrival/city framing uses this trip's content.
 - [ ] **Loading/save:** Check cold and cached photo loads without flashes or
   unnecessary refetches; retry without losing selection/text. For editor changes,
   check save → preview → reload recovery, readable diff and conflict handling.

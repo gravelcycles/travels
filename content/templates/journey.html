@@ -195,8 +195,8 @@
             <p data-event-copy="Days can start with a few notes. Destinations, routes, and photographs can be added as the journey takes shape.">Days can start with a few notes. Destinations, routes, and photographs can be added as the journey takes shape.</p>
           </section>
           <section>
-            <strong data-event-copy="4 · Photos follow the day">4 · Photos follow the day</strong>
-            <p data-event-copy="The full-screen viewer keeps each day's photographs together. Day controls move the route map and journal context with the images.">The full-screen viewer keeps each day's photographs together. Day controls move the route map and journal context with the images.</p>
+            <strong>4 · Browse the journey</strong>
+            <p data-event-copy="On phones, swipe through the journey's photographs. Day controls jump between albums and keep the route map and journal with you.">On phones, swipe through the journey's photographs. Day controls jump between albums and keep the route map and journal with you.</p>
           </section>
         </div>
         <div class="storage-note">
@@ -209,7 +209,16 @@
     <dialog id="album-dialog" class="album-dialog" aria-labelledby="album-title"><div class="album-heading"><h2 id="album-title">All photographs</h2><button id="close-album" type="button" aria-label="Close album overview"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div id="album-days"></div></dialog>
     <dialog class="photo-dialog" id="photo-dialog" data-event-aria="Journey photos and videos by day" aria-label="Journey photos and videos by day">
       <div class="photo-viewer">
-        <header class="mobile-photo-header"><button id="mobile-photo-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label" data-event-copy="Day">Day</span></button><span id="mobile-photo-count" aria-live="polite"></span><button id="mobile-photo-grid" type="button" data-event-aria="Show this day's photos and videos" aria-label="Show this day's photos and videos"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6" height="6" rx="1.3"/><rect x="14" y="4" width="6" height="6" rx="1.3"/><rect x="4" y="14" width="6" height="6" rx="1.3"/><rect x="14" y="14" width="6" height="6" rx="1.3"/></svg></button></header>
+        <header class="mobile-photo-header">
+          <button id="mobile-photo-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label" data-event-copy="Day">Day</span></button>
+          <span id="mobile-photo-count" aria-live="polite"></span>
+          <button id="mobile-photo-grid" type="button" data-event-aria="Show this day's photos and videos" aria-label="Show this day's photos and videos"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6" height="6" rx="1.3"/><rect x="14" y="4" width="6" height="6" rx="1.3"/><rect x="4" y="14" width="6" height="6" rx="1.3"/><rect x="14" y="14" width="6" height="6" rx="1.3"/></svg></button>
+          <nav class="mobile-photo-event-nav" aria-label="Browse photo days">
+            <button id="mobile-photo-previous-event" type="button" aria-label="Previous photo day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Day</span></button>
+            <span id="mobile-photo-event-label" aria-live="polite"></span>
+            <button id="mobile-photo-next-event" type="button" aria-label="Next photo day"><span class="button-label">Day</span><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button>
+          </nav>
+        </header>
 
         <button class="photo-close" aria-label="Close photo and video viewer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
         <button id="open-photo-comments" class="open-photo-comments" type="button" aria-haspopup="dialog" aria-controls="comments-dialog" hidden>Comments · <span id="photo-comments-count">0</span></button>

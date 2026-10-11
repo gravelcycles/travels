@@ -16,6 +16,27 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Mobile map return and camera roll — 11 October 2026
+
+Authorized by the owner's mobile issue report: keep the previous map zoom when
+closing a photo, browse all photos like a camera roll, clearer left/right arrows,
+and city swiping. O08 and PHOTO_WORKFLOW own the current contract; ordinary phone
+browsing crosses event albums, while explicit Places collections retain scope.
+Implemented in shared app/mobile code and the journey template: exact same-event
+map-camera return, continuous photo order, clearer arrows, event jumps and a
+swipeable city/day bar. Explicit collections keep their scope. Grid scrolling is
+confined to the grid so fullscreen headers/footers stay at the viewport edges.
+
+Validation: all 535 tests and the production build pass. Browser checks cover
+Heading East, Switzerland–Italy, the Alpine demo, an empty fresh city draft and
+an independently populated city draft. Verified cross-event arrows/photo swipes,
+city-bar swipes, empty-event skipping, unchanged marker positions after manual
+map movement and photo dismissal, event grid selection, Back/Forward, location
+staying closed, 320/390 px portrait and landscape, and retained desktop selection.
+The isolated release is based on sanitized main with full-trip Replay disabled.
+Next: integrate any newer main, publish, and verify Pages plus fresh public
+HTML/assets; no media/content changes are required.
+
 ## Full-trip Replay disabled — 11 October 2026
 
 Authorized: disable the redundant full-trip animation across the shared viewer;

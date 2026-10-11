@@ -4,6 +4,19 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — phone camera roll and map return
+
+- Preserve the exact previous map camera and scope after same-event photo/grid
+  dismissal, including browser Back; prevent delayed tab fitting from undoing it.
+- Browse the full visible journey in event/album order on phones, crossing city
+  boundaries with photo swipes and arrows. Keep explicit Places collections.
+- Add clear photo arrows and a separate swipeable city/day jump bar, skipping
+  empty albums; retain the current event grid, pinch/pan and location gestures.
+- Carry the correction into O08, principles and photo/journey workflows. Shared
+  runtime and independent-draft regression checks cover entry, order, event
+  boundaries, map return and history. All 535 tests and the production build pass; phone/desktop browser checks cover
+  the reference, target, demo and independent fresh drafts (details in WIP).
+
 ## 11 October 2026 — disable full-trip Replay
 
 - Remove desktop/phone Replay entry and paused-return actions across the shared
