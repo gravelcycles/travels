@@ -143,6 +143,8 @@ Implemented endpoints on the photo service's origin:
 
 ```text
 GET    /community/journeys/:journeyId/photos/:photoId/comments?after=cursor
+GET    /community/journeys/:journeyId/comments/summary?after=cursor
+GET    /community/journeys/:journeyId/comments?before=cursor
 POST   /community/journeys/:journeyId/photos/:photoId/comments
 PATCH  /community/comments/:commentId
 DELETE /community/comments/:commentId
@@ -176,14 +178,59 @@ Validate plain text (name 1–40, comment 1–1,000 characters), bound request b
 rate-limit posts by visitor and IP, and escape all rendered content. Add
 pagination, moderation and export before inviting a group. Show sending/saved/
 failed states; retry with the same client request ID and retain the draft.
-Refreshing comments on opening the panel and after posting is sufficient for
-the first release; sockets and realtime subscriptions are unnecessary.
+Refresh comment bodies on opening the panel and after posting; trip notification
+metadata also refreshes on authorized entry and visibility/focus returns, subject
+to its cache lifetime. Sockets, timers and realtime subscriptions are unnecessary.
 
 The demo is intentionally not a security implementation. Live delivery needs
 Worker integration tests for expired/revoked tokens, CORS, target eligibility,
 cross-author deletion, admin scope, rate limits, concurrent/idempotent writes,
 pagination and errors, plus runtime and public checks. Check current account
 usage/allowances before provisioning; this proposal makes no price guarantee.
+
+## Comment notifications
+
+Owner direction, 11 October 2026, is recorded in
+[O17](OWNER_DECISIONS.md#comment-notifications--11-october-2026).
+The photo Comments action, both in the sidebar/card and fullscreen, shows its
+unread number in a red circular badge. Once all comments are read it shows the
+plain total. A count is unknown until authorized metadata has loaded; a failed
+request must not imply that there are no comments.
+
+The top-right bell opens **Most recent comments**, newest first across the whole
+current trip, irrespective of day or route-group filters. Each row identifies
+the author, comment, time and photo context and opens that photo's conversation.
+Only traveler photo copy or actual capture-time/event context supplies a label;
+no venue guesses or generated captions. The clicked comment remains visible even
+when it falls beyond the oldest conversation page. Close/Back preserves the
+underlying photo/map flow and unfinished drafts.
+
+Read state is an explicit set of comment IDs in local browser storage, scoped by
+journey. Mark only displayed rows, including those brought into the scroll viewport;
+opening a thread or loading a page does not clear offscreen/unloaded comments.
+Posting one's own comment marks it read. Reading in another tab updates the
+badges. Clearing browser storage resets read status; unavailable storage retains
+current-page state. Names, bodies and credentials are not stored with read IDs.
+Deleted/moderated/ineligible comments do not count; restoring an already-read ID
+does not make it unread again.
+
+The shared model uses one paginated trip metadata summary (`id`, `photoId`,
+`createdAt`, 500 rows/page), deriving exact per-photo and trip totals against
+local read IDs. Summary pages replace the prior snapshot atomically. The recent
+feed separately loads 30 full comments per page, newest first by `(created_at,id)`.
+Both endpoints apply eligibility before pagination and use the additive partial
+`comments_journey_order` index. No per-photo count requests, public comment data,
+server read receipts, background polling or new service are needed. Initial and
+stale summary reads transfer O(visible comment count) compact metadata; this is
+the deliberate cost of exact counts for arbitrarily partially-read threads.
+
+Authorized data uses a thirty-second memory cache and coalesces matching in-flight
+reads. Mutations invalidate/update the shared snapshot and feed; auth lock clears
+private caches and DOM, with late responses discarded. Read IDs survive a lock.
+Live access remains the existing photo password. Demos use local preview comments;
+unpublished drafts keep an honest unavailable-until-publication state. Empty,
+loading and failed feeds have inline guidance and retry. See
+[operations](COMMUNITY_OPERATIONS.md) for migration and Worker-before-Pages rollout.
 
 ## Prompt-authored places and imagery
 

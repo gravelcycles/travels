@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="./assets/places-comments.css" />
     <link rel="stylesheet" href="./assets/places-panel.css" />
     <link rel="stylesheet" href="./assets/photo-comments.css" />
+    <link rel="stylesheet" href="./assets/trip-notifications.css" />
     <link rel="stylesheet" href="./assets/photo-bubbles.css" />
     <link rel="stylesheet" href="./assets/arrival-chapter.css" />
   </head>
@@ -41,12 +42,14 @@
       </a>
       <div class="header-context">
         <a class="header-link" href="./">All journeys</a>
+        <button class="trip-notifications-button" data-trip-notifications type="button" aria-label="Notifications" title="Most recent comments" aria-controls="trip-notifications-dialog" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="comment-count-badge" data-notifications-count aria-hidden="true" hidden></span></button>
       </div>
     </header>
 
     <header class="mobile-header" aria-label="Mobile journey navigation">
       <button id="mobile-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label" data-event-copy="Day map">Day map</span></button>
       <a href="./" class="mobile-brand">Journey Atlas</a>
+      <button class="trip-notifications-button" data-trip-notifications type="button" aria-label="Notifications" title="Most recent comments" aria-controls="trip-notifications-dialog" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="comment-count-badge" data-notifications-count aria-hidden="true" hidden></span></button>
     </header>
 
     <section id="trip-intro" class="trip-intro" aria-label="Journey introduction" hidden></section>
@@ -160,7 +163,7 @@
               <div class="bubble-card-toolbar">
                 <div class="bubble-card-navigation"><button type="button" data-bubble-prev aria-label="Previous photo">←</button><span data-bubble-count aria-live="polite"></span><button type="button" data-bubble-next aria-label="Next photo">→</button></div>
                 <button type="button" data-bubble-locate aria-label="Locate photo on map" title="Locate photo on map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg></button>
-                <button type="button" data-bubble-comments aria-label="Photo comments" title="Photo comments" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 1-8 8H4l1.5-4A8 8 0 1 1 20 11Z"/><path d="M8 10h8m-8 4h5"/></svg></button>
+                <button type="button" data-bubble-comments aria-label="Photo comments" title="Photo comments" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 1-8 8H4l1.5-4A8 8 0 1 1 20 11Z"/><path d="M8 10h8m-8 4h5"/></svg><span data-comment-count aria-hidden="true" hidden></span></button>
               </div>
               <p data-bubble-caption hidden></p>
               <button type="button" data-bubble-place hidden></button>
@@ -320,6 +323,7 @@
     <dialog id="experience-unlock" class="experience-unlock" aria-labelledby="experience-unlock-title"></dialog>
     <dialog id="place-reviews-dialog" class="pp-reviews-dialog conversation-surface" aria-labelledby="place-reviews-title"></dialog>
     <dialog id="comments-dialog" class="comments-dialog conversation-surface" aria-labelledby="comments-title"></dialog>
+    <dialog id="trip-notifications-dialog" class="trip-notifications-dialog conversation-surface" aria-labelledby="trip-notifications-title"></dialog>
 
     <script src="./assets/vendor/maplibre-5.24.0/maplibre-gl.js"></script>
     <script src="./assets/journeys.js"></script>
@@ -337,12 +341,14 @@
     <script src="./assets/group-travel.js"></script>
     <script src="./assets/media-utils.js"></script>
     <script src="./assets/location-labels.js"></script>
+    <script src="./assets/comment-notifications.js"></script>
     <script src="./assets/community-client.js"></script>
     <script src="./assets/places-comments.js"></script>
     <script src="./assets/photo-places.js"></script>
     <script src="./assets/photo-bubbles.js"></script>
     <script src="./assets/places-panel.js"></script>
     <script src="./assets/photo-comments.js"></script>
+    <script src="./assets/trip-notifications.js"></script>
     <script src="./assets/app.js"></script>
   </body>
 </html>

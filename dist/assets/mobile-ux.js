@@ -52,7 +52,7 @@
       afterDismiss = after || null;
       $(`#${id}`).close();
     }
-    for (const id of ['album-dialog', 'replay-dialog', 'notes-dialog', 'comments-dialog', 'experience-unlock']) {
+    for (const id of ['album-dialog', 'replay-dialog', 'notes-dialog', 'comments-dialog', 'experience-unlock', 'trip-notifications-dialog']) {
       $(`#${id}`).addEventListener('close', () => {
         // Native close events are queued. A replacement may already own the entry.
         if ($(`#${id}`).open || overlay !== id) return;

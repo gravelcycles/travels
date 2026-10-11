@@ -4,6 +4,8 @@ const PREFIX = '/community/';
 const idPattern = /^[a-zA-Z0-9_-]{1,180}$/;
 const requestIdPattern = /^[a-zA-Z0-9_-]{16,80}$/;
 export const UNDO_MS = 5 * 60 * 1000;
+export const SUMMARY_PAGE_SIZE = 500;
+export const RECENT_PAGE_SIZE = 30;
 export function validName(value) {
   if (typeof value !== 'string' || !value.trim() || value.trim().length > 40 || /[\u0000-\u001f\u007f]/.test(value)) throw new Error('Choose a name of 1–40 characters.');
   return value.trim();
@@ -26,10 +28,12 @@ function cursor(value) {
   if (!value) return [0, ''];
   const parts = value.split('.');
   if (parts.length !== 2 || !/^\d{1,16}$/.test(parts[0]) || !requestIdPattern.test(parts[1])) throw new Error('Invalid page cursor.');
-  return [Number(parts[0]), parts[1]];
+  const at = Number(parts[0]);
+  if (!Number.isSafeInteger(at)) throw new Error('Invalid page cursor.');
+  return [at, parts[1]];
 }
 const nextCursor = row => row ? `${row.created_at}.${row.id}` : null;
-const view = (row, visitorId) => ({ id: row.id, photoId: row.photo_id, displayName: row.display_name_snapshot, body: row.body, createdAt: row.created_at, editedAt: row.edited_at, own: row.visitor_id === visitorId });
+const view = (row, visitorId) => ({ id: row.id, journeyId: row.journey_id, photoId: row.photo_id, displayName: row.display_name_snapshot, body: row.body, createdAt: row.created_at, editedAt: row.edited_at, own: row.visitor_id === visitorId });
 const eligible = (journey, photo) => Object.hasOwn(eligiblePhotos, journey) && eligiblePhotos[journey].includes(photo);
 async function adminAllowed(value, secret) {
   if (typeof secret !== 'string' || secret.length < 43 || typeof value !== 'string' || value.length > 256) return false;
@@ -79,6 +83,25 @@ export async function community(request, env, origin, json) {
       if (typeof body.hidden !== 'boolean') return json(400, { error: 'Specify whether to hide the comment.' }, origin);
       const result = await query('UPDATE comments SET hidden_at = ? WHERE id = ?', body.hidden ? Date.now() : null, moderation[1]).run();
       return json(result.meta.changes ? 200 : 404, { changed: Boolean(result.meta.changes) }, origin);
+    }
+    const tripComments = route.match(/^journeys\/([A-Za-z0-9_-]+)\/comments(\/summary)?$/);
+    if (tripComments) {
+      const [, journey, summary] = tripComments;
+      if (!idPattern.test(journey) || !Object.hasOwn(eligiblePhotos, journey)) return json(404, { error: 'This journey is not available for comments.' }, origin);
+      if (method !== 'GET') return json(405, { error: 'Method not allowed' }, origin);
+      // A JSON parameter keeps eligibility filtering inside SQL without D1's
+      // per-statement bind limit. Filter before LIMIT so removed targets never
+      // leak metadata or consume a visible page. The partial covering index
+      // scans only this trip's live comments in cursor order, without a sort.
+      const photos = JSON.stringify(eligiblePhotos[journey]);
+      if (summary) {
+        const [at, id] = cursor(url.searchParams.get('after'));
+        const { results } = await query(`SELECT id, photo_id, created_at FROM comments INDEXED BY comments_journey_order WHERE journey_id = ? AND deleted_at IS NULL AND hidden_at IS NULL AND (created_at, id) > (?, ?) AND photo_id IN (SELECT value FROM json_each(?)) ORDER BY created_at, id LIMIT ${SUMMARY_PAGE_SIZE + 1}`, journey, at, id, photos).all();
+        return json(200, { comments: results.slice(0, SUMMARY_PAGE_SIZE).map(row => ({ id: row.id, photoId: row.photo_id, createdAt: row.created_at })), next: results.length > SUMMARY_PAGE_SIZE ? nextCursor(results[SUMMARY_PAGE_SIZE - 1]) : null }, origin);
+      }
+      const [at, id] = url.searchParams.has('before') ? cursor(url.searchParams.get('before')) : [Number.MAX_SAFE_INTEGER, ''];
+      const { results } = await query(`SELECT * FROM comments INDEXED BY comments_journey_order WHERE journey_id = ? AND deleted_at IS NULL AND hidden_at IS NULL AND (created_at, id) < (?, ?) AND photo_id IN (SELECT value FROM json_each(?)) ORDER BY created_at DESC, id DESC LIMIT ${RECENT_PAGE_SIZE + 1}`, journey, at, id, photos).all();
+      return json(200, { comments: results.slice(0, RECENT_PAGE_SIZE).map(row => view(row, session.visitorId)), next: results.length > RECENT_PAGE_SIZE ? nextCursor(results[RECENT_PAGE_SIZE - 1]) : null }, origin);
     }
     const target = route.match(/^journeys\/([A-Za-z0-9_-]+)\/photos\/([A-Za-z0-9_-]+)\/comments$/);
     if (target) {

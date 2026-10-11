@@ -1,5 +1,18 @@
 # Changelog
 
+## 11 October 2026 — trip comment notifications
+
+- Add a top-right recent-comments bell and unread-number badges on photo
+  Comments actions, returning to plain totals when read.
+- Keep read comment IDs locally by trip, counting only visible comments as read;
+  retain correct photo context, drafts and deep-thread notification entry.
+- Add authenticated, indexed trip metadata and newest-comment pages with shared
+  request caching and no per-photo count requests. Apply migration 0002 before
+  deploying the Worker and Pages.
+- Record the continuing behavior and acceptance checks in O17, the conversation
+  contract and shared feature/architecture guidance. Verification is tracked in WIP.
+
+
 ## 11 October 2026 — one opening action and Heading East description
 
 - Keep one Explore the journey action and open the whole-trip map. Remove the

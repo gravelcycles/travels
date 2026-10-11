@@ -112,6 +112,7 @@ password system.
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |
 | `dist/assets/mobile-ux.js`, `dist/assets/mobile.css` | Shared mobile day navigation, immersive photo gestures, location panel, grid and Back behavior |
 | `dist/assets/community-client.js`, `photo-comments.js` / `.css`, `places-comments.css`, `places-panel.js` | Shared floating photo conversations and place reviews; immediate presentation, authorized memory caches and retry behavior |
+| `dist/assets/comment-notifications.js`, `trip-notifications.js` / `.css` | Shared journey-scoped local read IDs, exact photo/trip counts, cached trip metadata and recent-feed presentation; no per-photo count requests or public comment text |
 | `dist/assets/input-mode.js` | Shared pointer/keyboard focus presentation for catalog, journeys and draft previews |
 | `studio/` | Local authoring UI for any selected journey |
 | `studio/plan-extras.js`, `scripts/studio-plan-sources.mjs` | Studio roster/group/overnight/meetup and hosted-video forms; source-preserving persistence of photo group assignments |
@@ -198,6 +199,27 @@ Pages CI runs the suite and build, then rejects uncommitted output differences
 with `git diff --exit-code -- dist/`. Commit regenerated outputs with source
 changes. Preserve concurrent work, fetch/integrate remote main before each
 push, verify the Pages run, and check fresh public content before completion.
+
+## Comment notification architecture
+
+The shared comment store owns authenticated photo threads and trip notification
+reads. `comment-notifications.js` owns local read membership and count helpers;
+`community-client.js` owns authenticated metadata/feed caches; `trip-notifications.js` owns the header bell and recent-comments dialog.
+The coordinator connects the same model to photo/sidebar badges and conversation
+visibility. Trip scope is independent of the selected event or route group.
+No journey-specific template or backend instance is introduced.
+
+The Worker serves 500-row compact metadata pages and a separate newest-first
+30-comment feed. Both use the partial trip-order D1 index and filter eligible
+photos before pagination. A summary refresh is O(visible comment metadata),
+coalesced and cached for thirty seconds; it avoids N photo requests and fetching
+every comment body. Explicit local read IDs preserve exact unread counts through
+partial scrolling, pagination and deletion/restoration. For substantially larger
+trips, reconsider conditional/incremental metadata snapshots based on measured
+traffic; there is no new streaming/polling service or pending infrastructure
+requirement. The current contract and privacy/lifecycle details live in
+[Places and comments](PLACES_AND_COMMENTS.md#comment-notifications).
+
 
 ## Remaining migration plan
 

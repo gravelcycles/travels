@@ -16,6 +16,26 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Trip comment notifications — 11 October 2026
+
+Implemented: photo Comments actions show red numbered unread badges, then plain
+totals; journey-scoped local read IDs; top-right newest-comments feed across the
+whole trip. O17 and [the conversation contract](docs/PLACES_AND_COMMENTS.md#comment-notifications)
+own the behavior. Shared indexed metadata/feed endpoints, bounded pagination,
+30-second caches and request coalescing avoid per-photo count requests. Read
+membership follows visible rows and survives reload/delete/restore; auth clears
+private memory/DOM and ignores late responses.
+
+SQLite, client and UI regressions cover pagination, storage, privacy, cache races
+and notification history ordering. Browser fixtures verify reference-trip and
+independently populated city-draft desktop/phone entry, a comment beyond the first
+50, 320px layout, and red unread → plain total. The full suite/build and actual
+Worker runtime passed locally. Next: integrate current main, repeat final release
+checks, apply additive migration 0002, deploy Worker before Pages and verify live
+endpoints/assets. Production delivery remains pending. Concurrent mobile, map,
+Replay and hover changes are preserved in their own releases.
+
+
 ## Opening screen and Heading East description — 11 October 2026
 
 Authorized: one Explore the journey button opening the whole-trip map; remove

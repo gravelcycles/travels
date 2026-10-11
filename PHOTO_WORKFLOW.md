@@ -466,6 +466,16 @@ speculative work to a foreground download. Public-photo Retry uses the public
 loader and never asks for private-photo access.
 
 
+## Comment counts and read state
+
+Photo Comments actions inherit the shared notification contract: a red numbered
+badge for unread comments and a plain total otherwise. Read IDs stay locally
+scoped to the trip; the top-right bell opens its most recent conversations.
+Preserve the presenting collection and unfinished text when opening a comment.
+See [the complete contract](docs/PLACES_AND_COMMENTS.md#comment-notifications)
+and [owner decision O17](docs/OWNER_DECISIONS.md#comment-notifications--11-october-2026).
+
+
 ## Link photos to Places
 
 Open **Studio → Places**, choose a place, then use **Trip photo links**. Link

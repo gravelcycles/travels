@@ -1634,6 +1634,20 @@
     else selectPhoto(photoId, options);
   }
 
+  function openNotificationPhoto(photoId) {
+    // Notifications cover the entire trip. Reveal a target outside the current
+    // route/planning filter through the existing controls before selecting it.
+    if (!sourceJourney.photos?.some(photo => photo.id === photoId)) return false;
+    if (!photoById(photoId) && activeGroupId) selectRouteGroup('');
+    if (!photoById(photoId) && !showTbd) {
+      $('#show-tbd').checked = true;
+      $('#show-tbd').dispatchEvent(new Event('change'));
+    }
+    if (!photoById(photoId)) return false;
+    openCommentPhoto(photoId);
+    return true;
+  }
+
   function openPhoto(photoId, { photos: collection, collectionLabel = '', preserveCollection = false } = {}) {
     const photo = photoById(photoId);
     if (!photo) return;
@@ -2306,7 +2320,7 @@
       clearSegmentInspection(true);
       return;
     }
-    if (!photoDialog.open || document.querySelector('#comments-dialog[open], #experience-unlock[open]') || window.JOURNEY_ATLAS_MOBILE_UI?.keyTarget(event) || ['INPUT','SELECT','TEXTAREA'].includes(event.target.tagName)) return;
+    if (!photoDialog.open || document.querySelector('#comments-dialog[open], #experience-unlock[open], #trip-notifications-dialog[open]') || window.JOURNEY_ATLAS_MOBILE_UI?.keyTarget(event) || ['INPUT','SELECT','TEXTAREA'].includes(event.target.tagName)) return;
     if (event.key === "ArrowLeft" && event.shiftKey) moveViewerDay(-1);
     else if (event.key === "ArrowRight" && event.shiftKey) moveViewerDay(1);
     else if (event.key === "ArrowLeft") moveViewer(-1);
@@ -2320,7 +2334,7 @@
     collection:()=>viewerCollection,
     openDay:openDayViewer, move:moveViewer, selectPhoto:index=>{viewerPhotoIndex=index;updateViewer();},
     overview:fitRoute, album:openAlbum, replay:openReplay,
-    restoreOverlay:id=>{if(id==='album-dialog')openAlbum();else if(id==='replay-dialog')openReplay();else if(['comments-dialog','experience-unlock'].includes(id))placesUI?.restoreOverlay(id);else window.JOURNEY_ATLAS_MOBILE_UI.presentOverlay(id);},
+    restoreOverlay:id=>{if(id==='album-dialog')openAlbum();else if(id==='replay-dialog')openReplay();else if(['comments-dialog','experience-unlock','trip-notifications-dialog'].includes(id))placesUI?.restoreOverlay(id);else window.JOURNEY_ATLAS_MOBILE_UI.presentOverlay(id);},
     location:()=>{viewerCameraPhoto=null;initViewerMap();},
     pauseLocation:()=>viewerTransition?.cancel(),
     replayMap:()=>{if(replayMapReady && replayDialog.open){replayMap.resize();drawReplayMomentMap(currentReplayMoment(),replayProgress,true);}},
@@ -2344,7 +2358,7 @@
     resolvedDay: dayById, visibleDayIds: () => journey.days.map(day => day.id),
     photoCollection: () => photoDialog.open ? {photos:viewerPhotos(),label:viewerCollection?.label || viewerDay().title} : photoBubbles?.collection() || {photos:photosForDay(activeDayId),label:activeDay().title},
     photos: () => orderedPhotos().filter(photo => !mediaUtils.isVideo(photo)), openPhoto, photoUrl:preferredPhotoUrl,
-    openCommentPhoto,
+    openCommentPhoto, openNotificationPhoto,
     browsePhotos: (photos, collectionLabel = '') => { if (photos.length) openPhoto(photos[0].id,{photos,collectionLabel}); },
     onPlacesVisibility: () => photoBubbles?.placesChanged(),
     mapScope: () => mapScope,

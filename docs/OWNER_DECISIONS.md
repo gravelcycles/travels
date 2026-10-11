@@ -53,6 +53,32 @@ large useful imagery, restrained copy, continuous geographic context, responsive
 interruptible motion, obvious navigation and reliable recovery. It does not mean
 adding decorative animation, labels, another panel or another confirmation step.
 
+## Comment notifications — 11 October 2026
+
+**O17 · Comment notifications.** The owner requested: “mark the number of
+comments on the comments button using the red circle like on iphone notifs for
+unread comments (store read comments locally). just show num comments otherwise,”
+plus a top-right notification symbol showing “most recent comments” across a
+whole trip and an efficient shared architecture. This applies to every atlas,
+and extends the existing O04 conversations without changing their photo context.
+
+Photo Comments buttons show a red numbered unread badge, then the plain total
+when all comments are read. The top-right bell opens the current trip's newest
+comments, independent of selected day or route-group filters, with links to their
+photo conversations. Store read comment IDs locally per journey; opening a panel
+does not mark offscreen or unloaded comments read. No private comment text enters
+public bundles or notification storage. Use the same photo-access boundary and
+shared indexed trip queries, bounded pages and request caches rather than one
+request per photograph. Technical details and empty states belong in the
+[conversation contract](PLACES_AND_COMMENTS.md#comment-notifications).
+
+Acceptance: unread → viewed → plain total, reload and cross-tab read persistence,
+partial threads exceeding one page, correct photo/day entry from recent comments,
+whole-trip scope, desktop/phone keyboard and Back behavior, and locked/error/empty
+states. Check the reference, a demo and an independently populated fresh draft.
+Implementation/deployment status remains in [WIP](../WIP.md).
+
+
 ## UX corrections — 11 October 2026
 
 The owner authorized all sixteen findings in [the UX review](UX_REVIEW_2026-10-11.md)

@@ -71,6 +71,13 @@ content-only; see [its intake and route evidence](HEADING_EAST.md).
 | Review for sharing | Concise summary with required fixes first, grouped editorial choices and expandable source details; read-only review of the current Studio draft and trip plan against saved sources; real local-asset blockers, optional editorial choices, links to the affected editor, revision-bound acknowledgements and a copyable publishing handoff | Works for real trips, samples and empty drafts. Blank captions/stories and photo-only days are valid. Local draft promotion and protected-asset publication remain agent-operated. Public deployment is explicitly unverified until the agent checks it | Studio ready-to-share, studio-readiness; [workflow](../JOURNEY_WORKFLOW.md#ready-to-share-review) |
 | Reproducible delivery | Validated generation, cache-busted assets, Pages CI, bounded orphan-deployment recovery/retry and public verification | Reviewed published sources; no private originals/network fetch needed for site build; GitHub service failures remain visible | build-site, Pages workflow, recover-pages |
 
+Comment notifications extend photo conversations with red unread-number badges
+on photo Comments buttons and plain total counts once read. The top-right bell
+shows **Most recent comments** across the trip and opens the selected photo's
+conversation. Local read IDs, indexed compact metadata pages, a bounded recent
+feed and shared request caches keep counts exact without per-photo requests.
+See the [notification contract](PLACES_AND_COMMENTS.md#comment-notifications).
+
 ## Features versus editorial content
 
 Heading East's second camera batch uses the existing incremental photo importer

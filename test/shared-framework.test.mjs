@@ -45,6 +45,40 @@ function bundle(source, key) {
 }
 const app = read(repo, 'dist/assets/app.js');
 
+test('trip read state and counts are inherited across reference, demo and independently populated city draft', async t => {
+  await import('../dist/assets/comment-notifications.js');
+  const model = globalThis.JOURNEY_ATLAS_COMMENT_NOTIFICATIONS;
+  const root = fixture(t), created = createJourney(root, { ...input, eventMode: 'city' });
+  const { data } = loadContent(root, { includeDrafts: true });
+  const draft = data.journeys.find(item => item.id === created.id);
+  draft.photos = [1, 2].map(n => ({ id: `${draft.id}-photo-${n}`, dayId: draft.days[0].id, caption: '', takenAt: `2028-02-28 12:0${n}`, src: `https://images.example.test/independent-${n}.jpg` }));
+  const values = new Map(), storage = { getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, value) };
+  for (const journey of [data.journeys.find(item => item.id === 'switzerland-italy-family-2026'), data.journeys.find(item => item.kind === 'demo' && item.photos.length), draft]) {
+    const state = model.createReadState({ storage, journeyId: journey.id, eventTarget: null });
+    assert.equal(model.summarize([], state).total, 0);
+    const photoId = journey.photos[0].id;
+    const comments = Array.from({ length: 53 }, (_, n) => ({ id: `fixture-comment-${n}`, photoId, createdAt: n + 1 }));
+    assert.equal(model.summarize(comments, state).unread, 53, `${journey.id}: another trip's read IDs cannot clear this trip`);
+    state.markRead(comments.slice(0, 3));
+    const partial = model.summarize(comments, state);
+    assert.equal(partial.photos[photoId].total, 53);
+    assert.equal(partial.photos[photoId].unread, 50, 'Unread includes comments beyond the conversation page');
+    state.destroy();
+    const restored = model.createReadState({ storage, journeyId: journey.id, eventTarget: null });
+    assert.equal(model.summarize(comments, restored).unread, 50, 'Reload keeps read membership');
+    restored.markRead(comments);
+    assert.equal(model.summarize(comments, restored).unread, 0);
+    assert.equal(model.summarize(comments, restored).total, 53);
+    const html = renderJourneyPage(root, journey, { preview: true });
+    assert.match(html, /trip-notifications\.js/);
+    assert.match(html, /comment-notifications\.js/);
+    assert.match(html, /id="trip-notifications-dialog"/);
+    restored.destroy();
+  }
+  for (const value of values.values()) assert.deepEqual(Object.keys(JSON.parse(value)), ['version', 'read'], 'Read storage contains no comment text or identity');
+});
+
+
 test('stationary photo bubbles stay attached for reference, demo and freshly generated draft',t=>{
   const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root);
   for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'),draft]){

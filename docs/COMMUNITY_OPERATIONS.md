@@ -40,10 +40,11 @@ See [D1 pricing](https://developers.cloudflare.com/d1/platform/pricing/).
    }]
    ```
 
-3. Apply the reviewed migration remotely with
+3. Apply the reviewed migrations remotely with
    `npx wrangler d1 migrations apply travels-community --remote --config workers/photo-auth/wrangler.jsonc`.
    The schema is `workers/photo-auth/migrations/0001_community.sql`. It creates
-   profiles and comments; it does not seed real visitor names or comments.
+   profiles and comments; `0002_comment_notifications.sql` adds the live trip
+   cursor index. Neither migration seeds visitor names or comments.
 4. Generate a separate random 32-byte administrator secret, retain it in an
    approved private credential store, and install it as `COMMUNITY_ADMIN_KEY`
    using Wrangler's secret-input channel. Never put it in content, browser
@@ -61,6 +62,9 @@ No unauthenticated comment-read or write endpoint is provided.
 
 Run `npm test`, `npm run build`, and `npm run auth:runtime-test`. The last command
 uses the actual Worker runtime and D1 SQLite with disposable local fixture data.
+Apply every pending reviewed D1 migration before deploying a Worker that uses
+it. The notification endpoints require `0002_comment_notifications.sql`; its
+additive partial index leaves existing comments and identities intact.
 
 Every build regenerates `workers/photo-auth/community-index.mjs` from published
 real journeys. It contains only journey/photo IDs, excluding trashed or
@@ -123,7 +127,7 @@ and server time supply author/timestamps; client author/role fields are ignored.
 A unique visitor/request-ID constraint makes uncertain/concurrent retries safe.
 The browser retains that identifier with its draft until a confirmed response.
 
-Lists page forward by `(created_at, id)` with 50 records per request. No polling,
+Photo discussions page forward by `(created_at, id)` with 50 records per request. No polling,
 realtime socket, automatic external lookup or Maps API is introduced. Removing a
 photo from the deployed eligibility index hides all its comments and blocks
 writes; restoring the same photo ID makes them accessible again.
@@ -161,3 +165,55 @@ Network errors stay in the conversation, retaining cached comments and the draft
 they do not launch an unrelated photo-unlock prompt. Comment thumbnails reuse the
 current image until the photo/access changes and request a small derivative.
 No background polling, service-plan change or new public endpoint is introduced.
+
+## Trip notifications and local read receipts — 11 October 2026
+
+The owner's notification request adds red unread counts on photo Comments
+buttons and a top-right trip feed of most recent comments. Read membership is
+local to the browser. It uses explicit comment IDs so opening a discussion's
+first page cannot accidentally mark its unloaded comments as read. The server
+does not accept, persist or infer visitor read state.
+
+Two authenticated GET routes share the existing access, allowed-Origin and
+`no-store` boundary:
+
+| Route | Response and order |
+| --- | --- |
+| `/community/journeys/:journeyId/comments/summary?after=cursor` | Up to 500 `{id, photoId, createdAt}` entries, oldest first; `next` is the next page cursor or `null`. No body, author or ownership fields. |
+| `/community/journeys/:journeyId/comments?before=cursor` | Up to 30 ordinary comment views, newest first; `next` is the next page cursor or `null`. Views include `journeyId` for precise mutation invalidation. |
+
+Both cursors encode the exclusive `(created_at, id)` boundary. The ID tie-breaker
+keeps paging stable when comments share a timestamp. Each page uses one D1 query
+through the partial `comments_journey_order(journey_id, created_at, id, photo_id)`
+index. Eligibility is a single JSON bind filtered in SQL before `LIMIT`, avoiding
+both D1's per-statement parameter ceiling and a request per photo. Hidden,
+deleted and removed-photo comments never enter either response, including their
+IDs. Fictional demos and unpublished drafts have no live trip endpoint.
+
+The client fetches all compact summary pages into a temporary result and swaps
+them into memory only after successful completion. This yields per-photo totals
+and exact unread membership against the locally stored read IDs, including
+discussions longer than 50 comments. It deduplicates concurrent loads, reuses the
+result for 30 seconds, refreshes on relevant access/visibility/user actions and
+invalidates after mutations. No interval polling or per-photo badge requests
+are needed. A mutation/access generation guard prevents older reads from
+overwriting newer local results or repopulating locked access. The recent feed
+loads independently in bounded pages, so showing it never fetches every body.
+
+A complete initial load or stale summary refresh is O(visible comment metadata),
+not O(number of photos) requests. This is an intentional tradeoff for exact local
+read membership and correct partial-discussion behavior. Metadata pages are
+bounded, but the assembled metadata and local receipt set grow with comments;
+a much larger service should review this before adding timers or downloading
+whole discussions. There is no cross-request database snapshot: other visitors'
+changes can become visible on the next refresh. Count freshness follows the
+same short cache window as conversations. Read receipts remain local IDs;
+live comment bodies and display names stay in authorized memory and clear on lock.
+
+`test/community.test.mjs` exercises real SQLite with more than one metadata
+page, timestamp ties, eligibility before page limits, removed/hidden/deleted
+rows, target/auth/privacy checks and query plans with no full comment scan or
+temporary ordering sort. The Worker runtime check applies all migrations and
+checks both new routes against disposable D1 data. Apply the migration, deploy
+the Worker, then publish Pages; verify signed reads and anonymous/foreign-origin
+denial without inserting fabricated memories into production.

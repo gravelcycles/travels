@@ -15,7 +15,11 @@
   }
   // Local persistence is the UX adapter. Shared writes will replace this boundary,
   // without changing the cards, conversations or the existing photo authorization.
-  function createDemoStore(storage, key) {
+  function createDemoStore(storage, key, { readState, eligiblePhotos } = {}) {
+    const listeners = new Set();
+    const emit = type => { for (const listener of listeners) listener({ type }); };
+    const unsubscribeReads = readState?.subscribe(() => emit('read'));
+    let recentLimit = 50;
     const empty = () => ({ comments: [], reviews: [], drafts: {} });
     const validComment = c => c && typeof c.id === 'string' && typeof c.photoId === 'string' && typeof c.visitorId === 'string' && typeof c.displayName === 'string' && c.displayName.trim() && c.displayName.length <= 40 && typeof c.body === 'string' && c.body.trim() && c.body.length <= 1000 && Number.isFinite(c.createdAt);
     function read() {
@@ -30,14 +34,29 @@
     }
     function save(data) {
       try { storage.setItem(key, JSON.stringify(data)); } catch { throw new Error('This browser could not save your changes. Your text is still here. Allow browser storage and try again.'); }
+      emit('mutation');
     }
     function owned(data, id, visitorId) {
       const comment = data.comments.find(c => c.id === id);
       if (!comment || !visitorId || comment.visitorId !== visitorId) throw new Error('You can only change your own comments.');
       return comment;
     }
+    const allComments = () => {
+      const eligible = eligiblePhotos ? new Set(eligiblePhotos().map(photo => photo.id)) : null;
+      return read().comments.filter(comment => !eligible || eligible.has(comment.photoId));
+    };
     return {
-      comments: photoId => read().comments.filter(c => c.photoId === photoId).sort((a,b) => a.createdAt - b.createdAt || a.id.localeCompare(b.id)),
+      readState,
+      notificationSummary: () => root.JOURNEY_ATLAS_COMMENT_NOTIFICATIONS.summarize(allComments(), readState),
+      refreshSummary: async () => {},
+      recentComments: () => allComments().sort(root.JOURNEY_ATLAS_COMMENT_NOTIFICATIONS.newestFirst).slice(0, recentLimit),
+      refreshRecent: async (_journey, { more = false } = {}) => { recentLimit = more ? recentLimit + 50 : Math.max(50, recentLimit); emit('recent'); },
+      hasRecent: () => true,
+      hasMoreRecent: () => allComments().length > recentLimit,
+      markRead: rows => readState?.markRead(rows),
+      subscribe(listener) { listeners.add(listener); return () => listeners.delete(listener); },
+      destroy() { unsubscribeReads?.(); listeners.clear(); },
+      comments: photoId => read().comments.filter(c => c.photoId === photoId).sort((a, b) => a.createdAt - b.createdAt || (a.id > b.id ? 1 : a.id < b.id ? -1 : 0)),
       reviews: pointId => read().reviews.filter(r => r.pointId === pointId),
       addComment(photoId, visitor, body, id, createdAt = Date.now()) {
         if (!photoId || !visitor?.id) throw new Error('Unlock the demo before commenting.');
@@ -102,28 +121,35 @@
   function create(options) {
     const preview = options.journey().kind === 'demo' && ['places', 'comments'].includes(new URLSearchParams(location.search).get('experience'));
     const live = options.journey().kind !== 'demo' && Boolean(options.journey().published);
-    let journeyId = '', store;
+    let journeyId = '', store, readState;
     function selectStore() {
       const id = options.journey().id;
       if (journeyId === id) return;
+      store?.destroy?.(); readState?.destroy?.();
       journeyId = id;
       let storage;
       try { storage = localStorage; } catch { storage = { getItem() { return null; }, setItem() { throw new Error('Storage unavailable'); } }; }
-      const local = createDemoStore(storage, `${live ? 'atlas-community-drafts-v1' : 'atlas-experience-v1'}:${id}`);
-      store = live ? root.JOURNEY_ATLAS_COMMUNITY.createStore({ drafts: local, request: (...args) => root.JOURNEY_ATLAS_AUTH.communityRequest(...args) }) : local;
+      readState = root.JOURNEY_ATLAS_COMMENT_NOTIFICATIONS.createReadState({ storage, journeyId: id });
+      const local = createDemoStore(storage, `${live ? 'atlas-community-drafts-v1' : 'atlas-experience-v1'}:${id}`, { readState: live ? undefined : readState, eligiblePhotos: () => options.journey().photos || [] });
+      store = live ? root.JOURNEY_ATLAS_COMMUNITY.createStore({ drafts: local, readState, journeyId: id, request: (...args) => root.JOURNEY_ATLAS_AUTH.communityRequest(...args) }) : local;
     }
     selectStore();
     const shared = { ...options, preview, live, store: () => store };
     const places = root.JOURNEY_ATLAS_PLACE_PANEL.create({ ...shared, store: () => live ? ({ reviews: () => [], draft: (...args) => store.draft(...args) }) : store });
     const comments = root.JOURNEY_ATLAS_PHOTO_COMMENTS.create({ ...shared, openPhoto: options.openCommentPhoto || options.openPhoto, onPlaces: () => places.open(), onReset: () => places.update(true) });
-    function update() { selectStore(); places.update(); comments.update(); }
+    const notifications = root.JOURNEY_ATLAS_TRIP_NOTIFICATIONS.create({ ...shared, openComment(comment) {
+      const open = options.openNotificationPhoto || options.openCommentPhoto || options.openPhoto;
+      if (open(comment.photoId) === false) return;
+      comments.open({ comment });
+    } });
+    function update() { selectStore(); places.update(); comments.update(); notifications.update(); }
     update();
     return {
       update, isOpen: () => places.isOpen(), mapReady: () => places.mapReady(), photoChanged: photo => comments.photoChanged(photo),
-      restoreOverlay: id => comments.restore?.(id),
+      restoreOverlay: id => id === 'trip-notifications-dialog' ? notifications.open() : comments.restore?.(id),
       openPlace: id => places.openPlace(id), closeForPhotos:()=>places.closeForPhotos(),dayChanged:()=>places.dayChanged(),
       openComments:()=>comments.open(),commentsAvailable:()=>comments.available(),
-      start() { comments.start(); if (preview && new URLSearchParams(location.search).get('experience') === 'places') places.open(); }
+      start() { comments.start(); notifications.start(); if (preview && new URLSearchParams(location.search).get('experience') === 'places') places.open(); }
     };
   }
   root.JOURNEY_ATLAS_PLACES = { escape, average, ratingSummary, placeTabs, filterPlaces, validateComment, createDemoStore, create };
