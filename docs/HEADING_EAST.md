@@ -53,6 +53,17 @@ uploaded one at a time and downloaded for SHA-256 verification before the
 76 new manifest entries were marked published. The eligible-photo index
 contains all 120 trip photo IDs.
 
+Delivery verification: **518 tests passed**, production build succeeded and a
+repeat build left checked-in output unchanged. Private Worker version
+`5fff255d-6a7c-49ae-8efa-c62fa681f7f8` serves the updated eligible IDs and rejects
+an anonymous new-photo request with HTTP 401. Photo release `635c35c` passed
+[GitHub Pages deployment](https://github.com/gravelcycles/travels/actions/runs/38134402030).
+A fresh public page shows the 120-photo total, corrected city counts, retained
+August timestamp and a fully loaded new protected image without generated copy.
+The original checkout retains every pre-existing photo override and its pending
+UX documentation edits; new private derivatives and Studio originals are also
+available there for continued editing.
+
 ## Photo intake — 10 October 2026
 
 The owner requested all 44 stills from ignored `photos/euro-eastbound/`:
