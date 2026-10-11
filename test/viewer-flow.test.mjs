@@ -11,11 +11,11 @@ test('the large sidebar photograph opens full screen and leaves the presenting m
   assert.equal(f.context.photoDialog.open,true);
   assert.deepEqual(f.events,['entry','fullscreen','render']);
   assert.equal(f.context.viewerPhotoIndex,1);
-  assert.deepEqual(f.photos().map(photo=>photo.id),['first','second','clip']);
+  assert.deepEqual(f.photos().map(photo=>photo.id),['first','second','clip','fourth']);
   assert.equal(f.context.viewerCollection,null);
 });
 
-test('explicit map/place collections preserve their order, boundaries, and current-photo day',()=>{
+test('explicit Places collections preserve their order, boundaries, and current-photo day',()=>{
   const f=photoEntryFixture(journey), collection=[journey.photos[3],journey.photos[1]];
   f.open('second',{photos:collection,collectionLabel:'Saved place'});
   assert.deepEqual(f.photos().map(photo=>photo.id),['fourth','second']);
@@ -24,14 +24,14 @@ test('explicit map/place collections preserve their order, boundaries, and curre
   f.context.moveViewer(-1);assert.equal(f.context.viewerDayId,'hill');
   assert.equal(f.context.viewerCollection.label,'Saved place');
   f.context.moveViewerDay(-1);assert.equal(f.context.viewerDayId,'hill','Day arrows do not silently change a named collection');
-  f.open('first');assert.equal(f.context.viewerCollection,null,'A fresh album entry starts the day album again');
+  f.open('first');assert.equal(f.context.viewerCollection,null,'A fresh album entry starts the journey roll again');
 });
 
 test('the right reel selects the large photo without opening fullscreen or moving the map',()=>{
   const f=photoEntryFixture(journey);
   f.click('photoStrip','second');
   assert.equal(f.context.photoDialog.open,false);
-  assert.deepEqual(JSON.parse(JSON.stringify(f.events)),[{selection:'second',photos:['first','second'],options:{label:'Harbor'}}]);
+  assert.deepEqual(JSON.parse(JSON.stringify(f.events)),[{selection:'second',photos:['first','second','fourth'],options:{label:'Journey photos',browseJourney:true}}]);
   f.click('storyMedia','second');
   assert.equal(f.context.photoDialog.open,true);
   assert.equal(f.context.viewerPhotoIndex,1);
@@ -101,15 +101,15 @@ test('phone arrival is one state of the stop card and blank days never promise a
   assert.equal(node('.mobile-day-summary').dataset.arrivalTraveling,'false');
 });
 
-test('Comments navigation preserves implicit day albums and explicit map collections',()=>{
+test('Comments navigation preserves the implicit trip roll and explicit Places collections',()=>{
   const f=photoEntryFixture(journey);
   f.open('first');
   f.open('second',{photos:f.photos(),collectionLabel:'Harbor',preserveCollection:true});
-  assert.equal(f.context.viewerCollection,null,'Comments must not convert a day album into a new collection and reset it on Back');
+  assert.equal(f.context.viewerCollection,null,'Comments must not convert the trip roll into a new collection and reset it on Back');
   assert.equal(f.context.viewerPhotoIndex,1);
-  f.open('first',{photos:journey.photos.slice(0,2),collectionLabel:'Map photos'});
+  f.open('first',{photos:journey.photos.slice(0,2),collectionLabel:'Saved place'});
   const original=f.context.viewerCollection;
-  f.open('second',{photos:f.photos(),collectionLabel:'Map photos',preserveCollection:true});
+  f.open('second',{photos:f.photos(),collectionLabel:'Saved place',preserveCollection:true});
   assert.equal(f.context.viewerCollection,original);
   assert.equal(f.context.viewerPhotoIndex,1);
 });

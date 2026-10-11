@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import '../dist/assets/media-utils.js';
+import '../dist/assets/mobile-ux.js';
 
 const source = fs.readFileSync(new URL('../dist/assets/app.js', import.meta.url), 'utf8');
 function functionSource(name) {
@@ -19,7 +20,7 @@ function selection() {
   };
   const days = [{ id: 'd1', number: 1, segmentIds: [] }, { id: 'd2', number: 2, segmentIds: [] }];
   const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),
-    window: {}, clearDayPreview(){}, deferDayPreviewClear(){}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
+    window: {JOURNEY_ATLAS_MOBILE:globalThis.JOURNEY_ATLAS_MOBILE}, orderedPhotos:()=>[], clearDayPreview(){}, deferDayPreviewClear(){}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
     arrivalChapter:null, arrivalKey:day=>day.id, cancelArrival(){}, settleAtCity(){}, startArrival(){}, mainMapReady:true, locationLabels:null,
     activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null, mobileMapTimer:null, clearTimeout(){},
     viewerCollection:null,viewerDayId:'d2',viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null, placesUI: null, photoBubbles: null,
@@ -27,6 +28,7 @@ function selection() {
     photosForDay: () => [], routeLabel: () => '', escapeHtml: value => value || '',
     refreshPreloads() {}, renderDays() {}, scrollActiveDayIntoView() {}, renderStory() {}, drawMainMap() {}, renderViewerFilmstrip() {}, clearSegmentInspection() {}
   });
+  context.orderedPhotos=()=>context.photosForDay();
   vm.runInContext(`${functionSource('setActiveDay')}\n${functionSource('viewerPhotos')}\n${functionSource('updateViewer')}`, context);
   return context;
 }
@@ -102,7 +104,7 @@ test('the same day viewer switches photo to video and back without sending video
   context.viewerPhotoIndex = 1; context.updateViewer();
   assert.equal(context.$('#modal-photo').hidden,true);
   assert.equal(context.$('.photo-viewer').dataset.mediaType,'video');
-  assert.equal(context.$('#modal-progress').textContent,'VIDEO 2 OF 2');
+  assert.equal(context.$('#modal-progress').textContent,'TRIP VIDEO 2 OF 2');
   assert.equal(context.$('#viewer-media-title').textContent,'A clip');
   context.viewerPhotoIndex = 0; context.updateViewer();
   assert.equal(context.$('#modal-photo').hidden,false);
@@ -169,7 +171,7 @@ test('Fit route bounds use routes and journey places, excluding distant photo pi
 test('selecting another viewer photo preserves thumbnail elements and updates selection only', () => {
   let builds=0,prepares=0,buttons=[];
   const strip={dataset:{},querySelectorAll:()=>buttons,set innerHTML(html){builds++;buttons=[...html.matchAll(/data-viewer-index="(\d+)"/g)].map(m=>({dataset:{viewerIndex:m[1]},selected:false,classList:{toggle(name,value){this.active=value;}},setAttribute(name,value){this[name]=value;},scrollIntoView(){}}));}};
-  const context=vm.createContext({window:{},eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerPhotoIndex:0,mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,escapeHtml:value=>value,photoImageMarkup:()=>'<img>',prepareProgressiveImages(){prepares++;},$:selector=>selector==='#viewer-filmstrip'?strip:buttons.find(b=>b.classList.active)});
+  const context=vm.createContext({window:{},viewerCollection:null,viewerDay:()=>({}),eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerPhotoIndex:0,mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,escapeHtml:value=>value,photoImageMarkup:()=>'<img>',prepareProgressiveImages(){prepares++;},$:selector=>selector==='#viewer-filmstrip'?strip:buttons.find(b=>b.classList.active)});
   vm.runInContext(functionSource('renderViewerFilmstrip'),context);
   const photos=[{id:'one'},{id:'two'},{id:'three'}];context.photos=photos;
   vm.runInContext('renderViewerFilmstrip(photos)',context);const original=[...buttons];
@@ -267,7 +269,7 @@ test('route inspection is suppressed on phones while desktop retains its tooltip
 
 test('changing the full-screen viewer day clears the previous day photo selection and Places before drawing',()=>{
  const context=selection(),cleared=[];
- context.photoBubbles={close:()=>cleared.push('photos')};
+ context.photoBubbles={close:()=>cleared.push('photos'),collection:()=>null};
  context.placesUI={dayChanged:()=>cleared.push('places'),photoChanged(){}};
  context.updateViewer();
  assert.equal(context.activeDayId,'d2');

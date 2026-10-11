@@ -331,15 +331,16 @@
       // it reveals the current photograph, not the image saved before opening.
       const returningFromViewerOverlay = Boolean(old?.viewer && state.viewer && old.overlay && !collectionChanged);
       const leavingViewer = Boolean(old?.viewer && !state.viewer);
+      const sidebarPhoto = !old?.viewer && old?.overlay === 'comments-dialog' && !state.viewer ? api.sidebarPhoto?.() : null;
       viewerDepth = state.depth || 0; overlayDepth = state.overlayDepth || 0;
       const oldOverlay = overlay; overlay = state.overlay || null;
       if (oldOverlay && oldOverlay !== overlay) $(`#${oldOverlay}`).close();
-      const targetDay = leavingViewer || returningFromViewerOverlay ? current.day?.id || state.dayId : state.dayId;
+      const targetDay = sidebarPhoto?.dayId || (leavingViewer || returningFromViewerOverlay ? current.day?.id || state.dayId : state.dayId);
       const returnMap = leavingViewer && state.mapView?.dayId === targetDay ? state.mapView : null;
       if(api.day().id !== targetDay || !returnMap && state.scope === 'day' && api.scope() !== 'day') api.selectDay(targetDay);
       const targetTab = !state.viewer && (exitingToDay || old?.viewer) ? 'map' : state.tab;
       if ($('.atlas-shell').dataset.mobileTab !== targetTab) api.tab(targetTab, {preserveCamera:Boolean(returnMap)});
-      if(!state.viewer && state.scope === 'journey' && !old?.viewer)api.overview();
+      if(!state.viewer && state.scope === 'journey' && !old?.viewer && !sidebarPhoto)api.overview();
       if (state.viewer) {
         if (!returningFromViewerOverlay) {
           if (!dialog.open || current.day?.id !== state.viewerDay || collectionChanged) api.openDay(state.viewerDay, {grid:state.layer === 'grid',collection:state.collection});
@@ -356,7 +357,7 @@
       restoring = false; previousState = state;
       // Cross-event photo browsing deliberately changes the destination map.
       // Save that actual return, so the next viewer cannot resurrect an old day.
-      if (leavingViewer) save();
+      if (leavingViewer || sidebarPhoto) save();
       if (afterDismiss) { const after = afterDismiss; afterDismiss = null; after(); save(); }
     });
     function pointerDown(event) {

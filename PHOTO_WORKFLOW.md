@@ -508,13 +508,18 @@ or keyboard-activating a map circle bubble (including a cluster) or a thumbnail
 in the right-hand reel selects the photo in that existing sidebar, without
 opening fullscreen. The large top-right selected/lead image opens fullscreen
 directly in one activation. Selection must not add another photo panel. Existing
-album/grid and explicitly linked Places viewer entry retain their flow. The
-desktop fullscreen collection retains the entry surface's order and count;
-comments and arrows keep that scope. On phones, ordinary event/map-card entry
-uses the continuous journey camera roll described above, while explicitly
-selected Places collections preserve their order/count through comments and
-grids. This phone behavior supersedes the earlier entry-day/map-group boundary
-under the owner's later 11 October mobile correction (O08).
+album/grid and explicitly linked Places viewer entry retain their flow. Ordinary
+desktop sidebar arrows browse every visible trip photo in event/album
+order, even after entry through a small map cluster; the adjacent reel still
+shows the current city/day. Ordinary fullscreen on both desktop and phone uses
+the continuous journey camera roll. Its filmstrip/grid shows the current event,
+while arrows continue across event boundaries and event jumps skip empty albums.
+Desktop Comments preserve this same trip order and the selected photo on return.
+Explicitly selected Places collections alone keep their own order/count through
+comments, fullscreen and grids. The owner's later 11 October desktop follow-up
+(O03) supersedes the previous desktop entry-day/map-group restriction.
+Keep a clicked map group's geographic members separate from browsing membership:
+continuing to another photo must not merge the entire city's map bubbles.
 
 The existing sidebar frame remains uncropped and stable across portrait and
 landscape photos, with adjacent thumbnails and expandable day details. Hovering

@@ -149,3 +149,37 @@ test('leaving a day clears its map photo markers immediately even during arrival
  f.flush();assert.equal(f.liveMarkers().length,0);
  assert.ok(before.every(marker=>marker.removed));
 });
+
+
+test('desktop map cluster is an entry point into city and trip photos without regrouping the map',()=>{
+ const f=fixture();
+ const [a,b,c]=f.photos, other={id:'d',dayId:'one',lng:8.4,lat:47};
+ f.setPhotos([a,b,other,c]);
+ f.map.project=([lng,lat])=>({x:200+(lng-8)*1000,y:200+(lat-47)*1000});
+ const before=f.draw();assert.equal(before.length,2);
+ before[0].element.children[0].onclick({stopPropagation(){}});f.flush();
+ assert.equal(f.controller.collection().browseJourney,true);
+ assert.deepEqual(Array.from(f.controller.collection().photos,photo=>photo.id),['a','b','d','c']);
+ assert.deepEqual(f.history.state.atlasPhotoBubble.groupIds,['a','b']);
+ f.node('[data-bubble-next]').onclick();f.node('[data-bubble-next]').onclick();f.flush();
+ assert.equal(f.node('map-photo-card').dataset.photoId,'d','Reach the city photo outside the clicked cluster');
+ assert.equal(f.liveMarkers().length,2,'Retained group is geographic, not the entire browsing album');
+ f.node('[data-bubble-full]').onclick({detail:0});
+ assert.equal(f.fullscreens.at(-1).options.browseJourney,true,'Fullscreen uses ordinary trip navigation');
+ f.node('[data-bubble-next]').onclick();
+ assert.equal(f.day,'two');assert.equal(f.node('map-photo-card').dataset.photoId,'c');
+ assert.equal(f.node('[data-bubble-next]').disabled,true);
+ f.node('map-photo-card').fire('keydown',{key:'ArrowLeft',preventDefault(){},stopPropagation(){}});
+ assert.equal(f.day,'one');assert.equal(f.node('map-photo-card').dataset.photoId,'d');
+});
+
+test('journey sidebar retains a cross-city fullscreen or Comments selection on Back',()=>{
+ const f=fixture();f.controller.open(f.photos.slice(0,2),'a',{mapGroup:true,browseJourney:true});
+ f.history.pushState({...f.history.state,mobileAtlas:{viewer:true,overlay:null}});
+ f.controller.viewerPhotoChanged(f.photos[2]);
+ f.history.back();
+ assert.equal(f.day,'two');assert.equal(f.node('map-photo-card').dataset.photoId,'c');
+ assert.equal(f.history.state.atlasPhotoBubble.dayId,'two');
+ assert.equal(f.node('[data-bubble-prev]').disabled,false);
+ f.history.back();assert.equal(f.controller.isOpen(),false);
+});

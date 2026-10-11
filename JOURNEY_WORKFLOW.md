@@ -576,7 +576,9 @@ Use local labelled fixtures when real media is unavailable; never publish them.
   stay blank through import, save and public rendering; preserve authored text.
   Check album order and first-photo entry, with cover chosen separately.
 - [ ] **Photo/Places interaction:** Test map bubble → existing sidebar → image
-  click/fullscreen → close, album entry and a day switch. Try portrait and
+  click/fullscreen → close, album entry and a day switch. On desktop, navigate
+  beyond the clicked cluster through the rest of the city and the next city;
+  check event jumps, explicit Places scope and Comments/Back selection. Try portrait and
   landscape images, an unlocated image and a blank-caption image. Layout and
   map thumbnails remain stable. Nearby but unlinked photos get no venue label
   or About button; saved links work. No curated places means no viewer Places

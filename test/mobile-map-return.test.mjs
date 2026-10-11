@@ -8,7 +8,7 @@ import { viewerFunction } from './viewer-flow-harness.mjs';
 // Native close events and history traversals are queued, as in the browser.
 function fixture({ scope = 'day', tab = 'map' } = {}) {
   const nodes = new Map(), events = new Map(), queue = [], timers = new Map();
-  let timerId = 0, controller, cursor = 0, selected = 0;
+  let timerId = 0, controller, cursor = 0, selected = 0, sidebarPhoto = null;
   const stack = [{}], days = ['one', 'two'].map((id, index) => ({ id, number:index + 1, title:id, date:id }));
   let camera = {center:[8.5423,47.3791],zoom:16.25,bearing:24,pitch:18,padding:{top:7,right:12,bottom:28,left:19}};
   const originalCamera = structuredClone(camera), calls = [];
@@ -53,7 +53,7 @@ function fixture({ scope = 'day', tab = 'map' } = {}) {
   vm.runInContext(['captureMapView','restoreMapView','setMobileTab'].map(viewerFunction).join('\n'),context);
   const api = {
     day:context.activeDay,days:()=>days,scope:()=>context.mapScope,title:()=> 'Journey',dayInfo:()=>({meta:'',count:2}),
-    captureMapView:context.captureMapView,restoreMapView:context.restoreMapView,tab:context.setMobileTab,
+    captureMapView:context.captureMapView,restoreMapView:context.restoreMapView,tab:context.setMobileTab,sidebarPhoto:()=>sidebarPhoto,
     selectDay(id){context.activeDayId=id;context.mapScope='day';camera=defaultCamera(id);calls.push('selectDay');},
     stepDay(){},preview(){},overview(){context.mapScope='journey';context.fitJourneyBounds();},album(){},replay(){},
     location(){},pauseLocation(){},clearImage(){},loadImage(){},restoreOverlay:id=>controller.presentOverlay(id),
@@ -74,6 +74,7 @@ function fixture({ scope = 'day', tab = 'map' } = {}) {
   function flush(){let count=0;while(queue.length || timers.size){assert.ok(++count<40,'Return must settle');while(queue.length)queue.shift()();const pending=[...timers.values()];timers.clear();pending.forEach(fn=>fn());}}
   return {api,controller,node,history,context,calls,originalCamera,flush,get camera(){return camera;},
     crossDay(id){api.selectDay(id);update();},
+    selectSidebar(photo){sidebarPhoto=photo;api.selectDay(photo.dayId);},
     close(control){if(control === 'browser')history.back();else if(control === 'close')node('#photo-dialog').close();else node(control).onclick();}}
 }
 
@@ -131,4 +132,17 @@ test('Forward reopens the photo and another Back still restores the original map
   f.history.go(1);f.flush();assert.equal(f.node('#photo-dialog').open,true);
   assert.equal(f.history.state.mobileAtlas.index,1);
   f.close('browser');f.flush();assert.deepEqual(f.camera,f.originalCamera);
+});
+
+
+test('closing sidebar Comments keeps the city chosen by conversation photo arrows',()=>{
+ const f=fixture();
+ f.selectSidebar({id:'a',dayId:'one'});
+ f.controller.presentOverlay('comments-dialog');
+ f.selectSidebar({id:'b',dayId:'two'});
+ const expected=structuredClone(f.camera);f.calls.length=0;
+ f.node('#comments-dialog').close();f.flush();
+ assert.equal(f.context.activeDayId,'two');assert.deepEqual(f.camera,expected);
+ assert.ok(!f.calls.includes('selectDay'),'History must not clear the sidebar by selecting its old day');
+ assert.equal(f.history.state.mobileAtlas.dayId,'two');
 });

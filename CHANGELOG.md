@@ -1,5 +1,16 @@
 # Changelog
 
+## 11 October 2026 — desktop photos beyond map clusters
+
+- Make ordinary desktop sidebar and fullscreen navigation continue through the
+  visible trip, with the current city's reel and event jumps that skip empty
+  albums. Keep clicked geographic groups separate from browsing membership.
+- Preserve the selected photo across fullscreen/Comments/Back and keep explicit
+  Places galleries scoped. Retain the existing sidebar/photo-entry boundary.
+- Record the desktop follow-up in O03 and the photo/journey/Places contracts.
+- Validation: 576 passing tests, clean production build and target/reference/
+  demo/independent-draft browser checks, including cross-day Comments return.
+
 ## 11 October 2026 — opening action always visible
 
 - Reserve a bottom action row in every journey introduction so long descriptions

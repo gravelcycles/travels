@@ -97,7 +97,7 @@ password system.
 | --- | --- |
 | `content/templates/journey.html` | All journey DOM, dialogs, control IDs, scripts and styles; real, demo, preview |
 | `content/templates/catalog.html` | Public catalog shell |
-| `dist/assets/photo-places.js`, `photo-bubbles.js`, `photo-bubbles.css` | Shared Photos + Places associations, stable selected map groups, protected thumbnails and selection through the existing desktop sidebar/phone compact card; map bubbles and right-hand reel thumbnails select, the large selected/lead image opens fullscreen (desktop preserves its collection; ordinary phone entry uses the journey camera roll under O08); close old map popups before day changes and keep location thumbnails independent of album browsing |
+| `dist/assets/photo-places.js`, `photo-bubbles.js`, `photo-bubbles.css` | Shared Photos + Places associations, stable geographic map groups separate from desktop journey browsing, protected thumbnails and selection through the existing desktop sidebar/phone compact card; map bubbles and right-hand reel thumbnails select, the large selected/lead image opens fullscreen (ordinary desktop/phone entry uses the journey roll under O03/O08; explicit Places collections retain scope); close old map popups before day changes and keep location thumbnails independent of album browsing |
 | `studio/place-editor.js` | Owner Places, credited images, curated reviews and ordered trip-photo links through the existing plan/save/recovery flow |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction; dormant full-trip Replay UI |
 | `dist/assets/location-labels.js` | Shared destination grouping, screen-space clusters, upright signposts, compact previews and accessible day selection |
@@ -110,7 +110,7 @@ password system.
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |
 | `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching |
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |
-| `dist/assets/mobile-ux.js`, `dist/assets/mobile.css` | Shared mobile day navigation, continuous journey photo gestures, separate event jumps, event grids, location panel and exact map-camera restoration on same-event Back/close |
+| `dist/assets/mobile-ux.js`, `dist/assets/mobile.css` | Shared mobile day navigation, continuous journey photo gestures, separate event jumps, event grids, location panel, exact map-camera restoration on same-event Back/close and retained cross-event sidebar selection when dismissing Comments |
 | `dist/assets/community-client.js`, `photo-comments.js` / `.css`, `places-comments.css`, `places-panel.js` | Shared floating photo conversations and place reviews; immediate presentation, authorized memory caches and retry behavior |
 | `dist/assets/comment-notifications.js`, `trip-notifications.js` / `.css` | Shared journey-scoped local read IDs, exact photo/trip counts, cached trip metadata and recent-feed presentation; no per-photo count requests or public comment text |
 | `dist/assets/input-mode.js` | Shared pointer/keyboard focus presentation for catalog, journeys and draft previews |

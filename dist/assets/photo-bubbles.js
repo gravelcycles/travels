@@ -8,8 +8,16 @@
     const markers = new Map();
     const phone = () => matchMedia('(max-width:900px)').matches;
     const photos = () => options.photos().filter(model.visible);
-    const selected = () => selection ? model.retainedSelection(selection,photos()) : null;
-    const members = () => selection ? selection.ids.map(id=>photos().find(photo=>photo.id===id)).filter(Boolean) : [];
+    const selected = () => {
+      if (!selection) return null;
+      const visible = photos();
+      return model.retainedSelection(selection.browseJourney ? {...selection,ids:visible.map(photo=>photo.id)} : selection,visible);
+    };
+    const members = () => {
+      if (!selection) return [];
+      const visible = new Map(photos().map(photo=>[photo.id,photo]));
+      return selection.ids.map(id=>visible.get(id)).filter(Boolean);
+    };
     const current = () => members().find(photo=>photo.id===selection?.photoId);
     function historyWrite(push = false) {
       if (history.state?.mobileAtlas?.viewer) selectionLayer = 'viewer';
@@ -48,12 +56,13 @@
       if(write)historyWrite();options.photoChanged?.(null);
       if(focus)requestAnimationFrame(()=>document.querySelector(`[data-bubble-anchor="${CSS.escape(anchor || '')}"]`)?.focus({preventScroll:true}));
     }
-    function open(items,photoId=items[0]?.id,{write=true,mapGroup=false,label='Map photos',preserveCollection=false}={}) {
-      const ids=items.filter(model.visible).map(photo=>photo.id); if(!ids.length)return;
+    function open(items,photoId=items[0]?.id,{write=true,mapGroup=false,label='Map photos',preserveCollection=false,browseJourney=false}={}) {
+      const groupIds=items.filter(model.visible).map(photo=>photo.id);
+      const ids=(browseJourney ? photos() : items.filter(model.visible)).map(photo=>photo.id); if(!ids.length)return;
       const push=!selection || Boolean(history.state?.atlasPlaces?.open);
       selection=preserveCollection && selection?.ids.includes(photoId)
         ? {...selection,dayId:options.dayId(),photoId}
-        : {journeyId:options.journey().id,dayId:options.dayId(),ids,mapGroup,label,photoId:ids.includes(photoId)?photoId:ids[0]};
+        : {journeyId:options.journey().id,dayId:options.dayId(),ids,mapGroup,groupIds,browseJourney,label:browseJourney ? options.journey().title || 'Journey photos' : label,photoId:ids.includes(photoId)?photoId:ids[0]};
       options.closePlaces();options.explore();update();if(write)historyWrite(push);schedule();
       if(!phone())document.querySelector('.story-panel').scrollTop=0;
       $('[data-bubble-full]').focus({preventScroll:true});
@@ -69,7 +78,7 @@
       $('[data-bubble-caption]').textContent=photo.caption || '';$('[data-bubble-caption]').hidden=!photo.caption?.trim();
       $('[data-bubble-description]').textContent=photo.description || ''; $('[data-bubble-description]').hidden=!photo.description;
       $('[data-bubble-count]').textContent=`${index+1} / ${list.length}`;
-      $('[data-bubble-count]').setAttribute('aria-label',`Photo ${index+1} of ${list.length} in this selection`);
+      $('[data-bubble-count]').setAttribute('aria-label',`Photo ${index+1} of ${list.length} ${selection.browseJourney ? 'in the trip' : 'in this selection'}`);
       document.getElementById('sidebar-day-summary').textContent=day?`${root.JOURNEY_ATLAS_UTILS.eventWord(options.journey(),'title')} details · ${day.title}`:'Day details';
       $('[data-bubble-prev]').disabled=index===0;$('[data-bubble-next]').disabled=index===list.length-1;
       $('[data-bubble-locate]').disabled=!model.located(photo);
@@ -79,10 +88,10 @@
       card.dataset.photoId=photo.id;options.photoChanged?.(photo);$('[data-bubble-comments]').hidden=!options.commentsAvailable?.();
     }
     function viewerPhotoChanged(photo) {
-      if (!photo || !selection?.ids.includes(photo.id) || photo.dayId !== selection.dayId) return;
+      if (!photo || !selection?.ids.includes(photo.id) || !selection.browseJourney && photo.dayId !== selection.dayId) return;
       // Keep the presenting sidebar in step with the full viewer without
       // loading an obscured image or changing the viewer's conversation.
-      selection.photoId = photo.id; selectionLayer = 'viewer';
+      selection.photoId = photo.id; selection.dayId = photo.dayId; selectionLayer = 'viewer';
     }
     function step(delta) {
       const list=members(),index=list.findIndex(photo=>photo.id===selection?.photoId),photo=list[index+delta];if(!photo)return;
@@ -103,7 +112,7 @@
       const viewport={width:map.getContainer().clientWidth,height:map.getContainer().clientHeight};
       if(!viewport.width||!viewport.height)return;
       const visible=photos().filter(photo=>photo.dayId===options.dayId()&&model.located(photo)).filter(photo=>{const point=map.project([photo.lng,photo.lat]);return point.x>=0&&point.y>=0&&point.x<=viewport.width&&point.y<=viewport.height;});
-      const picked=selection?.mapGroup?members().filter(photo=>photo.dayId===options.dayId()&&model.located(photo)):[],groups=model.bubbleGroups(visible,picked,p=>map.project(p),map.getZoom()>=10?106:78,phone()?4:6),boxes=obstacles(map);
+      const picked=selection?.mapGroup?photos().filter(photo=>(selection.groupIds || selection.ids).includes(photo.id)&&photo.dayId===options.dayId()&&model.located(photo)):[],groups=model.bubbleGroups(visible,picked,p=>map.project(p),map.getZoom()>=10?106:78,phone()?4:6),boxes=obstacles(map);
       const visibleIds=new Set(visible.map(photo=>photo.id)),retained=new Set();
       for(const group of groups){
         const key=group.photos[0].id,active=group.photos.some(photo=>photo.id===selection?.photoId);
@@ -134,7 +143,7 @@
         count.textContent=group.photos.length>1?group.photos.length:'';count.hidden=group.photos.length<=1;
         button.onclick=event=>{
           event.stopPropagation();
-          open(group.photos,anchor.id,{mapGroup:true});
+          open(group.photos,anchor.id,{mapGroup:true,browseJourney:!phone()});
         };
         const position=JSON.stringify([anchor.lng,anchor.lat,placement.offset]);
         if(entry.position!==position){marker.setLngLat([anchor.lng,anchor.lat]);marker.setOffset(placement.offset);entry.position=position;}
@@ -152,7 +161,7 @@
       if(suppress){event.preventDefault();return;}
       const photo=current();if(!photo)return;
       if(auth()?.isProtected(photo)&&!auth()?.unlocked)auth()?.showPrompt();
-      else options.fullscreen(photo.id,members(),selection.label || 'Map photos');
+      else options.fullscreen(photo.id,members(),selection.label || 'Map photos',{browseJourney:Boolean(selection.browseJourney)});
     };
     $('[data-bubble-place]').onclick=()=>options.openPlace($('[data-bubble-place]').dataset.placeId);
     $('[data-bubble-retry]').onclick=()=>{if(current())loadImage(image,current(),1280);};
@@ -176,10 +185,10 @@
     window.addEventListener('resize',()=>{syncVisibility();schedule();});
     window.addEventListener('popstate',event=>{
       const saved=event.state?.atlasPhotoBubble;
-      const valid=saved?.journeyId===options.journey().id&&saved.dayId===options.dayId()?saved:null;
+      const valid=saved?.journeyId===options.journey().id&&(saved.browseJourney || saved.dayId===options.dayId())?saved:null;
       const sameCollection=selection && valid && selection.journeyId===valid.journeyId && JSON.stringify(selection.ids)===JSON.stringify(valid.ids);
       const retainPhoto=Boolean(selectionLayer && sameCollection && valid.ids.includes(selection.photoId));
-      selection=valid?{...valid,...(retainPhoto?{photoId:selection.photoId}: {})}:null;
+      selection=valid?{...valid,...(retainPhoto?{photoId:selection.photoId,dayId:selection.dayId}: {})}:null;
       const foreground=event.state?.mobileAtlas?.viewer || event.state?.mobileAtlas?.overlay==='comments-dialog';
       if(!foreground)selectionLayer=null;
       update();schedule();
@@ -187,7 +196,7 @@
       // selection, and unrelated Places scope/scroll/navigation stays intact.
       if(retainPhoto)history.replaceState({...history.state,atlasPhotoBubble:{...selection}},'',location.href);
     });
-    return {open,close,refresh,mapReady,viewerPhotoChanged,clearMap:clearMarkers,collection:()=>selection?{photos:members(),label:selection.label || 'Map photos'}:null,placesChanged:()=>{syncVisibility();schedule();},isOpen:()=>Boolean(selection)};
+    return {open,close,refresh,mapReady,viewerPhotoChanged,currentPhoto:current,clearMap:clearMarkers,collection:()=>selection?{photos:members(),label:selection.label || 'Map photos',browseJourney:Boolean(selection.browseJourney)}:null,placesChanged:()=>{syncVisibility();schedule();},isOpen:()=>Boolean(selection)};
   }
   root.JOURNEY_ATLAS_PHOTO_BUBBLES={create};
 })(typeof window==='undefined'?globalThis:window);

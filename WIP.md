@@ -16,6 +16,24 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Desktop photo navigation — 11 October 2026
+
+Authorized follow-up: desktop users get stuck inside map clusters and cannot
+reach the city's other photographs or full trip. O03 and PHOTO_WORKFLOW own the
+correction. Implemented ordinary sidebar/fullscreen trip browsing while keeping
+map groups geographical, local event reels, explicit Places scope and the
+existing photo-entry boundary. Comments dismissal also retains the current city
+and selected image. Isolated branch `codex/desktop-photo-navigation`.
+
+Validation: all **576 tests** and the production build pass. Browser checks cover
+Heading East's real six-photo Berlin cluster → other city photos → Prague,
+fullscreen/Back with the current image, Switzerland–Italy's day boundary,
+a mixed photo/video demo and its cross-day Comments return, and an independent
+populated city draft with an empty middle event. The draft retains selection
+through desktop/phone resizing; empty and explicit-collection behavior also have
+regression coverage. Current main is integrated. Next: publish, confirm Pages
+and verify fresh public HTML/runtime. No trip content or media changed.
+
 ## Trip comment notifications — 11 October 2026
 
 Implemented: photo Comments actions show red numbered unread badges, then plain

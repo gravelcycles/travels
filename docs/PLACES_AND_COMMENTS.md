@@ -356,8 +356,12 @@ bottom event picker and a consolidated current-event card with contextual Places
 Phone map bubbles select the compact photo card and its large image opens
 fullscreen; the existing grid/swipe flow stays intact. Back/Forward and comments
 use shared overlay history.
-Comments, fullscreen arrows and grids retain the entry collection's count/order;
-explicit groups that cross days follow the selected photo's real day.
+Ordinary desktop sidebar and fullscreen Comments follow the visible trip order,
+including navigation beyond a clicked map cluster. Filmstrips/grids retain the
+current event; arrows cross events and update the map/story. Explicit Places
+collections keep their deliberate order/count through Comments and fullscreen.
+A return from Comments/fullscreen retains the selected photo, including across
+cities. Geographic map groups remain independent of browsing membership (O03).
 
 Places initially uses the selected day/stop (all places from a whole-trip view).
 Deliberate search, category and scope changes persist while browsing and reopening;

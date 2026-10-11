@@ -53,7 +53,7 @@ test('phone Places collections and Comments retain explicit order and scope',()=
   assert.equal(f.context.viewerPhotoIndex,0);
 });
 
-test('the phone grid shows the current event with camera-roll indices; desktop remains day scoped',()=>{
+test('the phone grid shows the current event with camera-roll indices; desktop shares journey navigation',()=>{
   const f=photoEntryFixture(journey,undefined,{mobile:true}), nodes=new Map();
   f.open('b2');
   const node=selector=>{if(!nodes.has(selector))nodes.set(selector,{dataset:{},querySelectorAll:()=>[]});return nodes.get(selector);};
@@ -64,8 +64,8 @@ test('the phone grid shows the current event with camera-roll indices; desktop r
   assert.deepEqual([...html.matchAll(/data-viewer-index="(\d+)"/g)].map(match=>Number(match[1])),[2,3]);
   assert.match(html,/photo 1 of 2/);assert.doesNotMatch(html,/data-photo="a[12]"/);
   const desktop=photoEntryFixture(journey);desktop.open('a1');
-  assert.deepEqual(desktop.photos().map(photo=>photo.id),['a2','a1']);
-  desktop.context.moveViewer(1);assert.equal(desktop.context.viewerPhotoIndex,1);
+  assert.deepEqual(desktop.photos().map(photo=>photo.id),['a2','a1','b2','clip']);
+  desktop.context.moveViewer(1);assert.equal(desktop.context.viewerPhotoIndex,2);
 });
 
 test('thumbnail reveal scrolls only a visible grid and never the fullscreen shell',()=>{

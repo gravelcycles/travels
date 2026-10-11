@@ -80,7 +80,7 @@ test('trip read state and counts are inherited across reference, demo and indepe
 });
 
 
-test('phone camera roll and event controls inherit across reference, city atlas, demo and an independent fresh draft', t => {
+test('desktop and phone journey browsing inherits across reference, city atlas, demo and an independent fresh draft', t => {
   const root=fixture(t), draft=createJourney(root,{...input,slug:'phone-camera-roll-fixture'});
   const {data}=loadContent(root);
   const controls=['mobile-photo-prev','mobile-photo-next','mobile-photo-previous-event','mobile-photo-next-event','mobile-photo-event-label'];
@@ -92,7 +92,8 @@ test('phone camera roll and event controls inherit across reference, city atlas,
     for(const id of controls)assert.equal(ids(html).filter(value=>value===id).length,1,`${journey.id}: ${id}`);
     const [first,emptyDay,last]=journey.days;
     const media=[{id:`${journey.id}-north-a`,dayId:first.id},{id:`${journey.id}-north-b`,dayId:first.id},{id:`${journey.id}-south`,dayId:last.id}];
-    const f=photoEntryFixture(journey,media,{mobile:true});
+    for (const mobile of [false,true]) {
+    const f=photoEntryFixture(journey,media,{mobile});
     f.open(media[1].id);
     assert.equal(f.context.viewerPhotoIndex,1,journey.id);
     assert.deepEqual(f.photos().map(photo=>photo.id),media.map(photo=>photo.id));
@@ -107,6 +108,7 @@ test('phone camera roll and event controls inherit across reference, city atlas,
     f.context.moveViewerDay(-1);
     assert.equal(f.context.viewerDayId,last.id,'Event jumps do not escape explicit collections');
     assert.notEqual(emptyDay.id,last.id);
+    }
   }
 });
 
