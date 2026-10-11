@@ -829,11 +829,30 @@ The trip's `startDate`/`endDate` cover only its dated portion; describe the onwa
 uncertainty in `dates`. Dated TBD entries are also supported, with the usual
 calendar continuity rules. Never invent stay dates to satisfy a calendar check.
 
-The viewer shows TBD stops by default, with badges, dotted mode-colored routes,
-explicit dates-to-decide copy and a shared **Show TBD stops** checkbox. Hiding
-them filters the map, stop list and albums together, without changing
-the source or renumbering retained stops. The control is hidden for journeys
-without TBD entries and disabled when every entry is TBD.
+The viewer keeps badges, dotted mode-colored routes and explicit dates-to-decide
+copy. All events start visible. Shared **Past**, **Future locked in**, and
+**Future TBD** checkboxes replace Show TBD stops, with the same selection in the
+Days/Stops list and the full-trip map's **Filter days/stops** menu on desktop and
+phone. The controls appear when more than one group is populated; unavailable
+groups and the last visible populated group are disabled.
+
+Classification uses the current calendar date in `journey.timeZone` (UTC when
+absent). Past includes today and city stays whose arrival has already occurred;
+this never asserts a visit. Later dated events without `planningStatus: "tbd"`
+are Future locked in. Upcoming or undated TBD events are Future TBD. Legacy
+undated confirmed content follows the trip's planned/past status without
+inventing dates. Labels explicitly explain the inclusion of ongoing stays.
+
+Filtering projects the map, day navigation, Places assignments and albums
+together without changing sources or renumbering events. Retain a visible active
+stop; otherwise move to the next visible stop, or the last visible stop if none
+follows. Clear old map popups and selections first. Return the map to the filtered
+trip overview, fit only its geography, and restore authored overview bounds when
+all groups return. Incoming legs remain complete, including their origin in an
+excluded stay. Navigation ends use visible indices while labels retain original
+numbers. Visibility is session state and resets on reload or changing trips.
+The [Heading East request](docs/HEADING_EAST.md#day-visibility-filters--11-october-2026)
+provides the scope and actual city-stay acceptance case.
 
 Studio's Trip plan has **+ TBD stop**, a planning-status selector and **Dates
 TBD**. Add places/legs normally. Keep undated entries after the dated itinerary;

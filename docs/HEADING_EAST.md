@@ -5,6 +5,32 @@ Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 
 Each city is one event. Taglines and stories are deliberately empty; the first
 photo intake is recorded below.
 
+## Day visibility filters — 11 October 2026
+
+Owner request: a toggle in the Days section for “past, future locked in, and
+future tbd”, also available from the full-trip view. This replaces this trip's
+single Show TBD stops control. Implement through the shared viewer; do not
+change saved dates, confirmation status, route accuracy or traveler content.
+
+The implementation uses three independent, synchronized visibility toggles,
+initially all on. Past includes today and city stays whose arrival has already
+occurred, using the trip's time zone; this is calendar grouping, not evidence
+of a visit. Future locked in uses dated upcoming events without TBD status;
+Future TBD uses upcoming/undated TBD events. Both controls filter the same list,
+map and albums. Keep original stop numbers and at least one populated
+group visible. Verify desktop Days and full-trip map controls, the phone picker
+and whole-trip map, including hiding the selected stop and restoring all stops.
+See the [shared contract](../JOURNEY_WORKFLOW.md#tbd-stops-and-legs).
+
+Validation: all 523 integration tests and the production build pass. Desktop and
+phone checks verify synchronized controls and the actual 8 past/current, 3 locked-in
+and 18 TBD stays on 11 October. The reference, demo and independent city draft
+retain shared behavior, including 320px and landscape checks. Full-trip Replay
+remains disabled under O09. Private images were omitted in local map QA.
+Published in `e58f939`; [Pages deployment](https://github.com/gravelcycles/travels/actions/runs/38149951215)
+succeeded, and freshly fetched public HTML plus all five changed browser assets
+match the tested release byte-for-byte.
+
 ## Owner-reviewed photo locations — 11 October 2026
 
 After editing the locations in Studio, the owner requested **“ok i updated all

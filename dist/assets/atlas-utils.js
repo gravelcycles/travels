@@ -349,10 +349,35 @@
   function prepareImageReveals(container) { (imageReveals ||= createImageReveals()).prepare(container); }
   function resetImageReveal(image) { (imageReveals ||= createImageReveals()).reset(image); }
 
+  function journeyToday(journey, now = new Date()) {
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone: journey.timeZone || 'UTC', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).format(now);
+  }
+
+  // Calendar grouping never asserts that a planned stay was actually visited.
+  function planningCategory(day, journey, today = journeyToday(journey)) {
+    if (day.calendarDate && day.calendarDate <= today) return 'past';
+    if (day.planningStatus === 'tbd') return 'tbd';
+    return day.calendarDate || journey.status === 'planned' ? 'locked' : 'past';
+  }
+
+  function planningCounts(journey, now = new Date()) {
+    const today = journeyToday(journey, now), counts = {past: 0, locked: 0, tbd: 0};
+    journey.days.forEach(day => counts[planningCategory(day, journey, today)]++);
+    return counts;
+  }
+
   // Planning confidence is independent of reviewed network geometry and dates.
-  function projectPlanning(journey, showTbd = true) {
-    if (!journey.days.some(day => day.planningStatus === 'tbd')) return journey;
-    const days = journey.days.filter(day => showTbd || day.planningStatus !== 'tbd').map(day => ({
+  // Boolean input retains the original Show TBD API for existing callers.
+  function projectPlanning(journey, visibility = true, now = new Date()) {
+    const today = journeyToday(journey, now);
+    const include = day => typeof visibility === 'boolean'
+      ? visibility || day.planningStatus !== 'tbd'
+      : visibility[planningCategory(day, journey, today)] !== false;
+    const retained = journey.days.filter(include), filtered = retained.length !== journey.days.length;
+    if (!filtered && !journey.days.some(day => day.planningStatus === 'tbd')) return journey;
+    const days = retained.map(day => ({
       ...day, date: day.planningStatus === 'tbd' ? (day.calendarDate ? `TBD · ${day.date}` : 'TBD · Dates to decide') : day.date
     }));
     const dayIds = new Set(days.map(day => day.id));
@@ -361,7 +386,9 @@
     const meetup = dayIds.has(journey.meetup?.dayId) ? journey.meetup : undefined;
     const placeIds = new Set([meetup?.placeId, ...days.flatMap(day => [day.placeId, day.destinationId, ...Object.values(day.groupPlaces || {})]), ...segments.flatMap(segment => [segment.from, segment.to])]);
     return {...journey, days, segments, meetup,
-      places: showTbd ? journey.places : journey.places.filter(place => placeIds.has(place.id)),
+      overviewBounds: filtered ? undefined : journey.overviewBounds,
+      places: filtered ? journey.places.filter(place => placeIds.has(place.id)) : journey.places,
+      pointsOfInterest: filtered ? journey.pointsOfInterest?.filter(point => !point.dayIds?.length || point.dayIds.some(id => dayIds.has(id))) : journey.pointsOfInterest,
       photos: (journey.photos || []).filter(photo => dayIds.has(photo.dayId)),
       videos: (journey.videos || []).filter(video => dayIds.has(video.dayId)),
       replayMoments: journey.replayMoments?.filter(moment => dayIds.has(moment.dayId))
@@ -411,5 +438,5 @@
     return start === end ? format(start) : `${format(start)} – ${format(end)}`;
   }
 
-  root.JOURNEY_ATLAS_UTILS = { journeyPresentation, validCityBoundary, cityFrameCoordinates, projectPlanning, eventWord, eventCopy, applyEventCopy, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
+  root.JOURNEY_ATLAS_UTILS = { journeyPresentation, validCityBoundary, cityFrameCoordinates, journeyToday, planningCategory, planningCounts, projectPlanning, eventWord, eventCopy, applyEventCopy, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

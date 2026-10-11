@@ -27,8 +27,7 @@ Selecting a stop pans and zooms directly to the complete incoming route in one
 850 ms ease, with no separate pullback/re-zoom or flight arc. An already-fitted
 view stays still. This implements the owner's 11 October correction to awkward
 day/stop zooming and poor north–south visibility, superseding the earlier
-450–950 ms old-place pullback plus 750 ms second move. Trip Replay is separate
-and unchanged. Named endpoints and **From → To** preserve orientation.
+450–950 ms old-place pullback plus 750 ms second move. Full-trip Replay remains disabled. Named endpoints and **From → To** preserve orientation.
 
 Fit the actual map area after rendering/resizing the arrival card. Keep clearance
 for the orange circle, endpoint labels and the desktop overlay;
@@ -124,7 +123,7 @@ city stops and an independently populated draft. Check rapid stop changes,
 Skip/Replay arrival, manual interruption and reduced motion. Preserve the shared
 stroke width, circle diameter and display-pixel-density rendering on phones.
 
-The 11 October release passes 525 tests and the production build. Browser
+The 11 October release passes 528 tests and the production build. Browser
 comparison used Innsbruck → Bolzano (north–south), the Alpine demo's Disentis →
 St. Moritz (wide), the reference multi-leg route and an independent synthetic
 city draft. Desktop, 390/320 px portrait and 844 × 390 landscape retained the

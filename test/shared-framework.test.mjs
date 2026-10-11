@@ -1155,3 +1155,85 @@ test('reference, demo, city stops and independent populated draft inherit visibl
     }
   }
 });
+
+test('day visibility uses trip-local dates, including today, ongoing stays and dated TBD events', () => {
+  const utils = globalThis.JOURNEY_ATLAS_UTILS, journey = {timeZone:'Europe/Berlin', status:'ongoing', days:[]};
+  const now = new Date('2026-10-10T22:30:00Z');
+  assert.equal(utils.journeyToday(journey, now), '2026-10-11');
+  journey.days = [
+    {calendarDate:'2026-10-01',calendarEndDate:'2026-10-15'},
+    {calendarDate:'2026-10-11'}, {calendarDate:'2026-10-12'},
+    {calendarDate:'2026-10-12',planningStatus:'tbd'}, {planningStatus:'tbd'},
+    {calendarDate:'2026-10-09',planningStatus:'tbd'}
+  ];
+  assert.deepEqual(utils.planningCounts(journey, now), {past:3,locked:1,tbd:2});
+  assert.deepEqual(utils.planningCounts({...journey,timeZone:'America/New_York'}, now), {past:2,locked:2,tbd:2});
+});
+
+test('Heading East groups the real city stays without inventing onward dates or changing confirmation', () => {
+  const journey = loadContent(repo).data.journeys.find(j => j.id === 'backpacking-europe-heading-east');
+  const utils = globalThis.JOURNEY_ATLAS_UTILS, now = new Date('2026-10-11T12:00:00Z');
+  assert.deepEqual(utils.planningCounts(journey, now), {past:8,locked:3,tbd:18});
+  const snapshot = JSON.stringify(journey);
+  const locked = utils.projectPlanning(journey, {past:false,locked:true,tbd:false}, now);
+  assert.deepEqual(locked.days.map(day => day.title), ['Innsbruck','Bolzano','Venice']);
+  assert.deepEqual(locked.days.map(day => day.number), [9,10,11]);
+  assert.equal(locked.segments.length, 3);
+  assert.ok(!locked.places.some(place => /Athens|Prague/.test(place.name)));
+  assert.equal(JSON.stringify(journey), snapshot);
+});
+
+test('visibility projections and synchronized controls work for reference, demo and an independently populated new draft', t => {
+  const root=fixture(t), draft=createJourney(root,input), {data}=loadContent(root);
+  const utils=globalThis.JOURNEY_ATLAS_UTILS;
+  for (const original of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'),draft]) {
+    const journey={...structuredClone(original), timeZone:'UTC', overviewBounds:[[0,0],[100,80]],
+      days:['past','locked','tbd'].map((key,index)=>({id:`fixture-${key}`,number:index+1,title:key,date:key,
+        ...(key==='tbd'?{planningStatus:'tbd'}:{calendarDate:index?'2099-01-02':'2000-01-01'}),
+        placeId:`place-${key}`,destinationId:`place-${key}`,segmentIds:[`leg-${key}`]})),
+      places:['past','locked','tbd'].map((key,index)=>({id:`place-${key}`,name:key,lng:10+index,lat:40})),
+      segments:['past','locked','tbd'].map(key=>({id:`leg-${key}`,from:`place-${key}`,to:`place-${key}`,mode:'train'})),
+      photos:['past','locked','tbd'].map(key=>({id:`photo-${key}`,dayId:`fixture-${key}`})),
+      videos:['past','locked','tbd'].map(key=>({id:`video-${key}`,dayId:`fixture-${key}`})),
+      replayMoments:['past','locked','tbd'].map(key=>({id:`moment-${key}`,dayId:`fixture-${key}`})),
+      pointsOfInterest:['past','locked','tbd'].map(key=>({id:`point-${key}`,dayIds:[`fixture-${key}`]})),
+      meetup:{dayId:'fixture-past',placeId:'place-past'}};
+    const snapshot=JSON.stringify(journey);
+    for(const key of ['past','locked','tbd']) {
+      const view=utils.projectPlanning(journey,{past:false,locked:false,tbd:false,[key]:true});
+      assert.deepEqual(view.days.map(day=>day.id),[`fixture-${key}`]);
+      for(const [field,prefix] of [['segments','leg'],['places','place'],['photos','photo'],['videos','video'],['replayMoments','moment'],['pointsOfInterest','point']]) {
+        assert.deepEqual(view[field].map(item=>item.id),[`${prefix}-${key}`],`${original.id}: ${field}`);
+      }
+      assert.equal(view.overviewBounds,undefined,'Hidden geography cannot widen filtered framing');
+      assert.equal(Boolean(view.meetup),key==='past');
+    }
+    const controls=['list','map'].flatMap(surface=>['past','locked','tbd'].map(category=>({surface,dataset:{planningCategory:category}})));
+    const counts=['past','locked','tbd'].map(category=>({dataset:{planningCount:category}}));
+    const nodes=new Map(); const node=selector=>{if(!nodes.has(selector))nodes.set(selector,{style:{},offsetTop:80,offsetParent:{}});return nodes.get(selector);};
+    const closed=[];
+    const context=vm.createContext({sourceJourney:journey,journey,planningVisibility:{past:true,locked:true,tbd:true},activeDayId:'fixture-past',activeGroupId:'',mapScope:'day',
+      window:{JOURNEY_ATLAS_UTILS:utils},document:{querySelectorAll:selector=>selector==='[data-planning-category]'?controls:counts},$:node,
+      eventWord:form=>utils.eventWord(journey,form),groupTravel:{projectJourney:j=>j},dayById:id=>context.journey.days.find(day=>day.id===id),
+      cancelArrival(){},locationLabels:{closePreview(){closed.push('preview');}},clearDayPreview(){},placesUI:{dayChanged(){closed.push('places');}},
+      photoBubbles:{clearMap(){closed.push('bubbles');},close(){}},clearSegmentInspection(){},pauseReplay(){},videoPlayer:{stop(){}},photoDialog:{open:false},
+      renderAll(){assert.ok(closed.length>=3);context.renderPlanningFilters();},fitJourneyBounds(){},
+      viewerDayId:'fixture-past',storyMapDay:null,viewerRouteKey:null,replayJourneyId:journey.id});
+    vm.runInContext(appFunction('renderPlanningFilters')+appFunction('selectPlanningCategory'),context);
+    context.selectPlanningCategory('past',false);
+    assert.equal(context.activeDayId,'fixture-locked');
+    assert.equal(context.mapScope,'journey');
+    assert.ok(controls.filter(c=>c.dataset.planningCategory==='past').every(c=>!c.checked));
+    context.selectPlanningCategory('tbd',false);
+    assert.ok(controls.filter(c=>c.dataset.planningCategory==='locked').every(c=>c.checked&&c.disabled));
+    assert.equal(node('#map-planning-summary').textContent,`Filter ${utils.eventWord(journey,'plural')} · Future locked in`);
+    context.selectPlanningCategory('locked',false);
+    assert.equal(context.journey.days.length,1,'Reject an empty visible journey');
+    context.selectPlanningCategory('past',true);context.selectPlanningCategory('tbd',true);
+    assert.equal(context.journey.days.length,3);
+    assert.deepEqual(context.journey.overviewBounds,journey.overviewBounds);
+    assert.equal(JSON.stringify(journey),snapshot,'Projection and controller preserve traveler sources');
+    const html=renderJourneyPage(root,original,{preview:true});
+    for(const id of ['planning-filter','map-planning-filter','show-past','show-locked','show-tbd','map-show-past','map-show-locked','map-show-tbd']) assert.ok(html.includes(`id="${id}"`));
+  }
+});

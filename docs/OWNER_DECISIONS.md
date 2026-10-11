@@ -139,7 +139,7 @@ remain. The owner then explicitly required desktop/mobile comparison: “the rou
   owner's request. This does not strip other journeys' stories or group support.
 - Heading East's city dates/order, replacement bus, onward TBD stays, city
   boundaries, saved venues and owner-reviewed photo pins remain in
-  [its intake record](HEADING_EAST.md). The 11 October Studio review resolves
+  [its intake record](HEADING_EAST.md). Its 11 October Days/full-trip visibility request replaces the single TBD checkbox with synchronized Past, Future locked in and Future TBD filters; the [scoped decision and acceptance](HEADING_EAST.md#day-visibility-filters--11-october-2026) govern that change. The 11 October Studio review resolves
   the missing locations across both photo batches and preserves one trashed photo. A request for light factual venue
   descriptions does not authorize personal photo captions or invented visits.
   Its [11 October image selection](HEADING_EAST.md#place-image-refresh--11-october-2026)

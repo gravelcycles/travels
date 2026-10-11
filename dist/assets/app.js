@@ -53,8 +53,8 @@
   let sourceJourney = journey;
   let activeGroupId = new URLSearchParams(location.search).get('group') || '';
   if (!sourceJourney.routeGroups?.some(group => group.id === activeGroupId)) activeGroupId = '';
-  let showTbd = true;
-  journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(groupTravel.projectJourney(sourceJourney, activeGroupId), showTbd);
+  let planningVisibility = {past: true, locked: true, tbd: true};
+  journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(groupTravel.projectJourney(sourceJourney, activeGroupId), planningVisibility);
   let activeDayId = journey.days[0].id;
   let mapScope = "journey";
   let arrivalChapter, arrivalDrawing;
@@ -585,7 +585,7 @@
         },
         obstacles: () => {
           const mapRect = mainMap.getContainer().getBoundingClientRect();
-          return ['#day-navigator', '#map-legend', '#arrival-chapter', '#route-inspector', '.maplibregl-ctrl-top-right', '.maplibregl-ctrl-bottom-right']
+          return ['#day-navigator', '#map-planning-filter', '#map-legend', '#arrival-chapter', '#route-inspector', '.maplibregl-ctrl-top-right', '.maplibregl-ctrl-bottom-right']
             .map(selector => mainMap.getContainer().querySelector(selector) || $(selector))
             .filter(element => element && !element.hidden && element.getClientRects().length)
             .map(element => { const r = element.getBoundingClientRect(); return { left: r.left - mapRect.left, right: r.right - mapRect.left, top: r.top - mapRect.top, bottom: r.bottom - mapRect.top }; });
@@ -813,6 +813,7 @@
   }
 
   function drawMainMap(fit, attempt = 0) {
+    renderPlanningFilters();
     if (typeof placesUI !== 'undefined') placesUI?.update();
     photoBubbles?.refresh();
     renderLegend();
@@ -851,6 +852,7 @@
   }
 
   function renderDayNavigator() {
+    renderPlanningFilters();
     const navigator = $("#day-navigator");
     const dayIndex = journey.days.findIndex((day) => day.id === activeDayId);
     window.JOURNEY_ATLAS_MOBILE_UI?.renderDay();
@@ -858,7 +860,7 @@
       ? `${$('.mobile-day-summary').offsetHeight + 12}px` : '18px';
     navigator.hidden = mapScope !== "day";
     navigator.style.top = `${$("#map").offsetTop + 14}px`;
-    $("#focused-day-label").textContent = `${eventWord('title')} ${dayIndex + 1} · ${activeDay().title}`;
+    $("#focused-day-label").textContent = `${eventWord('title')} ${activeDay().number} · ${activeDay().title}`;
     $("#previous-day").disabled = dayIndex <= 0;
     $("#next-day").disabled = dayIndex >= journey.days.length - 1;
   }
@@ -879,7 +881,8 @@
     const width = Math.max(mapElement.clientWidth, 320);
     const height = Math.max(mapElement.clientHeight, 260);
     const side = Math.max(28, Math.min(62, Math.floor(width * 0.08)));
-    const top = Math.max(28, Math.min(56, Math.floor(height * 0.11)));
+    const filterRoom = mapScope === 'journey' && !$('#map-planning-filter').hidden ? 68 : 0;
+    const top = Math.max(filterRoom, 28, Math.min(56, Math.floor(height * 0.11)));
     const legendRoom = legend ? legend.offsetHeight + 30 : 70;
     const bottom = Math.min(Math.max(legendRoom, extraBottom || 0), Math.floor(height * 0.36));
     return { top, right: side, bottom, left: side };
@@ -1084,7 +1087,7 @@
     $("#journey-kicker").textContent = journey.kicker;
     $("#journey-title").textContent = journey.title;
     $("#journey-subtitle").textContent = journey.subtitle;
-    $("#day-count").textContent = `${journey.days.length} ${eventWord('plural')}`;
+    $("#day-count").textContent = `${journey.days.length} ${eventWord(journey.days.length === 1 ? 'singular' : 'plural')}`;
     const album = orderedPhotos(), hasVideos = album.some(mediaUtils.isVideo);
     $('#show-all-photos').innerHTML = `${hasVideos ? 'Photos & videos' : 'All photos'} · <span id="photo-count">${album.length}</span>`;
     $('#show-all-photos').disabled = !album.length;
@@ -1192,7 +1195,7 @@
       ${travelSummary ? `<p class="travel-summary">${escapeHtml(travelSummary)}</p>` : ''}
       ${day.segmentIds.length ? `<details class="travel-details"><summary>Travel details <span>${day.segmentIds.length} leg${day.segmentIds.length===1?'':'s'}</span></summary>${renderRouteLegs(day)}</details>` : ''}
       ${groupTravel.dayDetails(sourceJourney, sourceJourney.days.find(item => item.id === day.id), activeGroupId)}
-      <nav class="journal-day-nav" aria-label="Journal ${eventWord('plural')}"><button type="button" data-journal-step="-1" ${day.number===1?'disabled':''}>← Previous ${eventWord()}</button><span>${eventWord('title')} ${day.number} of ${journey.days.length}</span><button type="button" data-journal-step="1" ${day.number===journey.days.length?'disabled':''}>Next ${eventWord()} →</button></nav>
+      <nav class="journal-day-nav" aria-label="Journal ${eventWord('plural')}"><button type="button" data-journal-step="-1" ${journey.days[0].id===day.id?'disabled':''}>← Previous ${eventWord()}</button><span>${eventWord('title')} ${day.number} of ${sourceJourney.days.length}</span><button type="button" data-journal-step="1" ${journey.days.at(-1).id===day.id?'disabled':''}>Next ${eventWord()} →</button></nav>
     `;
 
     photoStrip.innerHTML = photos.length
@@ -1237,7 +1240,7 @@
     clearSegmentInspection(true); pauseReplay(); replayJourneyId = null;
     videoPlayer.stop(); if (photoDialog.open) photoDialog.close();
     activeGroupId = id;
-    journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(groupTravel.projectJourney(sourceJourney, id), showTbd);
+    journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(groupTravel.projectJourney(sourceJourney, id), planningVisibility);
     if (!dayById(activeDayId)) activeDayId = journey.days[0].id;
     storyMapDay = null; viewerRouteKey = null;
     const url = new URL(location.href);
@@ -1250,13 +1253,53 @@
     button?.focus({ preventScroll: true });
   }
 
+  function renderPlanningFilters() {
+    const counts = window.JOURNEY_ATLAS_UTILS.planningCounts(sourceJourney);
+    const available = Object.keys(counts).filter(key => counts[key]);
+    const selected = available.filter(key => planningVisibility[key]);
+    $('#planning-filter').hidden = available.length < 2;
+    document.querySelectorAll('[data-planning-category]').forEach(input => {
+      const key = input.dataset.planningCategory;
+      input.checked = planningVisibility[key] && counts[key] > 0;
+      input.disabled = !counts[key] || (input.checked && selected.length === 1);
+      input.title = !counts[key] ? `No ${eventWord('plural')} in this group`
+        : input.disabled ? 'Keep at least one group visible' : '';
+    });
+    document.querySelectorAll('[data-planning-count]').forEach(count => {
+      count.textContent = counts[count.dataset.planningCount];
+    });
+    const labels = {past: 'Past', locked: 'Future locked in', tbd: 'Future TBD'};
+    $('#map-planning-summary').textContent = `Filter ${eventWord('plural')} · ${selected.length === available.length ? 'All' : selected.length === 1 ? labels[selected[0]] : `${selected.length} groups`}`;
+    const mapFilter = $('#map-planning-filter');
+    mapFilter.hidden = available.length < 2 || mapScope !== 'journey';
+    mapFilter.style.top = `${$('#map').offsetTop + 14}px`;
+  }
+
+  function selectPlanningCategory(category, visible) {
+    if (!Object.hasOwn(planningVisibility, category)) return;
+    const next = {...planningVisibility, [category]: visible};
+    const projected = window.JOURNEY_ATLAS_UTILS.projectPlanning(groupTravel.projectJourney(sourceJourney, activeGroupId), next);
+    if (!projected.days.length) { renderPlanningFilters(); return; }
+    cancelArrival();
+    locationLabels?.closePreview(); clearDayPreview(); placesUI?.dayChanged();
+    photoBubbles?.clearMap?.(); photoBubbles?.close();
+    clearSegmentInspection(true); pauseReplay(); replayJourneyId = null;
+    videoPlayer.stop(); if (photoDialog.open) photoDialog.close();
+    const previousIndex = sourceJourney.days.findIndex(day => day.id === activeDayId);
+    planningVisibility = next;
+    journey = projected;
+    if (!dayById(activeDayId)) {
+      activeDayId = journey.days.find(day => sourceJourney.days.findIndex(item => item.id === day.id) >= previousIndex)?.id || journey.days.at(-1).id;
+    }
+    viewerDayId = activeDayId; storyMapDay = null; viewerRouteKey = null;
+    mapScope = 'journey';
+    renderAll({fit: false});
+    if ($('.map-panel').offsetParent === null) pendingMapAction = 'fit'; else fitJourneyBounds();
+  }
+
   function renderAll(options) {
     renderParty();
-    const pendingCount = sourceJourney.days.filter(day => day.planningStatus === 'tbd').length;
-    $('#planning-filter').hidden = !pendingCount;
-    $('#show-tbd').checked = showTbd;
-    $('#show-tbd').disabled = pendingCount === sourceJourney.days.length;
-    $('#tbd-count').textContent = pendingCount ? `· ${pendingCount} unconfirmed` : '';
+    renderPlanningFilters();
     renderJourneyIdentity();
     renderOverview();
     renderJourneyPicker();
@@ -1495,7 +1538,7 @@
     $("#modal-day-title").textContent = day.title;
     $("#modal-day-route").textContent = routeLabel(day);
     $("#viewer-day-label").textContent = `${eventWord('title')} ${day.number} · ${day.date}`;
-    $("#viewer-day-label").setAttribute("aria-label", `${eventWord('title')} ${day.number} of ${journey.days.length} · ${day.date}`);
+    $("#viewer-day-label").setAttribute("aria-label", `${eventWord('title')} ${day.number} · ${day.date}`);
     const dayIndex = journey.days.findIndex((item) => item.id === day.id);
     $("#viewer-previous-day").disabled = Boolean(viewerCollection) || dayIndex <= 0;
     $("#viewer-next-day").disabled = Boolean(viewerCollection) || dayIndex >= journey.days.length - 1;
@@ -2091,18 +2134,10 @@
   $('#mobile-routes-action').addEventListener('click', () => { setMobileTab('route'); $('#travel-party button')?.focus(); });
   document.addEventListener('visibilitychange', () => { if (document.hidden) videoPlayer.pause(); });
 
-  $('#show-tbd').addEventListener('change', event => {
-    cancelArrival();
-    clearSegmentInspection(true); clearDayPreview(); pauseReplay(); replayJourneyId = null;
-    videoPlayer.stop(); if (photoDialog.open) photoDialog.close();
-    showTbd = event.target.checked;
-    journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(groupTravel.projectJourney(sourceJourney, activeGroupId), showTbd);
-    if (!dayById(activeDayId)) activeDayId = journey.days.at(-1).id;
-    viewerDayId = activeDayId; storyMapDay = null; viewerRouteKey = null;
-    mapScope = 'journey';
-    renderAll({fit: false});
-    if ($('.map-panel').offsetParent === null) pendingMapAction = 'fit'; else fitJourneyBounds();
+  document.querySelectorAll('[data-planning-category]').forEach(input => {
+    input.addEventListener('change', () => selectPlanningCategory(input.dataset.planningCategory, input.checked));
   });
+  $('#map-planning-filter').addEventListener('toggle', () => locationLabels?.refresh());
 
   $("#journey-select").addEventListener("change", (event) => {
     const nextJourney = availableJourneys.find((item) => item.id === event.target.value);
@@ -2112,8 +2147,8 @@
     pauseReplay(); replayJourneyId = null; storyMapDay = null; viewerRouteKey = null;
     videoPlayer.stop(); if (photoDialog.open) photoDialog.close();
     sourceJourney = nextJourney; activeGroupId = '';
-    showTbd = true;
-    journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(nextJourney, showTbd);
+    planningVisibility = {past: true, locked: true, tbd: true};
+    journey = window.JOURNEY_ATLAS_UTILS.projectPlanning(nextJourney, planningVisibility);
     const url = new URL(location.href);
     url.searchParams.set('journey', journey.id); url.searchParams.delete('group');
     url.searchParams.delete('day'); url.searchParams.delete('photo'); url.hash = '';

@@ -1,5 +1,17 @@
 # Changelog
 
+## 11 October 2026 — Past and future trip filters
+
+- Replaced the shared TBD-only checkbox with Past / Future locked in / Future
+  TBD toggles in the Days/Stops section and a synchronized full-trip map menu,
+  including the phone picker and overview. All groups start visible.
+- Group by trip-local dates and saved planning status, including ongoing stays
+  under Past. Keep stable stop numbers and at least one populated group visible;
+  map routes, media and Places assignments follow the selection.
+- Preserve complete incoming legs, clear stale map selections, and fix journal
+  navigation boundaries for filtered subsets. Record the owner's Heading East
+  request and shared contract in the live trip/workflow/framework/feature docs.
+
 This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
@@ -15,8 +27,8 @@ This file records dated changes, not current instructions. Use
 - Move north–south endpoint labels outside the travel path and preserve the
   quiet guide through delayed route loading; prevent false map-error overlays.
 - Record the owner's desktop/mobile clarity requirement in O09 and the arrival
-  workflow. Trip Replay remains unchanged.
-- Validation: all 525 tests and the production build pass. Camera regressions
+  workflow. Full-trip Replay remains disabled.
+- Validation: all 528 tests and the production build pass. Camera regressions
   cover reference, demo, actual city stops and a populated draft, plus late
   route loading. Browser checks compare the same legs on desktop, 390/320 px
   phones and landscape, plus ordinary playback, skipping and rapid navigation.
