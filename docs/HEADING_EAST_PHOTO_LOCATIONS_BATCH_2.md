@@ -1,10 +1,16 @@
-# Heading East · second batch: photos without GPS
+# Heading East · second batch: original missing-GPS checklist
 
 Intake: 11 October 2026, from private `photos/euro-eastbound-2/`.
 
-75 of the 76 new photos have no embedded GPS and need an owner-placed pin.
-The only new geotagged file is `IMG_3388.HEIC` (Hamburg). Two exact duplicates
-already in the first batch retain their existing locations and are not re-added.
+**Resolved on 11 October 2026:** the owner placed all 75 missing pins in
+Studio and requested publication. All 119 visible Heading East photos now
+have locations; `IMG_3388.HEIC` is in recoverable Trash. See the
+[current trip record](HEADING_EAST.md#owner-reviewed-photo-locations--11-october-2026).
+The table below is the original intake inventory, not outstanding work.
+
+75 of the 76 new photos have no embedded GPS. The only new geotagged file was
+`IMG_3388.HEIC` (Hamburg). Two exact duplicates already in the first batch
+retained their existing IDs and were not re-added.
 
 Use Studio → Media → Photos, select the album below and search the original
 filename. Capture dates and times are retained. These album assignments come

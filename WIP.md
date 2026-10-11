@@ -33,8 +33,14 @@ upload and trip publication on 11 October. All 518 tests and the production
 build pass; the private service and Pages are deployed, and a fresh public page
 shows 120 photos and loads new protected images. The import is integrated into
 the main checkout with all pre-existing pin and documentation edits preserved
-and left uncommitted. No shared runtime changed. The 75 missing pins remain
-available for the owner's later editing; see the checklist above.
+and left uncommitted. No shared runtime changed.
+
+Later on 11 October the owner completed Studio location review and requested
+publication. All 119 visible photos now have valid pins; `IMG_3388.HEIC` is in
+recoverable Trash. This resolves all 75 second-batch and five first-batch missing
+locations. The saved pin/label/frame edits and generated comments eligibility
+index are prepared for release. All 518 tests, the production build and
+Worker runtime checks passed; deployment verification is pending. See the [current photo review](docs/HEADING_EAST.md#owner-reviewed-photo-locations--11-october-2026).
 
 ## UX flow review implementation — 11 October 2026
 

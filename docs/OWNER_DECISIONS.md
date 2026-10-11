@@ -114,8 +114,9 @@ explicitly linked Places viewer entry are not redefined by this clarification.
 - Florence–Genoa keeps six cycling days and campsite-only descriptions at the
   owner's request. This does not strip other journeys' stories or group support.
 - Heading East's city dates/order, replacement bus, onward TBD stays, city
-  boundaries, saved venues and unresolved five photo pins remain in
-  [its intake record](HEADING_EAST.md). A request for light factual venue
+  boundaries, saved venues and owner-reviewed photo pins remain in
+  [its intake record](HEADING_EAST.md). The 11 October Studio review resolves
+  the missing locations across both photo batches and preserves one trashed photo. A request for light factual venue
   descriptions does not authorize personal photo captions or invented visits.
   Its [11 October image selection](HEADING_EAST.md#place-image-refresh--11-october-2026)
   preserves the exact Barbès/Abi’s photos and the food/atmosphere mix with bakery

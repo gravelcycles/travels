@@ -62,7 +62,6 @@ export default {
     "backpacking-europe-heading-east-upload-2b43f07d4a7a9be0266e",
     "backpacking-europe-heading-east-upload-2f29a9d5459cb43f2e59",
     "backpacking-europe-heading-east-upload-2fb907bac028aaa4c35b",
-    "backpacking-europe-heading-east-upload-30a203d3b04bbb23130a",
     "backpacking-europe-heading-east-upload-31ce5d3b4d168273dfc9",
     "backpacking-europe-heading-east-upload-330fa9862b3be5e57bf7",
     "backpacking-europe-heading-east-upload-3b685b801eb1413875df",

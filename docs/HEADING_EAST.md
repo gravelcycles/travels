@@ -5,6 +5,32 @@ Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 
 Each city is one event. Taglines and stories are deliberately empty; the first
 photo intake is recorded below.
 
+## Owner-reviewed photo locations — 11 October 2026
+
+After editing the locations in Studio, the owner requested **“ok i updated all
+locations. pls update and publish.”** The saved overrides now give every one
+of the **119 non-trashed photos** a valid map location. The owner also moved
+`IMG_3388.HEIC` to recoverable Trash; preserve that selection and its private
+original. The 120 source records remain intact.
+
+These owner-placed pins supersede the first batch's five unresolved locations
+and the second batch's 75 missing-GPS review items below. Original GPS metadata
+and intake status labels remain provenance; effective saved coordinates govern
+current location completeness. Preserve the owner's place labels, zoom levels
+and separately composed map frame. Captions, notes, capture timestamps, album
+assignments, cover, itinerary and routes retain their saved values.
+
+Visible album counts are Luzern 10, Freiburg 18, Hamburg 16, Köln 10,
+Düsseldorf 1, Berlin 21 and Prague 43. All image assets were already published;
+this release changes saved photo metadata, generated public output and the
+comments eligibility index for the trashed photo. No image upload is required.
+
+Release validation: all **518 tests passed**, the production build succeeded,
+and the real Worker runtime passed authentication, protected-media and D1
+comment checks. Generated data matches every saved photo override, includes
+119 located photos, and excludes the trashed photo from both the public gallery
+and comments index.
+
 ## Second photo batch — 11 October 2026
 
 The owner requested intake of `photos/euro-eastbound-2/` and a list of photos
@@ -15,10 +41,11 @@ Two original SHA-256 hashes match photos already in the first batch:
 edits; add the remaining 76 through the separate incremental upload manifest.
 
 Only `IMG_3388.HEIC` among the new files has camera GPS, in Hamburg. The other
-75 have no GPS; keep them unlocated. The owner-facing
+75 have no GPS and were kept unlocated at intake. The owner subsequently
+placed all 75 pins in Studio; see the current location review above. The
 [filename and capture-date checklist](HEADING_EAST_PHOTO_LOCATIONS_BATCH_2.md)
-groups them by album for Studio review. Do not infer precise locations from
-other photographs, filenames or nearby venues.
+retains the original review inventory. Do not infer future missing locations
+from other photographs, filenames or nearby venues.
 
 Nine photographs predate the trip calendar (28–30 August). The owner explicitly
 answered **“Add them to Luzern”** on 11 October. Assign those to the existing
@@ -27,8 +54,8 @@ route geometry unchanged. The owner also confirmed **“Put all six in Köln”*
 for the unlocated 30 September photos, overriding the calendar's Düsseldorf
 arrival assignment. Other photos follow the capture-date calendar.
 
-All captions, notes and location labels stay blank. Preserve the original
-44 photos, their edited pins, frames, order and cover. New derivatives use the
+All captions, notes and location labels began blank. Preserve the original
+44 photos and subsequent owner edits to pins, labels, frames, order and cover. New derivatives use the
 existing private 480/1280/full-size WebP pipeline, capped at a 3200 px longest
 edge. The original files and complete metadata remain ignored/private.
 
@@ -79,8 +106,8 @@ retain the recorded coordinates. GPS corrects transfer-date assignments:
 remain in the Prague arrival album with their actual Dresden coordinates.
 No route or city-stay dates change.
 
-Five photos have no GPS. The owner will locate them in Studio later; they
-remain included in Freiburg's album without invented pins:
+Five photos had no GPS at intake. The owner subsequently located all five
+in Studio on 11 October; they remain in Freiburg's album. Original review cues:
 
 | Original filename | Owner review cue |
 | --- | --- |
@@ -92,7 +119,7 @@ remain included in Freiburg's album without invented pins:
 
 Studio **Photos → Photos from → Freiburg** shows all five. Search the source
 filename in **Select multiple**, or select the matching photograph individually
-to add its map location. Original filenames remain available in Studio; only
+to review its saved map location. Original filenames remain available in Studio; only
 derivatives are served as images, never the original files.
 
 All 132 metadata-stripped WebP objects were uploaded sequentially to the

@@ -1849,19 +1849,40 @@
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 48.00657,
+      "lng": 7.822455
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.13
   },
   "backpacking-europe-heading-east-bed4a0a8-76cd-4410-a3c0-f8ded20fec54": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 48.00657,
+      "lng": 7.822534
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.13
   },
   "backpacking-europe-heading-east-34d92b6e-8842-43d9-994c-1f59af75a0cb": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.995129,
+      "lng": 7.859006
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.13
   },
   "backpacking-europe-heading-east-snapseed-camera-capture-20260905-150143-459": {
     "reviewed": true,
@@ -1887,223 +1908,300 @@
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.989355,
+      "lng": 7.871712
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.13
   },
   "backpacking-europe-heading-east-77c09c57-d680-425d-a2a2-43d5fca96c57": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.992032,
+      "lng": 7.849672
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.13
   },
   "backpacking-europe-heading-east-img-3389": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 53.5981444444444,
-      "lng": 10.0353861111111
+      "lat": 53.59817,
+      "lng": 10.035464
     },
-    "zoom": 15
+    "zoom": 13.75,
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-snapseed-camera-capture-20260926-145129-729": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 53.5902027777778,
-      "lng": 10.0450166666667
+      "lat": 53.590196,
+      "lng": 10.045037
     },
-    "zoom": 15
+    "zoom": 13.75,
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-snapseed-camera-capture-20260926-162050-471": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 53.542275,
-      "lng": 9.99045833333333
+      "lat": 53.542331,
+      "lng": 9.990876
     },
-    "zoom": 15
+    "zoom": 12.29,
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-snapseed-camera-capture-20260926-162059-473": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 53.5422694444444,
-      "lng": 9.99045277777778
+      "lat": 53.542081,
+      "lng": 9.989895
     },
-    "zoom": 15
+    "zoom": 12.29,
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-snapseed-camera-capture-20260926-164234-715": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 53.5403777777778,
-      "lng": 9.99952777777778
+      "lat": 53.540499,
+      "lng": 9.999567
     },
-    "zoom": 15
+    "zoom": 12.29,
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-snapseed-camera-capture-20260926-180426-392": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 53.5749055555556,
-      "lng": 10.0071222222222
+      "lat": 53.574804,
+      "lng": 10.007417
     },
-    "zoom": 15
+    "zoom": 12.29,
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3412": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 53.5752833333333,
-      "lng": 10.0060777777778
+      "lat": 53.575636,
+      "lng": 10.005875
     },
-    "zoom": 15
+    "zoom": 12.29,
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3419": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 53.5874527777778,
-      "lng": 10.0167777777778
+      "lat": 53.587536,
+      "lng": 10.016808
     },
-    "zoom": 15
+    "zoom": 12.29,
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-snapseed-camera-capture-20260927-180659-416": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 53.558725,
-      "lng": 9.96461111111111
+      "lat": 53.55882,
+      "lng": 9.964945
     },
-    "zoom": 15
+    "zoom": 12.29,
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3429": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 53.5414861111111,
-      "lng": 10.0123861111111
+      "lat": 53.527586,
+      "lng": 10.01821
     },
-    "zoom": 15
+    "zoom": 12.29,
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3442": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.9412472222222,
-      "lng": 6.95623611111111
+      "lat": 50.941124,
+      "lng": 6.956126
     },
-    "zoom": 15
+    "zoom": 12.74,
+    "dayId": "backpacking-europe-heading-east-koln-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3444": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.94075,
-      "lng": 6.95662222222222
+      "lat": 50.940799,
+      "lng": 6.956538
     },
-    "zoom": 15
+    "zoom": 12.74,
+    "dayId": "backpacking-europe-heading-east-koln-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-snapseed-camera-capture-20260930-144641-400": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.9421166666667,
-      "lng": 6.95760277777778
+      "lat": 50.942034,
+      "lng": 6.958085
     },
-    "zoom": 15
+    "zoom": 12.74,
+    "dayId": "backpacking-europe-heading-east-koln-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3448": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.9422333333333,
-      "lng": 6.95781666666667
+      "lat": 50.942423,
+      "lng": 6.957982
     },
-    "zoom": 15
+    "zoom": 12.74,
+    "dayId": "backpacking-europe-heading-east-koln-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3450": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 51.2036138888889,
-      "lng": 6.68487777777778
+      "lat": 51.210851,
+      "lng": 6.739831
     },
-    "zoom": 15
+    "zoom": 10.97,
+    "dayId": "backpacking-europe-heading-east-dusseldorf-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3456": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 52.5225194444444,
-      "lng": 13.4127166666667
+      "lat": 52.522421,
+      "lng": 13.412838
     },
-    "zoom": 15
+    "zoom": 12.66,
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3460": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 52.5024944444444,
-      "lng": 13.4460472222222
+      "lat": 52.50228,
+      "lng": 13.446041
     },
-    "zoom": 15
+    "zoom": 12.66,
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3465": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 52.5024722222222,
-      "lng": 13.4460527777778
+      "lat": 52.502545,
+      "lng": 13.445932
     },
-    "zoom": 15
+    "zoom": 12.66,
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3469": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 52.51625,
-      "lng": 13.3782083333333
+      "lat": 52.515796,
+      "lng": 13.378219
     },
-    "zoom": 15
+    "zoom": 12.66,
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3473": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 52.5143472222222,
-      "lng": 13.4055194444444
+      "lat": 52.513875,
+      "lng": 13.405762
     },
-    "zoom": 15
+    "zoom": 12.66,
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3476": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 52.5050805555556,
-      "lng": 13.3188972222222
+      "lat": 52.504348,
+      "lng": 13.318635
     },
-    "zoom": 15
+    "zoom": 11.01,
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3478": {
     "reviewed": true,
@@ -2120,146 +2218,195 @@
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 51.0489166666667,
-      "lng": 13.7353861111111
+      "lat": 51.048762,
+      "lng": 13.735346
     },
-    "zoom": 15
+    "zoom": 12.43,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3481": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 51.0533861111111,
-      "lng": 13.7411138888889
+      "lat": 51.05316,
+      "lng": 13.741198
     },
-    "zoom": 15
+    "zoom": 12.43,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-snapseed-camera-capture-20261006-150136-391": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.0867694444444,
-      "lng": 14.4203333333333
+      "lat": 50.086428,
+      "lng": 14.420499
     },
-    "zoom": 15
+    "zoom": 12.49,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3492": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.0872083333333,
-      "lng": 14.4069805555556
+      "lat": 50.08682,
+      "lng": 14.407175
     },
-    "zoom": 15
+    "zoom": 12.49,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3502": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.1004305555556,
-      "lng": 14.4331861111111
+      "lat": 50.100465,
+      "lng": 14.433701
     },
-    "zoom": 15
+    "zoom": 12.49,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3504": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.091025,
-      "lng": 14.4021138888889
+      "lat": 50.090898,
+      "lng": 14.401674
     },
-    "zoom": 15
+    "zoom": 12.49,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3505": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.0896722222222,
-      "lng": 14.3983388888889
+      "lat": 50.089722,
+      "lng": 14.398007
     },
-    "zoom": 15
+    "zoom": 12.49,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3506": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.0812944444444,
-      "lng": 14.4497472222222
+      "lat": 50.081094,
+      "lng": 14.449959
     },
-    "zoom": 15
+    "zoom": 12.49,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3507": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.081525,
-      "lng": 14.4518611111111
+      "lat": 50.081565,
+      "lng": 14.451548
     },
-    "zoom": 15
+    "zoom": 12.49,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3517": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.0947138888889,
-      "lng": 14.4167861111111
+      "lat": 50.094898,
+      "lng": 14.416221
     },
-    "zoom": 15
+    "zoom": 12.49,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3520": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.0960777777778,
-      "lng": 14.4254722222222
+      "lat": 50.095682,
+      "lng": 14.426611
     },
-    "zoom": 15
+    "zoom": 12.49,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3528": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.0802,
-      "lng": 14.4284805555556
+      "lat": 50.079996,
+      "lng": 14.428445
     },
-    "zoom": 15
+    "zoom": 12.49,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3532": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.0810777777778,
-      "lng": 14.4260555555556
+      "lat": 50.080702,
+      "lng": 14.425633
     },
-    "zoom": 15
+    "zoom": 12.49,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-img-3535": {
     "reviewed": true,
     "locationStatus": "reviewed-exact",
     "locationLabel": "",
     "location": {
-      "lat": 50.0774833333333,
-      "lng": 14.4189
+      "lat": 50.077329,
+      "lng": 14.419277
     },
-    "zoom": 15
+    "zoom": 12.49,
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": ""
   },
   "backpacking-europe-heading-east-upload-330fa9862b3be5e57bf7": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 53.575469,
+      "lng": 10.015687
+    },
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.29
   },
   "backpacking-europe-heading-east-upload-30a203d3b04bbb23130a": {
     "reviewed": true,
@@ -2269,450 +2416,970 @@
       "lat": 53.59814444444444,
       "lng": 10.03538611111111
     },
-    "zoom": 15
+    "zoom": 15,
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-53e3ef59716aef8e1bf6": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "locationLabel": "",
-    "location": null
+    "locationLabel": "covered bridge luzern",
+    "location": {
+      "lat": 47.051588,
+      "lng": 8.307466
+    },
+    "dayId": "backpacking-europe-heading-east-luzern-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.9
   },
   "backpacking-europe-heading-east-upload-1fc9bea6c00885f793a5": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.031712,
+      "lng": 8.435858
+    },
+    "dayId": "backpacking-europe-heading-east-luzern-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.04
   },
   "backpacking-europe-heading-east-upload-f366c54e409d8006ec77": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.990264,
+      "lng": 7.84636
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.34
   },
   "backpacking-europe-heading-east-upload-089d06cf9fc8eb426463": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.990218,
+      "lng": 7.8467
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.34
   },
   "backpacking-europe-heading-east-upload-80285f87ffa7fdb23498": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.990173,
+      "lng": 7.847108
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.34
   },
   "backpacking-europe-heading-east-upload-7e6a083c2e87656530fe": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.990264,
+      "lng": 7.848265
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.34
   },
   "backpacking-europe-heading-east-upload-f49a8470552a28c77773": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 53.528586,
+      "lng": 10.018631
+    },
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.29
   },
   "backpacking-europe-heading-east-upload-7588ee13f66da3fd61ad": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 53.550077,
+      "lng": 10.000548
+    },
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.29
   },
   "backpacking-europe-heading-east-upload-93ec5b3135fb8393ca59": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 53.571308,
+      "lng": 9.997885
+    },
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.29
   },
   "backpacking-europe-heading-east-upload-fbd2c1a168f7bb4ca247": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.946451,
+      "lng": 6.957879
+    },
+    "dayId": "backpacking-europe-heading-east-koln-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.74
   },
   "backpacking-europe-heading-east-upload-2fb907bac028aaa4c35b": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.946061,
+      "lng": 6.95262
+    },
+    "dayId": "backpacking-europe-heading-east-koln-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.74
   },
   "backpacking-europe-heading-east-upload-0c9ecf49de2111a7051c": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.509276,
+      "lng": 13.429509
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-6f56542ec603d8e8416c": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.521184,
+      "lng": 13.378731
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-d7f767a0fb643ee3bcb9": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.520054,
+      "lng": 13.389382
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-d90b1f16a88de07cee13": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.497062,
+      "lng": 13.399414
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-0ab10b9f55a41157406f": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.496308,
+      "lng": 13.409693
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-24a4b78a71da6f618417": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.496082,
+      "lng": 13.408455
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-6ef4f40ebee07e386979": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.081408,
+      "lng": 14.420132
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-74d4a535adb64b0f5a9e": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.075132,
+      "lng": 14.413776
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-d2783ec63dd5b93dfc54": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.077799,
+      "lng": 14.414509
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-063e6cbbb7fe4d1371a3": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.083447,
+      "lng": 14.415976
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-f47a88409ddac4a0c2ab": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.083369,
+      "lng": 14.41671
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-417cf5674986dd58cfff": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.089487,
+      "lng": 14.407297
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-62513dfcefb3187b4fdd": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.090898,
+      "lng": 14.409864
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-9e770bbe690385232c71": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.089173,
+      "lng": 14.402897
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-757931beb711138b93da": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.088781,
+      "lng": 14.415976
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-716d4ebd72dac31fe710": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.089565,
+      "lng": 14.416343
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-5bd26e15b32ba75fa8db": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.089408,
+      "lng": 14.404241
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-0551f1a46aa18fcb2016": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.085722,
+      "lng": 14.406197
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-1a03138481fcd53b8ab4": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.066188,
+      "lng": 14.415365
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-86d4743441a90233c419": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.072308,
+      "lng": 14.415487
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-5343397c368402809d2a": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.081879,
+      "lng": 14.431501
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-f0d82fef0369cbc84d0f": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.095447,
+      "lng": 14.419399
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-947a2f80c83b67206389": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "locationLabel": "",
-    "location": null
+    "locationLabel": "Lucerna Cafe",
+    "location": {
+      "lat": 50.089408,
+      "lng": 14.429301
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-31ce5d3b4d168273dfc9": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.08933,
+      "lng": 14.427589
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-b0163f478bb000ae5b1a": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "locationLabel": "",
-    "location": null
+    "locationLabel": "Lucerna Cafe",
+    "location": {
+      "lat": 50.089644,
+      "lng": 14.428078
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-9c627896e6668676374b": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "locationLabel": "",
-    "location": null
+    "locationLabel": "Lucerna Passage",
+    "location": {
+      "lat": 50.089487,
+      "lng": 14.430278
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-44a6acd6868ad45977e9": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "locationLabel": "",
-    "location": null
+    "locationLabel": "Lucerna Passage",
+    "location": {
+      "lat": 50.089565,
+      "lng": 14.4282
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-b7c42825209ea8fe8638": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "locationLabel": "",
-    "location": null
+    "locationLabel": "Lucerna Passage",
+    "location": {
+      "lat": 50.0898,
+      "lng": 14.427834
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-8a26476119188765154e": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.090585,
+      "lng": 14.427834
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-902541c590ad25c12aa4": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.089565,
+      "lng": 14.426611
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-7adee45845c1d871ccad": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.088153,
+      "lng": 14.424533
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-9275ed6a35a6ef263039": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "locationLabel": "",
-    "location": null
+    "locationLabel": "Old Prague train station",
+    "location": {
+      "lat": 50.087997,
+      "lng": 14.4249
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-6cafa206240643c99779": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.088153,
+      "lng": 14.415976
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-dfb6bd907ec217c15fe0": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "locationLabel": "",
-    "location": null
+    "locationLabel": "Bassotto",
+    "location": {
+      "lat": 50.081251,
+      "lng": 14.421233
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-4bd1855b7f117fbb0697": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.082035,
+      "lng": 14.421477
+    },
+    "dayId": "backpacking-europe-heading-east-prague-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.49
   },
   "backpacking-europe-heading-east-upload-dac5328bfb16461d32ae": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "locationLabel": "",
-    "location": null
+    "locationLabel": "13 wesemlinterrasse",
+    "location": {
+      "lat": 47.063193,
+      "lng": 8.314536
+    },
+    "dayId": "backpacking-europe-heading-east-luzern-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 15
   },
   "backpacking-europe-heading-east-upload-2a03b43fdddc123d7f10": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "locationLabel": "",
-    "location": null
+    "locationLabel": "13 wesemlinterrasse",
+    "location": {
+      "lat": 47.063215,
+      "lng": 8.314515
+    },
+    "dayId": "backpacking-europe-heading-east-luzern-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 15
   },
   "backpacking-europe-heading-east-upload-2f29a9d5459cb43f2e59": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
-    "locationLabel": "",
-    "location": null
+    "locationLabel": "weggis",
+    "location": {
+      "lat": 47.031825,
+      "lng": 8.43436
+    },
+    "dayId": "backpacking-europe-heading-east-luzern-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.04
   },
   "backpacking-europe-heading-east-upload-cb7a62b4305fd9464031": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.031825,
+      "lng": 8.436358
+    },
+    "dayId": "backpacking-europe-heading-east-luzern-stay",
+    "caption": "",
+    "description": "",
+    "mapFrame": null,
+    "zoom": 12.04
   },
   "backpacking-europe-heading-east-upload-d14fdc183832a9832e73": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.032165,
+      "lng": 8.43486
+    },
+    "dayId": "backpacking-europe-heading-east-luzern-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.04
   },
   "backpacking-europe-heading-east-upload-f06a4bc17c775929637e": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.032052,
+      "lng": 8.434027
+    },
+    "dayId": "backpacking-europe-heading-east-luzern-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.04
   },
   "backpacking-europe-heading-east-upload-2b43f07d4a7a9be0266e": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.053153,
+      "lng": 8.307812
+    },
+    "dayId": "backpacking-europe-heading-east-luzern-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 14.21
   },
   "backpacking-europe-heading-east-upload-8737ad531c2de7c5781c": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 48.030106,
+      "lng": 7.863423
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 11.93
   },
   "backpacking-europe-heading-east-upload-1840b516b3f506867764": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 48.017418,
+      "lng": 7.864322
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 11.93
   },
   "backpacking-europe-heading-east-upload-4e2d816c02acd347f7c9": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 48.004306,
+      "lng": 7.859826
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 11.93
   },
   "backpacking-europe-heading-east-upload-3b685b801eb1413875df": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.993496,
+      "lng": 7.851666
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.34
   },
   "backpacking-europe-heading-east-upload-7b4bda268048a2860a01": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.997275,
+      "lng": 7.850986
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.34
   },
   "backpacking-europe-heading-east-upload-b39442e6909598636ce8": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.991129,
+      "lng": 7.846632
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.34
   },
   "backpacking-europe-heading-east-upload-4ac1954e2fd63e56e303": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.99122,
+      "lng": 7.847653
+    },
+    "dayId": "backpacking-europe-heading-east-freiburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 13.34
   },
   "backpacking-europe-heading-east-upload-481c05b8a76da50ac12d": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 53.547329,
+      "lng": 9.992699
+    },
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.29
   },
   "backpacking-europe-heading-east-upload-58ad83d0d444b3b213fc": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 53.55116,
+      "lng": 9.997885
+    },
+    "dayId": "backpacking-europe-heading-east-hamburg-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.29
   },
   "backpacking-europe-heading-east-upload-142bf5bf67c6bd3ecd06": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.931904,
+      "lng": 6.96056
+    },
+    "dayId": "backpacking-europe-heading-east-koln-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.74
   },
   "backpacking-europe-heading-east-upload-ab2453ea4fd4a7552c6a": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.931677,
+      "lng": 6.960971
+    },
+    "dayId": "backpacking-europe-heading-east-koln-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.74
   },
   "backpacking-europe-heading-east-upload-280a6cade6fef125d77d": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.932937,
+      "lng": 6.960559
+    },
+    "dayId": "backpacking-europe-heading-east-koln-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.74
   },
   "backpacking-europe-heading-east-upload-dfafd690e7c87ac396da": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 50.93976,
+      "lng": 6.958497
+    },
+    "dayId": "backpacking-europe-heading-east-koln-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.74
   },
   "backpacking-europe-heading-east-upload-2b172e17c2b67e01486c": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.510859,
+      "lng": 13.42728
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-a81c31ea658c9c00bd31": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.51116,
+      "lng": 13.426785
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-557750833b6af45b0a12": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.511235,
+      "lng": 13.426785
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-d1bfc7b17b18e99966f7": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.510934,
+      "lng": 13.427156
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-dca5df75def57377629a": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.511537,
+      "lng": 13.426413
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-e7933d9919705cc8c8c2": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.523068,
+      "lng": 13.395698
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-15149e681863db8700fc": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.518999,
+      "lng": 13.39124
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   },
   "backpacking-europe-heading-east-upload-4195865909aa4d1826d7": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 52.517567,
+      "lng": 13.407216
+    },
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "caption": "",
+    "description": "",
+    "zoom": 12.47
   }
 }

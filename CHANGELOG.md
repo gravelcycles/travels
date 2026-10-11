@@ -4,6 +4,17 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — publish Heading East location review
+
+- Apply the owner's saved photo pins, place labels, zooms and map frame across
+  both batches. All 119 visible photos have valid locations.
+- Preserve the owner's recoverable Trash choice for `IMG_3388.HEIC`, retain
+  all private originals and regenerate public bundles and comments eligibility.
+- Resolve the original missing-location checklists in the trip documentation;
+  keep camera metadata separate from later owner-reviewed locations.
+- Validation: all 518 tests, production build and real Worker runtime checks
+  pass; generated output retains all 119 located photos and excludes Trash.
+
 ## 11 October 2026 — Heading East second photo batch
 
 - Add 76 new photos from `euro-eastbound-2` through the incremental upload
