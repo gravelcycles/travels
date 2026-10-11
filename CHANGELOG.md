@@ -1,5 +1,12 @@
 # Changelog
 
+## 11 October 2026 — Heading East copy proofreading
+
+- Correct “2.5 weeks” and the other small spelling, capitalization, punctuation
+  and grammar slips in the city stories and introduction at the owner's request.
+- Retain the traveler's informal wording and record the scoped proofreading
+  approval in the trip notes.
+
 ## 11 October 2026 — Heading East city stories
 
 - Publish the owner's seven saved city descriptions, from Luzern through
