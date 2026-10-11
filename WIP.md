@@ -72,6 +72,14 @@ deployed before Pages and still rejects anonymous access. See the [current photo
 
 ## UX flow review implementation — 11 October 2026
 
+Later hover correction: the owner reported the selected sidebar photo's blue
+background flashing white on hover. The image button now overrides the general
+toolbar hover fill, retaining the blue frame. All 520 tests and the production
+build pass. Browser checks cover Heading East, the reference, Alpine demo and an
+independently populated city draft (portrait/landscape, pointer entry/exit, visible
+keyboard focus and fullscreen). The correction follows the normal Pages delivery
+and fresh-public-page checks. See O03 and the photo workflow.
+
 The owner authorized all U01–U16 findings and direct one-click fullscreen, then
 clarified the boundary later on 11 October: map circle bubbles and right-hand
 reel thumbnails select in the existing sidebar/card; the large top-right
