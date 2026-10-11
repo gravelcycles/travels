@@ -26,14 +26,15 @@ own the behavior. Shared indexed metadata/feed endpoints, bounded pagination,
 membership follows visible rows and survives reload/delete/restore; auth clears
 private memory/DOM and ignores late responses.
 
-SQLite, client and UI regressions cover pagination, storage, privacy, cache races
-and notification history ordering. Browser fixtures verify reference-trip and
-independently populated city-draft desktop/phone entry, a comment beyond the first
-50, 320px layout, and red unread → plain total. The full suite/build and actual
-Worker runtime passed locally. Next: integrate current main, repeat final release
-checks, apply additive migration 0002, deploy Worker before Pages and verify live
-endpoints/assets. Production delivery remains pending. Concurrent mobile, map,
-Replay and hover changes are preserved in their own releases.
+SQLite, client and UI regressions cover pagination, storage, privacy, cache races,
+notification history ordering and filtered-photo entry. Browser fixtures verify
+reference, demo, independent city draft and Heading East event models on desktop
+and phone: a comment beyond the first 50, 320/390px layout, reload persistence,
+red unread → plain total, and revealing a hidden target stop. Integrated current
+main's mobile, filters, arrival, intro and copy changes; all **570 tests**, the
+production build and actual Worker runtime pass. Next: apply additive migration
+0002, deploy Worker before Pages and verify live endpoints/assets. Production
+delivery remains pending.
 
 ## Mobile map return and camera roll — 11 October 2026
 
@@ -52,9 +53,12 @@ an independently populated city draft. Verified cross-event arrows/photo swipes,
 city-bar swipes, empty-event skipping, unchanged marker positions after manual
 map movement and photo dismissal, event grid selection, Back/Forward, location
 staying closed, 320/390 px portrait and landscape, and retained desktop selection.
-The isolated release is based on sanitized main with full-trip Replay disabled and the newer opening/day filters retained.
-Next: integrate any newer main, publish, and verify Pages plus fresh public
-HTML/assets; no media/content changes are required.
+Integrated current sanitized main, preserving full-trip Replay disablement and
+the newer opening/day filters. Deployed as `497cd0b` via successful
+[Pages run 38151034258](https://github.com/gravelcycles/travels/actions/runs/38151034258).
+Fresh public HTML for all four journey/demo pages and `app.js`, `mobile-ux.js`
+and `mobile.css` matched the tested release byte-for-byte. No mobile
+implementation or delivery work remains; no media/content changed in this fix.
 
 ## Opening screen and Heading East description — 11 October 2026
 
@@ -202,12 +206,35 @@ and floating photo comments/place reviews with immediate opening and cached read
 These later decisions supersede incompatible behavior in the preserved prototypes
 below. The documentation audit itself changes no trip content or runtime.
 
+## Day/stop travel camera correction — 11 October 2026
+
+Accepted: replace awkward zooming between days/stops and keep the moving train
+position visible, especially on north–south routes. Scope is ordinary stop
+navigation; full-trip Replay remains disabled. See O09 and the arrival workflow.
+Implemented on `codex/place-zoom-20261011` in
+`/private/tmp/travels-place-zoom-release`, integrated onto sanitized main:
+one route ease, single-applied padding, resize-before-fit, measured card/label
+clearance, unobstructed north–south endpoint labels, temporarily hidden
+signposts and guarded late route redraws. Full-trip Replay remains disabled.
+All **544 tests** and the production build pass. Browser comparisons cover the
+same north–south leg on desktop and 390/320 px phones, landscape, the wide Alpine
+demo route, reference multi-leg routes and an independent populated city draft.
+Skip/rapid navigation and ordinary timed playback were checked; the final phone
+arrival shows the departing circle clear of labels without false map errors.
+Deployed as `ad55da8`, including the latest opening, day filters, mobile
+camera roll and city stories. [Pages run 38151311374](https://github.com/gravelcycles/travels/actions/runs/38151311374)
+succeeded. Fresh public target/reference/demo HTML and all three changed runtime
+assets match the tested build byte-for-byte. Desktop/phone visual checks used
+the local production build; automatic approval review blocked the live browser
+auth redirect, so public verification used HTTP without private-photo access.
+No implementation or deployment work remains; synthetic fixtures stay local.
+
 ## Arrival → city release — 10 October 2026
 
 The owner approved the locally reviewed arrival experience for deployment.
-Shared playback pulls back around the previous view, combines the pan and zoom
-onto the next route, traces it over 1.5 seconds with a plain orange tracking
-circle, pauses for 250 ms and settles on the destination. City framing fits nearby
+The original two-stage camera preparation is superseded by the 11 October
+correction above. Playback traces the route over 1.5 seconds with a plain orange
+tracking circle, pauses for 250 ms and settles on the destination. City framing fits nearby
 photos (city limits plus five miles) and marked places. Existing trip content
 and saved places are retained. Synthetic photo fixtures remain ignored/local.
 See [arrival behavior and checks](docs/ARRIVAL_CITY_DEMO.md).

@@ -18,9 +18,15 @@ delivery; use the [live update procedure](OWNER_DECISIONS.md#record-the-next-cor
 Accepted work still pending belongs in WIP, not among delivered capabilities.
 
 Shared [Arrival → city](ARRIVAL_CITY_DEMO.md) playback traces the incoming
-route with a plain orange tracking circle at display cadence after a contextual pullback and a
-combined pan/zoom, with named endpoints and linear 1.5-second overhead
-progression and a 0.25-second arrival pause before the destination zoom. Unlocated
+route with a plain orange tracking circle at display cadence after one direct
+850 ms pan/zoom. The camera stays still for the linear 1.5-second trace and
+0.25-second arrival hold, then eases into the destination over 900 ms. Full-route
+framing applies bounds padding once and clears endpoint labels and the desktop
+overlay; the external phone card does not consume map space a second time.
+The same stroke and marker sizes preserve mobile/desktop clarity, including
+north–south routes (owner correction, 11 October 2026). Endpoint labels sit
+outside vertical travel paths; late route loading preserves the quiet guide and
+canvas trace without false map errors. Unlocated
 photos keep the local city view. City zoom fits photo locations inside or within
 five miles of the city boundary, plus the stop's marked places. Missing boundary
 data uses a five-mile radius from the destination; all marked excursions remain

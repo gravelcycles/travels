@@ -12,6 +12,13 @@
 - Record the continuing behavior and acceptance checks in O17, the conversation
   contract and shared feature/architecture guidance. Verification is tracked in WIP.
 
+## 11 October 2026 — Heading East copy proofreading
+
+- Correct “2.5 weeks” and the other small spelling, capitalization, punctuation
+  and grammar slips in the city stories and introduction at the owner's request.
+- Retain the traveler's informal wording and record the scoped proofreading
+  approval in the trip notes.
+
 ## 11 October 2026 — Heading East city stories
 
 - Publish the owner's seven saved city descriptions, from Luzern through
@@ -54,6 +61,23 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — clear day/stop travel on desktop and phone
+
+- Replace the separate pullback/re-zoom and destination flight arc with direct
+  route/city eases; keep the route camera stationary during travel and arrival.
+- Fix double-applied bounds padding that pushed north–south routes toward the
+  top edge. Resize after the phone card changes, fit the complete incoming route,
+  and clear endpoint labels and the desktop overlay without counting the phone
+  card twice. Preserve shared line/marker sizes and the 1.5 s / 250 ms timing.
+- Move north–south endpoint labels outside the travel path and preserve the
+  quiet guide through delayed route loading; prevent false map-error overlays.
+- Record the owner's desktop/mobile clarity requirement in O09 and the arrival
+  workflow. Full-trip Replay remains disabled.
+- Validation: all 544 tests and the production build pass. Camera regressions
+  cover reference, demo, actual city stops and a populated draft, plus late
+  route loading. Browser checks compare the same legs on desktop, 390/320 px
+  phones and landscape, plus ordinary playback, skipping and rapid navigation.
+
 ## 11 October 2026 — phone camera roll and map return
 
 - Preserve the exact previous map camera and scope after same-event photo/grid
@@ -64,7 +88,7 @@ This file records dated changes, not current instructions. Use
   empty albums; retain the current event grid, pinch/pan and location gestures.
 - Carry the correction into O08, principles and photo/journey workflows. Shared
   runtime and independent-draft regression checks cover entry, order, event
-  boundaries, map return and history. All 535 tests and the production build pass; phone/desktop browser checks cover
+  boundaries, map return and history. All 539 tests and the production build pass; phone/desktop browser checks cover
   the reference, target, demo and independent fresh drafts (details in WIP).
 
 ## 11 October 2026 — steady sidebar photo hover

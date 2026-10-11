@@ -5,7 +5,7 @@ Reviewed locally on 8 October 2026 and approved for deployment by the owner on
 drafts. The synthetic review fixtures below remain local only.
 
 Selecting a new stop frames its incoming route, draws each leg in order, then
-flies into the destination. The normal story remains alongside the map. At the
+settles into the destination. The normal story remains alongside the map. At the
 destination, the railway becomes quiet context and **View photos** opens the
 existing gallery. **Replay arrival** repeats the sequence; **Skip to city** ends
 it early. Dragging/zooming during arrival cancels the automatic camera and offers
@@ -23,18 +23,32 @@ are cached; playback does not rebuild GeoJSON or send work to the map's route
 workers. The overlay respects train/bus/TBD styling and display pixel density,
 reprojects on resize, and restores the regular map layers when it ends.
 
-Selecting a stop pulls back around the current place to a wider geographic scale,
-then pans and zooms onto the next route in one continuous move.
-The pullback takes 450–950 ms depending on zoom change, followed by a combined
-750 ms pan and zoom; redundant stages are omitted. Named start/arrival pins and
-the route's **From → To** title preserve orientation. A distinct previous city
-is labelled during the camera move when navigating from a close city view.
+Selecting a stop pans and zooms directly to the complete incoming route in one
+850 ms ease, with no separate pullback/re-zoom or flight arc. An already-fitted
+view stays still. This implements the owner's 11 October correction to awkward
+day/stop zooming and poor north–south visibility, superseding the earlier
+450–950 ms old-place pullback plus 750 ms second move. Full-trip Replay remains disabled. Named endpoints and **From → To** preserve orientation.
 
-Playback waits for all camera stages to finish, then plays for **1.5 seconds**
+Fit the actual map area after rendering/resizing the arrival card. Keep clearance
+for the orange circle, endpoint labels and the desktop overlay;
+the phone's card is outside the map and must not reduce the route area twice.
+`cameraForBounds` already offsets the fitted center for its padding: applying
+that padding again in `easeTo` clips the northern end of tall routes. Pass the
+computed camera without a second padding value, both here and for city framing.
+North–south endpoint labels sit outside the line (above the northern end and
+below the southern end), so the departing circle does not pass behind its start
+label. Stationary signposts are hidden during framing/travel, then return when
+arrival ends or is interrupted; named arrival endpoints remain. The untravelled guide remains visible at 35% opacity. Late route redraws
+reapply the guide and hide only layers that actually exist; they must not reveal
+the full active stroke or emit a false map error over the moving marker.
+The camera stays stationary throughout route tracing and the arrival hold, then
+uses a direct 900 ms ease into the photo/place-aware city view.
+
+Playback waits for the camera move to finish, then plays for **1.5 seconds**
 (40% shorter than 2.5 seconds), holds the completed route and circle for **0.25
 seconds**, and starts the city zoom. Framing time does not consume travel time.
 Travel itself remains linear.
-Replay uses the same preparation; reduced motion skips it. Changing stops,
+Replay arrival uses the same preparation; reduced motion skips it. Changing stops,
 skipping, or dragging during preparation cancels the pending playback too.
 
 The timing follows a simplified overhead outline in Mercator space, retaining
@@ -84,8 +98,8 @@ journeys, samples and drafts. No journey ID check or new content flag is used.
 
 ## Review
 
-Regression checks cover camera-stage order/completion/cancellation, previous-view
-context, overhead pacing,
+Regression checks cover one-move framing, single application of bounds padding,
+phone/desktop overlay clearance, resize-before-fit, completion/cancellation, overhead pacing,
 switchbacks/backtracking, the exact
 1.5-second travel plus 250 ms hold, synchronized canvas painting and cleanup,
 sequence/cancellation/reduced-motion checks, city-camera
@@ -99,3 +113,26 @@ Optional city boundaries are stored with source attribution in journey data;
 the browser never sends photo locations to a geocoding service. The local fixtures
 contain labelled placeholders; production continues to use each journey's own
 photos and stories.
+
+
+For the 11 October correction, compare the **same leg and progress** at desktop,
+390 px, 320 px and phone landscape sizes. Check both long north–south and wide
+routes: the whole geometry and circle must remain visible, and endpoint labels
+must clear the card. Use Switzerland–Italy, Alpine Crossing, Heading East's
+city stops and an independently populated draft. Check rapid stop changes,
+Skip/Replay arrival, manual interruption and reduced motion. Preserve the shared
+stroke width, circle diameter and display-pixel-density rendering on phones.
+
+The 11 October release passes 544 tests and the production build. Browser
+comparison used Innsbruck → Bolzano (north–south), the Alpine demo's Disentis →
+St. Moritz (wide), the reference multi-leg route and an independent synthetic
+city draft. Desktop, 390/320 px portrait and 844 × 390 landscape retained the
+full line and marker; ordinary playback, skip and rapid navigation were checked.
+The discovered missing-layer error and delayed full-stroke redraw have focused
+regressions. Synthetic fixtures and diagnostics remain unpublished.
+
+Published as `ad55da8`; [Pages deployment](https://github.com/gravelcycles/travels/actions/runs/38151311374)
+succeeded. Fresh public target/reference/demo pages and the three changed
+runtime assets match the tested local production build. The live browser
+auth redirect was blocked by automatic approval review; public HTTP verification
+accessed no private photos.

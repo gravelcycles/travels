@@ -40,3 +40,6 @@
   .mobile-day-summary[data-arrival-traveling="true"] > span,.mobile-day-summary[data-arrival-traveling="true"] > h2,.mobile-day-summary[data-arrival-traveling="true"] > p,.mobile-day-summary[data-arrival-traveling="true"] > div { display:none!important; }
   .mobile-day-summary[data-arrival-traveling="true"] .arrival-actions button { min-height:44px; }
 }
+
+/* Arrival has named endpoints; stationary signposts must not cover its circle. */
+.map-panel:has(.arrival-chapter:not([hidden]):is([data-phase="framing"],[data-phase="arrival"])) .location-label-anchor { visibility: hidden; }

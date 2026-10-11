@@ -419,10 +419,12 @@ stay/photo framing without new journey fields or trip-specific branches.
 It caches an overhead timing outline and projected canvas paths once per arrival,
 then paints the route and a plain orange tracking circle at display cadence
 without GeoJSON worker updates. The circle contains no arrow or symbol.
-Cancellable camera stages pull back around the previous view, then pan
-and zoom onto the selected route in one continuous move. Named endpoint pins and
-the route title retain geographic context. Each stage waits for its own move-end
-event before playback. All routed events play linearly for 1.5 seconds (40%
+The 11 October owner correction replaces the old separate pullback/re-zoom
+with one cancellable direct route ease. Bounds padding is applied once after
+resizing for the arrival card; endpoint labels and the circle clear controls on
+desktop and phone. Named endpoints and the route title retain geographic context.
+Playback waits for camera completion and keeps that view stationary. Late route
+redraws preserve the canvas trace and quiet guide, guarding missing layers. All routed events play linearly for 1.5 seconds (40%
 shorter than the previous 2.5 seconds), hold for 250 ms, then
 start the city zoom; empty/reduced-motion stays skip playback and the hold.
 The overlay is transient shared rendering, with regular map layers restored on

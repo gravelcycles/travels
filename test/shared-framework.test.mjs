@@ -12,6 +12,7 @@ import { studioRouteAvailability, proposeStudioRoute } from '../scripts/studio-r
 import { photoImportConfig } from '../scripts/photo-import-config.mjs';
 import '../dist/assets/replay-utils.js';
 import '../dist/assets/arrival-chapter.js';
+import {arrivalCameraHarness} from './arrival-camera-harness.mjs';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/map-style.js';
 import { mapStyleHarness } from './map-style-harness.mjs';
@@ -1220,6 +1221,28 @@ test('reference, demo and independently populated city draft share reel selectio
     const html=renderJourneyPage(root,journey,{preview:true});
     assert.ok(ids(html).includes('replay-chapter'),source.id);
     assert.ok(ids(html).includes('mobile-day-places'),source.id);
+  }
+});
+
+
+test('reference, demo, city stops and independent populated draft inherit visible arrival framing', t => {
+  const root=fixture(t),draft=createJourney(root,{...input,slug:'arrival-framing-draft',eventMode:'city'});
+  draft.places=[{id:'north',name:'Synthetic north',lng:139.7,lat:38},{id:'south',name:'Synthetic south',lng:139.7,lat:34}];
+  draft.segments=[{id:'new-southbound',mode:'train',from:'north',to:'south',geometry:[[139.7,38],[139.9,36],[139.7,34]]}];
+  draft.days[0].placeId='south';draft.days[0].segmentIds=['new-southbound'];
+  const {data,routes}=loadContent(root,{includeDrafts:true});
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),draft]){
+    for(const day of journey.days.filter(day=>day.segmentIds.length)){
+      const legs=day.segmentIds.map(id=>journey.segments.find(s=>s.id===id)).map(s=>({...s,geometry:s.geometry||routes[s.id]||[journey.places.find(p=>p.id===s.from),journey.places.find(p=>p.id===s.to)].map(p=>[p.lng,p.lat])}));
+      for(const phone of [false,true]){
+        const h=arrivalCameraHarness(legs,{width:phone?390:600,height:540,phone});h.prepare();
+        const fits=h.calls.filter(c=>c.type==='fit'),moves=h.calls.filter(c=>c.type==='ease');
+        assert.equal(fits.length,1,journey.id);assert.equal(moves.length,1,journey.id);
+        assert.equal(fits[0].bounds.length,legs.reduce((n,leg)=>n+leg.geometry.length,0),'Every incoming leg is fitted');
+        assert.equal(moves[0].camera.padding,undefined,'No second offset can crop vertical routes');
+        assert.equal(fits[0].options.padding.bottom,phone?64:154);
+      }
+    }
   }
 });
 

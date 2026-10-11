@@ -8,7 +8,7 @@ import { readOverrides } from '../scripts/build-site.mjs';
 
 const root = new URL('../', import.meta.url).pathname;
 const source = fs.readFileSync(new URL('../dist/assets/app.js', import.meta.url), 'utf8');
-const names = ['railStopCoordinate', 'dayMapStops', 'addDayStopMarkers', 'revealStopsWithRoutes', 'clearDecorations', 'addSegmentLayer', 'syncViewerMap', 'drawMainMap'];
+const names = ['railStopCoordinate', 'dayMapStops', 'addDayStopMarkers', 'revealStopsWithRoutes', 'clearDecorations', 'addSegmentLayer', 'syncViewerMap', 'syncArrivalLayers', 'drawMainMap'];
 const functions = names.map(name => {
   const start = source.indexOf(`  function ${name}(`);
   assert.ok(start >= 0, name);
@@ -25,7 +25,7 @@ function harness(journey) {
   ];
   const place = id => journey.places.find(p => p.id === id);
   const segments = d => d.segmentIds.map(id => journey.segments.find(s => s.id === id));
-  const context = vm.createContext({ journey, modeStyles, window: { JOURNEY_ATLAS_MAP_STYLE: globalThis.JOURNEY_ATLAS_MAP_STYLE },
+  const context = vm.createContext({ journey, modeStyles, arrivalDrawing:null, arrivalPlan:null, window: { JOURNEY_ATLAS_MAP_STYLE: globalThis.JOURNEY_ATLAS_MAP_STYLE },
     segmentsForDay: segments, segmentCoordinates: coordinates, placeById: place
   });
   vm.runInContext(functions, context);

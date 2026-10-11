@@ -838,6 +838,7 @@
           opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.78)
         });
       });
+    syncArrivalLayers();
     const stopJourney = journey;
     const stops = addDayStopMarkers(mainMap, mainDecorations, mapScope === "day" ? activeDay() : null,
       day => journey === stopJourney && (day ? mapScope === "day" && activeDayId === day.id : mapScope !== "day"));
@@ -972,9 +973,10 @@
     $('#arrival-city').textContent = traveling ? 'Skip to city' : phase === 'explore' ? 'Back to city' : photosForDay(day.id).length ? 'View photos' : day.text?.trim() ? 'Read story' : `View ${eventWord()}`;
   }
 
-  function showCity(day, duration = 1250) {
+  function showCity(day, duration = 900) {
     mapScope = 'day';
     if (!mainMapReady) { pendingMapAction = 'city'; return; }
+    mainMap.resize();
     const padding = mapPadding(112), camera = cityCamera(mainMap,day,padding);
     mainFeedback?.empty(!camera);
     for (const segment of segmentsForDay(day)) {
@@ -985,7 +987,8 @@
         mainMap.setPaintProperty(`main-casing-${segment.id}`, 'line-opacity', 0.25);
       }
     }
-    if (camera) mainMap.flyTo({...camera, padding, duration:prefersReducedMotion()?0:duration});
+    // cameraForBounds already includes the screen offset for its padding.
+    if (camera) mainMap.easeTo({...camera, duration:prefersReducedMotion()?0:duration});
     else mainMap.easeTo({center:[0,20],zoom:1.5,duration:0});
     renderDayNavigator();
     renderArrivalChapter('stay');
@@ -1012,17 +1015,19 @@
   }
 
   function prepareArrivalView(day, previousDay, ready) {
+    mapScope = 'day'; drawMainMap(false);
+    // Rendering the phone arrival card changes the available map height.
+    mainMap.resize();
     const from = {center:mainMap.getCenter().toArray(),zoom:mainMap.getZoom()};
     const coordinates = arrivalPlan.legs.flatMap(leg => leg.coordinates);
     const previous = from.zoom > 4 && previousDay && previousDay.id !== day.id ? cityCoordinate(previousDay) : null;
-    const padding = mapPadding(140);
+    const padding = window.JOURNEY_ATLAS_ARRIVAL.routePadding(
+      $('#map').getBoundingClientRect(), $('#arrival-chapter').getBoundingClientRect());
     const route = mainMap.cameraForBounds(boundsFromCoordinates(coordinates), {padding,maxZoom:12.5});
-    const context = mainMap.cameraForBounds(boundsFromCoordinates(coordinates.concat(from.zoom > 4 ? [from.center] : [], previous ? [previous] : [])), {padding,maxZoom:12.5});
-    mapScope = 'day'; drawMainMap(false);
     const first = arrivalPlan.legs[0], last = arrivalPlan.legs.at(-1);
     const places = [
-      {coordinate:first.coordinates[0],name:placeById(first.segment.from)?.name || 'Start',label:'Start'},
-      {coordinate:last.coordinates.at(-1),name:placeById(last.segment.to)?.name || day.title,label:'Arrive'}
+      {coordinate:first.coordinates[0],name:placeById(first.segment.from)?.name || 'Start',label:'Start',above:first.coordinates[0][1] > last.coordinates.at(-1)[1]},
+      {coordinate:last.coordinates.at(-1),name:placeById(last.segment.to)?.name || day.title,label:'Arrive',above:last.coordinates.at(-1)[1] > first.coordinates[0][1]}
     ];
     if (Math.hypot(places[0].coordinate[0]-places[1].coordinate[0],places[0].coordinate[1]-places[1].coordinate[1]) < 0.0001) { places[0].label = 'Start & finish'; places.pop(); }
     if (previous && !places.some(place => Math.hypot(place.coordinate[0]-previous[0],place.coordinate[1]-previous[1]) < 0.001)) places.push({coordinate:previous,name:destinationForDay(previousDay)?.name || previousDay.title,label:'Previous view',contextOnly:true});
@@ -1031,24 +1036,37 @@
       const label = document.createElement('small'); label.textContent = place.label;
       const name = document.createElement('strong'); name.textContent = place.name;
       element.append(label,name);
-      const marker = new maplibregl.Marker({element,anchor:'top',offset:[0,14]}).setLngLat(place.coordinate).addTo(mainMap);
+      const marker = new maplibregl.Marker({element,anchor:place.above?'bottom':'top',offset:[0,place.above?-18:18]}).setLngLat(place.coordinate).addTo(mainMap);
       arrivalPlaceMarkers.push({marker,contextOnly:place.contextOnly});
     }
-    const moves = window.JOURNEY_ATLAS_ARRIVAL.cameraMoves(from, route, context);
-    return window.JOURNEY_ATLAS_ARRIVAL.afterCamera(mainMap, moves.map(camera => eventData => mainMap.easeTo({...camera,padding},eventData)), ready);
+    const moves = window.JOURNEY_ATLAS_ARRIVAL.cameraMoves(from, route);
+    // As with fitBounds, do not apply padding again to the computed camera.
+    return window.JOURNEY_ATLAS_ARRIVAL.afterCamera(mainMap, moves.map(camera => eventData => mainMap.easeTo(camera,eventData)), ready);
   }
 
   function drawArrival(current) {
     if (current.key !== arrivalKey(activeDay()) || !mainMapReady) return;
     arrivalPlaceMarkers.filter(item => item.contextOnly).forEach(item => item.marker.remove());
     arrivalPlaceMarkers = arrivalPlaceMarkers.filter(item => !item.contextOnly);
-    for (const leg of arrivalPlan.legs) addSegmentLayer(mainMap, mainDecorations, leg.segment, {prefix:'arrival-guide',color:palette.muted,opacity:0.18,selected:false});
     if (arrivalPlan.legs.length && !prefersReducedMotion()) {
       arrivalDrawing = window.JOURNEY_ATLAS_ARRIVAL.createDrawing({ map: mainMap, plan: arrivalPlan, styleForSegment: segment => {
         const style = modeStyles[segment.mode] || {color:palette.route,width:4.7};
         return {color:style.color,width:style.width+1.4,casing:palette.casing,casingWidth:style.width+5.2,dash:segment.planningStatus==='tbd'?[1,1.4]:style.dash};
       }});
-      if (arrivalDrawing) for (const leg of arrivalPlan.legs) for (const part of ['line','casing']) mainMap.setLayoutProperty(`main-${part}-${leg.segment.id}`, 'visibility', 'none');
+      syncArrivalLayers();
+    }
+  }
+
+  function syncArrivalLayers() {
+    if (!arrivalDrawing) return;
+    for (const leg of arrivalPlan.legs) {
+      if (!mainMap.getLayer(`arrival-guide-line-${leg.segment.id}`)) {
+        addSegmentLayer(mainMap, mainDecorations, leg.segment, {prefix:'arrival-guide',color:palette.muted,opacity:0.35,selected:false});
+      }
+      for (const part of ['line','casing']) {
+        const id = `main-${part}-${leg.segment.id}`;
+        if (mainMap.getLayer(id)) mainMap.setLayoutProperty(id, 'visibility', 'none');
+      }
     }
   }
 

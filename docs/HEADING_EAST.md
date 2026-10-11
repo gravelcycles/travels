@@ -9,7 +9,7 @@ city stories in Studio on 11 October. The photo intake is recorded below.
 
 The owner replaced the generated itinerary-count subtitle with their paragraph
 beginning “After a summer in Switzerland”. Store that text verbatim in the
-journey's `subtitle`, including the supplied spelling and punctuation; it is
+journey's `subtitle`, with the later owner-authorized proofreading below; it is
 the source for the opening description and other existing subtitle surfaces.
 Do not replace it with a city-count or route-summary fallback. This does not
 change dates, route evidence, place records or captions. The single opening
@@ -64,7 +64,7 @@ The owner saved descriptions in Studio and requested their publication:
 “ok saved some chagnes pls publish them. mostly content changes”. Seven
 city stories now live in `content/day-overrides.json`: Luzern, Freiburg,
 Hamburg, Köln, Düsseldorf, Berlin and Prague. Preserve the saved wording
-exactly, including its informal voice; this supersedes the earlier blank-story
+with its informal voice and the later proofreading corrections below; this supersedes the earlier blank-story
 state for those stops. The owner's blank taglines and all later stop stories
 remain blank. Existing date labels and city titles are retained.
 
@@ -76,6 +76,21 @@ Validation after integrating current main: all **539 tests passed** and the
 production build succeeded. Each
 of the seven generated day overrides matches the owner-saved source exactly;
 all other day overrides remain unchanged.
+
+## Copy proofreading — 11 October 2026
+
+The owner corrected “2.5 weks” to **“2.5 weeks”**, then asked to check and fix
+other typos. This authorizes small spelling, capitalization, punctuation and
+obvious grammar corrections to Heading East's new city stories and introduction.
+It supersedes preserving the original typos, while retaining the owner's meaning,
+informal voice, names and blank optional fields.
+
+The Freiburg story now uses “Black Forest”, punctuation around “though”, and
+“until the end”. The Düsseldorf greeting and Prague's “holy moly” sentence gain
+commas. The introduction uses plural “bags”, “Düsseldorf” and “rail passes”.
+No itinerary facts, personal names or other traveler wording are rewritten.
+Validation: all 544 tests and the production build pass; only three story text
+fields and the introduction changed in the content sources.
 
 ## Owner-reviewed photo locations — 11 October 2026
 
