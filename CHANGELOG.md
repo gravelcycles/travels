@@ -11,6 +11,8 @@
   deploying the Worker and Pages.
 - Record the continuing behavior and acceptance checks in O17, the conversation
   contract and shared feature/architecture guidance. Verification is tracked in WIP.
+- Verified 570 tests, build, Worker runtime, migration and live private reads;
+  Pages release `177317e` and fresh public pages/assets passed verification.
 
 ## 11 October 2026 — Heading East copy proofreading
 

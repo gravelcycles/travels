@@ -32,9 +32,15 @@ reference, demo, independent city draft and Heading East event models on desktop
 and phone: a comment beyond the first 50, 320/390px layout, reload persistence,
 red unread → plain total, and revealing a hidden target stop. Integrated current
 main's mobile, filters, arrival, intro and copy changes; all **570 tests**, the
-production build and actual Worker runtime pass. Next: apply additive migration
-0002, deploy Worker before Pages and verify live endpoints/assets. Production
-delivery remains pending.
+production build and actual Worker runtime pass. Migration 0002 is applied;
+Worker version `1ac1be5b-9646-4290-be40-1c3f8a331e75` serves both endpoints. Signed
+read-only summary/feed checks passed for every published trip, including
+anonymous/foreign-origin rejection. Pages release `177317e` succeeded in
+[run 38152000837](https://github.com/gravelcycles/travels/actions/runs/38152000837);
+fresh public trip/demo HTML and notification assets match the tested build.
+No notification implementation or deployment work remains. The release checkout
+is `build/comment-notifications-release`; the primary checkout's concurrent
+working edits remain intact and must be reconciled from current main before reuse.
 
 ## Mobile map return and camera roll — 11 October 2026
 
