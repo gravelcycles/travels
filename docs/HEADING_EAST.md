@@ -15,6 +15,10 @@ Do not replace it with a city-count or route-summary fallback. This does not
 change dates, route evidence, place records or captions. The single opening
 button follows the shared O06 whole-trip-map rule.
 
+Published as `841bc0f` after 524 passing tests, a successful build and desktop/
+390px opening checks. Pages run `38150354580` succeeded; fresh public HTML and
+the opening runtime match the tested release.
+
 ## Day visibility filters — 11 October 2026
 
 Owner request: a toggle in the Days section for “past, future locked in, and
