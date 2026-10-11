@@ -16,6 +16,34 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Opening screen and Heading East description — 11 October 2026
+
+Authorized: one Explore the journey button opening the whole-trip map; remove
+the secondary map action. Replace Heading East's subtitle with the owner's exact
+paragraph beginning “After a summer in Switzerland”. Current guidance is O06
+and [the trip record](docs/HEADING_EAST.md). Work is isolated on
+`codex/intro-whole-trip-map`; concurrent edits remain in the original checkout.
+Implementation and shared introduction regressions pass all **524 tests** and
+the production build. Heading East desktop/390px checks confirm the exact copy,
+one button and whole-trip map entry; reference/demo/populated-draft checks
+cover inheritance. Next: integrate latest main, deploy and verify public content.
+
+## Heading East day visibility — 11 October 2026
+
+Authorized: synchronized Past / Future locked in / Future TBD toggles in the
+Days section and full-trip view; [scope and acceptance](docs/HEADING_EAST.md#day-visibility-filters--11-october-2026).
+Implemented in isolated `codex/day-status-filters`, preserving unrelated mobile
+and service work. All 523 integration tests and build pass. Browser checks cover the real
+Heading East groups, reference/demo defaults, and independently populated city
+draft; synchronized desktop/390px controls, 320px and landscape, filtered
+navigation and complete incoming routes. Private images were omitted in local
+map QA. Current main, including Replay disablement and anonymous credential
+documentation, is integrated. The merged browser check confirms both filters
+and absent full-trip Replay. Deployed as `e58f939` via successful
+[Pages run 38149951215](https://github.com/gravelcycles/travels/actions/runs/38149951215).
+Fresh public Heading East HTML and all five changed browser assets match the
+release byte-for-byte. No filter implementation or delivery work remains.
+
 ## Full-trip Replay disabled — 11 October 2026
 
 Authorized: disable the redundant full-trip animation across the shared viewer;

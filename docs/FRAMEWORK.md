@@ -27,7 +27,7 @@ trip; no application rewrite or feature-copy exercise is needed tomorrow.
 | --- | --- | --- |
 | Real trips and local draft previews | One `journey.html` template | Retained as the single journey page template |
 | Sample page | Separately maintained 215-line HTML document | Generated from the same template as real trips |
-| Cover introduction | Explicitly skipped for demos in `app.js` | Same introduction and entry actions for demos, real trips, and drafts |
+| Cover introduction | Explicitly skipped for demos in `app.js` | Same introduction and single whole-trip-map entry for demos, real trips, and drafts; unmapped drafts enter the day/stop list |
 | Catalog | Build read and rewrote the existing output HTML | Generated from `content/templates/catalog.html` |
 | Demo calendars | All four lacked machine dates/time zones; the rail example skipped calendar days | Complete dated calendars and time zones usable by Studio and photo intake |
 | Editorial examples | No explicit cover configuration or curated Replay example | All demos have cover choices; saved chapters remain compatible, but full-trip Replay is disabled (O09) |
@@ -382,6 +382,12 @@ An undated TBD tail is validated without extending the known calendar. The viewe
 Studio, photo assignment and calendar moves retain the shared contracts. Heading
 East supplies the content instance; family/demo/fresh-draft tests cover inheritance.
 No separate trip implementation or framework migration is introduced.
+The 11 October Heading East filter request extends this projection through shared
+`journeyToday`, `planningCategory`, `planningCounts` and `projectPlanning` helpers:
+three synchronized visibility groups, source-preserving map/media scoping,
+and complete incoming legs. The boolean `projectPlanning` API remains compatible.
+The [journey workflow](../JOURNEY_WORKFLOW.md#tbd-stops-and-legs) owns grouping,
+empty-state, numbering and navigation semantics.
 
 ## Arrival/city playback — approved 10 October 2026
 
