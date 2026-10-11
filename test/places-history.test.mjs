@@ -282,13 +282,13 @@ test('place gallery Back restores the detail and preserves the underlying mobile
 test('resetting preview edits removes the rendered review and its in-memory draft', () => {
   const f = placeHistoryFixture();
   f.store.saveReview('cafe', 'Alex', 5, 'Posted impression');
-  f.controller.open(); f.click('', { placeId: 'cafe' });
+  f.controller.open(); f.click('', { placeId: 'cafe' }); f.click('', { showPlaceTab:'reviews' });
   const form = f.node('#place-review-form');
   form.values = { name: 'Alex', rating: '4', body: 'Unfinished edited impression' };
   form.fire('input', {});
   assert.equal(f.store.draft('place-review:cafe').body, 'Unfinished edited impression');
   f.store.reset(); f.controller.update(true);
-  assert.doesNotMatch(f.node('#places-content').innerHTML, /Posted impression|Unfinished edited impression|pp-own-review/);
+  assert.doesNotMatch(f.node('.pp-reviews-content').innerHTML, /Posted impression|Unfinished edited impression|pp-own-review/);
   assert.equal(f.store.draft('place-review:cafe'), null);
 });
 
@@ -335,4 +335,20 @@ test('Places to inline trip photos preserves Back and Forward to the original pl
   f.history.pushState({...detail,atlasPlaces:{...detail.atlasPlaces,open:false,depth:0},atlasPhotoBubble:{journeyId:'journey',dayId:'one',ids:['photo'],photoId:'photo'}});
   f.history.back();f.flush();assert.equal(f.controller.isOpen(),true);assert.equal(f.history.state.atlasPlaces.selectedId,'cafe');
   f.history.go(1);f.flush();assert.equal(f.controller.isOpen(),false);assert.equal(f.history.state.atlasPhotoBubble.photoId,'photo');
+});
+
+
+test('place reviews float over the current detail and Back/Forward restore only the conversation', () => {
+  const f=placeHistoryFixture();f.controller.openPlace('cafe');
+  f.click('', {showPlaceTab:'reviews'});
+  assert.equal(f.node('#place-reviews-dialog').open,true);
+  assert.equal(f.controller.isOpen(),true);
+  assert.equal(f.history.state.atlasPlaces.tab,'overview');
+  assert.equal(f.history.state.atlasPlaces.reviews,true);
+  f.history.back();f.flush();
+  assert.equal(f.node('#place-reviews-dialog').open,false);
+  assert.equal(f.history.state.atlasPlaces.selectedId,'cafe');
+  assert.equal(f.controller.isOpen(),true);
+  f.history.go(1);f.flush();assert.equal(f.node('#place-reviews-dialog').open,true);
+  f.controller.close();f.flush();assert.equal(f.node('#place-reviews-dialog').open,false);
 });

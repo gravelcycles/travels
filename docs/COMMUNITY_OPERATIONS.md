@@ -135,3 +135,29 @@ Backups and retention policy are owner operations. Unfinished drafts remain
 local to the visitor's browser. A database/network/rate-limit error preserves
 the draft and displays a retryable error; private media authentication remains
 independent of comment availability.
+
+
+## Conversation presentation and read latency — 11 October 2026
+
+Photo comments open immediately in a floating card, with the photo and its
+sidebar still visible behind it. Place reviews use the same card treatment and
+retain the underlying place detail, filters and scroll position; their content
+is bundled with the journey and requires no review fetch. Phones use inset,
+rounded sheets with keyboard-aware bounds. Close, outside click, Escape and
+Back/Forward return to the underlying view. Existing review authoring permissions
+remain unchanged.
+
+Authorized photo profile and comment reads start together. Concurrent matching
+reads share one request; a successful profile is reused for five minutes and a
+comment page for thirty seconds in memory. Reopening a stale conversation shows
+its cached comments while refreshing. These records are never persisted to disk;
+locking photo access clears them and late responses cannot repopulate them.
+Mutations protect newer local results against older in-flight reads. Pagination
+retains already loaded pages while fresh. Names are required to post, not to
+read; unfinished text stays available while the profile loads.
+
+Community requests have an eight-second deadline and an explicit retry action.
+Network errors stay in the conversation, retaining cached comments and the draft;
+they do not launch an unrelated photo-unlock prompt. Comment thumbnails reuse the
+current image until the photo/access changes and request a small derivative.
+No background polling, service-plan change or new public endpoint is introduced.

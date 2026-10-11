@@ -79,11 +79,11 @@
     restoreAfterExpiry = true;
     check();
   }
-  async function requestJson(url, options = {}) {
+  async function requestJson(url, options = {}, timeoutMs = REQUEST_TIMEOUT) {
     const controller = new AbortController();
     let timer;
     const timeout = new Promise((_, reject) => {
-      timer = setTimeout(() => { controller.abort(); reject(new Error('Photo access timed out. Please try again.')); }, REQUEST_TIMEOUT);
+      timer = setTimeout(() => { controller.abort(); reject(new Error('Photo access timed out. Please try again.')); }, timeoutMs);
     });
     try {
       return await Promise.race([(async () => {
@@ -403,7 +403,7 @@
     if (!/^\/community\/[a-zA-Z0-9_/?=&.%-]+$/.test(path) || !service) throw new Error('Comments are unavailable.');
     if (!token || expiresAt <= Date.now()/1000) { if (token) expireAccess(); throw Object.assign(new Error('Unlock photos to read or leave comments.'), { status: 401 }); }
     const epoch = generation;
-    const { response, data } = await requestJson(service + path, { method, credentials: 'omit', cache: 'no-store', headers: { Authorization: `Bearer ${token}`, ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}) }, ...(body !== undefined ? { body: JSON.stringify(body) } : {}) });
+    const { response, data } = await requestJson(service + path, { method, credentials: 'omit', cache: 'no-store', headers: { Authorization: `Bearer ${token}`, ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}) }, ...(body !== undefined ? { body: JSON.stringify(body) } : {}) }, 8000).catch(error => { if (error.message.includes('timed out')) throw new Error('The comments service is taking too long to respond. Try again.'); throw error; });
     if (epoch !== generation) throw new Error('Photo access changed. Open comments again.');
     if (!response.ok) { if (response.status === 401) expireAccess(); throw Object.assign(new Error(data.error || 'Comments could not be saved. Try again.'), { status: response.status, code: data.code }); }
     return data;

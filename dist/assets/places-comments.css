@@ -20,3 +20,47 @@
 :is(.places-panel,.place-lightbox,.comments-dialog,.experience-unlock,.experience-confirm,.experience-bar) :focus-visible { outline:3px solid #b6663f; outline-offset:3px; }
 :is(.places-panel,.comments-dialog,.experience-unlock,.experience-confirm) :is(input,textarea) { font-size:16px; }
 @media(prefers-reduced-motion:reduce) { .experience-primary,.experience-secondary { transition:none; } }
+
+/* Conversations float above the current view without resizing or hiding it. */
+dialog.conversation-surface {
+  --conversation-paper:#fbfbfdf7; --conversation-ink:#20252b; --conversation-muted:#69727c; --conversation-line:#172b4014; --conversation-tint:#edf0f4;
+  --pp-ink:var(--conversation-ink); --pp-muted:var(--conversation-muted); --pp-line:var(--conversation-line); --pp-paper:var(--conversation-paper); --pp-accent:#376d9b; --pp-tint:var(--conversation-tint); --pp-gold:#a57319;
+  position:fixed; inset:96px clamp(120px,17vw,280px) auto auto; margin:0;
+  width:420px; max-width:calc(100vw - 32px); height:620px; max-height:calc(100dvh - 128px);
+  padding:0; overflow:hidden; border:1px solid #ffffffd9; border-radius:24px;
+  background:var(--conversation-paper); color:var(--conversation-ink);
+  box-shadow:0 24px 70px #17233430,0 8px 22px #1723341a,0 0 0 1px #1723340d;
+  font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  backdrop-filter:blur(18px); overscroll-behavior:contain;
+}
+dialog.conversation-surface[open] { display:flex; flex-direction:column; }
+dialog.conversation-surface::backdrop { background:#1625360a; }
+.conversation-surface [hidden] { display:none!important; }
+.conversation-surface button { font:inherit; color:inherit; cursor:pointer; }
+.conversation-surface svg { width:20px; height:20px; flex:none; }
+.conversation-surface :focus-visible { outline:2px solid #517eaa; outline-offset:2px; }
+.conversation-heading { display:flex; align-items:center; justify-content:space-between; flex:none; gap:12px; padding:20px 20px 16px 24px; border-bottom:1px solid var(--conversation-line); }
+.conversation-heading h2 { margin:0; font:650 20px/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; letter-spacing:-.025em; }
+.conversation-heading p { margin:5px 0 0; font-size:12px; color:var(--conversation-muted); }
+.conversation-surface .pp-icon-button { display:grid; place-items:center; width:44px; height:44px; flex:none; border:0; border-radius:50%; background:#172b4008; padding:0; }
+.pp-reviews-content { flex:1; min-height:0; overflow:auto; overscroll-behavior:contain; }
+.pp-reviews-dialog .pp-reviews { padding:20px 24px; }
+.pp-reviews-dialog .pp-section-heading h4 { font:600 14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+.pp-reviews-dialog .pp-quiet-empty h5,.pp-reviews-dialog .pp-review-form h5 { font:600 18px/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+.pp-reviews-dialog .pp-review-form { background:#f0f2f6; border-color:var(--conversation-line); }
+.pp-reviews-dialog .pp-review p { padding:12px 14px; border-radius:4px 16px 16px; background:#eef1f5; line-height:1.55; }
+.pp-reviews-dialog .pp-avatar { background:#e6edf5; border-color:#d9e2ed; color:#3e6180; font-family:inherit; }
+.pp-reviews-dialog .pp-toast { position:static; margin:0 16px 16px; flex:none; }
+@media(max-width:900px) {
+  dialog.conversation-surface { inset:auto 12px calc(12px + var(--comments-keyboard-inset,0px)); width:calc(100vw - 24px); max-width:none; height:min(76dvh,660px); max-height:calc(var(--comments-viewport-height,100dvh) - 24px); border-radius:24px; padding-bottom:env(safe-area-inset-bottom); }
+}
+@media(max-height:600px) and (min-width:901px) {
+  dialog.conversation-surface { top:20px; max-height:calc(100dvh - 40px); }
+}
+@media(max-height:600px) and (max-width:900px) and (orientation:landscape) {
+  dialog.conversation-surface { inset:12px 16px auto auto; width:min(440px,60vw); height:calc(var(--comments-viewport-height,100dvh) - 24px); }
+}
+@media(prefers-reduced-motion:no-preference) {
+  dialog.conversation-surface[open] { animation:conversation-float .18s ease-out; }
+  @keyframes conversation-float { from { opacity:0; transform:translateY(6px) scale(.98); } to { opacity:1; transform:none; } }
+}

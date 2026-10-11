@@ -71,6 +71,7 @@
     const assetBase = new URL('.', script?.src || location.href);
     let currentPhoto = null, journeyId = '', store, lastPhotoId = '', afterUnlock = null, unlockMode = 'unlock', busy = false, editingId = '', deleted = null, photoOpener = null;
     const transientDrafts = new Map(), editsByPhoto = new Map();
+    let loadState = 'idle', loadRevision = 0, thumbnailKey = '', identityRequired = false;
     const draftKey = (photoId = currentPhoto?.id) => `photo-comment:${photoId}`;
     const fallbackKey = key => `${journeyId}:${key}`;
     function readDraft(key, fallback = '') {
@@ -97,7 +98,7 @@
     function mount() {
       bar.className = 'experience-bar';
       bar.innerHTML = `<span class="experience-preview-label">UX preview</span><div class="experience-switch" role="group" aria-label="Preview feature"><button id="experience-places" type="button">${icon('pin')}<span>Places</span></button><button id="experience-comments" type="button">${icon('comment')}<span>Comments</span></button></div><details class="experience-menu"><summary aria-label="Preview options">${icon('more')}</summary><div><p>Changes stay in this browser.</p><button id="experience-reset" type="button">Reset preview edits…</button><a id="experience-exit">Exit preview</a></div></details><span id="experience-status" role="status"></span>`;
-      dialog.innerHTML = `<header class="comments-heading"><div><span class="comments-eyebrow">LITTLE MEMORIES</span><h2 id="comments-title">Around this photo</h2></div><button id="close-comments" class="comments-icon-button" type="button" aria-label="Close comments">${icon('close')}</button></header><section class="comments-photo-context" aria-label="Current photograph"><button id="comments-view-photo" class="comments-photo-preview" type="button" aria-label="Return to photograph"><img id="comments-photo-image" alt=""/><span>${icon('comment')}</span></button><div><p id="comments-photo-title"></p><span id="comments-photo-position"></span></div><div class="comments-photo-navigation"><button id="comments-previous-photo" class="comments-icon-button" type="button" aria-label="Previous photograph">${icon('back')}</button><button id="comments-next-photo" class="comments-icon-button" type="button" aria-label="Next photograph">${icon('next')}</button></div></section><div class="comments-meta"><span id="comments-count"></span><span>${live ? 'Shared with people who have photo access' : 'Saved in this browser'}</span></div><div id="comments-list" class="comments-list" tabindex="-1"></div><button id="comments-load-more" class="comments-load-more" type="button" hidden>Load more comments</button><div id="comment-undo" class="comment-undo" hidden><span>Comment deleted.</span><button id="comment-undo-button" type="button">Undo</button><button id="comment-undo-dismiss" class="comments-icon-button" type="button" aria-label="Dismiss undo">${icon('close')}</button></div><form id="comment-form" class="comment-form"><div class="comment-byline"><span id="comment-self-avatar" class="comment-avatar" aria-hidden="true"></span><span>Commenting as <strong id="comment-author"></strong></span><button id="comment-change-name" type="button">Change name</button></div><label for="comment-body" class="comments-sr-only">Your comment</label><div class="comment-compose"><textarea id="comment-body" maxlength="1000" rows="2" placeholder="Leave a little memory…" aria-describedby="comment-status comment-character-count"></textarea><div class="comment-compose-footer"><span id="comment-draft-state"></span><span id="comment-character-count" hidden></span><button id="comment-submit" class="experience-primary" type="submit" disabled><span>Post</span>${icon('arrow')}</button></div></div><p id="comment-status" role="status"></p></form>`;
+      dialog.innerHTML = `<header class="comments-heading"><div><h2 id="comments-title">Photo comments</h2></div><button id="close-comments" class="comments-icon-button" type="button" aria-label="Close comments">${icon('close')}</button></header><section class="comments-photo-context" aria-label="Current photograph"><button id="comments-view-photo" class="comments-photo-preview" type="button" aria-label="Return to photograph"><img id="comments-photo-image" alt=""/><span>${icon('comment')}</span></button><div><p id="comments-photo-title"></p><span id="comments-photo-position"></span></div><div class="comments-photo-navigation"><button id="comments-previous-photo" class="comments-icon-button" type="button" aria-label="Previous photograph">${icon('back')}</button><button id="comments-next-photo" class="comments-icon-button" type="button" aria-label="Next photograph">${icon('next')}</button></div></section><div class="comments-meta"><span id="comments-count"></span><span>${live ? 'Shared with people who have photo access' : 'Saved in this browser'}</span></div><div id="comments-list" class="comments-list" tabindex="-1" aria-busy="false"></div><div class="comments-load-status" role="status"><span id="comments-loading"></span><button id="comments-retry" type="button" hidden>Try again</button></div><button id="comments-load-more" class="comments-load-more" type="button" hidden>Load more comments</button><div id="comment-undo" class="comment-undo" hidden><span>Comment deleted.</span><button id="comment-undo-button" type="button">Undo</button><button id="comment-undo-dismiss" class="comments-icon-button" type="button" aria-label="Dismiss undo">${icon('close')}</button></div><form id="comment-form" class="comment-form"><div class="comment-byline"><span id="comment-self-avatar" class="comment-avatar" aria-hidden="true"></span><span>Commenting as <strong id="comment-author"></strong></span><button id="comment-change-name" type="button">Change name</button></div><label for="comment-body" class="comments-sr-only">Your comment</label><div class="comment-compose"><textarea id="comment-body" maxlength="1000" rows="2" placeholder="Add a comment…" aria-describedby="comment-status comment-character-count"></textarea><div class="comment-compose-footer"><span id="comment-draft-state"></span><span id="comment-character-count" hidden></span><button id="comment-submit" class="experience-primary" type="submit" disabled><span>Post</span>${icon('arrow')}</button></div></div><p id="comment-status" role="status"></p></form>`;
       const trigger = $('#open-photo-comments');
       trigger.innerHTML = `${icon('comment')}<span>Comments</span><span id="photo-comments-count">0</span>`;
       trigger.setAttribute('aria-expanded', 'false');
@@ -111,7 +112,7 @@
       textarea.style.height = 'auto'; textarea.style.height = `${Math.min(textarea.scrollHeight, 140)}px`;
     }
     function updateComposer() {
-      const field = $('#comment-body'), state = commentState(field.value, busy);
+      const field = $('#comment-body'), state = commentState(field.value, busy || live && !identity.allowed());
       $('#comment-submit').disabled = !state.valid;
       $('#comment-character-count').hidden = state.count < 750;
       $('#comment-character-count').textContent = `${state.count.toLocaleString()} / 1,000`;
@@ -128,6 +129,8 @@
       const visitor = identity.get();
       $('#comment-author').textContent = visitor?.name || 'you';
       $('#comment-self-avatar').textContent = initials(visitor?.name);
+      $('#comment-change-name').textContent = visitor?.name ? 'Change name' : 'Add your name';
+      $('#comment-change-name').disabled = live && !visitor;
     }
     function refreshCounts() {
       const count = currentPhoto && store ? store.comments(currentPhoto.id).length : 0;
@@ -140,6 +143,9 @@
     function syncThumbnail() {
       const image = $('#comments-photo-image'), photo = currentPhoto;
       if (!photo) return;
+      const key = `${photo.id}:${Boolean(options.unlocked())}`;
+      if (thumbnailKey === key) return;
+      thumbnailKey = key;
       root.JOURNEY_ATLAS_AUTH?.clearImage(image);
       if(options.protected(photo) && options.unlocked() && root.JOURNEY_ATLAS_AUTH?.setImage){image.hidden=false;root.JOURNEY_ATLAS_AUTH.setImage(image,photo,480);return;}
       let src = '';
@@ -147,7 +153,7 @@
         const visible = $('#modal-photo');
         const sources = [photo.src, ...(photo.srcset || []).map(source => source.src)];
         if (options.unlocked() && visible?.dataset.photoState === 'ready' && sources.includes(visible.dataset.privateSrc)) src = visible.currentSrc || visible.src;
-      } else if (photo.src) src = photo.src.startsWith('./assets/') ? new URL(photo.src.slice(9), assetBase).href : photo.src;
+      } else if (photo.src) { const source = options.photoUrl?.(photo,160) || photo.src; src = source.startsWith('./assets/') ? new URL(source.slice(9), assetBase).href : source; }
       if (src) { image.src = src; image.hidden = false; } else { image.removeAttribute('src'); image.hidden = true; }
     }
     function renderPhotoContext() {
@@ -166,11 +172,12 @@
     function renderComments({ revealId } = {}) {
       updateIdentity(); refreshCounts(); renderPhotoContext();
       const visitor = identity.get(), comments = currentPhoto && store ? store.comments(currentPhoto.id) : [];
+      $('#comments-list').setAttribute('aria-busy', String(loadState === 'loading'));
       $('#comments-list').innerHTML = comments.length ? comments.map(comment => {
         const own = comment.visitorId === visitor?.id;
         const editing = own && editingId === comment.id;
         return `<article class="photo-comment${own ? ' is-own' : ''}" data-comment-id="${escape(comment.id)}"><span class="comment-avatar" aria-hidden="true">${escape(initials(comment.displayName))}</span><div class="photo-comment-content"><header><div><strong>${escape(comment.displayName)}</strong>${own ? '<span class="comment-you">you</span>' : ''}${dateHtml(comment)}</div>${own && !editing ? `<details class="comment-actions"><summary aria-label="Options for your comment">${icon('more')}</summary><div><button data-edit-comment="${escape(comment.id)}" type="button">Edit comment</button><button data-delete-comment="${escape(comment.id)}" type="button">Delete comment</button></div></details>` : ''}</header>${editing ? `<form class="comment-edit-form" data-edit-form="${escape(comment.id)}"><label class="comments-sr-only" for="comment-edit-body">Edit your comment</label><textarea id="comment-edit-body" maxlength="1000" rows="3">${escape(readDraft(`comment-edit:${comment.id}`, comment.body))}</textarea><div><span id="comment-edit-count"></span><button data-cancel-edit type="button">Cancel</button><button class="experience-primary" type="submit">Save</button></div><p class="comment-edit-status" role="status"></p></form>` : `<p>${escape(comment.body)}</p>`}</div></article>`;
-      }).join('') : `<div class="comments-empty"><span class="comments-empty-symbol" aria-hidden="true">${icon('comment')}</span><h3>A photo starts the story.</h3><p>Leave a memory, a detail you noticed,<br/>or a little hello from home.</p><button id="write-first-comment" type="button">Write the first comment ${icon('arrow')}</button></div>`;
+      }).join('') : live && !store?.hasLoaded(currentPhoto?.id) ? `<div class="comments-empty"><span class="comments-empty-symbol" aria-hidden="true">${icon('comment')}</span><h3>${loadState === 'error' ? 'Comments unavailable' : 'Loading comments…'}</h3><p>${loadState === 'error' ? 'Try again when your connection is ready.' : 'You can start writing while we fetch the conversation.'}</p></div>` : `<div class="comments-empty"><span class="comments-empty-symbol" aria-hidden="true">${icon('comment')}</span><h3>No comments yet</h3><p>Share a memory or start the conversation.</p><button id="write-first-comment" type="button">Write the first comment ${icon('arrow')}</button></div>`;
       if (revealId) requestAnimationFrame(() => {
         const row = [...$('#comments-list').querySelectorAll('[data-comment-id]')].find(node => node.dataset.commentId === revealId);
         row?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
@@ -187,11 +194,9 @@
     async function openComments() {
       if (!enabled || !currentPhoto) return;
       if (options.protected(currentPhoto) && !options.unlocked()) { options.unlock(); return; }
-      if (live) {
-        if (!options.unlocked()) { options.unlock(); return; }
-        try { await store.profile(); } catch (error) { if (error.code === 'identity_required') root.JOURNEY_ATLAS_AUTH.begin(); else root.JOURNEY_ATLAS_AUTH.showPrompt(error.message); return; }
-      }
-      if (!identity.allowed()) { beginUnlock(live ? 'name' : 'unlock', openComments); return; }
+      if (live && !options.unlocked()) { options.unlock(); return; }
+      if (!live && !identity.allowed()) { beginUnlock('unlock', openComments); return; }
+      loadState = live && !store.hasLoaded(currentPhoto.id) ? 'loading' : 'idle';
       if (!dialog.open) {
         photoOpener = document.activeElement;
         $('#comment-body').value = readDraft(draftKey());
@@ -205,11 +210,23 @@
       updateToolbar();
       if (live) await refreshComments();
     }
-    async function refreshComments(more = false) {
-      const photo = currentPhoto?.id, activeStore = store; if (!photo) return;
-      status("Loading comments…");
-      try { await activeStore.refresh(journeyId, photo, more); if (currentPhoto?.id !== photo || activeStore !== store) return; renderComments(); status(); $("#comments-load-more").hidden = !store.hasMore(photo); }
-      catch (error) { if (currentPhoto?.id === photo && activeStore === store) status(error.message, true); }
+    async function refreshComments(more = false, force = false) {
+      const photo = currentPhoto?.id, activeStore = store, revision = ++loadRevision; if (!photo) return;
+      const cached = activeStore.hasLoaded(photo);
+      loadState = cached ? 'refreshing' : 'loading';
+      $('#comments-loading').textContent = cached ? (activeStore.fresh(photo) && !force && !more ? '' : 'Updating…') : 'Loading comments…';
+      $('#comments-retry').hidden = true; identityRequired = false; $('#comments-load-more').disabled = true;
+      renderComments(); updateComposer();
+      const results = await Promise.allSettled([activeStore.profile(), activeStore.refresh(journeyId, photo, more, force)]);
+      if (revision !== loadRevision || currentPhoto?.id !== photo || activeStore !== store || !dialog.open) return;
+      const error = results.find(result => result.status === 'rejected')?.reason;
+      loadState = error ? 'error' : 'idle';
+      $('#comments-loading').textContent = error ? (cached ? 'Couldn’t update. Showing saved comments.' : error.message || 'Couldn’t load comments.') : '';
+      identityRequired = error?.code === 'identity_required';
+      $('#comments-retry').textContent = identityRequired ? 'Unlock photos' : 'Try again';
+      $('#comments-retry').hidden = !error; $('#comments-load-more').disabled = false;
+      renderComments(); updateComposer(); $('#comments-load-more').hidden = !store.hasMore(photo);
+      if (error?.code === 'identity_required') { $('#comments-loading').textContent = 'Unlock photos again to use comments.'; }
     }
     function closeComments() { persistComposer(); dismiss('comments-dialog'); }
     function startComments() {
@@ -251,6 +268,7 @@
     unlock.addEventListener('cancel', event => { event.preventDefault(); afterUnlock = null; dismiss('experience-unlock'); });
     dialog.addEventListener('close', () => {
       if (dialog.open) return;
+      loadRevision++; thumbnailKey = '';
       root.JOURNEY_ATLAS_AUTH?.clearImage($('#comments-photo-image'));$('#comments-photo-image').removeAttribute('src');
       persistComposer(); document.body.classList.remove('comments-open'); $('#open-photo-comments').setAttribute('aria-expanded', 'false');
       updateToolbar();
@@ -275,6 +293,7 @@
     $('#comment-body').addEventListener('keydown', event => {
       if (event.key === 'Enter' && (event.metaKey || event.ctrlKey) && commentState(event.currentTarget.value, busy).valid) { event.preventDefault(); $('#comment-form').requestSubmit(); }
     });
+    $('#comments-retry').addEventListener('click', () => identityRequired ? root.JOURNEY_ATLAS_AUTH.begin() : refreshComments(false, true));
     $('#comments-load-more').addEventListener('click', () => refreshComments(true));
     $('#comment-form').addEventListener('submit', async event => {
       event.preventDefault();
@@ -282,7 +301,7 @@
       busy = true; updateComposer(); $('#comment-submit span').textContent = 'Posting…';
       try {
         const photoId = currentPhoto.id, activeStore = store, postingJourney = journeyId, submitted = $('#comment-body').value;
-        const comment = await activeStore.addComment(photoId, identity.get(), submitted, uuid(), postingJourney);
+        const comment = await activeStore.addComment(photoId, identity.get(), submitted, uuid(), live ? postingJourney : undefined);
         const key = `${postingJourney}:photo-comment:${photoId}`;
         if (transientDrafts.get(key) === submitted) transientDrafts.set(key, null);
         try { if (activeStore.draft(`photo-comment:${photoId}`) === submitted) activeStore.draft(`photo-comment:${photoId}`, null); } catch { /* The confirmed comment remains visible; a local draft is harmless. */ }
@@ -292,7 +311,7 @@
       } catch (error) { status(error.message || 'Your comment could not be saved. Your draft is still here; try again.', true); }
       finally { busy = false; $('#comment-submit span').textContent = 'Post'; updateComposer(); }
     });
-    $('#comment-change-name').addEventListener('click', () => beginUnlock('name', () => { updateIdentity(); $('#comment-change-name').focus(); }));
+    $('#comment-change-name').addEventListener('click', () => beginUnlock('name', () => { updateIdentity(); updateComposer(); $('#comment-change-name').focus(); }));
     unlock.addEventListener('click', event => {
       if (event.target.closest('#experience-unlock-cancel, #experience-maybe-later, #experience-keep-edits')) { afterUnlock = null; dismiss('experience-unlock'); }
       if (event.target.closest('#experience-show-password')) {
@@ -364,10 +383,10 @@
     });
     $('#modal-photo')?.addEventListener('load', () => { if (dialog.open) syncThumbnail(); });
     $('#modal-photo')?.addEventListener('atlas-photo-state', () => { if (dialog.open) syncThumbnail(); });
-    $('#comments-photo-image').addEventListener('error', event => { event.target.hidden = true; });
+    $('#comments-photo-image').addEventListener('error', event => { thumbnailKey = ''; event.target.hidden = true; });
     $('#photo-dialog')?.addEventListener('close', () => { if (!$('#photo-dialog').open && dialog.open) dialog.close(); });
     root.addEventListener('atlas-photos-locked', () => {
-      persistComposer(); identity.lock(); $('#comments-list').replaceChildren(); refreshCounts(); afterUnlock = null; $('#comments-photo-image').removeAttribute('src'); $('#comments-photo-image').hidden = true;
+      persistComposer(); loadRevision++; thumbnailKey = ''; identityRequired = false; identity.lock(); $('#comments-list').replaceChildren(); refreshCounts(); afterUnlock = null; $('#comments-photo-image').removeAttribute('src'); $('#comments-photo-image').hidden = true;
       const finish = () => { if (dialog.open) dismiss('comments-dialog'); };
       if (unlock.open) dismiss('experience-unlock', finish); else finish();
     });
@@ -394,14 +413,14 @@
           if (currentPhoto) persistComposer();
           currentPhoto = next; lastPhotoId = next?.id || ''; editingId = editsByPhoto.get(lastPhotoId) || '';
           $('#comment-body').value = next ? readDraft(draftKey()) : ''; status(); $('#comment-undo').hidden = !deleted || deleted.photoId !== next?.id;
-          if (dialog.open && next) { if (live) refreshComments(); renderComments(); updateComposer(); persistComposer(); $('#comments-list').scrollTop = 0; }
+          if (dialog.open && next) { loadState = live && !store.hasLoaded(next.id) ? 'loading' : 'idle'; if (live) refreshComments(); renderComments(); updateComposer(); persistComposer(); $('#comments-list').scrollTop = 0; }
           else if (dialog.open && !next) dismiss('comments-dialog');
         } else currentPhoto = next;
         $('#open-photo-comments').hidden = !enabled || !currentPhoto; refreshCounts();
       },
       restore(id) {
         if (id === 'comments-dialog') { if (!currentPhoto || !identity.allowed()) return; renderComments(); if (live) refreshComments(); document.body.classList.add('comments-open'); present(id); $('#open-photo-comments').setAttribute('aria-expanded', 'true'); updateComposer(); }
-        else if (id === 'experience-unlock') { if (unlockMode === 'unlock') afterUnlock = openComments; else if (unlockMode === 'name') afterUnlock = updateIdentity; present(id); }
+        else if (id === 'experience-unlock') { if (unlockMode === 'unlock') afterUnlock = openComments; else if (unlockMode === 'name') afterUnlock = () => { updateIdentity(); updateComposer(); }; present(id); }
         updateToolbar();
       },
       start() { update(); if (!preview) return; bar.hidden = false; updateViewport(); if (new URLSearchParams(location.search).get('experience') === 'comments') startComments(); }

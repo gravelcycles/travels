@@ -2248,7 +2248,7 @@
   $('#focused-day-label').addEventListener('click',()=>$('#mobile-day-picker').click());
   placesUI = window.JOURNEY_ATLAS_PLACES.create({
     journey: () => sourceJourney, dayId: () => activeDayId, map: () => mainMap,
-    photos: () => orderedPhotos().filter(photo => !mediaUtils.isVideo(photo)), openPhoto,
+    photos: () => orderedPhotos().filter(photo => !mediaUtils.isVideo(photo)), openPhoto, photoUrl:preferredPhotoUrl,
     browsePhotos: photos => { if (!photos.length) return; photoBubbles.open(photos,photos[0].id); },
     onPlacesVisibility: () => photoBubbles?.placesChanged(),
     mapScope: () => mapScope,

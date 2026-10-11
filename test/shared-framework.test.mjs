@@ -1020,6 +1020,8 @@ test('Photos + Places editing and rendering are inherited by family, sample and 
   for(const journey of [family,demo,data.journeys.find(j=>j.id===draft.id)]){
     const html=renderJourneyPage(root,journey,{preview:true});assert.match(html,/<aside class="story-panel"[\s\S]*?<div class="story-album-entry">[\s\S]*?<section id="map-photo-card"[\s\S]*?<div class="story-detail"[\s\S]*?id="photo-strip"[\s\S]*?<\/aside>/);assert.match(html,/<button[^>]+data-bubble-full[^>]*>[\s\S]*?<img/);
     assert.match(html,/<details[^>]+id="sidebar-day-details"[^>]*open/);
+    assert.match(html,/<dialog id="place-reviews-dialog" class="pp-reviews-dialog conversation-surface"/);
+    assert.match(html,/<dialog id="comments-dialog" class="comments-dialog conversation-surface"/);
     assert.match(html,/assets\/photo-places.js/);assert.match(html,/assets\/photo-bubbles.js/);
     const point={...globalThis.JOURNEY_ATLAS_PLACE_EDITOR.newPoint(journey),name:'A reviewed place',summary:'An owner-authored place',coordinates:[8,47],sources:[{label:'Official source',url:'https://example.test/place'}],dayIds:[journey.days[0].id],photoIds:journey.photos.slice(0,1).map(photo=>photo.id)};
     point.images=[{src:'https://images.example.test/venue.jpg',alt:'The venue',credit:'Venue contributor via source',sourceUrl:'https://example.test/place',permission:'linked'}];

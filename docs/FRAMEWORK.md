@@ -90,6 +90,7 @@ password system.
 | `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching |
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |
 | `dist/assets/mobile-ux.js`, `dist/assets/mobile.css` | Shared mobile day navigation, immersive photo gestures, location panel, grid and Back behavior |
+| `dist/assets/community-client.js`, `photo-comments.js` / `.css`, `places-comments.css`, `places-panel.js` | Shared floating photo conversations and place reviews; immediate presentation, authorized memory caches and retry behavior |
 | `dist/assets/input-mode.js` | Shared pointer/keyboard focus presentation for catalog, journeys and draft previews |
 | `studio/` | Local authoring UI for any selected journey |
 | `studio/plan-extras.js`, `scripts/studio-plan-sources.mjs` | Studio roster/group/overnight/meetup and hosted-video forms; source-preserving persistence of photo group assignments |
