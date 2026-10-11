@@ -729,9 +729,11 @@ preserved. The old offending local commit object was pruned. Historical scans
 found no identifying labels, and the sanitized release passed all 518 tests,
 the production build and Pages deployment.
 
-GitHub still serves an obsolete commit by its old hash. This is a remaining
-server-side cache-purge request, not completed erasure. The prepared support
-request is private and ignored at
+At the owner's request, the obsolete Actions run was deleted and its API now
+returns 404. Its separate Pages deployment record and obsolete commit remain
+accessible. Removing the run does not prove erasure, and GitHub documents no
+automatic expiry deadline. A Support purge request remains unsubmitted and
+subject to GitHub's eligibility rules. The prepared request is private and ignored at
 `build/password-update-20261011/github-support-request.txt` in the primary
 checkout. Next action: obtain explicit authorization to submit it to GitHub
 Support, then verify the obsolete cached content is unavailable. Do not merge
