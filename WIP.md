@@ -33,9 +33,12 @@ an independently populated city draft. Verified cross-event arrows/photo swipes,
 city-bar swipes, empty-event skipping, unchanged marker positions after manual
 map movement and photo dismissal, event grid selection, Back/Forward, location
 staying closed, 320/390 px portrait and landscape, and retained desktop selection.
-The isolated release is based on sanitized main with full-trip Replay disabled and the newer opening/day filters retained.
-Next: integrate any newer main, publish, and verify Pages plus fresh public
-HTML/assets; no media/content changes are required.
+Integrated current sanitized main, preserving full-trip Replay disablement and
+the newer opening/day filters. Deployed as `497cd0b` via successful
+[Pages run 38151034258](https://github.com/gravelcycles/travels/actions/runs/38151034258).
+Fresh public HTML for all four journey/demo pages and `app.js`, `mobile-ux.js`
+and `mobile.css` matched the tested release byte-for-byte. No mobile
+implementation or delivery work remains; no media/content changed in this fix.
 
 ## Opening screen and Heading East description — 11 October 2026
 
