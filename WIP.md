@@ -35,18 +35,40 @@ checks, apply additive migration 0002, deploy Worker before Pages and verify liv
 endpoints/assets. Production delivery remains pending. Concurrent mobile, map,
 Replay and hover changes are preserved in their own releases.
 
+## Mobile map return and camera roll — 11 October 2026
+
+Authorized by the owner's mobile issue report: keep the previous map zoom when
+closing a photo, browse all photos like a camera roll, clearer left/right arrows,
+and city swiping. O08 and PHOTO_WORKFLOW own the current contract; ordinary phone
+browsing crosses event albums, while explicit Places collections retain scope.
+Implemented in shared app/mobile code and the journey template: exact same-event
+map-camera return, continuous photo order, clearer arrows, event jumps and a
+swipeable city/day bar. Explicit collections keep their scope. Grid scrolling is
+confined to the grid so fullscreen headers/footers stay at the viewport edges.
+
+Validation: all 539 tests and the production build pass. Browser checks cover
+Heading East, Switzerland–Italy, the Alpine demo, an empty fresh city draft and
+an independently populated city draft. Verified cross-event arrows/photo swipes,
+city-bar swipes, empty-event skipping, unchanged marker positions after manual
+map movement and photo dismissal, event grid selection, Back/Forward, location
+staying closed, 320/390 px portrait and landscape, and retained desktop selection.
+The isolated release is based on sanitized main with full-trip Replay disabled and the newer opening/day filters retained.
+Next: integrate any newer main, publish, and verify Pages plus fresh public
+HTML/assets; no media/content changes are required.
 
 ## Opening screen and Heading East description — 11 October 2026
 
 Authorized: one Explore the journey button opening the whole-trip map; remove
 the secondary map action. Replace Heading East's subtitle with the owner's exact
 paragraph beginning “After a summer in Switzerland”. Current guidance is O06
-and [the trip record](docs/HEADING_EAST.md). Work is isolated on
-`codex/intro-whole-trip-map`; concurrent edits remain in the original checkout.
+and [the trip record](docs/HEADING_EAST.md). Implemented in `f488be8` and deployed as `841bc0f`; concurrent edits remain
+in the original checkout.
 Implementation and shared introduction regressions pass all **524 tests** and
 the production build. Heading East desktop/390px checks confirm the exact copy,
 one button and whole-trip map entry; reference/demo/populated-draft checks
-cover inheritance. Next: integrate latest main, deploy and verify public content.
+cover inheritance. [Pages run 38150354580](https://github.com/gravelcycles/travels/actions/runs/38150354580)
+succeeded. Fresh public Heading East HTML and the opening runtime match the
+tested release byte-for-byte. No implementation or delivery work remains.
 
 ## Heading East day visibility — 11 October 2026
 
@@ -62,7 +84,14 @@ documentation, is integrated. The merged browser check confirms both filters
 and absent full-trip Replay. Deployed as `e58f939` via successful
 [Pages run 38149951215](https://github.com/gravelcycles/travels/actions/runs/38149951215).
 Fresh public Heading East HTML and all five changed browser assets match the
-release byte-for-byte. No filter implementation or delivery work remains.
+release byte-for-byte. Later owner follow-up requires a compact horizontal row
+in both locations. Layout and current guidance updated on the same branch.
+Desktop and 320/390px browser checks confirm one row and synchronized controls;
+all 524 tests and the production build pass. Integrated current main and deployed
+as `6073b0c` via successful
+[Pages run 38150899171](https://github.com/gravelcycles/travels/actions/runs/38150899171).
+Fresh public Heading East HTML and shared CSS match the tested release
+byte-for-byte. No implementation or delivery work remains.
 
 ## Full-trip Replay disabled — 11 October 2026
 
@@ -119,6 +148,14 @@ release and contain all 119 located photos. The updated private Worker was
 deployed before Pages and still rejects anonymous access. See the [current photo review](docs/HEADING_EAST.md#owner-reviewed-photo-locations--11-october-2026).
 
 ## UX flow review implementation — 11 October 2026
+
+Later hover correction: the owner reported the selected sidebar photo's blue
+background flashing white on hover. The image button now overrides the general
+toolbar hover fill, retaining the blue frame. All 520 tests and the production
+build pass. Browser checks cover Heading East, the reference, Alpine demo and an
+independently populated city draft (portrait/landscape, pointer entry/exit, visible
+keyboard focus and fullscreen). The correction follows the normal Pages delivery
+and fresh-public-page checks. See O03 and the photo workflow.
 
 The owner authorized all U01–U16 findings and direct one-click fullscreen, then
 clarified the boundary later on 11 October: map circle bubbles and right-hand

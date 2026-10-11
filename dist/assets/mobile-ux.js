@@ -13,6 +13,15 @@
     return commit && index + step >= 0 && index + step < count ? step : 0;
   }
   function panLimit(size, scale, viewport) { return Math.max(0, (size * scale - viewport) / 2); }
+  function eventPhotoTarget(photos, days, dayId, delta) {
+    const direction = Math.sign(delta), current = days.findIndex(day => day.id === dayId);
+    if (!direction || current < 0) return null;
+    for (let i = current + direction; i >= 0 && i < days.length; i += direction) {
+      const index = photos.findIndex(photo => photo.dayId === days[i].id);
+      if (index >= 0) return {day: days[i], index};
+    }
+    return null;
+  }
 
   function create(api) {
     const eventWord = form => api.eventWord?.(form) || ({title:'Day',upper:'DAY',plural:'days'}[form] || 'day');
@@ -26,7 +35,7 @@
     let locationTimer, swipeTimer, swipeFrame, zoomFrame;
     let replayState = null;
     let overlay = null, overlayDepth = 0, afterDismiss = null;
-    let restoring = false, previousState = null, lastTap = null, viewerDepth = 0, fromAlbum = false, exitingToDay = false;
+    let restoring = false, previousState = null, lastTap = null, viewerDepth = 0, fromAlbum = false, exitingToDay = false, preparedEntry = null;
     const neighbors = [-1, 1].map(delta => {
       const node = document.createElement('img'); node.className = 'mobile-photo-neighbor'; node.hidden = true; node.alt = ''; node.setAttribute('aria-hidden', 'true'); node.draggable = false;
       $('#viewer-photo-frame').append(node); return {node, delta};
@@ -34,7 +43,7 @@
     const enabled = () => media.matches;
     function snapshot() {
       return {overlay, overlayDepth, dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
-        viewerDay: current.day?.id, collection: dialog.open ? api.collection?.() || null : null, index: current.index, scope:api.scope(), depth:dialog.open?viewerDepth:0, fromAlbum, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
+        viewerDay: current.day?.id, collection: dialog.open ? api.collection?.() || null : null, index: current.index, scope:api.scope(), mapView:api.captureMapView?.() || null, depth:dialog.open?viewerDepth:0, fromAlbum, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
     }
     function save(push = false) {
       if (restoring) return;
@@ -62,7 +71,11 @@
     }
     function exitToDay() {
       exitingToDay = true; fromAlbum = false;
-      dialog.close(); api.tab('map');
+      const ownsHistory = history.state?.mobileAtlas?.viewer;
+      dialog.close();
+      // The history return restores the presenting camera. Re-selecting the
+      // already visible map tab would schedule another city fit after it.
+      if (!ownsHistory && $('.atlas-shell').dataset.mobileTab !== 'map') api.tab('map');
     }
     function openGrid(dayId) { api.openDay(dayId, {grid:true}); setGrid(true); }
     function back() {
@@ -216,7 +229,7 @@
       $('#mobile-photo-location .location-hint').textContent = value ? 'Hide location' : 'Photo location';
 
       if (value) api.location();
-      else { api.pauseLocation?.(); if (enabled()) $('#mobile-photo-location').focus(); }
+      else { api.pauseLocation?.(); if (enabled()) $('#mobile-photo-location').focus({preventScroll:true}); }
       // Layers share the viewer's history entry. Dismissing one must not queue
       // a traversal that can later restore an obsolete location or grid state.
       if (record && changed) save();
@@ -228,9 +241,9 @@
       grid = value; viewer.dataset.grid = String(value);
       stage.inert = value; $('.mobile-photo-header').inert = value || !chrome; $('.mobile-photo-footer').inert = value || !chrome;
       panel.inert = value || !locationOpen; $('#album-continue').inert = value || !chrome; strip.inert = !value && enabled();
-      if (value) { setChrome(true); $('.mobile-photo-header').inert = true; $('.mobile-photo-footer').inert = true; $('#mobile-grid-back').focus(); }
-      else if (enabled()) $('#mobile-photo-grid').focus();
-      if (value) { api.suspendPhotos?.(); neighbors.forEach(({node})=>{api.clearImage(node);node.removeAttribute("src");node.hidden=true;}); }
+      if (value) { setChrome(true); $('.mobile-photo-header').inert = true; $('.mobile-photo-footer').inert = true; $('#mobile-grid-back').focus({preventScroll:true}); }
+      else if (enabled()) $('#mobile-photo-grid').focus({preventScroll:true});
+      if (value) { api.suspendPhotos?.(); neighbors.forEach(({node})=>{api.clearImage(node);node.removeAttribute("src");node.hidden=true;}); api.refreshGrid?.(); }
       else api.resumePhoto?.();
       if (record && changed) save();
     }
@@ -242,8 +255,23 @@
       $('#mobile-photo-back .button-label').textContent = data.day.title || `${eventWord('title')} ${data.day.number}`;
       $('#mobile-photo-count').textContent = data.photos.length ? `${data.index + 1} of ${data.photos.length}` : 'No photos';
       $('#mobile-grid-back .button-label').textContent = data.day.title || `${eventWord('title')} ${data.day.number}`;
-      const videoCount = data.photos.filter(item => item.mediaType === 'video').length, photoCount = data.photos.length - videoCount;
+      const gridPhotos = data.gridPhotos || data.photos;
+      const videoCount = gridPhotos.filter(item => item.mediaType === 'video').length, photoCount = gridPhotos.length - videoCount;
       $('#mobile-grid-title').textContent = (data.collectionLabel ? `${data.collectionLabel} · ` : '') + [photoCount ? `${photoCount} photo${photoCount === 1 ? '' : 's'}` : '', videoCount ? `${videoCount} video${videoCount === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ') || 'No photos or videos';
+      const previousEvent = data.scoped ? null : eventPhotoTarget(data.photos, api.days(), data.day.id, -1);
+      const nextEvent = data.scoped ? null : eventPhotoTarget(data.photos, api.days(), data.day.id, 1);
+      const eventName = eventWord() === 'stop' ? 'City' : 'Day';
+      const eventNav = $('.mobile-photo-event-nav');
+      eventNav.hidden = Boolean(data.scoped || !previousEvent && !nextEvent);
+      eventNav.setAttribute('aria-label', `Browse photo ${eventName === 'City' ? 'cities' : 'days'}`);
+      $('#mobile-photo-event-label').textContent = `${eventName} ${data.day.number} · ${data.day.title}`;
+      for (const [direction, target] of [['previous', previousEvent], ['next', nextEvent]]) {
+        const button = $(`#mobile-photo-${direction}-event`);
+        button.disabled = !target;
+        $(`#mobile-photo-${direction}-event .button-label`).textContent = eventName;
+        const label = `${direction === 'previous' ? 'Previous' : 'Next'} ${eventName.toLowerCase()}${target ? ` · ${target.day.title}` : ''}`;
+        button.setAttribute('aria-label', label); button.title = label;
+      }
       const photo = data.photos[data.index];
       $('#mobile-photo-time').textContent = photo?.mediaType === 'video' ? photo.title || photo.caption : photo?.takenAt || data.day.date;
       $('#mobile-photo-prev').disabled = data.index <= 0;
@@ -261,9 +289,21 @@
       });
       measure(); transform(); save();
     }
+    function prepareOpen() {
+      if (!restoring && !dialog.open && !preparedEntry) preparedEntry = snapshot();
+    }
     function open(options = {}) {
       if (!dialog.open) {
-        if (!restoring) { save(); history.pushState({...history.state}, '', location.href); }
+        if (!restoring) {
+          // Entry may settle an arrival or select a different event before
+          // showing the dialog. Keep the map from before those operations.
+          if (preparedEntry) {
+            history.replaceState({...history.state, mobileAtlas:preparedEntry}, '', location.href);
+            previousState = preparedEntry;
+          } else save();
+          history.pushState({...history.state}, '', location.href);
+        }
+        preparedEntry = null;
         if (overlay) { const previousOverlay = overlay; overlay = null; overlayDepth = 0; $(`#${previousOverlay}`).close(); }
         viewerDepth = 1;
         if (!enabled()) return;
@@ -290,13 +330,15 @@
       // A conversation can browse an explicit collection across days. Closing
       // it reveals the current photograph, not the image saved before opening.
       const returningFromViewerOverlay = Boolean(old?.viewer && state.viewer && old.overlay && !collectionChanged);
+      const leavingViewer = Boolean(old?.viewer && !state.viewer);
       viewerDepth = state.depth || 0; overlayDepth = state.overlayDepth || 0;
       const oldOverlay = overlay; overlay = state.overlay || null;
       if (oldOverlay && oldOverlay !== overlay) $(`#${oldOverlay}`).close();
-      const targetDay = old?.viewer && !state.viewer || returningFromViewerOverlay ? current.day?.id || state.dayId : state.dayId;
-      if(api.day().id !== targetDay || state.scope === 'day' && api.scope() !== 'day') api.selectDay(targetDay);
+      const targetDay = leavingViewer || returningFromViewerOverlay ? current.day?.id || state.dayId : state.dayId;
+      const returnMap = leavingViewer && state.mapView?.dayId === targetDay ? state.mapView : null;
+      if(api.day().id !== targetDay || !returnMap && state.scope === 'day' && api.scope() !== 'day') api.selectDay(targetDay);
       const targetTab = !state.viewer && (exitingToDay || old?.viewer) ? 'map' : state.tab;
-      if ($('.atlas-shell').dataset.mobileTab !== targetTab) api.tab(targetTab);
+      if ($('.atlas-shell').dataset.mobileTab !== targetTab) api.tab(targetTab, {preserveCamera:Boolean(returnMap)});
       if(!state.viewer && state.scope === 'journey' && !old?.viewer)api.overview();
       if (state.viewer) {
         if (!returningFromViewerOverlay) {
@@ -305,12 +347,16 @@
         }
         if (enabled()) { setLocation(state.layer === 'location', false); setGrid(state.layer === 'grid', false); }
       } else if (dialog.open) { dialog.close(); fromAlbum=false; }
+      if (returnMap) api.restoreMapView?.(returnMap);
       if (overlay) api.restoreOverlay(overlay);
-      if(state.viewer && old?.layer === 'grid' && state.layer !== 'grid')$('#mobile-photo-grid').focus();
-      else if(state.viewer && old?.layer === 'location' && state.layer !== 'location')$('#mobile-photo-location').focus();
+      if(state.viewer && old?.layer === 'grid' && state.layer !== 'grid')$('#mobile-photo-grid').focus({preventScroll:true});
+      else if(state.viewer && old?.layer === 'location' && state.layer !== 'location')$('#mobile-photo-location').focus({preventScroll:true});
       if(!state.viewer)exitingToDay=false;
       renderDay();
       restoring = false; previousState = state;
+      // Cross-event photo browsing deliberately changes the destination map.
+      // Save that actual return, so the next viewer cannot resurrect an old day.
+      if (leavingViewer) save();
       if (afterDismiss) { const after = afterDismiss; afterDismiss = null; after(); save(); }
     });
     function pointerDown(event) {
@@ -384,6 +430,30 @@
       if (lastTap && now-lastTap.time < 280 && Math.hypot(event.clientX-lastTap.x,event.clientY-lastTap.y) < 40) { toggleZoom(event); lastTap=null; }
       else lastTap={time:now,x:event.clientX,y:event.clientY};
     });
+    // The event header owns city/day jumps; image gestures always browse or pan
+    // photographs. Starting on a button remains a normal tap, never a swipe.
+    let eventGesture = null;
+    const eventNav = $('.mobile-photo-event-nav');
+    eventNav.addEventListener('pointerdown', event => {
+      if (!enabled() || grid || current.scoped || event.button > 0 || event.isPrimary === false || event.target.closest('button')) return;
+      eventGesture = {id:event.pointerId, x:event.clientX, y:event.clientY, time:performance.now(), dx:0, dy:0};
+      eventNav.setPointerCapture(event.pointerId);
+    });
+    eventNav.addEventListener('pointermove', event => {
+      if (!eventGesture || eventGesture.id !== event.pointerId) return;
+      eventGesture.dx = event.clientX - eventGesture.x; eventGesture.dy = event.clientY - eventGesture.y;
+    });
+    const finishEventSwipe = event => {
+      if (!eventGesture || eventGesture.id !== event.pointerId) return;
+      const action = eventGesture; eventGesture = null;
+      if (event.type === 'pointercancel' || gestureAxis(action.dx, action.dy) !== 'x') return;
+      const delta = swipeStep(action.dx, performance.now() - action.time, eventNav.clientWidth, 1, 3);
+      if (delta && eventPhotoTarget(current.photos, api.days(), current.day.id, delta)) api.moveEvent?.(delta);
+    };
+    eventNav.addEventListener('pointerup', finishEventSwipe);
+    eventNav.addEventListener('pointercancel', finishEventSwipe);
+    $('#mobile-photo-previous-event').onclick=()=>api.moveEvent?.(-1);
+    $('#mobile-photo-next-event').onclick=()=>api.moveEvent?.(1);
     $('#mobile-photo-location').onclick=()=>setLocation(!locationOpen);
     $('#mobile-location-close').onclick=()=>setLocation(false);
     $('#mobile-photo-grid').onclick=()=>setGrid(true);
@@ -406,6 +476,7 @@
     };
     media.addEventListener('change',()=>{
       stopZoom();
+      if (dialog.open) api.layoutChanged?.(current.photos[current.index]?.id);
       if (!enabled()) {setGrid(false,false);setLocation(false,false);setChrome(true);panel.inert=false;panel.removeAttribute('aria-hidden');strip.inert=false;img.style.transform='';neighbors.forEach(({node})=>node.hidden=true);if(dialog.open)api.location();}
       else if(dialog.open) {
         if(!history.state?.mobileAtlas?.viewer || !history.state.mobileAtlas.depth) {
@@ -420,10 +491,10 @@
     window.addEventListener('resize',()=>{measure();measureReplay();});
     new ResizeObserver(()=>{ $('.map-panel').style.setProperty('--day-summary-height',`${$('.mobile-day-summary').offsetHeight}px`); }).observe($('.mobile-day-summary'));
     save();
-    return {enabled,presentOverlay,dismissOverlay,renderDay,tabChanged,update,open,closed,openGrid,exitToDay,replayControlsChanged,locationVisible:()=>locationOpen,gridVisible:()=>enabled()&&grid,
+    return {enabled,presentOverlay,dismissOverlay,renderDay,tabChanged,update,prepareOpen,open,closed,openGrid,exitToDay,replayControlsChanged,locationVisible:()=>locationOpen,gridVisible:()=>enabled()&&grid,
       fromAlbum:()=>{fromAlbum=true;},selectedDay:()=>navigate('map'),gridSelected:()=>{if(grid)setGrid(false);}, keyTarget:event=>enabled()&&(grid||event.target.closest('#photo-map'))};
   }
-  const exported = {gestureAxis,swipeStep,panLimit,create};
+  const exported = {gestureAxis,swipeStep,panLimit,eventPhotoTarget,create};
   if (typeof module !== 'undefined' && module.exports) module.exports = exported;
   else root.JOURNEY_ATLAS_MOBILE = exported;
 })(typeof window !== 'undefined' ? window : globalThis);

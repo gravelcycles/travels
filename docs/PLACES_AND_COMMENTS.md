@@ -200,6 +200,10 @@ request must not imply that there are no comments.
 The top-right bell opens **Most recent comments**, newest first across the whole
 current trip, irrespective of day or route-group filters. Each row identifies
 the author, comment, time and photo context and opens that photo's conversation.
+If its event is hidden, enable only that event's Past / Future locked in /
+Future TBD category through the shared filter controls. Preserve the other
+category choices and the current route group; reveal all routes only if the
+target photo is still excluded by that group.
 Only traveler photo copy or actual capture-time/event context supplies a label;
 no venue guesses or generated captions. The clicked comment remains visible even
 when it falls beyond the oldest conversation page. Close/Back preserves the

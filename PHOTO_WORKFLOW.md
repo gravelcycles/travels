@@ -134,14 +134,24 @@ or caption changes in Studio:
 4. Wait for Pages, then open a fresh public journey and verify day assignment,
    photo viewer, and any deleted-photo absence. Record the deployment receipt.
 
-On phones, Photos and View photos open the selected day’s grid. Selecting a
-thumbnail opens the full photograph; both Back and Close return to that day’s
-map. Controls stay visible when the photo is tapped. Swipe sideways for the
-next/previous photo, double-tap or pinch to zoom, and drag upward or tap Photo
-location to reveal its map. Hide location collapses it without leaving the
-photo. Verify a quick hide-then-swipe keeps location closed. Replay shows the
-route map and day story with fixed playback controls. It has no photo viewer,
-image preloads or photo pauses; browse photographs through the day albums.
+On phones, Photos and View photos open the selected event’s grid. Selecting a
+thumbnail opens that photograph in the journey camera roll, preserving event and
+album order. Image swipes and clear previous/next photo arrows continue across
+city/day boundaries; the distinct event bar supports city/day jumps, skipping
+events without media. Its sideways swipe jumps events without competing with
+image swipe/pinch. Explicitly selected Places collections retain their own scope.
+The grid shows the current event (or that explicit collection). Back and the
+Day/Stop control return to the map: preserve its exact center, zoom, bearing,
+pitch and scope for the same event; after intentionally crossing an event
+boundary, show the current event’s map. Capture this state before photo/grid
+entry can settle or refit the map. Check close, browser Back/Forward, Escape,
+grid round trips and a manually panned/zoomed overview as well as a focused city.
+Controls stay visible when the photo is tapped. Double-tap or pinch to zoom, and
+drag upward or tap Photo location to reveal its map. Hide location collapses it without leaving the
+photo. Verify a quick hide-then-swipe keeps location closed. Full-trip Replay is disabled under O09; arrival/city playback remains on the
+main map. Browse photographs through the event albums.
+Keep selected-thumbnail scrolling inside the grid: grid selection and city
+changes must leave fullscreen headers and footers at the viewport edges.
 Check the affected flow on a demo and a fresh draft as well as the real trip.
 Full-screen photos use a 350 ms blur-to-clear reveal on desktop and phones.
 Desktop covers, journal images and thumbnails (including video posters) retain
@@ -499,17 +509,23 @@ in the right-hand reel selects the photo in that existing sidebar, without
 opening fullscreen. The large top-right selected/lead image opens fullscreen
 directly in one activation. Selection must not add another photo panel. Existing
 album/grid and explicitly linked Places viewer entry retain their flow. The
-fullscreen collection retains the entry surface's order and count; comments,
-arrows and phone grids use that same scope. A fresh day-album entry restores
-its own collection. This replaces the earlier all-photo-fullscreen interpretation.
+desktop fullscreen collection retains the entry surface's order and count;
+comments and arrows keep that scope. On phones, ordinary event/map-card entry
+uses the continuous journey camera roll described above, while explicitly
+selected Places collections preserve their order/count through comments and
+grids. This phone behavior supersedes the earlier entry-day/map-group boundary
+under the owner's later 11 October mobile correction (O08).
 
 The existing sidebar frame remains uncropped and stable across portrait and
-landscape photos, with adjacent thumbnails and expandable day details. Only
-traveler-supplied captions appear. An About-place action requires an explicit
+landscape photos, with adjacent thumbnails and expandable day details. Hovering
+the large photo must retain its blue background without a white flash; its image
+button stays transparent instead of inheriting the toolbar's pale hover fill.
+Check pointer entry/exit with both photo orientations and retain keyboard focus.
+Only traveler-supplied captions appear. An About-place action requires an explicit
 saved link. Phone map screens have one date/title block and Photos action,
 contextual Places and secondary arrival controls, plus one bottom event picker.
 Phone map bubbles select the existing compact photo card; its large image opens
-fullscreen. The established photo-grid and swipe flow remains unchanged.
+fullscreen. Event grids lead into the continuous phone camera roll (O08).
 
 Map bubbles retain their representative image at its actual location. Album and
 Places browsing do not regroup map bubbles; only a clicked map group retains its

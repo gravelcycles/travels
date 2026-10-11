@@ -79,6 +79,36 @@ test('trip read state and counts are inherited across reference, demo and indepe
 });
 
 
+test('phone camera roll and event controls inherit across reference, city atlas, demo and an independent fresh draft', t => {
+  const root=fixture(t), draft=createJourney(root,{...input,slug:'phone-camera-roll-fixture'});
+  const {data}=loadContent(root);
+  const controls=['mobile-photo-prev','mobile-photo-next','mobile-photo-previous-event','mobile-photo-next-event','mobile-photo-event-label'];
+  const independent={...draft,eventMode:'city',days:draft.days.map((day,index)=>({...day,title:['North harbour','Museum quarter','South gardens'][index],calendarEndDate:draft.days[Math.min(index+1,draft.days.length-1)].calendarDate}))};
+  const empty=photoEntryFixture(independent,[],{mobile:true});
+  assert.deepEqual(empty.photos(),[],'A new empty city draft does not inherit another trip’s photos');
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo'),independent]) {
+    const html=renderJourneyPage(root,journey,{preview:true});
+    for(const id of controls)assert.equal(ids(html).filter(value=>value===id).length,1,`${journey.id}: ${id}`);
+    const [first,emptyDay,last]=journey.days;
+    const media=[{id:`${journey.id}-north-a`,dayId:first.id},{id:`${journey.id}-north-b`,dayId:first.id},{id:`${journey.id}-south`,dayId:last.id}];
+    const f=photoEntryFixture(journey,media,{mobile:true});
+    f.open(media[1].id);
+    assert.equal(f.context.viewerPhotoIndex,1,journey.id);
+    assert.deepEqual(f.photos().map(photo=>photo.id),media.map(photo=>photo.id));
+    f.context.moveViewer(1);
+    assert.equal(f.context.viewerDayId,last.id,'Adjacent photo browsing crosses the empty event');
+    f.context.moveViewerDay(-1);
+    assert.equal(f.context.viewerDayId,first.id,'Event jump skips empty events');
+    assert.equal(f.context.viewerPhotoIndex,0,'An event jump starts at that album’s first photo');
+    f.open(media[2].id,{photos:[media[2],media[0]],collectionLabel:'Saved place'});
+    assert.deepEqual(f.photos().map(photo=>photo.id),[media[2].id,media[0].id],'Explicit collections preserve their own order');
+    assert.equal(f.context.viewerPhotoIndex,0);
+    f.context.moveViewerDay(-1);
+    assert.equal(f.context.viewerDayId,last.id,'Event jumps do not escape explicit collections');
+    assert.notEqual(emptyDay.id,last.id);
+  }
+});
+
 test('stationary photo bubbles stay attached for reference, demo and freshly generated draft',t=>{
   const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root);
   for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'),draft]){

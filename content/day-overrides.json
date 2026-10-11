@@ -188,5 +188,47 @@
   },
   "family-d14": {
     "text": ""
+  },
+  "backpacking-europe-heading-east-luzern-stay": {
+    "date": "1 Sept",
+    "title": "Luzern",
+    "tagline": "",
+    "text": "We packed up, had a long farewell, and then lugged half of our stuff to Freiburg."
+  },
+  "backpacking-europe-heading-east-freiburg-stay": {
+    "date": "1 Sept – 17 Sept",
+    "title": "Freiburg",
+    "tagline": "",
+    "text": "2.5 weks in Freiburg! The leaves are starting to turn. Good to be back and fun to explore the Schwarzwald (black forest). Unfortunately though, Michelle got sick in Freiburg and won't get better until end of Hamburg."
+  },
+  "backpacking-europe-heading-east-hamburg-stay": {
+    "date": "17 Sept – 29 Sept",
+    "title": "Hamburg",
+    "tagline": "",
+    "text": "Sick Michelle made it to Hamburg! A city integrated with a large river network. Gorgeous architecture and it was awesome to zoom around on e-scooters."
+  },
+  "backpacking-europe-heading-east-koln-stay": {
+    "date": "29 Sept – 30 Sept",
+    "title": "Köln",
+    "tagline": "",
+    "text": "What a cathedral!"
+  },
+  "backpacking-europe-heading-east-dusseldorf-stay": {
+    "date": "30 Sept – 1 Oct",
+    "title": "Düsseldorf",
+    "tagline": "",
+    "text": "Hello Kawan! Ciao to our belongings :P"
+  },
+  "backpacking-europe-heading-east-berlin-stay": {
+    "date": "1 Oct – 5 Oct",
+    "title": "Berlin",
+    "tagline": "",
+    "text": "The coolest city in the world. Punk af. House DJs at train stations, rock concerts spontaneously on bridges, and super hardcore."
+  },
+  "backpacking-europe-heading-east-prague-stay": {
+    "date": "5 Oct – 11 Oct",
+    "title": "Prague",
+    "tagline": "",
+    "text": "Gorgeous architecture holy moly. A city of a hundred spires for sure."
   }
 }

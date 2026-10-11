@@ -577,8 +577,10 @@ Use local labelled fixtures when real media is unavailable; never publish them.
   button, while Studio still supports adding the first one.
 - [ ] **Phone/map/motion:** Check desktop and 390 px phone; use 320 px/landscape
   for changed overlays/gestures. Verify visible map context, labels/mode key,
-  day/stop list selection, grid, location close/swipe, Back/Forward and reduced
-  motion. Full-trip Replay stays disabled; arrival/city framing uses this trip's content.
+  day/stop list selection, event grid → continuous camera roll, cross-event
+  photo swipes/event jumps, same-event map zoom preservation on close,
+  location close/swipe, Back/Forward and reduced motion. Full-trip Replay stays
+  disabled; arrival/city framing uses this trip's content.
 - [ ] **Loading/save:** Check cold and cached photo loads without flashes or
   unnecessary refetches; retry without losing selection/text. For editor changes,
   check save → preview → reload recovery, readable diff and conflict handling.
@@ -840,7 +842,11 @@ copy. All events start visible. Shared **Past**, **Future locked in**, and
 **Future TBD** checkboxes replace Show TBD stops, with the same selection in the
 Days/Stops list and the full-trip map's **Filter days/stops** menu on desktop and
 phone. The controls appear when more than one group is populated; unavailable
-groups and the last visible populated group are disabled.
+groups and the last visible populated group are disabled. Keep all three toggles
+in one horizontal row, including at 320px, with 44px-high label targets. Visible
+labels are Past / Locked in / TBD; accessible labels retain Future, and the
+Past/today explanation is an accessible description and hover hint rather than
+another visible paragraph (owner follow-up, 11 October 2026).
 
 Classification uses the current calendar date in `journey.timeZone` (UTC when
 absent). Past includes today and city stays whose arrival has already occurred;

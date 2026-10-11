@@ -12,6 +12,20 @@
 - Record the continuing behavior and acceptance checks in O17, the conversation
   contract and shared feature/architecture guidance. Verification is tracked in WIP.
 
+## 11 October 2026 — Heading East city stories
+
+- Publish the owner's seven saved city descriptions, from Luzern through
+  Prague, preserving their exact wording and blank optional taglines.
+- Update the trip record so future edits preserve the authored stories instead
+  of treating those stops as deliberately blank. Shared behavior is unchanged.
+
+## 11 October 2026 — Compact day visibility row
+
+- Place the three day-visibility toggles in one horizontal row in the Days/Stops
+  section and full-trip map menu, including phones. Shorten visible labels to
+  Past / Locked in / TBD while retaining full accessible meanings and 44px
+  targets; move the Past/today explanation out of the visible layout.
+- Record the owner's follow-up in the Heading East record and shared workflow.
 
 ## 11 October 2026 — one opening action and Heading East description
 
@@ -39,6 +53,28 @@
 This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
+
+## 11 October 2026 — phone camera roll and map return
+
+- Preserve the exact previous map camera and scope after same-event photo/grid
+  dismissal, including browser Back; prevent delayed tab fitting from undoing it.
+- Browse the full visible journey in event/album order on phones, crossing city
+  boundaries with photo swipes and arrows. Keep explicit Places collections.
+- Add clear photo arrows and a separate swipeable city/day jump bar, skipping
+  empty albums; retain the current event grid, pinch/pan and location gestures.
+- Carry the correction into O08, principles and photo/journey workflows. Shared
+  runtime and independent-draft regression checks cover entry, order, event
+  boundaries, map return and history. All 535 tests and the production build pass; phone/desktop browser checks cover
+  the reference, target, demo and independent fresh drafts (details in WIP).
+
+## 11 October 2026 — steady sidebar photo hover
+
+- Keep the selected sidebar photo’s blue frame visible on hover by correcting
+  the image button’s CSS priority over the general pale toolbar hover style.
+- Preserve photo selection, fullscreen activation, image reveals and keyboard
+  focus; carry the no-flash requirement into O03 and the photo workflow.
+- Validation: all 520 tests and production build pass; browser checks cover the
+  reference, demo and a fresh city draft with portrait/landscape photos.
 
 ## 11 October 2026 — disable full-trip Replay
 
