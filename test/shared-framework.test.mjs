@@ -48,14 +48,23 @@ test('reference, demo and fresh-draft photo cards keep visible copy separate fro
   const root = fixture(t), draft = createJourney(root, input);
   const { data } = loadContent(root, { includeDrafts: true });
   for (const journey of [data.journeys.find(j => j.id === 'switzerland-italy-family-2026'), data.journeys.find(j => j.kind === 'demo'), draft]) {
-    const f = photoBubbleFixture(journey);
-    const photo = { id: `${journey.id}-copy-fixture`, dayId: journey.days[0].id, caption: '', description: '', alt: 'Accessible scene description', takenAt: '2028-02-28 · 12:34' };
+    const point = { id: 'unrelated-cafe', name: 'Unrelated cafe', coordinates: [8,47], dayIds: [journey.days[0].id], photoIds: [] };
+    const f = photoBubbleFixture({...journey, pointsOfInterest: [point]});
+    const photo = { id: `${journey.id}-copy-fixture`, dayId: journey.days[0].id, lat: 47, lng: 8, caption: '', description: '', alt: 'Accessible scene description', takenAt: '2028-02-28 · 12:34' };
     f.setPhotos([photo]); f.controller.open([photo]);
     assert.equal(f.node('[data-bubble-caption]').textContent, '');
     assert.equal(f.node('[data-bubble-caption]').hidden, true);
     assert.equal(f.node('[data-bubble-notes]').hidden, true);
     assert.equal(f.node('[data-bubble-title]').textContent, photo.takenAt);
+    assert.equal(f.node('[data-bubble-place]').hidden, true, 'Identical coordinates do not produce an About place button');
     assert.equal(f.node('img').alt, photo.alt, 'Alt text remains available to screen readers');
+    point.photoIds = [photo.id]; f.controller.refresh();
+    assert.equal(f.node('[data-bubble-title]').textContent, `At ${point.name}`);
+    assert.equal(f.node('[data-bubble-place]').hidden, false, 'An owner-saved link remains available');
+    assert.equal(f.node('[data-bubble-place]').textContent, `About ${point.name} →`);
+    point.photoIds = []; f.controller.refresh();
+    assert.equal(f.node('[data-bubble-title]').textContent, photo.takenAt);
+    assert.equal(f.node('[data-bubble-place]').hidden, true, 'Removing a link clears the association');
     Object.assign(photo, { caption: 'Our lunch together', description: 'A note from the traveler', locationLabel: 'My chosen place label' });
     f.controller.refresh();
     assert.equal(f.node('[data-bubble-caption]').textContent, photo.caption);

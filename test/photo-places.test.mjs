@@ -19,16 +19,18 @@ const point={id:'cafe',name:'Cafe',coordinates:[8,47],dayIds:['one'],photoIds:['
 
 test('explicit links preserve editorial order, admit unlocated photos and filter trash/hidden/group projection',()=>{
  const noLocation={id:'no-location',dayId:'two'},photos=[photo('first'),photo('second'),noLocation,{...photo('hidden'),hidden:true},{...photo('trash'),trashed:true}];
- const result=model.photosForPlace(point,photos);assert.deepEqual(result.linked.map(p=>p.id),['no-location','second']);assert.deepEqual(result.nearby.map(p=>p.id),['first']);
+ const result=model.photosForPlace(point,photos);assert.deepEqual(result.linked.map(p=>p.id),['no-location','second']);
  assert.deepEqual(model.photosForPlace(point,photos.filter(p=>p.id!=='second')).linked.map(p=>p.id),['no-location']);
- const before=structuredClone(point);model.photosForPlace(point,photos);assert.deepEqual(point,before,'Proximity never writes editorial associations');
- assert.equal(model.placeForPhoto(noLocation,[point]).explicit,true);assert.equal(model.placeForPhoto(photo('first'),[point]).explicit,false);
+ const before=structuredClone(point);model.photosForPlace(point,photos);assert.deepEqual(point,before,'Rendering never writes editorial associations');
+ assert.equal(model.placeForPhoto(noLocation,[point]).point,point);assert.equal(model.placeForPhoto(photo('first'),[point]),null);
  assert.equal(model.placeForPhoto({...photo('other'),dayId:'three'},[point]),null);
 });
-test('proximity has a bounded radius, known coordinates and explicit day semantics',()=>{
- assert.equal(model.distanceKm(photo('a'),[8,47]),0);assert.equal(model.distanceKm({id:'x'},[8,47]),Infinity);assert.equal(model.distanceKm(photo('a'),[]),Infinity);
- assert.equal(model.photosForPlace({...point,photoIds:[]},[photo('far',8.1)]).nearby.length,0);
- assert.equal(model.photosForPlace({...point,dayIds:[],photoIds:[]},[{...photo('any-day'),dayId:'two'}]).nearby.length,1);
+test('GPS proximity never associates photos with places, even at identical coordinates',()=>{
+ for(const dayIds of [[],['one']]){
+  const unlinked={...point,dayIds,photoIds:[]},photos=[photo('same'),photo('close',8.0001),photo('far',8.1),{id:'unlocated',dayId:'one'}];
+  assert.deepEqual(model.photosForPlace(unlinked,photos),{linked:[]});
+  for(const p of photos)assert.equal(model.placeForPhoto(p,[unlinked]),null);
+ }
 });
 test('selected groups retain members, order and selected photo through zoom and pan, with no duplicates',()=>{
  const photos=[photo('a'),photo('b',8.001),photo('c',8.1)],chosen={ids:['b','a'],photoId:'a'};

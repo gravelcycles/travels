@@ -200,6 +200,8 @@ names, captions, descriptions or location labels**. Visible copy stays blank
 unless the traveler writes or supplies it. Never display accessibility `alt` text
 or original filenames as substitute captions. Keep source filenames as editor
 identifiers, and retain actual capture dates/times and reviewed map coordinates.
+Do not infer photo–place links from GPS proximity. Place labels and “About”
+buttons require an explicit link saved by the traveler in Studio.
 
 For an initial folder import, select the journey and source explicitly:
 
