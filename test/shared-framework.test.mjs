@@ -106,6 +106,42 @@ test('photo intake skips undated TBD entries for the reference, demo and a fresh
   assert.equal(config.daysByDate.has('2026-10-24'), false);
 });
 
+test('full-trip Replay stays inaccessible while arrival works for reference, demo and populated city draft', t => {
+  const root = fixture(t), draft = createJourney(root, {...input, eventMode:'city'});
+  draft.places = [{id:'qa-origin', name:'Origin', lng:139.7, lat:35.6}, {id:'qa-city', name:'City', lng:139.8, lat:35.7}];
+  draft.segments = [{id:'qa-leg', mode:'train', from:'qa-origin', to:'qa-city', geometry:[[139.7,35.6],[139.75,35.65],[139.8,35.7]]}];
+  draft.days[0].placeId = 'qa-city'; draft.days[0].segmentIds = ['qa-leg'];
+  draft.replayMoments = [{id:'qa-chapter', dayId:draft.days[0].id, segmentIds:['qa-leg'], caption:'Saved chapter', duration:8}];
+  const {data,routes} = loadContent(root);
+  const functions = ['openReplay','startReplay','initReplayMap'].map(name => {
+    const start = app.indexOf(`  function ${name}(`);
+    return app.slice(start, app.indexOf('\n  function ',start+1));
+  }).join('\n');
+  for (const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'), data.journeys.find(j=>j.kind==='demo'), draft]) {
+    const html = renderJourneyPage(root,journey,{preview:true});
+    assert.doesNotMatch(html, /id="(?:open-replay|mobile-open-replay|resume-replay)"/,journey.id);
+    const shell = html.match(/<dialog[^>]*id="replay-dialog"[^>]*>/)[0];
+    assert.match(shell,/ hidden inert>/,journey.id);
+    for(const id of ['arrival-replay','arrival-city','mobile-day-picker']) assert.ok(ids(html).includes(id),journey.id);
+    const before = JSON.stringify(journey.replayMoments);
+    // The real entry functions must return before touching arrival, history,
+    // maps or clocks, even if old navigation requests the dormant player.
+    const context = vm.createContext({journey,replayDialog:{inert:true},arrivalChapter:{phase:'arrival'}});
+    vm.runInContext(functions+'\nopenReplay();startReplay();initReplayMap();',context);
+    assert.equal(context.arrivalChapter.phase,'arrival');
+    assert.equal(JSON.stringify(journey.replayMoments),before);
+    const day = journey.days.find(d=>d.segmentIds.length);
+    const segments = day.segmentIds.map(id=>journey.segments.find(s=>s.id===id));
+    const plan = globalThis.JOURNEY_ATLAS_ARRIVAL.plan(segments,s=>s.geometry||routes[s.id]||[s.from,s.to].map(id=>journey.places.find(p=>p.id===id)).filter(Boolean).map(p=>[p.lng,p.lat]));
+    assert.ok(plan.legs.length,journey.id);
+    assert.equal(plan.duration,1500); assert.equal(plan.arrivalHold,250);
+    assert.ok(globalThis.JOURNEY_ATLAS_ARRIVAL.frame(plan,.5).position.every(Number.isFinite));
+  }
+  const studio = read(repo,'studio/index.html');
+  assert.match(studio,/<details hidden inert><summary>Curated Replay moments<\/summary>/);
+  assert.doesNotMatch(app, /id="resume-replay"/);
+});
+
 test('arrival and stay controls inherit across reference, demo and fresh draft without new trip flags', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const {data,routes}=loadContent(root,{includeDrafts:true});
@@ -317,7 +353,7 @@ test('one template supplies every control and asset to real trips, all samples, 
   assert.doesNotMatch(replay, /<img|replay-photo|replay-view-(?:map|photos)/, 'Replay has no photo surface or media switch');
   assert.match(replay, /id="replay-map"/);
   assert.match(replay, /id="replay-toggle"/);
-  for (const id of ['mobile-open-replay', 'mobile-photo-back', 'mobile-photo-location', 'mobile-grid-back', 'mobile-replay-back']) {
+  for (const id of ['mobile-photo-back', 'mobile-photo-location', 'mobile-grid-back', 'mobile-replay-back']) {
     assert.ok(ids(reference).includes(id), `Shared mobile control ${id} exists`);
     assert.match(reference, new RegExp(`<button[^>]*id="${id}"[^>]*>\\s*<svg[^>]*aria-hidden="true"`), `${id} uses a drawn icon with an accessible button label`);
   }
@@ -326,8 +362,7 @@ test('one template supplies every control and asset to real trips, all samples, 
   }
   assert.match(reference, /id="mobile-day-picker"[^>]*aria-controls="mobile-journey-panel"[^>]*aria-expanded="false"/);
   const header = reference.match(/<header class="mobile-header"[\s\S]*?<\/header>/)?.[0];
-  assert.match(header, /id="mobile-open-replay"[^>]*aria-controls="replay-dialog"[^>]*aria-haspopup="dialog"/);
-  assert.match(header, /<span>Replay<\/span>/, 'Replay is a direct, labeled header action');
+  assert.doesNotMatch(header, /mobile-open-replay|>Replay</, 'Full-trip Replay is disabled on phones');
   const actions = reference.match(/<nav id="mobile-journey-actions"[\s\S]*?<\/nav>/)?.[0];
   for (const action of ['overview', 'photos', 'unlock', 'about']) assert.ok(actions?.includes(`data-journey-action="${action}"`), `${action} remains accessible in the day picker`);
   assert.ok(ids(reference).includes('mobile-story-legend'), 'Route key remains available in day details');

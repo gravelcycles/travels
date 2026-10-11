@@ -1077,10 +1077,6 @@
     $('[data-journey-action="photos"]').disabled = !album.length;
     const presentation = window.JOURNEY_ATLAS_UTILS.journeyPresentation(journey, album);
     $('[data-journey-action="overview"]').disabled = !presentation.hasMap;
-    $("#open-replay").disabled = !replayUtils || !presentation.hasReplay;
-    $('#mobile-open-replay').disabled = $('#open-replay').disabled;
-    $('#open-replay').title = $('#open-replay').disabled ? 'Add a place, route or story to begin Replay' : '';
-    $('#mobile-open-replay').title = $('#open-replay').title;
     $("#focus-day").disabled = !dayCoordinates(activeDay()).length;
     $("#fit-route").disabled = !journeyCoordinates().length;
     $("#journey-summary").innerHTML = `
@@ -1182,7 +1178,6 @@
       ${day.segmentIds.length ? `<details class="travel-details"><summary>Travel details <span>${day.segmentIds.length} leg${day.segmentIds.length===1?'':'s'}</span></summary>${renderRouteLegs(day)}</details>` : ''}
       ${groupTravel.dayDetails(sourceJourney, sourceJourney.days.find(item => item.id === day.id), activeGroupId)}
       <nav class="journal-day-nav" aria-label="Journal ${eventWord('plural')}"><button type="button" data-journal-step="-1" ${journey.days[0].id===day.id?'disabled':''}>← Previous ${eventWord()}</button><span>${eventWord('title')} ${day.number} of ${sourceJourney.days.length}</span><button type="button" data-journal-step="1" ${journey.days.at(-1).id===day.id?'disabled':''}>Next ${eventWord()} →</button></nav>
-      <button id="resume-replay" type="button" ${replayJourneyId===journey.id?'':'hidden'}>Return to paused Replay</button>
     `;
 
     photoStrip.innerHTML = photos.length
@@ -1218,7 +1213,7 @@
       ${meetup ? `<p class="party-meetup"><strong>Meet in ${escapeHtml(destination.name)}</strong><span>${eventWord('title')} ${day.number} · ${escapeHtml(meetup.label)}</span></p>` : ''}
       ${groups.length ? `<button type="button" class="party-all" data-route-group="" aria-pressed="${!activeGroupId}">Everyone · all routes</button>` : ''}
       <div class="party-groups">${groups.map(group => `<button type="button" data-route-group="${escapeHtml(group.id)}" aria-pressed="${activeGroupId === group.id}"><strong>${escapeHtml(group.label)} <span>${group.travelerIds.length}</span></strong><small>${group.travelerIds.map(id => escapeHtml(sourceJourney.travelers.find(person => person.id === id).name)).join(' · ')}</small></button>`).join('')}</div>
-      ${groups.length ? `<p class="party-view" role="status">Viewing ${escapeHtml(selected?.label || 'everyone')} · map, journal & Replay</p>` : `<p>${sourceJourney.travelers.map(person => escapeHtml(person.name)).join(' · ')}</p>`}`;
+      ${groups.length ? `<p class="party-view" role="status">Viewing ${escapeHtml(selected?.label || 'everyone')} · map & journal</p>` : `<p>${sourceJourney.travelers.map(person => escapeHtml(person.name)).join(' · ')}</p>`}`;
   }
 
   function selectRouteGroup(id) {
@@ -1950,6 +1945,7 @@
   }
 
   function startReplay() {
+    if (replayDialog.inert) return;
     cancelReplayAutoplay();
     if (!replayTimeline.length) return;
     if (replayCompleted) {
@@ -1981,6 +1977,7 @@
   function stepReplayDay(delta) { jumpReplayToMoment(replayMomentIndex+delta); }
 
   function initReplayMap() {
+    if (replayDialog.inert) return;
     if (replayMap) {
       if (replayMap) {
         replayMap.resize();
@@ -2016,6 +2013,8 @@
   }
 
   function openReplay() {
+    // Disabled globally (O09); stale history must not interrupt arrival playback.
+    if (replayDialog.inert) return;
     if (['framing','arrival'].includes(arrivalChapter?.phase)) settleAtCity();
     if (!replayUtils) return;
     pauseReplay();
@@ -2195,7 +2194,6 @@
       window.setTimeout(() => { if(mainMapReady) { mainMap.resize(); mainMap.fitBounds(boundsFromCoordinates(segmentCoordinates(segmentById(card.dataset.routeSegment))), {padding:mapPadding(100),maxZoom:13,duration:prefersReducedMotion()?0:500}); } },100);
     }
     const step=event.target.closest('[data-journal-step]'); if(step) { moveActiveDay(Number(step.dataset.journalStep)); showJournal(true); }
-    if(event.target.closest('#resume-replay')) openReplay();
   });
 
   window.matchMedia("(max-width: 900px)").addEventListener("change", () => {
@@ -2214,7 +2212,6 @@
     else if (photosForDay(activeDayId).length) openDayPhotos(); else showJournal(true);
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden && ['framing','arrival'].includes(arrivalChapter?.phase)) settleAtCity(); });
-  $("#open-replay").addEventListener("click", openReplay);
   $("#previous-day").addEventListener("click", () => moveActiveDay(-1));
   $("#next-day").addEventListener("click", () => moveActiveDay(1));
   $("#story-view-photos").addEventListener("click", () => openDayPhotos());

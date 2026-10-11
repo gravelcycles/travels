@@ -278,8 +278,8 @@ test('All days restores the whole map, saves its scope and supports Back to the 
 });
 
 
-test('Album, Replay and About dismiss with Back and restore with Forward on phone and desktop',()=>{
-  for(const mobile of [true,false])for(const id of ['album-dialog','replay-dialog','notes-dialog']){
+test('Album and About dismiss with Back and restore with Forward on phone and desktop',()=>{
+  for(const mobile of [true,false])for(const id of ['album-dialog','notes-dialog']){
     const f=viewerFixture();if(!mobile)f.resize(false);
     f.controller.presentOverlay(id);assert.equal(f.node(`#${id}`).open,true);
     f.history.back();assert.equal(f.node(`#${id}`).open,false);
@@ -345,4 +345,22 @@ test('closing Comments after browsing a cross-day collection keeps the current p
   assert.equal(f.node('#comments-dialog').open,false);
   assert.equal(f.api.day().id,'two');
   assert.equal(f.index,2);
+});
+
+
+test('disabled Replay cannot open or restore from stale overlay history',()=>{
+  for(const mobile of [true,false]) {
+    const f=viewerFixture();if(!mobile)f.resize(false);
+    // Model a history entry saved before Replay was disabled.
+    f.controller.presentOverlay('replay-dialog');f.history.back();
+    f.node('#replay-dialog').inert=true;f.node('#replay-dialog').hidden=true;
+    const previous=JSON.stringify(f.history.state);
+    f.controller.presentOverlay('replay-dialog');
+    assert.equal(f.node('#replay-dialog').open,false);
+    assert.equal(JSON.stringify(f.history.state),previous,'No new history entry');
+    f.history.go(1);assert.equal(f.node('#replay-dialog').open,false);
+    f.controller.presentOverlay('album-dialog');assert.equal(f.node('#album-dialog').open,true);
+    f.history.back();assert.equal(f.node('#album-dialog').open,false);
+    assert.equal(f.node('#replay-dialog').open,false);
+  }
 });

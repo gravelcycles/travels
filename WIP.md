@@ -21,12 +21,32 @@ must read current files and reconcile any later corrections before continuing.
 Authorized: synchronized Past / Future locked in / Future TBD toggles in the
 Days section and full-trip view; [scope and acceptance](docs/HEADING_EAST.md#day-visibility-filters--11-october-2026).
 Implemented in isolated `codex/day-status-filters`, preserving unrelated mobile
-and service work. All 521 tests and build pass. Browser checks cover the real
+and service work. All 523 integration tests and build pass. Browser checks cover the real
 Heading East groups, reference/demo defaults, and independently populated city
 draft; synchronized desktop/390px controls, 320px and landscape, filtered
 navigation and complete incoming routes. Private images were omitted in local
-map QA. Next: integrate current main (including Replay disablement), rerun checks,
-deploy and verify a fresh public page. Public delivery remains pending.
+map QA. Current main, including Replay disablement and anonymous credential
+documentation, is integrated. The merged browser check confirms both filters
+and absent full-trip Replay. Next: deploy and verify a fresh public page; public
+delivery remains pending.
+
+## Full-trip Replay disabled — 11 October 2026
+
+Authorized: disable the redundant full-trip animation across the shared viewer;
+preserve arrival/city playback and chapter source data. [O09](docs/OWNER_DECISIONS.md)
+supersedes earlier Replay availability/seeking and prototype adoption guidance.
+Completed in `edb415f`, integrated and deployed as `b450cde`:
+entry/resume actions removed, player/history guarded and Studio editor hidden.
+Validation: all **520 tests** and the production build pass, including
+reference/demo/independently populated city-draft arrival preservation and stale
+history checks. Browser checks confirmed the Alpine multi-leg arrival on desktop
+and the reference phone map/arrival controls at 390 px; the reference used the
+documented local photo mode (private media was not copied into this checkout).
+The independently populated city draft also passed browser entry/arrival checks.
+[Pages run 38149118451](https://github.com/gravelcycles/travels/actions/runs/38149118451)
+succeeded. Fresh public HTML for all three real journeys and the demo, plus
+`app.js` and `mobile-ux.js`, match the tested release byte-for-byte. No Replay
+implementation or delivery work remains. Concurrent checkout edits were preserved.
 
 ## Café August outside-only correction — 11 October 2026
 
@@ -189,9 +209,9 @@ index and Worker code are unchanged, so this release needs only Pages deployment
 Open [the public Alpine example](https://gravelcycles.github.io/travels/demo.html?journey=alpine-crossing&day=alps-d1&view=map)
 or the local [Studio Places editor](http://127.0.0.1:4186/studio/).
 
-**Replay playback, slider and named chapter seeking are implemented.** Named
-seeking was authorized in the 11 October UX fixes. The older day-experience
-experiment separately compares camera framing; it is not the current player.
+**Full-trip Replay is disabled by the later 11 October owner request (O09).**
+The earlier playback/seeking implementation and camera prototypes remain historical;
+do not reactivate them. Arrival/city playback remains available in the main map.
 
 The superseded combined **Photos + Places** prototype is preserved locally at
 `codex/day-experience-review` · `37a8b0a`. Open
@@ -367,7 +387,7 @@ for demos before putting the proposed new features on the live site.
 | Batch photo editing / larger contact sheet | Demo only. Existing single-photo edits and album ordering are already delivered. |
 | Publishing readiness / agent handoff | Demo only. Keep local/saved/live distinctions explicit; publishing remains agent-operated. |
 | Private video intake | Demo only; see W07 below. Hosted public video playback already works. |
-| Labeled Replay seeking/timeline | Demo only. Shared Replay remains map-only. |
+| Labeled Replay seeking/timeline | Superseded: full-trip Replay disabled on 11 October (O09). |
 
 The delight review additionally proposes personal memory entry points, direct
 media browsing, in-context day editing, visual authoring and group storytelling.

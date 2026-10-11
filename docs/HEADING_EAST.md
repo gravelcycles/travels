@@ -17,10 +17,16 @@ initially all on. Past includes today and city stays whose arrival has already
 occurred, using the trip's time zone; this is calendar grouping, not evidence
 of a visit. Future locked in uses dated upcoming events without TBD status;
 Future TBD uses upcoming/undated TBD events. Both controls filter the same list,
-map, albums and Replay. Keep original stop numbers and at least one populated
+map and albums. Keep original stop numbers and at least one populated
 group visible. Verify desktop Days and full-trip map controls, the phone picker
 and whole-trip map, including hiding the selected stop and restoring all stops.
 See the [shared contract](../JOURNEY_WORKFLOW.md#tbd-stops-and-legs).
+
+Validation: all 523 integration tests and the production build pass. Desktop and
+phone checks verify synchronized controls and the actual 8 past/current, 3 locked-in
+and 18 TBD stays on 11 October. The reference, demo and independent city draft
+retain shared behavior, including 320px and landscape checks. Full-trip Replay
+remains disabled under O09. Private images were omitted in local map QA.
 
 ## Owner-reviewed photo locations — 11 October 2026
 

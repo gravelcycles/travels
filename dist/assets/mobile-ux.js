@@ -44,7 +44,7 @@
     }
     function presentOverlay(id) {
       const surface = $(`#${id}`);
-      if (surface.open) return;
+      if (!surface || surface.inert || surface.open) return;
       if (!restoring) { save(); history.pushState({...history.state}, '', location.href); }
       overlay = id; if (!restoring) overlayDepth++; surface.showModal(); save();
     }
@@ -392,7 +392,6 @@
     $('#mobile-photo-prev').onclick=()=>api.move(-1);$('#mobile-photo-next').onclick=()=>api.move(1);
     dialog.addEventListener('cancel',event=>{if(!enabled())return;event.preventDefault();if(grid)setGrid(false);else if(locationOpen)setLocation(false);else back();});
     $('#mobile-back').onclick=()=>$('.atlas-shell').dataset.mobileTab==='map'?overview():navigate('map');
-    $('#mobile-open-replay').onclick=()=>api.replay();
     $('#mobile-day-picker').onclick=()=>navigate($('.atlas-shell').dataset.mobileTab==='route'?'map':'route');
     $('#mobile-previous-day').onclick=()=>{api.stepDay(-1);save();};$('#mobile-next-day').onclick=()=>{api.stepDay(1);save();};
     $('#mobile-day-details').onclick=()=>{navigate(api.scope()==='journey'?'route':'story');$('.story-panel').scrollTop=0;};

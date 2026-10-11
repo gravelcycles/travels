@@ -150,7 +150,7 @@ cached reads and inline retry. Saved places have no empty-review modal detour.
 Studio uses Trip / Media / Places / Routes, with Photos and Videos under Media,
 visual photo choices, a contact sheet before batch actions and one Save locally.
 Review for sharing groups required fixes and optional choices; it prepares a
-handoff without claiming the draft is live. Replay includes named chapter seeking.
+handoff without claiming the draft is live.
 
 When both photo pins are already in view, the viewer map stays still. Nearby
 moves go directly to the next view; longer moves use a parabolic zoom arc with
@@ -158,24 +158,15 @@ a brief 40 ms pause at the widest view. Saved map frames preserve the composed
 area on different screen sizes. Older photos automatically use their saved pin
 and zoom. Reduced motion skips animation; unlocated photos use the day’s context.
 
-## Replay a trip
+## Explore a trip
 
-Open a journey and choose **Trip replay** or **Relive the trip**. Playback starts
-automatically after two seconds; Pause cancels the countdown. Closing, changing
-moments, or hiding the tab also cancels pending autoplay. Replay follows every day's travel
-legs in their stored order, retaining each mode's map color and line pattern as
-the route accumulates. Playback starts at **2×** by default, with 50% longer holds for rest days
-at that speed. The 1× timing is unchanged. It includes
-play/pause, half/normal/double speed, day
-step buttons, a day timeline, keyboard controls, and a completion state.
-
-Replay is map-only: ordered route travel and event stories, without photographs,
-photo pauses or image preloads. It frames the active route leg; legacy photo
-choices in saved chapters are ignored. Browse photographs in the day/stop albums.
-The separate [Arrival → city flow](docs/ARRIVAL_CITY_DEMO.md) shows an incoming
-route before settling on the destination. With reduced motion enabled, legs and
-camera changes update without animation while timing and manual controls remain
-available.
+Full-trip Replay is disabled by the owner's 11 October 2026 decision because
+its useful features are now part of the normal view. Explore the map and
+navigate days/stops as usual. The [Arrival → city flow](docs/ARRIVAL_CITY_DEMO.md)
+still traces the incoming route before settling on the destination, with
+Replay arrival and Skip to city controls and reduced-motion support.
+Existing chapter data is preserved; the full-trip player and Studio chapter
+editor are inaccessible. See [O09](docs/OWNER_DECISIONS.md).
 
 ## Annotate photos and redraw routes
 
@@ -197,7 +188,7 @@ Selecting another photo in the same day keeps the working view, so nearby pins
 can share a frame. **Show saved frame** restores it; **Reset frame to pin** returns
 to automatic framing. Moving a pin inside a custom frame preserves that frame;
 moving it outside resets to automatic framing. The photo viewer uses the saved
-frame; Replay retains its route/day camera.
+frame; arrival playback retains its reviewed route/city camera.
 In **Route drawing**, select a day and any of its travel
 legs, click the orange line to add control points, drag any point—including the
 start and end—or type exact endpoint coordinates. Moving an endpoint updates

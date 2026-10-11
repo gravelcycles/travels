@@ -289,8 +289,8 @@ Routes, text, captions, locations, and tiny embedded blur placeholders stay publ
 - Worker: https://travels-private-photos.travels-journey-atlas.workers.dev
 - Current deployed code uses browser password derivation and lightweight server
   proof verification. Temporary production probe credentials were removed and
-  the Worker was explicitly redeployed. The owner-selected `<credential-id>`
-  credential is now active; production login and photo checks passed.
+  the Worker was explicitly redeployed. The owner-selected credential
+  is active at this historical checkpoint; production login and photo checks passed.
   Worker version: `125d91b6-75cf-4ff1-b5f8-17e27428b14d`.
 - Private Standard R2 bucket: `travels-private-photos`; managed public access is
   disabled and no public custom domains are attached.
@@ -386,14 +386,11 @@ blob cache entries. Local Studio can read ignored derivatives; the local-only
 
 ## Agent-operated maintenance
 
-Credential update, 11 October 2026: the owner's final supplied pair was added as
-`<credential-id>` and `<credential-id>`; the superseded pair was not configured. The four prior
-credentials and signing key are unchanged. Worker version
-`781275f0-405e-4b83-8c50-401744eca060` passed live login, PKCE redemption,
-remembered access and protected-image checksum checks for both additions.
-Existing signed access still works; anonymous image GET/HEAD and both
-superseded password values are rejected. All 518 tests, build and Worker
-runtime checks passed. No shared runtime or public assets changed.
+Credential maintenance, 11 October 2026: deployed and verified live login,
+PKCE redemption, remembered access, protected-image checksums and anonymous
+access denial. Existing access and the signing key were preserved. All 518
+tests, build and Worker runtime checks passed. No shared runtime or public
+assets changed.
 
 Password additions preserve every existing credential and the session signing
 key; they do not rotate or revoke access. Compare the local credential IDs/salts
@@ -402,14 +399,20 @@ login, PKCE redemption, remembered access and a protected-image request. When
 the owner has already supplied passwords, process them through non-echoing
 input in memory using the existing credential helpers; do not put plaintext in
 source files, shell arguments/history, logs or documentation. Otherwise use the
-local setup form. Keep verification receipts generic; never record credential labels or identifying password hints in Git.
+local setup form. Keep verification receipts generic. Never document real
+credential IDs/labels, recipient or group names, password fragments, structure,
+length, or other identifying hints in Markdown, changelogs or commit messages.
+Use neutral placeholders in examples. Inspect IDs privately when operating the
+service, and do not copy that output into documentation. This implements the
+owner's 11 October 2026 correction and supersedes the earlier permission to
+record credential labels.
 
 The user uses browser forms; these commands are for agents:
 
 ```sh
 npm run auth:manage
 npm run auth:credentials -- list
-npm run auth:credentials -- revoke family
+npm run auth:credentials -- revoke "<credential-id>"
 npm run auth:credentials -- rotate-sessions
 npm run auth:credentials -- deploy
 npm run auth:deploy
@@ -473,6 +476,5 @@ originals remain private. Old caches or copies outside the origin may persist;
 this does not provide retroactive secrecy.
 
 Do not restore public hosting as a failure fallback. Keep the atlas locked while
-repairing auth. Future passwords should use the local setup form (12-character
-minimum); the initial shorter test credential was explicitly chosen by the
-owner. Replace that test credential with a strong passphrase before broader use.
+repairing auth. Future passwords should use the local setup form and its
+validation rules; do not record exceptions or identifying password details here.
