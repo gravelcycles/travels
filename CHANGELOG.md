@@ -1,5 +1,16 @@
 # Changelog
 
+## 11 October 2026 — one opening action and Heading East description
+
+- Keep one Explore the journey action and open the whole-trip map. Remove the
+  duplicate Whole trip map action; preserve direct day/photo links and one
+  useful day/stop-list fallback for unmapped drafts.
+- Replace Heading East's subtitle with the owner's exact paragraph about the
+  journey after summer in Switzerland. Record the shared opening correction in
+  O06 and the trip-specific wording in its intake record.
+- Validation: 524 tests and the production build pass; desktop/phone checks
+  confirm the supplied copy, single action and whole-trip map entry.
+
 ## 11 October 2026 — Past and future trip filters
 
 - Replaced the shared TBD-only checkbox with Past / Future locked in / Future

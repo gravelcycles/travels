@@ -224,6 +224,12 @@ stable. Default day date labels follow moves; custom date labels and photo
 capture timestamps remain editorial data. Existing reviewed geometry is retained;
 new legs start as explicitly provisional endpoint guides and need route review.
 
+The opening has one **Explore the journey** button that enters the whole-trip
+map, without focusing a day or playing its arrival. Do not restore the separate
+Whole trip map button. Unmapped drafts retain a single day/stop-list entry;
+direct day/photo links bypass the opening. Journey `subtitle` supplies the
+opening description and stays traveler-authored (O06/O10).
+
 The editor stores `coverPhoto: { photoId, focal: [xPercent, yPercent] }` for the
 catalog and opening, with visible-photo/text fallback. Full-trip Replay is
 disabled across all viewers and its Studio chapter editor is hidden (O09,

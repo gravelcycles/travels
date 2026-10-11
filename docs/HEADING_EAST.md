@@ -5,6 +5,16 @@ Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 
 Each city is one event. Taglines and stories are deliberately empty; the first
 photo intake is recorded below.
 
+## Owner-supplied opening description — 11 October 2026
+
+The owner replaced the generated itinerary-count subtitle with their paragraph
+beginning “After a summer in Switzerland”. Store that text verbatim in the
+journey's `subtitle`, including the supplied spelling and punctuation; it is
+the source for the opening description and other existing subtitle surfaces.
+Do not replace it with a city-count or route-summary fallback. This does not
+change dates, route evidence, place records or captions. The single opening
+button follows the shared O06 whole-trip-map rule.
+
 ## Day visibility filters — 11 October 2026
 
 Owner request: a toggle in the Days section for “past, future locked in, and

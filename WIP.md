@@ -16,6 +16,18 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Opening screen and Heading East description — 11 October 2026
+
+Authorized: one Explore the journey button opening the whole-trip map; remove
+the secondary map action. Replace Heading East's subtitle with the owner's exact
+paragraph beginning “After a summer in Switzerland”. Current guidance is O06
+and [the trip record](docs/HEADING_EAST.md). Work is isolated on
+`codex/intro-whole-trip-map`; concurrent edits remain in the original checkout.
+Implementation and shared introduction regressions pass all **524 tests** and
+the production build. Heading East desktop/390px checks confirm the exact copy,
+one button and whole-trip map entry; reference/demo/populated-draft checks
+cover inheritance. Next: integrate latest main, deploy and verify public content.
+
 ## Heading East day visibility — 11 October 2026
 
 Authorized: synchronized Past / Future locked in / Future TBD toggles in the
