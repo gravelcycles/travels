@@ -26,18 +26,20 @@ This file records dated changes, not current instructions. Use
 - Validation: 518 tests and the production build pass; all three outdoor images
   load and open in the gallery with the correct source credits.
 
-## 11 October 2026 — additional shared photo passwords
+## 11 October 2026 — keep password documentation anonymous
 
-- Add two owner-selected credentials through the existing Cloudflare password
-  handler, retaining all four existing credentials and the session signing key.
-- The owner's corrected values supersede the earlier request; only the final
-  supplied values are configured. Passwords and verifiers remain outside Git.
-- Document additive credential maintenance and live acceptance checks in
-  `PHOTO_AUTH_HANDOFF.md`.
-- Validation: all 518 tests, build and Worker runtime checks pass. Both new
-  credentials pass live login, PKCE, remembered access and protected-image
-  checksum checks; existing signed access remains valid, while anonymous image
-  requests and the superseded password values are rejected.
+- Remove identifying credential labels and password hints from Markdown,
+  including historical records and command examples.
+- Record the owner's correction in O14 and the password-maintenance workflow:
+  documentation contains generic operations and verification results only.
+
+## 11 October 2026 — shared photo credential maintenance
+
+- Deploy and verify the requested credential update through the existing
+  Cloudflare handler, preserving existing access and the session signing key.
+- Validation: all 518 tests, build and Worker runtime checks pass. Live login,
+  PKCE, remembered access, protected-image checksums and anonymous access denial
+  are verified. Credential details remain in private operational storage.
 
 
 ## 11 October 2026 — publish Heading East location review

@@ -297,7 +297,7 @@ files. Authentication and private storage are unchanged.
 
 Published as `55eeb2b` in successful Pages run `34377620269`.
 Worker version: `125d91b6-75cf-4ff1-b5f8-17e27428b14d` on Workers Free.
-The owner-selected `<credential-id>` credential is active; its plaintext is not
+The owner-selected credential is active at this historical checkpoint; its plaintext is not
 stored in the repository. Cloudflare serves 99 visible photographs as 198
 private WebP objects (135,849,682 bytes), with small and large sizes and public
 32 px blur placeholders. The GitHub Pages address remains unchanged.
