@@ -37,7 +37,7 @@ only the traveler's words. Place labels are optional traveler-written text too;
 do not generate photo names, scene descriptions, city/GPS labels, or substitute
 alt text or filenames into visible copy. Blank captions remain blank in both the
 selected-photo card and full viewer. An unlabeled card uses the capture date/time
-as its heading unless it has related Place context. Keep capture timestamps,
+as its heading unless it has an owner-saved Place link. Keep capture timestamps,
 reviewed pins and source filenames for identification in Studio. Resizing,
 metadata extraction, asset upload, and manifest
 updates are deterministic code tasks; no LLM or API key is needed. Accessibility
@@ -444,17 +444,16 @@ A link never assigns GPS. Unlocated linked photos remain browseable; Locate is
 disabled until a known photo location exists. Trashed photos retain their saved
 links and return when restored, but never appear in the public selection.
 
-The viewer distinguishes explicit links from **nearby photos** within 150 metres
-of a place's coordinate on its assigned days. Proximity is computed, never saved
-as a relationship, and does not prove a visit. Venue/landmark imagery has its own
-public credits and source links, separate from the trip album. Moving a photo to
-another day or changing its group automatically updates eligible nearby results;
-explicit place membership and order remain owner-controlled.
+Only explicitly saved links associate photos with Places. GPS proximity never
+creates a photo label, an About button or a nearby-photo suggestion, even when a
+photo and venue share coordinates. Venue/landmark imagery has its own public
+credits and source links, separate from the trip album. Place membership and
+order remain owner-controlled.
 
 Desktop days stay on the left; map bubbles, album thumbnails and linked Places
 photos select a photo inside the existing right journal/photo sidebar. The day
 details and thumbnail strip remain available, with the current photo marked.
-Comments, Locate, About this place and an explicit Full screen control accompany
+Comments, Locate, About this place (only for an owner-saved link) and an explicit Full screen control accompany
 the selected photo; closing it restores the ordinary day preview. Phones keep one named day picker at the bottom and a compact selected
 photo card below the map. Auth expiry clears protected photo pixels from bubbles
 and the card; unlock uses the existing photo service.
