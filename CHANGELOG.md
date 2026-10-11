@@ -4,6 +4,19 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — additional shared photo passwords
+
+- Add two owner-selected credentials through the existing Cloudflare password
+  handler, retaining all four existing credentials and the session signing key.
+- The owner's corrected values supersede the earlier request; only the final
+  supplied values are configured. Passwords and verifiers remain outside Git.
+- Document additive credential maintenance and live acceptance checks in
+  `PHOTO_AUTH_HANDOFF.md`.
+- Validation: all 518 tests, build and Worker runtime checks pass. Both new
+  credentials pass live login, PKCE, remembered access and protected-image
+  checksum checks; existing signed access remains valid, while anonymous image
+  requests and the superseded password values are rejected.
+
 ## 11 October 2026 — publish Heading East location review
 
 - Apply the owner's saved photo pins, place labels, zooms and map frame across

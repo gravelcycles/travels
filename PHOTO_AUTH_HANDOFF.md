@@ -386,6 +386,24 @@ blob cache entries. Local Studio can read ignored derivatives; the local-only
 
 ## Agent-operated maintenance
 
+Credential update, 11 October 2026: the owner's final supplied pair was added as
+`<credential-id>` and `<credential-id>`; the superseded pair was not configured. The four prior
+credentials and signing key are unchanged. Worker version
+`781275f0-405e-4b83-8c50-401744eca060` passed live login, PKCE redemption,
+remembered access and protected-image checksum checks for both additions.
+Existing signed access still works; anonymous image GET/HEAD and both
+superseded password values are rejected. All 518 tests, build and Worker
+runtime checks passed. No shared runtime or public assets changed.
+
+Password additions preserve every existing credential and the session signing
+key; they do not rotate or revoke access. Compare the local credential IDs/salts
+with the live login page before deploying, then verify each new password through
+login, PKCE redemption, remembered access and a protected-image request. When
+the owner has already supplied passwords, process them through non-echoing
+input in memory using the existing credential helpers; do not put plaintext in
+source files, shell arguments/history, logs or documentation. Otherwise use the
+local setup form. Keep verification receipts generic; never record credential labels or identifying password hints in Git.
+
 The user uses browser forms; these commands are for agents:
 
 ```sh
