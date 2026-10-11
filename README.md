@@ -33,7 +33,7 @@ appear; demo journeys remain separate. The family trip is titled
 ## Private photographs
 
 The photo-only Cloudflare implementation supports multiple shared passwords and
-30-day remembered access. Two private WebP sizes replace the old variants; tiny
+30-day remembered access. Private WebP thumbnails, previews and full photos replace originals; tiny
 embedded blurs remain public. The site address stays on GitHub Pages.
 **Password protection is live, and both historical public photo Releases have
 been removed.** See [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md)
@@ -156,8 +156,9 @@ npm run studio
 
 The agent then opens `http://127.0.0.1:4173/studio/`. Choose any journey first.
 In **Photo locations**, select a day and photo, click the map (or drag its pin)
-to set the exact location, and add the precise place, caption, scene description,
-and preferred map zoom. Pan and zoom to compose the surrounding area, then choose
+to set the exact location and preferred map zoom. Captions, notes and place labels
+are optional traveler-written text; leave them blank unless the traveler supplies
+them. Pan and zoom to compose the surrounding area, then choose
 **Use current map frame** to save its bounds separately from the pin. The dashed
 outline shows the saved frame; existing photos infer one from their pin and zoom.
 Selecting another photo in the same day keeps the working view, so nearby pins
@@ -194,17 +195,51 @@ Start with `TRIP_CONTENT.md`. Journey source data lives in
 `content/journeys/<journey-id>.json`. Private originals go in ignored `photos/`; the
 checked-in manifest references protected WebPs in private Cloudflare R2.
 
-The agent installs the generator dependencies and builds the current trip with:
+Use the Switzerland–Italy photo workflow as the reference: **no generated photo
+names, captions, descriptions or location labels**. Visible copy stays blank
+unless the traveler writes or supplies it. Never display accessibility `alt` text
+or original filenames as substitute captions. Keep source filenames as editor
+identifiers, and retain actual capture dates/times and reviewed map coordinates.
+
+For an initial folder import, select the journey and source explicitly:
 
 ```sh
-npm install
-npm run photos:build -- --journey switzerland-italy-family-2026
+npm run photos:build -- --journey <journey-id> --source photos/<folder>
 ```
 
-This creates responsive 480/1280/2560/3200 px variants under ignored `build/`
-and updates `dist/assets/trip-photos.js`. See `PHOTO_WORKFLOW.md` for review,
-privacy, and private R2 publishing steps. Never commit the originals or generated
-photo binaries.
+1. Preserve untouched originals, including HEIC and DNG. On macOS, the bulk
+   importer decodes HEIC/DNG through Quick Look and creates metadata-stripped
+   WebPs: up to 480 px wide, 1280 px wide and 3200 px on the longest edge, without
+   upscaling, plus a tiny embedded blur. Upload these derivatives, never RAW files.
+2. Check the import report against the source count. Review capture-date matching
+   in the journey time zone, especially transfer days and multi-day city albums.
+   Keep the actual photo date/time, not the album's start date. Review GPS before
+   saving exact pins; missing GPS stays unset until the traveler places it. Do
+   not guess a viewpoint or add labels such as “city · camera GPS.”
+3. Preview through Studio using local derivatives. Preserve existing day/order,
+   pins, frames, cover and traveler-written edits. Bulk import replaces the
+   journey manifest; use Studio's incremental upload for later additions, and
+   edit overrides directly for text-only cleanup. Do not rebuild or re-upload
+   image files just to change captions.
+4. Dry-run the private publisher, then upload and verify the reviewed assets:
+
+   ```sh
+   npm run photos:publish -- --journey <journey-id>
+   npm run photos:publish -- --journey <journey-id> --publish --concurrency 1
+   ```
+
+   One file at a time is suitable for poor Wi-Fi. Retries verify and reuse
+   matching uploaded objects. Originals and derivatives remain ignored locally;
+   only the manifest and editorial metadata belong in Git.
+5. Run `npm test` and `npm run build`, review and commit the source changes and
+   generated output, integrate remote `main`, then deploy. Verify Pages succeeds
+   and a fresh public page shows the expected count and text. Update the private
+   service's asset index when adding/removing eligible photo IDs; text-only edits
+   need only the site deployment.
+
+The importer writes `content/photo-manifests/<journey-id>.json`; the site build
+generates `dist/assets/trip-photos.js`. See [PHOTO_WORKFLOW.md](PHOTO_WORKFLOW.md)
+for the complete review and private publishing flow.
 
 Use `PHOTO_WORKFLOW.md` when transferring iPhone images so capture time and GPS
 survive the import. Route research and its limitations are recorded in
