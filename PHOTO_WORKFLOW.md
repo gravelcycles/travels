@@ -445,8 +445,10 @@ public credits and source links, separate from the trip album. Moving a photo to
 another day or changing its group automatically updates eligible nearby results;
 explicit place membership and order remain owner-controlled.
 
-Desktop days stay on the left; normal photo browsing opens on the right beside
-the map, with Comments, Locate, About this place and an explicit Full screen
-control. Phones keep one named day picker at the bottom and a compact selected
+Desktop days stay on the left; map bubbles, album thumbnails and linked Places
+photos select a photo inside the existing right journal/photo sidebar. The day
+details and thumbnail strip remain available, with the current photo marked.
+Comments, Locate, About this place and an explicit Full screen control accompany
+the selected photo; closing it restores the ordinary day preview. Phones keep one named day picker at the bottom and a compact selected
 photo card below the map. Auth expiry clears protected photo pixels from bubbles
 and the card; unlock uses the existing photo service.

@@ -2266,7 +2266,13 @@
     explore:()=>{dismissIntroduction();clearSegmentInspection(true);if($('.atlas-shell').dataset.mobileTab!=='map')setMobileTab('map');},
     placesOpen:()=>placesUI.isOpen(), closePlaces:()=>placesUI.closeForPhotos(),openPlace:id=>placesUI.openPlace(id),
     selectPhotoDay:id=>{if(id!==activeDayId)setActiveDay(id,true,{preservePhotoSelection:true,animateArrival:false});},
-    photoChanged:photo=>placesUI.photoChanged(photo),comments:()=>placesUI.openComments(),commentsAvailable:()=>placesUI.commentsAvailable()
+    photoChanged:photo=>{
+      for(const button of photoStrip.querySelectorAll('[data-open-photo]')) {
+        if(button.dataset.openPhoto===photo?.id)button.setAttribute('aria-current','true');
+        else button.removeAttribute('aria-current');
+      }
+      placesUI.photoChanged(photo);
+    },comments:()=>placesUI.openComments(),commentsAvailable:()=>placesUI.commentsAvailable()
   });
   arrivalChapter = window.JOURNEY_ATLAS_ARRIVAL.create({
     onState: renderArrivalChapter,
