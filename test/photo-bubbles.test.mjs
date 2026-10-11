@@ -93,9 +93,8 @@ test('scrolling or cancelled touches cannot accidentally open full screen',()=>{
  button.fire('pointerup',{clientX:21,clientY:22,pointerId:2});
  button.onclick({detail:1});assert.deepEqual(f.opened,['a']);
 });
-test('portraits use their own proportions and blank captions never repeat accessibility text',()=>{
+test('blank captions never repeat accessibility text',()=>{
  const f=fixture();f.photos[0].alt='Accessibility only';f.controller.open(f.photos.slice(0,1));
- assert.equal(f.node('map-photo-card').style['--selected-photo-ratio'],'0.75');
  assert.equal(f.node('[data-bubble-caption]').textContent,'');assert.equal(f.node('[data-bubble-caption]').hidden,true);
 });
 test('browsing a selection keeps each map thumbnail tied to its anchor and filters cross-day members',()=>{

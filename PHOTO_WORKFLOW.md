@@ -456,8 +456,10 @@ order remain owner-controlled.
 
 Desktop days stay on the left; map bubbles, album thumbnails and linked Places
 photos select a photo inside the existing right journal/photo sidebar. The image
-uses its own proportions with a viewport height limit, and clicking it (or
-pressing Enter/Space) opens the full viewer. An About place action appears only for an owner-saved link. One compact row groups photo arrows,
+fits uncropped inside a fixed-height frame that adapts only to the viewport,
+keeping the controls and thumbnails stationary when browsing portrait and
+landscape photos. Clicking it (or pressing Enter/Space) opens the full viewer.
+An About place action appears only for an owner-saved link. One compact row groups photo arrows,
 selection count, Locate and Comments. Only supplied captions appear; metadata is
 under **Photo details**, and the day's thumbnail strip sits immediately below.
 **Day/Stop details** expands the itinerary without taking space from the photo.

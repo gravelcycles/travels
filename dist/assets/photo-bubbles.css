@@ -57,7 +57,7 @@
  .places-open .map-panel { grid-column:2;grid-row:1; }
  .bubble-card-open .story-album-entry>.story-media,.bubble-card-open .story-photo-action { display:none; }
  .bubble-card { display:block;padding:0;border:0; }
- .bubble-card-image { aspect-ratio:var(--selected-photo-ratio,1);max-height:max(240px,calc(100dvh - 320px));border-radius:0; }
+ .bubble-card-image { height:clamp(240px,calc(100dvh - 320px),480px);aspect-ratio:auto;border-radius:0; }
  .bubble-card-copy { padding:4px 14px 8px; }
  .photo-strip button[aria-current="true"] { outline:2px solid var(--selected);outline-offset:2px; }
  .bubble-card-open .photo-section { padding:10px 14px; }

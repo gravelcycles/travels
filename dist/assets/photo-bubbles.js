@@ -20,16 +20,22 @@
       node.hidden=Boolean(auth()?.isProtected(photo) && !auth()?.unlocked);
       if(node===image){$('[data-bubble-image-status]').textContent=node.hidden?'':'Loading photo…';$('[data-bubble-retry]').hidden=true;}
       if(node.hidden)return;
-      node.onerror=()=>{node.hidden=true;if(node===image){$('[data-bubble-image-status]').textContent='This photo could not load.';$('[data-bubble-retry]').hidden=false;}}; node.onload=()=>{node.hidden=false;if(node===image){if(node.naturalWidth>0&&node.naturalHeight>0)card.style.setProperty('--selected-photo-ratio',String(node.naturalWidth/node.naturalHeight));$('[data-bubble-image-status]').textContent='';$('[data-bubble-retry]').hidden=true;}};
+      node.onerror=()=>{node.hidden=true;if(node===image){$('[data-bubble-image-status]').textContent='This photo could not load.';$('[data-bubble-retry]').hidden=false;}}; node.onload=()=>{node.hidden=false;if(node===image){$('[data-bubble-image-status]').textContent='';$('[data-bubble-retry]').hidden=true;}};
       if(auth()?.isProtected(photo))auth().setImage(node,photo,width);else node.src=options.photoUrl(photo,width);
     }
     function syncVisibility() {
       const shown=Boolean(selection && !options.placesOpen());
       card.hidden=!shown;document.body.classList.toggle('bubble-card-open',shown);
-      if(phone())document.querySelector('.mobile-day-summary').before(card);
-      else document.querySelector('.story-album-entry').append(card);
+      if(phone()){
+        const summary=document.querySelector('.mobile-day-summary');
+        if(card.nextElementSibling!==summary)summary.before(card);
+      }else{
+        const album=document.querySelector('.story-album-entry');
+        if(card.parentElement!==album)album.append(card);
+      }
       const desktopSelection=shown&&!phone(),details=document.getElementById('sidebar-day-details'),strip=document.querySelector('.photo-section');
-      if(desktopSelection)details.before(strip);else details.after(strip);
+      if(desktopSelection){if(strip.nextElementSibling!==details)details.before(strip);}
+      else if(details.nextElementSibling!==strip)details.after(strip);
       if(desktopSelection!==sidebarPhotoMode){details.open=!desktopSelection;sidebarPhotoMode=desktopSelection;}
       requestAnimationFrame(()=>options.map()?.resize());
     }
@@ -51,8 +57,6 @@
       selection=selected();syncVisibility();if(!selection){exact?.remove();exact=null;clearImage(image);options.photoChanged?.(null);return;}
       const photo=current();if(card.dataset.photoId!==photo.id){exact?.remove();exact=null;}if(photo.dayId!==options.dayId()){selection.dayId=photo.dayId;options.selectPhotoDay?.(photo.dayId);}
       const list=members(), index=list.indexOf(photo), place=model.placeForPhoto(photo,options.journey().pointsOfInterest || []);
-      const ratio=Number(photo.width)/Number(photo.height);
-      card.style.setProperty('--selected-photo-ratio',Number.isFinite(ratio)&&ratio>0?String(ratio):'1');
       loadImage(image,photo,1280);
       $('[data-bubble-title]').textContent=place ? `At ${place.point.name}` : (photo.locationLabel || photo.takenAt || 'Photo');
       const day=options.journey().days.find(day=>day.id===photo.dayId);$('[data-bubble-day]').textContent=day ? `${root.JOURNEY_ATLAS_UTILS.eventWord(options.journey(),'title')} ${day.number} · ${day.title}` : '';
