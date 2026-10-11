@@ -32,6 +32,13 @@ group visible. Verify desktop Days and full-trip map controls, the phone picker
 and whole-trip map, including hiding the selected stop and restoring all stops.
 See the [shared contract](../JOURNEY_WORKFLOW.md#tbd-stops-and-legs).
 
+Later owner correction, 11 October: “horizontal in a row so it takes up less
+vert space.” Both filter locations must keep the three toggles in one compact
+row, including at 320px. Visible labels shorten to Past / Locked in / TBD, with
+full future labels and the Past/today explanation available to assistive
+technology. The explanatory paragraph no longer consumes visible vertical space.
+This supersedes the initial stacked checkbox layout, not its filtering behavior.
+
 Validation: all 523 integration tests and the production build pass. Desktop and
 phone checks verify synchronized controls and the actual 8 past/current, 3 locked-in
 and 18 TBD stays on 11 October. The reference, demo and independent city draft

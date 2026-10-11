@@ -42,7 +42,11 @@ documentation, is integrated. The merged browser check confirms both filters
 and absent full-trip Replay. Deployed as `e58f939` via successful
 [Pages run 38149951215](https://github.com/gravelcycles/travels/actions/runs/38149951215).
 Fresh public Heading East HTML and all five changed browser assets match the
-release byte-for-byte. No filter implementation or delivery work remains.
+release byte-for-byte. Later owner follow-up requires a compact horizontal row
+in both locations. Layout and current guidance updated on the same branch. Desktop and 320/390px
+browser checks confirm one row and synchronized controls; all 524 tests and the
+production build pass. Next: integrate current main, publish and verify public
+assets. Horizontal-layout delivery is pending.
 
 ## Full-trip Replay disabled — 11 October 2026
 

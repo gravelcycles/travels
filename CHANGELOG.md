@@ -1,5 +1,13 @@
 # Changelog
 
+## 11 October 2026 — Compact day visibility row
+
+- Place the three day-visibility toggles in one horizontal row in the Days/Stops
+  section and full-trip map menu, including phones. Shorten visible labels to
+  Past / Locked in / TBD while retaining full accessible meanings and 44px
+  targets; move the Past/today explanation out of the visible layout.
+- Record the owner's follow-up in the Heading East record and shared workflow.
+
 ## 11 October 2026 — one opening action and Heading East description
 
 - Keep one Explore the journey action and open the whole-trip map. Remove the

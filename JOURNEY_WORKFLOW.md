@@ -840,7 +840,11 @@ copy. All events start visible. Shared **Past**, **Future locked in**, and
 **Future TBD** checkboxes replace Show TBD stops, with the same selection in the
 Days/Stops list and the full-trip map's **Filter days/stops** menu on desktop and
 phone. The controls appear when more than one group is populated; unavailable
-groups and the last visible populated group are disabled.
+groups and the last visible populated group are disabled. Keep all three toggles
+in one horizontal row, including at 320px, with 44px-high label targets. Visible
+labels are Past / Locked in / TBD; accessible labels retain Future, and the
+Past/today explanation is an accessible description and hover hint rather than
+another visible paragraph (owner follow-up, 11 October 2026).
 
 Classification uses the current calendar date in `journey.timeZone` (UTC when
 absent). Past includes today and city stays whose arrival has already occurred;
