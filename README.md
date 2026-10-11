@@ -124,15 +124,19 @@ compact expandable row. Descriptions and taglines may stay blank; no generated
 stay labels or placeholder prose appear.
 
 Sparse photo bubbles coexist with Places pins on day/stop maps. Desktop keeps
-days left, map center and the existing journal/photo sidebar right. Every actual
-photo opens full screen in one click, including clustered map thumbnails, albums
-and linked Places images. The entry collection's order/count stays intact in
-comments and phone grids. Sidebar imagery remains large, uncropped and stable in
-height. Browsing does not replace an unrelated bubble's image; changing days
-clears the old selection. Only saved links connect photos to venues.
+days left, map center and the existing journal/photo sidebar right. Clicking a
+map circle bubble or a thumbnail in the right-hand reel selects the photo in
+that sidebar. Clicking the large top-right selected/lead image opens fullscreen
+in one step. Album/grid and linked Places viewer entry keep their existing flow;
+the entry collection's order/count stays intact in comments and phone grids.
+Sidebar imagery remains large, uncropped and stable in height. Browsing does not
+replace an unrelated bubble's image. Switching days closes the old map popups
+first and clears the old selection. Only saved links connect photos to venues.
 
 Phone Photos opens the event grid; one event card contains its title/date,
-Photos, contextual Places and secondary arrival controls. Photo comments and
+Photos, contextual Places and secondary arrival controls. A map photo bubble
+selects the compact photo card; its large image opens fullscreen. Existing
+grid/swipe navigation stays intact. Photo comments and
 populated place reviews float above their context with immediate opening,
 cached reads and inline retry. Saved places have no empty-review modal detour.
 

@@ -4,10 +4,23 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — clarified photo selection and day-change cleanup
+
+- Apply the owner's later correction: map circle bubbles and right-hand reel
+  thumbnails select in the existing sidebar, without opening fullscreen. The
+  large top-right selected/lead image opens fullscreen in one activation.
+- Phone map bubbles select the compact photo card; its large image opens
+  fullscreen. Existing album/grid, linked Places and phone swipe flows remain.
+- Close old day/stop map popups and hover previews before showing the next day;
+  cancel pending opens so old previews cannot reappear over it.
+- This supersedes the all-photo-fullscreen behavior described in the initial
+  UX entry below. That entry is retained as the implementation history.
+
 ## 11 October 2026 — direct photo opening and coherent UX flows
 
-- Open actual photos full screen in one activation from map clusters, albums,
-  sidebar and linked places; preserve the exact collection through comments,
+- Initial behavior, **superseded for map circles and right-hand reel thumbnails
+  by the later same-day clarification above:** open actual photos full screen
+  in one activation from map clusters, albums, sidebar and linked places; preserve the exact collection through comments,
   grids and Back/Forward, including responsive deep-link navigation.
 - Consolidate phone arrival/event controls, quiet desktop tools, scope Places,
   remove empty review detours and preserve explicit photo links and blank copy.

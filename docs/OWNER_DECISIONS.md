@@ -1,7 +1,8 @@
 # Owner decisions that every atlas inherits
 
-Reconciled 11 October 2026 against available project conversations, committed
-corrections and current shared behavior. Read this before creating a trip,
+Reconciled 11 October 2026, including the later photo-entry and map-popup
+clarification, against available project conversations, committed corrections
+and current shared behavior. Read this before creating a trip,
 importing content, changing UX or resuming a workstream. These are product and
 editorial requirements, not optional polish. [AGENTS.md](../AGENTS.md) defines
 the reading order and update process; [the audit](ATLAS_CONTINUITY_AUDIT_2026-10-11.md)
@@ -29,11 +30,11 @@ choice supersedes which; ask only if a consequential ambiguity remains.
 | --- | --- | --- |
 | O01 · Photo copy | Captions, notes and place labels start blank and contain only traveler-supplied words. Do not generate photo names, scene descriptions or city/GPS labels. Filenames and accessibility alt text are not visible-caption fallbacks. Actual capture dates/times may identify an unlabeled photo. | Check bulk import **and** Studio upload, then card/fullscreen/phone renderers with blank fields and a separate authored example. Preserve existing copy, order, pins and frames on incremental intake. [Photo workflow](../PHOTO_WORKFLOW.md). |
 | O02 · Photo/place meaning | Only explicit owner-saved `point.photoIds` associate a photo with a venue. Nearby coordinates do not justify “Near …”, an About-place button, a visit or a review. Venue imagery and trip photos remain distinct. | An unlinked photo beside a venue has no venue association; a saved link works and preserves its order. Missing GPS remains unset. [Places contract](PLACES_AND_COMMENTS.md#photos--places--current-contract). |
-| O03 · Desktop photos | Keep days left, map center, and the existing journal/photo sidebar right. Give the selected image useful space, compact controls, adjacent thumbnails and expandable details. Its uncropped frame has a stable height while browsing; clicking or keyboard-activating any actual photo (map bubble, album, sidebar or linked place) opens full screen directly, preserving that collection. Do not insert a second photo panel. | Check a single click from portrait/landscape, singleton/clustered map bubble, album and linked Places photo; then change day; controls must not jump, unrelated bubbles must keep their own images, and the old day's selection must clear. Stationary map refreshes must not remove bubbles or restart their image loads. |
+| O03 · Desktop photos | Keep days left, map center, and the existing journal/photo sidebar right. Clicking or keyboard-activating a map circle bubble (single or clustered) or a thumbnail in the right-hand reel selects the photo in that existing sidebar; it does not open fullscreen. The large top-right selected/lead photo opens fullscreen in one activation, preserving its collection. Its uncropped frame stays a stable height with compact controls and expandable details. Do not insert a second photo panel. Existing album/grid and linked Places viewer entry remain available. | Check map bubble → sidebar selection, reel thumbnail → sidebar selection, then large selected/lead image → fullscreen, including keyboard activation and portrait/landscape images. Controls must not jump; unrelated bubbles keep their own images. Change day: old selection and map popups clear before the new day appears. Stationary refreshes must not remove bubbles or restart image loads. Phone bubbles select the compact card; its large image opens fullscreen, retaining the existing grid/swipe flow. |
 | O04 · Loading and conversations | Preserve the same-size blurred preview until the full image is ready; no black/sizing/loading/auth flash. Fullscreen gets the full derivative, not a sharp thumbnail substitute. Keep the reviewed 350 ms fullscreen reveal and desktop cached-image reveals without refetching. Comments/reviews float with a soft shadow and visible sidebar context; open immediately, with inline loading/retry and preserved text. Comments keep the presenting collection, order and index. Empty saved-place reviews do not open an empty modal. | Test a cold load, cached revisit, rapid selection, slow/failing request and remembered/anonymous access. Reuse bounded caches/preloads; never solve speed by exposing private media. Respect reduced motion. [Photo workflow](../PHOTO_WORKFLOW.md), [conversation UX](PLACES_AND_COMMENTS.md). |
 | O05 · Photo camera | Keep the exact pin separate from its saved map frame. Do not move the photo map when successive pins already fit. Nearby moves are direct; longer moves preserve geographic context. Studio keeps the same-day working frame until deliberately changed. | Browse nearby/distant/unlocated photos; pan manually; check a saved off-center frame on desktop and phone. Unknown locations use event/city context, not a fabricated viewpoint. |
 | O06 · Map hierarchy | The map is the main experience. Keep terrain legible but routes dominant; preserve transport colors/patterns during selection and match the key. Settlement labels stay readable above routes; road labels/shields stay below. Credits start collapsed but remain accessible. | Inspect intersections, overview and close zoom; desktop travel-row hover/focus highlights only that leg without a click action, popup or camera jump. Phone route taps select without desktop tooltips. [Journey workflow](../JOURNEY_WORKFLOW.md#map-location-labels). |
-| O07 · Map markers | Use the reviewed upright signposts, quiet grouped/repeat dots and compact linked hover/focus previews. No sideways/upside-down balloons or large leader-line clutter. Intermediate rail dots are small; each train leg's endpoints are larger. Overview shows endpoints, not intermediate stations. Signpost stems meet the orange endpoint ring's top. | Check route/label/control collisions and fast event changes; dots appear after their route lines and stale pending markers cannot leak into another view. [Location labels](LOCATION_LABELS.md). |
+| O07 · Map markers | Use the reviewed upright signposts, quiet grouped/repeat dots and compact linked hover/focus previews. Before switching the displayed day/stop, close its map popups and hover previews and cancel pending opens; an old popup must not remain over the next map. No sideways/upside-down balloons or large leader-line clutter. Intermediate rail dots are small; each train leg's endpoints are larger. Overview shows endpoints, not intermediate stations. Signpost stems meet the orange endpoint ring's top. | Open a map popup, switch day/stop through the day list, previous/next and photo navigation, and check that it closes before the new map appears. Rapid transitions must not reopen stale previews. Check route/label/control collisions; dots appear after their route lines and stale pending markers cannot leak into another view. [Location labels](LOCATION_LABELS.md). |
 | O08 · Phone navigation | Keep the map-led day/stop screen, persistent header/Replay access and one bottom event picker. Use one resting date/title card with one Photos action and contextual Places; arrival controls belong in that card. Photos opens that event's grid; the Day/Stop control returns to its map. Large photos, responsive swipe/pinch, animated double-tap and deliberate pull-up location follow the established phone flow. | Closing location stays closed through swipes/grid round trips; zoomed drags pan the photo. Check All days, Back/Forward, Escape, 320/390 px and landscape. Desktop retains its left list, without a second day picker. No stray orange pointer-focus rings; keyboard focus stays visible. |
 | O09 · Replay and arrival | Replay is map-only: routes, stories and controls, with no photographs, photo pauses or preloads. Keep its two-second autoplay delay, default 2× and readable rest-day holds; a named chapter selector seeks the existing timeline. Arrival → city is a separate reviewed flow: contextual pullback, combined pan/zoom, 1.5-second trace, plain orange circle, 0.25-second arrival hold, then city framing. | Check a rest event and a complex multi-leg event. Manual navigation/movement cancels stale animation; reduced motion works. City framing includes nearby photos and assigned marked places using the documented boundary/radius rules. [Arrival contract](ARRIVAL_CITY_DEMO.md). |
 | O10 · Editorial restraint | Blank stories/taglines are valid. No generated “stayed here” or “In one place” filler. Optional authored taglines are italic; story paragraphs survive saving. First album photo is the event preview; journey cover is a separate choice. Keep technical/prototype explanations out of the story. | Preview deliberately blank and authored fields after save/rebuild; opening a day's lead starts at photo 1. Do not revive the retired independent daily lead picker. Keep research/uncertainty in provenance with only useful factual context in public copy. |
@@ -51,10 +52,12 @@ adding decorative animation, labels, another panel or another confirmation step.
 ## UX corrections — 11 October 2026
 
 The owner authorized all sixteen findings in [the UX review](UX_REVIEW_2026-10-11.md)
-and explicitly required one screen → full-screen photo in a single activation.
-This supersedes the intermediate map/album/Places selection panel from the
-same day's earlier photo work. The desktop day/map/journal structure remains;
-the existing selected-photo frame stays stable and uncropped. Reviewed image
+and requested one screen → full-screen photo in a single activation. The first
+implementation interpreted that as direct fullscreen from every photo surface.
+**That interpretation is superseded by the later clarification below:** map
+bubbles and the right-hand reel select in the existing sidebar; the large
+selected/lead image opens fullscreen. The desktop day/map/journal structure
+and its stable, uncropped selected-photo frame remain. Reviewed image
 reveals, floating populated conversations, arrival timing and map-only Replay
 remain in force. Named Replay seeking is now authorized; visitor reload
 persistence and explicit sharing remain outside this change.
@@ -66,12 +69,28 @@ revision-bound; the public version remains unverified until deployment checks.
 Video transfer reports measured progress; preparation is indeterminate, with
 clear interruption behavior. These changes apply to every trip and fresh draft.
 
+## Later photo-entry clarification — 11 October 2026
+
+The owner explicitly narrowed the fullscreen boundary in the same task:
+
+> if i click a photo on the map (the circle bubble), don't go fullscreen. if i click a photo in the reel on the right, don't go fullscreen. if i click a photo in the top right of the photo section, then go fullscreen
+
+The owner also reported popups persisting after a day change and directed:
+“popups should close first.” These corrections govern O03 and O07 and supersede
+the earlier all-photo-fullscreen implementation and its verification claims.
+Map/reel selection uses the existing sidebar, not another intermediate panel.
+The large selected/lead image remains one activation from fullscreen. On phones,
+map bubbles select the existing compact card and its large image opens fullscreen;
+the established album grid, swipe and Back flow stays intact. Album/grid and
+explicitly linked Places viewer entry are not redefined by this clarification.
+
 ## Reversals that must not be undone accidentally
 
 | Earlier direction | Latest applicable decision | Evidence |
 | --- | --- | --- |
 | Generated photo captions/descriptions and later metadata-derived labels | Blank traveler-only copy; dates remain separate | 9 September, repeated 11 October; `32cf654`, `de72fad` |
 | Photo landmarks removed on 9 September | Sparse Photos + Places bubbles authorized on 8 October; existing sidebar restored and refined 11 October | `147229b` → `1c7dabe` → `ed7f106`, `7f962ff`, `b80ed36`, `8b6fbc9` |
+| All-photo fullscreen interpretation in the initial 11 October UX implementation | Map circles and right reel thumbnails select in the existing sidebar/card; only the large selected/lead image opens fullscreen within that map/sidebar flow. Close old map popups before switching days. | Later owner clarification, 11 October; quoted above; O03/O07 |
 | Nearby-photo suggestions in the Photos + Places prototype/release | Explicit links only; remove geographic venue guesses | 11 October; `3d88dd7` |
 | Photos inside Replay | Map-only Replay across desktop/phone | 10 September; `bcfc91f` |
 | Always-expanded travel details, generated stay labels | Compact expandable details, authored optional taglines, no stay filler | 15 September; `df5740d`, `7e26085` |

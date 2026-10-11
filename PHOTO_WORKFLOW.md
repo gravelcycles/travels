@@ -475,22 +475,30 @@ credits and source links, separate from the trip album. Place membership and
 order remain owner-controlled.
 
 Desktop days stay on the left, the map in the center and the journal/photo
-sidebar on the right. Clicking or keyboard-activating an actual photo on any
-surface opens full screen immediately: a map bubble (including a cluster),
-sidebar image, album thumbnail or explicitly linked Places photo. There is no
-intermediate photo-selection panel. The fullscreen collection retains the entry
-surface's order and count; comments, arrows and phone grids use that same scope.
-A fresh day-album entry restores its own collection.
+sidebar on the right. Under the owner's later 11 October clarification, clicking
+or keyboard-activating a map circle bubble (including a cluster) or a thumbnail
+in the right-hand reel selects the photo in that existing sidebar, without
+opening fullscreen. The large top-right selected/lead image opens fullscreen
+directly in one activation. Selection must not add another photo panel. Existing
+album/grid and explicitly linked Places viewer entry retain their flow. The
+fullscreen collection retains the entry surface's order and count; comments,
+arrows and phone grids use that same scope. A fresh day-album entry restores
+its own collection. This replaces the earlier all-photo-fullscreen interpretation.
 
 The existing sidebar frame remains uncropped and stable across portrait and
 landscape photos, with adjacent thumbnails and expandable day details. Only
 traveler-supplied captions appear. An About-place action requires an explicit
 saved link. Phone map screens have one date/title block and Photos action,
 contextual Places and secondary arrival controls, plus one bottom event picker.
+Phone map bubbles select the existing compact photo card; its large image opens
+fullscreen. The established photo-grid and swipe flow remains unchanged.
 
 Map bubbles retain their representative image at its actual location. Album and
 Places browsing do not regroup map bubbles; only a clicked map group retains its
-membership while zooming. Cross-day selections draw only that day's members, and
-changing days in full screen clears the previous day's map selection. Auth expiry
+membership while zooming. Cross-day selections draw only that day's members.
+Before any displayed day/stop change, close the old map popups and hover previews
+and cancel pending opens so they cannot clutter or reappear over the new map.
+Changing days, including through fullscreen photo navigation, clears the previous
+day's map selection. Auth expiry
 clears protected photo pixels from bubbles and the card; unlock uses the existing
 photo service.

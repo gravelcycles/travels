@@ -20,7 +20,7 @@ function selection() {
   const days = [{ id: 'd1', number: 1, segmentIds: [] }, { id: 'd2', number: 2, segmentIds: [] }];
   const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),
     window: {}, clearDayPreview(){}, deferDayPreviewClear(){}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
-    arrivalChapter:null, arrivalKey:day=>day.id, cancelArrival(){}, settleAtCity(){}, startArrival(){}, mainMapReady:true,
+    arrivalChapter:null, arrivalKey:day=>day.id, cancelArrival(){}, settleAtCity(){}, startArrival(){}, mainMapReady:true, locationLabels:null,
     activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null,
     viewerCollection:null,viewerDayId:'d2',viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null, placesUI: null, photoBubbles: null,
     journey: { days, segments: [] }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],
@@ -36,6 +36,17 @@ test('selecting a day leaves overview scope even when the mobile map is hidden',
   vm.runInContext('setActiveDay("d2", true)', context);
   assert.equal(context.activeDayId, 'd2');
   assert.equal(context.mapScope, 'day');
+});
+
+test('day changes dismiss old popups and pending previews before state, arrival or camera changes',()=>{
+  const context=selection(),events=[];
+  const record=name=>()=>events.push([name,context.activeDayId]);
+  Object.assign(context,{locationLabels:{closePreview:record('location')},clearDayPreview:record('hover'),
+    placesUI:{dayChanged:record('places')},photoBubbles:{close:record('photos')},cancelArrival:record('arrival'),drawMainMap:record('map')});
+  context.setActiveDay('d2',false);
+  assert.deepEqual(events,[['location','d1'],['hover','d1'],['places','d1'],['photos','d1'],['arrival','d1'],['map','d2']]);
+  events.length=0;context.setActiveDay('d2',false);
+  assert.ok(events.every(([name])=>!['location','hover','places','photos'].includes(name)),'Same-day photo updates retain selection');
 });
 
 test('visible stop selection retains the previously viewed city for the orientation move',()=>{

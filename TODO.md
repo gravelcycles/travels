@@ -340,7 +340,11 @@ as a local review artifact; unrelated Replay experiments remain separate.
       feature or source-manifest rewrite; see PHOTO_WORKFLOW.md.
 
 
-- [x] **11 October UX flow review U01–U16:** one-click fullscreen, exact photo
+- [x] **11 October UX flow review U01–U16:** one-click fullscreen from the large
+  selected/lead image, map-circle/right-reel selection in the existing sidebar
+  or phone card, and old map popups closed before day/stop changes. This follows
+  the later same-day owner clarification; the original all-photo-fullscreen
+  interpretation is superseded. Existing phone grid/swipe flow is retained. Exact photo
   collections, consolidated phone card, scoped Places, current labels, empty
   states, Studio task navigation/visual pickers/batch flow, sharing review and
   video lifecycle feedback. Approved arrival/reveal timing is retained; populated

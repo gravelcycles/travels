@@ -1150,7 +1150,7 @@
     const firstPhoto = photos[0];
     if (firstPhoto) {
       storyMedia.innerHTML = `
-        <button type="button" data-open-photo="${escapeHtml(firstPhoto.id)}" aria-label="Open ${escapeHtml(firstPhoto.caption || firstPhoto.alt || 'photo')}">
+        <button type="button" data-open-photo="${escapeHtml(firstPhoto.id)}" aria-label="Open ${escapeHtml(firstPhoto.caption || firstPhoto.alt || 'photo')} full screen">
           ${photoImageMarkup(firstPhoto, { alt: firstPhoto.alt, sizes: "(max-width: 900px) 100vw, 26vw", eager: true })}
           <span>${eventWord('upper')} ${String(day.number).padStart(2, "0")} · ${mediaUtils.label(photos).toUpperCase()}</span>
           <small>${escapeHtml(firstPhoto.caption)}</small>
@@ -1184,7 +1184,7 @@
 
     photoStrip.innerHTML = photos.length
       ? photos.map((photo, index) => `
-          <button type="button" data-open-photo="${escapeHtml(photo.id)}" aria-label="Open ${escapeHtml(photo.caption || photo.alt || 'photo')}">
+          <button type="button" data-open-photo="${escapeHtml(photo.id)}" aria-label="${mediaUtils.isVideo(photo) ? 'Play' : 'Select'} ${escapeHtml(photo.caption || photo.alt || 'photo')}">
             ${photoImageMarkup(photo, { alt: "", sizes: "180px", targetWidth: 480 })}
             <span>${String(index + 1).padStart(2, "0")}</span>
             <small>${escapeHtml(photo.caption)}</small>
@@ -1267,9 +1267,15 @@
     if (!dayById(id)) return;
     const previousDay = dayById(activeDayId);
     const changed = id !== activeDayId || arrivalChapter?.key !== arrivalKey(dayById(id));
+    if (id !== activeDayId) {
+      locationLabels?.closePreview();
+      clearDayPreview();
+      placesUI?.dayChanged();
+      photoBubbles?.clearMap?.();
+      if (!preservePhotoSelection) photoBubbles?.close();
+    }
     if (changed) cancelArrival();
     clearSegmentInspection(true);
-    if (id !== activeDayId) { placesUI?.dayChanged(); if(!preservePhotoSelection)photoBubbles?.close(); }
     activeDayId = id;
     mapScope = "day";
     renderDays();
@@ -1495,6 +1501,7 @@
     else if (scopeChanged) { drawMainMap(false); settleAtCity(day); }
     if (viewerMapReady) syncViewerMap();
     // Conversation context follows the newly selected image, including its auth state.
+    photoBubbles?.viewerPhotoChanged?.(photo);
     if (typeof placesUI !== 'undefined') placesUI?.photoChanged(photo);
     refreshPreloads();
   }
@@ -1567,11 +1574,33 @@
     }
   }
 
+  function selectPhoto(photoId, { photos: collection, collectionLabel = '', preserveCollection = false } = {}) {
+    const photo = photoById(photoId);
+    if (!photo) return;
+    if (mediaUtils.isVideo(photo)) { openPhoto(photoId); return; }
+    if (photo.dayId !== activeDayId && !preserveCollection) setActiveDay(photo.dayId, true, {animateArrival:false});
+    if (['framing','arrival'].includes(arrivalChapter?.phase)) settleAtCity();
+    const photos = (collection || photosForDay(photo.dayId)).filter(item => !mediaUtils.isVideo(item));
+    photoBubbles.open(photos, photoId, {label:collectionLabel || dayById(photo.dayId).title,...(preserveCollection ? {preserveCollection:true} : {})});
+  }
+
+  function handlePhotoEntry(event) {
+    const button = event.target.closest('[data-open-photo]');
+    if (!button) return;
+    if (event.currentTarget === photoStrip) selectPhoto(button.dataset.openPhoto);
+    else openPhoto(button.dataset.openPhoto);
+  }
+
+  function openCommentPhoto(photoId, options) {
+    if (photoDialog.open) openPhoto(photoId, options);
+    else selectPhoto(photoId, options);
+  }
+
   function openPhoto(photoId, { photos: collection, collectionLabel = '', preserveCollection = false } = {}) {
     const photo = photoById(photoId);
     if (!photo) return;
-    // Every actual photograph opens the same full viewer in one action. A
-    // deliberate map/place collection keeps its order through Comments and Back.
+    // The large photograph opens the full viewer. A deliberate map/place
+    // collection keeps its order through Comments and Back.
     if (!preserveCollection || !photoDialog.open) {
       viewerCollection = collection?.some(item => item.id === photoId)
         ? { ids: [...new Set(collection.map(item => item.id))], label: collectionLabel }
@@ -2140,10 +2169,7 @@
     if (legs) legs.outerHTML = renderRouteLegs(activeDay());
   });
 
-  [storyMedia, photoStrip].forEach((container) => container.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-open-photo]");
-    if (button) openPhoto(button.dataset.openPhoto);
-  }));
+  [storyMedia, photoStrip].forEach(container => container.addEventListener('click', handlePhotoEntry));
 
   $("#fit-route").addEventListener("click", fitRoute);
   $("#focus-day").addEventListener("click", () => { cancelArrival(); focusDay(activeDay()); renderArrivalChapter('explore'); });
@@ -2287,6 +2313,7 @@
     resolvedDay: dayById, visibleDayIds: () => journey.days.map(day => day.id),
     photoCollection: () => photoDialog.open ? {photos:viewerPhotos(),label:viewerCollection?.label || viewerDay().title} : photoBubbles?.collection() || {photos:photosForDay(activeDayId),label:activeDay().title},
     photos: () => orderedPhotos().filter(photo => !mediaUtils.isVideo(photo)), openPhoto, photoUrl:preferredPhotoUrl,
+    openCommentPhoto,
     browsePhotos: (photos, collectionLabel = '') => { if (photos.length) openPhoto(photos[0].id,{photos,collectionLabel}); },
     onPlacesVisibility: () => photoBubbles?.placesChanged(),
     mapScope: () => mapScope,
@@ -2300,7 +2327,7 @@
   photoBubbles = window.JOURNEY_ATLAS_PHOTO_BUBBLES.create({
     journey:()=>sourceJourney, dayId:()=>activeDayId, photos:()=>orderedPhotos().filter(photo=>!mediaUtils.isVideo(photo)),
     map:()=>mainMap, ready:()=>mainMapReady, scope:()=>mapScope,
-    photoUrl:preferredPhotoUrl, fullscreen:(id,photos)=>openPhoto(id,{photos,collectionLabel:'Map photos'}),
+    photoUrl:preferredPhotoUrl, fullscreen:(id,photos,collectionLabel)=>openPhoto(id,{photos,collectionLabel}),
     explore:()=>{dismissIntroduction();clearSegmentInspection(true);if($('.atlas-shell').dataset.mobileTab!=='map')setMobileTab('map');},
     placesOpen:()=>placesUI.isOpen(), closePlaces:()=>placesUI.closeForPhotos(),openPlace:id=>placesUI.openPlace(id),
     selectPhotoDay:id=>{if(id!==activeDayId)setActiveDay(id,true,{preservePhotoSelection:true,animateArrival:false});},

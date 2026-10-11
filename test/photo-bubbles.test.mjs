@@ -115,3 +115,37 @@ test('album browsing does not collapse the day map into a selected bubble',()=>{
  const markers=f.draw();assert.equal(markers.length,2);
  assert.deepEqual(markers.map(marker=>marker.element.children[0].children[1].src),['blob:a','d.jpg']);
 });
+
+test('closing sidebar Comments retains the current photo and original map collection, then Back closes the selection',()=>{
+ const f=fixture();f.controller.open(f.photos.slice(0,2),'a',{mapGroup:true,label:'Map photos'});
+ f.history.pushState({...f.history.state,mobileAtlas:{viewer:false,overlay:'comments-dialog'}});
+ f.controller.open(f.photos.slice(0,2),'b',{label:'Changed label',preserveCollection:true});
+ assert.equal(f.history.state.atlasPhotoBubble.mapGroup,true);
+ assert.equal(f.controller.collection().label,'Map photos');
+ f.history.back();
+ assert.equal(f.node('map-photo-card').dataset.photoId,'b');
+ assert.equal(f.history.state.atlasPhotoBubble.photoId,'b');
+ f.history.back();assert.equal(f.controller.isOpen(),false);
+});
+
+test('closing fullscreen or its Comments returns to the current sidebar photo without changing Places history',()=>{
+ const f=fixture();f.controller.open(f.photos.slice(0,2),'a',{mapGroup:true});
+ const places={open:false,scopeChoice:'all',category:'food',query:'kept'};
+ f.history.replaceState({...f.history.state,atlasPlaces:places});
+ f.history.pushState({...f.history.state,mobileAtlas:{viewer:true,overlay:null}});
+ f.history.pushState({...f.history.state,mobileAtlas:{viewer:true,overlay:'comments-dialog'}});
+ f.controller.viewerPhotoChanged(f.photos[1]);
+ f.history.back();assert.equal(f.node('map-photo-card').dataset.photoId,'b');
+ f.history.back();assert.equal(f.node('map-photo-card').dataset.photoId,'b');
+ assert.deepEqual(f.history.state.atlasPlaces,places);
+ f.history.back();assert.equal(f.controller.isOpen(),false);
+});
+
+test('leaving a day clears its map photo markers immediately even during arrival movement',()=>{
+ const f=fixture();f.controller.open(f.photos.slice(0,2));
+ const before=f.draw();assert.ok(before.length);
+ f.setMoving(true);f.controller.clearMap();f.controller.close();
+ assert.equal(f.liveMarkers().length,0,'Old-day photo markers are removed before a move-end redraw');
+ f.flush();assert.equal(f.liveMarkers().length,0);
+ assert.ok(before.every(marker=>marker.removed));
+});

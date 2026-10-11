@@ -63,6 +63,7 @@
     let journeyId = '', selectedId = '', category = 'all', query = '', dayOnly = false, scopeChoice = null, tab = 'overview', expanded = false, visible = false;
     let listScroll = 0, nearbyIds = null, nearbyScroll = 0, selectedTabScroll = {}, lastDay = '', markers = [], markerMap = null, markerFrame = 0, returnFocus = null;
     let galleryIndex = -1, galleryReturn = null, restoring = false, undo = null, toastTimer, lastHistory = '', clusterPopup = null, historyDepth = 0, savedCamera = null;
+    let panelVersion = 0, cameraVersion = 0;
     const memoryDrafts = new Map();
     const icon = name => {
       const paths = {
@@ -318,6 +319,7 @@
     }
     function scheduleMarkers() { if (markerFrame) return; markerFrame = requestAnimationFrame(() => { markerFrame = 0; renderMarkers(); }); }
     function renderMarkers() {
+      closeCluster();
       markers.forEach(marker => marker.remove()); markers = [];
       const map = options.map(); if ((!visible && options.mapScope?.() !== 'day') || !map || !root.maplibregl) return;
       const results = visible ? filtered() : points().filter(point=>!point.dayIds.length || point.dayIds.includes(options.dayId())); if (visible && current() && !results.includes(current())) results.push(current());
@@ -350,9 +352,15 @@
     function fitPlaces() {
       const map = options.map(), results = filtered(); if (!map || !results.length || !root.maplibregl) { if (!map) showToast('The map is still loading. Your places are ready to browse.'); return; }
       setExpanded(false);
-      requestAnimationFrame(() => { const bounds = results.reduce((bounds, point) => bounds.extend(point.coordinates), new root.maplibregl.LngLatBounds(results[0].coordinates, results[0].coordinates)); map.fitBounds(bounds, { padding: mapPadding(), maxZoom: 15.5, duration: duration(650) }); });
+      const request = ++cameraVersion;
+      requestAnimationFrame(() => {
+        if (!visible || request !== cameraVersion) return;
+        const bounds = results.reduce((bounds, point) => bounds.extend(point.coordinates), new root.maplibregl.LngLatBounds(results[0].coordinates, results[0].coordinates));
+        map.fitBounds(bounds, { padding: mapPadding(), maxZoom: 15.5, duration: duration(650) });
+      });
     }
     function focusPlace(point) {
+      cameraVersion++;
       const map = options.map(); if (!map || !point) { showToast('The map is still loading. Your place is ready to read.'); return; }
       const padding = mapPadding();
       map.easeTo({ center: point.coordinates, zoom: Math.max(15, map.getZoom()), padding: 0, offset: [0, (padding.top - padding.bottom) / 2], duration: duration(500) });
@@ -393,25 +401,28 @@
       const center = canRestoreCamera ? map?.getCenter?.() : null;
       savedCamera = center ? { dayId: options.dayId(), center: center.toArray ? center.toArray() : center, zoom: map.getZoom(), bearing: map.getBearing?.() || 0, pitch: map.getPitch?.() || 0, padding: map.getPadding?.() || 0 } : null;
       returnFocus = document.activeElement; options.explore(); visible = true; panel.hidden = false; document.body.classList.add('places-open');
+      const opening = ++panelVersion;
       if (historyWrite) historyDepth = 0;
       for (const id of ['open-places', 'mobile-open-places', 'mobile-day-places']) document.getElementById(id)?.setAttribute('aria-expanded', 'true');
       update(); selectedId ? renderDetail() : renderList(); setExpanded(expanded);options.onPlacesVisibility?.();
       if (historyWrite) rememberHistory(true);
-      requestAnimationFrame(() => { options.map()?.resize(); renderMarkers(); if (!selectedId) fitPlaces(); else focusPlace(current()); });
+      requestAnimationFrame(() => { if (!visible || opening !== panelVersion) return; options.map()?.resize(); renderMarkers(); if (!selectedId) fitPlaces(); else focusPlace(current()); });
       if (focus) (selectedId ? $('#places-back-to-list') : $('#places-title')).focus({ preventScroll: true });
     }
-    function close({ historyWrite = true, focus = true } = {}) {
+    function close({ historyWrite = true, focus = true, restoreCamera = true } = {}) {
+      closeCluster();
       if (!visible) return;
       if (historyWrite && history.state?.atlasPlaces?.open) { history.go(-Math.max(1, history.state.atlasPlaces.depth || 1)); return; }
+      panelVersion++; cameraVersion++;
       if (!selectedId) { if (nearbyIds) nearbyScroll = content.scrollTop; else listScroll = content.scrollTop; }
       if (reviewDialog.open) closeReviews(false, false);
-      if (gallery.open) closeGallery(false); visible = false; historyDepth = 0; panel.hidden = true; document.body.classList.remove('places-open'); closeCluster(); renderMarkers();
+      if (gallery.open) closeGallery(false); visible = false; historyDepth = 0; panel.hidden = true; document.body.classList.remove('places-open'); renderMarkers();
       options.onPlacesVisibility?.();
       for (const id of ['open-places', 'mobile-open-places', 'mobile-day-places']) document.getElementById(id)?.setAttribute('aria-expanded', 'false');
       const map = options.map(); map?.resize();
-      if (savedCamera && savedCamera.dayId === options.dayId() && map?.jumpTo) {
+      if (restoreCamera && savedCamera && savedCamera.dayId === options.dayId() && map?.jumpTo) {
         const { dayId, ...camera } = savedCamera; map.jumpTo(camera);
-      } else options.restoreMap?.();
+      } else if (restoreCamera) options.restoreMap?.();
       if (focus) { const target = returnFocus?.isConnected && returnFocus.getClientRects().length ? returnFocus : document.getElementById(mobile() ? 'mobile-day-picker' : 'open-places'); target?.focus({ preventScroll: true }); }
     }
     function update(reset = false) {
@@ -443,7 +454,7 @@
       scheduleMarkers();
     }
     function mapReady() {
-      const map = options.map(); if (map && map !== markerMap) { markerMap?.off('moveend', scheduleMarkers); markerMap = map; map.on('moveend', scheduleMarkers); }
+      const map = options.map(); if (map && map !== markerMap) { markerMap?.off('moveend', scheduleMarkers); markerMap?.off('movestart', closeCluster); markerMap = map; map.on('moveend', scheduleMarkers); map.on('movestart', closeCluster); }
       scheduleMarkers();if (visible) { current() ? focusPlace(current()) : fitPlaces(); }
     }
     for (const id of ['open-places', 'mobile-open-places']) document.getElementById(id)?.addEventListener('click', () => open());
@@ -536,7 +547,16 @@
     update(); mapReady();
     function openPlace(id) { if(!points().some(point=>point.id===id))return;open({focus:false});selectPlace(id,true); }
     function closeForPhotos() { close({historyWrite:false,focus:false});lastHistory=JSON.stringify(snapshot()); }
-    function dayChanged() { if(visible){closeForPhotos();rememberHistory();}selectedId='';nearbyIds=null; }
+    function dayChanged() {
+      // A desktop cluster chooser may be open while the Places panel is hidden.
+      // Clear it first, and never restore the previous stop's camera on the way
+      // to a newly selected stop.
+      closeCluster();
+      const wasOpen = visible;
+      if (wasOpen) close({ historyWrite: false, focus: false, restoreCamera: false });
+      selectedId = ''; nearbyIds = null; tab = 'overview'; selectedTabScroll = {}; savedCamera = null;
+      if (wasOpen) rememberHistory();
+    }
     return { open, close, update, mapReady, showNearby, openPlace, closeForPhotos, dayChanged, isOpen: () => visible };
   }
   root.JOURNEY_ATLAS_PLACE_PANEL = { create, searchPlaces, nearbyPlaces, placesInView, clusterPoints, mapInsets };

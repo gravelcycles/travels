@@ -5,9 +5,9 @@ import {photoEntryFixture} from './viewer-flow-harness.mjs';
 import {photoBubbleFixture} from './photo-bubble-harness.mjs';
 const journey = {id:'independent-trip',eventMode:'city',days:[{id:'harbor',number:1,title:'Harbor'},{id:'hill',number:2,title:'Hill'}],photos:[{id:'first',dayId:'harbor'},{id:'second',dayId:'harbor'},{id:'clip',dayId:'harbor',mediaType:'video'},{id:'fourth',dayId:'hill'}]};
 
-test('an actual photo opens full screen directly and leaves the presenting map camera alone',()=>{
+test('the large sidebar photograph opens full screen and leaves the presenting map camera alone',()=>{
   const f=photoEntryFixture(journey);
-  f.open('second');
+  f.click('storyMedia','second');
   assert.equal(f.context.photoDialog.open,true);
   assert.deepEqual(f.events,['entry','fullscreen','render']);
   assert.equal(f.context.viewerPhotoIndex,1);
@@ -27,16 +27,37 @@ test('explicit map/place collections preserve their order, boundaries, and curre
   f.open('first');assert.equal(f.context.viewerCollection,null,'A fresh album entry starts the day album again');
 });
 
-test('both single and clustered map thumbnails open their displayed photo directly',()=>{
-  for(const count of [1,2]){
+test('the right reel selects the large photo without opening fullscreen or moving the map',()=>{
+  const f=photoEntryFixture(journey);
+  f.click('photoStrip','second');
+  assert.equal(f.context.photoDialog.open,false);
+  assert.deepEqual(JSON.parse(JSON.stringify(f.events)),[{selection:'second',photos:['first','second'],options:{label:'Harbor'}}]);
+  f.click('storyMedia','second');
+  assert.equal(f.context.photoDialog.open,true);
+  assert.equal(f.context.viewerPhotoIndex,1);
+});
+
+test('a reel video still opens its player rather than entering the still-photo card',()=>{
+  const f=photoEntryFixture(journey);f.click('photoStrip','clip');
+  assert.equal(f.context.photoDialog.open,true);
+  assert.equal(f.context.viewerPhotoIndex,2);
+});
+
+test('both single and clustered map thumbnails select a card; only its large image opens fullscreen',()=>{
+  for(const phone of [false,true])for(const count of [1,2]){
     const f=photoBubbleFixture();f.setPhotos(f.photos.slice(0,count));
+    f.resize(phone);
     const button=f.draw()[0].element.children[0];
     button.onclick({stopPropagation(){}});
-    assert.deepEqual(f.opened,['a']);
-    assert.equal(f.controller.isOpen(),false,'No additional photo panel appears');
-    assert.equal(f.node('map-photo-card').hidden,true);
+    assert.deepEqual(f.opened,[]);
+    assert.equal(f.controller.isOpen(),true);
+    assert.equal(f.node('map-photo-card').hidden,false);
+    assert.equal(f.node('map-photo-card').dataset.photoId,'a');
     assert.deepEqual(Array.from(f.controller.collection().photos,photo=>photo.id),count===1?['a']:['a','b']);
-    f.controller.refresh();assert.equal(f.node('map-photo-card').hidden,true);
+    f.controller.refresh();assert.equal(f.node('map-photo-card').hidden,false);
+    if(count===2){f.node('[data-bubble-next]').onclick();assert.deepEqual(f.opened,[]);}
+    f.node('[data-bubble-full]').onclick({detail:0});
+    assert.deepEqual(f.opened,[count===1?'a':'b']);
   }
 });
 
@@ -91,4 +112,16 @@ test('Comments navigation preserves implicit day albums and explicit map collect
   f.open('second',{photos:f.photos(),collectionLabel:'Map photos',preserveCollection:true});
   assert.equal(f.context.viewerCollection,original);
   assert.equal(f.context.viewerPhotoIndex,1);
+});
+
+test('Comments navigation stays on the presenting sidebar or fullscreen surface',()=>{
+  const f=photoEntryFixture(journey), options={photos:journey.photos.slice(0,2),collectionLabel:'Harbor',preserveCollection:true};
+  f.context.openCommentPhoto('second',options);
+  assert.equal(f.context.photoDialog.open,false);
+  assert.equal(f.events.at(-1).selection,'second');
+  assert.equal(f.events.at(-1).options.label,'Harbor');
+  f.open('first');
+  f.context.openCommentPhoto('second',options);
+  assert.equal(f.context.viewerPhotoIndex,1);
+  assert.equal(f.context.viewerCollection,null);
 });

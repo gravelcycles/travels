@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
 import { loadContent } from '../scripts/journey-content.mjs';
 import { readOverrides } from '../scripts/build-site.mjs';
 import '../dist/assets/location-labels.js';
@@ -107,4 +109,108 @@ test('real and demo maps use clustered pins with separate touch targets and prot
     }
     assert.ok(visible,`${journey.id} at ${width}px`);
   }
+});
+
+function previewFixture() {
+  const frames = new Map(), timers = new Map(), mapEvents = new Map(), previews = [], selections = [];
+  let nextId = 1, moving = false, controller;
+  function node(tag) {
+    const listeners = new Map(), attributes = new Map(), classes = new Set();
+    return {
+      tag, children: [], parent: null, dataset: {}, style: { setProperty() {} }, clientWidth: 800, clientHeight: 600,
+      offsetWidth: 240, offsetHeight: 150, isConnected: true,
+      classList: { add(name) { classes.add(name); }, remove(name) { classes.delete(name); }, toggle(name, value) { value ? classes.add(name) : classes.delete(name); }, contains(name) { return classes.has(name); } },
+      append(...children) { children.forEach(child => { child.parent = this; this.children.push(child); }); },
+      remove() { this.isConnected = false; if (this.parent) this.parent.children = this.parent.children.filter(child => child !== this); },
+      setAttribute(name, value) { attributes.set(name, value); }, removeAttribute(name) { attributes.delete(name); }, getAttribute(name) { return attributes.get(name); },
+      getBoundingClientRect() { return { left: 0, top: 0, right: 800, bottom: 600, width: 800, height: 600 }; },
+      contains(target) { return this === target || this.children.some(child => child.contains(target)); },
+      querySelector(selector) { return this.children.find(child => child.tag === selector) || this.children.map(child => child.querySelector(selector)).find(Boolean); },
+      addEventListener(name, listener) { if (!listeners.has(name)) listeners.set(name, []); listeners.get(name).push(listener); },
+      removeEventListener(name, listener) { listeners.set(name, (listeners.get(name) || []).filter(item => item !== listener)); },
+      fire(name, event = {}) { for (const listener of listeners.get(name) || []) listener({ stopPropagation() {}, ...event }); },
+      focus() { document.activeElement = this; this.fire('focus'); }
+    };
+  }
+  const container = node('map');
+  const document = { createElement: node, documentElement: { dataset: { inputMode: 'keyboard' } }, addEventListener() {}, removeEventListener() {}, activeElement: null };
+  const map = { getContainer: () => container, isMoving: () => moving, project: ([x,y]) => ({x,y}), on: (name, listener) => mapEvents.set(name, listener), off: name => mapEvents.delete(name) };
+  const maplibregl = { Marker: class {
+    constructor({ element }) { this.element = element; }
+    setLngLat() { return this; }
+    addTo() { container.append(this.element); return this; }
+    remove() { this.element.remove(); }
+  } };
+  const context = vm.createContext({ window: {}, document, matchMedia: query => ({ matches: query.includes('hover: hover') }),
+    requestAnimationFrame(callback) { const id = nextId++; frames.set(id, callback); return id; }, cancelAnimationFrame: id => frames.delete(id),
+    setTimeout(callback) { const id = nextId++; timers.set(id, callback); return id; }, clearTimeout: id => timers.delete(id)
+  });
+  vm.runInContext(fs.readFileSync(new URL('../dist/assets/location-labels.js', import.meta.url), 'utf8'), context);
+  const group = { key: 'lake', name: 'Lakeside', coordinate: [200,200], days: [{ id: 'one', number: 1, title: 'A day' }], selected: true };
+  controller = context.window.JOURNEY_ATLAS_LOCATION_LABELS.create({ map, maplibregl,
+    onPreviewDays: ids => previews.push([...ids]), onSelectDay(id) { selections.push(id); controller.closePreview(); controller.update([group], []); }
+  });
+  const flush = queue => { while (queue.size) { const [id, callback] = queue.entries().next().value; queue.delete(id); callback(); } };
+  controller.update([group], []); flush(frames);
+  return { controller, previews, selections, document, get button() { return container.children.find(child => child.className === 'location-label-anchor')?.children[0]; },
+    get card() { return container.children.find(child => child.className === 'map-place-card'); },
+    flushTimers() { flush(timers); }, flushFrames() { flush(frames); },
+    startMoving() { moving = true; mapEvents.get('movestart')(); }, stopMoving() { moving = false; mapEvents.get('moveend')(); flush(frames); }
+  };
+}
+
+test('an event change dismisses the location preview before map movement and cancels pending hover', () => {
+  const f = previewFixture();
+  f.button.fire('pointerenter', { pointerType: 'mouse' });
+  f.controller.closePreview(); f.flushTimers();
+  assert.equal(f.card, undefined, 'A hover queued on the previous event cannot open later');
+  assert.deepEqual(f.previews.at(-1), []);
+  f.button.fire('pointerenter', { pointerType: 'mouse' }); f.flushTimers();
+  assert.ok(f.card);
+  f.controller.closePreview();
+  assert.equal(f.card, undefined, 'The card is gone synchronously before the camera changes');
+  assert.equal(f.button.getAttribute('aria-expanded'), 'false');
+});
+
+test('location hover cards cannot open during camera movement', () => {
+  const f = previewFixture();
+  f.button.fire('pointerenter', { pointerType: 'mouse' }); f.flushTimers(); assert.ok(f.card);
+  f.startMoving(); assert.equal(f.card, undefined);
+  f.button.fire('pointerenter', { pointerType: 'mouse' }); f.flushTimers();
+  assert.equal(f.card, undefined, 'A moving marker cannot create a new stale card');
+  f.stopMoving(); f.flushTimers(); assert.equal(f.card, undefined);
+});
+
+test('keyboard selection restores the selected marker focus without reopening its preview', () => {
+  const f = previewFixture();
+  f.button.focus(); f.flushTimers(); assert.ok(f.card);
+  f.card.children.find(child => child.className === 'map-place-visits').children[0].fire('click');
+  assert.deepEqual(f.selections, ['one']);
+  assert.equal(f.card, undefined);
+  f.flushFrames(); f.flushTimers();
+  assert.equal(f.document.activeElement, f.button);
+  assert.equal(f.card, undefined, 'Programmatic focus after selection must not reopen a popup');
+  assert.deepEqual(f.previews.at(-1), []);
+});
+
+test('keyboard selection keeps pending marker focus through camera movement', () => {
+  const f = previewFixture();
+  f.button.focus(); f.flushTimers();
+  f.card.children.find(child => child.className === 'map-place-visits').children[0].fire('click');
+  f.startMoving(); f.flushFrames(); f.flushTimers();
+  assert.equal(f.card, undefined);
+  f.stopMoving(); f.flushTimers();
+  assert.equal(f.document.activeElement, f.button, 'The selected marker receives keyboard focus after the camera settles');
+  assert.equal(f.card, undefined, 'Restoring keyboard focus must not recreate the dismissed preview');
+  assert.deepEqual(f.previews.at(-1), []);
+});
+
+test('an explicit event change still cancels pending marker focus from an older selection', () => {
+  const f = previewFixture();
+  f.button.focus(); f.flushTimers();
+  f.card.children.find(child => child.className === 'map-place-visits').children[0].fire('click');
+  f.controller.closePreview();
+  f.startMoving(); f.flushFrames(); f.stopMoving(); f.flushTimers();
+  assert.notEqual(f.document.activeElement, f.button, 'An unrelated event change must not inherit the previous keyboard selection');
+  assert.equal(f.card, undefined);
 });

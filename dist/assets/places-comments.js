@@ -115,7 +115,7 @@
     selectStore();
     const shared = { ...options, preview, live, store: () => store };
     const places = root.JOURNEY_ATLAS_PLACE_PANEL.create({ ...shared, store: () => live ? ({ reviews: () => [], draft: (...args) => store.draft(...args) }) : store });
-    const comments = root.JOURNEY_ATLAS_PHOTO_COMMENTS.create({ ...shared, onPlaces: () => places.open(), onReset: () => places.update(true) });
+    const comments = root.JOURNEY_ATLAS_PHOTO_COMMENTS.create({ ...shared, openPhoto: options.openCommentPhoto || options.openPhoto, onPlaces: () => places.open(), onReset: () => places.update(true) });
     function update() { selectStore(); places.update(); comments.update(); }
     update();
     return {

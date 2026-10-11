@@ -11,14 +11,27 @@ to the public site. [TODO.md](TODO.md) remains the backlog;
 
 ## UX flow review implementation — 11 October 2026
 
-The owner authorized all U01–U16 findings and direct one-click fullscreen.
+The owner authorized all U01–U16 findings and direct one-click fullscreen, then
+clarified the boundary later on 11 October: map circle bubbles and right-hand
+reel thumbnails select in the existing sidebar/card; the large top-right
+selected/lead image opens fullscreen. Old map popups close before switching
+days/stops. Existing phone grid/swipe and album/linked Places entry remain.
 Three parallel workstreams cover viewer/navigation, Places/conversations and
 Studio; the integration also simplifies sharing readiness. Existing floated
 populated conversations, exact image reveal/arrival timing, sidebar structure,
-private media and recovery remain intact. The photo-entry correction supersedes
-the intermediate selection step described in earlier photo-sidebar checkpoints.
-Validation: **500 tests passed**, production build successful; desktop/phone and
+private media and recovery remain intact. The later clarification supersedes
+the initial all-photo-fullscreen interpretation, not ordinary selection in the
+existing sidebar. See O03/O07 for the operative boundary.
+Initial UX implementation validation (before this later clarification): **500 tests passed**, production build successful; desktop/phone and
 independently populated city-draft browser checks completed. See [the audit and delivery record](docs/UX_REVIEW_2026-10-11.md).
+
+Later photo-boundary and popup correction validation: **518 tests passed** and
+production build succeeded. Desktop browser checks covered reel/map selection,
+large-image fullscreen and dismissing an open Places cluster on day change.
+Phone checks covered compact-card selection, fullscreen navigation and returning
+to the current photo. Regression coverage includes the reference, a demo and an
+independently populated fresh draft, pending hover/keyboard focus, rapid Places
+camera work and Comments/Back collection retention.
 
 ## Atlas continuity and October corrections — 11 October 2026
 

@@ -154,12 +154,12 @@ test('place-only history changes do not refit an unchanged whole-journey map', (
   assert.equal(f.overviewCalls, 0, 'Independent places navigation cannot reset its camera through the mobile controller');
 });
 
-function placeHistoryFixture({ cameraReady = null, scope = 'journey', photos = [], visibleDayIds } = {}) {
+function placeHistoryFixture({ cameraReady = null, scope = 'journey', photos = [], visibleDayIds, interactiveMap = false } = {}) {
   const nodes = new Map(), events = new Map(), queue = [];
   const mobileState = { viewer: false, dayId: 'one', scope: 'journey', tab: 'map' };
   const stack = [{ priorPage: true }, { mobileAtlas: mobileState }];
   let cursor = 1, restoreCalls = 0, currentDay = 'one';
-  const cameraJumps = [], openedPhotos = [];
+  const cameraJumps = [], cameraMoves = [], openedPhotos = [], frames = [], mapEvents = new Map(), pinButtons = [], popups = []; let elementId = 0;
   function node(selector) {
     if (nodes.has(selector)) return nodes.get(selector);
     const listeners = new Map(), classes = new Set();
@@ -176,7 +176,7 @@ function placeHistoryFixture({ cameraReady = null, scope = 'journey', photos = [
     };
     nodes.set(selector, value); return value;
   }
-  const document = { getElementById: id => node(`#${id}`), querySelector: node, createElement: () => node('gallery'), body: node('body'), addEventListener() {}, activeElement: node('#open-places') };
+  const document = { getElementById: id => node(`#${id}`), querySelector: node, createElement: () => node(interactiveMap ? `element-${elementId++}` : 'gallery'), body: node('body'), addEventListener() {}, activeElement: node('#open-places') };
   node('script[src*="/places-panel.js"]').src = 'https://example.test/assets/places-panel.js';
   node('#experience-bar').hidden = true;
   const history = {
@@ -191,18 +191,23 @@ function placeHistoryFixture({ cameraReady = null, scope = 'journey', photos = [
     window: { JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS, addEventListener: (name, listener) => events.set(name, listener) }, document, history, URL,
     FormData: class { constructor(form) { this.values = form.values || {}; } get(name) { return this.values[name]; } },
     location: { href: 'https://example.test/journey' }, matchMedia: () => ({ matches: false }),
-    requestAnimationFrame() { return 1; }, cancelAnimationFrame() {}, setTimeout() {}, clearTimeout() {}
+    requestAnimationFrame(fn) { if(interactiveMap)frames.push(fn); return 1; }, cancelAnimationFrame() {}, setTimeout() {}, clearTimeout() {}
   });
   for (const file of ['photo-places.js','places-comments.js', 'places-panel.js']) vm.runInContext(fs.readFileSync(new URL(`../dist/assets/${file}`, import.meta.url), 'utf8'), context);
   const stored = new Map();
   const store = context.window.JOURNEY_ATLAS_PLACES.createDemoStore({ getItem: key => stored.get(key), setItem: (key, value) => stored.set(key, value) }, 'trip');
   const originalCamera = { center: [8.53, 47.38], zoom: 9, bearing: 30, pitch: 12, padding: { top: 10, right: 20, bottom: 30, left: 40 } };
   const map = cameraReady === null ? null : {
-    on() {}, off() {}, resize() {}, easeTo() {}, loaded: () => cameraReady, isMoving: () => false,
+    on(name,fn) { mapEvents.set(name,fn); }, off(name) { mapEvents.delete(name); }, resize() {}, easeTo(value) { cameraMoves.push(value); }, fitBounds(value) { cameraMoves.push(value); }, project: ([x,y])=>({x,y}), loaded: () => cameraReady, isMoving: () => false,
     getCenter: () => ({ toArray: () => [...originalCamera.center] }), getZoom: () => originalCamera.zoom,
     getBearing: () => originalCamera.bearing, getPitch: () => originalCamera.pitch, getPadding: () => ({ ...originalCamera.padding }),
     getContainer: () => ({ getBoundingClientRect: () => ({ left: 0, top: 0, right: 1000, bottom: 800 }) }),
     jumpTo: camera => cameraJumps.push(structuredClone(camera))
+  };
+  if (interactiveMap) context.window.maplibregl = {
+    Marker: class { constructor({element}) { this.element=element; } setLngLat(){return this;} addTo(){pinButtons.push(this.element);return this;} remove(){this.removed=true;} },
+    Popup: class { constructor(){popups.push(this);this.open=false;} setLngLat(){return this;} setDOMContent(){return this;} addTo(){this.open=true;return this;} remove(){this.open=false;} },
+    LngLatBounds: class { extend(){return this;} }
   };
   let journey = { id: 'journey', days: [{ id: 'one', number: 1, date: 'Today' }], pointsOfInterest: [point] };
   const controller = context.window.JOURNEY_ATLAS_PLACE_PANEL.create({
@@ -211,7 +216,8 @@ function placeHistoryFixture({ cameraReady = null, scope = 'journey', photos = [
     canRestoreMapCamera: () => cameraReady === true, restoreMap() { restoreCalls++; }
   });
   return {
-    controller, history, node, mobileState, store, originalCamera, cameraJumps, journey, openedPhotos,
+    controller, history, node, mobileState, store, originalCamera, cameraJumps, cameraMoves, journey, openedPhotos, pinButtons, popups,
+    flushFrames() { while(frames.length)frames.shift()(); }, flushFrame() { frames.shift()?.(); }, mapEvent(name){mapEvents.get(name)?.();},
     setJourney(value) { journey = value; controller.update(); },
     get restoreCalls() { return restoreCalls; }, setDay(id) { currentDay = id; },
     click(id, dataset = {}, attributes = []) {
@@ -417,4 +423,68 @@ test('Places respects the visible itinerary when TBD stops are excluded', () => 
   f.controller.open();
   assert.doesNotMatch(f.node('#places-content').innerHTML, /Later city/);
   assert.equal(f.node('#places-all-count').textContent, '1');
+});
+
+test('changing the event closes a Places cluster chooser even when the Places panel is hidden', () => {
+  const f=placeHistoryFixture({cameraReady:true,scope:'day',interactiveMap:true});
+  const original=f.journey.pointsOfInterest[0];
+  f.setJourney({...f.journey,pointsOfInterest:[original,{...original,id:'neighbor'}]});f.flushFrames();
+  f.pinButtons.at(-1).fire('click',{stopPropagation(){}});
+  assert.equal(f.controller.isOpen(),false);
+  assert.equal(f.popups.at(-1).open,true);
+  f.controller.dayChanged();
+  assert.equal(f.popups.at(-1).open,false,'Close the transient chooser synchronously, before the active event changes');
+  assert.equal(f.cameraJumps.length,0);
+});
+
+test('map movement dismisses a Places cluster chooser without waiting for moveend', () => {
+  const f=placeHistoryFixture({cameraReady:true,scope:'day',interactiveMap:true});
+  const original=f.journey.pointsOfInterest[0];
+  f.setJourney({...f.journey,pointsOfInterest:[original,{...original,id:'neighbor'}]});f.flushFrames();
+  f.pinButtons.at(-1).fire('click',{stopPropagation(){}});
+  assert.equal(f.popups.at(-1).open,true);
+  f.mapEvent('movestart');
+  assert.equal(f.popups.at(-1).open,false);
+});
+
+test('opening photos dismisses a Places cluster chooser even when the panel is hidden', () => {
+  const f=placeHistoryFixture({cameraReady:true,scope:'day',interactiveMap:true});
+  const original=f.journey.pointsOfInterest[0];
+  f.setJourney({...f.journey,pointsOfInterest:[original,{...original,id:'neighbor'}]});f.flushFrames();
+  f.pinButtons.at(-1).fire('click',{stopPropagation(){}});
+  assert.equal(f.popups.at(-1).open,true);
+  f.controller.closeForPhotos();
+  assert.equal(f.popups.at(-1).open,false);
+  assert.equal(f.cameraJumps.length,0);
+});
+
+test('leaving a selected place closes its detail first without jumping back to the old camera', () => {
+  const f=placeHistoryFixture({cameraReady:true});
+  f.controller.openPlace('cafe');
+  f.controller.dayChanged();
+  assert.equal(f.controller.isOpen(),false);
+  assert.equal(f.history.state.atlasPlaces.selectedId,'');
+  assert.equal(f.history.state.atlasPlaces.open,false);
+  assert.equal(f.cameraJumps.length,0,'Event navigation owns the next camera; closing Places must not replay its saved old camera');
+  assert.equal(f.restoreCalls,0);
+});
+
+test('changing events cancels deferred Places camera work before and after its opening frame', () => {
+  for (const finishOpeningFrame of [false, true]) {
+    const f = placeHistoryFixture({cameraReady:true,scope:'day',interactiveMap:true});
+    f.flushFrames(); f.controller.open();
+    if (finishOpeningFrame) { f.flushFrame(); f.flushFrame(); }
+    f.controller.dayChanged(); f.setDay('two'); f.controller.update(); f.flushFrames();
+    assert.equal(f.cameraMoves.length,0,'Queued Places fitting cannot override the new event camera');
+  }
+});
+
+test('selecting a place cancels a previously queued list fit', () => {
+  const f = placeHistoryFixture({cameraReady:true,scope:'day',interactiveMap:true});
+  f.flushFrames(); f.controller.open(); f.flushFrames();
+  f.node('#places-fit').fire('click');
+  f.click('', {placeId:'cafe'});
+  const afterSelection = f.cameraMoves.length;
+  f.flushFrames();
+  assert.equal(f.cameraMoves.length,afterSelection,'The selected place remains in focus when an old results fit was queued');
 });

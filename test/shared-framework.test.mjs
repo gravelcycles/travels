@@ -284,7 +284,7 @@ test('selecting a real, demo or fresh-draft day scrolls its newly selected row i
     const selected = journey.days[Math.min(10, journey.days.length - 1)];
     let renderedId, scrolled = false;
     const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form), journey, activeDayId: journey.days[0].id, prefersReducedMotion: () => false,
-      arrivalChapter:null,arrivalKey:day=>day.id,cancelArrival(){},placesUI:null,photoBubbles:null,dayById: id => journey.days.find(day => day.id === id), clearSegmentInspection() {},
+      arrivalChapter:null,arrivalKey:day=>day.id,cancelArrival(){},locationLabels:null,clearDayPreview(){},placesUI:null,photoBubbles:null,dayById: id => journey.days.find(day => day.id === id), clearSegmentInspection() {},
       renderDays() { renderedId = context.activeDayId; }, renderStory() {}, drawMainMap() {},
       dayList: { clientHeight: 400, getBoundingClientRect: () => ({ top: 100, bottom: 500 }),
         querySelector: () => {
@@ -1070,7 +1070,7 @@ test('TBD planning is shared by the family, demo and fresh draft without inventi
 });
 
 
-test('reference, demo and independently populated city draft inherit direct fullscreen and named collection boundaries', t => {
+test('reference, demo and independently populated city draft share reel selection, large-photo fullscreen and collection boundaries', t => {
   const root = fixture(t), draft = createJourney(root, {...input, eventMode:'city'});
   const {data} = loadContent(root, {includeDrafts:true});
   for (const source of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'), data.journeys.find(j=>j.kind==='demo'), draft]) {
@@ -1079,9 +1079,12 @@ test('reference, demo and independently populated city draft inherit direct full
     journey.photos = [{id:`${source.id}-qa-first`,dayId:journey.days[0].id,caption:'',alt:'Accessibility only'},
       {id:`${source.id}-qa-second`,dayId:journey.days[0].id,caption:'Traveler supplied words'}];
     const f=photoEntryFixture(journey);
-    f.open(journey.photos[1].id);
+    f.click('photoStrip',journey.photos[1].id);
+    assert.equal(f.context.photoDialog.open,false,source.id);
+    assert.equal(f.events.at(-1).selection,journey.photos[1].id);
+    assert.deepEqual(Array.from(f.events.at(-1).photos),journey.photos.map(photo=>photo.id));
+    f.click('storyMedia',journey.photos[1].id);
     assert.equal(f.context.photoDialog.open,true,source.id);
-    assert.equal(f.events.includes('intermediate-photo-panel'),false,source.id);
     assert.equal(f.context.viewerPhotoIndex,1);
     f.open(journey.photos[0].id,{photos:[journey.photos[1],journey.photos[0]],collectionLabel:'Explicit linked photos'});
     assert.deepEqual(f.photos().map(photo=>photo.id),[journey.photos[1].id,journey.photos[0].id]);

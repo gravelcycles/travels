@@ -99,7 +99,7 @@
     let endpoints = new Set();
     let previewIds = [], pendingFocus = false, closeTimer = null, openTimer = null, suppressedEntry = null;
     const finePointer = () => matchMedia('(hover: hover) and (pointer: fine)').matches;
-    const cancelTimers = () => { clearTimeout(closeTimer); clearTimeout(openTimer); };
+    const cancelTimers = () => { clearTimeout(closeTimer); clearTimeout(openTimer); closeTimer = openTimer = null; };
     const closeCard = (restore = false) => {
       cancelTimers();
       if (!card) return;
@@ -114,7 +114,7 @@
       clearTimeout(openTimer); clearTimeout(closeTimer);
       if (!persistent) closeTimer = setTimeout(() => { closeCard(); endPreview(); }, 150);
     };
-    const select = day => { pendingFocus = true; closeCard(); endPreview(); onSelectDay(day.id); };
+    const select = day => { closeCard(); endPreview(); onSelectDay(day.id); pendingFocus = true; };
     const positionCard = entry => {
       if (!card) return;
       const rect = entry.button.getBoundingClientRect(), area = container.getBoundingClientRect();
@@ -137,7 +137,7 @@
       card.style.left = `${best.left}px`; card.style.top = `${best.top}px`;
     };
     const showCard = (entry, { pinned = false, dayIds = [], origin = 'pin' } = {}) => {
-      if (!entry || entry.element.style.visibility === 'hidden') return;
+      if (!entry || !entries.includes(entry) || map.isMoving() || entry.element.style.visibility === 'hidden') return;
       cancelTimers();
       const key = `${entry.group.key}:${dayIds.join(',')}:${pinned}:${origin}`;
       if (key === cardKey) return;
@@ -190,6 +190,13 @@
         else if (card?.dataset.origin === 'linked') closeCard();
       } else if (card?.dataset.origin === 'linked' && (!preserveCard || !dayIds.length)) closeCard();
     };
+    function closePreview({ preserveSelectionFocus = false } = {}) {
+      // Event changes clear the old interaction before the camera or markers
+      // move. This also cancels a hover that has not opened its card yet.
+      suppressedEntry = cardEntry;
+      if (!preserveSelectionFocus) pendingFocus = false;
+      closeCard(); setPreview([]); endPreview();
+    }
     const refresh = () => {
       frame = null;
       if (map.isMoving()) return;
@@ -249,12 +256,12 @@
       setPreview(previewIds);
       if (pendingFocus) {
         const selected = entries.find(entry => entry.group.selected);
-        if (selected) selected.button.focus({preventScroll:true});
+        if (selected) { suppressedEntry = selected; selected.button.focus({preventScroll:true}); }
         pendingFocus = false;
       }
     };
     const schedule = () => { if (frame === null) frame = requestAnimationFrame(refresh); };
-    const moving = () => { closeCard(); endPreview(); };
+    const moving = () => closePreview({ preserveSelectionFocus: true });
     const outside = event => { if (card && !card.contains(event.target) && !cardEntry.element.contains(event.target)) dismiss(); };
     const escape = event => { if (event.key === 'Escape' && card) { event.stopPropagation(); suppressedEntry = cardEntry; closeCard(true); endPreview(); } };
     container.addEventListener('pointerdown', outside); document.addEventListener('keydown', escape);
@@ -264,7 +271,7 @@
         groups = nextGroups; routes = nextRoutes; endpoints = new Set(endpointCoordinates.map(coordinateKey));
         previewIds = []; closeCard(); schedule();
       },
-      setPreview,
+      setPreview, closePreview,
       destroy() {
         closeCard(); if (frame !== null) cancelAnimationFrame(frame);
         entries.forEach(entry => entry.marker.remove());

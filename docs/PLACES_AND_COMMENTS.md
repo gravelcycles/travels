@@ -263,7 +263,9 @@ provisioning commands are in [COMMUNITY_OPERATIONS.md](COMMUNITY_OPERATIONS.md).
 
 ## Photos + Places — current contract
 
-Reconciled 11 October 2026; supersedes the 8 October proximity prototype/release.
+Reconciled 11 October 2026, including the later photo-entry/map-popup
+clarification; supersedes the 8 October proximity prototype/release and the
+earlier all-photo-fullscreen interpretation of the October UX request.
 
 The production layer uses `photo-places.js` for explicit saved associations
 and stable screen-space grouping, with `photo-bubbles.js` for map/card lifecycle.
@@ -290,13 +292,19 @@ imagery must not reuse protected family derivatives. Curated group reviews are
 owner data in Git; visitor photo access still grants no editing permission.
 
 Desktop keeps days continuously on the left, map in the center and the existing
-journal/photo sidebar on the right. Any actual photo click opens full screen
-directly, including map clusters, album thumbnails and linked Places photos.
-The existing sidebar image stays uncropped with a stable-height frame. Album
-navigation does not regroup map bubbles or replace their own thumbnails.
-Stationary refreshes retain bubble nodes/image loads; day changes clear the old
-selection. Phones use one bottom event picker and a consolidated current-event
-card with contextual Places. Back/Forward and comments use shared overlay history.
+journal/photo sidebar on the right. A map circle bubble (single or clustered)
+or right-hand reel thumbnail selects a photo in that existing sidebar without
+opening fullscreen. The large top-right selected/lead image opens fullscreen in
+one activation. Album/grid and explicitly linked Places viewer entry retain
+their existing flow. The sidebar image stays uncropped with a stable-height
+frame; no second photo panel is inserted. Album navigation does not regroup map
+bubbles or replace their own thumbnails. Stationary refreshes retain bubble
+nodes/image loads. Before switching days/stops, close old map popups and hover
+previews, cancel pending opens and clear the old photo selection. Phones use one
+bottom event picker and a consolidated current-event card with contextual Places.
+Phone map bubbles select the compact photo card and its large image opens
+fullscreen; the existing grid/swipe flow stays intact. Back/Forward and comments
+use shared overlay history.
 Comments, fullscreen arrows and grids retain the entry collection's count/order;
 explicit groups that cross days follow the selected photo's real day.
 

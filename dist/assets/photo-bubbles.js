@@ -4,7 +4,7 @@
   function create(options) {
     const card = document.getElementById('map-photo-card'), image = card.querySelector('img');
     const $ = selector => card.querySelector(selector), auth = () => root.JOURNEY_ATLAS_AUTH;
-    let selection = null, markerMap = null, frame = 0, exact = null, gesture = null, suppressPhotoClick = false, sidebarPhotoMode = false;
+    let selection = null, selectionLayer = null, markerMap = null, frame = 0, exact = null, gesture = null, suppressPhotoClick = false, sidebarPhotoMode = false;
     const markers = new Map();
     const phone = () => matchMedia('(max-width:900px)').matches;
     const photos = () => options.photos().filter(model.visible);
@@ -12,6 +12,8 @@
     const members = () => selection ? selection.ids.map(id=>photos().find(photo=>photo.id===id)).filter(Boolean) : [];
     const current = () => members().find(photo=>photo.id===selection?.photoId);
     function historyWrite(push = false) {
+      if (history.state?.mobileAtlas?.viewer) selectionLayer = 'viewer';
+      else if (history.state?.mobileAtlas?.overlay === 'comments-dialog') selectionLayer = 'comments';
       history[push ? 'pushState' : 'replaceState']({...history.state,...(!options.placesOpen() && history.state?.atlasPlaces ? {atlasPlaces:{...history.state.atlasPlaces,open:false,depth:0}} : {}),atlasPhotoBubble:selection && {...selection}},'',location.href);
     }
     function clearImage(node) { auth()?.clearImage(node); node.onload = node.onerror = null; node.removeAttribute('src'); }
@@ -24,7 +26,7 @@
       if(auth()?.isProtected(photo))auth().setImage(node,photo,width);else node.src=options.photoUrl(photo,width);
     }
     function syncVisibility() {
-      const shown=Boolean(selection && !selection.fullscreenOnly && !options.placesOpen());
+      const shown=Boolean(selection && !options.placesOpen());
       card.hidden=!shown;document.body.classList.toggle('bubble-card-open',shown);
       if(phone()){
         const summary=document.querySelector('.mobile-day-summary');
@@ -42,28 +44,23 @@
     function removeMarker(key,entry){clearImage(entry.thumbnail);entry.marker.remove();markers.delete(key);}
     function clearMarkers(){for(const [key,entry] of markers)removeMarker(key,entry);}
     function close({write=true,focus=false}={}) {
-      const anchor=selection?.ids[0];selection=null;exact?.remove();exact=null;clearImage(image);syncVisibility();schedule();
+      const anchor=selection?.ids[0];selection=null;selectionLayer=null;exact?.remove();exact=null;clearImage(image);syncVisibility();schedule();
       if(write)historyWrite();options.photoChanged?.(null);
       if(focus)requestAnimationFrame(()=>document.querySelector(`[data-bubble-anchor="${CSS.escape(anchor || '')}"]`)?.focus({preventScroll:true}));
     }
-    function open(items,photoId=items[0]?.id,{write=true,mapGroup=false}={}) {
+    function open(items,photoId=items[0]?.id,{write=true,mapGroup=false,label='Map photos',preserveCollection=false}={}) {
       const ids=items.filter(model.visible).map(photo=>photo.id); if(!ids.length)return;
-      const push=!selection || Boolean(history.state?.atlasPlaces?.open);selection={journeyId:options.journey().id,dayId:options.dayId(),ids,mapGroup,photoId:ids.includes(photoId)?photoId:ids[0]};
-      options.explore();update();if(write)historyWrite(push);schedule();
+      const push=!selection || Boolean(history.state?.atlasPlaces?.open);
+      selection=preserveCollection && selection?.ids.includes(photoId)
+        ? {...selection,dayId:options.dayId(),photoId}
+        : {journeyId:options.journey().id,dayId:options.dayId(),ids,mapGroup,label,photoId:ids.includes(photoId)?photoId:ids[0]};
+      options.closePlaces();options.explore();update();if(write)historyWrite(push);schedule();
       if(!phone())document.querySelector('.story-panel').scrollTop=0;
       $('[data-bubble-full]').focus({preventScroll:true});
-    }
-    function openFullscreen(items, photoId = items[0]?.id) {
-      const ids = items.filter(model.visible).map(photo => photo.id);
-      if (!ids.length) return;
-      selection = {journeyId:options.journey().id,dayId:options.dayId(),ids,mapGroup:true,fullscreenOnly:true,photoId:ids.includes(photoId)?photoId:ids[0]};
-      syncVisibility(); historyWrite(); schedule();
-      options.fullscreen(selection.photoId,members());
     }
     function update() {
       selection=selected();syncVisibility();if(!selection){exact?.remove();exact=null;clearImage(image);options.photoChanged?.(null);return;}
       const photo=current();
-      if(selection.fullscreenOnly){options.photoChanged?.(photo);return;}
       if(card.dataset.photoId!==photo.id){exact?.remove();exact=null;}if(photo.dayId!==options.dayId()){selection.dayId=photo.dayId;options.selectPhotoDay?.(photo.dayId);}
       const list=members(), index=list.indexOf(photo), place=model.placeForPhoto(photo,options.journey().pointsOfInterest || []);
       loadImage(image,photo,1280);
@@ -80,6 +77,12 @@
       $('[data-bubble-place]').hidden=!place;if(place){$('[data-bubble-place]').textContent=`About ${place.point.name} →`;$('[data-bubble-place]').dataset.placeId=place.point.id;}
       $('[data-bubble-unlock]').hidden=!auth()?.isProtected(photo)||Boolean(auth()?.unlocked);
       card.dataset.photoId=photo.id;options.photoChanged?.(photo);$('[data-bubble-comments]').hidden=!options.commentsAvailable?.();
+    }
+    function viewerPhotoChanged(photo) {
+      if (!photo || !selection?.ids.includes(photo.id) || photo.dayId !== selection.dayId) return;
+      // Keep the presenting sidebar in step with the full viewer without
+      // loading an obscured image or changing the viewer's conversation.
+      selection.photoId = photo.id; selectionLayer = 'viewer';
     }
     function step(delta) {
       const list=members(),index=list.findIndex(photo=>photo.id===selection?.photoId),photo=list[index+delta];if(!photo)return;
@@ -127,11 +130,11 @@
         const {node,button,thumbnail,count,marker}=entry;
         node.classList.toggle('bubble-anchor',true);node.classList.toggle('is-selected',active);node.classList.toggle('is-quiet',Boolean(selection)&&!active);
         node.style.setProperty('--bubble-size',`${size}px`);node.style.setProperty('--bubble-leader',`${Math.hypot(...placement.offset)}px`);node.style.setProperty('--bubble-angle',`${Math.atan2(-placement.offset[1],-placement.offset[0])*180/Math.PI}deg`);
-        button.setAttribute('aria-label',group.photos.length===1?'Open photo full screen':`Browse ${group.photos.length} photos`);button.setAttribute('aria-pressed',String(active));
+        button.setAttribute('aria-label',group.photos.length===1?'Select photo':`Browse ${group.photos.length} photos`);button.setAttribute('aria-pressed',String(active));
         count.textContent=group.photos.length>1?group.photos.length:'';count.hidden=group.photos.length<=1;
         button.onclick=event=>{
           event.stopPropagation();
-          openFullscreen(group.photos,anchor.id);
+          open(group.photos,anchor.id,{mapGroup:true});
         };
         const position=JSON.stringify([anchor.lng,anchor.lat,placement.offset]);
         if(entry.position!==position){marker.setLngLat([anchor.lng,anchor.lat]);marker.setOffset(placement.offset);entry.position=position;}
@@ -149,7 +152,7 @@
       if(suppress){event.preventDefault();return;}
       const photo=current();if(!photo)return;
       if(auth()?.isProtected(photo)&&!auth()?.unlocked)auth()?.showPrompt();
-      else options.fullscreen(photo.id,members());
+      else options.fullscreen(photo.id,members(),selection.label || 'Map photos');
     };
     $('[data-bubble-place]').onclick=()=>options.openPlace($('[data-bubble-place]').dataset.placeId);
     $('[data-bubble-retry]').onclick=()=>{if(current())loadImage(image,current(),1280);};
@@ -171,8 +174,20 @@
     card.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();event.stopPropagation();step(event.key==='ArrowLeft'?-1:1);}if(event.key==='Escape'){event.preventDefault();event.stopPropagation();$('[data-bubble-close]').click();}});
     window.addEventListener('atlas-photos-locked',()=>{exact?.remove();exact=null;update();schedule();});window.addEventListener('atlas-photos-unlocked',()=>{update();schedule();});
     window.addEventListener('resize',()=>{syncVisibility();schedule();});
-    window.addEventListener('popstate',event=>{const saved=event.state?.atlasPhotoBubble;selection=saved?.journeyId===options.journey().id&&saved.dayId===options.dayId()?saved:null;update();schedule();});
-    return {open,openFullscreen,close,refresh,mapReady,collection:()=>selection?{photos:members(),label:'Map photos'}:null,placesChanged:()=>{syncVisibility();schedule();},isOpen:()=>Boolean(selection&&!selection.fullscreenOnly)};
+    window.addEventListener('popstate',event=>{
+      const saved=event.state?.atlasPhotoBubble;
+      const valid=saved?.journeyId===options.journey().id&&saved.dayId===options.dayId()?saved:null;
+      const sameCollection=selection && valid && selection.journeyId===valid.journeyId && JSON.stringify(selection.ids)===JSON.stringify(valid.ids);
+      const retainPhoto=Boolean(selectionLayer && sameCollection && valid.ids.includes(selection.photoId));
+      selection=valid?{...valid,...(retainPhoto?{photoId:selection.photoId}: {})}:null;
+      const foreground=event.state?.mobileAtlas?.viewer || event.state?.mobileAtlas?.overlay==='comments-dialog';
+      if(!foreground)selectionLayer=null;
+      update();schedule();
+      // Replace only this surface's state. A subsequent Back still closes the
+      // selection, and unrelated Places scope/scroll/navigation stays intact.
+      if(retainPhoto)history.replaceState({...history.state,atlasPhotoBubble:{...selection}},'',location.href);
+    });
+    return {open,close,refresh,mapReady,viewerPhotoChanged,clearMap:clearMarkers,collection:()=>selection?{photos:members(),label:selection.label || 'Map photos'}:null,placesChanged:()=>{syncVisibility();schedule();},isOpen:()=>Boolean(selection)};
   }
   root.JOURNEY_ATLAS_PHOTO_BUBBLES={create};
 })(typeof window==='undefined'?globalThis:window);

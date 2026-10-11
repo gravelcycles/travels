@@ -16,10 +16,11 @@ export function photoEntryFixture(journey, media = journey.photos || []) {
     photoDialog:{open:false,showModal(){this.open=true;events.push('fullscreen');}},
     setActiveDay(id,_focus,options){context.activeDayId=id;events.push({day:id,options});},
     arrivalChapter:{phase:'explore'},settleAtCity(){events.push('camera');},
-    photoBubbles:{open(){events.push('intermediate-photo-panel');}},
+    mediaUtils:{isVideo:photo=>photo.mediaType==='video'},photoStrip:{},storyMedia:{},
+    photoBubbles:{open(photos,id,options){events.push({selection:id,photos:photos.map(photo=>photo.id),options});}},
     updateViewer(){const photo=context.viewerPhotos()[context.viewerPhotoIndex];if(photo)context.viewerDayId=photo.dayId;events.push('render');},
     initViewerMap(){},window:{requestAnimationFrame(){},JOURNEY_ATLAS_MOBILE_UI:{enabled:()=>false,open(){events.push('entry');}}}
   });
-  vm.runInContext(['viewerPhotos','viewerDay','openPhoto','moveViewer','openDayViewer','moveViewerDay'].map(viewerFunction).join('\n'),context);
-  return {context,events,open:(id,options)=>context.openPhoto(id,options),photos:()=>Array.from(context.viewerPhotos())};
+  vm.runInContext(['viewerPhotos','viewerDay','selectPhoto','handlePhotoEntry','openCommentPhoto','openPhoto','moveViewer','openDayViewer','moveViewerDay'].map(viewerFunction).join('\n'),context);
+  return {context,events,open:(id,options)=>context.openPhoto(id,options),click:(surface,id)=>context.handlePhotoEntry({currentTarget:context[surface],target:{closest:()=>({dataset:{openPhoto:id}})}}),photos:()=>Array.from(context.viewerPhotos())};
 }
