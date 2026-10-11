@@ -31,8 +31,11 @@ fullscreen/Back with the current image, Switzerland–Italy's day boundary,
 a mixed photo/video demo and its cross-day Comments return, and an independent
 populated city draft with an empty middle event. The draft retains selection
 through desktop/phone resizing; empty and explicit-collection behavior also have
-regression coverage. Current main is integrated. Next: publish, confirm Pages
-and verify fresh public HTML/runtime. No trip content or media changed.
+regression coverage. Integrated current main and deployed as `d09bc72` via
+[Pages run 38166550947](https://github.com/gravelcycles/travels/actions/runs/38166550947).
+The run succeeded; fresh public HTML for all four trip/demo pages and the three
+changed runtime assets match the tested build byte-for-byte. No desktop photo
+implementation or delivery work remains. No trip content or media changed.
 
 ## Trip comment notifications — 11 October 2026
 
