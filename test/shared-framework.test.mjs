@@ -23,6 +23,7 @@ import '../studio/photo-batch.js';
 import { validateJourneyExtras } from '../scripts/journey-extras.mjs';
 import { assessStudioReadiness } from '../scripts/studio-readiness.mjs';
 import { journeyRevision } from '../scripts/journey-planner.mjs';
+import { fixture as photoBubbleFixture } from './photo-bubbles-harness.mjs';
 
 const repo = path.resolve(import.meta.dirname, '..');
 const input = { title: 'A completely new trip', slug: 'framework-test-trip', startDate: '2028-02-28', endDate: '2028-03-01', timeZone: 'Asia/Tokyo' };
@@ -42,6 +43,19 @@ function bundle(source, key) {
   return JSON.parse(JSON.stringify(context.window[key]));
 }
 const app = read(repo, 'dist/assets/app.js');
+
+test('stationary photo bubbles stay attached for reference, demo and freshly generated draft',t=>{
+  const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root);
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'),draft]){
+    for(const [width,height] of [[800,600],[360,400]]){
+      const f=photoBubbleFixture({ready:true,journey,initialPhotos:[],width,height});
+      f.controller.mapReady();f.flush();assert.equal(f.liveMarkers().length,0,'Empty trips have no invented photo markers');
+      f.setPhotos([{id:`${journey.id}-fixture-photo`,dayId:journey.days[0].id,lat:47,lng:8}]);
+      f.controller.refresh();f.flush();const marker=f.liveMarkers()[0];assert.ok(marker,journey.id);
+      f.mapEvent('resize');f.controller.refresh();f.flush();assert.equal(f.liveMarkers()[0],marker,journey.id);
+    }
+  }
+});
 
 test('photo intake skips undated TBD entries for the reference, demo and a fresh draft', t => {
   const root = fixture(t), draft = createJourney(root, input);

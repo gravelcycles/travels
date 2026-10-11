@@ -6,6 +6,7 @@
 .photo-bubble>img[hidden] { display:none; }
 .photo-bubble>svg { position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:18px;height:18px; }
 .bubble-count { position:absolute;z-index:1;right:-5px;bottom:-4px;min-width:20px;height:20px;padding:0 4px;display:grid;place-items:center;background:#315747;color:#fff;border:2px solid #fff;border-radius:12px;font-size:10px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1; }
+.bubble-count[hidden] { display:none; }
 .bubble-anchor.is-selected { z-index:7; }
 .bubble-anchor.is-selected::before { background:#36594c80; }
 .bubble-anchor.is-selected .photo-bubble { box-shadow:0 0 0 2px #cf6b39,0 2px 8px #15323825; }

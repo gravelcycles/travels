@@ -4,7 +4,8 @@
   function create(options) {
     const card = document.getElementById('map-photo-card'), image = card.querySelector('img');
     const $ = selector => card.querySelector(selector), auth = () => root.JOURNEY_ATLAS_AUTH;
-    let selection = null, markers = [], markerMap = null, frame = 0, exact = null, gesture = null;
+    let selection = null, markerMap = null, frame = 0, exact = null, gesture = null;
+    const markers = new Map();
     const phone = () => matchMedia('(max-width:900px)').matches;
     const photos = () => options.photos().filter(model.visible);
     const selected = () => selection ? model.retainedSelection(selection,photos()) : null;
@@ -29,7 +30,8 @@
       else document.querySelector('.story-album-entry').append(card);
       requestAnimationFrame(()=>options.map()?.resize());
     }
-    function clearMarkers(){for(const marker of markers){marker.getElement().querySelectorAll('img').forEach(clearImage);marker.remove();}markers=[];}
+    function removeMarker(key,entry){clearImage(entry.thumbnail);entry.marker.remove();markers.delete(key);}
+    function clearMarkers(){for(const [key,entry] of markers)removeMarker(key,entry);}
     function close({write=true,focus=false}={}) {
       const anchor=selection?.ids[0];selection=null;exact?.remove();exact=null;clearImage(image);syncVisibility();schedule();
       if(write)historyWrite();options.photoChanged?.(null);
@@ -69,29 +71,54 @@
       return [...document.querySelectorAll('#map .day-marker,#map .route-endpoint-marker,#map .pp-pin,#map .pp-pin-label,#map .maplibregl-ctrl-group,#map .maplibregl-ctrl-attrib,#day-navigator,#map-legend')].filter(node=>node.getClientRects().length&&!node.hidden).map(node=>{const n=node.getBoundingClientRect();return {left:n.left-r.left-5,right:n.right-r.left+5,top:n.top-r.top-5,bottom:n.bottom-r.top+5};});
     }
     function draw() {
-      const focusId=document.activeElement?.dataset.bubbleAnchor;clearMarkers();
-      const map=options.map();if(!map||!options.ready())return;
+      const map=options.map();if(!map||!options.ready()){clearMarkers();return;}
       if(selection && (selection.journeyId!==options.journey().id || selection.dayId!==options.dayId())){close();return;}
-      if(options.scope()!=='day')return;
+      if(options.scope()!=='day'){clearMarkers();return;}
+      // Move-end will lay out the settled view. Keep existing thumbnails alive
+      // during camera transitions and ordinary resize/selection refreshes.
+      if(map.isMoving())return;
       const viewport={width:map.getContainer().clientWidth,height:map.getContainer().clientHeight};
+      if(!viewport.width||!viewport.height)return;
       const visible=photos().filter(photo=>photo.dayId===options.dayId()&&model.located(photo)).filter(photo=>{const point=map.project([photo.lng,photo.lat]);return point.x>=0&&point.y>=0&&point.x<=viewport.width&&point.y<=viewport.height;});
       const picked=members().filter(model.located),groups=model.bubbleGroups(visible,picked,p=>map.project(p),map.getZoom()>=10?106:78,phone()?4:6),boxes=obstacles(map);
+      const visibleIds=new Set(visible.map(photo=>photo.id)),retained=new Set();
       for(const group of groups){
-        const anchor=group.photos[0],active=selection?.ids.includes(anchor.id),point=map.project([anchor.lng,anchor.lat]);
-        let size=model.bubbleSize(map.getZoom(),active),placement=model.bubblePlacement(point,size,viewport,boxes);
-        if(!placement){size=40;placement=model.bubblePlacement(point,size,viewport,boxes);}if(!placement)continue;boxes.push(placement.box);
-        const node=document.createElement('div');node.className=`bubble-anchor${active?' is-selected':''}`;
+        const key=group.photos[0].id,active=Boolean(selection?.ids.includes(key));
+        const candidates=group.photos.filter(photo=>visibleIds.has(photo.id));
+        let size=model.bubbleSize(map.getZoom(),active),placement,anchor;
+        // A retained group can span the viewport edge or a crowded place pin.
+        // Its album order must not make the whole group disappear.
+        for(const candidateSize of [...new Set([size,40])]){
+          size=candidateSize;
+          for(const photo of candidates){placement=model.bubblePlacement(map.project([photo.lng,photo.lat]),size,viewport,boxes);if(placement){anchor=photo;break;}}
+          if(placement)break;
+        }
+        if(!placement)continue;boxes.push(placement.box);retained.add(key);
+        let entry=markers.get(key);
+        if(!entry){
+          const node=document.createElement('div'),button=document.createElement('button');
+          button.type='button';button.className='photo-bubble';button.dataset.bubbleAnchor=key;
+          const thumbnail=document.createElement('img'),fallback=document.createElement('span'),count=document.createElement('span');
+          fallback.className='bubble-fallback';fallback.textContent='▧';fallback.setAttribute('aria-hidden','true');count.className='bubble-count';
+          button.append(fallback,thumbnail,count);node.append(button);
+          const marker=new root.maplibregl.Marker({element:node,anchor:'center',offset:placement.offset}).setLngLat([anchor.lng,anchor.lat]).addTo(map);
+          entry={node,button,thumbnail,count,marker};markers.set(key,entry);
+        }
+        const {node,button,thumbnail,count,marker}=entry;
+        node.classList.toggle('bubble-anchor',true);node.classList.toggle('is-selected',active);
         node.style.setProperty('--bubble-size',`${size}px`);node.style.setProperty('--bubble-leader',`${Math.hypot(...placement.offset)}px`);node.style.setProperty('--bubble-angle',`${Math.atan2(-placement.offset[1],-placement.offset[0])*180/Math.PI}deg`);
-        const button=document.createElement('button');button.type='button';button.className='photo-bubble';button.dataset.bubbleAnchor=anchor.id;button.setAttribute('aria-label',`Browse ${group.photos.length} ${group.photos.length===1?'photo':'photos'}`);button.setAttribute('aria-pressed',String(Boolean(active)));
-        const thumbnail=document.createElement('img'),fallback=document.createElement('span');fallback.className='bubble-fallback';fallback.textContent='▧';fallback.setAttribute('aria-hidden','true');button.append(fallback,thumbnail);
-        if(group.photos.length>1){const count=document.createElement('span');count.className='bubble-count';count.textContent=group.photos.length;button.append(count);}node.append(button);
+        button.setAttribute('aria-label',`Browse ${group.photos.length} ${group.photos.length===1?'photo':'photos'}`);button.setAttribute('aria-pressed',String(active));
+        count.textContent=group.photos.length>1?group.photos.length:'';count.hidden=group.photos.length<=1;
         button.onclick=event=>{event.stopPropagation();options.closePlaces();open(group.photos,active?selection.photoId:anchor.id);};
-        const marker=new root.maplibregl.Marker({element:node,anchor:'center',offset:placement.offset}).setLngLat([anchor.lng,anchor.lat]).addTo(map);markers.push(marker);loadImage(thumbnail,active?current():anchor,160);
+        const position=JSON.stringify([anchor.lng,anchor.lat,placement.offset]);
+        if(entry.position!==position){marker.setLngLat([anchor.lng,anchor.lat]);marker.setOffset(placement.offset);entry.position=position;}
+        const photo=active?current():group.photos[0],imageKey=JSON.stringify([photo,auth()?.unlocked]);
+        if(entry.imageKey!==imageKey){loadImage(thumbnail,photo,160);entry.imageKey=imageKey;}
       }
-      if(focusId)document.querySelector(`[data-bubble-anchor="${CSS.escape(focusId)}"]`)?.focus({preventScroll:true});
+      for(const [key,entry] of markers)if(!retained.has(key))removeMarker(key,entry);
     }
     function refresh(){if(selection){if(selection.journeyId!==options.journey().id||selection.dayId!==options.dayId())close();else update();}schedule();}
-    function mapReady(){const map=options.map();if(map===markerMap)return;markerMap?.off('moveend',schedule);markerMap?.off('resize',schedule);markerMap=map;map?.on('moveend',schedule);map?.on('resize',schedule);schedule();}
+    function mapReady(){const map=options.map();if(map===markerMap)return;clearMarkers();markerMap?.off('moveend',schedule);markerMap?.off('resize',schedule);markerMap=map;map?.on('moveend',schedule);map?.on('resize',schedule);schedule();}
     $('[data-bubble-close]').onclick=()=>{if(history.state?.atlasPhotoBubble && !options.placesOpen())history.back();else close({focus:true});};
     $('[data-bubble-prev]').onclick=()=>step(-1);$('[data-bubble-next]').onclick=()=>step(1);
     $('[data-bubble-full]').onclick=()=>current()&&options.fullscreen(current().id);

@@ -52,8 +52,9 @@
   }
   function bubbleGroups(visiblePhotos,selectedPhotos,project,radius,limit) {
     const selectedIds=new Set(selectedPhotos.map(p=>p.id));
+    const visibleIds=new Set(visiblePhotos.map(p=>p.id));
     const groups=groupPhotos(visiblePhotos.filter(p=>!selectedIds.has(p.id)),project,radius,Math.max(1,limit-(selectedPhotos.length?1:0)));
-    if(selectedPhotos.length&&visiblePhotos.some(p=>p.id===selectedPhotos[0].id))groups.unshift({photos:selectedPhotos});
+    if(selectedPhotos.some(p=>visibleIds.has(p.id)))groups.unshift({photos:selectedPhotos});
     return groups;
   }
   function bubbleSize(zoom,selected=false) {return selected?64:Math.round(40+8*Math.max(0,Math.min(1,(zoom-9)/3)));}

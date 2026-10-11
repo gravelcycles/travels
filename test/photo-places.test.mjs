@@ -41,6 +41,12 @@ test('bubble placement avoids map controls and never invents a map coordinate fo
  const obstacle={left:0,right:200,top:0,bottom:200};assert.equal(model.bubblePlacement({x:100,y:100},48,{width:200,height:200},[obstacle]),null);
  const result=model.bubblePlacement({x:100,y:100},48,{width:400,height:400},[{left:60,right:140,top:10,bottom:80}]);assert.ok(result);assert.ok(result.box.top>=80 || result.box.left>=140 || result.box.right<=60);
 });
+
+test('selected membership and order survive when only a later member is in view',()=>{
+ const selected=[photo('outside'),photo('inside',8.001)],groups=model.bubbleGroups([selected[1]],selected,([x,y])=>({x,y}),80,6);
+ assert.deepEqual(groups.map(group=>group.photos.map(photo=>photo.id)),[['outside','inside']]);
+ assert.deepEqual(model.bubbleGroups([],selected,([x,y])=>({x,y}),80,6),[]);
+});
 test('owner link/unlink/reorder edits explicit references without changing photo metadata',()=>{
  const item=structuredClone(point),photos=[photo('a'),{id:'no-location'},photo('second')],original=structuredClone(photos);
  editor.linkPhoto(item,'a',true,photos);editor.move(item.photoIds,2,-1);assert.deepEqual(item.photoIds,['no-location','a','second']);editor.linkPhoto(item,'a',false,photos);assert.deepEqual(item.photoIds,point.photoIds);assert.deepEqual(photos,original);
