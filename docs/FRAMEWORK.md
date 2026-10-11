@@ -368,6 +368,12 @@ An undated TBD tail is validated without extending the known calendar. The viewe
 Studio, photo assignment and calendar moves retain the shared contracts. Heading
 East supplies the content instance; family/demo/fresh-draft tests cover inheritance.
 No separate trip implementation or framework migration is introduced.
+The 11 October Heading East filter request extends this projection through shared
+`journeyToday`, `planningCategory`, `planningCounts` and `projectPlanning` helpers:
+three synchronized visibility groups, source-preserving map/media/Replay scoping,
+and complete incoming legs. The boolean `projectPlanning` API remains compatible.
+The [journey workflow](../JOURNEY_WORKFLOW.md#tbd-stops-and-legs) owns grouping,
+empty-state, numbering and navigation semantics.
 
 ## Arrival/city playback — approved 10 October 2026
 

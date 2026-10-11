@@ -1,5 +1,17 @@
 # Changelog
 
+## 11 October 2026 — Past and future trip filters
+
+- Replaced the shared TBD-only checkbox with Past / Future locked in / Future
+  TBD toggles in the Days/Stops section and a synchronized full-trip map menu,
+  including the phone picker and overview. All groups start visible.
+- Group by trip-local dates and saved planning status, including ongoing stays
+  under Past. Keep stable stop numbers and at least one populated group visible;
+  map routes, media, Places assignments and Replay follow the selection.
+- Preserve complete incoming legs, clear stale map selections, and fix journal
+  navigation boundaries for filtered subsets. Record the owner's Heading East
+  request and shared contract in the live trip/workflow/framework/feature docs.
+
 This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
