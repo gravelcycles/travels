@@ -76,7 +76,7 @@ This file records dated changes, not current instructions. Use
   empty albums; retain the current event grid, pinch/pan and location gestures.
 - Carry the correction into O08, principles and photo/journey workflows. Shared
   runtime and independent-draft regression checks cover entry, order, event
-  boundaries, map return and history. All 535 tests and the production build pass; phone/desktop browser checks cover
+  boundaries, map return and history. All 539 tests and the production build pass; phone/desktop browser checks cover
   the reference, target, demo and independent fresh drafts (details in WIP).
 
 ## 11 October 2026 — steady sidebar photo hover

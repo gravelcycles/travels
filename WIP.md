@@ -33,9 +33,12 @@ an independently populated city draft. Verified cross-event arrows/photo swipes,
 city-bar swipes, empty-event skipping, unchanged marker positions after manual
 map movement and photo dismissal, event grid selection, Back/Forward, location
 staying closed, 320/390 px portrait and landscape, and retained desktop selection.
-The isolated release is based on sanitized main with full-trip Replay disabled and the newer opening/day filters retained.
-Next: integrate any newer main, publish, and verify Pages plus fresh public
-HTML/assets; no media/content changes are required.
+Integrated current sanitized main, preserving full-trip Replay disablement and
+the newer opening/day filters. Deployed as `497cd0b` via successful
+[Pages run 38151034258](https://github.com/gravelcycles/travels/actions/runs/38151034258).
+Fresh public HTML for all four journey/demo pages and `app.js`, `mobile-ux.js`
+and `mobile.css` matched the tested release byte-for-byte. No mobile
+implementation or delivery work remains; no media/content changed in this fix.
 
 ## Opening screen and Heading East description — 11 October 2026
 
@@ -198,9 +201,13 @@ same north–south leg on desktop and 390/320 px phones, landscape, the wide Alp
 demo route, reference multi-leg routes and an independent populated city draft.
 Skip/rapid navigation and ordinary timed playback were checked; the final phone
 arrival shows the departing circle clear of labels without false map errors.
-The release includes the latest opening, day filters and mobile camera-roll
-changes. Next: publish the tested integration and verify Pages/public output.
-Synthetic fixtures remain local only.
+Deployed as `ad55da8`, including the latest opening, day filters, mobile
+camera roll and city stories. [Pages run 38151311374](https://github.com/gravelcycles/travels/actions/runs/38151311374)
+succeeded. Fresh public target/reference/demo HTML and all three changed runtime
+assets match the tested build byte-for-byte. Desktop/phone visual checks used
+the local production build; automatic approval review blocked the live browser
+auth redirect, so public verification used HTTP without private-photo access.
+No implementation or deployment work remains; synthetic fixtures stay local.
 
 ## Arrival → city release — 10 October 2026
 

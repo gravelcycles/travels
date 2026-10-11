@@ -107,6 +107,24 @@ acceptance checks. The dormant player shell and helpers are retained because
 arrival uses shared route interpolation; the Studio chapter editor stays hidden.
 
 
+## Mobile camera-roll correction — 11 October 2026
+
+The owner reported that closing a phone photo reset the map instead of retaining
+its previous zoom, asked for fullscreen to “work like a camera roll” with access
+to all photos and clearer left/right arrows, and suggested swiping between cities.
+O08 now requires continuous ordinary phone browsing across day/city albums and
+preservation of the presenting map camera when the event has not changed. This
+supersedes the earlier phone restriction to the entry day or map-bubble group;
+explicitly selected Places collections still keep their order and scope.
+
+The implementation uses image swipes for adjacent photos, including crossing
+cities, and distinct city/day controls plus a swipeable event bar for larger
+jumps. The latter is the implementation choice for the owner's city-swipe idea,
+not a new gesture over the image that competes with photo navigation. Event
+changes continue to update the map/story context and close stale map popups.
+Desktop collection boundaries and photo-entry behavior remain governed by O03.
+
+
 ## Reversals that must not be undone accidentally
 
 | Earlier direction | Latest applicable decision | Evidence |
