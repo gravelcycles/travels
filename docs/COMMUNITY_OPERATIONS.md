@@ -217,3 +217,11 @@ temporary ordering sort. The Worker runtime check applies all migrations and
 checks both new routes against disposable D1 data. Apply the migration, deploy
 the Worker, then publish Pages; verify signed reads and anonymous/foreign-origin
 denial without inserting fabricated memories into production.
+
+
+Notification rollout verified 11 October 2026: migration 0002 applied to the
+existing database, followed by Worker version
+`1ac1be5b-9646-4290-be40-1c3f8a331e75` and Pages release `177317e`
+([successful run](https://github.com/gravelcycles/travels/actions/runs/38152000837)).
+All published journeys passed signed summary/recent reads, no-store checks and
+anonymous/foreign-origin rejection. No test comments were posted to production.

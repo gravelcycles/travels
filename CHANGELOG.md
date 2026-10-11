@@ -19,6 +19,8 @@
   deploying the Worker and Pages.
 - Record the continuing behavior and acceptance checks in O17, the conversation
   contract and shared feature/architecture guidance. Verification is tracked in WIP.
+- Verified 570 tests, build, Worker runtime, migration and live private reads;
+  Pages release `177317e` and fresh public pages/assets passed verification.
 
 ## 11 October 2026 — Heading East copy proofreading
 
@@ -135,8 +137,9 @@ This file records dated changes, not current instructions. Use
 ## 11 October 2026 — keep password documentation anonymous
 
 - At the owner’s explicit request, sanitize affected Git history and local
-  recovery refs while preserving concurrent work. GitHub’s remaining obsolete
-  commit cache requires a separate support purge; tracked in WIP.
+  recovery refs while preserving concurrent work. Delete the obsolete Actions
+  run on follow-up and verify its API returns 404. The old commit and separate
+  deployment record remain accessible; further removal is tracked in WIP.
 
 - Remove identifying credential labels and password hints from Markdown,
   including historical records and command examples.
