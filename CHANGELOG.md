@@ -7,6 +7,8 @@
   with a full-width phone button and safe-area spacing.
 - Preserve desktop cover framing, keyboard scrolling and the single whole-trip
   map entry (or the unmapped draft list fallback); update O06 and the workflow.
+- All 570 tests and the build pass; desktop/phone, long-copy and enlarged-text
+  checks pass. Pages release `a88dddc` succeeded and fresh public assets match.
 
 ## 11 October 2026 — trip comment notifications
 

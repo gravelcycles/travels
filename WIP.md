@@ -84,8 +84,14 @@ and 200% root text. Keyboard and pointer scrolling reach the final line without
 covering it; Tab reaches the action. Map entry still shows the whole journey,
 and the empty draft enters its stop list. Local photo mode used existing blur
 previews because protected derivatives are outside this isolated checkout.
-The shared deep-link bypass regression passes. Next: integrate current main,
-deploy Pages and verify fresh public output.
+The shared deep-link bypass regression passes. Integrated current main and
+deployed as `a88dddc` via successful
+[Pages run 38158941309](https://github.com/gravelcycles/travels/actions/runs/38158941309).
+Fresh public Heading East/reference/demo HTML and `app.js`, `styles.css` and
+`mobile.css` match the tested build byte-for-byte. An additional live browser
+check was blocked by automatic approval review when the page tried to access
+the private-photo Worker; the local layout checks and public asset verification
+are complete. No implementation or deployment work remains.
 
 ## Opening screen and Heading East description — 11 October 2026
 
