@@ -336,6 +336,10 @@ used the existing local-photo mode; no private photographs were needed.
 
 ### Place photos — 10 October 2026
 
+**Superseded selection:** the single-photo sets below were replaced by the
+11 October refresh recorded after this section. The external-reference contract
+and separation from traveler photos still apply.
+
 The owner explicitly requested at least one Google Maps photo for each of the
 20 saved places. Each place has one reviewed image from its exact branch's
 public listing, with a short visual description, the contributor's displayed
@@ -362,6 +366,43 @@ were retrieved successfully and visually reviewed. Browser QA confirmed 20
 image-bearing cards, a complete portrait image with attribution on desktop,
 and a complete landscape image with contributor/source on a 390 × 844 phone
 viewport. The existing shared unavailable-image fallback remains in place.
+
+### Place image refresh — 11 October 2026
+
+The owner supplied exact replacements for Barbès (tagines) and Abi’s Luzern
+(a takeaway meal on a table). Those two places retain one image each. Each of
+the other 18 saved places now has three distinct photographs, for 56 total.
+The requested mix is food and two atmosphere views, preferably outdoors;
+the owner's follow-up specifically includes the counter for bakeries.
+
+The selected sets include street fronts, terraces and courtyards where suitable
+images were available. Isabella, AERA, Oshione and Antonínovo include their
+display counters. Indoor dining/shop views complete sets without a suitable
+verified exterior. Popocafepetl uses drinks and bar atmosphere. Its wide bar
+image comes from HaBalyan's explicitly Michalská-labeled 2015 gallery; bis POWI's
+food-counter image comes from Grünhof's Café POW/bis POWI page. Source dates and
+visible menus are not current venue information.
+
+Maps candidates were matched to the exact saved branch, visually reviewed and
+paired with their loaded contributor credit and photo ID. The two supplied
+photos load from their exact image URLs, but the signed-out Maps viewer redirects
+their deep links to a cover photo, so their uploader names could not be verified.
+They use a source-only Google Maps credit identifying owner selection; no
+photographer is guessed. Both original photo IDs and supplied deep links are
+preserved. Website references name the source publisher, not an assumed author.
+The complete selection and credits are in
+[the attribution record](../dist/assets/places/ATTRIBUTION.md#heading-east--linked-place-photographs).
+
+All images remain `linked` external references with HTTPS sources. No image
+binaries, trip-photo associations, visits, ratings, itinerary or shared behavior
+are added by this content refresh. Future edits should retain this selection
+intent and the explicit two-photo replacements unless the owner changes it.
+
+Validation: all 56 selected URLs returned decodable images; all 518 tests and
+the production build passed. Desktop and 390 × 844 browser checks confirmed
+the three-image bakery gallery, complete compositions, contributor/source
+display and navigation through the final image. Non-image journey fields were
+compared with the previous source and remain unchanged.
 
 # City framing boundaries — 10 October 2026
 

@@ -4,6 +4,15 @@ This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
 
+## 11 October 2026 — refresh Heading East place photographs
+
+- Use the owner's exact Barbès and Abi’s images and curate three images for
+  each remaining saved place, pairing food/drinks with atmosphere and including
+  bakery counters. Prefer outdoor tables and street views where available.
+- Record all 56 source-hosted images and credits, preserve verified branches,
+  and document the two supplied photos whose contributor names are unavailable.
+  Keep venue imagery separate from personal photos and visit records.
+
 ## 11 October 2026 — clarified photo selection and day-change cleanup
 
 - Apply the owner's later correction: map circle bubbles and right-hand reel

@@ -79,9 +79,12 @@ facts arrive; no feature porting is required.
 Heading East includes 20 saved food/drink places matched from a shared Google
 Maps list to seven existing city stays. Addresses, approximate venue pins,
 branch-specific Maps links and factual sources use the existing Places contract;
-no visit or group rating is inferred. Each now has one owner-requested Google
-Maps photo, displayed from its original host with contributor credit and a source
-link. Shared image provenance supports externally hosted references (`linked`)
+no visit or group rating is inferred. The 11 October image refresh includes the
+owner's exact Barbès and Abi’s photos and three images for each of the other 18
+places: food or drinks and atmosphere, including bakery counters. The 56 images
+load from their original hosts with source credits and links; verified Maps
+contributor names are retained, with source-only credits where unavailable.
+Shared image provenance supports externally hosted references (`linked`)
 without labelling them owned or licensed. The [intake record](HEADING_EAST.md#saved-places--10-october-2026)
 documents the city-only selection and excluded detours.
 
