@@ -143,7 +143,7 @@
       $('.atlas-shell').dataset.mapScope = api.scope();
       $('#mobile-back .button-label').textContent = tab === 'map' ? `All ${eventWord('plural')}` : `${eventWord('title')} map`;
       $('#mobile-day-picker').setAttribute('aria-expanded', String(tab === 'route'));
-      $('#mobile-day-picker').setAttribute('aria-label', `${tab === 'route' ? 'Return to' : `Choose a ${eventWord()}, current`} ${eventWord('title')} ${api.day().number} of ${api.days().length}`);
+      $('#mobile-day-picker').setAttribute('aria-label', `${tab === 'route' ? 'Return to' : `Choose a ${eventWord()}, current`} ${eventWord('title')} ${api.day().number}`);
       $('[data-journey-action=unlock]').hidden = Boolean(window.JOURNEY_ATLAS_AUTH?.unlocked);
       if (enabled() && tab === 'story') requestAnimationFrame(api.preview);
     }

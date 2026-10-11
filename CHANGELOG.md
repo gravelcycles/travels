@@ -1,5 +1,28 @@
 # Changelog
 
+## 11 October 2026 — one opening action and Heading East description
+
+- Keep one Explore the journey action and open the whole-trip map. Remove the
+  duplicate Whole trip map action; preserve direct day/photo links and one
+  useful day/stop-list fallback for unmapped drafts.
+- Replace Heading East's subtitle with the owner's exact paragraph about the
+  journey after summer in Switzerland. Record the shared opening correction in
+  O06 and the trip-specific wording in its intake record.
+- Validation: 524 tests and the production build pass; desktop/phone checks
+  confirm the supplied copy, single action and whole-trip map entry.
+
+## 11 October 2026 — Past and future trip filters
+
+- Replaced the shared TBD-only checkbox with Past / Future locked in / Future
+  TBD toggles in the Days/Stops section and a synchronized full-trip map menu,
+  including the phone picker and overview. All groups start visible.
+- Group by trip-local dates and saved planning status, including ongoing stays
+  under Past. Keep stable stop numbers and at least one populated group visible;
+  map routes, media and Places assignments follow the selection.
+- Preserve complete incoming legs, clear stale map selections, and fix journal
+  navigation boundaries for filtered subsets. Record the owner's Heading East
+  request and shared contract in the live trip/workflow/framework/feature docs.
+
 This file records dated changes, not current instructions. Use
 [AGENTS.md](AGENTS.md), [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md) and the
 [feature inventory](docs/FEATURES.md) when starting or changing an atlas.
@@ -16,6 +39,15 @@ This file records dated changes, not current instructions. Use
   runtime and independent-draft regression checks cover entry, order, event
   boundaries, map return and history. All 535 tests and the production build pass; phone/desktop browser checks cover
   the reference, target, demo and independent fresh drafts (details in WIP).
+
+## 11 October 2026 — steady sidebar photo hover
+
+- Keep the selected sidebar photo’s blue frame visible on hover by correcting
+  the image button’s CSS priority over the general pale toolbar hover style.
+- Preserve photo selection, fullscreen activation, image reveals and keyboard
+  focus; carry the no-flash requirement into O03 and the photo workflow.
+- Validation: all 520 tests and production build pass; browser checks cover the
+  reference, demo and a fresh city draft with portrait/landscape photos.
 
 ## 11 October 2026 — disable full-trip Replay
 

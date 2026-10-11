@@ -64,14 +64,17 @@
 
         <section id="travel-party" class="travel-party" aria-label="Travelers and routes" hidden></section>
 
-        <label class="planning-filter" id="planning-filter" hidden>
-          <input type="checkbox" id="show-tbd" checked>
-          <span>Show TBD stops <small id="tbd-count"></small></span>
-        </label>
         <div class="route-heading">
           <span data-event-copy="THE DAYS">THE DAYS</span>
-          <small id="day-count"></small>
+          <small id="day-count" aria-live="polite"></small>
         </div>
+        <fieldset class="planning-filter" id="planning-filter" hidden>
+          <legend class="visually-hidden" data-event-copy="Show days">Show days</legend>
+          <label><input type="checkbox" id="show-past" data-planning-category="past" checked><span>Past</span><small data-planning-count="past"></small></label>
+          <label><input type="checkbox" id="show-locked" data-planning-category="locked" checked><span>Future locked in</span><small data-planning-count="locked"></small></label>
+          <label><input type="checkbox" id="show-tbd" data-planning-category="tbd" checked><span>Future TBD</span><small data-planning-count="tbd"></small></label>
+          <p>Past includes today and ongoing stays.</p>
+        </fieldset>
         <div class="day-list" id="day-list"></div>
         <nav id="mobile-journey-actions" class="mobile-journey-actions" aria-label="Explore the journey">
           <button data-journey-action="overview" type="button">Whole trip map</button>
@@ -98,6 +101,16 @@
           </div>
         </div>
         <div id="map" aria-label="Map showing the selected journey"></div>
+        <details id="map-planning-filter" class="map-planning-filter" hidden>
+          <summary id="map-planning-summary">Filter days · All</summary>
+          <fieldset class="planning-filter">
+            <legend class="visually-hidden" data-event-copy="Show days on the map">Show days on the map</legend>
+          <label><input type="checkbox" id="map-show-past" data-planning-category="past" checked><span>Past</span><small data-planning-count="past"></small></label>
+          <label><input type="checkbox" id="map-show-locked" data-planning-category="locked" checked><span>Future locked in</span><small data-planning-count="locked"></small></label>
+          <label><input type="checkbox" id="map-show-tbd" data-planning-category="tbd" checked><span>Future TBD</span><small data-planning-count="tbd"></small></label>
+            <p>Past includes today and ongoing stays.</p>
+          </fieldset>
+        </details>
         <div class="day-navigator" id="day-navigator" hidden aria-live="polite">
           <button id="previous-day" type="button" data-event-aria="Previous day" aria-label="Previous day">←</button>
           <button id="focused-day-label" type="button" data-event-aria="Choose a day" aria-label="Choose a day"></button>

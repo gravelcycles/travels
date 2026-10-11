@@ -507,8 +507,11 @@ grids. This phone behavior supersedes the earlier entry-day/map-group boundary
 under the owner's later 11 October mobile correction (O08).
 
 The existing sidebar frame remains uncropped and stable across portrait and
-landscape photos, with adjacent thumbnails and expandable day details. Only
-traveler-supplied captions appear. An About-place action requires an explicit
+landscape photos, with adjacent thumbnails and expandable day details. Hovering
+the large photo must retain its blue background without a white flash; its image
+button stays transparent instead of inheriting the toolbar's pale hover fill.
+Check pointer entry/exit with both photo orientations and retain keyboard focus.
+Only traveler-supplied captions appear. An About-place action requires an explicit
 saved link. Phone map screens have one date/title block and Photos action,
 contextual Places and secondary arrival controls, plus one bottom event picker.
 Phone map bubbles select the existing compact photo card; its large image opens

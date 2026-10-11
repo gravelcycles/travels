@@ -271,7 +271,7 @@
         groups = nextGroups; routes = nextRoutes; endpoints = new Set(endpointCoordinates.map(coordinateKey));
         previewIds = []; closeCard(); schedule();
       },
-      setPreview, closePreview,
+      setPreview, closePreview, refresh: schedule,
       destroy() {
         closeCard(); if (frame !== null) cancelAnimationFrame(frame);
         entries.forEach(entry => entry.marker.remove());
