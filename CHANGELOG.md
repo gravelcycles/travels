@@ -15,7 +15,9 @@ This file records dated changes, not current instructions. Use
   to supersede the earlier full-trip Replay/seeking requirement.
 - Validation: 520 tests pass and the production build succeeds; reference/demo/
   populated-city-draft regressions and desktop/phone browser checks preserve
-  arrival playback while full-trip Replay remains inaccessible.
+  arrival playback while full-trip Replay remains inaccessible. Pages deployment
+  `38149118451` succeeded; fresh public pages and changed runtime assets match
+  the tested build byte-for-byte.
 
 ## 11 October 2026 — Café August outside photos
 

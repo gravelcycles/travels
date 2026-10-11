@@ -21,14 +21,18 @@ must read current files and reconcile any later corrections before continuing.
 Authorized: disable the redundant full-trip animation across the shared viewer;
 preserve arrival/city playback and chapter source data. [O09](docs/OWNER_DECISIONS.md)
 supersedes earlier Replay availability/seeking and prototype adoption guidance.
-Implementation is on `codex/disable-full-trip-replay` in an isolated checkout:
+Completed in `edb415f`, integrated and deployed as `b450cde`:
 entry/resume actions removed, player/history guarded and Studio editor hidden.
 Validation: all **520 tests** and the production build pass, including
 reference/demo/independently populated city-draft arrival preservation and stale
 history checks. Browser checks confirmed the Alpine multi-leg arrival on desktop
 and the reference phone map/arrival controls at 390 px; the reference used the
 documented local photo mode (private media was not copied into this checkout).
-Next: integrate latest main, deploy and verify fresh public content.
+The independently populated city draft also passed browser entry/arrival checks.
+[Pages run 38149118451](https://github.com/gravelcycles/travels/actions/runs/38149118451)
+succeeded. Fresh public HTML for all three real journeys and the demo, plus
+`app.js` and `mobile-ux.js`, match the tested release byte-for-byte. No Replay
+implementation or delivery work remains. Concurrent checkout edits were preserved.
 
 ## Café August outside-only correction — 11 October 2026
 
