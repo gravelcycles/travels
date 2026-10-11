@@ -1,5 +1,24 @@
 # Changelog
 
+## 11 October 2026 — Compact day visibility row
+
+- Place the three day-visibility toggles in one horizontal row in the Days/Stops
+  section and full-trip map menu, including phones. Shorten visible labels to
+  Past / Locked in / TBD while retaining full accessible meanings and 44px
+  targets; move the Past/today explanation out of the visible layout.
+- Record the owner's follow-up in the Heading East record and shared workflow.
+
+## 11 October 2026 — one opening action and Heading East description
+
+- Keep one Explore the journey action and open the whole-trip map. Remove the
+  duplicate Whole trip map action; preserve direct day/photo links and one
+  useful day/stop-list fallback for unmapped drafts.
+- Replace Heading East's subtitle with the owner's exact paragraph about the
+  journey after summer in Switzerland. Record the shared opening correction in
+  O06 and the trip-specific wording in its intake record.
+- Validation: 524 tests and the production build pass; desktop/phone checks
+  confirm the supplied copy, single action and whole-trip map entry.
+
 ## 11 October 2026 — Past and future trip filters
 
 - Replaced the shared TBD-only checkbox with Past / Future locked in / Future
@@ -28,10 +47,32 @@ This file records dated changes, not current instructions. Use
   quiet guide through delayed route loading; prevent false map-error overlays.
 - Record the owner's desktop/mobile clarity requirement in O09 and the arrival
   workflow. Full-trip Replay remains disabled.
-- Validation: all 528 tests and the production build pass. Camera regressions
+- Validation: all 544 tests and the production build pass. Camera regressions
   cover reference, demo, actual city stops and a populated draft, plus late
   route loading. Browser checks compare the same legs on desktop, 390/320 px
   phones and landscape, plus ordinary playback, skipping and rapid navigation.
+
+## 11 October 2026 — phone camera roll and map return
+
+- Preserve the exact previous map camera and scope after same-event photo/grid
+  dismissal, including browser Back; prevent delayed tab fitting from undoing it.
+- Browse the full visible journey in event/album order on phones, crossing city
+  boundaries with photo swipes and arrows. Keep explicit Places collections.
+- Add clear photo arrows and a separate swipeable city/day jump bar, skipping
+  empty albums; retain the current event grid, pinch/pan and location gestures.
+- Carry the correction into O08, principles and photo/journey workflows. Shared
+  runtime and independent-draft regression checks cover entry, order, event
+  boundaries, map return and history. All 535 tests and the production build pass; phone/desktop browser checks cover
+  the reference, target, demo and independent fresh drafts (details in WIP).
+
+## 11 October 2026 — steady sidebar photo hover
+
+- Keep the selected sidebar photo’s blue frame visible on hover by correcting
+  the image button’s CSS priority over the general pale toolbar hover style.
+- Preserve photo selection, fullscreen activation, image reveals and keyboard
+  focus; carry the no-flash requirement into O03 and the photo workflow.
+- Validation: all 520 tests and production build pass; browser checks cover the
+  reference, demo and a fresh city draft with portrait/landscape photos.
 
 ## 11 October 2026 — disable full-trip Replay
 

@@ -16,6 +16,41 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Mobile map return and camera roll — 11 October 2026
+
+Authorized by the owner's mobile issue report: keep the previous map zoom when
+closing a photo, browse all photos like a camera roll, clearer left/right arrows,
+and city swiping. O08 and PHOTO_WORKFLOW own the current contract; ordinary phone
+browsing crosses event albums, while explicit Places collections retain scope.
+Implemented in shared app/mobile code and the journey template: exact same-event
+map-camera return, continuous photo order, clearer arrows, event jumps and a
+swipeable city/day bar. Explicit collections keep their scope. Grid scrolling is
+confined to the grid so fullscreen headers/footers stay at the viewport edges.
+
+Validation: all 539 tests and the production build pass. Browser checks cover
+Heading East, Switzerland–Italy, the Alpine demo, an empty fresh city draft and
+an independently populated city draft. Verified cross-event arrows/photo swipes,
+city-bar swipes, empty-event skipping, unchanged marker positions after manual
+map movement and photo dismissal, event grid selection, Back/Forward, location
+staying closed, 320/390 px portrait and landscape, and retained desktop selection.
+The isolated release is based on sanitized main with full-trip Replay disabled and the newer opening/day filters retained.
+Next: integrate any newer main, publish, and verify Pages plus fresh public
+HTML/assets; no media/content changes are required.
+
+## Opening screen and Heading East description — 11 October 2026
+
+Authorized: one Explore the journey button opening the whole-trip map; remove
+the secondary map action. Replace Heading East's subtitle with the owner's exact
+paragraph beginning “After a summer in Switzerland”. Current guidance is O06
+and [the trip record](docs/HEADING_EAST.md). Implemented in `f488be8` and deployed as `841bc0f`; concurrent edits remain
+in the original checkout.
+Implementation and shared introduction regressions pass all **524 tests** and
+the production build. Heading East desktop/390px checks confirm the exact copy,
+one button and whole-trip map entry; reference/demo/populated-draft checks
+cover inheritance. [Pages run 38150354580](https://github.com/gravelcycles/travels/actions/runs/38150354580)
+succeeded. Fresh public Heading East HTML and the opening runtime match the
+tested release byte-for-byte. No implementation or delivery work remains.
+
 ## Heading East day visibility — 11 October 2026
 
 Authorized: synchronized Past / Future locked in / Future TBD toggles in the
@@ -30,7 +65,11 @@ documentation, is integrated. The merged browser check confirms both filters
 and absent full-trip Replay. Deployed as `e58f939` via successful
 [Pages run 38149951215](https://github.com/gravelcycles/travels/actions/runs/38149951215).
 Fresh public Heading East HTML and all five changed browser assets match the
-release byte-for-byte. No filter implementation or delivery work remains.
+release byte-for-byte. Later owner follow-up requires a compact horizontal row
+in both locations. Layout and current guidance updated on the same branch. Desktop and 320/390px
+browser checks confirm one row and synchronized controls; all 524 tests and the
+production build pass. Next: integrate current main, publish and verify public
+assets. Horizontal-layout delivery is pending.
 
 ## Full-trip Replay disabled — 11 October 2026
 
@@ -88,6 +127,14 @@ deployed before Pages and still rejects anonymous access. See the [current photo
 
 ## UX flow review implementation — 11 October 2026
 
+Later hover correction: the owner reported the selected sidebar photo's blue
+background flashing white on hover. The image button now overrides the general
+toolbar hover fill, retaining the blue frame. All 520 tests and the production
+build pass. Browser checks cover Heading East, the reference, Alpine demo and an
+independently populated city draft (portrait/landscape, pointer entry/exit, visible
+keyboard focus and fullscreen). The correction follows the normal Pages delivery
+and fresh-public-page checks. See O03 and the photo workflow.
+
 The owner authorized all U01–U16 findings and direct one-click fullscreen, then
 clarified the boundary later on 11 October: map circle bubbles and right-hand
 reel thumbnails select in the existing sidebar/card; the large top-right
@@ -137,19 +184,20 @@ below. The documentation audit itself changes no trip content or runtime.
 
 Accepted: replace awkward zooming between days/stops and keep the moving train
 position visible, especially on north–south routes. Scope is ordinary stop
-navigation; Trip Replay is unchanged. See O09 and the arrival workflow.
+navigation; full-trip Replay remains disabled. See O09 and the arrival workflow.
 Implemented on `codex/place-zoom-20261011` in
 `/private/tmp/travels-place-zoom-release`, integrated onto sanitized main:
 one route ease, single-applied padding, resize-before-fit, measured card/label
 clearance, unobstructed north–south endpoint labels, temporarily hidden
 signposts and guarded late route redraws. Full-trip Replay remains disabled.
-All **528 tests** and the production build pass. Browser comparisons cover the
+All **544 tests** and the production build pass. Browser comparisons cover the
 same north–south leg on desktop and 390/320 px phones, landscape, the wide Alpine
 demo route, reference multi-leg routes and an independent populated city draft.
 Skip/rapid navigation and ordinary timed playback were checked; the final phone
 arrival shows the departing circle clear of labels without false map errors.
-Next: fetch/integrate current main, commit scoped code/docs/generated pages,
-deploy and verify Pages/public output. Synthetic fixtures remain local only.
+The release includes the latest opening, day filters and mobile camera-roll
+changes. Next: publish the tested integration and verify Pages/public output.
+Synthetic fixtures remain local only.
 
 ## Arrival → city release — 10 October 2026
 

@@ -35,8 +35,10 @@ Specific current decisions and their supersessions are recorded there.
 - A located photo keeps its exact pin separate from its composed map frame.
   Keep the camera still while successive photo pins are already in view;
   travel to the saved frame only when needed to show the next location.
-- Full-screen photo browsing remains anchored to a calendar day; changing days
-  also changes the atlas map/story context.
+- Full-screen photo browsing keeps the current calendar day or city context.
+  Ordinary phone browsing continues across event albums in journey order; an
+  event change also updates the atlas map/story. Dismissing photos in the same
+  event preserves the map camera the traveler chose.
 - Give photos a tiny embedded preview, responsive sizes, lazy off-screen loads,
   and bounded neighbor preloads so the atlas stays quick without feeling empty.
 - Route smoothing must never imply network accuracy. Keep enough editable

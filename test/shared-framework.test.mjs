@@ -46,6 +46,36 @@ function bundle(source, key) {
 }
 const app = read(repo, 'dist/assets/app.js');
 
+test('phone camera roll and event controls inherit across reference, city atlas, demo and an independent fresh draft', t => {
+  const root=fixture(t), draft=createJourney(root,{...input,slug:'phone-camera-roll-fixture'});
+  const {data}=loadContent(root);
+  const controls=['mobile-photo-prev','mobile-photo-next','mobile-photo-previous-event','mobile-photo-next-event','mobile-photo-event-label'];
+  const independent={...draft,eventMode:'city',days:draft.days.map((day,index)=>({...day,title:['North harbour','Museum quarter','South gardens'][index],calendarEndDate:draft.days[Math.min(index+1,draft.days.length-1)].calendarDate}))};
+  const empty=photoEntryFixture(independent,[],{mobile:true});
+  assert.deepEqual(empty.photos(),[],'A new empty city draft does not inherit another trip’s photos');
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo'),independent]) {
+    const html=renderJourneyPage(root,journey,{preview:true});
+    for(const id of controls)assert.equal(ids(html).filter(value=>value===id).length,1,`${journey.id}: ${id}`);
+    const [first,emptyDay,last]=journey.days;
+    const media=[{id:`${journey.id}-north-a`,dayId:first.id},{id:`${journey.id}-north-b`,dayId:first.id},{id:`${journey.id}-south`,dayId:last.id}];
+    const f=photoEntryFixture(journey,media,{mobile:true});
+    f.open(media[1].id);
+    assert.equal(f.context.viewerPhotoIndex,1,journey.id);
+    assert.deepEqual(f.photos().map(photo=>photo.id),media.map(photo=>photo.id));
+    f.context.moveViewer(1);
+    assert.equal(f.context.viewerDayId,last.id,'Adjacent photo browsing crosses the empty event');
+    f.context.moveViewerDay(-1);
+    assert.equal(f.context.viewerDayId,first.id,'Event jump skips empty events');
+    assert.equal(f.context.viewerPhotoIndex,0,'An event jump starts at that album’s first photo');
+    f.open(media[2].id,{photos:[media[2],media[0]],collectionLabel:'Saved place'});
+    assert.deepEqual(f.photos().map(photo=>photo.id),[media[2].id,media[0].id],'Explicit collections preserve their own order');
+    assert.equal(f.context.viewerPhotoIndex,0);
+    f.context.moveViewerDay(-1);
+    assert.equal(f.context.viewerDayId,last.id,'Event jumps do not escape explicit collections');
+    assert.notEqual(emptyDay.id,last.id);
+  }
+});
+
 test('stationary photo bubbles stay attached for reference, demo and freshly generated draft',t=>{
   const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root);
   for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'),draft]){
@@ -472,13 +502,39 @@ test('the same introduction opens for real trips, samples and empty drafts; deep
     assert.equal($('#trip-intro').hidden, false);
     assert.equal($('.atlas-shell').inert, true);
     assert.match($('#trip-intro').innerHTML, hasPhoto ? /Explore the journey/ : /View days/);
-    assert.match($('#trip-intro').innerHTML, /id="intro-map" type="button" hidden>Whole trip map/, 'An unmapped draft does not offer an empty map action');
+    assert.equal(($('#trip-intro').innerHTML.match(/<button\b/g)||[]).length,1, 'The opening has exactly one action');
+    assert.doesNotMatch($('#trip-intro').innerHTML, /id="intro-map"/);
     if (!hasPhoto) assert.match($('#trip-intro').innerHTML, /A journey taking shape/);
     for (const [hash, search] of [['#day=d1', ''], ['', '?photo=p1']]) {
       context.location = { hash, search };
       vm.runInContext('renderIntroduction()', context);
       assert.equal($('#trip-intro').hidden, true);
     }
+  }
+});
+
+test('one opening action reaches the whole-trip map for reference, Heading East, demo and a populated fresh draft', t => {
+  const root=fixture(t), draft=createJourney(root,{...input,eventMode:'city'}), {data}=loadContent(root);
+  const populated={...draft,places:[{id:'qa-stay',name:'A new stay',lng:139.8,lat:35.7}],days:draft.days.map(day=>({...day,placeId:'qa-stay'}))};
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo'),draft,populated]) {
+    const nodes=new Map(), calls=[];
+    const $=selector=>{if(!nodes.has(selector))nodes.set(selector,{hidden:true,inert:false});return nodes.get(selector);};
+    const context=vm.createContext({journey,$,location:{hash:'',search:''},URLSearchParams,
+      eventWord:form=>globalThis.JOURNEY_ATLAS_UTILS.eventWord(journey,form),
+      window:{JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS},document:{body:{classList:{add(){},remove(){}}}},
+      escapeHtml:value=>value,photoImageMarkup:()=>'<img alt="Fixture" />',orderedPhotos:()=>journey.photos||[],prepareProgressiveImages(){},
+      setMobileTab:tab=>calls.push(tab),fitRoute:()=>calls.push('whole-trip-map'),
+      setActiveDay:()=>assert.fail('Opening must not focus an individual day'),
+      dayList:{querySelector:()=>({focus:()=>calls.push('day-list-focus')})}
+    });
+    vm.runInContext(appFunction('renderIntroduction')+'\n'+appFunction('dismissIntroduction')+'\nrenderIntroduction()',context);
+    const html=$('#trip-intro').innerHTML;
+    assert.equal((html.match(/<button\b/g)||[]).length,1,journey.id);
+    assert.doesNotMatch(html,/id="intro-map"/);
+    $('#intro-relive').onclick();
+    assert.equal($('#trip-intro').hidden,true);assert.equal($('.atlas-shell').inert,false);
+    const mapped=globalThis.JOURNEY_ATLAS_UTILS.journeyPresentation(journey).hasMap;
+    assert.deepEqual(calls,mapped?['map','whole-trip-map']:['route','day-list-focus'],journey.id);
   }
 });
 

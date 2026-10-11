@@ -5,6 +5,20 @@ Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 
 Each city is one event. Taglines and stories are deliberately empty; the first
 photo intake is recorded below.
 
+## Owner-supplied opening description — 11 October 2026
+
+The owner replaced the generated itinerary-count subtitle with their paragraph
+beginning “After a summer in Switzerland”. Store that text verbatim in the
+journey's `subtitle`, including the supplied spelling and punctuation; it is
+the source for the opening description and other existing subtitle surfaces.
+Do not replace it with a city-count or route-summary fallback. This does not
+change dates, route evidence, place records or captions. The single opening
+button follows the shared O06 whole-trip-map rule.
+
+Published as `841bc0f` after 524 passing tests, a successful build and desktop/
+390px opening checks. Pages run `38150354580` succeeded; fresh public HTML and
+the opening runtime match the tested release.
+
 ## Day visibility filters — 11 October 2026
 
 Owner request: a toggle in the Days section for “past, future locked in, and
@@ -21,6 +35,13 @@ map and albums. Keep original stop numbers and at least one populated
 group visible. Verify desktop Days and full-trip map controls, the phone picker
 and whole-trip map, including hiding the selected stop and restoring all stops.
 See the [shared contract](../JOURNEY_WORKFLOW.md#tbd-stops-and-legs).
+
+Later owner correction, 11 October: “horizontal in a row so it takes up less
+vert space.” Both filter locations must keep the three toggles in one compact
+row, including at 320px. Visible labels shorten to Past / Locked in / TBD, with
+full future labels and the Past/today explanation available to assistive
+technology. The explanatory paragraph no longer consumes visible vertical space.
+This supersedes the initial stacked checkbox layout, not its filtering behavior.
 
 Validation: all 523 integration tests and the production build pass. Desktop and
 phone checks verify synchronized controls and the actual 8 past/current, 3 locked-in

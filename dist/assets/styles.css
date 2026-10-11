@@ -602,17 +602,17 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 #photo-map .maplibregl-ctrl-top-right { top:64px; }
 .mobile-photo-caption { display:none; }
 
-.planning-filter { margin:0; padding:4px 18px 10px; border:0; border-bottom:1px solid var(--line); min-width:0; }
+.planning-filter { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:0; padding:0 12px 6px; border:0; border-bottom:1px solid var(--line); min-width:0; }
 .planning-filter[hidden],.map-planning-filter[hidden] { display:none; }
-.planning-filter label { display:flex; gap:9px; align-items:center; min-height:44px; font-size:13px; cursor:pointer; }
-.planning-filter input { accent-color:var(--ink); width:18px; height:18px; margin:0; flex-shrink:0; }
+.planning-filter label { display:flex; gap:4px; align-items:center; justify-content:center; min-width:0; min-height:44px; font-size:12px; white-space:nowrap; cursor:pointer; }
+.planning-filter input { accent-color:var(--ink); width:14px; height:14px; margin:0; flex-shrink:0; }
 .planning-filter label:has(input:disabled) { cursor:default; }
 .planning-filter label:has(input:disabled:not(:checked)) { opacity:.45; }
-.planning-filter small { margin-left:auto; color:var(--muted); font-variant-numeric:tabular-nums; }
+.planning-filter small { color:var(--muted); font-size:10px; font-variant-numeric:tabular-nums; }
 .planning-filter p { margin:4px 0 0; color:var(--muted); font-size:11px; line-height:1.4; }
-.map-planning-filter { position:absolute; z-index:4; top:14px; left:14px; max-width:calc(100% - 76px); background:var(--panel); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); }
+.map-planning-filter { position:absolute; z-index:4; top:14px; left:14px; max-width:calc(100% - 28px); background:var(--panel); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); }
 .map-planning-filter summary { padding:12px 14px; min-height:44px; font-size:13px; font-weight:650; cursor:pointer; }
-.map-planning-filter .planning-filter { width:232px; max-width:100%; border-bottom:0; }
+.map-planning-filter .planning-filter { width:300px; max-width:100%; padding-top:4px; border-bottom:0; }
 .map-planning-filter[open] summary { border-bottom:1px solid var(--line); }
 
 .tbd-badge { display:inline-block; border:1px solid #b5a4c3; border-radius:4px; padding:1px 5px; font:600 10px/1.5 system-ui,sans-serif; letter-spacing:.06em; color:#5f4776; background:#f2edf6; vertical-align:middle; }

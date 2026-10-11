@@ -123,7 +123,7 @@ city stops and an independently populated draft. Check rapid stop changes,
 Skip/Replay arrival, manual interruption and reduced motion. Preserve the shared
 stroke width, circle diameter and display-pixel-density rendering on phones.
 
-The 11 October release passes 528 tests and the production build. Browser
+The 11 October release passes 544 tests and the production build. Browser
 comparison used Innsbruck → Bolzano (north–south), the Alpine demo's Disentis →
 St. Moritz (wide), the reference multi-leg route and an independent synthetic
 city draft. Desktop, 390/320 px portrait and 844 × 390 landscape retained the

@@ -21,7 +21,7 @@ function selection() {
   const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),
     window: {}, clearDayPreview(){}, deferDayPreviewClear(){}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
     arrivalChapter:null, arrivalKey:day=>day.id, cancelArrival(){}, settleAtCity(){}, startArrival(){}, mainMapReady:true, locationLabels:null,
-    activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null,
+    activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null, mobileMapTimer:null, clearTimeout(){},
     viewerCollection:null,viewerDayId:'d2',viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null, placesUI: null, photoBubbles: null,
     journey: { days, segments: [] }, $: getNode, dayById: id => days.find(day => day.id === id), viewerDay: () => days[1],
     photosForDay: () => [], routeLabel: () => '', escapeHtml: value => value || '',
@@ -169,7 +169,7 @@ test('Fit route bounds use routes and journey places, excluding distant photo pi
 test('selecting another viewer photo preserves thumbnail elements and updates selection only', () => {
   let builds=0,prepares=0,buttons=[];
   const strip={dataset:{},querySelectorAll:()=>buttons,set innerHTML(html){builds++;buttons=[...html.matchAll(/data-viewer-index="(\d+)"/g)].map(m=>({dataset:{viewerIndex:m[1]},selected:false,classList:{toggle(name,value){this.active=value;}},setAttribute(name,value){this[name]=value;},scrollIntoView(){}}));}};
-  const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerPhotoIndex:0,mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,escapeHtml:value=>value,photoImageMarkup:()=>'<img>',prepareProgressiveImages(){prepares++;},$:selector=>selector==='#viewer-filmstrip'?strip:buttons.find(b=>b.classList.active)});
+  const context=vm.createContext({window:{},eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerPhotoIndex:0,mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,escapeHtml:value=>value,photoImageMarkup:()=>'<img>',prepareProgressiveImages(){prepares++;},$:selector=>selector==='#viewer-filmstrip'?strip:buttons.find(b=>b.classList.active)});
   vm.runInContext(functionSource('renderViewerFilmstrip'),context);
   const photos=[{id:'one'},{id:'two'},{id:'three'}];context.photos=photos;
   vm.runInContext('renderViewerFilmstrip(photos)',context);const original=[...buttons];

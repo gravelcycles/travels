@@ -224,6 +224,12 @@ stable. Default day date labels follow moves; custom date labels and photo
 capture timestamps remain editorial data. Existing reviewed geometry is retained;
 new legs start as explicitly provisional endpoint guides and need route review.
 
+The opening has one **Explore the journey** button that enters the whole-trip
+map, without focusing a day or playing its arrival. Do not restore the separate
+Whole trip map button. Unmapped drafts retain a single day/stop-list entry;
+direct day/photo links bypass the opening. Journey `subtitle` supplies the
+opening description and stays traveler-authored (O06/O10).
+
 The editor stores `coverPhoto: { photoId, focal: [xPercent, yPercent] }` for the
 catalog and opening, with visible-photo/text fallback. Full-trip Replay is
 disabled across all viewers and its Studio chapter editor is hidden (O09,
@@ -571,8 +577,10 @@ Use local labelled fixtures when real media is unavailable; never publish them.
   button, while Studio still supports adding the first one.
 - [ ] **Phone/map/motion:** Check desktop and 390 px phone; use 320 px/landscape
   for changed overlays/gestures. Verify visible map context, labels/mode key,
-  day/stop list selection, grid, location close/swipe, Back/Forward and reduced
-  motion. Full-trip Replay stays disabled; arrival/city framing uses this trip's content.
+  day/stop list selection, event grid → continuous camera roll, cross-event
+  photo swipes/event jumps, same-event map zoom preservation on close,
+  location close/swipe, Back/Forward and reduced motion. Full-trip Replay stays
+  disabled; arrival/city framing uses this trip's content.
 - [ ] **Loading/save:** Check cold and cached photo loads without flashes or
   unnecessary refetches; retry without losing selection/text. For editor changes,
   check save → preview → reload recovery, readable diff and conflict handling.
@@ -834,7 +842,11 @@ copy. All events start visible. Shared **Past**, **Future locked in**, and
 **Future TBD** checkboxes replace Show TBD stops, with the same selection in the
 Days/Stops list and the full-trip map's **Filter days/stops** menu on desktop and
 phone. The controls appear when more than one group is populated; unavailable
-groups and the last visible populated group are disabled.
+groups and the last visible populated group are disabled. Keep all three toggles
+in one horizontal row, including at 320px, with 44px-high label targets. Visible
+labels are Past / Locked in / TBD; accessible labels retain Future, and the
+Past/today explanation is an accessible description and hover hint rather than
+another visible paragraph (owner follow-up, 11 October 2026).
 
 Classification uses the current calendar date in `journey.timeZone` (UTC when
 absent). Past includes today and city stays whose arrival has already occurred;
