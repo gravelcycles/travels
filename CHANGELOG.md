@@ -8,7 +8,8 @@
   short landscape and preserve existing list/detail/history state.
 - Record the iPhone 12-and-larger acceptance requirement in O08 and the Places
   contract. All 640 tests, production build and 32 trip/viewport browser cases
-  pass; public delivery is tracked in WIP.
+  pass. Pages release `6a195a6` succeeded; fresh public output matches the build
+  and the live 390 × 844 Places list shows both Luzern cards immediately.
 
 ## 12 October 2026 — chronological Heading East city photos
 

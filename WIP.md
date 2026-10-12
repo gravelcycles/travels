@@ -31,8 +31,13 @@ draft and the empty reference at 320/375/390/414/430 px, a shortened 390 px
 viewport, 844 × 390 landscape and 1360 px desktop. Checks cover visible complete
 cards, map/list switching, filters/empty escape, details/gallery, Back/Forward,
 scroll retention and no horizontal overflow. Integrated main through `1b35343`,
-preserving the newly published chronological city albums. Next: final checks,
-publish and verify fresh Pages output. Publication is pending.
+preserving the newly published chronological city albums. Release `6a195a6`
+passed [Pages run 38265530459](https://github.com/gravelcycles/travels/actions/runs/38265530459).
+Fresh public reference/Heading East/Florence/demo pages and Places JS/CSS match
+the tested build byte-for-byte. A fresh public 390 × 844 browser load shows both
+Luzern cards immediately, with a 507 px result viewport. Implementation and
+public delivery are complete; physical-device Safari was not used for these
+Chrome viewport checks.
 
 ## Heading East photo chronology — 12 October 2026
 
