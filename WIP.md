@@ -32,8 +32,11 @@ checks now complete at 100% after approximately 3,000 ms through the same resize
 Browser coverage includes reference, Heading East, Alpine demo and an independent
 populated draft at 320/390px, desktop and 844px landscape. Playback reaches 100%
 through resize; navigation cancels both pending entry and an active trace.
-Private photo loads were excluded from map QA. Remaining: deploy and verify
-fresh public pages/assets.
+Private photo loads were excluded from map QA. Deployed as `f360382` through
+successful [Pages run 38217199004](https://github.com/gravelcycles/travels/actions/runs/38217199004).
+Fresh public reference/Heading East/Florence/demo pages and opening runtime
+assets match the tested build byte-for-byte. The public demo retains its active
+trace through a phone viewport resize. No implementation or delivery work remains.
 
 ## Photo and view sharing — 12 October 2026
 

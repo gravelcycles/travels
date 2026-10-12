@@ -10,7 +10,8 @@
 - Record the owner’s follow-up in O06 and current journey/framework/feature docs.
 - Validation: 615 passing tests after current-main integration and production build; an actual MapLibre resize
   that previously stopped at 455 ms now permits completion at approximately
-  3,000 ms. Deployment verification remains tracked in WIP.
+  3,000 ms. Pages release `f360382` succeeded; fresh public pages/assets match the
+  build, and the live phone trace survives viewport resizing.
 
 ## 12 October 2026 — share photos and the current view
 
