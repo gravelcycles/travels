@@ -55,6 +55,14 @@ test('editing metadata keeps the thumbnail pointer target attached through blur'
   h.api.click('next');assert.equal(h.selectedPhotoId,'next');
   assert.equal(grid.querySelectorAll()[1],buttons[1]);
 });
+test('typing past a search match keeps the current photo until an intentional filter change', () => {
+  const f={journey:{id:'test',days:[{id:'d',number:1,title:'Day'}]},photos:[{...photo,caption:'Search match'},{id:'next',dayId:'d',caption:'Search next'}],state:empty()};
+  const h=uiHarness(f);h.api.click('p');h.node('#photo-search').value='Search';h.render();
+  f.state.photos.p={caption:'Completely changed'};
+  h.api.render(globalThis.JOURNEY_ATLAS_PHOTO_BATCH.orderedPhotos(f.journey,f.photos,f.state),h.selectedPhotoId,{keepSelected:true});
+  assert.equal(h.selectedPhotoId,'p');assert.match(h.node('#studio-photo-grid').innerHTML,/Completely changed/);
+  h.render();assert.equal(h.selectedPhotoId,'next');
+});
 const {data}=loadContent(new URL('..',import.meta.url).pathname);
 const independent={id:'independent-draft',published:false,eventMode:'city',days:[{id:'north',number:1,title:'North'},{id:'south',number:2,title:'South'}],photos:[{id:'one',dayId:'north'},{id:'two',dayId:'south'},{id:'three',dayId:'south'}]};
 for (const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'),independent]) {

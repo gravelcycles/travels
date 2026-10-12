@@ -18,6 +18,22 @@ must read current files and reconcile any later corrections before continuing.
 
 ## Studio photo navigation and save feedback — 12 October 2026
 
+Data-safety follow-up authorized: “ensure there's no data loss paths here.”
+Implemented on `codex/studio-photo-data-safety` in the isolated release checkout:
+raw photo input recovery/validation, stable selection while typing, guarded save/
+restore/discard responses, detached autosave snapshots, duplicate-tab stream
+ownership and exact disk acknowledgements. Real-handler tests cover unfinished
+numbers, switching/reload, in-flight input and delayed recovery; real API tests
+cover independent photo fields, conflict choices, lost-response retries, corrupt
+draft reads and build rollback. All **613 tests** and the production build pass.
+Browser checks cover the reference, Alpine demo and a populated independent city
+draft, including reload before blur, search edits, offline save/restart/retry,
+and discard/archive/restore of unfinished input. The task patch is applied to
+the primary checkout without changing real photo sources. Next: integrate latest
+main, rerun required checks, deploy and verify Pages. Existing user tabs await
+safe refresh; automatic browser approval temporarily failed with a rate-limit
+error, and permission to inspect/preserve/reload them is pending.
+
 Implemented under O11's Studio follow-up: filtered left/right browsing, labeled
 per-photo local-save status, and stable thumbnail targets for first-click
 switching after editing. The primary local editor is updated and running.
@@ -32,7 +48,8 @@ and current guidance belong to `codex/studio-photo-editing` in
 primary checkout's other work remain separate. Source release `260aa04` passed
 [Pages run 38215755921](https://github.com/gravelcycles/travels/actions/runs/38215755921).
 A fresh public reference page matches the build byte-for-byte; localhost serves
-the tested editing helper. Studio remains local-only. No work remains.
+the tested editing helper. Studio remains local-only. That initial delivery is
+complete; the data-safety follow-up above is the active work.
 
 
 ## Opening route trace — 12 October 2026

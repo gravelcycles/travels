@@ -1,3 +1,5 @@
+import '../studio/photo-editing.js';
+
 const equal = (a,b) => JSON.stringify(a) === JSON.stringify(b);
 const object = value => value && typeof value === 'object' && !Array.isArray(value);
 const title = value => value?.sourceFilename || value?.name || value?.title || value?.label || value?.caption || value?.id || '';
@@ -99,6 +101,17 @@ export function studioDraftDiff(data, saved, draft, routes = {}) {
         if (key==='updatedAt' || key==='hidden') continue;
         compare(section,context(journey,field,base),[key],Object.hasOwn(before,key)?before[key]:fallback(key),Object.hasOwn(after,key)?after[key]:fallback(key),journey);
       }
+    }
+  }
+  for (const [id,fields] of Object.entries(draft.photoFields || {})) {
+    if (!globalThis.JOURNEY_ATLAS_PHOTO_EDITING.coordinates(fields).error) continue;
+    const journey=data.journeys.find(j=>j.photos?.some(photo=>photo.id===id));
+    const photo=journey?.photos.find(photo=>photo.id===id) || {id};
+    const override=draft.state?.photos?.[id] || {};
+    for (const key of ['lat','lng','zoom']) {
+      const value=key==='zoom' ? override.zoom ?? photo.zoom ?? 16
+        : Object.hasOwn(override,'location') ? override.location?.[key] : photo[key];
+      compare('Unfinished photo input',context(journey,'photos',photo),[key],String(value ?? ''),fields[key],journey);
     }
   }
   for (const [id,plan] of draft.plans || []) {

@@ -1,5 +1,18 @@
 # Changelog
 
+## 12 October 2026 — Studio photo data safety
+
+- Capture every photo input before blur; retain unfinished coordinates through
+  switching/reload and show them in draft review. Invalid numbers block Save
+  without deleting pins. Preserve text and coordinate precision.
+- Keep the selected photo stable while typing away from a search/day match.
+  Delayed save/recovery/discard responses cannot replace newer edits.
+- Isolate duplicated-tab recovery streams, detach autosave snapshots, confirm
+  exact disk sequences and preserve unreadable draft files. Added storage,
+  delayed-response, concurrent-photo, retry and rollback regression coverage.
+- Updated the owner decision, photo workflow, feature inventory and persistence
+  contract with the follow-up requirement and tested behavior.
+
 ## 12 October 2026 — Studio photo navigation and save feedback
 
 - Add filtered, bounded left/right photo browsing and Previous/Next controls,

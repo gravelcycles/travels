@@ -12,12 +12,12 @@ const app = fs.readFileSync(new URL('../dist/assets/app.js', import.meta.url),'u
 function fn(source,name) {const start=source.indexOf(`  function ${name}(`);assert.ok(start>=0,name);return source.slice(start,source.indexOf('\n  function ',start+1));}
 function editor() {
   const nodes=new Map(), requests=[];
-  const $=selector=>{if(!nodes.has(selector))nodes.set(selector,{value:'',dataset:{},handlers:{},classList:{toggle(){}},setAttribute(){},addEventListener(n,fn){this.handlers[n]=fn;},showModal(){this.open=true;},close(){this.open=false;},reset(){},querySelectorAll(){return [];}});return nodes.get(selector);};
+  const $=selector=>{if(!nodes.has(selector))nodes.set(selector,{value:'',dataset:{},handlers:{},classList:{toggle(){}},setAttribute(){},getAttribute(){return null;},focus(){this.focused=true;},addEventListener(n,fn){this.handlers[n]=fn;},showModal(){this.open=true;},close(){this.open=false;},reset(){},querySelectorAll(){return [];}});return nodes.get(selector);};
   const photos=[{id:'p1',dayId:'d1',caption:'One'},{id:'p2',dayId:'d2',caption:'Two'}];
   const journey={id:'trip',places:[{id:'a',name:'A',lng:8,lat:47}],segments:[{id:'leg',from:'a',to:'a',mode:'walk',geometry:[[8,47],[8.01,47.01],[8,47]]}],photos,
     days:[{id:'d1',title:'One',segmentIds:['leg']},{id:'d2',title:'Two',segmentIds:[]}],replayMoments:[{id:'m',dayId:'d1',caption:'Sentence',segmentIds:[]}]};
   const context=vm.createContext({structuredClone,URL,URLSearchParams,document:{querySelector:$,querySelectorAll:()=>[],addEventListener(){}},
-    fetch:(url,options)=>new Promise(resolve=>requests.push({url,body:JSON.parse(options.body),resolve})),
+    fetch:(url,options)=>new Promise(resolve=>requests.push({url,body:options ? JSON.parse(options.body) : null,resolve})),
     window:{addEventListener(){},JOURNEY_ATLAS_DRAFT_REVIEW:globalThis.JOURNEY_ATLAS_DRAFT_REVIEW,JOURNEY_ATLAS_DATA:{journeys:[journey]},JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS,JOURNEY_ATLAS_MEDIA:globalThis.JOURNEY_ATLAS_MEDIA,JOURNEY_ATLAS_PLAN_EXTRAS:globalThis.JOURNEY_ATLAS_PLAN_EXTRAS}});
   const source=fs.readFileSync(new URL('../studio/studio.js',import.meta.url),'utf8');
   context.window.JOURNEY_ATLAS_PHOTO_BATCH = globalThis.JOURNEY_ATLAS_PHOTO_BATCH;
@@ -27,10 +27,11 @@ function editor() {
   vm.runInContext(fs.readFileSync(new URL('../studio/place-editor.js', import.meta.url), 'utf8'), context);
   vm.runInContext(source.replace('  init();\n})();', `
     drawRouteEditor=()=>{};renderRouteList=()=>{};renderPhotoGrid=()=>{};refreshPhotoOrderControls=()=>{};renderDaySelectors=()=>{};
+    studioVideoPlayer.stop=()=>{};
     routePoints=[[8,47],[8,47]]; resetHistory(routePoints);
     savedPhotoState=structuredClone(state);
     window.audit={saveAll,acceptRouteGeometry,restoreRouteHistory,routeEditSnapshot,newPlaceCanBeRemoved,planForJourney,
-      selectPhoto,editPhoto:caption=>{state.photos.p1={caption};markDirty();},
+      selectPhoto,draftSnapshot,restoreDraft,editPhoto:caption=>{state.photos.p1={caption};markDirty();},
       state:()=>state,dirty:()=>dirty,editDay:text=>{state.days.d1={title:text};markDirty();}};
   })();`),context);
   return {api:context.window.audit,$,requests,journey};
@@ -47,6 +48,51 @@ test('ordinary Studio saves acknowledge only the sent edits and serialize repeat
 test('failed Studio save keeps edits and enables a retry',async()=>{
   const f=editor();f.api.editDay('Keep me');const saving=f.api.saveAll();f.requests[0].resolve({ok:false,json:async()=>({error:'Revision conflict'})});
   assert.equal(await saving,false);assert.equal(f.api.dirty(),true);assert.equal(f.$('#save-all').disabled,false);assert.match(f.$('#save-status').textContent,/Revision conflict/);
+});
+test('photo input is captured before blur and incomplete coordinates survive switching and reload',async()=>{
+  const f=editor();f.journey.photos[0].lat=47.123456789;f.journey.photos[0].lng=8.123456789;
+  f.api.selectPhoto('p1',false);
+  f.$('#photo-lat').value='-';f.$('#photo-caption').value='  My exact words  ';
+  f.$('#photo-form').handlers.input({type:'input'});
+  assert.equal(f.api.dirty(),true);assert.equal(f.api.state().photos.p1.location,undefined,'Invalid input does not erase the existing pin');
+  assert.equal(f.api.state().photos.p1.caption,'  My exact words  ');
+  const snapshot=structuredClone(f.api.draftSnapshot());
+  f.api.selectPhoto('p2',false);f.api.selectPhoto('p1',false);assert.equal(f.$('#photo-lat').value,'-');
+  const reloaded=editor();reloaded.api.restoreDraft(snapshot);reloaded.api.selectPhoto('p1',false);
+  assert.equal(reloaded.$('#photo-lat').value,'-');assert.equal(reloaded.$('#photo-caption').value,'  My exact words  ');
+  assert.equal(await reloaded.api.saveAll(),false);assert.equal(reloaded.requests.length,0);
+  assert.equal(reloaded.$('#photo-lat').focused,true);assert.match(reloaded.$('#save-status').textContent,/input is kept/);
+  reloaded.$('#photo-lat').value='47.123456789';reloaded.$('#photo-form').handlers.input({type:'input'});
+  const saving=reloaded.api.saveAll();
+  assert.deepEqual(reloaded.requests[0].body.photos.p1.location,{lat:47.123456789,lng:8.123456789});
+  assert.equal(reloaded.$('#photo-save-status').dataset.state,'saving');
+  reloaded.requests[0].resolve({ok:true,json:async()=>({ok:true,stateRevision:'r1'})});await saving;
+  assert.equal(reloaded.api.dirty(),false);assert.equal(reloaded.$('#photo-save-status').dataset.state,'saved');
+});
+test('new incomplete numeric input remains dirty after an older source save acknowledges',async()=>{
+  const f=editor();f.api.selectPhoto('p1',false);f.$('#photo-caption').value='Sent';f.$('#photo-form').handlers.input({type:'input'});
+  const saving=f.api.saveAll();f.$('#photo-zoom').value='-';f.$('#photo-form').handlers.input({type:'input'});
+  f.requests[0].resolve({ok:true,json:async()=>({ok:true,stateRevision:'r1',state:f.requests[0].body})});await saving;
+  assert.equal(f.api.dirty(),true);assert.equal(f.$('#photo-zoom').value,'-');assert.equal(f.$('#photo-save-status').dataset.state,'dirty');
+  assert.equal(await f.api.saveAll(),false);assert.equal(f.requests.length,1);
+  f.api.selectPhoto('p2',false);f.api.selectPhoto('p1',false);assert.equal(f.$('#photo-zoom').value,'-');
+});
+test('typing into a previously untouched photo during Save preserves independent merged photo fields',async()=>{
+  const f=editor();f.api.editDay('Sent day');const saving=f.api.saveAll();f.api.editPhoto('New caption');
+  f.requests[0].resolve({ok:true,json:async()=>({ok:true,stateRevision:'r1',state:{days:{d1:{title:'Sent day'}},photos:{p1:{description:'Other tab notes'}},routes:{}}})});await saving;
+  assert.equal(f.api.state().photos.p1.caption,'New caption');assert.equal(f.api.state().photos.p1.description,'Other tab notes');
+});
+test('a delayed recovery response cannot replace edits made after Restore was clicked',async()=>{
+  const f=editor();const restoring=f.$('#recover-draft-list').handlers.click({target:{closest:()=>({dataset:{recoverDraft:'old'}})}});
+  assert.equal(f.requests[0].url,'/api/drafts/old');f.api.editPhoto('Keep this newer edit');
+  const draft=structuredClone(f.api.draftSnapshot());draft.state.photos.p1.caption='Old recovered words';
+  f.requests[0].resolve({ok:true,json:async()=>({ok:true,draft})});await restoring;
+  assert.equal(f.api.state().photos.p1.caption,'Keep this newer edit');assert.match(f.$('#save-status').textContent,/New edits were kept/);
+});
+test('discard cannot race an outstanding source save',async()=>{
+  const f=editor();f.api.editPhoto('Keep until saved');const saving=f.api.saveAll();
+  await f.$('#discard-draft').handlers.click();assert.equal(f.requests.length,1);assert.match(f.$('#draft-diff-status').textContent,/Wait for the save/);
+  f.requests[0].resolve({ok:false,json:async()=>({error:'Offline'})});await saving;assert.equal(f.api.state().photos.p1.caption,'Keep until saved');
 });
 test('photo save badge follows the actual save response, newer typing, switching and retry',async()=>{
   const f=editor();f.api.selectPhoto('p1',false);assert.equal(f.$('#photo-save-status').dataset.state,'saved');

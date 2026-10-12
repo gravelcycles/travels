@@ -326,6 +326,19 @@ by this documentation checkpoint.
 
 The owner subsequently requested reload recovery, readable draft review, and usable Save conflict handling. Those are now shared capabilities: local revision snapshots support three-way saves, independent changes combine, and conflicting fields require an explicit saved/draft choice. No force overwrite is inferred from a reload. Editable day taglines, preserved story paragraphs and compact expandable travel details use the existing shared templates and editorial overrides for real trips, demos and fresh drafts.
 
+The 12 October photo data-safety follow-up adds raw `photoFields` to private
+schema-1 recovery snapshots; invalid numbers stay out of source overrides and
+block explicit Save. Input snapshots are detached before debounce. Recovery
+streams use document-lifetime Web Locks and a versioned session key; duplicate
+tabs fork the copied draft into a new stream. Without Web Locks, each document
+uses a new stream while recovering its predecessor. Old streams remain available
+for recovery. Persist a new session pointer only after browser/disk capture.
+Disk acknowledgements must match the sent sequence; the server refuses reused
+sequences containing different edits. Corrupt draft reads return an error and
+preserve the file. Loading, save acknowledgement, restore and discard each guard
+against replacing newer edits. See [the editing contract](../PHOTO_WORKFLOW.md#editing-reliability--12-september-2026)
+and the recovery, photo-editing, real-handler and real-API regressions.
+
 
 ## Places and conversations — updated 20 September 2026
 

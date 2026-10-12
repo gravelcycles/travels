@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import {isDeepStrictEqual} from 'node:util';
 
 export const studioWorkspaceId = root => crypto.createHash('sha256').update(path.resolve(root)).digest('hex').slice(0, 20);
 const directory = root => path.join(root, 'build/studio-drafts');
@@ -16,6 +17,10 @@ export function writeStudioDraft(root, id, draft) {
   const file = filename(root, id);
   if (draft?.schema !== 1 || !Number.isSafeInteger(draft.sequence) || draft.sequence < 1 || typeof draft.dirty !== 'boolean' || !draft.state || !Array.isArray(draft.plans)) throw new Error('Invalid draft snapshot');
   const previous = readStudioDraft(root, id);
+  if (previous?.sequence === draft.sequence) {
+    const contents = ({id,updatedAt,...value}) => value;
+    if (!isDeepStrictEqual(contents(previous),contents(draft))) throw new Error('This draft sequence already contains different edits. Keep the tab open and recover into a separate draft.');
+  }
   if (previous && previous.sequence >= draft.sequence) return previous;
   // Incomplete forms are intentional here. Only explicit Save validates and
   // writes content sources; automatic drafts can never enter a public build.

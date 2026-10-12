@@ -499,6 +499,23 @@ stays unsaved until a later acknowledgement includes it. Draft recovery autosave
 does not earn the saved check; use **Save locally** to apply changes. Publishing
 remains separate. Check reference, demo and an independently populated draft.
 
+Data-safety follow-up, 12 October 2026: capture every photo input immediately,
+including raw latitude/longitude/zoom before blur. Unfinished or invalid numbers
+remain in the browser/disk recovery draft and its review/download; they keep
+the previous valid pin and block Save with a focused correction. They must never
+silently clear a pin or discard coordinate precision. Preserve authored text
+exactly. Switching photos, journeys or modes retains unfinished fields. Editing
+away from a search/day match keeps the selected photo until deliberate navigation
+or a filter change. The editor stays disabled until sources and recovery load.
+
+Save acknowledges only the sent snapshot; later input stays dirty. Restore and
+discard cannot replace newer typing or race an active Save. Discard requires an
+acknowledged recovery archive. Each tab owns its recovery stream, including
+Duplicate Tab; old draft streams remain recoverable during migration. Browser
+storage failures keep a close warning until disk autosave succeeds, and failed
+recovery reads never clear an unread draft. Test these failure/race paths, lost
+responses and source rollback as behavior, not just successful Save clicks.
+
 Changing **Photos from** selects a photo in that day or clears the editor when
 there are no matches. The complete upload form scrolls within its panel on a
 phone. Save status and **Preview atlas** remain visible at tablet widths.

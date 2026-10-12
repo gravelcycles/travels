@@ -207,6 +207,15 @@ preceding screen is a map. See [the photo workflow](../PHOTO_WORKFLOW.md).
 
 ## Studio photo editing — 12 October 2026
 
+Later owner follow-up: “ensure there's no data loss paths here.” Audit and
+protect each photo field before blur, switching/filtering, reload/close, delayed
+or failed saves, recovery/discard and multiple tabs. Preserve incomplete numeric
+input as a recoverable draft; never turn invalid coordinates into a cleared pin.
+Typing must not change the selected photo underneath the editor. Acknowledged
+older saves must not clear newer input, and recovery must not overwrite edits
+made while a request is pending. Check these as behaviors with failure/race
+fixtures; passing counts alone are not evidence that every loss path is closed.
+
 Owner follow-up: “arrow keys to flip through photos in local editing mode”, a
 clear local-save icon for each photo, and switching photos on the first click
 after editing. This extends O11 across every Studio journey. Left/right arrows
