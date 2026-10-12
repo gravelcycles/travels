@@ -29,8 +29,10 @@ in automated regressions. All **600 tests** pass against current main; the
 production build produces no public-output changes. Only Studio, focused tests
 and current guidance belong to `codex/studio-photo-editing` in
 `/private/tmp/travels-studio-photo-editing-release`. Real photo edits and the
-primary checkout's other work remain separate. Pages/public verification
-accompanies the source delivery; Studio itself remains local-only.
+primary checkout's other work remain separate. Source release `260aa04` passed
+[Pages run 38215755921](https://github.com/gravelcycles/travels/actions/runs/38215755921).
+A fresh public reference page matches the build byte-for-byte; localhost serves
+the tested editing helper. Studio remains local-only. No work remains.
 
 
 ## Opening route trace — 12 October 2026
