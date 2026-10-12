@@ -87,12 +87,13 @@ restore/discard responses, detached autosave snapshots, duplicate-tab stream
 ownership and exact disk acknowledgements. Real-handler tests cover unfinished
 numbers, switching/reload, in-flight input and delayed recovery; real API tests
 cover independent photo fields, conflict choices, lost-response retries, corrupt
-draft reads and build rollback. All **613 tests** and the production build pass.
+draft reads and build rollback. Integrated main through `32e7cdf`; all **629 tests**
+and the production build pass, with unchanged generated output.
 Browser checks cover the reference, Alpine demo and a populated independent city
 draft, including reload before blur, search edits, offline save/restart/retry,
 and discard/archive/restore of unfinished input. The task patch is applied to
-the primary checkout without changing real photo sources. Next: integrate latest
-main, rerun required checks, deploy and verify Pages. Existing user tabs await
+the primary checkout without changing real photo sources; the updated local
+server is running. Next: deploy and verify Pages. Existing user tabs await
 safe refresh; automatic browser approval temporarily failed with a rate-limit
 error, and permission to inspect/preserve/reload them is pending.
 
