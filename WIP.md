@@ -111,15 +111,19 @@ overrides; merged fields refresh without moving the typing caret. Composed frame
 survive intermediate coordinate keystrokes, and unlocated photos retain zoom. Real-handler tests cover unfinished
 numbers, switching/reload, in-flight input and delayed recovery; real API tests
 cover independent photo fields, conflict choices, lost-response retries, corrupt
-draft reads and build rollback. Integrated main through `32e7cdf`; all **631 tests**
+draft reads and build rollback. Integrated main through `b4e4b9a`; all **637 tests**
 and the production build pass, with unchanged generated output.
 Browser checks cover the reference, Alpine demo and a populated independent city
 draft, including reload before blur, search edits, offline save/restart/retry,
 and discard/archive/restore of unfinished input. The task patch is applied to
 the primary checkout without changing real photo sources; the updated local
-server is running. Next: deploy and verify Pages. Existing user tabs await
-safe refresh; automatic browser approval temporarily failed with a rate-limit
-error, and permission to inspect/preserve/reload them is pending.
+server is running and serves the tested safety modules byte-for-byte. Release
+`4654fe0` passed [Pages run 38219591303](https://github.com/gravelcycles/travels/actions/runs/38219591303);
+a fresh public reference page matches the build. Implementation and deployment
+are complete. Remaining activation: inspect/preserve pending input and refresh
+the user's existing Studio tabs after browser-access confirmation. Automatic
+approval review blocked tab access with a temporary rate-limit error; the tabs
+remain untouched. Do not refresh them blindly or infer that pending input is saved.
 
 Implemented under O11's Studio follow-up: filtered left/right browsing, labeled
 per-photo local-save status, and stable thumbnail targets for first-click
