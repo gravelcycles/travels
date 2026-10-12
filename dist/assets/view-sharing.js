@@ -52,7 +52,9 @@
       // The app first establishes the return surface, then opens the requested
       // photo. Its existing history controller remains the only history owner.
       api.restore(target);
-      changed();
+      // Authentication may redirect as soon as its pending crypto work finishes.
+      // Preserve the completed target before that continuation captures the URL.
+      sync(true);
     }
     // Surface controllers run first; defer writes until the complete event has
     // settled, and retain the destination for its paired hashchange.

@@ -533,7 +533,10 @@ selectable link. Cancelling the share sheet does nothing. Shared links carry onl
 journey/group context and the view hash, never media URLs, access credentials or
 local preview switches. Local previews still yield local links; they do not
 claim a draft is published. Private media retains the normal unlock flow and
-returns to the requested view. Removed/unknown photos fall back to a valid day.
+returns to the requested view. Restoring a link writes its final URL synchronously
+before authentication can capture the return hash; a pending unlock prompt stays
+above the restored photo viewer. Ordinary navigation updates
+wait until the surface event settles. Removed/unknown photos fall back to a valid day.
 
 Photo browsing uses `replaceState`, preserving the existing surface history.
 Opening/closing photos, grids and conversations still follows O03/O08; Back does

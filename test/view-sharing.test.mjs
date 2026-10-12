@@ -57,7 +57,8 @@ test('URL sync preserves surface history and coalesces browsing without pushing 
 });
 
 test('initial and manually changed links restore; owned Back/Forward is not reopened by hashchange',()=>{
-  const f=fixture('https://atlas.test/trip#day=two&photo=p2&view=map');f.ui.start();f.flush();
+  const f=fixture('https://atlas.test/trip#day=two&photo=p2&view=map');f.ui.start();
+  assert.equal(read(f.env.location.href).photoId,'p2','Target is ready synchronously before an auth redirect');f.flush();
   assert.equal(f.restored.length,1);assert.equal(f.restored[0].view,'map');
   const newURL='https://atlas.test/trip#day=one&view=map';f.env.location.href=newURL;
   f.set({dayId:'one',photoId:'',view:'map',scope:'day'});
@@ -70,15 +71,14 @@ test('initial and manually changed links restore; owned Back/Forward is not reop
 
 test('a native close leaves its forward photo URL intact until history traversal settles',()=>{
   const f=fixture('https://atlas.test/trip#photo=p2');f.ui.start();f.flush();
-  const url=f.env.location.href;
   // This pending-close guard is independent of the existing history payload.
   let pending=true;const listeners={},queue=[];
   const env={...f.env,setTimeout:fn=>queue.push(fn),addEventListener:(name,fn,capture)=>{listeners[name+(capture?'Capture':'')]=fn;}};
   let state={dayId:'one',photoId:'p2',view:'photo'};
   const restored=[];
   const ui=create({state:()=>state,pending:()=>pending,restore:target=>restored.push(target)},env);
-  ui.start();state={dayId:'one',photoId:'p2',view:'map'};ui.changed();queue.shift()();
-  assert.equal(env.location.href,url);
+  ui.start();const forwardUrl=env.location.href;state={dayId:'one',photoId:'p2',view:'map'};ui.changed();queue.shift()();
+  assert.equal(env.location.href,forwardUrl);
   const destination='https://atlas.test/trip#photo=p1&view=map';env.location.href=destination;
   listeners.popstateCapture();
   // Model a surface listener replacing the URL before the sharing listener.
@@ -86,4 +86,18 @@ test('a native close leaves its forward photo URL intact until history traversal
   listeners.popstate({state:{mobileAtlas:{viewer:false}}});
   listeners.hashchange({newURL:destination});
   assert.equal(restored.length,1,'Only startup restores; paired hashchange does not add another entry');
+});
+
+test('a fresh photo target is written before an asynchronous auth redirect can capture the temporary return surface',async()=>{
+  const env={location:{href:'https://atlas.test/trip#day=one&photo=p2&view=photo'},history:{state:{},replaceState(_state,_title,url){env.location.href=url;}},setTimeout(){},addEventListener(){}};
+  let selected;
+  const ui=create({state:()=>selected,restore:target=>{
+    // Real entry first creates a map URL for Back, then opens the photo.
+    env.history.replaceState({},'', 'https://atlas.test/trip#day=one&view=map');
+    selected=target;
+  }},env);
+  ui.start();
+  await Promise.resolve();
+  assert.equal(read(env.location.href).photoId,'p2');
+  assert.equal(read(env.location.href).view,'photo');
 });

@@ -44,14 +44,16 @@ Authorized under O18: current day/photo/view URLs, Share with device sheet and
 copy fallback, private access preserved, no history entry per photo swipe.
 Implemented in `/private/tmp/travels-photo-sharing` on
 `codex/photo-sharing-20261012`, starting at remote main `9143387`; primary-checkout
-concurrent edits remain untouched. Integrated main through `b279152`; all
-**612 tests** and the production build pass. Headless Chrome checks with labelled synthetic media cover reference,
+concurrent edits remain untouched. Integrated main through `7e3df65`; all
+**616 tests** and the production build pass. Headless Chrome checks with labelled synthetic media cover reference,
 Heading East, Alpine demo and an independently populated draft: selected/fullscreen
 fresh links and reload, native-share payload/cancellation, copy and denied-clipboard
 fallback, 320/390px phone and landscape, grid Back/Forward, manual hash changes,
 cross-event links, deleted IDs, bare entry and empty albums. A separate locked
 photo check retained the target URL and made zero private-media requests; auth
 regressions verify the target hash survives remembered/locked login returns.
+A simulated browser login round trip also checks prompt stacking and the exact
+selected/fullscreen target before and after Continue without photos.
 Next: deploy the integrated release and verify fresh public output. Exact map
 framing and automatic saved visitor resume remain excluded.
 

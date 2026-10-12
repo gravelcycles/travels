@@ -2231,6 +2231,7 @@
     if (target.view === 'grid') openDayViewer(day.id, {grid:true});
     else if (photo && target.view === 'photo') openPhoto(photo.id);
     else if (photo) { selectPhoto(photo.id); if (target.view === 'story') setMobileTab('story'); }
+    window.JOURNEY_ATLAS_AUTH?.raisePrompt?.();
   }
   // Any deliberate input wins over the opening, including while the map loads.
   document.addEventListener('pointerdown', cancelOpeningRoute, true);
