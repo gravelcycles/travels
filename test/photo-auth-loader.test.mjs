@@ -7,20 +7,20 @@ class Element extends EventTarget {
  querySelectorAll(){return [];}
  append(){}setAttribute(){}removeAttribute(name){if(name==='srcset')this.srcset='';}focus(){}showModal(){this.open=true;}close(){this.open=false;}
 }
-function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/webp'}}),{startup=false,tabStorage=new Map(),clock=Date}={}){
+function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/webp'}}),{startup=false,tabStorage=new Map(),clock=Date,hash=''}={}){
  const elements=[],header=new Element(),events=new Map(),calls=[],revoked=[],timers=new Map();let loginFlow,timerId=0;
  const document={body:new Element(),hidden:false,activeElement:new Element(),createElement(){const e=new Element();elements.push(e);return e;},querySelector(){return header;},querySelectorAll(){return [elements[0].querySelector('[data-unlock]'),elements[1].querySelector('[data-unlock]')];},addEventListener(n,fn){events.set(n,fn);}};
  const window={JOURNEY_ATLAS_PHOTO_SERVICE:{origin:'https://photos.example.com'},addEventListener(n,fn){events.set(n,fn);},dispatchEvent(){},open(){throw new Error('Login should not require a popup');}};
  const Url=class extends URL{};Url.createObjectURL=()=>`blob:fixture-${calls.length}`;Url.revokeObjectURL=u=>revoked.push(u);
  document.body.dataset.journeyScope=startup?'real':'demo';
- const navigations=[];const location=new URL('https://gravelcycles.github.io/travels/');location.assign=url=>navigations.push(url);
+ const navigations=[],historyUrls=[];const location=new URL('https://gravelcycles.github.io/travels/');location.hash=hash;location.assign=url=>navigations.push(url);
  const storage={getItem:k=>k==='atlas-photo-login'?JSON.stringify(loginFlow):tabStorage.get(k)||null,removeItem:k=>tabStorage.delete(k),setItem(k,v){if(k==='atlas-photo-login')loginFlow=JSON.parse(v);else tabStorage.set(k,v);}};
- const context=vm.createContext({window,document,location,history:{replaceState(){}},sessionStorage:storage,URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,Blob,btoa,Date:clock,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json({token:'fixture-access-token',expiresAt:Math.floor(clock.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
+ const context=vm.createContext({window,document,location,history:{replaceState(_state,_title,url){historyUrls.push(url);}},sessionStorage:storage,URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,Blob,btoa,Date:clock,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json({token:'fixture-access-token',expiresAt:Math.floor(clock.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
  vm.runInContext(source.replace('completeReturn();}', 'window.__startup=completeReturn();}').replace(/\}\)\(\);\s*$/, 'window.__completeReturn=completeReturn;})();'),context);
  async function unlock(spoof=false){loginFlow={state:'fixture-state',verifier:'v'.repeat(43),created:Date.now(),hash:''};location.hash=new URLSearchParams({photoAuthCode:'c'.repeat(43),state:spoof?'wrong-state':'fixture-state'}).toString();await window.__completeReturn();}
 
  async function returnFrom(kind){location.hash=new URLSearchParams({[kind]:kind==='photoAuthCode'?'c'.repeat(43):'1',state:loginFlow.state}).toString();await window.__completeReturn();}
- return {window,events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,header:elements[1]};
+ return {window,events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,historyUrls,header:elements[1]};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 async function waitForNavigation(f) {
@@ -453,4 +453,18 @@ test('a late grant cannot unlock video after locking, and excessive grant lifeti
  const videoSrc=`/private-videos/assets/v1/${'d'.repeat(64)}.mp4`;let finish;
  const f=fixture(()=>new Promise(resolve=>{finish=resolve;}));await f.unlock();const pending=f.auth.videoSource(videoSrc);await settle();f.auth.lock();finish(Response.json({grant:'scoped.signature',expiresAt:Math.floor(Date.now()/1000)+500}));await assert.rejects(pending,/access changed/);
  const excessive=fixture(()=>Response.json({grant:'scoped.signature',expiresAt:Math.floor(Date.now()/1000)+1800}));await excessive.unlock();await assert.rejects(excessive.auth.videoSource(videoSrc),/unavailable/);
+});
+
+
+test('fresh shared photo views survive remembered-access and locked login returns without credentials in the URL',async()=>{
+ for(const view of ['map','photo'])for(const result of ['photoAuthCode','photoAuthMissing']) {
+  const hash=`#day=fixture-day&photo=fixture-photo&view=${view}`;
+  const f=fixture(undefined,{startup:true,hash});await f.ready;
+  assert.equal(f.navigations.length,1);
+  await f.returnFrom(result);
+  assert.equal(f.historyUrls.at(-1),`/travels/${hash}`);
+  assert.equal(f.auth.unlocked,result==='photoAuthCode');
+  assert.ok(!f.historyUrls.at(-1).includes('photoAuthCode'));
+  assert.ok(!f.historyUrls.at(-1).includes('fixture-access-token'));
+ }
 });

@@ -16,6 +16,23 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Photo and view sharing — 12 October 2026
+
+Authorized under O18: current day/photo/view URLs, Share with device sheet and
+copy fallback, private access preserved, no history entry per photo swipe.
+Implemented in `/private/tmp/travels-photo-sharing` on
+`codex/photo-sharing-20261012`, starting at remote main `9143387`; primary-checkout
+concurrent edits remain untouched. Integrated main through `b279152`; all
+**612 tests** and the production build pass. Headless Chrome checks with labelled synthetic media cover reference,
+Heading East, Alpine demo and an independently populated draft: selected/fullscreen
+fresh links and reload, native-share payload/cancellation, copy and denied-clipboard
+fallback, 320/390px phone and landscape, grid Back/Forward, manual hash changes,
+cross-event links, deleted IDs, bare entry and empty albums. A separate locked
+photo check retained the target URL and made zero private-media requests; auth
+regressions verify the target hash survives remembered/locked login returns.
+Next: deploy the integrated release and verify fresh public output. Exact map
+framing and automatic saved visitor resume remain excluded.
+
 ## Mobile photo grid continuity — 12 October 2026
 
 Owner follow-up: returning from fullscreen flashes when the “N photos” grid was
@@ -484,8 +501,8 @@ preview runs at [port 4185](http://127.0.0.1:4185/studio/). These loopback links
 work only while the corresponding local servers are running.
 
 This section supersedes pending-status claims in the historical cleanup and
-family-publication checkpoints below. Remaining design work includes explicit
-sharing and the delight mockup; named Replay seeking was implemented on 11 October. Framework W04–W06
+family-publication checkpoints below. Explicit day/photo sharing is now authorized under O18. Remaining design work includes
+the delight mockup; named Replay seeking was implemented on 11 October. Framework W04–W06
 and paired Live Photos W09 remain open.
 
 ## Publication update — 8 October 2026
@@ -635,7 +652,7 @@ for demos before putting the proposed new features on the live site.
 | Proposal | Current status |
 | --- | --- |
 | Studio recovery, readable draft comparison, save-conflict review | Subsequently authorized and shipped on 14–15 September (`06f5d63`, `94f5f27`, `df5740d`). Do not reimplement the older mockup. |
-| Explicit day/photo/moment sharing | Demo only. Preserve group/photo access context; do not infer permission for automatic visitor resume. |
+| Explicit day/photo/moment sharing | Day/photo/view sharing authorized 12 October under O18; see current workstream above. Moment/Replay sharing and saved visitor resume remain excluded. |
 | Batch photo editing / larger contact sheet | Demo only. Existing single-photo edits and album ordering are already delivered. |
 | Publishing readiness / agent handoff | Demo only. Keep local/saved/live distinctions explicit; publishing remains agent-operated. |
 | Private video intake | Demo only; see W07 below. Hosted public video playback already works. |

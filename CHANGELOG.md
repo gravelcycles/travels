@@ -1,5 +1,18 @@
 # Changelog
 
+## 12 October 2026 — share photos and the current view
+
+- Keep the address bar aligned with the day/city, selected photo and map/sidebar
+  or fullscreen view; preserve legacy links and the normal photo unlock.
+- Add quiet Share controls using the device share sheet, copy fallback and a
+  selectable link when clipboard access is unavailable. Share page identifiers
+  only; retain existing Back/Forward without one history entry per photo swipe.
+- Record authorization and acceptance in O18, the photo workflow and shared
+  feature/architecture guidance. Exact map framing and saved resume stay excluded.
+- Validation: 612 passing tests after current-main integration, successful production build, and desktop/phone
+  browser checks across reference, city atlas, demo and an independent populated
+  draft, including locked access, invalid IDs, history and share/copy failures.
+
 ## 12 October 2026 — keep the photo grid behind fullscreen
 
 - Remove the map flash during photo dismissal by retaining the presenting grid
