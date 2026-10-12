@@ -32,7 +32,7 @@
     let current = { photos: [], index: 0, day: null }, locationOpen = false, grid = false, chrome = true;
     let reveal = 0, locationHeight = 300, scale = 1, panX = 0, panY = 0;
     let gesture = null, pointers = new Map(), pinch = null, suppressClick = false;
-    let locationTimer, swipeTimer, swipeFrame, zoomFrame;
+    let locationTimer, swipeTimer, swipeFrame, zoomFrame, dismissTimer;
     let replayState = null;
     let overlay = null, overlayDepth = 0, afterDismiss = null;
     let restoring = false, previousState = null, lastTap = null, viewerDepth = 0, fromAlbum = false, exitingToDay = false, preparedEntry = null;
@@ -54,6 +54,7 @@
     function presentOverlay(id) {
       const surface = $(`#${id}`);
       if (!surface || surface.inert || surface.open) return;
+      resetDismiss();
       if (!restoring) { save(); history.pushState({...history.state}, '', location.href); }
       overlay = id; if (!restoring) overlayDepth++; surface.showModal(); save();
     }
@@ -214,6 +215,36 @@
         swipeTimer = setTimeout(() => viewer.classList.remove('is-swipe-settling'), 160);
       });
     }
+    function resetDismiss() {
+      clearTimeout(dismissTimer); dismissTimer = null;
+      dialog.classList.remove('is-photo-dismissing');
+      dialog.classList.remove('is-dismiss-settling');
+      for (const [name, value] of Object.entries({x:'0px', y:'0px', scale:1, backdrop:1, chrome:1, image:1})) {
+        dialog.style.setProperty(`--dismiss-${name}`, String(value));
+      }
+    }
+    function dragDismiss(dx, dy, leaving = false) {
+      const distance = Math.max(0, dy), progress = clamp(distance / Math.max(1, stage.clientHeight * .65), 0, 1);
+      dialog.classList.add('is-photo-dismissing');
+      dialog.style.setProperty('--dismiss-x', `${dx}px`);
+      dialog.style.setProperty('--dismiss-y', `${distance}px`);
+      dialog.style.setProperty('--dismiss-scale', String(reduced.matches ? 1 : 1 - progress * .18));
+      dialog.style.setProperty('--dismiss-backdrop', String(leaving ? 0 : 1 - progress * .9));
+      dialog.style.setProperty('--dismiss-chrome', String(leaving ? 0 : 1 - clamp(progress * 2, 0, 1)));
+      dialog.style.setProperty('--dismiss-image', leaving ? '0' : '1');
+    }
+    function settleDismiss(action, cancelled) {
+      const distance = Math.max(0, action.dy), elapsed = Math.max(1, performance.now() - action.time);
+      const commit = !cancelled && (distance > Math.min(120, Math.max(64, stage.clientHeight * .22)) || distance > 36 && distance / elapsed > .55);
+      const finish = () => { if (commit && dialog.open) exitToDay(); resetDismiss(); };
+      if (reduced.matches) { finish(); return; }
+      // Animate from the finger's release position. New input, selection or
+      // closing cancels this timer so it cannot dismiss a later photograph.
+      $('#viewer-photo-frame').getBoundingClientRect();
+      dialog.classList.add('is-dismiss-settling');
+      dragDismiss(commit ? action.dx : 0, commit ? Math.max(distance, stage.clientHeight * .7) : 0, commit);
+      dismissTimer = setTimeout(finish, 180);
+    }
     function revealTo(value) {
       reveal = clamp(value, 0, locationHeight); viewer.style.setProperty('--reveal', `${reveal}px`);
       viewer.dataset.locationVisible = String(reveal > 0);
@@ -223,7 +254,7 @@
       const changed = value !== locationOpen;
       const target = value ? locationHeight : 0;
       if (!changed && reveal === target) return;
-      locationOpen = value; stopZoom(); setChrome(true); zoom(1); animateLocation(); revealTo(target);
+      resetDismiss(); locationOpen = value; stopZoom(); setChrome(true); zoom(1); animateLocation(); revealTo(target);
       panel.inert = !value; panel.setAttribute('aria-hidden', String(!value));
       $('#mobile-photo-location').setAttribute('aria-expanded', String(value));
       $('#mobile-photo-location .location-hint').textContent = value ? 'Hide location' : 'Photo location';
@@ -238,7 +269,7 @@
       const changed = grid !== value;
       if (!changed) return;
       if (value) api.pauseMedia?.();
-      grid = value; viewer.dataset.grid = String(value);
+      resetDismiss(); grid = value; viewer.dataset.grid = String(value);
       stage.inert = value; $('.mobile-photo-header').inert = value || !chrome; $('.mobile-photo-footer').inert = value || !chrome;
       panel.inert = value || !locationOpen; $('#album-continue').inert = value || !chrome; strip.inert = !value && enabled();
       if (value) { setChrome(true); $('.mobile-photo-header').inert = true; $('.mobile-photo-footer').inert = true; $('#mobile-grid-back').focus({preventScroll:true}); }
@@ -248,7 +279,7 @@
       if (record && changed) save();
     }
     function update(data) {
-      current = data; stopSwipe(); stopZoom(); lastTap = null;
+      current = data; resetDismiss(); stopSwipe(); stopZoom(); lastTap = null;
       if (!enabled()) { save(); return; }
       pointers.clear(); gesture = pinch = null; zoom(1);
       panel.inert=!locationOpen||grid;panel.setAttribute('aria-hidden',String(!locationOpen||grid));strip.inert=!grid;
@@ -315,6 +346,7 @@
       }
     }
     function closed() {
+      resetDismiss();
       neighbors.forEach(({node}) => {node.hidden=true;api.clearImage(node);node.removeAttribute('src');});
       stopSwipe(); stopZoom(); pointers.clear(); gesture = pinch = null; lastTap = null;
       if (!restoring && history.state?.mobileAtlas?.viewer) history.go(-Math.max(1, viewerDepth + (history.state.mobileAtlas.overlayDepth || 0)));
@@ -366,7 +398,7 @@
       // a tap on Close immediately after dragging) must always be accepted.
       suppressClick = false;
       if ((event.target.closest('button:not(#mobile-photo-location)') || event.target.closest('#viewer-video'))) return;
-      stopSwipe(); stopZoom(); clearTimeout(locationTimer); viewer.classList.remove('is-location-settling');
+      resetDismiss(); stopSwipe(); stopZoom(); clearTimeout(locationTimer); viewer.classList.remove('is-location-settling');
       pointers.set(event.pointerId, {x:event.clientX,y:event.clientY});
       event.currentTarget.setPointerCapture(event.pointerId);
       if (pointers.size === 2) {
@@ -385,11 +417,17 @@
       }
       if (!gesture) return;
       gesture.dx = event.clientX-gesture.x; gesture.dy = event.clientY-gesture.y;
-      gesture.axis ||= gestureAxis(gesture.dx, gesture.dy);
+      if (!gesture.axis) {
+        gesture.axis = gestureAxis(gesture.dx, gesture.dy);
+        gesture.dismiss = gesture.axis === 'y' && gesture.dy > 0 && !gesture.handle &&
+          scale === 1 && !locationOpen && gesture.startReveal === 0 &&
+          current.photos[current.index] && current.photos[current.index].mediaType !== 'video';
+      }
       if (!gesture.axis) return;
       lastTap = null;
       suppressClick = true;
       if (scale > 1 && !gesture.handle) {panX=gesture.panX+gesture.dx;panY=gesture.panY+gesture.dy;zoom(scale);return;}
+      if (gesture.dismiss) { dragDismiss(gesture.dx, gesture.dy); return; }
       if (gesture.axis === 'x' && !gesture.handle) {
         const edge = gesture.dx > 0 ? current.index === 0 : current.index === current.photos.length-1;
         transform(gesture.dx * (edge ? .2 : 1));
@@ -403,8 +441,9 @@
       if (pinch) { if (!pointers.size) {pinch=null;zoom(scale < 1.1 ? 1 : scale);} return; }
       const action = gesture; gesture = null;
       if (!action) return;
-      const cancelled = event.type === 'pointercancel';
+      const cancelled = event.type !== 'pointerup';
       if (scale > 1 && !action.handle) return;
+      if (action.dismiss) { settleDismiss(action, cancelled); return; }
       if (action.axis === 'x' && !action.handle) {
         const delta = cancelled ? 0 : swipeStep(action.dx, performance.now()-action.time, stage.clientWidth, current.index, current.photos.length);
         const offset = action.dx + delta * (stage.clientWidth + 16);
@@ -418,6 +457,7 @@
     [stage,$('#mobile-photo-location'),$('.photo-location-heading')].forEach(node => {
       node.addEventListener('pointerdown',pointerDown);node.addEventListener('pointermove',pointerMove);
       node.addEventListener('pointerup',pointerEnd);node.addEventListener('pointercancel',pointerEnd);
+      node.addEventListener('lostpointercapture',pointerEnd);
       node.addEventListener('click', event => {
         const dragged = suppressClick; suppressClick = false;
         if (dragged && event.detail !== 0 && !event.target.closest('button:not(#mobile-photo-location)')) {
@@ -476,7 +516,7 @@
       else if(action==='about')presentOverlay('notes-dialog');
     };
     media.addEventListener('change',()=>{
-      stopZoom();
+      resetDismiss(); pointers.clear(); gesture = pinch = null; stopZoom();
       if (dialog.open) api.layoutChanged?.(current.photos[current.index]?.id);
       if (!enabled()) {setGrid(false,false);setLocation(false,false);setChrome(true);panel.inert=false;panel.removeAttribute('aria-hidden');strip.inert=false;img.style.transform='';neighbors.forEach(({node})=>node.hidden=true);if(dialog.open)api.location();}
       else if(dialog.open) {
@@ -489,7 +529,7 @@
       if(replayState)replayControlsChanged(replayState);
       renderDay();save();
     });
-    window.addEventListener('resize',()=>{measure();measureReplay();});
+    window.addEventListener('resize',()=>{resetDismiss(); pointers.clear(); gesture = pinch = null; measure();measureReplay();});
     new ResizeObserver(()=>{ $('.map-panel').style.setProperty('--day-summary-height',`${$('.mobile-day-summary').offsetHeight}px`); }).observe($('.mobile-day-summary'));
     save();
     return {enabled,presentOverlay,dismissOverlay,renderDay,tabChanged,update,prepareOpen,open,closed,openGrid,exitToDay,replayControlsChanged,locationVisible:()=>locationOpen,gridVisible:()=>enabled()&&grid,

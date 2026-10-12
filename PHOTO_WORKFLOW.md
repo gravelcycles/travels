@@ -148,7 +148,19 @@ entry can settle or refit the map. Check close, browser Back/Forward, Escape,
 grid round trips and a manually panned/zoomed overview as well as a focused city.
 Controls stay visible when the photo is tapped. Double-tap or pinch to zoom, and
 drag upward or tap Photo location to reveal its map. Hide location collapses it without leaving the
-photo. Verify a quick hide-then-swipe keeps location closed. Full-trip Replay is disabled under O09; arrival/city playback remains on the
+photo. Pull an unzoomed still photo downward to dismiss fullscreen: the photo
+follows the finger, shrinks slightly and reveals the underlying map. A deliberate
+pull or quick downward flick exits through the existing Day/Stop history path;
+a short, reversed or cancelled pull snaps back without changing the photo.
+An open location panel collapses first; upward pulls reveal location, horizontal
+swipes browse, zoomed drags pan, and a second finger cancels dismissal for pinch.
+The gesture stays off grids, buttons and native videos. Reduced motion omits
+shrink/settling animation. New input, photo changes, close and resize cancel a
+pending dismissal so it cannot close a later viewer. Keep the visible Day/Stop
+exit and check same-event camera return, cross-event return, Back/Forward,
+short/cancelled pulls, portrait/landscape photos and 320/390px plus landscape.
+This implements the owner's 12 October “pull the photo away” request in O08.
+Verify a quick hide-then-swipe keeps location closed. Full-trip Replay is disabled under O09; arrival/city playback remains on the
 main map. Browse photographs through the event albums.
 Keep selected-thumbnail scrolling inside the grid: grid selection and city
 changes must leave fullscreen headers and footers at the viewport edges.

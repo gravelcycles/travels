@@ -233,3 +233,28 @@
   #mobile-photo-event-label { font-size:11px; }
  }
 }
+
+/* Pull an unzoomed photo down to leave the shared fullscreen viewer. */
+@media(max-width:900px) {
+ .photo-dialog.is-photo-dismissing,
+ .photo-dialog.is-photo-dismissing .photo-viewer,
+ .photo-dialog.is-photo-dismissing .photo-stage { background:transparent; }
+ .photo-dialog.is-photo-dismissing::backdrop { background:rgba(9,17,19,var(--dismiss-backdrop,1)); }
+ .photo-dialog.is-photo-dismissing .viewer-photo-frame { transform:translate3d(var(--dismiss-x,0px),var(--dismiss-y,0px),0) scale(var(--dismiss-scale,1)); opacity:var(--dismiss-image,1); }
+ .photo-dialog.is-photo-dismissing .mobile-photo-neighbor { visibility:hidden; }
+ .photo-dialog.is-photo-dismissing .mobile-photo-header,
+ .photo-dialog.is-photo-dismissing .mobile-photo-footer,
+ .photo-dialog.is-photo-dismissing .album-continue { opacity:var(--dismiss-chrome,1); }
+ .photo-dialog.is-dismiss-settling .viewer-photo-frame { transition:transform 180ms ease-out,opacity 180ms ease-out; }
+ .photo-dialog.is-dismiss-settling::backdrop { transition:background-color 180ms ease-out; }
+ .photo-dialog.is-dismiss-settling .mobile-photo-header,
+ .photo-dialog.is-dismiss-settling .mobile-photo-footer,
+ .photo-dialog.is-dismiss-settling .album-continue { transition:opacity 180ms ease-out; }
+ @media(prefers-reduced-motion:reduce) {
+  .photo-dialog.is-dismiss-settling .viewer-photo-frame,
+  .photo-dialog.is-dismiss-settling::backdrop,
+  .photo-dialog.is-dismiss-settling .mobile-photo-header,
+  .photo-dialog.is-dismiss-settling .mobile-photo-footer,
+  .photo-dialog.is-dismiss-settling .album-continue { transition:none; }
+ }
+}

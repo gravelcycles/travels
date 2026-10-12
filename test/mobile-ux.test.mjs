@@ -34,58 +34,7 @@ test('zoom panning stays inside the photograph and does not move letterboxed axe
   assert.equal(panLimit(292, 4, 706), 231);
 });
 
-import vm from 'node:vm';
-import fs from 'node:fs';
-function viewerFixture({deferredHistory=false, reducedMotion=false, videoIndex=-1} = {}) {
-  const nodes = new Map(), events = new Map(), timers = new Map(), frames = new Map(), traversals = [], queries = new Map();
-  let clock = 0, timer = 0, controller;
-  function node(selector) {
-    if (!nodes.has(selector)) nodes.set(selector, {
-      dataset:{},style:{setProperty(name,value){this[name]=value;}},classList:{names:new Set(),add(name){this.names.add(name);},remove(name){this.names.delete(name);},contains(name){return this.names.has(name);}},getBoundingClientRect(){return {left:0,top:0,width:390,height:706};},clientWidth:390,clientHeight:706,offsetHeight:160,naturalWidth:1200,naturalHeight:800,
-      open:false,hidden:false,handlers:new Map(),captures:new Map(),textContent:'',inert:false,
-      setAttribute(name,value){this[name]=value;},removeAttribute(name){delete this[name];},children:[],append(child){child.parentElement=this;this.children.push(child);},focus(){},setPointerCapture(){},
-      querySelectorAll(){return [];},closest(query){return selector.startsWith('#mobile-') && (query==='button' || query==='button:not(#mobile-photo-location)' && selector!=='#mobile-photo-location')?this:null;},
-      addEventListener(name,fn,capture){(capture?this.captures:this.handlers).set(name,fn);},
-      showModal(){this.open=true;},close(){this.open=false;if(selector==='#photo-dialog')controller?.closed();else this.handlers.get('close')?.();}
-    });
-    return nodes.get(selector);
-  }
-  const days=[{id:'one',number:1,date:'Today',title:'One'},{id:'two',number:2,date:'Tomorrow',title:'Two'}];
-  const photos=[0,1,2].map(i=>({id:`p${i}`,lng:8+i,lat:47}));
-  if (videoIndex >= 0) Object.assign(photos[videoIndex], {mediaType:'video',title:'A video'});
-  let mediaPauses = 0, neighborLoads = 0;
-  let day=days[0], index=0, locations=0, pauses=0, tabs=0, scope='day';
-  const stack=[{}]; let cursor=0;
-  const history={get state(){return stack[cursor];},replaceState(state){stack[cursor]=structuredClone(state);},pushState(state){stack.splice(++cursor);stack[cursor]=structuredClone(state);},back(){this.go(-1);},go(delta){const traverse=()=>{cursor=Math.max(0,Math.min(stack.length-1,cursor+delta));events.get('popstate')?.({state:this.state});};if(deferredHistory)traversals.push(traverse);else traverse();}};
-  const api={day:()=>day,days:()=>days,scope:()=>scope,title:()=> 'Journey',dayInfo:()=>({route:'Route',meta:'Train',count:3}),
-    tab:value=>{tabs++;node('.atlas-shell').dataset.mobileTab=value;},selectDay:id=>{day=days.find(d=>d.id===id);scope='day';},preview(){},stepDay(){},album(){},overview(){scope='journey';controller.renderDay();},replay(){},
-    location(){locations++;},pauseLocation(){pauses++;},pauseMedia(){mediaPauses++;},clearImage(){},loadImage(){neighborLoads++;},restoreOverlay:id=>controller.presentOverlay(id),
-    move(delta){index+=delta;update();},selectPhoto(value){index=value;update();},
-    openDay(id=day.id,options){controller.open(options);day=days.find(d=>d.id===id);index=0;node('#photo-dialog').open=true;update();}};
-  const context=vm.createContext({window:{addEventListener:(name,fn)=>events.set(name,fn)},document:{querySelector:node,createElement:()=>node(`image${nodes.size}`)},
-    matchMedia:query=>{if(!queries.has(query))queries.set(query,{matches:query.includes('900px') || reducedMotion && query.includes('reduced-motion'),addEventListener(_name,fn){this.changed=fn;}});return queries.get(query);},ResizeObserver:class{observe(){}},
-    history,location:{href:'https://example.test/day'},performance:{now:()=>clock},requestAnimationFrame:fn=>{frames.set(++timer,fn);return timer;},cancelAnimationFrame:id=>frames.delete(id),
-    setTimeout:fn=>{timers.set(++timer,fn);return timer;},clearTimeout:id=>timers.delete(id)});
-  vm.runInContext(fs.readFileSync(new URL('../dist/assets/mobile-ux.js',import.meta.url),'utf8'),context);
-  node('.atlas-shell').dataset.mobileTab='map';
-  controller=context.window.JOURNEY_ATLAS_MOBILE.create(api);
-  function update(){controller.update({day,photos,index});}
-  function drag(selector,dx,dy,elapsed=500,type='pointerup') {
-    const target=node(selector),event={pointerId:1,button:0,clientX:200,clientY:350,target,currentTarget:target};
-    target.handlers.get('pointerdown')(event);clock+=elapsed;
-    target.handlers.get('pointermove')({...event,clientX:200+dx,clientY:350+dy});
-    target.handlers.get(type)({...event,type,clientX:200+dx,clientY:350+dy});
-  }
-  function click(selector,surface=selector,{synthetic=false,keyboard=false}={}) {
-    const target=node(selector),currentTarget=node(surface);
-    const event={target,currentTarget,pointerId:1,button:0,clientX:180,clientY:350,detail:keyboard?0:1,preventDefault(){this.prevented=true;},stopImmediatePropagation(){this.stopped=true;}};
-    if(!synthetic && !keyboard){currentTarget.handlers.get('pointerdown')?.(event);currentTarget.handlers.get('pointerup')?.({...event,type:'pointerup'});}
-    currentTarget.captures.get('click')?.(event);
-    if(!event.stopped){currentTarget.handlers.get('click')?.(event);target.onclick?.(event);}
-    return event;
-  }
-  return {api,node,controller,history,drag,click,get neighborLoads(){return neighborLoads;},get mediaPauses(){return mediaPauses;},resize(mobile){const query=queries.get('(max-width: 900px)');query.matches=mobile;query.changed();},get tabs(){return tabs;},get pauses(){return pauses;},flushHistory(){while(traversals.length)traversals.shift()();},get index(){return index;},get locations(){return locations;},flush(elapsed=300){clock+=elapsed;const raf=[...frames.values()];frames.clear();raf.forEach(fn=>fn(clock));const work=[...timers.values()];timers.clear();work.forEach(fn=>fn());}};
-}
+import {viewerFixture} from './mobile-viewer-harness.mjs';
 
 test('video scrubbing stays native, video taps cannot zoom, and opening the media grid pauses playback', () => {
   const f = viewerFixture({videoIndex:1}); f.api.openDay(); f.api.selectPhoto(1);
@@ -363,4 +312,78 @@ test('disabled Replay cannot open or restore from stale overlay history',()=>{
     f.history.back();assert.equal(f.node('#album-dialog').open,false);
     assert.equal(f.node('#replay-dialog').open,false);
   }
+});
+
+
+test('downward pulls dismiss; short, cancelled and lost-capture pulls snap back',()=>{
+  for(const [dy,elapsed,type,closed] of [[160,600,'pointerup',true],[50,60,'pointerup',true],[45,700,'pointerup',false],[20,20,'pointerup',false],[180,600,'pointercancel',false],[180,600,'lostpointercapture',false]]) {
+    const f=viewerFixture();f.api.openDay();f.api.selectPhoto(1);
+    f.drag('.photo-stage',4,dy,elapsed,type);f.flush();
+    assert.equal(f.node('#photo-dialog').open,!closed,`${dy}px / ${elapsed}ms / ${type}`);
+    assert.equal(f.node('#photo-dialog').classList.contains('is-photo-dismissing'),false);
+    assert.equal(f.index,1,'Dismissal never advances the photograph');
+    if(closed){f.history.go(1);assert.equal(f.node('#photo-dialog').open,true);assert.equal(f.index,1,'Forward restores the selected photo');}
+  }
+});
+
+test('a downward pull follows the finger, and a second finger cancels dismissal for pinch',()=>{
+  const f=viewerFixture();f.api.openDay();
+  const stage=f.node('.photo-stage'),dialog=f.node('#photo-dialog');
+  const event={pointerId:1,button:0,clientX:180,clientY:200,target:stage,currentTarget:stage};
+  stage.handlers.get('pointerdown')(event);
+  stage.handlers.get('pointermove')({...event,clientX:195,clientY:360});
+  assert.equal(dialog.style['--dismiss-x'],'15px');assert.equal(dialog.style['--dismiss-y'],'160px');
+  assert.ok(Number(dialog.style['--dismiss-scale'])<1);assert.ok(Number(dialog.style['--dismiss-backdrop'])<1);
+  stage.handlers.get('pointerdown')({...event,pointerId:2,clientX:250,clientY:360});
+  assert.equal(dialog.classList.contains('is-photo-dismissing'),false);
+  stage.handlers.get('pointermove')({...event,pointerId:2,clientX:310,clientY:400});
+  stage.handlers.get('pointerup')({...event,type:'pointerup'});
+  stage.handlers.get('pointerup')({...event,pointerId:2,type:'pointerup'});f.flush();
+  assert.equal(dialog.open,true);assert.match(f.node('#modal-photo').style.transform,/scale\([234]/);
+});
+
+test('location collapses before photo dismissal; zoom, grids, video and desktop retain their gestures',()=>{
+  const f=viewerFixture({reducedMotion:true});f.api.openDay();
+  f.drag('.photo-stage',0,-160);f.drag('.photo-stage',0,200);f.flush();
+  assert.equal(f.controller.locationVisible(),false);assert.equal(f.node('#photo-dialog').open,true);
+  f.click('.photo-stage');f.click('.photo-stage');f.drag('.photo-stage',0,220);f.flush();
+  assert.equal(f.node('#photo-dialog').open,true);assert.match(f.node('#modal-photo').style.transform,/scale\(2\)/);
+  for(const state of ['grid','video','desktop','handle']) {
+    const g=viewerFixture({videoIndex:state==='video'?0:-1});g.api.openDay();
+    if(state==='grid')g.click('#mobile-photo-grid');if(state==='desktop')g.resize(false);
+    g.drag(state==='handle'?'#mobile-photo-location':'.photo-stage',0,220);g.flush();
+    assert.equal(g.node('#photo-dialog').open,true,state);
+  }
+});
+
+test('dismissal settling is cancelled by a new gesture, selection, grid, close or resize',()=>{
+  for(const interrupt of ['gesture','photo','grid','overlay','close','resize']) {
+    const f=viewerFixture();f.api.openDay();f.drag('.photo-stage',0,180);
+    if(interrupt==='gesture')f.drag('.photo-stage',-150,0);
+    if(interrupt==='photo')f.api.selectPhoto(1);
+    if(interrupt==='grid')f.click('#mobile-photo-grid');
+    if(interrupt==='overlay')f.controller.presentOverlay('comments-dialog');
+    if(interrupt==='close'){f.node('#photo-dialog').close();f.api.openDay('two');}
+    if(interrupt==='resize')f.resize(false);
+    f.flush();assert.equal(f.node('#photo-dialog').open,true,interrupt);
+    assert.equal(f.node('#photo-dialog').classList.contains('is-photo-dismissing'),false,interrupt);
+  }
+});
+
+test('reduced motion dismisses immediately without a settling animation',()=>{
+  const f=viewerFixture({reducedMotion:true});f.api.openDay();f.drag('.photo-stage',0,180);
+  assert.equal(f.node('#photo-dialog').open,false);
+  f.api.openDay('two');f.flush();assert.equal(f.node('#photo-dialog').open,true);
+});
+
+
+test('pulling a photo back to its starting point cancels a potential dismissal',()=>{
+  const f=viewerFixture();f.api.openDay();
+  const stage=f.node('.photo-stage'),event={pointerId:1,button:0,clientX:180,clientY:200,target:stage,currentTarget:stage};
+  stage.handlers.get('pointerdown')(event);
+  stage.handlers.get('pointermove')({...event,clientY:380});
+  stage.handlers.get('pointermove')({...event,clientY:205});
+  stage.handlers.get('pointerup')({...event,type:'pointerup',clientY:205});f.flush();
+  assert.equal(f.node('#photo-dialog').open,true);
+  assert.equal(f.node('#photo-dialog').classList.contains('is-photo-dismissing'),false);
 });

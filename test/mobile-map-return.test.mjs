@@ -20,6 +20,8 @@ function fixture({ scope = 'day', tab = 'map' } = {}) {
       dataset:{},style:{setProperty(){}},classList:{add(){},remove(){}},open:false,children:[],
       clientWidth:390,clientHeight:706,offsetHeight:150,naturalWidth:1200,naturalHeight:800,
       setAttribute(name,value){this[name]=value;},removeAttribute(name){delete this[name];},append(child){this.children.push(child);},focus(){},
+      setPointerCapture(){},closest(){return null;},
+      dispatch(type, values={}){for(const handler of listeners.get(type)||[])handler({type,pointerId:1,button:0,clientX:180,clientY:200,target:this,currentTarget:this,...values});},
       getBoundingClientRect(){return {left:0,top:0,width:390,height:706};},
       addEventListener(name,handler){if(!listeners.has(name))listeners.set(name,[]);listeners.get(name).push(handler);},
       showModal(){this.open=true;},close(){if(!this.open)return;this.open=false;queue.push(()=>{
@@ -75,11 +77,11 @@ function fixture({ scope = 'day', tab = 'map' } = {}) {
   return {api,controller,node,history,context,calls,originalCamera,flush,get camera(){return camera;},
     crossDay(id){api.selectDay(id);update();},
     selectSidebar(photo){sidebarPhoto=photo;api.selectDay(photo.dayId);},
-    close(control){if(control === 'browser')history.back();else if(control === 'close')node('#photo-dialog').close();else node(control).onclick();}}
+    close(control){if(control === 'pull'){const stage=node('.photo-stage');stage.dispatch('pointerdown');stage.dispatch('pointermove',{clientY:400});stage.dispatch('pointerup',{clientY:400});}else if(control === 'browser')history.back();else if(control === 'close')node('#photo-dialog').close();else node(control).onclick();}}
 }
 
 test('Close, Day/Stop, grid Back and browser Back preserve the exact presenting map camera',()=>{
-  for(const control of ['close','#mobile-photo-back','#mobile-grid-back','browser']){
+  for(const control of ['close','#mobile-photo-back','#mobile-grid-back','browser','pull']){
     const f=fixture();f.api.openDay('one',{settle:true,grid:control === '#mobile-grid-back'});
     assert.notDeepEqual(f.camera,f.originalCamera,'Fixture reproduces an entry that fits the city');
     f.close(control);f.flush();
@@ -108,7 +110,7 @@ test('photo return restores a manually framed journey overview without fitting t
 
 test('cross-event browsing returns to the selected event and records that map for the next entry',()=>{
   const f=fixture();f.api.openDay('one');f.crossDay('two');
-  const nextCamera=structuredClone(f.camera);f.close('close');f.flush();
+  const nextCamera=structuredClone(f.camera);f.close('pull');f.flush();
   assert.equal(f.api.day().id,'two');assert.deepEqual(f.camera,nextCamera);
   assert.equal(f.history.state.mobileAtlas.dayId,'two');
   f.api.openDay('two',{settle:true});f.close('#mobile-photo-back');f.flush();

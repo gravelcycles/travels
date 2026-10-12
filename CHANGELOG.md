@@ -1,5 +1,16 @@
 # Changelog
 
+## 12 October 2026 — pull down to dismiss mobile photos
+
+- Let an unzoomed fullscreen photo follow a downward pull, with slight shrink
+  and fading background, then return through the existing map/history exit.
+- Snap short/cancelled pulls back; preserve sideways browsing, upward location,
+  zoomed pan, pinch takeover, native video and reduced motion. Cancel pending
+  dismissal when input, selection, close or layout changes.
+- Record the owner's request in O08 and the photo/feature/framework guidance.
+- Validation: 584 passing tests, successful build and phone/landscape browser
+  checks on Heading East, reference, demo and an independently populated draft.
+
 ## 11 October 2026 — desktop photos beyond map clusters
 
 - Make ordinary desktop sidebar and fullscreen navigation continue through the

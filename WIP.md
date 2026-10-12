@@ -16,6 +16,25 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Mobile photo pull-to-dismiss — 12 October 2026
+
+Authorized: let a mobile user “pull the photo away” to exit fullscreen, like
+iPhone Photos. O08 and PHOTO_WORKFLOW own the shared behavior. Implementation
+uses a downward pull on an unzoomed still photo, short/cancelled snap-back,
+location-first collapse and the existing map/history exit. Work is isolated in
+`/private/tmp/travels-mobile-dismiss` on `codex/mobile-photo-dismiss`, based on
+current remote main `b934c07`; the primary checkout's other edits are untouched.
+Implemented in shared mobile code/CSS. All **584 tests** and the production
+build pass, including cancellation, pinch takeover, native-video/grid exclusions,
+reduced motion, pending-animation interruption, exact same-event camera return
+and cross-event/Forward history. Browser checks on Heading East, Switzerland–Italy,
+Alpine demo and an independently populated draft verify 320/390px portrait,
+844px landscape, portrait/landscape images, short-pull snap-back, dismissal,
+location collapse, zoomed pan, cross-event return and retained desktop behavior.
+Browser fixtures used labelled synthetic photos; no content/media was changed.
+Latest remote main `b934c07` is integrated. Next: commit, deploy Pages and verify
+fresh public HTML/assets; deployment is not yet complete.
+
 ## Desktop photo navigation — 11 October 2026
 
 Authorized follow-up: desktop users get stuck inside map clusters and cannot

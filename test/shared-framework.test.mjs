@@ -16,6 +16,7 @@ import {arrivalCameraHarness} from './arrival-camera-harness.mjs';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/map-style.js';
 import { mapStyleHarness } from './map-style-harness.mjs';
+import { viewerFixture } from './mobile-viewer-harness.mjs';
 import { photoEntryFixture } from './viewer-flow-harness.mjs';
 import { photoBubbleFixture } from './photo-bubble-harness.mjs';
 import '../dist/assets/group-travel.js';
@@ -109,6 +110,19 @@ test('desktop and phone journey browsing inherits across reference, city atlas, 
     assert.equal(f.context.viewerDayId,last.id,'Event jumps do not escape explicit collections');
     assert.notEqual(emptyDay.id,last.id);
     }
+  }
+});
+
+test('pull-to-dismiss inherits reference, city atlas, demo and independently populated fresh draft',t=>{
+  const root=fixture(t), created=createJourney(root,{...input,slug:'pull-dismiss-fixture'}),{data}=loadContent(root,{includeDrafts:true});
+  const draft=data.journeys.find(j=>j.id===created.id);
+  draft.photos=[{id:'independent-portrait',dayId:draft.days[0].id,src:'https://images.example.test/portrait.jpg',width:800,height:1200}];
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo' && j.photos.length),draft]) {
+    const f=viewerFixture({journey});f.api.openDay(journey.photos[0].dayId);
+    f.drag('.photo-stage',0,32,700);f.flush();assert.equal(f.node('#photo-dialog').open,true,journey.id);
+    f.drag('.photo-stage',12,180,600);f.flush();assert.equal(f.node('#photo-dialog').open,false,journey.id);
+    f.history.go(1);assert.equal(f.node('#photo-dialog').open,true,journey.id);
+    assert.equal(f.api.day().id,journey.photos[0].dayId);
   }
 });
 
