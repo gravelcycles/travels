@@ -25,11 +25,15 @@ behavior. Implementation is isolated in `build/opening-route-trace` on
 The shared opening action requests the trace when the map is ready; separate
 legs retain itinerary order and mode styling. Existing input/navigation cancels;
 reduced motion and route-less drafts retain the immediate overview. No content
-changes or full-trip Replay activation. Integrated main `9143387`; all **592 tests** and the production
-build pass. Browser checks cover reference, Heading East, Alpine demo and an
+changes or full-trip Replay activation. Integrated main through `c3c1083`;
+all **592 tests** and the production build pass. Browser checks cover reference, Heading East, Alpine demo and an
 independent draft, desktop, 320/390px phones and 844px landscape, completion
 and day-navigation interruption. Private images were excluded from map QA.
-Next: publish and verify fresh Pages.
+Deployed as `33cac36` through successful [Pages run 38215200078](https://github.com/gravelcycles/travels/actions/runs/38215200078).
+Fresh public reference/Heading East/Florence/demo pages and the three changed
+runtime assets match the tested build byte-for-byte; the live demo’s phone
+trace also passed browser verification. No implementation or delivery work
+remains. The primary checkout’s concurrent edits are untouched.
 
 ## Mobile photo return-screen correction — 12 October 2026
 

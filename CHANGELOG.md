@@ -10,6 +10,7 @@
 - Validation: 592 tests after current-main integration, production build and
   desktop/phone browser checks on
   reference, Heading East, demo and an independently populated local draft.
+  Pages release `33cac36` succeeded; fresh public pages/assets match the build.
 
 ## 12 October 2026 — return photos to the previous screen
 
