@@ -54,9 +54,16 @@ and reopening the detail. No comments or reviews were posted to a live service.
 
 ## Delivery
 
-Integrated remote main through `32e7cdf`, including photo/view sharing, login
+Integrated remote main through `c0661a7`, including photo/view sharing, login
 return, mobile route-trace and Studio data-safety corrections. All **635 tests**
 and the production build pass. Integrated browser checks retain album scroll
 through grid Back/Forward and Places tab/scroll through photo and list returns.
-Pages deployment and fresh public-output verification are pending; WIP owns the
-remaining delivery step.
+Deployed as `b4e4b9a` through successful [Pages run 38219260545](https://github.com/gravelcycles/travels/actions/runs/38219260545).
+Fresh public Heading East/reference/Florence/demo pages and all three changed
+runtime assets match the tested build byte-for-byte. The live demo also retains
+its scrolled album through a day grid and browser Back/Forward. No required
+implementation or delivery work remains.
+
+Final integration `9ecd943` also includes the subsequent Studio field/frame
+preservation corrections from `4654fe0`: **637 tests** and build pass, with no
+changes to generated public output. The verified public assets remain identical.
