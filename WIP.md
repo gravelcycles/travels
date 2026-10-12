@@ -16,6 +16,18 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## State persistence audit — 12 October 2026
+
+Owner request: verify that other features do not lose their state across the
+site after the fullscreen return fixes. Audit in
+`/private/tmp/travels-mobile-dismiss`, branch `codex/persistence-audit`, based on
+main `b279152`. Scope: navigation and nested overlays, album/Places scroll and
+selection, comments/review drafts, notifications, map context and Studio save
+recovery. Preserve intentional resets and the existing no-auto-resume visitor
+reload policy. Next: reproduce candidate album/Places rebuilds, add regression
+coverage, fix confirmed losses, run the complete suite/build and browser checks
+against reference, Heading East, demo and independent content, then deploy.
+
 ## Mobile photo grid continuity — 12 October 2026
 
 Owner follow-up: returning from fullscreen flashes when the “N photos” grid was

@@ -35,6 +35,7 @@
     let locationTimer, swipeTimer, swipeFrame, zoomFrame, dismissTimer;
     let replayState = null;
     let overlay = null, overlayDepth = 0, afterDismiss = null;
+    const overlayScrolls = new Map();
     let restoring = false, previousState = null, lastTap = null, viewerDepth = 0, fromAlbum = false, preparedEntry = null, backPending = false;
     const neighbors = [-1, 1].map(delta => {
       const node = document.createElement('img'); node.className = 'mobile-photo-neighbor'; node.hidden = true; node.alt = ''; node.setAttribute('aria-hidden', 'true'); node.draggable = false;
@@ -42,7 +43,7 @@
     });
     const enabled = () => media.matches;
     function snapshot() {
-      return {overlay, overlayDepth, dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
+      return {overlay, overlayDepth, overlayScroll:overlay ? {top:$(`#${overlay}`).scrollTop || 0,left:$(`#${overlay}`).scrollLeft || 0} : null, dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
         viewerDay: current.day?.id, collection: dialog.open ? api.collection?.() || null : null, index: current.index, scope:api.scope(), mapView:api.captureMapView?.() || null, depth:dialog.open?viewerDepth:0, fromAlbum, gridOrigin:dialog.open ? gridOrigin : null, gridScroll:grid ? {top:strip.scrollTop || 0,left:strip.scrollLeft || 0} : null, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
     }
     function save(push = false) {
@@ -63,6 +64,9 @@
       $(`#${id}`).close();
     }
     for (const id of ['album-dialog', 'replay-dialog', 'notes-dialog', 'comments-dialog', 'experience-unlock', 'trip-notifications-dialog']) {
+      $(`#${id}`).addEventListener('scroll', () => {
+        if (overlay === id && $(`#${id}`).open && !restoring) overlayScrolls.set(id, {top:$(`#${id}`).scrollTop || 0,left:$(`#${id}`).scrollLeft || 0});
+      }, {passive:true});
       $(`#${id}`).addEventListener('close', () => {
         // Native close events are queued. A replacement may already own the entry.
         if ($(`#${id}`).open || overlay !== id) return;
@@ -400,7 +404,13 @@
         }
       } else if (dialog.open) { dialog.close(); fromAlbum=false; }
       if (returnMap) api.restoreMapView?.(returnMap);
-      if (overlay) api.restoreOverlay(overlay);
+      if (overlay) {
+        api.restoreOverlay(overlay);
+        // Native dialog reopening focuses its first control and can reset the
+        // scroller even when all of the underlying content stayed mounted.
+        const scroll = overlayScrolls.get(overlay) || state.overlayScroll;
+        if (scroll) { $(`#${overlay}`).scrollTop = scroll.top; $(`#${overlay}`).scrollLeft = scroll.left; }
+      }
       if(state.viewer && old?.layer === 'grid' && state.layer !== 'grid')$('#mobile-photo-grid').focus({preventScroll:true});
       else if(state.viewer && old?.layer === 'location' && state.layer !== 'location')$('#mobile-photo-location').focus({preventScroll:true});
       renderDay();

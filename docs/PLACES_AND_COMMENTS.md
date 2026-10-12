@@ -64,7 +64,12 @@ Undo, and per-place draft recovery. Photos open an accessible full-screen galler
 with previous/next navigation, complete images and attribution. Map pins use
 screen-space clustering with accessible place choices. A phone sheet expands
 for reading and contracts for the map. Tabs support arrow keys, Home and End.
-Browser Back and Forward follow place details and galleries.
+Browser Back and Forward follow place details and galleries. A return from
+linked trip photos or a temporary close keeps the same detail nodes, images,
+expanded disclosures, selected tab and scroll. Back to the list and Forward to
+the detail restore that history entry's tab and independent tab scroll positions.
+Refresh changed content and auth state; do not rebuild an unchanged detail just
+because its surface becomes visible again.
 
 Photo conversations use a contextual panel with per-photo drafts, previous/next
 photo navigation, edit/delete-own and Undo. Password plus display name is one

@@ -27,6 +27,19 @@ permission to erase it. An agent suggestion, passing test or prototype is not an
 owner decision. Resolve apparent conflicts from dated evidence and record which
 choice supersedes which; ask only if a consequential ambiguity remains.
 
+## Persistence audit — 12 October 2026
+
+Owner follow-up after the fullscreen grid correction: verify that other features
+also retain their state. Existing view continuity applies to the all-photos
+album and Places: returning through a photo, closing/reopening a remembered
+place, or browser Back/Forward keeps the presenting scroll, selected tab and
+unchanged thumbnail/detail nodes. Dialog focus must not reset a restored album
+or About page. Actual content changes still refresh the view. This extends the
+O03/O04/O08 acceptance checks; it does not introduce visitor reload auto-resume.
+[Audit evidence and limits](PERSISTENCE_AUDIT_2026-10-12.md) distinguish browser
+checks, automated coverage and intentional resets. The current photo and
+Places contracts own implementation guidance.
+
 ## Standing decisions and acceptance checks
 
 | ID | Current decision | Check when touching this area |

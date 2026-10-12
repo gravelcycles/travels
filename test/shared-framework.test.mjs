@@ -1376,3 +1376,23 @@ test('visibility projections and synchronized controls work for reference, demo 
     for(const id of ['planning-filter','map-planning-filter','show-past','show-locked','show-tbd','map-show-past','map-show-locked','map-show-tbd']) assert.ok(html.includes(`id="${id}"`));
   }
 });
+
+
+test('real, demo and independently populated draft albums retain their tiles through nested history', t=>{
+  const root=fixture(t);createJourney(root,input);
+  const {data}=loadContent(root,{includeDrafts:true}), draft=data.journeys.find(j=>j.id===input.slug);
+  draft.days.forEach((day,i)=>{day.title=`Independent stop ${i+1}`;day.text='A local fixture journal entry.';});
+  draft.photos=draft.days.map((day,i)=>({id:`independent-${i}`,dayId:day.id,src:`https://example.test/${i}.jpg`}));
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo'),draft]){
+    const f=viewerFixture({journey}), album=f.node('#album-dialog'), days=f.node('#album-days');
+    let builds=0,html='';Object.defineProperty(days,'innerHTML',{get:()=>html,set:value=>{html=value;builds++;}});
+    const photos=journey.photos||[],context=vm.createContext({journey,$:f.node,orderedPhotos:()=>photos,photosForDay:id=>photos.filter(p=>p.dayId===id),
+      eventWord:form=>globalThis.JOURNEY_ATLAS_UTILS.eventWord(journey,form),escapeHtml:s=>s||'',
+      photoImageMarkup:p=>`<img src="${p.src||''}">`,mediaUtils:{label:items=>`${items.length} photos`},prepareProgressiveImages(){},window:{JOURNEY_ATLAS_MOBILE_UI:f.controller}});
+    vm.runInContext(appFunction('openAlbum'),context);f.api.restoreOverlay=id=>id==='album-dialog'?context.openAlbum():f.controller.presentOverlay(id);
+    context.openAlbum();album.scrollTop=410;album.captures.get('scroll')({});
+    f.controller.openGrid(journey.days[0].id);f.history.back();
+    assert.equal(builds,1,journey.id);assert.equal(album.scrollTop,410,journey.id);
+    assert.equal((html.match(/data-album-day=/g)||[]).length,journey.days.length,journey.id);
+  }
+});

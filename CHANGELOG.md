@@ -1,5 +1,14 @@
 # Changelog
 
+## 12 October 2026 — persistence audit and return-state repairs
+
+- Keep All photos tiles mounted and restore dialog scroll after native focus on
+  history return; About uses the same restoration.
+- Preserve Places detail nodes and scroll across linked-photo returns and closing;
+  browser Forward also restores each detail tab and its scroll position.
+- Add regression coverage and record the owner’s audit scope in current guidance.
+  See [the audit matrix](docs/PERSISTENCE_AUDIT_2026-10-12.md) for evidence and limits.
+
 ## 12 October 2026 — keep the photo grid behind fullscreen
 
 - Remove the map flash during photo dismissal by retaining the presenting grid

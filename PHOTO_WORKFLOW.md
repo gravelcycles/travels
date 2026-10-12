@@ -150,6 +150,9 @@ crosses days. Fade the photo background over this grid; never reveal the map or
 a blank frame before the grid appears. Reuse the existing protected-image
 bindings instead of cloning image pixels. Direct photo entry returns to its
 presenting map/story/Places surface.
+The All photos overview also retains its existing event tiles and scroll when
+returning from a day grid or through browser history. Rebuild tiles only when
+their content changes; restore dialog scroll after native focus on reopening.
 Grid/photo transitions have distinct history entries, so browser Back/Forward
 matches these controls; location reveal stays within its photo entry. Rapid Back
 requests coalesce while a traversal is pending. Save the departing layer before

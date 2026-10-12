@@ -156,3 +156,20 @@ test('the presenting grid keeps its thumbnail nodes while the photo crosses days
     assert.deepEqual(buttons,original);
   }
 });
+
+
+test('the all-photos album retains its mounted tiles and scroll until its contents change',()=>{
+  let replacements=0, prepared=0, presentations=0;
+  const data=structuredClone(journey), album={dataset:{},scrollTop:480,set innerHTML(value){replacements++;this.html=value;this.scrollTop=0;}};
+  const context=vm.createContext({journey:data,$:selector=>selector==='#album-days'?album:{},
+    orderedPhotos:()=>data.photos,photosForDay:id=>data.photos.filter(photo=>photo.dayId===id),
+    eventWord:()=> 'Day',escapeHtml:value=>value||'',photoImageMarkup:photo=>`<img src="${photo.id}">`,
+    mediaUtils:{label:photos=>`${photos.length} photos`},prepareProgressiveImages(){prepared++;},
+    window:{JOURNEY_ATLAS_MOBILE_UI:{presentOverlay(){presentations++;}}}});
+  vm.runInContext(viewerFunction('openAlbum'),context);
+  context.openAlbum();album.scrollTop=480;context.openAlbum();
+  assert.equal(replacements,1);assert.equal(prepared,1);assert.equal(presentations,2);assert.equal(album.scrollTop,480);
+  data.days[0].title='Updated stop';context.openAlbum();
+  assert.equal(replacements,2);assert.match(album.html,/Updated stop/);
+  data.photos.push({id:'new',dayId:'hill'});context.openAlbum();assert.equal(replacements,3);
+});
