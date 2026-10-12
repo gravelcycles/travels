@@ -54,8 +54,14 @@ photo check retained the target URL and made zero private-media requests; auth
 regressions verify the target hash survives remembered/locked login returns.
 A simulated browser login round trip also checks prompt stacking and the exact
 selected/fullscreen target before and after Continue without photos.
-Next: deploy the integrated release and verify fresh public output. Exact map
-framing and automatic saved visitor resume remain excluded.
+Deployed as `32e7cdf` through successful
+[Pages run 38217922200](https://github.com/gravelcycles/travels/actions/runs/38217922200).
+Fresh public catalog/reference/Heading East/Florence/demo pages and all five
+changed viewer assets match the tested build byte-for-byte. A fresh public
+phone session passed the real remembered-access check, visible unlock prompt,
+Continue without photos, exact Share URL and Back/Forward; no protected-media
+requests were made while locked. No implementation or delivery work remains.
+Exact map framing and automatic saved visitor resume remain excluded.
 
 ## Mobile photo grid continuity — 12 October 2026
 
