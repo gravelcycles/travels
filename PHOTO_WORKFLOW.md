@@ -517,6 +517,38 @@ speculative work to a foreground download. Public-photo Retry uses the public
 loader and never asks for private-photo access.
 
 
+## Sharing a photo or view
+
+Owner-approved under [O18](docs/OWNER_DECISIONS.md#photo-and-view-sharing--12-october-2026),
+12 October 2026. The address bar follows day/city selection, a selected sidebar
+or map-card photo, and fullscreen/grid entry. The shared hash uses stable `day`
+and optional `photo` IDs, `view=map|story|photo|grid`, and `scope=journey` for an
+overview. Existing `#photo=…`, `?photo=…` and day links remain supported. Explicit
+view links survive reload; bare journey URLs keep the usual introduction.
+
+Share photo sits beside the lead/selected photo and in fullscreen. It shares the
+atlas page through the native device sheet where available. Otherwise it copies
+the link with a brief “Link copied” status; denied clipboard access opens a
+selectable link. Cancelling the share sheet does nothing. Shared links carry only
+journey/group context and the view hash, never media URLs, access credentials or
+local preview switches. Local previews still yield local links; they do not
+claim a draft is published. Private media retains the normal unlock flow and
+returns to the requested view. Removed/unknown photos fall back to a valid day.
+
+Photo browsing uses `replaceState`, preserving the existing surface history.
+Opening/closing photos, grids and conversations still follows O03/O08; Back does
+not walk through every swipe. URL synchronization runs after a selection settles,
+and history traversal is restored by the existing surface controllers. Exact
+map camera coordinates and collection membership are not serialized; recipients
+start the ordinary photo roll, while existing in-tab Places collections remain
+unchanged. No new visitor-resume storage is introduced.
+
+Check reference, city-stay atlas, demo and independently populated draft:
+selected photo versus fullscreen fresh links, day/overview, cross-event browsing,
+reload, grid → photo → Back, browser Back/Forward, locked/unlocked photo entry,
+invalid/deleted IDs, native share cancellation and clipboard denial. Verify a
+320px phone header, landscape and desktop controls without overlaps.
+
 ## Comment counts and read state
 
 Photo Comments actions inherit the shared notification contract: a red numbered

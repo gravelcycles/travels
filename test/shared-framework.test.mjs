@@ -1381,3 +1381,34 @@ test('visibility projections and synchronized controls work for reference, demo 
     for(const id of ['planning-filter','map-planning-filter','show-past','show-locked','show-tbd','map-show-past','map-show-locked','map-show-tbd']) assert.ok(html.includes(`id="${id}"`));
   }
 });
+
+
+test('current-view sharing is inherited by reference, city atlas, demo and a populated fresh draft', async t => {
+  await import('../dist/assets/view-sharing.js');
+  const sharing=globalThis.JOURNEY_ATLAS_SHARING;
+  const root=fixture(t), draft=createJourney(root,input), {data}=loadContent(root);
+  draft.photos=[{id:'independent-share-photo',dayId:draft.days[1].id,src:'https://example.test/fixture.webp',caption:''}];
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo'),draft]) {
+    const html=renderJourneyPage(root,journey,{preview:journey===draft});
+    for(const id of ['share-lead-photo','share-photo','mobile-share-photo','share-link-dialog']) assert.ok(ids(html).includes(id),`${journey.id}: ${id}`);
+    assert.ok(assets(html).includes('view-sharing.js'));assert.ok(assets(html).includes('view-sharing.css'));
+    const photo=journey.photos[0], nodes=new Map();
+    const $=selector=>{if(!nodes.has(selector))nodes.set(selector,{hidden:false,dataset:{mobileTab:'map'}});return nodes.get(selector);};
+    const context=vm.createContext({$,
+      activeDayId:photo.dayId,mapScope:'day',photoDialog:{open:false},viewerPhotoIndex:0,
+      photosForDay:id=>journey.photos.filter(p=>p.dayId===id),viewerPhotos:()=>journey.photos,
+      photoBubbles:{currentPhoto:()=>photo},document:{body:{classList:{contains:()=>false}}},
+      window:{JOURNEY_ATLAS_MOBILE_UI:{gridVisible:()=>false}}
+    });
+    vm.runInContext(appFunction('currentSharedView'),context);
+    for(const fullscreen of [false,true]) {
+      context.photoDialog.open=fullscreen;
+      const state=JSON.parse(JSON.stringify(context.currentSharedView()));
+      const url=sharing.urlFor(`https://atlas.test/${journey.slug}`,state,{share:true});
+      assert.equal(sharing.read(url).photoId,photo.id);
+      assert.equal(sharing.read(url).dayId,photo.dayId);
+      assert.equal(sharing.read(url).view,fullscreen?'photo':'map');
+      assert.ok(!url.includes(photo.src),'Share references the page, never the media object');
+    }
+  }
+});

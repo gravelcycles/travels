@@ -53,6 +53,26 @@ large useful imagery, restrained copy, continuous geographic context, responsive
 interruptible motion, obvious navigation and reliable recovery. It does not mean
 adding decorative animation, labels, another panel or another confirmation step.
 
+## Photo and view sharing — 12 October 2026
+
+**O18 · Share the current view.** The owner approved the proposed day/city and
+photo URL updates plus a quiet Share action (“great lets do it”, 12 October).
+Every atlas keeps the address bar aligned with the selected day/stop, photo and
+map/sidebar versus fullscreen view. Sharing opens the device share sheet where
+available, with Copy link as a fallback. Recipients use the existing photo unlock;
+links contain identifiers, never photo bytes, access tokens or passwords. Browsing
+photos replaces the current history entry instead of adding an entry per swipe.
+Existing one-level Back/Forward and map-camera restoration remain intact.
+
+This supersedes the earlier demo-only status for explicit day/photo sharing.
+Exact map coordinates/zoom and Replay links remain outside this implementation.
+There is no saved visitor resume preference: a bare journey URL retains normal
+entry, while a URL containing a view deliberately restores that view. Check
+fresh/reloaded links, selected sidebar versus fullscreen, cross-event browsing,
+Back/Forward, private locked/unlocked entry, invalid/deleted IDs and share/copy
+cancellation/failure on desktop and phone, reference/demo/populated fresh draft.
+Technical details live in [the photo workflow](../PHOTO_WORKFLOW.md#sharing-a-photo-or-view).
+
 ## Comment notifications — 11 October 2026
 
 **O17 · Comment notifications.** The owner requested: “mark the number of
@@ -90,8 +110,8 @@ selected/lead image opens fullscreen. The desktop day/map/journal structure
 and its stable, uncropped selected-photo frame remain. Reviewed image
 reveals, floating populated conversations and arrival timing remain in force.
 Named Replay seeking was authorized here, then superseded by the full-trip
-Replay disablement below. Visitor reload persistence and explicit sharing
-remain outside this change.
+Replay disablement below. Visitor reload persistence remained outside this change; explicit sharing was
+subsequently authorized under O18.
 
 Studio uses Trip / Media / Places / Routes with Photos and Videos under Media,
 one Save locally action, a contact sheet before batch controls, visual cover and

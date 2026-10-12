@@ -8,9 +8,22 @@
 - Refit the overview immediately on resize and reproject the existing drawing;
   retain the same clock, route order, geometry and transport styles.
 - Record the owner’s follow-up in O06 and current journey/framework/feature docs.
-- Validation: 595 passing tests and production build; an actual MapLibre resize
+- Validation: 615 passing tests after current-main integration and production build; an actual MapLibre resize
   that previously stopped at 455 ms now permits completion at approximately
   3,000 ms. Deployment verification remains tracked in WIP.
+
+## 12 October 2026 — share photos and the current view
+
+- Keep the address bar aligned with the day/city, selected photo and map/sidebar
+  or fullscreen view; preserve legacy links and the normal photo unlock.
+- Add quiet Share controls using the device share sheet, copy fallback and a
+  selectable link when clipboard access is unavailable. Share page identifiers
+  only; retain existing Back/Forward without one history entry per photo swipe.
+- Record authorization and acceptance in O18, the photo workflow and shared
+  feature/architecture guidance. Exact map framing and saved resume stay excluded.
+- Validation: 612 passing tests after current-main integration, successful production build, and desktop/phone
+  browser checks across reference, city atlas, demo and an independent populated
+  draft, including locked access, invalid IDs, history and share/copy failures.
 
 ## 12 October 2026 — keep the photo grid behind fullscreen
 
