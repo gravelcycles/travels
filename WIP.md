@@ -16,6 +16,21 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Opening route trace — 12 October 2026
+
+Authorized: a three-second full-route trace on initial desktop/phone entry.
+O06 and [the journey contract](JOURNEY_WORKFLOW.md#opening-route-trace) own the
+behavior. Implementation is isolated in `build/opening-route-trace` on
+`codex/opening-route-trace-20261012`, based on current main `0cd2d3b`.
+The shared opening action requests the trace when the map is ready; separate
+legs retain itinerary order and mode styling. Existing input/navigation cancels;
+reduced motion and route-less drafts retain the immediate overview. No content
+changes or full-trip Replay activation. All **589 tests** and the production
+build pass. Browser checks cover reference, Heading East, Alpine demo and an
+independent draft, desktop and 320/390px phones, completion and day-navigation
+interruption. Private images were excluded from map QA. Next: integrate latest
+main, repeat affected checks, publish and verify fresh Pages.
+
 ## Mobile photo pull-to-dismiss — 12 October 2026
 
 Authorized: let a mobile user “pull the photo away” to exit fullscreen, like

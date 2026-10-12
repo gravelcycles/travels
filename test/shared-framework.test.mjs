@@ -13,6 +13,7 @@ import { photoImportConfig } from '../scripts/photo-import-config.mjs';
 import '../dist/assets/replay-utils.js';
 import '../dist/assets/arrival-chapter.js';
 import {arrivalCameraHarness} from './arrival-camera-harness.mjs';
+import {openingRouteHarness} from './opening-route-harness.mjs';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/map-style.js';
 import { mapStyleHarness } from './map-style-harness.mjs';
@@ -46,6 +47,25 @@ function bundle(source, key) {
   return JSON.parse(JSON.stringify(context.window[key]));
 }
 const app = read(repo, 'dist/assets/app.js');
+
+test('three-second opening trace inherits resolved routes for reference, city atlas, demo and independent fresh draft', t => {
+  const root = fixture(t), draft = createJourney(root, {...input,slug:'opening-route-fixture'});
+  const {data, routes} = loadContent(root), overrides = readOverrides(root);
+  draft.places = [{id:'qa-north',name:'North',lng:139.7,lat:35.7},{id:'qa-south',name:'South',lng:139.8,lat:35.6}];
+  draft.segments = [{id:'qa-walk',mode:'walk',from:'qa-north',to:'qa-south',geometry:[[139.7,35.7],[139.72,35.64],[139.8,35.6]]}];
+  draft.days[0].segmentIds = ['qa-walk'];
+  for (const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo'),draft]) {
+    for (const segment of journey.segments) if (overrides.routes[segment.id]?.geometry) segment.geometry=overrides.routes[segment.id].geometry;
+    const context=vm.createContext({journey,window:{JOURNEY_ATLAS_ROUTE_GEOMETRY:routes}});
+    vm.runInContext(appFunction('placeById')+'\n'+appFunction('segmentCoordinates'),context);
+    const h=openingRouteHarness(journey,context.segmentCoordinates);h.start();
+    assert.match(renderJourneyPage(root,journey,{preview:true}),/opening-route\.js/);
+    assert.deepEqual(h.plan.legs.map(leg=>leg.segment.id),[...new Set(journey.days.flatMap(day=>day.segmentIds))],journey.id);
+    h.tick(0);h.tick(1500);assert.equal(h.frames.at(-1).progress,0.5);assert.equal(h.destroyed,0);
+    h.tick(3000);assert.deepEqual(h.frames.at(-1).position,h.plan.legs.at(-1).coordinates.at(-1));
+    assert.equal(h.destroyed,1);assert.equal(h.pending.size,0);
+  }
+});
 
 test('trip read state and counts are inherited across reference, demo and independently populated city draft', async t => {
   await import('../dist/assets/comment-notifications.js');
@@ -572,7 +592,7 @@ test('one opening action reaches the whole-trip map for reference, Heading East,
       eventWord:form=>globalThis.JOURNEY_ATLAS_UTILS.eventWord(journey,form),
       window:{JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS},document:{body:{classList:{add(){},remove(){}}}},
       escapeHtml:value=>value,photoImageMarkup:()=>'<img alt="Fixture" />',orderedPhotos:()=>journey.photos||[],prepareProgressiveImages(){},
-      setMobileTab:tab=>calls.push(tab),fitRoute:()=>calls.push('whole-trip-map'),
+      setMobileTab:tab=>calls.push(tab),openJourneyMap:()=>calls.push('whole-trip-map-with-opening-trace'),
       setActiveDay:()=>assert.fail('Opening must not focus an individual day'),
       dayList:{querySelector:()=>({focus:()=>calls.push('day-list-focus')})}
     });
@@ -588,7 +608,7 @@ test('one opening action reaches the whole-trip map for reference, Heading East,
     $('#intro-relive').onclick();
     assert.equal($('#trip-intro').hidden,true);assert.equal($('.atlas-shell').inert,false);
     const mapped=globalThis.JOURNEY_ATLAS_UTILS.journeyPresentation(journey).hasMap;
-    assert.deepEqual(calls,mapped?['map','whole-trip-map']:['route','day-list-focus'],journey.id);
+    assert.deepEqual(calls,mapped?['whole-trip-map-with-opening-trace']:['route','day-list-focus'],journey.id);
   }
 });
 

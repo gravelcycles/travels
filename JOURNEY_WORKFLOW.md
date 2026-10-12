@@ -43,6 +43,23 @@ terminal, local servers, asset generation, research, implementation, QA,
 commits, pushes, and deployment checks. Shell commands below are operational
 notes for agents; do not ask the user to run them.
 
+## Opening route trace
+
+O06 requires the initial whole-trip map reveal after **Explore the journey** to
+trace the visible route from start to end over **3,000 ms**, on desktop and phone.
+Fit the complete route immediately and hold the camera steady during the trace.
+Reuse resolved route geometry and transport styling; order legs by the visible
+events and their segment IDs, draw each leg separately and never connect gaps.
+The final overview restores its normal routes, endpoints and signposts.
+
+The cover remains the single entry action. Wait for map readiness if entry is
+early; do not spend the trace behind the cover or replay it on All days, resize
+or map Retry. Day/photo links retain direct entry. Pointer, keyboard, wheel,
+navigation and backgrounding interrupt and restore the complete map immediately.
+Reduced motion and route-less drafts skip motion. Full-trip Replay stays disabled.
+Verify reference, city-stay atlas, demo and an independently populated fresh draft
+at desktop/phone sizes, including early entry, interruption and empty routes.
+
 ## Inputs to request
 
 Start with the smallest useful intake and fill gaps incrementally:

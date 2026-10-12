@@ -99,6 +99,7 @@
   let storyMapDay = null;
   let storyDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
   let hasPlayedOpeningMove = false;
+  let openingRoutePending = false, openingRoute = null;
   let locationLabels;
   let placesUI;
   let photoBubbles;
@@ -598,13 +599,17 @@
       if (!hasPlayedOpeningMove) {
         hasPlayedOpeningMove = true;
         window.requestAnimationFrame(() => {
+          if (openingRoute) return;
           if (document.body.classList.contains('places-open') && sourceJourney.pointsOfInterest?.length) return;
           if(mapScope === 'day') {
             if($('.map-panel').offsetParent !== null) {
               if (pendingMapAction === 'arrival') startArrival(activeDay()); else showCity(activeDay(), 0);
               pendingMapAction=null;
             }
-          } else fitJourneyBounds(prefersReducedMotion() ? 0 : 2500);
+          } else {
+            fitJourneyBounds(0);
+            playOpeningRoute();
+          }
         });
       }
     };
@@ -814,6 +819,7 @@
   }
 
   function drawMainMap(fit, attempt = 0) {
+    openingRoute?.cancel(); openingRoute = null;
     renderPlanningFilters();
     if (typeof placesUI !== 'undefined') placesUI?.update();
     photoBubbles?.refresh();
@@ -908,6 +914,38 @@
     fitJourneyBounds();
   }
 
+  function cancelOpeningRoute() {
+    openingRoutePending = false;
+    openingRoute?.cancel(); openingRoute = null;
+  }
+
+  function openJourneyMap() {
+    cancelArrival();
+    mapScope = 'journey';
+    setMobileTab('map');
+    // This entry fits synchronously below; the ordinary tab resize would emit
+    // movestart 80 ms later and interrupt its own trace.
+    clearTimeout(mobileMapTimer); mobileMapTimer = null;
+    drawMainMap(false);
+    openingRoutePending = true;
+    playOpeningRoute();
+  }
+
+  function playOpeningRoute() {
+    if (!openingRoutePending || !mainMapReady || document.hidden) return;
+    openingRoutePending = false;
+    if (mapScope !== 'journey' || document.body.classList.contains('intro-open')) return;
+    mainMap.stop(); mainMap.resize(); fitJourneyBounds(0);
+    openingRoute = window.JOURNEY_ATLAS_OPENING_ROUTE.start({
+      map: mainMap, journey, coordinates: segmentCoordinates, reducedMotion: prefersReducedMotion(),
+      styleForSegment: segment => {
+        const style = modeStyles[segment.mode] || {color:palette.route,width:4.7};
+        return {color:style.color,width:style.width,casing:palette.casing,casingWidth:style.width+3.8,
+          dash:segment.planningStatus==='tbd'?[1,1.4]:style.dash};
+      }
+    });
+  }
+
   function focusDay(day, duration = 650, linear = false, eventData) {
     mapScope = "day";
     renderLegend();
@@ -950,6 +988,7 @@
   }
 
   function cancelArrival() {
+    cancelOpeningRoute();
     restoreArrivalLine(); arrivalChapter?.cancel(); arrivalPlan = null;
   }
 
@@ -2145,16 +2184,22 @@
     $('.intro-scroll').scrollTop=0;
     intro.hidden=false; document.body.classList.add('intro-open'); $('.atlas-shell').inert=true; $('.mobile-nav').inert=true;
     prepareProgressiveImages(intro);
-    $('#intro-relive').onclick=()=>{dismissIntroduction();if(!presentation.hasMap){setMobileTab('route');dayList.querySelector('button')?.focus();}else{setMobileTab('map');fitRoute();}};
+    $('#intro-relive').onclick=()=>{dismissIntroduction();if(!presentation.hasMap){setMobileTab('route');dayList.querySelector('button')?.focus();}else openJourneyMap();};
   }
   function dismissIntroduction() { document.body.classList.remove('intro-open'); $('#trip-intro').hidden=true; $('.atlas-shell').inert=false; $('.mobile-nav').inert=false; }
   function handleDeepLink() {
+    cancelOpeningRoute();
     const params=new URLSearchParams(location.hash.replace(/^#/,'')); const search=new URLSearchParams(location.search);
     const photo=params.get('photo')||search.get('photo'), day=params.get('day')||search.get('day');
     if(photoById(photo)) {if(replayDialog.open)replayDialog.close(); $('#album-dialog').close(); dismissIntroduction();openPhoto(photo);}
     else if(dayById(day)) {if(replayDialog.open)replayDialog.close(); photoDialog.close(); $('#album-dialog').close(); dismissIntroduction();setActiveDay(day,true);if(window.JOURNEY_ATLAS_MOBILE_UI?.enabled() && search.get('view')!=='story')setMobileTab('map');else showJournal(true);}
   }
   window.addEventListener('hashchange',handleDeepLink);
+  // Any deliberate input wins over the opening, including while the map loads.
+  document.addEventListener('pointerdown', cancelOpeningRoute, true);
+  document.addEventListener('keydown', cancelOpeningRoute, true);
+  document.addEventListener('wheel', cancelOpeningRoute, {capture:true,passive:true});
+  document.addEventListener('visibilitychange', () => { if (document.hidden) cancelOpeningRoute(); });
   window.addEventListener('atlas-photos-unlocked',refreshPreloads);
   window.addEventListener('atlas-photos-renewing',()=>{
     const photo=photoDialog.open?viewerPhotos()[viewerPhotoIndex]:null;

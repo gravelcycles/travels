@@ -25,7 +25,7 @@ function harness(journey) {
   ];
   const place = id => journey.places.find(p => p.id === id);
   const segments = d => d.segmentIds.map(id => journey.segments.find(s => s.id === id));
-  const context = vm.createContext({ journey, modeStyles, arrivalDrawing:null, arrivalPlan:null, window: { JOURNEY_ATLAS_MAP_STYLE: globalThis.JOURNEY_ATLAS_MAP_STYLE },
+  const context = vm.createContext({ journey, modeStyles, openingRoute:null, arrivalDrawing:null, arrivalPlan:null, window: { JOURNEY_ATLAS_MAP_STYLE: globalThis.JOURNEY_ATLAS_MAP_STYLE },
     segmentsForDay: segments, segmentCoordinates: coordinates, placeById: place
   });
   vm.runInContext(functions, context);

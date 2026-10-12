@@ -1,5 +1,15 @@
 # Changelog
 
+## 12 October 2026 — three-second opening route trace
+
+- Trace the full visible itinerary on the initial map reveal on desktop/phone,
+  with a stationary overview, mode styling and separate legs in event order.
+- Restore the complete map on completion or input; retain direct links, reduced
+  motion, empty-draft handling and disabled full-trip Replay.
+- Carry the owner’s direction in O06 and the journey/feature/framework guidance.
+- Validation: 589 tests, production build and desktop/phone browser checks on
+  reference, Heading East, demo and an independently populated local draft.
+
 ## 12 October 2026 — pull down to dismiss mobile photos
 
 - Let an unzoomed fullscreen photo follow a downward pull, with slight shrink
