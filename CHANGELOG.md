@@ -27,6 +27,8 @@
 - Validation: 616 passing tests after current-main integration, successful production build, and desktop/phone
   browser checks across reference, city atlas, demo and an independent populated
   draft, including locked access, invalid IDs, history and share/copy failures.
+  Pages release `32e7cdf` succeeded; public pages/assets match the tested build
+  and a fresh public locked-photo login return, Share and Back/Forward pass.
 
 ## 12 October 2026 — keep the photo grid behind fullscreen
 
