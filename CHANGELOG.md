@@ -21,6 +21,7 @@
   in O08 and supersede map-only exit guidance in the current workflows.
 - Validation: 587 passing tests, successful build and phone/landscape browser
   checks on Heading East, reference, demo and an independently populated draft.
+  Pages release `9143387` succeeded; fresh public pages/assets match the build.
 
 ## 12 October 2026 — pull down to dismiss mobile photos
 

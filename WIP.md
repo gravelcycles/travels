@@ -44,7 +44,10 @@ All **587 tests** and the production build pass. Browser checks on Heading East,
 Switzerland–Italy, Alpine demo and an independently populated draft verify
 320/390px portrait and 844px landscape, photo → source grid → map, grid scroll,
 Back/Forward and direct photo → story. Fixtures use labelled synthetic photos.
-Next: integrate latest main, deploy and verify fresh public output.
+Integrated latest main and deployed as `9143387` through successful
+[Pages run 38214863703](https://github.com/gravelcycles/travels/actions/runs/38214863703).
+Fresh public Heading East/reference/Florence/demo pages and mobile viewer assets
+match the tested build byte-for-byte. No implementation or delivery work remains.
 
 ## Mobile photo pull-to-dismiss — 12 October 2026
 
