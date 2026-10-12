@@ -78,9 +78,29 @@ test('new incomplete numeric input remains dirty after an older source save ackn
   f.api.selectPhoto('p2',false);f.api.selectPhoto('p1',false);assert.equal(f.$('#photo-zoom').value,'-');
 });
 test('typing into a previously untouched photo during Save preserves independent merged photo fields',async()=>{
-  const f=editor();f.api.editDay('Sent day');const saving=f.api.saveAll();f.api.editPhoto('New caption');
-  f.requests[0].resolve({ok:true,json:async()=>({ok:true,stateRevision:'r1',state:{days:{d1:{title:'Sent day'}},photos:{p1:{description:'Other tab notes'}},routes:{}}})});await saving;
+  const f=editor();f.api.editDay('Sent day');const saving=f.api.saveAll();
+  f.api.selectPhoto('p1',false);f.$('#photo-caption').value='New caption';f.$('#photo-form').handlers.input({type:'input'});
+  f.requests[0].resolve({ok:true,json:async()=>({ok:true,stateRevision:'r1',state:{days:{d1:{title:'Sent day'}},photos:{p1:{description:'Other tab notes',location:{lat:47,lng:8}}},routes:{}}})});await saving;
   assert.equal(f.api.state().photos.p1.caption,'New caption');assert.equal(f.api.state().photos.p1.description,'Other tab notes');
+  assert.equal(f.$('#photo-description').value,'Other tab notes');assert.equal(f.$('#photo-lat').value,'47');
+  f.$('#photo-caption').value='Continued typing';f.$('#photo-form').handlers.input({type:'input'});
+  assert.equal(f.api.state().photos.p1.description,'Other tab notes');assert.equal(f.api.state().photos.p1.location.lat,47);
+});
+test('intermediate coordinate keystrokes retain the composed frame and final save validates it',async()=>{
+  const f=editor(),photo=f.journey.photos[0];photo.lat=47;photo.lng=8;photo.mapFrame={bounds:[[7,46],[9,48]]};f.api.selectPhoto('p1',false);
+  f.$('#photo-lat').value='4';f.$('#photo-form').handlers.input({type:'input'});
+  assert.equal(f.api.state().photos.p1.mapFrame,undefined);
+  f.$('#photo-lat').value='47.1';f.$('#photo-form').handlers.input({type:'input'});f.$('#photo-form').handlers.change({type:'change'});
+  assert.equal(f.api.state().photos.p1.mapFrame,undefined,'Finishing a pin inside its frame must retain that frame');
+  f.$('#photo-lat').value='45';f.$('#photo-form').handlers.input({type:'input'});const saving=f.api.saveAll();
+  assert.equal(f.requests[0].body.photos.p1.mapFrame,null,'Save validates the final coordinates even without blur');
+  f.requests[0].resolve({ok:true,json:async()=>({ok:true,stateRevision:'r1'})});await saving;
+});
+test('a zoom entered on an unlocated photo survives saving and reselection',async()=>{
+  const f=editor();f.api.selectPhoto('p1',false);f.$('#photo-zoom').value='12.34';f.$('#photo-form').handlers.input({type:'input'});
+  const saving=f.api.saveAll();assert.equal(f.requests[0].body.photos.p1.zoom,12.34);
+  f.requests[0].resolve({ok:true,json:async()=>({ok:true,stateRevision:'r1'})});await saving;
+  f.api.selectPhoto('p2',false);f.api.selectPhoto('p1',false);assert.equal(Number(f.$('#photo-zoom').value),12.34);
 });
 test('a delayed recovery response cannot replace edits made after Restore was clicked',async()=>{
   const f=editor();const restoring=f.$('#recover-draft-list').handlers.click({target:{closest:()=>({dataset:{recoverDraft:'old'}})}});

@@ -15,7 +15,7 @@ export function studioSaveHarness(data, journey, initialState) {
   const context=vm.createContext({$,structuredClone,journey:structuredClone(journey),state:structuredClone(initialState),plans,savingState:false,savedStateRevision:'state-revision',savedRevisions:{},draftRecovery:null,photosByJourney:{},basePhotos:[],dirty:true,
     planForJourney:()=>plan,planChanges:draft=>Object.fromEntries(fields.filter(key=>draft[key]!==undefined).map(key=>[key,draft[key]])),
     savedPhotoState:null,savingPhotoState:null,photoSaveFailed:false,refreshPhotoSaveStatus(){},
-    discardingDraft:false,photoFieldDrafts:{},preparePhotoSave:()=>true,acknowledgePhotoFields(){},
+    discardingDraft:false,photoFieldDrafts:{},preparePhotoSave:()=>true,acknowledgePhotoFields(){},refreshPhotoInputs(){},
     persistDraft(){},setStatus:(text,type)=>{$('#save-status').textContent=text;$('#save-status').className=type;},markSaved:()=>context.dirty=false,markDirty:()=>context.dirty=true,
     refreshSavedEditors(){},renderJourneySelector(){},renderDaySelectors(){},renderDayList(){},renderRouteList(){},renderPhotoGrid(){},renderPlanner(){},
     fetch:async(_url,options)=>{const input=JSON.parse(options.body);requests.push(input);try {

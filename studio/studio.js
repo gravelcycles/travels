@@ -348,16 +348,7 @@
     selectedPhotoId = id;
     refreshPhotoSaveStatus();
     $("#selected-photo").innerHTML = `<img src="${photoUrl(photo.srcset?.find((item) => item.width >= 1280)?.src || photo.src)}" alt="" /><span>${escapeHtml(window.JOURNEY_ATLAS_PHOTO_BATCH.photoMetadata(photo,window.JOURNEY_ATLAS_PHOTO_BATCH.resolvedJourney(journey,state)).title)}${photo.sourceFilename ? `<small>${escapeHtml(photo.sourceFilename)}</small>` : ''}</span>`;
-    $("#photo-day").value = photo.dayId;
-    $("#photo-place").value = photo.locationLabel || "";
-    $("#photo-lat").value = Number.isFinite(photo.lat) ? photo.lat : "";
-    $("#photo-lng").value = Number.isFinite(photo.lng) ? photo.lng : "";
-    $("#photo-zoom").value = photo.zoom || 16;
-    $("#photo-caption").value = photo.caption || "";
-    $("#photo-description").value = photo.description || "";
-    const fields = photoFieldDrafts[id];
-    if (fields) for (const key of ['lat','lng','zoom']) $(`#photo-${key}`).value = fields[key];
-    $('#photo-field-error').textContent = fields ? window.JOURNEY_ATLAS_PHOTO_EDITING.coordinates(fields).error || '' : '';
+    refreshPhotoInputs();
     $('#trash-photo').textContent = photo.trashed ? 'Restore photo from trash' : 'Move photo to trash';
     $('#photo-asset-status').textContent = photo.trashed ? 'In trash. Save locally to remove it from the atlas on the next deployment. Originals and hosted files are retained for recovery.' : photo.assetStatus === 'local' ? 'Local upload · ready to review. Asset publishing is needed before this photo can appear on the live site.' : 'Photo assets published · edits appear after the next site deployment.';
     refreshPhotoOrderControls();
@@ -366,6 +357,17 @@
       if (!center) map.stop();
       renderPhotoMap(photo, center);
     }
+  }
+
+  function refreshPhotoInputs() {
+    const base = basePhotos.find(photo => photo.id === selectedPhotoId);
+    if (!base) return;
+    const photo = photoWithOverride(base), fields = photoFieldDrafts[selectedPhotoId];
+    const values = {day:photo.dayId,place:photo.locationLabel || '',caption:photo.caption || '',description:photo.description || '',
+      lat:Number.isFinite(photo.lat) ? photo.lat : '',lng:Number.isFinite(photo.lng) ? photo.lng : '',zoom:photo.zoom || 16,...fields};
+    // Updating only changed values preserves the caret in actively typed text.
+    for (const [key,value] of Object.entries(values)) if (String($(`#photo-${key}`).value) !== String(value)) $(`#photo-${key}`).value = String(value);
+    $('#photo-field-error').textContent = fields ? window.JOURNEY_ATLAS_PHOTO_EDITING.coordinates(fields).error || '' : '';
   }
 
   function switchToCurrentPhotoView() {
@@ -417,40 +419,39 @@
     const base = basePhotos.find((photo) => photo.id === selectedPhotoId);
     if (!base) return;
     const fields = Object.fromEntries(['lat','lng','zoom'].map(key => [key, String($(`#photo-${key}`).value)]));
-    photoFieldDrafts[selectedPhotoId] = fields;
     const coordinates = window.JOURNEY_ATLAS_PHOTO_EDITING.coordinates(fields);
     $('#photo-field-error').textContent = coordinates.error || '';
     const previous = photoWithOverride(base);
-    const override = {
-      ...(state.photos[selectedPhotoId] || {}),
-      dayId: $("#photo-day").value,
-      caption: $("#photo-caption").value,
-      description: $("#photo-description").value,
-      locationLabel: $("#photo-place").value
-    };
+    const changedCoordinates = fields.lat !== String(previous.lat ?? '') || fields.lng !== String(previous.lng ?? '') || fields.zoom !== String(previous.zoom || 16);
+    if (changedCoordinates || photoFieldDrafts[selectedPhotoId]) photoFieldDrafts[selectedPhotoId] = fields;
+    const override = { ...(state.photos[selectedPhotoId] || {}) };
+    // Only changed fields belong to this edit. Materializing every blank
+    // default would overwrite independently merged fields after a slow Save.
+    const values = {dayId:$('#photo-day').value,caption:$('#photo-caption').value,
+      description:$('#photo-description').value,locationLabel:$('#photo-place').value};
+    for (const [key,value] of Object.entries(values)) if (value !== (previous[key] ?? '')) override[key] = value;
     if (!coordinates.error && coordinates.location) {
-      override.location = coordinates.location;
-      override.zoom = coordinates.zoom;
+      if (coordinates.location.lat !== previous.lat || coordinates.location.lng !== previous.lng) override.location = coordinates.location;
       const frame = override.mapFrame === undefined ? base.mapFrame : override.mapFrame;
-      if (frame && !window.JOURNEY_ATLAS_UTILS.frameContainsPhoto(frame, { ...override.location })) override.mapFrame = null;
-    } else if (!coordinates.error) {
+      if (event?.type !== 'input' && frame && !window.JOURNEY_ATLAS_UTILS.frameContainsPhoto(frame, coordinates.location)) override.mapFrame = null;
+    } else if (!coordinates.error && (Number.isFinite(previous.lat) || Number.isFinite(previous.lng))) {
       override.location = null;
-      delete override.zoom;
       override.mapFrame = null;
     }
+    if (!coordinates.error && coordinates.zoom !== (previous.zoom || 16)) override.zoom = coordinates.zoom;
     delete override.hidden;
     state.photos[selectedPhotoId] = override;
-    if (previous.dayId !== override.dayId) {
-      for (const dayId of [previous.dayId, override.dayId]) {
+    if (previous.dayId !== values.dayId) {
+      for (const dayId of [previous.dayId, values.dayId]) {
         const current = state.days[dayId] || {};
         const photoOrder = explicitPhotoOrder(dayId);
         state.days[dayId] = { ...current, photoOrder };
-        if (current.leadPhotoId === selectedPhotoId && dayId !== override.dayId) delete state.days[dayId].leadPhotoId;
+        if (current.leadPhotoId === selectedPhotoId && dayId !== values.dayId) delete state.days[dayId].leadPhotoId;
       }
     }
     markDirty();
     renderDaySelectors();
-    $("#photo-day").value = override.dayId;
+    $("#photo-day").value = values.dayId;
     renderPhotoGrid({keepSelected:true});
     refreshPhotoOrderControls();
     if (mapReady && event?.type !== 'input') renderPhotoMap(photoWithOverride(base), false);
@@ -470,6 +471,14 @@
       }
       setStatus(`Not saved: ${invalid.error} Your input is kept in the draft.`, 'error');
       persistDraft(); return false;
+    }
+    // A Save without blur still validates the final pin/frame pair, after all
+    // raw input has been checked. Intermediate keystrokes cannot erase a frame.
+    for (const id of Object.keys(photoFieldDrafts)) {
+      const base = data.journeys.flatMap(item => photosByJourney[item.id] || item.photos || []).find(photo => photo.id === id);
+      if (!base) continue;
+      const photo = photoWithOverride(base);
+      if (photo.mapFrame && !window.JOURNEY_ATLAS_UTILS.frameContainsPhoto(photo.mapFrame, photo)) state.photos[id] = {...state.photos[id],mapFrame:null};
     }
     return true;
   }
@@ -1176,6 +1185,7 @@
       const merged = unchanged && result.state && JSON.stringify(result.state) !== snapshot;
       if (result.state) state=retainNewerEdits(JSON.parse(snapshot),state,result.state);
       acknowledgePhotoFields(sentPhotoFields);
+      refreshPhotoInputs();
       if (unchanged) markSaved();
       else markDirty('Earlier edits saved · newer changes still need saving');
       if (merged && !Object.keys(photoFieldDrafts).length) refreshSavedEditors();
@@ -1442,6 +1452,7 @@
       plan.revision=result.revision; savedRevisions[owner.id]=result.revision; plan.previewed=false;
       if (journey===owner) {
         basePhotos=result.journey.photos; photosByJourney[owner.id]=basePhotos;
+        refreshPhotoInputs();
         renderJourneySelector(); renderDaySelectors(); renderDayList(); renderRouteList(); renderPhotoGrid();
         if (planUnchanged) renderPlanner();
         if (stateUnchanged && planUnchanged && !Object.keys(photoFieldDrafts).length) refreshSavedEditors();
