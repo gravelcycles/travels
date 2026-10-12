@@ -30,8 +30,27 @@ trip/viewport cases: Heading East, Alpine demo, an independently created city
 draft and the empty reference at 320/375/390/414/430 px, a shortened 390 px
 viewport, 844 × 390 landscape and 1360 px desktop. Checks cover visible complete
 cards, map/list switching, filters/empty escape, details/gallery, Back/Forward,
-scroll retention and no horizontal overflow. Next: integrate main, rerun final
-checks, publish and verify fresh Pages output. Publication is pending.
+scroll retention and no horizontal overflow. Integrated main through `1b35343`,
+preserving the newly published chronological city albums. Next: final checks,
+publish and verify fresh Pages output. Publication is pending.
+
+## Heading East photo chronology — 12 October 2026
+
+Owner request: order photos chronologically within each city. The existing day
+`photoOrder` overrides now interleave both batches by capture time, preserving
+city membership, cover, photo edits and Trash. The scoped rule and superseded
+append-only intake choice are recorded in [the trip record](docs/HEADING_EAST.md#chronological-city-albums--12-october-2026).
+Work is isolated on `codex/heading-east-photo-chronology` in
+`/private/tmp/travels-heading-east-photo-chronology`; unrelated primary-checkout
+edits remain intact. All 637 tests and the production build pass. Actual desktop/
+phone viewer functions verify all 119 visible photos in seven chronological
+city albums, unchanged membership/cover and exact source/generated order parity.
+Released as `42dc9d9` after integrating main through `45cdef1`.
+[Pages run 38264639120](https://github.com/gravelcycles/travels/actions/runs/38264639120)
+succeeded; fresh public Heading East HTML and three data bundles match the
+release byte-for-byte, and all seven live city albums are chronological. The
+primary checkout has the same order with its pending content/Trash edits
+preserved. No image upload or Worker deployment was needed. Work is complete.
 
 ## State persistence audit — 12 October 2026
 
