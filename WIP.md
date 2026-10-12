@@ -66,7 +66,12 @@ the photo count, below the day controls (O18). Shared markup/styles updated in
 header control. All **637 tests** and the production build pass. Browser checks
 cover sidebar containment and share/copy at 1360/1024/901px, plus existing phone,
 link and Back/Forward flows on the reference, Heading East, Alpine demo and an
-independently populated draft. Next: publish and verify fresh public output.
+independently populated draft. Deployed as `2797e75` through successful
+[Pages run 38219940450](https://github.com/gravelcycles/travels/actions/runs/38219940450).
+Fresh public pages and viewer assets match the tested build; a fresh desktop
+load confirms Share in the right sidebar and the exact copied photo URL. Public
+phone unlock/guest entry and Back/Forward also pass without private media reads.
+No implementation or delivery work remains for this placement correction.
 
 Authorized under O18: current day/photo/view URLs, Share with device sheet and
 copy fallback, private access preserved, no history entry per photo swipe.

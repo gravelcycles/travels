@@ -8,6 +8,8 @@
   inventory; all journey pages and previews inherit the shared template.
 - Validation: 637 tests, production build and reference/city/demo/independent-draft
   browser checks pass, including 1360/1024/901px sidebar placement and share/copy.
+  Pages release `2797e75` succeeded; fresh public assets match and desktop sidebar
+  Share, phone entry and Back/Forward are verified.
 
 ## 12 October 2026 — persistence audit and return-state repairs
 
