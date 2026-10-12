@@ -9,6 +9,7 @@
 - Record the owner’s continuity correction in O08 and the current photo contract.
 - Validation: 604 passing tests after current-main integration, successful build and phone/landscape browser
   checks on Heading East, reference, demo and an independently populated draft.
+  Pages release `e4a7596` succeeded; fresh public pages/assets match the build.
 
 ## 12 October 2026 — Studio photo navigation and save feedback
 
