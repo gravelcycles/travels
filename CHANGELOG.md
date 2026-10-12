@@ -7,8 +7,20 @@
 - Restore the complete map on completion or input; retain direct links, reduced
   motion, empty-draft handling and disabled full-trip Replay.
 - Carry the owner’s direction in O06 and the journey/feature/framework guidance.
-- Validation: 589 tests, production build and desktop/phone browser checks on
+- Validation: 592 tests after current-main integration, production build and
+  desktop/phone browser checks on
   reference, Heading East, demo and an independently populated local draft.
+
+## 12 October 2026 — return photos to the previous screen
+
+- Correct pull-to-dismiss and the top-left Back action to return one screen,
+  including the presenting grid, instead of always exiting to the map.
+- Preserve grid scroll/selection and direct map/story/Places entry; align browser
+  Back/Forward with grid/photo screens and coalesce pending Back requests.
+- Label both photo/grid top-left controls “Back”. Record the owner’s follow-up
+  in O08 and supersede map-only exit guidance in the current workflows.
+- Validation: 587 passing tests, successful build and phone/landscape browser
+  checks on Heading East, reference, demo and an independently populated draft.
 
 ## 12 October 2026 — pull down to dismiss mobile photos
 

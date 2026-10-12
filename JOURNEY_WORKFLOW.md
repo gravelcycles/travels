@@ -454,8 +454,12 @@ on an unzoomed photo, tap Photo location, or drag its handle to reveal the map.
 Pull down on the photo or panel heading to dismiss it. When zoomed, dragging
 the photo pans it instead. Sideways swipes and grid round trips must not reopen
 a closed location; a new deliberate upward drag must reopen it.
-Location and grid changes update one viewer history entry synchronously;
-browser Back returns to the day map, while Escape dismisses a nested layer.
+Location changes update the photo entry; grid/photo navigation uses separate
+history entries. The fullscreen top-left control says Back, and Back/pull-down
+return to the preceding screen (including the presenting grid). Preserve grid
+scroll/selection and the presenting map/story/Places surface; browser
+Back/Forward follows the same layers. Escape collapses location first, then goes
+Back. See [the photo return contract](PHOTO_WORKFLOW.md#automated-publishing-after-review).
 Check these flows on the reference trip, a demo and a fresh empty draft.
 
 ## Editing and regeneration

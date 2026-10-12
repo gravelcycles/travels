@@ -63,8 +63,9 @@ care, while retaining the atlas's personal character. This means:
   are needed. Keep implementation and prototype explanations out of the story.
 - Make Back go one level up, Close dismiss the current surface, and Undo recover
   a recent removal according to the documented surface-specific flow. The phone
-  photo Day/Stop control returns to its map. Browser history must agree with
-  those visible controls and preserve the presenting album where applicable.
+  photo control says Back and returns to its presenting screen, including the
+  photo grid. Pull-to-dismiss and browser history agree with that one-level
+  return and retain the presenting grid/album and explored map camera.
 - Keep the map and photograph as context. A panel must make the next action
   obvious without covering the content that explains it.
 - Keep desktop photo browsing in the existing right sidebar with a large,

@@ -24,7 +24,7 @@ export function viewerFixture({deferredHistory=false, reducedMotion=false, video
   const api={day:()=>day,days:()=>days,scope:()=>scope,title:()=> 'Journey',dayInfo:()=>({route:'Route',meta:'Train',count:3}),
     tab:value=>{tabs++;node('.atlas-shell').dataset.mobileTab=value;},selectDay:id=>{day=days.find(d=>d.id===id);scope='day';},preview(){},stepDay(){},album(){},overview(){scope='journey';controller.renderDay();},replay(){},
     location(){locations++;},pauseLocation(){pauses++;},pauseMedia(){mediaPauses++;},clearImage(){},loadImage(){neighborLoads++;},restoreOverlay:id=>controller.presentOverlay(id),
-    move(delta){index+=delta;update();},selectPhoto(value){index=value;update();},
+    resumePhoto(){update();},move(delta){index+=delta;update();},selectPhoto(value){index=value;update();},
     openDay(id=day.id,options){controller.open(options);day=days.find(d=>d.id===id);index=0;node('#photo-dialog').open=true;update();}};
   const context=vm.createContext({window:{addEventListener:(name,fn)=>events.set(name,fn)},document:{querySelector:node,createElement:()=>node(`image${nodes.size}`)},
     matchMedia:query=>{if(!queries.has(query))queries.set(query,{matches:query.includes('900px') || reducedMotion && query.includes('reduced-motion'),addEventListener(_name,fn){this.changed=fn;}});return queries.get(query);},ResizeObserver:class{observe(){}},

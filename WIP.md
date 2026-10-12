@@ -25,11 +25,26 @@ behavior. Implementation is isolated in `build/opening-route-trace` on
 The shared opening action requests the trace when the map is ready; separate
 legs retain itinerary order and mode styling. Existing input/navigation cancels;
 reduced motion and route-less drafts retain the immediate overview. No content
-changes or full-trip Replay activation. All **589 tests** and the production
+changes or full-trip Replay activation. Integrated main `9143387`; all **592 tests** and the production
 build pass. Browser checks cover reference, Heading East, Alpine demo and an
-independent draft, desktop and 320/390px phones, completion and day-navigation
-interruption. Private images were excluded from map QA. Next: integrate latest
-main, repeat affected checks, publish and verify fresh Pages.
+independent draft, desktop, 320/390px phones and 844px landscape, completion
+and day-navigation interruption. Private images were excluded from map QA.
+Next: publish and verify fresh Pages.
+
+## Mobile photo return-screen correction — 12 October 2026
+
+Owner follow-up: pulling away does not return to the last screen; change the
+fullscreen top-left label to “Back”. This supersedes the first gesture release’s
+unconditional map exit. O08 owns one-level return (including the presenting grid)
+and matching browser history. Implemented in `/private/tmp/travels-mobile-dismiss`
+on `codex/mobile-photo-dismiss`, based on main `0cd2d3b`: distinct grid/photo
+entries preserve the source screen, collection, selection and grid scroll;
+pending Back requests cannot skip a screen. Both shared labels now say Back.
+All **587 tests** and the production build pass. Browser checks on Heading East,
+Switzerland–Italy, Alpine demo and an independently populated draft verify
+320/390px portrait and 844px landscape, photo → source grid → map, grid scroll,
+Back/Forward and direct photo → story. Fixtures use labelled synthetic photos.
+Next: integrate latest main, deploy and verify fresh public output.
 
 ## Mobile photo pull-to-dismiss — 12 October 2026
 
@@ -51,7 +66,8 @@ Integrated latest main and deployed as `7df08e8` through successful
 [Pages run 38212316035](https://github.com/gravelcycles/travels/actions/runs/38212316035).
 Fresh public Heading East/reference/Florence/demo HTML and both changed runtime
 assets match the tested build byte-for-byte. No implementation or delivery work
-remains for this gesture.
+remained at that checkpoint. The later return-screen correction above supersedes
+its map-only exit behavior.
 
 ## Desktop photo navigation — 11 October 2026
 
