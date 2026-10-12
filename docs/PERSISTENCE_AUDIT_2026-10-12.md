@@ -28,7 +28,8 @@ and PLACES_AND_COMMENTS.
 | Comments and reviews | Existing per-photo/place drafts, storage failures, late requests, identity changes, edit/delete/Undo and draft preservation tests; local demo browser draft checks | Pass |
 | Notifications | Existing explicit read-ID persistence, cross-tab merge, unavailable-storage fallback, viewport marking and history/target navigation tests | Pass |
 | Maps, day/route/planning selection | Existing same-event camera return, cross-event stale-state cleanup, planning filters, route groups and selection inheritance tests | Pass |
-| Studio | Existing actual save-handler tests for newer in-flight edits, failed-save/retry, conflict recovery, local draft reload, photo navigation and batch/Undo; no authoring source changed in this audit | Pass |
+| Sharing and login return | Integrated current-main regressions for exact selected/fullscreen URL reload, history, protected login return and share cancellation/failure; integrated mobile album/Places browser smoke | Pass |
+| Studio | Existing actual save-handler tests for newer in-flight edits, failed-save/retry, conflict recovery, local draft reload, duplicated-tab recovery isolation, raw photo input, stale acknowledgements, photo navigation and batch/Undo; no authoring source changed in this audit | Pass |
 
 Browser checks use the actual Heading East and Switzerland–Italy event models,
 the Alpine demo and an independently populated draft. Synthetic photos and a
@@ -43,8 +44,8 @@ and reopening the detail. No comments or reviews were posted to a live service.
 ## Limits and intentional resets
 
 - Browser checks use desktop-browser viewport emulation, not a physical iPhone.
-- Visitor reload auto-resume remains outside this audit's authorization; existing
-  local draft/read persistence is tested separately from restoring an entire view.
+- Saved visitor auto-resume remains excluded. O18 now restores an explicit
+  day/photo/view URL on reload; local draft/read persistence is separate.
 - Deliberately selecting a different day clears stale photo selection/popups;
   closing/backgrounding media pauses playback. These are existing requirements.
 - Studio and service failure/concurrency coverage is automated here; this audit
@@ -53,6 +54,9 @@ and reopening the detail. No comments or reviews were posted to a live service.
 
 ## Delivery
 
-Before integration: 610 tests and the production build pass. Current-main
-integration, final browser smoke and Pages deployment verification are pending;
-WIP owns the remaining delivery steps.
+Integrated remote main through `32e7cdf`, including photo/view sharing, login
+return, mobile route-trace and Studio data-safety corrections. All **635 tests**
+and the production build pass. Integrated browser checks retain album scroll
+through grid Back/Forward and Places tab/scroll through photo and list returns.
+Pages deployment and fresh public-output verification are pending; WIP owns the
+remaining delivery step.

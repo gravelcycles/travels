@@ -18,15 +18,19 @@ must read current files and reconcile any later corrections before continuing.
 
 ## State persistence audit — 12 October 2026
 
-Owner request: verify that other features do not lose their state across the
-site after the fullscreen return fixes. Audit in
-`/private/tmp/travels-mobile-dismiss`, branch `codex/persistence-audit`, based on
-main `b279152`. Scope: navigation and nested overlays, album/Places scroll and
-selection, comments/review drafts, notifications, map context and Studio save
-recovery. Preserve intentional resets and the existing no-auto-resume visitor
-reload policy. Next: reproduce candidate album/Places rebuilds, add regression
-coverage, fix confirmed losses, run the complete suite/build and browser checks
-against reference, Heading East, demo and independent content, then deploy.
+Owner request: verify other features retain state after the fullscreen fixes.
+Completed the audit and repaired album/dialog scroll resets, album tile rebuilds,
+Places detail resets on photo return/reopening, and lost detail/tab scroll on
+Forward. Current owner/photo/Places guidance and
+[the evidence matrix](docs/PERSISTENCE_AUDIT_2026-10-12.md) record scope and limits.
+Work is isolated in `/private/tmp/travels-mobile-dismiss` on
+`codex/persistence-audit`; source `ddfcc52`, integration `53890f5` includes remote
+main through `32e7cdf`. All **635 tests** and the production build pass; phone
+checks cover reference, Heading East, demo and independent content. Desktop demo
+checks cover comment drafts, nested identity, reload, review drafts and retained
+place disclosures. Integrated album/Places history smoke passes. No production
+comments or real trip edits changed. Remaining step: publish regenerated output,
+verify Pages succeeds, then compare fresh public pages/assets with this build.
 
 ## Mobile opening-trace interruption — 12 October 2026
 
