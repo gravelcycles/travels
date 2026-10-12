@@ -140,24 +140,34 @@ album order. Image swipes and clear previous/next photo arrows continue across
 city/day boundaries; the distinct event bar supports city/day jumps, skipping
 events without media. Its sideways swipe jumps events without competing with
 image swipe/pinch. Explicitly selected Places collections retain their own scope.
-The grid shows the current event (or that explicit collection). Back and the
-Day/Stop control return to the map: preserve its exact center, zoom, bearing,
-pitch and scope for the same event; after intentionally crossing an event
-boundary, show the current event’s map. Capture this state before photo/grid
-entry can settle or refit the map. Check close, browser Back/Forward, Escape,
-grid round trips and a manually panned/zoomed overview as well as a focused city.
+The grid shows the current event (or that explicit collection). The top-left
+photo and grid control says **Back**, with no destination name. Back and
+pull-to-dismiss return one screen: a photo opened from a grid returns to that
+grid with its scroll/selection, then Back returns to the grid’s presenting
+screen. Direct photo entry returns to its presenting map/story/Places surface.
+Grid/photo transitions have distinct history entries, so browser Back/Forward
+matches these controls; location reveal stays within its photo entry. Rapid Back
+requests coalesce while a traversal is pending. Save the departing layer before
+media refreshes can replace it. On return to a map, preserve its exact center,
+zoom, bearing, pitch and scope for the same event; direct cross-event browsing
+keeps the current event on the presenting surface. Capture the original map before photo/grid
+entry can settle or refit it. This supersedes the map-only exit from the initial
+12 October gesture release, following the owner’s same-day return-screen report.
+Check grid → photo → pull/Back → grid → Back, direct map/story entry, album and
+explicit Places entry, browser Back/Forward, Escape, grid scroll and explored map
+cameras. Use the actual app callbacks, including synchronous media refresh.
 Controls stay visible when the photo is tapped. Double-tap or pinch to zoom, and
 drag upward or tap Photo location to reveal its map. Hide location collapses it without leaving the
 photo. Pull an unzoomed still photo downward to dismiss fullscreen: the photo
-follows the finger, shrinks slightly and reveals the underlying map. A deliberate
-pull or quick downward flick exits through the existing Day/Stop history path;
+follows the finger, shrinks slightly and fades the backdrop. A deliberate
+pull or quick downward flick returns to the preceding screen through history;
 a short, reversed or cancelled pull snaps back without changing the photo.
 An open location panel collapses first; upward pulls reveal location, horizontal
 swipes browse, zoomed drags pan, and a second finger cancels dismissal for pinch.
 The gesture stays off grids, buttons and native videos. Reduced motion omits
 shrink/settling animation. New input, photo changes, close and resize cancel a
-pending dismissal so it cannot close a later viewer. Keep the visible Day/Stop
-exit and check same-event camera return, cross-event return, Back/Forward,
+pending dismissal so it cannot close a later viewer. Keep the visible Back
+control and check same-event camera return, cross-event return, Back/Forward,
 short/cancelled pulls, portrait/landscape photos and 320/390px plus landscape.
 This implements the owner's 12 October “pull the photo away” request in O08.
 Verify a quick hide-then-swipe keeps location closed. Full-trip Replay is disabled under O09; arrival/city playback remains on the

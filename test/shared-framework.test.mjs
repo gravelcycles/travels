@@ -123,6 +123,13 @@ test('pull-to-dismiss inherits reference, city atlas, demo and independently pop
     f.drag('.photo-stage',12,180,600);f.flush();assert.equal(f.node('#photo-dialog').open,false,journey.id);
     f.history.go(1);assert.equal(f.node('#photo-dialog').open,true,journey.id);
     assert.equal(f.api.day().id,journey.photos[0].dayId);
+    f.node('#mobile-photo-grid').onclick();f.node('#viewer-filmstrip').scrollTop=410;f.controller.gridSelected();
+    f.drag('.photo-stage',0,180,600);f.flush();
+    assert.equal(f.controller.gridVisible(),true,journey.id);
+    assert.equal(f.node('#viewer-filmstrip').scrollTop,410);
+    assert.equal(f.node('#mobile-photo-back .button-label').textContent,'Back');
+    const html=renderJourneyPage(root,journey,{preview:true});
+    assert.match(html, /id="mobile-photo-back"[^]*?<span class="button-label">Back<\/span>/);
   }
 });
 

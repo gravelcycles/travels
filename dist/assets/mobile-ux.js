@@ -35,7 +35,7 @@
     let locationTimer, swipeTimer, swipeFrame, zoomFrame, dismissTimer;
     let replayState = null;
     let overlay = null, overlayDepth = 0, afterDismiss = null;
-    let restoring = false, previousState = null, lastTap = null, viewerDepth = 0, fromAlbum = false, exitingToDay = false, preparedEntry = null;
+    let restoring = false, previousState = null, lastTap = null, viewerDepth = 0, fromAlbum = false, preparedEntry = null, backPending = false;
     const neighbors = [-1, 1].map(delta => {
       const node = document.createElement('img'); node.className = 'mobile-photo-neighbor'; node.hidden = true; node.alt = ''; node.setAttribute('aria-hidden', 'true'); node.draggable = false;
       $('#viewer-photo-frame').append(node); return {node, delta};
@@ -43,7 +43,7 @@
     const enabled = () => media.matches;
     function snapshot() {
       return {overlay, overlayDepth, dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
-        viewerDay: current.day?.id, collection: dialog.open ? api.collection?.() || null : null, index: current.index, scope:api.scope(), mapView:api.captureMapView?.() || null, depth:dialog.open?viewerDepth:0, fromAlbum, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
+        viewerDay: current.day?.id, collection: dialog.open ? api.collection?.() || null : null, index: current.index, scope:api.scope(), mapView:api.captureMapView?.() || null, depth:dialog.open?viewerDepth:0, fromAlbum, gridScroll:grid ? {top:strip.scrollTop || 0,left:strip.scrollLeft || 0} : null, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
     }
     function save(push = false) {
       if (restoring) return;
@@ -70,17 +70,10 @@
         if (!restoring && history.state?.mobileAtlas?.overlay === id) history.back();
       });
     }
-    function exitToDay() {
-      exitingToDay = true; fromAlbum = false;
-      const ownsHistory = history.state?.mobileAtlas?.viewer;
-      dialog.close();
-      // The history return restores the presenting camera. Re-selecting the
-      // already visible map tab would schedule another city fit after it.
-      if (!ownsHistory && $('.atlas-shell').dataset.mobileTab !== 'map') api.tab('map');
-    }
     function openGrid(dayId) { api.openDay(dayId, {grid:true}); setGrid(true); }
     function back() {
-      if (history.state?.mobileAtlas?.viewer) { history.back(); return; }
+      if (backPending) return;
+      if (history.state?.mobileAtlas?.viewer) { backPending = true; history.back(); return; }
       dialog.close();
     }
     function navigate(tab, push = true) {
@@ -236,7 +229,7 @@
     function settleDismiss(action, cancelled) {
       const distance = Math.max(0, action.dy), elapsed = Math.max(1, performance.now() - action.time);
       const commit = !cancelled && (distance > Math.min(120, Math.max(64, stage.clientHeight * .22)) || distance > 36 && distance / elapsed > .55);
-      const finish = () => { if (commit && dialog.open) exitToDay(); resetDismiss(); };
+      const finish = () => { if (commit && dialog.open) back(); else resetDismiss(); };
       if (reduced.matches) { finish(); return; }
       // Animate from the finger's release position. New input, selection or
       // closing cancels this timer so it cannot dismiss a later photograph.
@@ -268,6 +261,13 @@
     function setGrid(value, record = true) {
       const changed = grid !== value;
       if (!changed) return;
+      if (record && !restoring && dialog.open && enabled()) {
+        // Preserve the screen being left before media refreshes can save the
+        // new layer. Grid selection and Back must never skip this entry.
+        save();
+        history.pushState({...history.state}, '', location.href);
+        viewerDepth++;
+      }
       if (value) api.pauseMedia?.();
       resetDismiss(); grid = value; viewer.dataset.grid = String(value);
       stage.inert = value; $('.mobile-photo-header').inert = value || !chrome; $('.mobile-photo-footer').inert = value || !chrome;
@@ -283,9 +283,9 @@
       if (!enabled()) { save(); return; }
       pointers.clear(); gesture = pinch = null; zoom(1);
       panel.inert=!locationOpen||grid;panel.setAttribute('aria-hidden',String(!locationOpen||grid));strip.inert=!grid;
-      $('#mobile-photo-back .button-label').textContent = data.day.title || `${eventWord('title')} ${data.day.number}`;
+      $('#mobile-photo-back .button-label').textContent = 'Back';
       $('#mobile-photo-count').textContent = data.photos.length ? `${data.index + 1} of ${data.photos.length}` : 'No photos';
-      $('#mobile-grid-back .button-label').textContent = data.day.title || `${eventWord('title')} ${data.day.number}`;
+      $('#mobile-grid-back .button-label').textContent = 'Back';
       const gridPhotos = data.gridPhotos || data.photos;
       const videoCount = gridPhotos.filter(item => item.mediaType === 'video').length, photoCount = gridPhotos.length - videoCount;
       $('#mobile-grid-title').textContent = (data.collectionLabel ? `${data.collectionLabel} · ` : '') + [photoCount ? `${photoCount} photo${photoCount === 1 ? '' : 's'}` : '', videoCount ? `${videoCount} video${videoCount === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ') || 'No photos or videos';
@@ -352,6 +352,7 @@
       if (!restoring && history.state?.mobileAtlas?.viewer) history.go(-Math.max(1, viewerDepth + (history.state.mobileAtlas.overlayDepth || 0)));
     }
     window.addEventListener('popstate', event => {
+      backPending = false; resetDismiss();
       const state = event.state?.mobileAtlas;
       if (!state) return;
       // A Places/gallery entry can change while this atlas snapshot is identical.
@@ -370,24 +371,26 @@
       const targetDay = sidebarPhoto?.dayId || (leavingViewer || returningFromViewerOverlay ? current.day?.id || state.dayId : state.dayId);
       const returnMap = leavingViewer && state.mapView?.dayId === targetDay ? state.mapView : null;
       if(api.day().id !== targetDay || !returnMap && state.scope === 'day' && api.scope() !== 'day') api.selectDay(targetDay);
-      const targetTab = !state.viewer && (exitingToDay || old?.viewer) ? 'map' : state.tab;
+      const targetTab = state.tab;
       if ($('.atlas-shell').dataset.mobileTab !== targetTab) api.tab(targetTab, {preserveCamera:Boolean(returnMap)});
       if(!state.viewer && state.scope === 'journey' && !old?.viewer && !sidebarPhoto)api.overview();
       if (state.viewer) {
         if (!returningFromViewerOverlay) {
           if (!dialog.open || current.day?.id !== state.viewerDay || collectionChanged) api.openDay(state.viewerDay, {grid:state.layer === 'grid',collection:state.collection});
-          if (collectionChanged || !(old?.viewer && old.viewerDay === state.viewerDay)) api.selectPhoto(state.index || 0);
+          if (collectionChanged || !(old?.viewer && old.viewerDay === state.viewerDay) || old.layer !== state.layer) api.selectPhoto(state.index || 0);
         }
-        if (enabled()) { setLocation(state.layer === 'location', false); setGrid(state.layer === 'grid', false); }
+        if (enabled()) {
+          setLocation(state.layer === 'location', false); setGrid(state.layer === 'grid', false);
+          if (grid && state.gridScroll) { strip.scrollTop = state.gridScroll.top; strip.scrollLeft = state.gridScroll.left; }
+        }
       } else if (dialog.open) { dialog.close(); fromAlbum=false; }
       if (returnMap) api.restoreMapView?.(returnMap);
       if (overlay) api.restoreOverlay(overlay);
       if(state.viewer && old?.layer === 'grid' && state.layer !== 'grid')$('#mobile-photo-grid').focus({preventScroll:true});
       else if(state.viewer && old?.layer === 'location' && state.layer !== 'location')$('#mobile-photo-location').focus({preventScroll:true});
-      if(!state.viewer)exitingToDay=false;
       renderDay();
       restoring = false; previousState = state;
-      // Cross-event photo browsing deliberately changes the destination map.
+      // Direct cross-event browsing deliberately changes the returning event.
       // Save that actual return, so the next viewer cannot resurrect an old day.
       if (leavingViewer || sidebarPhoto) save();
       if (afterDismiss) { const after = afterDismiss; afterDismiss = null; after(); save(); }
@@ -498,10 +501,10 @@
     $('#mobile-photo-location').onclick=()=>setLocation(!locationOpen);
     $('#mobile-location-close').onclick=()=>setLocation(false);
     $('#mobile-photo-grid').onclick=()=>setGrid(true);
-    $('#mobile-grid-back').onclick=exitToDay;
-    $('#mobile-photo-back').onclick=exitToDay;
+    $('#mobile-grid-back').onclick=back;
+    $('#mobile-photo-back').onclick=back;
     $('#mobile-photo-prev').onclick=()=>api.move(-1);$('#mobile-photo-next').onclick=()=>api.move(1);
-    dialog.addEventListener('cancel',event=>{if(!enabled())return;event.preventDefault();if(grid)setGrid(false);else if(locationOpen)setLocation(false);else back();});
+    dialog.addEventListener('cancel',event=>{if(!enabled())return;event.preventDefault();if(locationOpen&&!grid)setLocation(false);else back();});
     $('#mobile-back').onclick=()=>$('.atlas-shell').dataset.mobileTab==='map'?overview():navigate('map');
     $('#mobile-day-picker').onclick=()=>navigate($('.atlas-shell').dataset.mobileTab==='route'?'map':'route');
     $('#mobile-previous-day').onclick=()=>{api.stepDay(-1);save();};$('#mobile-next-day').onclick=()=>{api.stepDay(1);save();};
@@ -532,7 +535,7 @@
     window.addEventListener('resize',()=>{resetDismiss(); pointers.clear(); gesture = pinch = null; measure();measureReplay();});
     new ResizeObserver(()=>{ $('.map-panel').style.setProperty('--day-summary-height',`${$('.mobile-day-summary').offsetHeight}px`); }).observe($('.mobile-day-summary'));
     save();
-    return {enabled,presentOverlay,dismissOverlay,renderDay,tabChanged,update,prepareOpen,open,closed,openGrid,exitToDay,replayControlsChanged,locationVisible:()=>locationOpen,gridVisible:()=>enabled()&&grid,
+    return {enabled,presentOverlay,dismissOverlay,renderDay,tabChanged,update,prepareOpen,open,closed,openGrid,replayControlsChanged,locationVisible:()=>locationOpen,gridVisible:()=>enabled()&&grid,
       fromAlbum:()=>{fromAlbum=true;},selectedDay:()=>navigate('map'),gridSelected:()=>{if(grid)setGrid(false);}, keyTarget:event=>enabled()&&(grid||event.target.closest('#photo-map'))};
   }
   const exported = {gestureAxis,swipeStep,panLimit,eventPhotoTarget,create};

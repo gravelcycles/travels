@@ -1,5 +1,16 @@
 # Changelog
 
+## 12 October 2026 — return photos to the previous screen
+
+- Correct pull-to-dismiss and the top-left Back action to return one screen,
+  including the presenting grid, instead of always exiting to the map.
+- Preserve grid scroll/selection and direct map/story/Places entry; align browser
+  Back/Forward with grid/photo screens and coalesce pending Back requests.
+- Label both photo/grid top-left controls “Back”. Record the owner’s follow-up
+  in O08 and supersede map-only exit guidance in the current workflows.
+- Validation: 587 passing tests, successful build and phone/landscape browser
+  checks on Heading East, reference, demo and an independently populated draft.
+
 ## 12 October 2026 — pull down to dismiss mobile photos
 
 - Let an unzoomed fullscreen photo follow a downward pull, with slight shrink

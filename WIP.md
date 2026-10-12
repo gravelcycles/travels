@@ -16,6 +16,21 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Mobile photo return-screen correction — 12 October 2026
+
+Owner follow-up: pulling away does not return to the last screen; change the
+fullscreen top-left label to “Back”. This supersedes the first gesture release’s
+unconditional map exit. O08 owns one-level return (including the presenting grid)
+and matching browser history. Implemented in `/private/tmp/travels-mobile-dismiss`
+on `codex/mobile-photo-dismiss`, based on main `0cd2d3b`: distinct grid/photo
+entries preserve the source screen, collection, selection and grid scroll;
+pending Back requests cannot skip a screen. Both shared labels now say Back.
+All **587 tests** and the production build pass. Browser checks on Heading East,
+Switzerland–Italy, Alpine demo and an independently populated draft verify
+320/390px portrait and 844px landscape, photo → source grid → map, grid scroll,
+Back/Forward and direct photo → story. Fixtures use labelled synthetic photos.
+Next: integrate latest main, deploy and verify fresh public output.
+
 ## Mobile photo pull-to-dismiss — 12 October 2026
 
 Authorized: let a mobile user “pull the photo away” to exit fullscreen, like
@@ -36,7 +51,8 @@ Integrated latest main and deployed as `7df08e8` through successful
 [Pages run 38212316035](https://github.com/gravelcycles/travels/actions/runs/38212316035).
 Fresh public Heading East/reference/Florence/demo HTML and both changed runtime
 assets match the tested build byte-for-byte. No implementation or delivery work
-remains for this gesture.
+remained at that checkpoint. The later return-screen correction above supersedes
+its map-only exit behavior.
 
 ## Desktop photo navigation — 11 October 2026
 

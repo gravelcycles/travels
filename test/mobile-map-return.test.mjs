@@ -80,7 +80,7 @@ function fixture({ scope = 'day', tab = 'map' } = {}) {
     close(control){if(control === 'pull'){const stage=node('.photo-stage');stage.dispatch('pointerdown');stage.dispatch('pointermove',{clientY:400});stage.dispatch('pointerup',{clientY:400});}else if(control === 'browser')history.back();else if(control === 'close')node('#photo-dialog').close();else node(control).onclick();}}
 }
 
-test('Close, Day/Stop, grid Back and browser Back preserve the exact presenting map camera',()=>{
+test('Close, photo Back, grid Back and browser Back preserve the exact presenting map camera',()=>{
   for(const control of ['close','#mobile-photo-back','#mobile-grid-back','browser','pull']){
     const f=fixture();f.api.openDay('one',{settle:true,grid:control === '#mobile-grid-back'});
     assert.notDeepEqual(f.camera,f.originalCamera,'Fixture reproduces an entry that fits the city');
@@ -92,10 +92,10 @@ test('Close, Day/Stop, grid Back and browser Back preserve the exact presenting 
   }
 });
 
-test('a queued map-tab resize cannot overwrite restored photo-return zoom',()=>{
+test('returning a direct photo to its original story screen preserves the map camera',()=>{
   const f=fixture({tab:'story'});f.api.openDay('one',{settle:true});
   f.close('browser');f.flush();
-  assert.equal(f.node('.atlas-shell').dataset.mobileTab,'map');
+  assert.equal(f.node('.atlas-shell').dataset.mobileTab,'story');
   assert.deepEqual(f.camera,f.originalCamera);
   assert.equal(f.calls.filter(call=>call === 'city').length,1,'Only initial entry may fit the city');
 });
@@ -147,4 +147,17 @@ test('closing sidebar Comments keeps the city chosen by conversation photo arrow
  assert.equal(f.context.activeDayId,'two');assert.deepEqual(f.camera,expected);
  assert.ok(!f.calls.includes('selectDay'),'History must not clear the sidebar by selecting its old day');
  assert.equal(f.history.state.mobileAtlas.dayId,'two');
+});
+
+
+test('grid → photo → Back → grid → Back preserves the original explored map',()=>{
+  const f=fixture({scope:'journey'});f.api.openDay('one',{grid:true,settle:true});
+  f.node('#viewer-filmstrip').scrollTop=520;
+  f.api.selectPhoto(1);f.controller.gridSelected();
+  f.close('pull');f.flush();
+  assert.equal(f.node('#photo-dialog').open,true);assert.equal(f.controller.gridVisible(),true);
+  assert.equal(f.node('#viewer-filmstrip').scrollTop,520);
+  f.close('#mobile-grid-back');f.flush();
+  assert.equal(f.node('#photo-dialog').open,false);assert.equal(f.history.position,0);
+  assert.deepEqual(f.camera,f.originalCamera);assert.equal(f.api.scope(),'journey');
 });
