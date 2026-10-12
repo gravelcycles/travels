@@ -42,7 +42,7 @@
       href="./assets/vendor/maplibre-5.24.0/maplibre-gl.css"
     />
     <link rel="stylesheet" href="./assets/styles.css?v=8340f5ea8ce4" />
-    <link rel="stylesheet" href="./assets/view-sharing.css?v=eed0b967abe3" />
+    <link rel="stylesheet" href="./assets/view-sharing.css?v=224d07bcf9ec" />
     <link rel="stylesheet" href="./assets/mobile.css?v=2879cbb33155" />
     <link rel="stylesheet" href="./assets/group-travel.css?v=832960325138" />
     <link rel="stylesheet" href="./assets/map-feedback.css?v=31eb86c9e975" />
@@ -265,7 +265,6 @@
         </header>
 
         <button class="photo-close" aria-label="Close photo and video viewer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
-        <button id="share-photo" class="share-photo" type="button" data-share-view="photo" aria-label="Share photo"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m-4 4 4-4 4 4M7 10H5v11h14V10h-2"/></svg><span>Share</span></button>
         <span class="share-status viewer-share-status" data-share-status role="status"></span>
         <button id="open-photo-comments" class="open-photo-comments" type="button" aria-haspopup="dialog" aria-controls="comments-dialog" hidden>Comments · <span id="photo-comments-count">0</span></button>
         <section class="photo-stage" aria-live="polite">
@@ -291,7 +290,10 @@
               <span id="viewer-day-label"></span>
               <button id="viewer-next-day" type="button" data-event-aria="Next photo day" aria-label="Next photo day">→</button>
             </div>
-            <span id="modal-progress"></span>
+            <div class="viewer-photo-actions">
+              <span id="modal-progress"></span>
+              <button id="share-photo" class="share-photo" type="button" data-share-view="photo" aria-label="Share photo"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m-4 4 4-4 4 4M7 10H5v11h14V10h-2"/></svg><span>Share</span></button>
+            </div>
             <h2 id="modal-day-title"></h2>
             <p id="modal-day-route"></p>
             <p class="modal-location" id="modal-location"></p>

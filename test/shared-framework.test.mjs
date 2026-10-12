@@ -1411,6 +1411,7 @@ test('current-view sharing is inherited by reference, city atlas, demo and a pop
     const html=renderJourneyPage(root,journey,{preview:journey===draft});
     for(const id of ['share-lead-photo','share-photo','mobile-share-photo','share-link-dialog']) assert.ok(ids(html).includes(id),`${journey.id}: ${id}`);
     assert.ok(assets(html).includes('view-sharing.js'));assert.ok(assets(html).includes('view-sharing.css'));
+    assert.match(html, /<aside class="photo-context">[\s\S]*?id="share-photo"[\s\S]*?<\/aside>/, `${journey.id}: fullscreen Share belongs in the right sidebar`);
     const photo=journey.photos[0], nodes=new Map();
     const $=selector=>{if(!nodes.has(selector))nodes.set(selector,{hidden:false,dataset:{mobileTab:'map'}});return nodes.get(selector);};
     const context=vm.createContext({$,

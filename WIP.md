@@ -60,6 +60,14 @@ trace through a phone viewport resize. No implementation or delivery work remain
 
 ## Photo and view sharing — 12 October 2026
 
+Fullscreen-desktop follow-up: Share now belongs in the right sidebar beside
+the photo count, below the day controls (O18). Shared markup/styles updated in
+`codex/photo-sharing-20261012` after integrating main `07d1896`; phone retains its
+header control. All **637 tests** and the production build pass. Browser checks
+cover sidebar containment and share/copy at 1360/1024/901px, plus existing phone,
+link and Back/Forward flows on the reference, Heading East, Alpine demo and an
+independently populated draft. Next: publish and verify fresh public output.
+
 Authorized under O18: current day/photo/view URLs, Share with device sheet and
 copy fallback, private access preserved, no history entry per photo swipe.
 Implemented in `/private/tmp/travels-photo-sharing` on

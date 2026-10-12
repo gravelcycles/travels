@@ -1,5 +1,14 @@
 # Changelog
 
+## 12 October 2026 — fullscreen Share in the desktop sidebar
+
+- Move fullscreen Share into the right sidebar beside the photo count, below
+  the day controls. Keep its existing native share/copy behavior and phone header.
+- Record the owner’s placement correction in O18, the photo workflow and feature
+  inventory; all journey pages and previews inherit the shared template.
+- Validation: 637 tests, production build and reference/city/demo/independent-draft
+  browser checks pass, including 1360/1024/901px sidebar placement and share/copy.
+
 ## 12 October 2026 — persistence audit and return-state repairs
 
 - Keep All photos tiles mounted and restore dialog scroll after native focus on

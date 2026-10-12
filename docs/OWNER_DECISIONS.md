@@ -77,6 +77,12 @@ links contain identifiers, never photo bytes, access tokens or passwords. Browsi
 photos replaces the current history entry instead of adding an entry per swipe.
 Existing one-level Back/Forward and map-camera restoration remain intact.
 
+The owner’s fullscreen-desktop follow-up (12 October: “put the share button on
+the right hand sidebar”) places Share in the existing right sidebar, beside the
+photo count below the day controls. This replaces its initial image-overlay
+placement. Phone Share stays in the photo header. Check desktop sidebar containment,
+click/copy feedback and compact widths without obscuring the photo or filmstrip.
+
 This supersedes the earlier demo-only status for explicit day/photo sharing.
 Exact map coordinates/zoom and Replay links remain outside this implementation.
 There is no saved visitor resume preference: a bare journey URL retains normal

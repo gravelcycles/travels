@@ -1,6 +1,7 @@
 .share-photo,.share-lead-photo { display:inline-flex; align-items:center; gap:7px; min-height:44px; border:0; border-radius:22px; padding:9px 13px; font:12px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; cursor:pointer; }
-.share-photo { position:absolute; z-index:8; top:17px; left:18px; color:#fff; background:#153437de; backdrop-filter:blur(10px); }
-.share-photo:hover { background:#285052; }
+.viewer-photo-actions { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.share-photo { flex:none; color:#375554; background:#e4ece8; }
+.share-photo:hover { background:#d5e2dc; }
 .share-photo svg,.share-lead-photo svg { width:19px; height:19px; }
 .share-lead-photo { color:#375554; background:transparent; margin:0 14px 8px; }
 .share-lead-photo:hover { background:#e4ece8; }

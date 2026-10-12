@@ -550,9 +550,10 @@ and optional `photo` IDs, `view=map|story|photo|grid`, and `scope=journey` for a
 overview. Existing `#photo=…`, `?photo=…` and day links remain supported. Explicit
 view links survive reload; bare journey URLs keep the usual introduction.
 
-Share photo sits beside the lead/selected photo and in fullscreen. It shares the
-atlas page through the native device sheet where available. Otherwise it copies
-the link with a brief “Link copied” status; denied clipboard access opens a
+Share photo sits beside the lead/selected photo. In desktop fullscreen it sits
+in the right sidebar beside the photo count, below the day controls; phone
+fullscreen uses its header Share control. It shares the atlas page through the
+native device sheet where available. Otherwise it copies the link with a brief “Link copied” status; denied clipboard access opens a
 selectable link. Cancelling the share sheet does nothing. Shared links carry only
 journey/group context and the view hash, never media URLs, access credentials or
 local preview switches. Local previews still yield local links; they do not
