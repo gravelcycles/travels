@@ -1,5 +1,16 @@
 # Changelog
 
+## 12 October 2026 — Studio photo navigation and save feedback
+
+- Add filtered, bounded left/right photo browsing and Previous/Next controls,
+  keeping text, map, dialog and batch keyboard interactions intact.
+- Preserve thumbnail buttons through field changes so one click switches photos.
+- Show per-photo local-save checks and unsaved/saving/failure states from the
+  acknowledged source snapshot, retaining newer edits during outstanding saves.
+- Carry the owner correction into O11's Studio follow-up, PHOTO_WORKFLOW and
+  the feature inventory. Draft recovery and publication remain separate.
+
+
 ## 12 October 2026 — three-second opening route trace
 
 - Trace the full visible itinerary on the initial map reveal on desktop/phone,

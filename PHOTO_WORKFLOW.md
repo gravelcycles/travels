@@ -485,6 +485,20 @@ video reads perform one HEAD plus a bounded GET and count against usage limits.
 
 ## Editing reliability — 12 September 2026
 
+Owner follow-up, 12 October 2026: **← / →** and the Previous/Next photo buttons
+browse the current day/search/Trash filter in album order, stopping at its ends.
+Arrow keys remain ordinary cursor/control keys while typing, using the map,
+inside a dialog or selecting a batch. Clicking a thumbnail after editing switches
+on the first click; blur/change must not replace its pointer target.
+
+Each selected photo shows a check with **Saved locally**, or a labeled unsaved,
+saving or failed-save state. This compares its copy, pin/frame, day, Trash and
+album order with the acknowledged local source snapshot. Other photos' changes
+do not make an unchanged photo look unsaved. Typing during an outstanding save
+stays unsaved until a later acknowledgement includes it. Draft recovery autosave
+does not earn the saved check; use **Save locally** to apply changes. Publishing
+remains separate. Check reference, demo and an independently populated draft.
+
 Changing **Photos from** selects a photo in that day or clears the editor when
 there are no matches. The complete upload form scrolls within its panel on a
 phone. Save status and **Preview atlas** remain visible at tablet widths.

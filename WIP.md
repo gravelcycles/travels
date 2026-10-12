@@ -16,6 +16,23 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Studio photo navigation and save feedback — 12 October 2026
+
+Implemented under O11's Studio follow-up: filtered left/right browsing, labeled
+per-photo local-save status, and stable thumbnail targets for first-click
+switching after editing. The primary local editor is updated and running.
+Reference and Alpine demo browser checks cover caption/coordinate edits,
+single-click switching, keyboard boundaries and cursor keys inside fields; an
+independently populated city draft covers notes, switching, reload recovery and
+saving. Save failure/retry and newer in-flight edits use the actual save handler
+in automated regressions. All **600 tests** pass against current main; the
+production build produces no public-output changes. Only Studio, focused tests
+and current guidance belong to `codex/studio-photo-editing` in
+`/private/tmp/travels-studio-photo-editing-release`. Real photo edits and the
+primary checkout's other work remain separate. Pages/public verification
+accompanies the source delivery; Studio itself remains local-only.
+
+
 ## Opening route trace — 12 October 2026
 
 Authorized: a three-second full-route trace on initial desktop/phone entry.
