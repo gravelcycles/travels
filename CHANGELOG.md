@@ -9,7 +9,8 @@
 - Add regression coverage and record the owner’s audit scope in current guidance.
   See [the audit matrix](docs/PERSISTENCE_AUDIT_2026-10-12.md) for evidence and limits.
 - Validation: 635 passing tests after current-main integration, successful build
-  and phone/desktop browser checks; deployment verification pending.
+  and phone/desktop browser checks. Pages release `b4e4b9a` succeeded; fresh
+  public pages/assets match the build and live album Back/Forward retains scroll.
 
 ## 12 October 2026 — Studio photo data safety
 

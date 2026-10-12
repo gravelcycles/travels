@@ -25,12 +25,15 @@ Forward. Current owner/photo/Places guidance and
 [the evidence matrix](docs/PERSISTENCE_AUDIT_2026-10-12.md) record scope and limits.
 Work is isolated in `/private/tmp/travels-mobile-dismiss` on
 `codex/persistence-audit`; source `ddfcc52`, integration `53890f5` includes remote
-main through `32e7cdf`. All **635 tests** and the production build pass; phone
+main through `c0661a7`. All **635 tests** and the production build pass; phone
 checks cover reference, Heading East, demo and independent content. Desktop demo
 checks cover comment drafts, nested identity, reload, review drafts and retained
 place disclosures. Integrated album/Places history smoke passes. No production
-comments or real trip edits changed. Remaining step: publish regenerated output,
-verify Pages succeeds, then compare fresh public pages/assets with this build.
+comments or real trip edits changed. Deployed as `b4e4b9a` through successful
+[Pages run 38219260545](https://github.com/gravelcycles/travels/actions/runs/38219260545).
+Fresh public reference/Heading East/Florence/demo pages and the three changed
+runtime assets match the build byte-for-byte. The live demo album passes the
+scrolled grid Back/Forward check. No implementation or delivery work remains.
 
 ## Mobile opening-trace interruption — 12 October 2026
 
