@@ -25,7 +25,8 @@ Forward. Current owner/photo/Places guidance and
 [the evidence matrix](docs/PERSISTENCE_AUDIT_2026-10-12.md) record scope and limits.
 Work is isolated in `/private/tmp/travels-mobile-dismiss` on
 `codex/persistence-audit`; source `ddfcc52`, integration `53890f5` includes remote
-main through `c0661a7`. All **635 tests** and the production build pass; phone
+main through `c0661a7`; final integration `9ecd943` also includes the Studio
+field/frame corrections in `4654fe0` without changing generated public output. All **637 tests** and the production build pass; phone
 checks cover reference, Heading East, demo and independent content. Desktop demo
 checks cover comment drafts, nested identity, reload, review drafts and retained
 place disclosures. Integrated album/Places history smoke passes. No production

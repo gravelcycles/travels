@@ -63,3 +63,7 @@ Fresh public Heading East/reference/Florence/demo pages and all three changed
 runtime assets match the tested build byte-for-byte. The live demo also retains
 its scrolled album through a day grid and browser Back/Forward. No required
 implementation or delivery work remains.
+
+Final integration `9ecd943` also includes the subsequent Studio field/frame
+preservation corrections from `4654fe0`: **637 tests** and build pass, with no
+changes to generated public output. The verified public assets remain identical.
