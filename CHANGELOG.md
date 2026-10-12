@@ -9,6 +9,8 @@
 - Validation: 637 tests and the production build pass; actual desktop/phone
   viewer functions confirm chronological order and unchanged membership across
   all seven cities, with generated source parity and the same journey cover.
+- Pages release `42dc9d9` succeeded; fresh public HTML/data match the build and
+  all seven live city albums pass the chronological check.
 
 ## 12 October 2026 — fullscreen Share in the desktop sidebar
 

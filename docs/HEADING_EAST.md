@@ -33,6 +33,11 @@ phone viewer ordering/entry functions verify all 119 visible photos across the
 seven cities; generated orders match sources exactly, with unchanged membership,
 cover and non-order content. No image upload or Worker deployment is needed.
 
+Published as `42dc9d9` through successful
+[Pages run 38264639120](https://github.com/gravelcycles/travels/actions/runs/38264639120).
+Fresh public Heading East HTML and the journey/photo/override bundles match the
+release byte-for-byte; all seven live city albums pass the chronological check.
+
 ## Owner-supplied opening description — 11 October 2026
 
 The owner replaced the generated itinerary-count subtitle with their paragraph

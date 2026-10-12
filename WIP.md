@@ -27,8 +27,12 @@ Work is isolated on `codex/heading-east-photo-chronology` in
 edits remain intact. All 637 tests and the production build pass. Actual desktop/
 phone viewer functions verify all 119 visible photos in seven chronological
 city albums, unchanged membership/cover and exact source/generated order parity.
-Latest remote main is integrated through `45cdef1`. Next: publish and verify
-Pages plus fresh public output; no image upload or Worker deployment is needed.
+Released as `42dc9d9` after integrating main through `45cdef1`.
+[Pages run 38264639120](https://github.com/gravelcycles/travels/actions/runs/38264639120)
+succeeded; fresh public Heading East HTML and three data bundles match the
+release byte-for-byte, and all seven live city albums are chronological. The
+primary checkout has the same order with its pending content/Trash edits
+preserved. No image upload or Worker deployment was needed. Work is complete.
 
 ## State persistence audit — 12 October 2026
 
