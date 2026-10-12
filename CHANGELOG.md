@@ -1,5 +1,15 @@
 # Changelog
 
+## 12 October 2026 — chronological Heading East city photos
+
+- Interleave both photo batches by capture date/time within each city using the
+  saved album-order overrides. Keep city membership, cover, pins, copy and Trash.
+- Record the owner's scoped ordering correction and future-batch guidance in
+  the trip record and photo workflow; shared gallery behavior is unchanged.
+- Validation: 637 tests and the production build pass; actual desktop/phone
+  viewer functions confirm chronological order and unchanged membership across
+  all seven cities, with generated source parity and the same journey cover.
+
 ## 12 October 2026 — fullscreen Share in the desktop sidebar
 
 - Move fullscreen Share into the right sidebar beside the photo count, below

@@ -43,6 +43,8 @@ service rollout follow their documented workflows.
 Heading East exercises the shared city-stay contract with eleven stops through
 Venice, 23 October 2026, and fourteen researched route legs. Extensions remain
 content-only; see [its intake and route evidence](HEADING_EAST.md).
+Its [chronological city photo order](HEADING_EAST.md#chronological-city-albums--12-october-2026)
+uses the existing album-order overrides, with no shared renderer change.
 
 | Capability | What carries over | Trip input / empty behavior | Main owner |
 | --- | --- | --- | --- |

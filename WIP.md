@@ -16,6 +16,20 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Heading East photo chronology — 12 October 2026
+
+Owner request: order photos chronologically within each city. The existing day
+`photoOrder` overrides now interleave both batches by capture time, preserving
+city membership, cover, photo edits and Trash. The scoped rule and superseded
+append-only intake choice are recorded in [the trip record](docs/HEADING_EAST.md#chronological-city-albums--12-october-2026).
+Work is isolated on `codex/heading-east-photo-chronology` in
+`/private/tmp/travels-heading-east-photo-chronology`; unrelated primary-checkout
+edits remain intact. All 637 tests and the production build pass. Actual desktop/
+phone viewer functions verify all 119 visible photos in seven chronological
+city albums, unchanged membership/cover and exact source/generated order parity.
+Latest remote main is integrated through `45cdef1`. Next: publish and verify
+Pages plus fresh public output; no image upload or Worker deployment is needed.
+
 ## State persistence audit — 12 October 2026
 
 Owner request: verify other features retain state after the fullscreen fixes.

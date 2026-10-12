@@ -5,6 +5,34 @@ Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 
 Each city is one event. Taglines remain blank; the owner added the first seven
 city stories in Studio on 11 October. The photo intake is recorded below.
 
+## Chronological city albums — 12 October 2026
+
+The owner requested: “order them chrono-wise within each city”. Each populated
+city album now combines both intake batches in ascending capture-date/time
+order, using the existing `photoOrder` fields in `content/day-overrides.json`.
+Equal recorded timestamps retain their previous relative order. This supersedes
+the second batch's append-after-existing ordering and preserved first photos;
+the first chronological visible photo becomes the city preview. The separate
+journey cover, city assignments, actual timestamps, pins, frames, copy and Trash
+choices remain unchanged. The August photos still belong to Luzern and the
+six reassigned 30 September photos still belong to Köln.
+
+Keep this chronological order when adding another Heading East batch: merge
+new photos into their assigned city's sequence rather than appending a separate
+batch. This is a trip-specific editorial choice, not a change to other trips'
+reviewed album orders. Source orders retain trashed IDs so an explicit restore
+returns them to their chronological position without restoring them now.
+
+Acceptance: every city's visible album has nondecreasing `takenAt` values and
+the same photo membership; generated overrides carry the exact saved order.
+Verify all seven populated cities, both batches, earliest/latest photos and
+the unchanged cover and other content before publication.
+
+Validation: all 637 tests and the production build pass. The actual desktop and
+phone viewer ordering/entry functions verify all 119 visible photos across the
+seven cities; generated orders match sources exactly, with unchanged membership,
+cover and non-order content. No image upload or Worker deployment is needed.
+
 ## Owner-supplied opening description — 11 October 2026
 
 The owner replaced the generated itinerary-count subtitle with their paragraph
@@ -155,8 +183,10 @@ existing private 480/1280/full-size WebP pipeline, capped at a 3200 px longest
 edge. The original files and complete metadata remain ignored/private.
 
 Intake verification accounts for all 78 unchanged source checksums, 76 new IDs
-and two exact duplicates. New photos append within their assigned albums in
-capture order, preserving the existing first photos and cover. Combined album
+and two exact duplicates. At intake, new photos appended within their assigned
+albums in capture order, preserving the existing first photos and cover. The
+[12 October correction](#chronological-city-albums--12-october-2026) supersedes
+that batch ordering. Combined album
 counts are Luzern 10, Freiburg 18, Hamburg 17, Köln 10, Düsseldorf 1, Berlin 21
 and Prague 43 (120 total).
 

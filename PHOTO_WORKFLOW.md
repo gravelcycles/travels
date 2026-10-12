@@ -86,6 +86,12 @@ a filename/date list of new photos without GPS; leave their pins unset. Dates
 outside the itinerary require an owner-selected album while retaining the real
 capture date. No full reimport is needed.
 
+Respect trip-specific ordering corrections when merging batches. Heading East
+uses [chronological city albums](docs/HEADING_EAST.md#chronological-city-albums--12-october-2026)
+across both manifests, saved through day `photoOrder` overrides. Preserve its
+reviewed city assignments and use actual capture times; other trips retain
+their existing editorial order.
+
 ## Batch editing in Studio
 
 Choose **Media → Photos → Select multiple** for a contact sheet. Search filenames,
