@@ -1,5 +1,16 @@
 # Changelog
 
+## 12 October 2026 — persistence audit and return-state repairs
+
+- Keep All photos tiles mounted and restore dialog scroll after native focus on
+  history return; About uses the same restoration.
+- Preserve Places detail nodes and scroll across linked-photo returns and closing;
+  browser Forward also restores each detail tab and its scroll position.
+- Add regression coverage and record the owner’s audit scope in current guidance.
+  See [the audit matrix](docs/PERSISTENCE_AUDIT_2026-10-12.md) for evidence and limits.
+- Validation: 635 passing tests after current-main integration, successful build
+  and phone/desktop browser checks; deployment verification pending.
+
 ## 12 October 2026 — Studio photo data safety
 
 - Capture every photo input before blur; retain unfinished coordinates through

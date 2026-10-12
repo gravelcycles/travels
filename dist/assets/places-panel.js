@@ -63,7 +63,8 @@
     let journeyId = '', selectedId = '', category = 'all', query = '', dayOnly = false, scopeChoice = null, tab = 'overview', expanded = false, visible = false;
     let listScroll = 0, nearbyIds = null, nearbyScroll = 0, selectedTabScroll = {}, lastDay = '', markers = [], markerMap = null, markerFrame = 0, returnFocus = null;
     let galleryIndex = -1, galleryReturn = null, restoring = false, undo = null, toastTimer, lastHistory = '', clusterPopup = null, historyDepth = 0, savedCamera = null;
-    let panelVersion = 0, cameraVersion = 0;
+    let panelVersion = 0, cameraVersion = 0, detailSignature = '', historyEntry = 0, nextHistoryEntry = 0;
+    const scrollEntries = new Map();
     const memoryDrafts = new Map();
     const icon = name => {
       const paths = {
@@ -181,6 +182,7 @@
       renderList(); renderMarkers(); fitPlaces(); rememberHistory();
     }
     function renderList() {
+      detailSignature = '';
       clearTripImages();
       const results = nearbyPlaces(filtered(), nearbyIds), hasFilters = category !== 'all' || dayOnly || Boolean(query.trim());
       const saved = nearbyIds ? nearbyScroll : listScroll;
@@ -229,6 +231,11 @@
       const point = current(); if (!point) { selectedId = ''; renderList(); return; }
       const scroll = preserveScroll ? content.scrollTop : 0, reviews = reviewsFor(point), score = average(reviews);
       const related = root.JOURNEY_ATLAS_PHOTO_PLACES.photosForPlace(point, options.photos()).linked;
+      const signature = JSON.stringify([point, reviews, related, Boolean(options.unlocked?.())]);
+      // Returning from a photo, gallery or temporary panel dismissal keeps the
+      // actual detail, image bindings and expanded disclosures in place.
+      if (detailSignature === signature) { if (!preserveScroll) content.scrollTop = 0; return; }
+      detailSignature = signature;
       const images = point.images || [], ownReviewAvailable = preview && point.status === 'visited';
       clearTripImages(); renderScope();
       panel.classList.add('pp-selected'); panel.setAttribute('aria-labelledby', 'place-detail-title');
@@ -263,10 +270,10 @@
         } catch (error) { $('#place-review-status').textContent = error.message; }
       });
     }
-    function snapshot() { return { journeyId, open: visible, selectedId, nearbyIds, category, query, dayOnly, scopeChoice, tab, reviews:reviewDialog.open, gallery: galleryIndex, depth: visible ? historyDepth : 0 }; }
+    function snapshot() { return { journeyId, open: visible, selectedId, nearbyIds, category, query, dayOnly, scopeChoice, tab, entry:historyEntry, scroll:visible ? {top:content.scrollTop || 0,tabs:{...selectedTabScroll}} : null, reviews:reviewDialog.open, gallery: galleryIndex, depth: visible ? historyDepth : 0 }; }
     function rememberHistory(push = false) {
       if (restoring) return;
-      if (push) historyDepth += 1;
+      if (push) { historyDepth += 1; historyEntry = ++nextHistoryEntry; }
       const state = snapshot(); history[push ? 'pushState' : 'replaceState']({ ...history.state, atlasPlaces: state }, '', location.href); lastHistory = JSON.stringify(state);
     }
     function setExpanded(value) {
@@ -404,7 +411,7 @@
       const opening = ++panelVersion;
       if (historyWrite) historyDepth = 0;
       for (const id of ['open-places', 'mobile-open-places', 'mobile-day-places']) document.getElementById(id)?.setAttribute('aria-expanded', 'true');
-      update(); selectedId ? renderDetail() : renderList(); setExpanded(expanded);options.onPlacesVisibility?.();
+      update(); selectedId ? renderDetail({ preserveScroll: true }) : renderList(); setExpanded(expanded);options.onPlacesVisibility?.();
       if (historyWrite) rememberHistory(true);
       requestAnimationFrame(() => { if (!visible || opening !== panelVersion) return; options.map()?.resize(); renderMarkers(); if (!selectedId) fitPlaces(); else focusPlace(current()); });
       if (focus) (selectedId ? $('#places-back-to-list') : $('#places-title')).focus({ preventScroll: true });
@@ -444,6 +451,7 @@
       const dayPlaces = document.getElementById('mobile-day-places'), dayCount = searchPlaces(points(), { dayId: options.dayId() }).length;
       if (dayPlaces) { dayPlaces.hidden = dayCount === 0; dayPlaces.textContent = `Places · ${dayCount}`; }
       if (reset) {
+        detailSignature = '';
         for (const key of memoryDrafts.keys()) if (key.startsWith(`${journeyId}:`)) memoryDrafts.delete(key);
         undo = null; clearTimeout(toastTimer); $('.pp-toast').hidden = true;
         if (visible) selectedId ? renderDetail({ preserveScroll: true }) : renderList();
@@ -495,7 +503,17 @@
     panel.addEventListener('click', handlePanelClick);
     reviewDialog.addEventListener('click', handlePanelClick);
     $('#places-search').addEventListener('input', event => { nearbyIds = null; query = event.target.value; listScroll = 0; renderList(); renderMarkers(); rememberHistory(); });
-    content.addEventListener('scroll', () => { if (!selectedId) { if (nearbyIds) nearbyScroll = content.scrollTop; else listScroll = content.scrollTop; } }, { passive: true });
+    content.addEventListener('scroll', () => {
+      if (!visible || restoring) return;
+      if (selectedId) selectedTabScroll[tab] = content.scrollTop;
+      else if (nearbyIds) nearbyScroll = content.scrollTop;
+      else listScroll = content.scrollTop;
+      // Each browser-history entry owns the view it is leaving, including a
+      // detail revisited with Forward after Back has rebuilt the places list.
+      // Keep scroll updates in memory: avoid replacing browser history on every
+      // animation frame.
+      if (history.state?.atlasPlaces?.open) scrollEntries.set(historyEntry, {top:content.scrollTop,tabs:{...selectedTabScroll}});
+    }, { passive: true });
     panel.addEventListener('keydown', event => {
       const target = event.target.closest('[data-place-tab]');
       if (!target || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
@@ -528,7 +546,7 @@
     });
     window.addEventListener('popstate', event => {
       const state = event.state?.atlasPlaces, signature = JSON.stringify(state || null); if (signature === lastHistory) return;
-      lastHistory = signature; restoring = true; historyDepth = state?.depth || 0;
+      lastHistory = signature; restoring = true; historyDepth = state?.depth || 0; historyEntry = state?.entry || 0;
       if (!state?.open || state.journeyId !== journeyId) close({ historyWrite: false });
       else {
         category = state.category || 'all'; query = state.query || ''; dayOnly = Boolean(state.dayOnly); scopeChoice = state.scopeChoice || null;
@@ -539,6 +557,12 @@
         if (state.selectedId !== selectedId) { if (state.selectedId) selectPlace(state.selectedId, true, false); else backToList(false); }
         else if (!selectedId) renderList();
         if (state.selectedId && state.tab !== tab) changeTab(state.tab, { historyWrite: false, focus: false });
+        const scroll = scrollEntries.get(historyEntry) || state.scroll;
+        if (scroll) {
+          selectedTabScroll = {...scroll.tabs};
+          content.scrollTop = scroll.top;
+          if (!selectedId) { if (nearbyIds) nearbyScroll = scroll.top; else listScroll = scroll.top; }
+        }
         if (state.reviews) openReviews(false); else if (reviewDialog.open) closeReviews(false);
         if (state.gallery >= 0) openGallery(state.gallery, false); else if (gallery.open) closeGallery(false);
       }

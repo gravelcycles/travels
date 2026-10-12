@@ -454,3 +454,20 @@ test('grid return restores its source event and explicit collection across photo
   assert.deepEqual(f.history.state.mobileAtlas.collection,collection);
   f.history.go(1);assert.equal(f.api.day().id,'two');assert.equal(f.index,2);
 });
+
+
+test('album and About history restores dialog scroll after native opening resets it',()=>{
+  for(const mobile of [true,false])for(const id of ['album-dialog','notes-dialog']){
+    const f=viewerFixture();if(!mobile)f.resize(false);
+    const surface=f.node(`#${id}`), original=surface.showModal;
+    surface.showModal=function(){original.call(this);this.scrollTop=0;this.scrollLeft=0;};
+    f.controller.presentOverlay(id);surface.scrollTop=844;surface.scrollLeft=12;
+    surface.captures.get('scroll')({});
+    f.history.back();f.history.go(1);
+    assert.equal(surface.scrollTop,844);assert.equal(surface.scrollLeft,12);
+    if(id==='album-dialog'){
+      f.controller.openGrid('two');f.history.back();
+      assert.equal(surface.scrollTop,844, 'Returning from a day grid keeps the album position');
+    }
+  }
+});

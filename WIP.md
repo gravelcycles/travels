@@ -16,6 +16,22 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## State persistence audit — 12 October 2026
+
+Owner request: verify other features retain state after the fullscreen fixes.
+Completed the audit and repaired album/dialog scroll resets, album tile rebuilds,
+Places detail resets on photo return/reopening, and lost detail/tab scroll on
+Forward. Current owner/photo/Places guidance and
+[the evidence matrix](docs/PERSISTENCE_AUDIT_2026-10-12.md) record scope and limits.
+Work is isolated in `/private/tmp/travels-mobile-dismiss` on
+`codex/persistence-audit`; source `ddfcc52`, integration `53890f5` includes remote
+main through `32e7cdf`. All **635 tests** and the production build pass; phone
+checks cover reference, Heading East, demo and independent content. Desktop demo
+checks cover comment drafts, nested identity, reload, review drafts and retained
+place disclosures. Integrated album/Places history smoke passes. No production
+comments or real trip edits changed. Remaining step: publish regenerated output,
+verify Pages succeeds, then compare fresh public pages/assets with this build.
+
 ## Mobile opening-trace interruption — 12 October 2026
 
 Owner follow-up: “the trace starts and then flashes to show the full map.”

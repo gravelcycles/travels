@@ -2183,11 +2183,17 @@
   }
   function openAlbum() {
     $('#album-title').textContent = `${journey.videos?.length ? 'Photos & videos' : 'All photos'} · ${orderedPhotos().length}`;
-    $('#album-days').innerHTML = journey.days.map(day=>{
-      const photos=photosForDay(day.id); const first=photos[0];
-      return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${first?photoImageMarkup(first,{sizes:'280px',targetWidth:480}):`<span class="album-text-scene">${day.text?.trim() ? 'From the journal' : `View ${eventWord()}`}</span>`}<strong>${eventWord('title')} ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?mediaUtils.label(photos):day.text?.trim()?'Read the story':`View ${eventWord()}`} </small></button>`;
-    }).join('');
-    window.JOURNEY_ATLAS_MOBILE_UI.presentOverlay('album-dialog'); prepareProgressiveImages($('#album-days'));
+    const album = $('#album-days');
+    const signature = JSON.stringify([journey.days, orderedPhotos()]);
+    if (album.dataset.album !== signature) {
+      album.dataset.album = signature;
+      album.innerHTML = journey.days.map(day=>{
+        const photos=photosForDay(day.id); const first=photos[0];
+        return `<button class="album-day" data-album-day="${escapeHtml(day.id)}">${first?photoImageMarkup(first,{sizes:'280px',targetWidth:480}):`<span class="album-text-scene">${day.text?.trim() ? 'From the journal' : `View ${eventWord()}`}</span>`}<strong>${eventWord('title')} ${day.number} · ${escapeHtml(day.title)}</strong><small>${escapeHtml(day.date)} · ${photos.length?mediaUtils.label(photos):day.text?.trim()?'Read the story':`View ${eventWord()}`} </small></button>`;
+      }).join('');
+      prepareProgressiveImages(album);
+    }
+    window.JOURNEY_ATLAS_MOBILE_UI.presentOverlay('album-dialog');
   }
   function renderIntroduction() {
     const intro=$('#trip-intro');

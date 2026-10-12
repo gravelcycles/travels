@@ -488,3 +488,42 @@ test('selecting a place cancels a previously queued list fit', () => {
   f.flushFrames();
   assert.equal(f.cameraMoves.length,afterSelection,'The selected place remains in focus when an old results fit was queued');
 });
+
+
+test('returning from trip photos and reopening Places retain the detail scroll', () => {
+  const f = placeHistoryFixture(); f.controller.openPlace('cafe');
+  const content = f.node('#places-content');
+  content.scrollTop = 287; content.fire('scroll', {});
+  const detail = structuredClone(f.history.state);
+  f.controller.closeForPhotos();
+  f.history.pushState({...detail, atlasPlaces:{...detail.atlasPlaces, open:false, depth:0}});
+  f.history.back(); f.flush();
+  assert.equal(content.scrollTop, 287, 'Back from a photo retains the presenting detail position');
+  f.controller.close(); f.flush(); f.controller.open();
+  assert.equal(content.scrollTop, 287, 'Reopening the remembered detail retains its position');
+});
+
+
+test('an unchanged Places detail keeps its mounted contents through updates and photo returns', () => {
+  const f = placeHistoryFixture(); f.controller.openPlace('cafe');
+  const content = f.node('#places-content'); let replacements = 0, html = content.innerHTML;
+  Object.defineProperty(content, 'innerHTML', {get:()=>html, set:value=>{html=value; replacements++;}});
+  f.controller.update(); f.controller.closeForPhotos(); f.controller.open();
+  assert.equal(replacements, 0, 'Keep expanded disclosures, images and detail nodes');
+  f.journey.pointsOfInterest[0].summary = 'Updated owner guidance'; f.controller.update();
+  assert.equal(replacements, 1, 'Real content changes still render');
+  assert.match(content.innerHTML, /Updated owner guidance/);
+  f.click('places-back-to-list'); f.flush(); f.click('', {placeId:'cafe'});
+  assert.match(content.innerHTML, /place-detail-title/, 'A list-to-detail transition still builds the detail');
+});
+
+
+test('Places Back and Forward retain the detail tab and its independent scroll positions',()=>{
+  const f=placeHistoryFixture();f.controller.open();f.click('',{placeId:'cafe'});
+  const content=f.node('#places-content');content.scrollTop=187;content.fire('scroll',{});
+  f.click('',{placeTab:'photos'});content.scrollTop=419;content.fire('scroll',{});
+  f.history.back();f.flush();assert.equal(f.history.state.atlasPlaces.selectedId,'');
+  f.history.go(1);f.flush();assert.equal(f.history.state.atlasPlaces.tab,'photos');
+  assert.equal(content.scrollTop,419);
+  f.click('',{placeTab:'overview'});assert.equal(content.scrollTop,187);
+});
