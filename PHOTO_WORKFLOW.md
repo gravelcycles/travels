@@ -509,7 +509,11 @@ including raw latitude/longitude/zoom before blur. Unfinished or invalid numbers
 remain in the browser/disk recovery draft and its review/download; they keep
 the previous valid pin and block Save with a focused correction. They must never
 silently clear a pin or discard coordinate precision. Preserve authored text
-exactly. Switching photos, journeys or modes retains unfinished fields. Editing
+exactly. Save only changed fields: blank defaults must not overwrite independent
+edits merged from disk. Refresh merged fields without moving the typing caret.
+Keep a custom map frame through intermediate coordinate keystrokes; validate the
+final pin/frame pair on blur or Save. A chosen zoom survives even before a pin
+is placed. Switching photos, journeys or modes retains unfinished fields. Editing
 away from a search/day match keeps the selected photo until deliberate navigation
 or a filter change. The editor stays disabled until sources and recovery load.
 

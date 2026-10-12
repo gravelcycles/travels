@@ -90,10 +90,12 @@ Data-safety follow-up authorized: “ensure there's no data loss paths here.”
 Implemented on `codex/studio-photo-data-safety` in the isolated release checkout:
 raw photo input recovery/validation, stable selection while typing, guarded save/
 restore/discard responses, detached autosave snapshots, duplicate-tab stream
-ownership and exact disk acknowledgements. Real-handler tests cover unfinished
+ownership and exact disk acknowledgements. Only changed photo fields enter
+overrides; merged fields refresh without moving the typing caret. Composed frames
+survive intermediate coordinate keystrokes, and unlocated photos retain zoom. Real-handler tests cover unfinished
 numbers, switching/reload, in-flight input and delayed recovery; real API tests
 cover independent photo fields, conflict choices, lost-response retries, corrupt
-draft reads and build rollback. Integrated main through `32e7cdf`; all **629 tests**
+draft reads and build rollback. Integrated main through `32e7cdf`; all **631 tests**
 and the production build pass, with unchanged generated output.
 Browser checks cover the reference, Alpine demo and a populated independent city
 draft, including reload before blur, search edits, offline save/restart/retry,

@@ -7,6 +7,9 @@
   without deleting pins. Preserve text and coordinate precision.
 - Keep the selected photo stable while typing away from a search/day match.
   Delayed save/recovery/discard responses cannot replace newer edits.
+- Write only changed fields and refresh independently merged values without
+  moving the typing caret. Retain frames through coordinate keystrokes and
+  preserve a chosen zoom on unlocated photos.
 - Isolate duplicated-tab recovery streams, detach autosave snapshots, confirm
   exact disk sequences and preserve unreadable draft files. Added storage,
   delayed-response, concurrent-photo, retry and rollback regression coverage.

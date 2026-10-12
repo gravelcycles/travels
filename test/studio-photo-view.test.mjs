@@ -80,7 +80,8 @@ test('capture saves bounds separately from the pin, survives switching and resto
   ed.nodes.get('#capture-photo-frame').handlers.click();
   const saved = ed.api.state().photos.first;
   assert.deepEqual(saved.mapFrame.bounds, [[7.8,46.8],[8.6,47.6]]);
-  assert.deepEqual(saved.location, { lat:47, lng:8 });
+  const resolved=globalThis.JOURNEY_ATLAS_UTILS.resolvePhoto({id:'first',lat:47,lng:8},saved);
+  assert.deepEqual([resolved.lat,resolved.lng],[47,8]);
   assert.equal(saved.zoom, 14.25); assert.equal(ed.api.dirty(), true);
   assert.equal(ed.nodes.get('#photo-zoom').readOnly, true);
   ed.select('next'); ed.select('first');
