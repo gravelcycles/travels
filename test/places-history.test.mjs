@@ -154,7 +154,7 @@ test('place-only history changes do not refit an unchanged whole-journey map', (
   assert.equal(f.overviewCalls, 0, 'Independent places navigation cannot reset its camera through the mobile controller');
 });
 
-function placeHistoryFixture({ cameraReady = null, scope = 'journey', photos = [], visibleDayIds, interactiveMap = false } = {}) {
+function placeHistoryFixture({ mobile = false, cameraReady = null, scope = 'journey', photos = [], visibleDayIds, interactiveMap = false } = {}) {
   const nodes = new Map(), events = new Map(), queue = [];
   const mobileState = { viewer: false, dayId: 'one', scope: 'journey', tab: 'map' };
   const stack = [{ priorPage: true }, { mobileAtlas: mobileState }];
@@ -190,7 +190,7 @@ function placeHistoryFixture({ cameraReady = null, scope = 'journey', photos = [
   const context = vm.createContext({
     window: { JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS, addEventListener: (name, listener) => events.set(name, listener) }, document, history, URL,
     FormData: class { constructor(form) { this.values = form.values || {}; } get(name) { return this.values[name]; } },
-    location: { href: 'https://example.test/journey' }, matchMedia: () => ({ matches: false }),
+    location: { href: 'https://example.test/journey' }, matchMedia: query => ({ matches: mobile && query.includes('900px') }),
     requestAnimationFrame(fn) { if(interactiveMap)frames.push(fn); return 1; }, cancelAnimationFrame() {}, setTimeout() {}, clearTimeout() {}
   });
   for (const file of ['photo-places.js','places-comments.js', 'places-panel.js']) vm.runInContext(fs.readFileSync(new URL(`../dist/assets/${file}`, import.meta.url), 'utf8'), context);
@@ -526,4 +526,44 @@ test('Places Back and Forward retain the detail tab and its independent scroll p
   f.history.go(1);f.flush();assert.equal(f.history.state.atlasPlaces.tab,'photos');
   assert.equal(content.scrollTop,419);
   f.click('',{placeTab:'overview'});assert.equal(content.scrollTop,187);
+});
+
+
+test('phone Places opens its list and automatic camera fits never collapse the reading sheet', () => {
+  const f = placeHistoryFixture({ mobile:true, cameraReady:true, interactiveMap:true, scope:'day' });
+  f.flushFrames(); f.controller.open(); f.flushFrames();
+  assert.equal(f.node('#places-panel').dataset.expanded, 'true');
+  assert.equal(f.node('#places-sheet-label').textContent, 'Show map');
+  assert.match(f.node('#places-content').innerHTML, /A café/);
+  f.click('', {placeScope:'all'}); f.flushFrames();
+  assert.equal(f.node('#places-panel').dataset.expanded, 'true');
+  f.controller.mapReady(); f.flushFrames();
+  assert.equal(f.node('#places-panel').dataset.expanded, 'true', 'Late map readiness must not hide results');
+  f.node('#places-sheet-toggle').fire('click');
+  assert.equal(f.node('#places-panel').dataset.expanded, 'false', 'Only the deliberate map action contracts the sheet');
+  assert.equal(f.node('#places-sheet-label').textContent, 'Show list');
+  f.click('', {placeId:'cafe'});
+  assert.equal(f.node('#places-panel').dataset.expanded, 'true', 'A compact result opens readable details');
+  f.history.back(); f.flush();
+  assert.equal(f.node('#places-panel').dataset.expanded, 'true');
+  f.node('#places-sheet-toggle').fire('click');
+  f.controller.close(); f.flush(); f.controller.open(); f.flushFrames();
+  assert.equal(f.node('#places-panel').dataset.expanded, 'true', 'Reopening never inherits a controls-only compact state');
+});
+
+test('phone category disclosure preserves filtering and returns space to results after selection', () => {
+  const f = placeHistoryFixture({mobile:true}); f.controller.open();
+  const target = f.node('#places-filter-toggle'); target.id = 'places-filter-toggle';
+  // Exercise the delegated handler with the real control attributes.
+  target.dataset = {}; target.closest = () => target; target.hasAttribute = () => false;
+  f.node('#places-panel').fire('click', {target});
+  assert.equal(target['aria-expanded'], 'true');
+  assert.equal(f.node('#places-panel').dataset.filtersOpen, 'true');
+  f.click('', {placeFilter:'sight'});
+  assert.equal(target['aria-expanded'], 'false');
+  assert.equal(target.textContent, 'Filters · 1');
+  assert.match(f.node('#places-content').innerHTML, /No places found/);
+  f.click('', {}, ['data-clear-filters']);
+  assert.match(f.node('#places-content').innerHTML, /A café/);
+  assert.equal(target.textContent, 'Filters');
 });

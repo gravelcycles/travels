@@ -31,7 +31,8 @@
   function mapInsets(frame, { sheet = null, toolbar = null, mobile = false } = {}) {
     const width = Math.max(1, frame.width ?? frame.right - frame.left), height = Math.max(1, frame.height ?? frame.bottom - frame.top);
     const overlaps = rect => rect && rect.right > frame.left && rect.left < frame.right && rect.bottom > frame.top && rect.top < frame.bottom;
-    let top = 64, bottom = mobile && overlaps(sheet) ? Math.max(40, frame.bottom - sheet.top + 36) : 68;
+    const sideSheet = mobile && overlaps(sheet) && sheet.left > frame.left + width * .2 && sheet.top < frame.top + height * .25;
+    let top = 64, bottom = mobile && !sideSheet && overlaps(sheet) ? Math.max(40, frame.bottom - sheet.top + 36) : 68;
     if (overlaps(toolbar)) {
       if ((toolbar.top + toolbar.bottom) / 2 < frame.top + height / 2) top = Math.max(top, toolbar.bottom - frame.top + 36);
       else bottom = Math.max(bottom, frame.bottom - toolbar.top + 36);
@@ -42,7 +43,7 @@
     top = Math.min(top, available / 2);
     bottom = Math.min(bottom, available - top);
     const side = Math.min(mobile ? 36 : 64, Math.max(0, (width - Math.min(80, width / 2)) / 2));
-    return { top, bottom, left: side, right: side };
+    return { top, bottom, left: side, right: sideSheet ? Math.min(width - side - 80, frame.right - sheet.left + 24) : side };
   }
   function create(options) {
     const { escape, average, ratingSummary } = root.JOURNEY_ATLAS_PLACES;
@@ -102,7 +103,7 @@
       try { store().draft(draftKey(point), null); } catch { /* A saved review stays saved even if draft cleanup fails. */ }
     }
     panel.classList.add('pp-panel');
-    panel.innerHTML = `<button id="places-sheet-toggle" class="pp-sheet-handle" type="button" aria-label="Expand places" aria-expanded="false"><span></span></button><header class="pp-heading"><div><span class="pp-eyebrow">ALONG THE WAY</span><h2 id="places-title">Places we found</h2></div><button id="close-places" class="pp-icon-button" type="button" aria-label="Close places">${icon('close')}</button></header><div class="pp-browse-controls"><label class="pp-search">${icon('search')}<span class="pp-sr-only">Search places</span><input id="places-search" type="search" placeholder="Find a place" autocomplete="off"/><button type="button" data-clear-search aria-label="Clear search" hidden>${icon('close')}</button></label><div class="pp-filters" role="group" aria-label="Filter places"><button data-place-filter="all" aria-pressed="true">All types</button><button data-place-filter="food" aria-pressed="false">${icon('food')}Food & drink</button><button data-place-filter="sight" aria-pressed="false">${icon('sight')}Sights</button></div><div class="pp-scope" role="group" aria-label="Places scope"><button type="button" data-place-scope="day" aria-pressed="false"><span id="places-event-only-label">This ${eventWord()}</span><span id="places-day-count"></span></button><button type="button" data-place-scope="all" aria-pressed="true">All places<span id="places-all-count"></span></button></div><div class="pp-options"><button id="places-fit" type="button">${icon('fit')}Show results on map</button></div></div><div class="pp-detail-nav" hidden><button id="places-back-to-list" class="pp-back" aria-label="Back to all places">${icon('back')}<span>Places</span></button><span class="pp-detail-nav-name"></span><button id="close-place-details" class="pp-icon-button" type="button" aria-label="Close place details">${icon('close')}</button></div><div id="places-content" class="pp-content"></div><div class="pp-toast" role="status" aria-live="polite" hidden><span></span><button data-undo-review hidden>Undo</button><button data-dismiss-toast class="pp-icon-button" aria-label="Dismiss message">${icon('close')}</button></div><p id="places-message" class="pp-sr-only" role="status" aria-live="polite"></p>`;
+    panel.innerHTML = `<button id="places-sheet-toggle" class="pp-sheet-handle" type="button" aria-label="Expand places" aria-expanded="false" aria-controls="places-content"><span></span><span id="places-sheet-label">Show list</span></button><header class="pp-heading"><div><span class="pp-eyebrow">ALONG THE WAY</span><h2 id="places-title">Places we found</h2></div><button id="close-places" class="pp-icon-button" type="button" aria-label="Close places">${icon('close')}</button></header><div class="pp-browse-controls"><div class="pp-search-row"><label class="pp-search">${icon('search')}<span class="pp-sr-only">Search places</span><input id="places-search" type="search" placeholder="Find a place" autocomplete="off"/><button type="button" data-clear-search aria-label="Clear search" hidden>${icon('close')}</button></label><button id="places-filter-toggle" class="pp-filter-toggle" type="button" aria-expanded="false" aria-controls="places-filters">Filters</button></div><div id="places-filters" class="pp-filters" role="group" aria-label="Filter places"><button data-place-filter="all" aria-pressed="true">All types</button><button data-place-filter="food" aria-pressed="false">${icon('food')}Food & drink</button><button data-place-filter="sight" aria-pressed="false">${icon('sight')}Sights</button></div><div class="pp-scope" role="group" aria-label="Places scope"><button type="button" data-place-scope="day" aria-pressed="false"><span id="places-event-only-label">This ${eventWord()}</span><span id="places-day-count"></span></button><button type="button" data-place-scope="all" aria-pressed="true">All places<span id="places-all-count"></span></button></div><div class="pp-options"><button id="places-fit" type="button">${icon('fit')}Show results on map</button></div></div><div class="pp-detail-nav" hidden><button id="places-back-to-list" class="pp-back" aria-label="Back to all places">${icon('back')}<span>Places</span></button><span class="pp-detail-nav-name"></span><button id="close-place-details" class="pp-icon-button" type="button" aria-label="Close place details">${icon('close')}</button></div><div id="places-content" class="pp-content"></div><div class="pp-toast" role="status" aria-live="polite" hidden><span></span><button data-undo-review hidden>Undo</button><button data-dismiss-toast class="pp-icon-button" aria-label="Dismiss message">${icon('close')}</button></div><p id="places-message" class="pp-sr-only" role="status" aria-live="polite"></p>`;
     const content = $('#places-content');
     const gallery = document.createElement('dialog');
     gallery.className = 'pp-gallery-dialog'; gallery.setAttribute('aria-label', 'Place photos');
@@ -190,6 +191,7 @@
       panel.classList.remove('pp-selected'); panel.setAttribute('aria-labelledby', 'places-title');
       $('.pp-heading').hidden = false; $('.pp-browse-controls').hidden = false; $('.pp-detail-nav').hidden = true;
       $('#places-fit').disabled = !results.length;
+      $('#places-filter-toggle').textContent = category === 'all' ? 'Filters' : 'Filters · 1';
       $('[data-clear-search]').hidden = !query;
       for (const button of panel.querySelectorAll('[data-place-filter]')) button.setAttribute('aria-pressed', String(button.dataset.placeFilter === category));
       content.innerHTML = results.length ? `<div class="pp-list-meta${nearbyIds ? ' pp-nearby-meta' : ''}"><span id="places-count">${results.length} ${results.length === 1 ? 'place' : 'places'}${nearbyIds ? ' nearby' : hasFilters ? ` of ${points().length}` : ''}</span>${nearbyIds ? '<button class="pp-text-button" type="button" data-clear-nearby>Show all results</button>' : `<span>${points().some(point => point.sample) ? 'Sample places' : points().every(point => point.status === 'saved') ? 'Saved for the journey' : ''}</span>`}</div><div class="pp-cards">${results.map(point => {
@@ -279,7 +281,8 @@
     function setExpanded(value) {
       expanded = value; panel.dataset.expanded = String(value);
       $('#places-sheet-toggle').setAttribute('aria-expanded', String(value));
-      $('#places-sheet-toggle').setAttribute('aria-label', value ? 'Show more map' : 'Expand places');
+      $('#places-sheet-toggle').setAttribute('aria-label', value ? 'Show map' : 'Show list');
+      $('#places-sheet-label').textContent = value ? 'Show map' : 'Show list';
     }
     function changeTab(name, { focus = true, scroll = true, historyWrite = true } = {}) {
       if (name === 'reviews') { openReviews(historyWrite); return; }
@@ -300,6 +303,7 @@
       const wasDetail = Boolean(selectedId); if (!wasDetail) { if (nearbyIds) nearbyScroll = content.scrollTop; else listScroll = content.scrollTop; }
       if (nearbyIds && !nearbyIds.includes(id)) nearbyIds = null;
       if (selectedId !== id) { selectedId = id; tab = 'overview'; selectedTabScroll = {}; }
+      if (mobile()) setExpanded(true);
       renderDetail(); closeCluster(); renderMarkers();
       if (historyWrite) rememberHistory(!wasDetail);
       if (move) focusPlace(current());
@@ -308,6 +312,7 @@
     function backToList(historyWrite = true) {
       if (reviewDialog.open) closeReviews(false, false);
       const previous = selectedId; selectedId = ''; tab = 'overview'; selectedTabScroll = {};
+      if (mobile()) setExpanded(true);
       renderList(); renderMarkers();
       const card = [...panel.querySelectorAll('[data-place-id]')].find(button => button.dataset.placeId === previous); card?.focus({ preventScroll: true });
       if (historyWrite) rememberHistory();
@@ -358,7 +363,6 @@
     }
     function fitPlaces() {
       const map = options.map(), results = filtered(); if (!map || !results.length || !root.maplibregl) { if (!map) showToast('The map is still loading. Your places are ready to browse.'); return; }
-      setExpanded(false);
       const request = ++cameraVersion;
       requestAnimationFrame(() => {
         if (!visible || request !== cameraVersion) return;
@@ -400,7 +404,7 @@
       if (scope === 'day' || scope === 'all') { scopeChoice = scope; selectedId = ''; nearbyIds = null; listScroll = 0; }
       if (!restoring) dayOnly = scopeChoice ? scopeChoice === 'day' : options.mapScope?.() === 'day';
       if (!resolvedDay(options.dayId())) dayOnly = false;
-      if (visible) { if (scope) { renderList(); renderMarkers(); rememberHistory(); } return; }
+      if (visible) { if (mobile()) setExpanded(true); if (scope) { renderList(); renderMarkers(); rememberHistory(); } return; }
       const map = options.map();
       // A cold MapLibre map has a neutral world camera. It is not a journey
       // context, nor is an opening animation's intermediate position.
@@ -411,7 +415,7 @@
       const opening = ++panelVersion;
       if (historyWrite) historyDepth = 0;
       for (const id of ['open-places', 'mobile-open-places', 'mobile-day-places']) document.getElementById(id)?.setAttribute('aria-expanded', 'true');
-      update(); selectedId ? renderDetail({ preserveScroll: true }) : renderList(); setExpanded(expanded);options.onPlacesVisibility?.();
+      update(); selectedId ? renderDetail({ preserveScroll: true }) : renderList(); setExpanded(mobile() || expanded);options.onPlacesVisibility?.();
       if (historyWrite) rememberHistory(true);
       requestAnimationFrame(() => { if (!visible || opening !== panelVersion) return; options.map()?.resize(); renderMarkers(); if (!selectedId) fitPlaces(); else focusPlace(current()); });
       if (focus) (selectedId ? $('#places-back-to-list') : $('#places-title')).focus({ preventScroll: true });
@@ -475,12 +479,18 @@
       if (target.dataset.placeId) { selectPlace(target.dataset.placeId); return; }
       if (target.hasAttribute('data-clear-nearby')) { clearNearby(); return; }
       if (target.dataset.placeScope) { setScope(target.dataset.placeScope); return; }
-      if (target.dataset.placeFilter) { nearbyIds = null; category = target.dataset.placeFilter; listScroll = 0; renderList(); renderMarkers(); fitPlaces(); rememberHistory(); return; }
+      if (target.dataset.placeFilter) { nearbyIds = null; category = target.dataset.placeFilter; if (mobile()) { panel.dataset.filtersOpen = 'false'; $('#places-filter-toggle').setAttribute('aria-expanded', 'false'); $('#places-filter-toggle').focus({ preventScroll: true }); } listScroll = 0; renderList(); renderMarkers(); fitPlaces(); rememberHistory(); return; }
       if (target.hasAttribute('data-clear-filters')) { nearbyIds = null; category = 'all'; query = ''; dayOnly = false; scopeChoice = 'all'; $('#places-search').value = ''; listScroll = 0; renderList(); renderMarkers(); fitPlaces(); rememberHistory(); $('#places-search').focus(); return; }
       if (target.hasAttribute('data-clear-search')) { nearbyIds = null; query = ''; $('#places-search').value = ''; listScroll = 0; renderList(); renderMarkers(); rememberHistory(); $('#places-search').focus(); return; }
-      if (target.id === 'places-fit') { fitPlaces(); return; }
+      if (target.id === 'places-filter-toggle') {
+        const show = panel.dataset.filtersOpen !== 'true';
+        panel.dataset.filtersOpen = String(show); target.setAttribute('aria-expanded', String(show));
+        if (mobile()) setExpanded(true);
+        return;
+      }
+      if (target.id === 'places-fit') { setExpanded(false); fitPlaces(); return; }
       if (target.dataset.placeTab || target.dataset.showPlaceTab) { changeTab(target.dataset.placeTab || target.dataset.showPlaceTab); return; }
-      if (target.hasAttribute('data-place-map')) { setExpanded(false); requestAnimationFrame(() => focusPlace(current())); announce(`${current().name} shown on the map.`); return; }
+      if (target.hasAttribute('data-place-map')) { toggleSheet(false); announce(`${current().name} shown on the map.`); return; }
       if (target.dataset.tripPhoto) {
         const point = current(), photos = root.JOURNEY_ATLAS_PHOTO_PLACES.photosForPlace(point, options.photos()).linked;
         if (photos.some(photo => photo.id === target.dataset.tripPhoto)) { closeForPhotos(); options.openPhoto?.(target.dataset.tripPhoto, { photos, collectionLabel: point.name }); }
@@ -502,6 +512,7 @@
     }
     panel.addEventListener('click', handlePanelClick);
     reviewDialog.addEventListener('click', handlePanelClick);
+    $('#places-search').addEventListener('focus', () => { if (mobile()) setExpanded(true); });
     $('#places-search').addEventListener('input', event => { nearbyIds = null; query = event.target.value; listScroll = 0; renderList(); renderMarkers(); rememberHistory(); });
     content.addEventListener('scroll', () => {
       if (!visible || restoring) return;
@@ -522,9 +533,17 @@
     });
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && visible && !document.querySelector('dialog[open]')) { event.preventDefault(); selectedId ? $('#places-back-to-list').click() : close(); } });
     const handle = $('#places-sheet-toggle'); let startY = null, ignoreClick = false;
-    handle.addEventListener('click', () => { if (!ignoreClick) setExpanded(!expanded); ignoreClick = false; });
+    function toggleSheet(value) {
+      setExpanded(value);
+      // Reframe only on a deliberate map request, after the sheet has settled.
+      if (!value) {
+        const version = panelVersion;
+        setTimeout(() => { if (visible && !expanded && version === panelVersion) current() ? focusPlace(current()) : fitPlaces(); }, duration(300));
+      }
+    }
+    handle.addEventListener('click', () => { if (!ignoreClick) toggleSheet(!expanded); ignoreClick = false; });
     handle.addEventListener('pointerdown', event => { startY = event.clientY; handle.setPointerCapture(event.pointerId); });
-    handle.addEventListener('pointerup', event => { if (startY !== null && Math.abs(event.clientY - startY) > 28) { setExpanded(event.clientY < startY); ignoreClick = true; setTimeout(() => { ignoreClick = false; }, 0); } startY = null; });
+    handle.addEventListener('pointerup', event => { if (startY !== null && Math.abs(event.clientY - startY) > 28) { toggleSheet(event.clientY < startY); ignoreClick = true; setTimeout(() => { ignoreClick = false; }, 0); } startY = null; });
     handle.addEventListener('pointercancel', () => { startY = null; });
     gallery.addEventListener('cancel', event => { event.preventDefault(); requestGalleryClose(); });
     gallery.addEventListener('click', event => {

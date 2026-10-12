@@ -1,5 +1,15 @@
 # Changelog
 
+## 12 October 2026 — visible mobile Places results
+
+- Open Places with room to read and select results. Keep search/scope visible,
+  reveal category filters on demand, and label the map/list sheet toggle.
+- Keep automatic pin fitting from collapsing the list; use a side sheet in
+  short landscape and preserve existing list/detail/history state.
+- Record the iPhone 12-and-larger acceptance requirement in O08 and the Places
+  contract. All 640 tests, production build and 32 trip/viewport browser cases
+  pass; public delivery is tracked in WIP.
+
 ## 12 October 2026 — fullscreen Share in the desktop sidebar
 
 - Move fullscreen Share into the right sidebar beside the photo count, below

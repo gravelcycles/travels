@@ -76,3 +76,14 @@ test('a short phone clusters places inside the real strip between the toolbar an
   assert.ok(frame.height - insets.top - insets.bottom >= 12);
   assert.ok(lowerCenter - upperCenter < 54, 'The fit naturally collapses nearby places into a compact cluster');
 });
+
+
+test('landscape Places reserves the side sheet without squeezing pins into a hidden vertical strip', () => {
+  const padding = mapInsets({left:0,top:54,right:844,bottom:390,width:844,height:336}, {
+    mobile:true, sheet:{left:364,top:54,right:844,bottom:390,width:480,height:336}
+  });
+  assert.equal(padding.right,504);
+  assert.equal(padding.bottom,68);
+  assert.ok(844-padding.left-padding.right >= 80);
+  assert.ok(336-padding.top-padding.bottom >= 80);
+});

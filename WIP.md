@@ -16,6 +16,23 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Mobile Places visibility — 12 October 2026
+
+Owner request: opening Places must expose places on iPhone 12 and larger phones.
+O08's [mobile Places correction](docs/OWNER_DECISIONS.md#mobile-places-visibility--12-october-2026)
+and the Places contract own the accepted behavior. Work is isolated in
+`/private/tmp/travels-mobile-places` on `codex/mobile-places`, based on main
+`45cdef1`; the primary checkout's concurrent edits remain untouched.
+Implemented list-first opening, explicit map/list control and progressive category
+filters, plus a landscape side sheet with unobstructed event navigation. All
+640 tests and the production build pass. Headless Chrome checks passed 32
+trip/viewport cases: Heading East, Alpine demo, an independently created city
+draft and the empty reference at 320/375/390/414/430 px, a shortened 390 px
+viewport, 844 × 390 landscape and 1360 px desktop. Checks cover visible complete
+cards, map/list switching, filters/empty escape, details/gallery, Back/Forward,
+scroll retention and no horizontal overflow. Next: integrate main, rerun final
+checks, publish and verify fresh Pages output. Publication is pending.
+
 ## State persistence audit — 12 October 2026
 
 Owner request: verify other features retain state after the fullscreen fixes.

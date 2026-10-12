@@ -62,8 +62,12 @@ belong explicitly to our group; saved unvisited places have no invented score.
 The UX preview supports rating-only or written reviews, editing, deletion with
 Undo, and per-place draft recovery. Photos open an accessible full-screen gallery
 with previous/next navigation, complete images and attribution. Map pins use
-screen-space clustering with accessible place choices. A phone sheet expands
-for reading and contracts for the map. Tabs support arrow keys, Home and End.
+screen-space clustering with accessible place choices. On phones Places opens expanded with results visible immediately. Show map /
+Show list explicitly switches space between the map and results; automatic
+pin fitting never collapses the list. Search and event scope stay directly
+available; Filters reveals the category choices, with an active-filter count.
+The compact map sheet keeps result cards and hides browse controls. Short
+landscape uses a side sheet so the map and readable results remain reachable. Tabs support arrow keys, Home and End.
 Browser Back and Forward follow place details and galleries. A return from
 linked trip photos or a temporary close keeps the same detail nodes, images,
 expanded disclosures, selected tab and scroll. Back to the list and Forward to

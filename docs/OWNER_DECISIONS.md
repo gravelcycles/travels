@@ -213,6 +213,19 @@ column; scroll the complete introduction above it. Retain the single map/list
 entry, keyboard access, readable text and phone safe-area spacing. No description
 length limit, truncation or new trip-specific field is introduced.
 
+## Mobile Places visibility — 12 October 2026
+
+The owner reported that opening Places “doesn't even show a single place on
+mobile” and requested a better UX for “iphone 12 screens +”. This extends O08:
+opening Places must show readable, tappable results immediately at 390 × 844
+and larger phone sizes, without first discovering an expansion gesture. It
+supersedes the half-height default that let controls consume the results area.
+The shared implementation opens the reading sheet, offers an explicit Show map /
+Show list control, and discloses category filters on demand. Automatic map fits
+must not collapse browsing. Check populated city/daily trips, empty filters,
+list/detail/gallery Back and Forward, scroll retention, safe areas, keyboard,
+short landscape and larger phones; preserve the existing desktop sidebar.
+
 ## Mobile pull-to-dismiss — 12 October 2026
 
 The owner reported that fullscreen is hard to exit on mobile and requested
