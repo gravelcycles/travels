@@ -36,15 +36,36 @@
       const action = $('#photo-batch-action').value, count = `${selected.size} photo${selected.size === 1 ? '' : 's'}`;
       $('#photo-batch-day-label').hidden = action !== 'assign';
       $('#photo-batch-apply').textContent = action === 'assign' ? `Move ${count} to ${journey.days.find(day => day.id === daySelect.value)?.title || 'selected day'}` : action === 'trash' ? `Move ${count} to Trash` : action === 'restore' ? `Restore ${count}` : `Move ${count} to album starts`;
-      $('#studio-photo-grid').innerHTML = visible.length ? visible.map(photo => {
+      const grid = $('#studio-photo-grid');
+      const buttons = [...grid.querySelectorAll('[data-photo-id]')];
+      const stable = visible.length && buttons.length === visible.length && buttons.every((button, index) => button.dataset.photoId === visible[index].id);
+      const markup = visible.length ? visible.map((photo, index) => {
         const thumb = photo.srcset?.[0]?.src || photo.src, chosen = selected.has(photo.id);
         const day = journey.days.find(day => day.id === photo.dayId);
-        return `<button type="button" data-photo-id="${escapeHtml(photo.id)}" class="${active ? chosen ? 'batch-selected' : '' : photo.id === selectedPhotoId ? 'active' : ''}" ${active ? `aria-pressed="${chosen}"` : ''} aria-label="${active ? 'Select' : 'Edit'} ${escapeHtml(label(photo))}, ${eventWord} ${day?.number}${photo.trashed ? ', in trash' : ''}">
+        const className = active ? chosen ? 'batch-selected' : '' : photo.id === selectedPhotoId ? 'active' : '';
+        const ariaLabel = `${active ? 'Select' : 'Edit'} ${label(photo)}, ${eventWord} ${day?.number}${photo.trashed ? ', in trash' : ''}`;
+        const contents = `
           <img src="${escapeHtml(photoUrl(thumb))}" alt="" loading="lazy" />
           ${active ? `<b class="batch-check" aria-hidden="true">${chosen ? '✓' : ''}</b>` : ''}
           <span>${escapeHtml(label(photo))}${active ? `<small>${escapeHtml(model.photoMetadata(photo, journey).detail)}${photo.trashed ? ' · In trash' : ''}</small>` : ''}</span>
-          <i class="${Number.isFinite(photo.lat) && Number.isFinite(photo.lng) ? '' : 'unlocated'}" title="${Number.isFinite(photo.lat) && Number.isFinite(photo.lng) ? 'Located' : 'Needs location'}"></i></button>`;
+          <i class="${Number.isFinite(photo.lat) && Number.isFinite(photo.lng) ? '' : 'unlocated'}" title="${Number.isFinite(photo.lat) && Number.isFinite(photo.lng) ? 'Located' : 'Needs location'}"></i>`;
+        if (stable) {
+          // Keep the pointer/focus target alive through a field's blur/change.
+          // Replacing the grid here used to swallow the user's first click.
+          const button = buttons[index];
+          button.className = className;
+          button.setAttribute('aria-label', ariaLabel);
+          if (active) button.setAttribute('aria-pressed', String(chosen));
+          else button.removeAttribute('aria-pressed');
+          if (button._photoContents !== contents) { button.innerHTML = contents; button._photoContents = contents; }
+        }
+        return `<button type="button" data-photo-id="${escapeHtml(photo.id)}" class="${className}" ${active ? `aria-pressed="${chosen}"` : ''} aria-label="${escapeHtml(ariaLabel)}">${contents}</button>`;
       }).join('') : `<p class="editor-note">${$('#photo-search').value.trim() ? 'No matching photos. Try a different search or day.' : $('#show-photo-trash').checked ? 'No photos in trash for this selection.' : 'No photos here yet. Use Add photos to begin.'}</p>`;
+      if (!stable) grid.innerHTML = markup;
+      const position = visible.findIndex(photo => photo.id === selectedPhotoId);
+      $('#photo-previous').disabled = active || position <= 0;
+      $('#photo-next').disabled = active || position < 0 || position >= visible.length - 1;
+      $('#photo-navigation-position').textContent = position < 0 ? 'No photo selected' : `${position + 1} of ${visible.length}`;
     }
     function setActive(value) {
       active = value;
@@ -80,7 +101,17 @@
         $('#photo-batch-message').textContent = 'Batch change undone. Other edits were kept.';
       } catch(error) {$('#photo-batch-message').textContent = error.message;}
     });
-    return {render, click(id) {
+    return {render, navigate(step, id) {
+      if (active) return false;
+      const position = visible.findIndex(photo => photo.id === id);
+      const next = position < 0 ? null : visible[position + step];
+      if (!next) return false;
+      selectPhoto(next.id);
+      const button = [...$('#studio-photo-grid').querySelectorAll('[data-photo-id]')].find(button => button.dataset.photoId === next.id);
+      button?.focus({preventScroll:true});
+      button?.scrollIntoView({block:'nearest'});
+      return true;
+    }, click(id) {
       if (!active) {selectPhoto(id); return;}
       selected.has(id) ? selected.delete(id) : selected.add(id); redraw();
       [...$('#studio-photo-grid').querySelectorAll('[data-photo-id]')].find(button => button.dataset.photoId === id)?.focus({preventScroll:true});

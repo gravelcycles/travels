@@ -32,6 +32,46 @@ checks now complete at 100% after approximately 3,000 ms through the same resize
 Remaining: finish browser coverage, integrate latest main, redeploy and verify
 the fresh public pages/assets.
 
+## Mobile photo grid continuity — 12 October 2026
+
+Owner follow-up: returning from fullscreen flashes when the “N photos” grid was
+open and makes the previous screen feel impermanent. O08 and PHOTO_WORKFLOW now
+require the presenting grid to remain behind the photo throughout the gesture.
+Implemented in `/private/tmp/travels-mobile-dismiss` on
+`codex/mobile-photo-dismiss`, based on main `c3c1083`. Shared code retains the
+actual grid nodes, source collection, selection and scroll while its foreground
+photo changes. Its photo background fades over that grid, preserving protected
+image bindings. Integrated main through `b96c448`; all **604 tests** and the
+production build pass. Browser checks on Heading East, Switzerland–Italy,
+Alpine demo and an independently populated
+draft cover 320/390px portrait, 844px landscape, scrolled source grids, cross-day
+browsing, nested grid/photo Back/Forward, cancellation and direct story return.
+Fixtures use labelled synthetic photos; the integrated browser smoke check also
+passes. Deployed as `e4a7596` through successful
+[Pages run 38216313781](https://github.com/gravelcycles/travels/actions/runs/38216313781).
+Fresh public Heading East/reference/Florence/demo pages and all three changed
+viewer assets match the tested build byte-for-byte. No implementation or delivery
+work remains.
+
+## Studio photo navigation and save feedback — 12 October 2026
+
+Implemented under O11's Studio follow-up: filtered left/right browsing, labeled
+per-photo local-save status, and stable thumbnail targets for first-click
+switching after editing. The primary local editor is updated and running.
+Reference and Alpine demo browser checks cover caption/coordinate edits,
+single-click switching, keyboard boundaries and cursor keys inside fields; an
+independently populated city draft covers notes, switching, reload recovery and
+saving. Save failure/retry and newer in-flight edits use the actual save handler
+in automated regressions. All **600 tests** pass against current main; the
+production build produces no public-output changes. Only Studio, focused tests
+and current guidance belong to `codex/studio-photo-editing` in
+`/private/tmp/travels-studio-photo-editing-release`. Real photo edits and the
+primary checkout's other work remain separate. Source release `260aa04` passed
+[Pages run 38215755921](https://github.com/gravelcycles/travels/actions/runs/38215755921).
+A fresh public reference page matches the build byte-for-byte; localhost serves
+the tested editing helper. Studio remains local-only. No work remains.
+
+
 ## Opening route trace — 12 October 2026
 
 Authorized: a three-second full-route trace on initial desktop/phone entry.

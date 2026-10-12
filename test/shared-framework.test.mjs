@@ -149,6 +149,8 @@ test('pull-to-dismiss inherits reference, city atlas, demo and independently pop
     f.history.go(1);assert.equal(f.node('#photo-dialog').open,true,journey.id);
     assert.equal(f.api.day().id,journey.photos[0].dayId);
     f.node('#mobile-photo-grid').onclick();f.node('#viewer-filmstrip').scrollTop=410;f.controller.gridSelected();
+    assert.equal(f.node('.photo-viewer').dataset.gridOrigin,'true',journey.id);
+    assert.equal(f.controller.gridOrigin().dayId,journey.photos[0].dayId);
     f.drag('.photo-stage',0,180,600);f.flush();
     assert.equal(f.controller.gridVisible(),true,journey.id);
     assert.equal(f.node('#viewer-filmstrip').scrollTop,410);

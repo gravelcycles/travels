@@ -144,7 +144,12 @@ The grid shows the current event (or that explicit collection). The top-left
 photo and grid control says **Back**, with no destination name. Back and
 pull-to-dismiss return one screen: a photo opened from a grid returns to that
 grid with its scroll/selection, then Back returns to the grid’s presenting
-screen. Direct photo entry returns to its presenting map/story/Places surface.
+screen. Keep that source grid mounted behind the fullscreen photo, with the
+same thumbnail nodes, selection and scroll, even while foreground browsing
+crosses days. Fade the photo background over this grid; never reveal the map or
+a blank frame before the grid appears. Reuse the existing protected-image
+bindings instead of cloning image pixels. Direct photo entry returns to its
+presenting map/story/Places surface.
 Grid/photo transitions have distinct history entries, so browser Back/Forward
 matches these controls; location reveal stays within its photo entry. Rapid Back
 requests coalesce while a traversal is pending. Save the departing layer before
@@ -484,6 +489,20 @@ retried to obtain fresh access. The gateway and R2 remain on the existing plan;
 video reads perform one HEAD plus a bounded GET and count against usage limits.
 
 ## Editing reliability — 12 September 2026
+
+Owner follow-up, 12 October 2026: **← / →** and the Previous/Next photo buttons
+browse the current day/search/Trash filter in album order, stopping at its ends.
+Arrow keys remain ordinary cursor/control keys while typing, using the map,
+inside a dialog or selecting a batch. Clicking a thumbnail after editing switches
+on the first click; blur/change must not replace its pointer target.
+
+Each selected photo shows a check with **Saved locally**, or a labeled unsaved,
+saving or failed-save state. This compares its copy, pin/frame, day, Trash and
+album order with the acknowledged local source snapshot. Other photos' changes
+do not make an unchanged photo look unsaved. Typing during an outstanding save
+stays unsaved until a later acknowledgement includes it. Draft recovery autosave
+does not earn the saved check; use **Save locally** to apply changes. Publishing
+remains separate. Check reference, demo and an independently populated draft.
 
 Changing **Photos from** selects a photo in that day or clears the editor when
 there are no matches. The complete upload form scrolls within its panel on a

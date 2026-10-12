@@ -7,6 +7,7 @@ import { photoMapHarness } from './photo-map-harness.mjs';
 import '../dist/assets/media-utils.js';
 import '../studio/plan-extras.js';
 import '../studio/photo-batch.js';
+import '../studio/photo-editing.js';
 
 function editor() {
   const nodes = new Map(), markers = [], moves = [];
@@ -41,6 +42,7 @@ function editor() {
   });
   const source = fs.readFileSync(new URL('../studio/studio.js', import.meta.url), 'utf8');
   context.window.JOURNEY_ATLAS_PHOTO_BATCH = globalThis.JOURNEY_ATLAS_PHOTO_BATCH;
+  context.window.JOURNEY_ATLAS_PHOTO_EDITING = globalThis.JOURNEY_ATLAS_PHOTO_EDITING;
   vm.runInContext(fs.readFileSync(new URL('../studio/photo-batch-ui.js', import.meta.url), 'utf8'), context);
   vm.runInContext(fs.readFileSync(new URL('../dist/assets/photo-places.js', import.meta.url), 'utf8'), context);
   vm.runInContext(fs.readFileSync(new URL('../studio/place-editor.js', import.meta.url), 'utf8'), context);

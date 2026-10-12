@@ -6,6 +6,7 @@ import '../dist/assets/atlas-utils.js';
 import '../dist/assets/media-utils.js';
 import '../studio/plan-extras.js';
 import '../studio/photo-batch.js';
+import '../studio/photo-editing.js';
 import '../studio/draft-review.js';
 const app = fs.readFileSync(new URL('../dist/assets/app.js', import.meta.url),'utf8');
 function fn(source,name) {const start=source.indexOf(`  function ${name}(`);assert.ok(start>=0,name);return source.slice(start,source.indexOf('\n  function ',start+1));}
@@ -20,13 +21,16 @@ function editor() {
     window:{addEventListener(){},JOURNEY_ATLAS_DRAFT_REVIEW:globalThis.JOURNEY_ATLAS_DRAFT_REVIEW,JOURNEY_ATLAS_DATA:{journeys:[journey]},JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS,JOURNEY_ATLAS_MEDIA:globalThis.JOURNEY_ATLAS_MEDIA,JOURNEY_ATLAS_PLAN_EXTRAS:globalThis.JOURNEY_ATLAS_PLAN_EXTRAS}});
   const source=fs.readFileSync(new URL('../studio/studio.js',import.meta.url),'utf8');
   context.window.JOURNEY_ATLAS_PHOTO_BATCH = globalThis.JOURNEY_ATLAS_PHOTO_BATCH;
+  context.window.JOURNEY_ATLAS_PHOTO_EDITING = globalThis.JOURNEY_ATLAS_PHOTO_EDITING;
   vm.runInContext(fs.readFileSync(new URL('../studio/photo-batch-ui.js', import.meta.url), 'utf8'), context);
   vm.runInContext(fs.readFileSync(new URL('../dist/assets/photo-places.js', import.meta.url), 'utf8'), context);
   vm.runInContext(fs.readFileSync(new URL('../studio/place-editor.js', import.meta.url), 'utf8'), context);
   vm.runInContext(source.replace('  init();\n})();', `
     drawRouteEditor=()=>{};renderRouteList=()=>{};renderPhotoGrid=()=>{};refreshPhotoOrderControls=()=>{};renderDaySelectors=()=>{};
     routePoints=[[8,47],[8,47]]; resetHistory(routePoints);
+    savedPhotoState=structuredClone(state);
     window.audit={saveAll,acceptRouteGeometry,restoreRouteHistory,routeEditSnapshot,newPlaceCanBeRemoved,planForJourney,
+      selectPhoto,editPhoto:caption=>{state.photos.p1={caption};markDirty();},
       state:()=>state,dirty:()=>dirty,editDay:text=>{state.days.d1={title:text};markDirty();}};
   })();`),context);
   return {api:context.window.audit,$,requests,journey};
@@ -43,6 +47,19 @@ test('ordinary Studio saves acknowledge only the sent edits and serialize repeat
 test('failed Studio save keeps edits and enables a retry',async()=>{
   const f=editor();f.api.editDay('Keep me');const saving=f.api.saveAll();f.requests[0].resolve({ok:false,json:async()=>({error:'Revision conflict'})});
   assert.equal(await saving,false);assert.equal(f.api.dirty(),true);assert.equal(f.$('#save-all').disabled,false);assert.match(f.$('#save-status').textContent,/Revision conflict/);
+});
+test('photo save badge follows the actual save response, newer typing, switching and retry',async()=>{
+  const f=editor();f.api.selectPhoto('p1',false);assert.equal(f.$('#photo-save-status').dataset.state,'saved');
+  f.api.editPhoto('Sent');assert.equal(f.$('#photo-save-status').dataset.state,'dirty');
+  const saving=f.api.saveAll();assert.equal(f.$('#photo-save-status').dataset.state,'saving');
+  f.api.editPhoto('Newer');assert.equal(f.$('#photo-save-status').dataset.state,'dirty');
+  f.api.selectPhoto('p2',false);assert.equal(f.$('#photo-save-status').dataset.state,'saved');
+  f.requests[0].resolve({ok:true,json:async()=>({ok:true,stateRevision:'r1'})});await saving;
+  f.api.selectPhoto('p1',false);assert.equal(f.$('#photo-save-status').dataset.state,'dirty');
+  const failure=f.api.saveAll();f.requests[1].resolve({ok:false,json:async()=>({error:'Offline'})});await failure;
+  assert.equal(f.$('#photo-save-status').dataset.state,'error');assert.equal(f.api.state().photos.p1.caption,'Newer');
+  const retry=f.api.saveAll();f.requests[2].resolve({ok:true,json:async()=>({ok:true,stateRevision:'r2'})});await retry;
+  assert.equal(f.$('#photo-save-status').dataset.state,'saved');
 });
 test('route replacement, smoothing and reset are undoable with the full reviewed geometry',()=>{
   const f=editor(), detailed=[[8,47],[8.005,47.009],[8.007,47.001],[8,47]];

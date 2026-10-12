@@ -12,6 +12,28 @@
   that previously stopped at 455 ms now permits completion at approximately
   3,000 ms. Deployment verification remains tracked in WIP.
 
+## 12 October 2026 — keep the photo grid behind fullscreen
+
+- Remove the map flash during photo dismissal by retaining the presenting grid
+  behind the photo for the entire gesture and return.
+- Preserve its thumbnail nodes, protected-image bindings, selection and scroll
+  through cross-day browsing, cancellation and Back/Forward.
+- Record the owner’s continuity correction in O08 and the current photo contract.
+- Validation: 604 passing tests after current-main integration, successful build and phone/landscape browser
+  checks on Heading East, reference, demo and an independently populated draft.
+  Pages release `e4a7596` succeeded; fresh public pages/assets match the build.
+
+## 12 October 2026 — Studio photo navigation and save feedback
+
+- Add filtered, bounded left/right photo browsing and Previous/Next controls,
+  keeping text, map, dialog and batch keyboard interactions intact.
+- Preserve thumbnail buttons through field changes so one click switches photos.
+- Show per-photo local-save checks and unsaved/saving/failure states from the
+  acknowledged source snapshot, retaining newer edits during outstanding saves.
+- Carry the owner correction into O11's Studio follow-up, PHOTO_WORKFLOW and
+  the feature inventory. Draft recovery and publication remain separate.
+
+
 ## 12 October 2026 — three-second opening route trace
 
 - Trace the full visible itinerary on the initial map reveal on desktop/phone,

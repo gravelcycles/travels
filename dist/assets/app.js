@@ -1483,14 +1483,25 @@
 
   function renderViewerFilmstrip(photos) {
     const strip = $("#viewer-filmstrip");
+    // Keep the actual source grid mounted beneath its fullscreen photo. Its
+    // protected image bindings and decoded thumbnails survive the round trip.
+    const origin = window.JOURNEY_ATLAS_MOBILE_UI?.gridOrigin?.();
+    const collection = origin ? origin.collection : viewerCollection;
+    const dayId = origin ? origin.dayId : viewerDay().id;
+    const selectedIndex = origin ? origin.index : viewerPhotoIndex;
+    if (origin) {
+      const ordered = orderedPhotos();
+      const byId = new Map(ordered.map(photo => [photo.id, photo]));
+      photos = collection ? collection.ids.map(id => byId.get(id)).filter(Boolean) : ordered;
+    }
     const entries = photos.map((photo, index) => ({photo, index})).filter(({photo}) =>
-      viewerCollection || photo.dayId === viewerDay().id);
+      collection || photo.dayId === dayId);
     const album = JSON.stringify(entries);
     if (strip.dataset.album !== album) {
       strip.dataset.album = album;
       strip.innerHTML = entries.length
       ? entries.map(({photo, index}, albumIndex) => `
-          <button type="button" data-viewer-index="${index}" class="${index === viewerPhotoIndex ? "active" : ""}" aria-pressed="${index === viewerPhotoIndex}" aria-label="Show ${mediaUtils.isVideo(photo) ? 'video' : 'photo'} ${albumIndex + 1} of ${entries.length}: ${escapeHtml(photo.caption || photo.alt || '')}">
+          <button type="button" data-viewer-index="${index}" class="${index === selectedIndex ? "active" : ""}" aria-pressed="${index === selectedIndex}" aria-label="Show ${mediaUtils.isVideo(photo) ? 'video' : 'photo'} ${albumIndex + 1} of ${entries.length}: ${escapeHtml(photo.caption || photo.alt || '')}">
             ${photoImageMarkup(photo, { alt: "", sizes: "180px", targetWidth: 480 })}
             <span>${String(albumIndex + 1).padStart(2, "0")}</span>
           </button>
@@ -1499,12 +1510,12 @@
       prepareProgressiveImages(strip);
     }
     for (const button of strip.querySelectorAll('[data-viewer-index]')) {
-      const selected = Number(button.dataset.viewerIndex) === viewerPhotoIndex;
+      const selected = Number(button.dataset.viewerIndex) === selectedIndex;
       button.classList.toggle('active', selected);
       button.setAttribute('aria-pressed', String(selected));
     }
     const activeThumb = $("#viewer-filmstrip .active");
-    if (!activeThumb || !strip.clientWidth || !strip.clientHeight || window.JOURNEY_ATLAS_MOBILE_UI?.enabled() && !window.JOURNEY_ATLAS_MOBILE_UI.gridVisible()) return;
+    if (origin || !activeThumb || !strip.clientWidth || !strip.clientHeight || window.JOURNEY_ATLAS_MOBILE_UI?.enabled() && !window.JOURNEY_ATLAS_MOBILE_UI.gridVisible()) return;
     // Only the filmstrip/grid may scroll. scrollIntoView also scrolls the
     // fullscreen shell, moving its fixed header and footer off the phone.
     const frame = strip.getBoundingClientRect(), thumb = activeThumb.getBoundingClientRect();
