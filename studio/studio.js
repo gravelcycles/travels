@@ -34,7 +34,7 @@
   let savedRevisions = {};
   let savedStateRevision = null;
   let savedPhotoState = null, savingPhotoState = null, photoSaveFailed = false;
-  let pendingPhotoField = null;
+  let photoFieldDrafts = {}, editGeneration = 0, discardingDraft = false;
   let uploadingPhotos = false;
   const pendingPhotoDays = new Map();
   let photoUploadSerial = 0;
@@ -175,7 +175,7 @@
     const status = window.JOURNEY_ATLAS_PHOTO_EDITING.status({
       photo:basePhotos.find(photo => photo.id === selectedPhotoId), state,
       saved:savedPhotoState, saving:savingPhotoState, failed:photoSaveFailed,
-      pending:pendingPhotoField === selectedPhotoId && selectedPhotoId !== null
+      pending:Boolean(photoFieldDrafts[selectedPhotoId] && window.JOURNEY_ATLAS_PHOTO_EDITING.coordinates(photoFieldDrafts[selectedPhotoId]).error)
     });
     const node = $('#photo-save-status');
     node.dataset.state = status.kind;
@@ -184,6 +184,7 @@
   }
 
   function markDirty(message = "Draft edits · Save locally to apply") {
+    editGeneration++;
     readiness?.invalidate();
     dirty = true;
     persistDraft();
@@ -195,6 +196,7 @@
 
   function markSaved(message = "Saved locally") {
     readiness?.invalidate();
+    if (Object.keys(photoFieldDrafts).length) { markDirty('Newer photo input still needs saving'); return; }
     if ([...plans.values()].some(plan=>plan.dirty)) { markDirty("Other trip plans still need saving"); return; }
     dirty = false;
     persistDraft();
@@ -296,8 +298,8 @@
     renderDayList();
   }
 
-  function renderPhotoGrid() {
-    photoBatch.render(window.JOURNEY_ATLAS_PHOTO_BATCH.orderedPhotos(journey, basePhotos, state), selectedPhotoId);
+  function renderPhotoGrid(options) {
+    photoBatch.render(window.JOURNEY_ATLAS_PHOTO_BATCH.orderedPhotos(journey, basePhotos, state), selectedPhotoId, options);
   }
 
   function refreshPhotoOrderControls() {
@@ -319,7 +321,6 @@
   }
 
   function selectPhoto(id, center) {
-    pendingPhotoField = null;
     const base = basePhotos.find((photo) => photo.id === id);
     $("#photo-form").inert = !base;
     $("#switch-photo-view").disabled = true;
@@ -330,6 +331,7 @@
       $("#photo-form").reset();
       $("#selected-photo").textContent = "Choose a photo, or use Add photos to begin.";
       $('#photo-asset-status').textContent = '';
+      $('#photo-field-error').textContent = '';
       $('#photo-order-status').textContent = 'No photo selected.';
       $('#trash-photo').textContent = 'Move photo to trash';
       $('#photo-move-earlier').disabled = true;
@@ -353,10 +355,13 @@
     $("#photo-zoom").value = photo.zoom || 16;
     $("#photo-caption").value = photo.caption || "";
     $("#photo-description").value = photo.description || "";
+    const fields = photoFieldDrafts[id];
+    if (fields) for (const key of ['lat','lng','zoom']) $(`#photo-${key}`).value = fields[key];
+    $('#photo-field-error').textContent = fields ? window.JOURNEY_ATLAS_PHOTO_EDITING.coordinates(fields).error || '' : '';
     $('#trash-photo').textContent = photo.trashed ? 'Restore photo from trash' : 'Move photo to trash';
     $('#photo-asset-status').textContent = photo.trashed ? 'In trash. Save locally to remove it from the atlas on the next deployment. Originals and hosted files are retained for recovery.' : photo.assetStatus === 'local' ? 'Local upload · ready to review. Asset publishing is needed before this photo can appear on the live site.' : 'Photo assets published · edits appear after the next site deployment.';
     refreshPhotoOrderControls();
-    renderPhotoGrid();
+    renderPhotoGrid({keepSelected:true});
     if (mapReady) {
       if (!center) map.stop();
       renderPhotoMap(photo, center);
@@ -408,27 +413,27 @@
     renderPhotoMap(photoWithOverride(base), true);
   }
 
-  function readPhotoForm() {
-    pendingPhotoField = null;
+  function readPhotoForm(event) {
     const base = basePhotos.find((photo) => photo.id === selectedPhotoId);
     if (!base) return;
-    const lat = Number($("#photo-lat").value);
-    const lng = Number($("#photo-lng").value);
-    const zoom = Number($("#photo-zoom").value);
+    const fields = Object.fromEntries(['lat','lng','zoom'].map(key => [key, String($(`#photo-${key}`).value)]));
+    photoFieldDrafts[selectedPhotoId] = fields;
+    const coordinates = window.JOURNEY_ATLAS_PHOTO_EDITING.coordinates(fields);
+    $('#photo-field-error').textContent = coordinates.error || '';
     const previous = photoWithOverride(base);
     const override = {
       ...(state.photos[selectedPhotoId] || {}),
       dayId: $("#photo-day").value,
-      caption: $("#photo-caption").value.trim(),
-      description: $("#photo-description").value.trim(),
-      locationLabel: $("#photo-place").value.trim()
+      caption: $("#photo-caption").value,
+      description: $("#photo-description").value,
+      locationLabel: $("#photo-place").value
     };
-    if (Number.isFinite(lat) && Number.isFinite(lng) && $("#photo-lat").value !== "" && $("#photo-lng").value !== "") {
-      override.location = { lat: Number(lat.toFixed(6)), lng: Number(lng.toFixed(6)) };
-      override.zoom = Number.isFinite(zoom) ? clampPhotoZoom(zoom) : 16;
+    if (!coordinates.error && coordinates.location) {
+      override.location = coordinates.location;
+      override.zoom = coordinates.zoom;
       const frame = override.mapFrame === undefined ? base.mapFrame : override.mapFrame;
       if (frame && !window.JOURNEY_ATLAS_UTILS.frameContainsPhoto(frame, { ...override.location })) override.mapFrame = null;
-    } else {
+    } else if (!coordinates.error) {
       override.location = null;
       delete override.zoom;
       override.mapFrame = null;
@@ -446,9 +451,33 @@
     markDirty();
     renderDaySelectors();
     $("#photo-day").value = override.dayId;
-    renderPhotoGrid();
+    renderPhotoGrid({keepSelected:true});
     refreshPhotoOrderControls();
-    if (mapReady) renderPhotoMap(photoWithOverride(base), false);
+    if (mapReady && event?.type !== 'input') renderPhotoMap(photoWithOverride(base), false);
+  }
+
+  function preparePhotoSave() {
+    for (const [id, fields] of Object.entries(photoFieldDrafts)) {
+      const invalid = window.JOURNEY_ATLAS_PHOTO_EDITING.coordinates(fields);
+      if (!invalid.error) continue;
+      const owner = data.journeys.find(item => (photosByJourney[item.id] || item.photos || []).some(photo => photo.id === id));
+      if (owner) {
+        if (owner.id !== journey.id) setJourney(owner.id);
+        $('#photo-search').value = ''; $('#photo-day-filter').value = 'all';
+        if ($('#photo-batch-toggle').getAttribute('aria-pressed') === 'true') $('#photo-batch-toggle').click();
+        setMode('photos'); selectPhoto(id, false);
+        $(`#photo-${invalid.field}`).focus();
+      }
+      setStatus(`Not saved: ${invalid.error} Your input is kept in the draft.`, 'error');
+      persistDraft(); return false;
+    }
+    return true;
+  }
+
+  function acknowledgePhotoFields(sent) {
+    for (const [id, fields] of Object.entries(sent)) {
+      if (JSON.stringify(photoFieldDrafts[id]) === JSON.stringify(fields)) delete photoFieldDrafts[id];
+    }
   }
 
   function clearActiveMap() {
@@ -1085,11 +1114,11 @@
   // result, so an unrelated disk edit is not undone by the next Save.
   function retainNewerEdits(before, current, saved) {
     if (JSON.stringify(before) === JSON.stringify(current)) return saved;
-    if (current && typeof current === 'object' && !Array.isArray(current) && before && typeof before === 'object' && !Array.isArray(before)) {
+    if (current && typeof current === 'object' && !Array.isArray(current) && (before === undefined || (before && typeof before === 'object' && !Array.isArray(before)))) {
       const result={...saved};
-      for (const key of new Set([...Object.keys(before),...Object.keys(current)])) {
+      for (const key of new Set([...Object.keys(before || {}),...Object.keys(current)])) {
         if (!Object.hasOwn(current,key)) delete result[key];
-        else result[key]=retainNewerEdits(before[key],current[key],saved?.[key]);
+        else result[key]=retainNewerEdits(before?.[key],current[key],saved?.[key]);
       }
       return result;
     }
@@ -1122,12 +1151,13 @@
   $('#cancel-save-conflict').addEventListener('click', () => $('#save-conflict-dialog').close());
 
   async function saveAll(resolution) {
-    if (savingState) return false;
+    if (savingState || discardingDraft || !preparePhotoSave()) return false;
     if (plans.get(journey.id)?.dirty) return savePlan(resolution);
     savingState = true;
     $('#save-all').disabled = true;
     $('#plan-save').disabled = true;
     const snapshot = JSON.stringify(state);
+    const sentPhotoFields = structuredClone(photoFieldDrafts);
     savingPhotoState = JSON.parse(snapshot); photoSaveFailed = false;
     refreshPhotoSaveStatus();
     persistDraft();
@@ -1145,9 +1175,10 @@
       const unchanged = JSON.stringify(state) === snapshot;
       const merged = unchanged && result.state && JSON.stringify(result.state) !== snapshot;
       if (result.state) state=retainNewerEdits(JSON.parse(snapshot),state,result.state);
+      acknowledgePhotoFields(sentPhotoFields);
       if (unchanged) markSaved();
       else markDirty('Earlier edits saved · newer changes still need saving');
-      if (merged) refreshSavedEditors();
+      if (merged && !Object.keys(photoFieldDrafts).length) refreshSavedEditors();
       if (unchanged && mode === 'routes') { $('#route-saved-state').textContent='Yes'; renderRouteList(); }
       await draftRecovery?.flush();
       return true;
@@ -1387,8 +1418,9 @@
     }
   }
   async function savePlan(resolution) {
-    if (savingState) return false;
+    if (savingState || discardingDraft || !preparePhotoSave()) return false;
     const plan=planForJourney(), owner=journey;
+    const sentPhotoFields=structuredClone(photoFieldDrafts);
     const stateSnapshot=JSON.stringify(state), planSnapshot=JSON.stringify(plan.draft);
     savingState=true; plan.saving=true;
     savingPhotoState=JSON.parse(stateSnapshot); photoSaveFailed=false; refreshPhotoSaveStatus();
@@ -1404,6 +1436,7 @@
       savedPhotoState=structuredClone(result.state);
       const stateUnchanged=JSON.stringify(state)===stateSnapshot, planUnchanged=JSON.stringify(plan.draft)===planSnapshot;
       state=retainNewerEdits(JSON.parse(stateSnapshot),state,result.state);
+      acknowledgePhotoFields(sentPhotoFields);
       Object.assign(owner,result.journey);
       if (planUnchanged) { plan.draft=structuredClone(result.journey); plan.dirty=false; }
       plan.revision=result.revision; savedRevisions[owner.id]=result.revision; plan.previewed=false;
@@ -1411,7 +1444,7 @@
         basePhotos=result.journey.photos; photosByJourney[owner.id]=basePhotos;
         renderJourneySelector(); renderDaySelectors(); renderDayList(); renderRouteList(); renderPhotoGrid();
         if (planUnchanged) renderPlanner();
-        if (stateUnchanged && planUnchanged) refreshSavedEditors();
+        if (stateUnchanged && planUnchanged && !Object.keys(photoFieldDrafts).length) refreshSavedEditors();
         $('#plan-status').textContent='Trip plan saved locally. Open Preview atlas to see the saved result.';
       }
       if (stateUnchanged && planUnchanged) markSaved('Trip plan and edits saved locally');
@@ -1523,7 +1556,7 @@
     }
   });
   function draftSnapshot() {
-    return {dirty, state, savedStateRevision, savedRevisions,
+    return {dirty, state, photoFields:photoFieldDrafts, savedStateRevision, savedRevisions,
       plans:[...plans].filter(([,plan]) => plan.dirty).map(([id,plan]) => [id, {...plan, saving:false}]),
       journeyId:journey.id, title:journey.title, mode, selectedPhotoId, selectedSegmentId, selectedDayId};
   }
@@ -1535,6 +1568,7 @@
   }
   function restoreDraft(draft) {
     state = draft.state;
+    photoFieldDrafts = structuredClone(draft.photoFields || {});
     savedStateRevision = draft.savedStateRevision;
     savedRevisions = draft.savedRevisions || {};
     plans.clear();
@@ -1551,7 +1585,8 @@
     if (!workspaceId) return false;
     try {
       draftRecovery = window.JOURNEY_ATLAS_STUDIO_RECOVERY.create({workspaceId,
-        storage:window.localStorage, session:window.sessionStorage, fetch,
+        storage:{getItem:key=>window.localStorage.getItem(key),setItem:(key,value)=>window.localStorage.setItem(key,value)},
+        session:{getItem:key=>window.sessionStorage.getItem(key),setItem:(key,value)=>window.sessionStorage.setItem(key,value)}, fetch,
         onStatus:(message,failed) => { $('#draft-status').textContent=message; $('#draft-status').className=failed?'error':''; }});
       const draft = await draftRecovery.recover();
       if (draft) { restoreDraft(draft); persistDraft(); return true; }
@@ -1560,15 +1595,17 @@
       const otherDrafts=(result.drafts || []).filter(item => item.id !== draftRecovery.id);
       $('#recover-drafts').hidden = !otherDrafts.length;
       $('#recover-draft-list').innerHTML = otherDrafts.map(item => `<button type="button" data-recover-draft="${escapeHtml(item.id)}">Restore ${escapeHtml(item.title)} · ${escapeHtml(new Date(item.updatedAt).toLocaleString())}</button>`).join('');
-    } catch(error) { $('#draft-status').textContent=`Draft recovery unavailable: ${error.message}`; $('#draft-status').className='error'; }
+    } catch(error) { $('#draft-status').textContent=`Draft recovery unavailable: ${error.message}. Reload to retry.`; $('#draft-status').className='error'; throw error; }
     return false;
   }
   $('#recover-draft-list').addEventListener('click', async event => {
     const id=event.target.closest('[data-recover-draft]')?.dataset.recoverDraft;
-    if (!id || dirty) { if (dirty) setStatus('Save or download your current edits before restoring another draft.', 'error'); return; }
+    if (!id || dirty || savingState || discardingDraft) { setStatus('Finish saving or keep your current edits before restoring another draft.', 'error'); return; }
+    const generation = editGeneration;
     try {
       const result=await (await fetch(`/api/drafts/${id}`)).json();
       if (!result.draft?.dirty) throw new Error('This draft has already been saved.');
+      if (editGeneration !== generation || dirty || savingState || discardingDraft) throw new Error('New edits were kept. Restore the other draft after saving them.');
       restoreDraft(result.draft);
       renderJourneySelector(); renderDaySelectors(); renderPhotoGrid(); renderRouteList(); renderDayList();
       if (selectedPhotoId) selectPhoto(selectedPhotoId, false);
@@ -1594,6 +1631,9 @@
   });
   $('#close-draft-diff').addEventListener('click', () => $('#draft-diff-dialog').close());
   $('#discard-draft').addEventListener('click', async () => {
+    if (savingState || discardingDraft) { $('#draft-diff-status').textContent='Wait for the save to finish before discarding a draft.'; return; }
+    discardingDraft = true;
+    const generation = editGeneration;
     $('#discard-draft').disabled=true;
     $('#draft-diff-status').textContent='Discarding the local draft…';
     // Keep a recovery archive on disk before clearing the browser snapshot.
@@ -1601,14 +1641,18 @@
     try {
       if (!draftRecovery) throw new Error('Local draft recovery is unavailable. Download your draft before continuing.');
       await draftRecovery.flush();
+      if (generation !== editGeneration) throw new Error('Newer edits arrived. Review them before discarding.');
       const snapshot=draftSnapshot();
-      const response=await fetch(`/api/drafts/${draftRecovery.id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...snapshot,schema:1,sequence:draftRecovery.sequence+1,dirty:false,discarded:true})});
+      const sequence=draftRecovery.sequence+1;
+      const response=await fetch(`/api/drafts/${draftRecovery.id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...snapshot,schema:1,sequence,dirty:false,discarded:true})});
       const result=await response.json();
-      if (!response.ok || !result.ok) throw new Error(result.error || 'Could not discard draft');
+      if (!response.ok || !result.ok || result.draft?.sequence !== sequence) throw new Error(result.error || 'Could not confirm the recovery archive');
+      if (generation !== editGeneration) throw new Error('Newer edits were kept. Review them before discarding.');
       draftRecovery.capture({...snapshot,dirty:false,discarded:true});
       dirty=false;
       window.location.reload();
-    } catch(error) { $('#draft-diff-status').textContent=`Draft kept: ${error.message}`; $('#discard-draft').disabled=false; }
+    } catch(error) { persistDraft(); $('#draft-diff-status').textContent=`Draft kept: ${error.message}`; $('#discard-draft').disabled=false; }
+    finally { discardingDraft=false; }
   });
   $('#download-draft').addEventListener('click', () => {
     const url=URL.createObjectURL(new Blob([JSON.stringify(draftSnapshot(), null, 2)], {type:'application/json'}));
@@ -1646,6 +1690,7 @@
     $('#ready-to-share').disabled=false;
     if (!recovered && journey.published === false) mode="planner";
     setMode(mode);
+    $('.studio-shell').inert=false; $('.studio-header nav').inert=false;
     initStudioMap();
   }
   let mapFeedback;
@@ -1770,11 +1815,9 @@
     if (button) selectDay(button.dataset.dayEditId, true);
   });
   $("#day-form").addEventListener("input", readDayForm);
-  $("#photo-form").addEventListener("input", (event) => {
-    if (!["photo-lat", "photo-lng", "photo-zoom"].includes(event.target.id)) readPhotoForm();
-    else { pendingPhotoField = selectedPhotoId; refreshPhotoSaveStatus(); }
-  });
+  $("#photo-form").addEventListener("input", readPhotoForm);
   $("#photo-form").addEventListener("change", readPhotoForm);
+  $('#photo-form').addEventListener('submit', event => event.preventDefault());
   $('#photo-previous').addEventListener('click', () => photoBatch.navigate(-1, selectedPhotoId));
   $('#photo-next').addEventListener('click', () => photoBatch.navigate(1, selectedPhotoId));
   document.addEventListener('keydown', event => {

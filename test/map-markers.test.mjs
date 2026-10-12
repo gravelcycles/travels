@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import '../dist/assets/map-style.js';
+import '../dist/assets/arrival-chapter.js';
+import '../dist/assets/opening-route.js';
 import { loadContent } from '../scripts/journey-content.mjs';
 import { readOverrides } from '../scripts/build-site.mjs';
 
@@ -106,8 +108,36 @@ function renderFixture(journey, prefix = 'main') {
     context.addDayStopMarkers(map,decorations,day);
   };
   const trainRoutes = day=>decorations.routeLayers.filter(route=>(!day||day.segmentIds.includes(route.segmentId))&&journey.segments.find(s=>s.id===route.segmentId).mode==='train');
-  return {context,map,decorations,markers,listeners,sources,draw,trainRoutes};
+  return {context,map,decorations,markers,listeners,sources,layers,draw,trainRoutes};
 }
+
+test('delayed main-map redraws preserve the active opening trace and hide rebuilt routes', () => {
+  for (const journey of data.journeys) {
+    const f=renderFixture(journey), frames=[];
+    let destroyed=0, nextFrame;
+    Object.assign(f.map, {
+      getContainer:()=>({classList:{add(){},remove(){}}}),
+      getLayoutProperty:(id,property)=>f.layers.get(id).layout?.[property],
+      setLayoutProperty:(id,property,value)=>{const layer=f.layers.get(id);layer.layout={...layer.layout,[property]:value};}
+    });
+    Object.assign(f.context,{photoBubbles:null,mainMap:f.map,mainMapReady:true,mainDecorations:f.decorations,mapScope:'journey',
+      activeDayId:journey.days[0].id,activeDay:()=>journey.days[0],mapIsReady:()=>true,
+      renderPlanningFilters(){},renderLegend(){},clearDayPreview(){},renderDayNavigator(){},inspectedSegmentId:null,locationLabels:null});
+    f.context.drawMainMap(false);
+    f.context.openingRoute=globalThis.JOURNEY_ATLAS_OPENING_ROUTE.start({map:f.map,journey,coordinates:f.context.segmentCoordinates,
+      requestFrame:callback=>{nextFrame=callback;return 1;},cancelFrame(){},
+      drawing:()=>({draw:frame=>frames.push(frame),destroy:()=>destroyed++})});
+    nextFrame(0);nextFrame(400);
+    f.context.drawMainMap(false);
+    assert.equal(destroyed,0,journey.id);
+    const nativeRoutes=[...f.layers.values()].filter(layer=>/^main-(line|casing)-/.test(layer.id));
+    assert.ok(nativeRoutes.length);
+    assert.ok(nativeRoutes.every(layer=>layer.layout.visibility==='none'),'Rebuilt complete routes stay hidden');
+    nextFrame(1500);assert.equal(frames.at(-1).progress,0.5);
+    nextFrame(3000);assert.equal(destroyed,1);
+    assert.ok(nativeRoutes.every(layer=>layer.layout.visibility==='visible'));
+  }
+});
 
 test('the full map restores only train endpoints and day switches replace them without stale reveals', () => {
   for (const journey of data.journeys) {

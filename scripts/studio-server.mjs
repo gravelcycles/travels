@@ -232,7 +232,11 @@ const server = http.createServer((request, response) => {
   }
   const draftMatch = url.pathname.match(/^\/api\/drafts\/([a-zA-Z0-9-]{1,80})$/);
   if (draftMatch && request.method === "GET") {
-    return send(response, 200, JSON.stringify({ok:true, draft:readStudioDraft(repoRoot, draftMatch[1])}), "application/json");
+    try {
+      return send(response, 200, JSON.stringify({ok:true, draft:readStudioDraft(repoRoot, draftMatch[1])}), "application/json");
+    } catch(error) {
+      return send(response, 500, JSON.stringify({ok:false,error:`Draft could not be read; the file has been preserved. ${error.message}`}), "application/json");
+    }
   }
   if (draftMatch && request.method === "PUT") {
     let body = "";

@@ -51,6 +51,7 @@
       const state = snapshot();
       history[push ? 'pushState' : 'replaceState']({...history.state, mobileAtlas: state}, '', location.href);
       previousState = state;
+      api.viewChanged?.();
     }
     function presentOverlay(id) {
       const surface = $(`#${id}`);
@@ -63,7 +64,7 @@
       afterDismiss = after || null;
       $(`#${id}`).close();
     }
-    for (const id of ['album-dialog', 'replay-dialog', 'notes-dialog', 'comments-dialog', 'experience-unlock', 'trip-notifications-dialog']) {
+    for (const id of ['album-dialog', 'replay-dialog', 'notes-dialog', 'comments-dialog', 'experience-unlock', 'trip-notifications-dialog', 'share-link-dialog']) {
       $(`#${id}`).addEventListener('scroll', () => {
         if (overlay === id && $(`#${id}`).open && !restoring) overlayScrolls.set(id, {top:$(`#${id}`).scrollTop || 0,left:$(`#${id}`).scrollLeft || 0});
       }, {passive:true});
@@ -415,6 +416,7 @@
       else if(state.viewer && old?.layer === 'location' && state.layer !== 'location')$('#mobile-photo-location').focus({preventScroll:true});
       renderDay();
       restoring = false; previousState = state;
+      api.viewChanged?.();
       // Direct cross-event browsing deliberately changes the returning event.
       // Save that actual return, so the next viewer cannot resurrect an old day.
       if (leavingViewer || sidebarPhoto) save();

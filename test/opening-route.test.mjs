@@ -35,11 +35,40 @@ test('cancellation restores original visibility and stale frames cannot draw aga
     const h=openingRouteHarness(journey); h.layers.set('main-line-north','none');
     const animation=h.start(); h.tick(0); h.tick(500);
     const stale=[...h.pending.values()][0], count=h.frames.length;
-    if(movement)h.events.get('movestart')();else animation.cancel();
+    if(movement)h.events.get('movestart')({originalEvent:{type:'pointermove'}});else animation.cancel();
     animation.cancel(); stale(3000);
     assert.equal(h.frames.length,count);assert.equal(h.pending.size,0);assert.equal(h.destroyed,1);
     assert.equal(h.layers.get('main-line-north'),'none');assert.equal(h.layers.get('main-line-bus'),'visible');
   }
+});
+
+test('automatic MapLibre resizing preserves the same three-second trace', () => {
+  const h=openingRouteHarness(journey); let refits=0;
+  h.start({fit:()=>refits++}); h.tick(0); h.tick(400);
+  // MapLibre resize emits movestart/move/resize/moveend without originalEvent,
+  // including a ResizeObserver update after the cover is dismissed on a phone.
+  for (const time of [450,650,1200]) {
+    h.events.get('movestart')?.({type:'movestart'});
+    h.events.get('resize')?.({type:'resize'});
+    h.tick(time);
+    assert.equal(h.destroyed,0,'Internal layout work must not reveal the entire route');
+    assert.equal(h.frames.at(-1).progress,time/3000,'Resize does not restart the clock');
+  }
+  assert.equal(refits,3);
+  h.tick(2999);assert.equal(h.destroyed,0);
+  h.tick(3000);assert.equal(h.destroyed,1);
+  assert.equal(h.events.size,0);
+});
+
+test('late native route redraws remain hidden until the opening completes', () => {
+  const h=openingRouteHarness(journey), animation=h.start();h.tick(0);h.tick(500);
+  for(const id of h.layers.keys())h.layers.set(id,'visible');
+  animation.syncLayers();
+  assert.ok([...h.layers.values()].every(value=>value==='none'));
+  h.tick(1500);assert.equal(h.frames.at(-1).progress,0.5);
+  h.tick(3000);assert.ok([...h.layers.values()].every(value=>value==='visible'));
+  animation.syncLayers();
+  assert.ok([...h.layers.values()].every(value=>value==='visible'),'A stale redraw cannot hide completed routes');
 });
 
 test('reduced motion, route-less drafts and unavailable canvas preserve the immediate map', () => {

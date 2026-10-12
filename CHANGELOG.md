@@ -9,6 +9,49 @@
 - Add regression coverage and record the owner’s audit scope in current guidance.
   See [the audit matrix](docs/PERSISTENCE_AUDIT_2026-10-12.md) for evidence and limits.
 
+## 12 October 2026 — Studio photo data safety
+
+- Capture every photo input before blur; retain unfinished coordinates through
+  switching/reload and show them in draft review. Invalid numbers block Save
+  without deleting pins. Preserve text and coordinate precision.
+- Keep the selected photo stable while typing away from a search/day match.
+  Delayed save/recovery/discard responses cannot replace newer edits.
+- Isolate duplicated-tab recovery streams, detach autosave snapshots, confirm
+  exact disk sequences and preserve unreadable draft files. Added storage,
+  delayed-response, concurrent-photo, retry and rollback regression coverage.
+- Updated the owner decision, photo workflow, feature inventory and persistence
+  contract with the follow-up requirement and tested behavior.
+
+## 12 October 2026 — preserve the mobile opening trace through layout updates
+
+- Fix the reported trace-to-full-map flash: MapLibre resize movement no longer
+  interrupts playback, and delayed map redraws keep native routes hidden until
+  the original three-second trace finishes. Deliberate input still cancels.
+- Refit the overview immediately on resize and reproject the existing drawing;
+  retain the same clock, route order, geometry and transport styles.
+- Record the owner’s follow-up in O06 and current journey/framework/feature docs.
+- Validation: 615 passing tests after current-main integration and production build; an actual MapLibre resize
+  that previously stopped at 455 ms now permits completion at approximately
+  3,000 ms. Pages release `f360382` succeeded; fresh public pages/assets match the
+  build, and the live phone trace survives viewport resizing.
+
+## 12 October 2026 — share photos and the current view
+
+- Preserve the exact shared view through an immediate login redirect and keep
+  a pending unlock prompt above a directly opened fullscreen photo.
+- Keep the address bar aligned with the day/city, selected photo and map/sidebar
+  or fullscreen view; preserve legacy links and the normal photo unlock.
+- Add quiet Share controls using the device share sheet, copy fallback and a
+  selectable link when clipboard access is unavailable. Share page identifiers
+  only; retain existing Back/Forward without one history entry per photo swipe.
+- Record authorization and acceptance in O18, the photo workflow and shared
+  feature/architecture guidance. Exact map framing and saved resume stay excluded.
+- Validation: 616 passing tests after current-main integration, successful production build, and desktop/phone
+  browser checks across reference, city atlas, demo and an independent populated
+  draft, including locked access, invalid IDs, history and share/copy failures.
+  Pages release `32e7cdf` succeeded; public pages/assets match the tested build
+  and a fresh public locked-photo login return, Share and Back/Forward pass.
+
 ## 12 October 2026 — keep the photo grid behind fullscreen
 
 - Remove the map flash during photo dismissal by retaining the presenting grid

@@ -17,7 +17,7 @@
         <span>LOCAL EDITOR</span>
         <h1>Atlas Studio</h1>
       </div>
-      <nav aria-label="Editor mode">
+      <nav aria-label="Editor mode" inert>
         <button data-mode="planner" type="button">Trip</button>
         <button class="active" data-mode="photos" type="button">Media</button>
         <button id="open-place-editor" data-mode="places" type="button">Places</button>
@@ -57,7 +57,7 @@
     </dialog>
 
     <div id="video-import-progress" class="video-import-progress" role="status" aria-live="polite" hidden><progress aria-label="Video preparation"></progress><span></span><button id="show-video-import" type="button">View in Media</button></div>
-    <main class="studio-shell" data-mode="photos">
+    <main class="studio-shell" data-mode="photos" inert>
       <aside class="browser-panel">
         <div class="studio-journey-picker">
           <label for="studio-journey">Journey</label>
@@ -150,8 +150,9 @@
           <div class="coordinate-fields">
             <label>Latitude<input id="photo-lat" name="lat" inputmode="decimal" /></label>
             <label>Longitude<input id="photo-lng" name="lng" inputmode="decimal" /></label>
-            <label>Saved map zoom<input id="photo-zoom" name="zoom" type="number" min="2" max="20" step="0.01" value="16" /></label>
+            <label>Saved map zoom<input id="photo-zoom" name="zoom" inputmode="decimal" value="16" /></label>
           </div>
+          <p id="photo-field-error" class="editor-note" role="status"></p>
           <section class="photo-frame-panel" aria-labelledby="photo-frame-heading">
             <strong id="photo-frame-heading">Map frame</strong>
             <p id="photo-frame-status" role="status">Place a pin to set its map frame.</p>

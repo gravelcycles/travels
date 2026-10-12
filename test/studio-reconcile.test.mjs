@@ -49,6 +49,10 @@ test('real Studio API reconciles, saves repeatedly, serves story/tagline and rej
     assert.match(response.headers.get('content-type'), match[1].endsWith('.js') ? /javascript/ : /css/);
   }
   const api=async(url,body,method='POST')=>{const response=await fetch(origin+url,body===undefined?{}:{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return {status:response.status,...await response.json()};};
+  fs.mkdirSync(path.join(root,'build/studio-drafts'),{recursive:true});
+  const corruptFile=path.join(root,'build/studio-drafts/corrupt.json');fs.writeFileSync(corruptFile,'incomplete file');
+  assert.equal((await api('/api/drafts/corrupt')).status,500);
+  assert.equal(fs.readFileSync(corruptFile,'utf8'),'incomplete file');assert.equal((await api('/api/state')).status,200,'A bad draft must not crash Studio');
   const loaded=await api('/api/state'),journey=loadContent(root).data.journeys.find(j=>j.kind==='real'),state=readOverrides(root);
   const baseline=structuredClone(journey),draft=structuredClone(journey),day=journey.days[4]||journey.days[0];
   draft.title='My changed trip';state.days[day.id]={...state.days[day.id],text:'A full story.\n\nSecond paragraph <kept>.',tagline:'Rain & a slow morning'};
@@ -69,6 +73,18 @@ test('real Studio API reconciles, saves repeatedly, serves story/tagline and rej
   // Ordinary day saves merge as well; an invalid build rolls every override back.
   const latest=await api('/api/state'),editorial={photos:latest.photos,routes:latest.routes,days:latest.days};editorial.days[day.id].tagline='New tagline';
   const ordinary=await api('/api/state',{...editorial,stateRevision:latest.stateRevision},'PUT');assert.equal(ordinary.status,200,ordinary.error);assert.equal(ordinary.state.days[day.id].tagline,'New tagline');
+  const photo=journey.photos[0],tabA=structuredClone(ordinary.state),tabB=structuredClone(ordinary.state);
+  tabA.photos[photo.id]={...tabA.photos[photo.id],caption:'  Exact caption from tab A  '};
+  tabB.photos[photo.id]={...tabB.photos[photo.id],description:'Notes from tab B\n\nStill here.'};
+  const sentA={...tabA,stateRevision:ordinary.stateRevision};
+  assert.equal((await api('/api/state',sentA,'PUT')).status,200);
+  const savedB=await api('/api/state',{...tabB,stateRevision:ordinary.stateRevision},'PUT');assert.equal(savedB.status,200,savedB.error);
+  assert.equal(savedB.state.photos[photo.id].caption,tabA.photos[photo.id].caption);
+  assert.equal(savedB.state.photos[photo.id].description,tabB.photos[photo.id].description);
+  const retriedA=await api('/api/state',sentA,'PUT');assert.equal(retriedA.status,200,'Retry after a lost response must be safe');
+  assert.deepEqual(retriedA.state.photos[photo.id],savedB.state.photos[photo.id]);
+  const conflict=await api('/api/state',{...tabA,photos:{...tabA.photos,[photo.id]:{caption:'Conflicting caption'}},stateRevision:ordinary.stateRevision},'PUT');
+  assert.equal(conflict.status,409);assert.equal(readOverrides(root).photos[photo.id].caption,tabA.photos[photo.id].caption);
   const beforeFailure=readOverrides(root);fs.writeFileSync(path.join(root,'scripts/build-content-overrides.mjs'),"throw new Error('Build failure fixture');");
-  const failed=await api('/api/state',{...editorial,days:{...editorial.days,[day.id]:{text:'Must roll back'}},stateRevision:ordinary.stateRevision},'PUT');assert.equal(failed.status,400);assert.deepEqual(readOverrides(root),beforeFailure);
+  const failed=await api('/api/state',{...retriedA.state,days:{...retriedA.state.days,[day.id]:{...retriedA.state.days[day.id],text:'Must roll back'}},stateRevision:retriedA.stateRevision},'PUT');assert.equal(failed.status,400);assert.deepEqual(readOverrides(root),beforeFailure);
 });

@@ -56,6 +56,10 @@ The cover remains the single entry action. Wait for map readiness if entry is
 early; do not spend the trace behind the cover or replay it on All days, resize
 or map Retry. Day/photo links retain direct entry. Pointer, keyboard, wheel,
 navigation and backgrounding interrupt and restore the complete map immediately.
+Automatic map/browser resizing and delayed route-source redraws must keep the
+same three-second clock; MapLibre emits movestart during resize even without
+user movement. Reproject/refit the trace and hide rebuilt native route layers
+until completion; do not cancel or restart it for these internal updates.
 Reduced motion and route-less drafts skip motion. Full-trip Replay stays disabled.
 Verify reference, city-stay atlas, demo and an independently populated fresh draft
 at desktop/phone sizes, including early entry, interruption and empty routes.

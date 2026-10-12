@@ -92,6 +92,12 @@
       })(), timeout]);
     } finally { clearTimeout(timer); }
   }
+  function raisePrompt() {
+    // A direct photo link may open its viewer after an auth return has already
+    // shown this prompt. Keep the existing prompt above the requested photo.
+    if (!dialog.open) return;
+    dialog.close(); dialog.showModal();
+  }
   function showPrompt(text='') { updateControls();message.textContent=text;lastFocus=document.activeElement;if(!dialog.open)dialog.showModal(); }
   function rememberGuest(){try{sessionStorage.setItem(GUEST_KEY,'1');}catch{}}
   function closePrompt(){dialog.close();lastFocus?.focus?.();}
@@ -398,7 +404,7 @@
   document.addEventListener('visibilitychange',()=>{pumpDownloads();if(!document.hidden)check();});window.navigator?.connection?.addEventListener('change',pumpDownloads);window.addEventListener('focus',check);setInterval(check,STATUS_INTERVAL);
   for(const button of document.querySelectorAll('[data-unlock]'))button.addEventListener('click',()=>begin());
   dialog.querySelector('[data-dismiss]').addEventListener('click',closePrompt);
-  dialog.addEventListener('close',()=>{if(!token)rememberGuest();lastFocus?.focus?.();});
+  dialog.addEventListener('close',()=>{if(dialog.open)return;if(!token)rememberGuest();lastFocus?.focus?.();});
   async function communityRequest(path, { method = 'GET', body } = {}) {
     if (!/^\/community\/[a-zA-Z0-9_/?=&.%-]+$/.test(path) || !service) throw new Error('Comments are unavailable.');
     if (!token || expiresAt <= Date.now()/1000) { if (token) expireAccess(); throw Object.assign(new Error('Unlock photos to read or leave comments.'), { status: 401 }); }
@@ -424,7 +430,7 @@
     let released=false;
     return {url:entry.url,release(){if(released)return;released=true;entry.refs.delete(lease);prune();}};
   }
-  window.JOURNEY_ATLAS_AUTH={communityRequest,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets,selected(photo,width)].slice(-MAX_PREFETCH));},lock,showPrompt,get unlocked(){return local||Boolean(token);}};
+  window.JOURNEY_ATLAS_AUTH={communityRequest,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets,selected(photo,width)].slice(-MAX_PREFETCH));},lock,showPrompt,raisePrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
 })();

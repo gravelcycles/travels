@@ -4,7 +4,7 @@
     const $ = selector => document.querySelector(selector), model = root.JOURNEY_ATLAS_PHOTO_BATCH;
     let active = false, selected = new Set(), undo = null, visible = [], filtered = [], inspectSelected = false;
     const label = photo => model.photoMetadata(photo, model.resolvedJourney(getContext().journey, getContext().state)).title;
-    function render(photos, selectedPhotoId) {
+    function render(photos, selectedPhotoId, {keepSelected = false} = {}) {
       const context = getContext(), journey = model.resolvedJourney(context.journey, context.state);
       const known = new Set(photos.map(photo => photo.id));
       selected = new Set([...selected].filter(id => known.has(id)));
@@ -12,6 +12,12 @@
       const dayId = journey.days.some(day => day.id === requestedDay) ? requestedDay : 'all';
       filtered = model.filterPhotos(photos, journey, {query:$('#photo-search').value, dayId, trash:$('#show-photo-trash').checked});
       visible = inspectSelected ? photos.filter(photo => selected.has(photo.id)) : filtered;
+      // Keep the photo being edited in the results until deliberate navigation.
+      // A caption/place/day edit must never redirect subsequent typing.
+      if (!active && keepSelected && selectedPhotoId && !visible.some(photo => photo.id === selectedPhotoId)) {
+        const current = photos.find(photo => photo.id === selectedPhotoId);
+        if (current) visible = photos.filter(photo => photo.id === selectedPhotoId || visible.some(item => item.id === photo.id));
+      }
       if (!active && selectedPhotoId && !visible.some(photo => photo.id === selectedPhotoId)) {
         selectedPhotoId = visible[0]?.id || null; selectPhoto(selectedPhotoId, false);
       }

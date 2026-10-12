@@ -23,5 +23,13 @@
     if (event.target?.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="slider"], #studio-map, dialog')) return 0;
     return event.key === 'ArrowLeft' ? -1 : event.key === 'ArrowRight' ? 1 : 0;
   }
-  root.JOURNEY_ATLAS_PHOTO_EDITING = {fingerprint, status, arrowStep};
+  function coordinates(fields) {
+    const lat = String(fields.lat ?? '').trim(), lng = String(fields.lng ?? '').trim(), zoom = String(fields.zoom ?? '').trim();
+    const number = value => /^[-+]?(?:\d+\.?\d*|\.\d+)$/.test(value) && Number.isFinite(Number(value));
+    if ((lat || lng) && (!number(lat) || Math.abs(Number(lat)) > 90)) return {error:'Finish the latitude (−90 to 90).',field:'lat'};
+    if ((lat || lng) && (!number(lng) || Math.abs(Number(lng)) > 180)) return {error:'Finish the longitude (−180 to 180).',field:'lng'};
+    if (!number(zoom) || Number(zoom) < 2 || Number(zoom) > 20) return {error:'Finish the map zoom (2 to 20).',field:'zoom'};
+    return {location:lat || lng ? {lat:Number(lat),lng:Number(lng)} : null,zoom:Number(zoom)};
+  }
+  root.JOURNEY_ATLAS_PHOTO_EDITING = {fingerprint, status, arrowStep, coordinates};
 })(typeof window === 'undefined' ? globalThis : window);

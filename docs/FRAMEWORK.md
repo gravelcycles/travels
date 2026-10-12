@@ -99,8 +99,9 @@ password system.
 | `content/templates/catalog.html` | Public catalog shell |
 | `dist/assets/photo-places.js`, `photo-bubbles.js`, `photo-bubbles.css` | Shared Photos + Places associations, stable geographic map groups separate from desktop journey browsing, protected thumbnails and selection through the existing desktop sidebar/phone compact card; map bubbles and right-hand reel thumbnails select, the large selected/lead image opens fullscreen (ordinary desktop/phone entry uses the journey roll under O03/O08; explicit Places collections retain scope); close old map popups before day changes and keep location thumbnails independent of album browsing |
 | `studio/place-editor.js` | Owner Places, credited images, curated reviews and ordered trip-photo links through the existing plan/save/recovery flow |
+| `dist/assets/view-sharing.js`, `view-sharing.css` | Shared view URL parsing/serialization, coalesced URL replacement and native share/copy fallback; surface controllers retain history ownership; no saved resume storage |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction; dormant full-trip Replay UI |
-| `dist/assets/opening-route.js` | Shared three-second initial overview trace; reuses arrival geometry/clock/canvas, owns temporary route visibility and cleanup, preserves separate legs and disabled Replay |
+| `dist/assets/opening-route.js` | Shared three-second initial overview trace; reuses arrival geometry/clock/canvas, owns temporary route visibility and cleanup, survives automatic map resize/refitting and resynchronizes rebuilt native layers without restarting, preserves separate legs and disabled Replay |
 | `dist/assets/location-labels.js` | Shared destination grouping, screen-space clusters, upright signposts, compact previews and accessible day selection |
 | `dist/assets/map-feedback.js`, `map-feedback.css` | Shared map loading, recovery, Retry and no-location feedback; used in Studio too |
 | `dist/assets/vendor/maplibre-5.24.0/` | Pinned MapLibre browser JS/CSS and license, served from the site |
@@ -325,6 +326,19 @@ by this documentation checkpoint.
 ## Studio persistence follow-up — 15 September 2026
 
 The owner subsequently requested reload recovery, readable draft review, and usable Save conflict handling. Those are now shared capabilities: local revision snapshots support three-way saves, independent changes combine, and conflicting fields require an explicit saved/draft choice. No force overwrite is inferred from a reload. Editable day taglines, preserved story paragraphs and compact expandable travel details use the existing shared templates and editorial overrides for real trips, demos and fresh drafts.
+
+The 12 October photo data-safety follow-up adds raw `photoFields` to private
+schema-1 recovery snapshots; invalid numbers stay out of source overrides and
+block explicit Save. Input snapshots are detached before debounce. Recovery
+streams use document-lifetime Web Locks and a versioned session key; duplicate
+tabs fork the copied draft into a new stream. Without Web Locks, each document
+uses a new stream while recovering its predecessor. Old streams remain available
+for recovery. Persist a new session pointer only after browser/disk capture.
+Disk acknowledgements must match the sent sequence; the server refuses reused
+sequences containing different edits. Corrupt draft reads return an error and
+preserve the file. Loading, save acknowledgement, restore and discard each guard
+against replacing newer edits. See [the editing contract](../PHOTO_WORKFLOW.md#editing-reliability--12-september-2026)
+and the recovery, photo-editing, real-handler and real-API regressions.
 
 
 ## Places and conversations — updated 20 September 2026
