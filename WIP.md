@@ -16,6 +16,22 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Mobile opening-trace interruption — 12 October 2026
+
+Owner follow-up: “the trace starts and then flashes to show the full map.”
+This reopens the mobile acceptance of the initial trace release below. Reproduced
+with actual MapLibre: an automatic resize at 455 ms ended playback at 15%.
+Shared opening code now ignores internal movestart events, refits immediately on
+resize, and hides rebuilt native routes without cancelling or restarting the
+clock. Deliberate input/navigation still interrupts. O06 and the opening-route
+contract own the correction. Work remains in `build/opening-route-trace` on
+`codex/opening-route-trace-20261012`, initially based on main `d74d489`.
+All **595 tests** and the production build pass, including resize/redraw checks
+on reference, city atlas, demo and an independent draft. Actual MapLibre phone
+checks now complete at 100% after approximately 3,000 ms through the same resize.
+Remaining: finish browser coverage, integrate latest main, redeploy and verify
+the fresh public pages/assets.
+
 ## Opening route trace — 12 October 2026
 
 Authorized: a three-second full-route trace on initial desktop/phone entry.

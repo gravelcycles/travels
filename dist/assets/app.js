@@ -819,7 +819,6 @@
   }
 
   function drawMainMap(fit, attempt = 0) {
-    openingRoute?.cancel(); openingRoute = null;
     renderPlanningFilters();
     if (typeof placesUI !== 'undefined') placesUI?.update();
     photoBubbles?.refresh();
@@ -845,6 +844,7 @@
         });
       });
     syncArrivalLayers();
+    openingRoute?.syncLayers();
     const stopJourney = journey;
     const stops = addDayStopMarkers(mainMap, mainDecorations, mapScope === "day" ? activeDay() : null,
       day => journey === stopJourney && (day ? mapScope === "day" && activeDayId === day.id : mapScope !== "day"));
@@ -923,8 +923,8 @@
     cancelArrival();
     mapScope = 'journey';
     setMobileTab('map');
-    // This entry fits synchronously below; the ordinary tab resize would emit
-    // movestart 80 ms later and interrupt its own trace.
+    // This entry resizes and fits synchronously below, so the ordinary tab
+    // resize is redundant. Later browser resizes preserve the running trace.
     clearTimeout(mobileMapTimer); mobileMapTimer = null;
     drawMainMap(false);
     openingRoutePending = true;
@@ -938,6 +938,7 @@
     mainMap.stop(); mainMap.resize(); fitJourneyBounds(0);
     openingRoute = window.JOURNEY_ATLAS_OPENING_ROUTE.start({
       map: mainMap, journey, coordinates: segmentCoordinates, reducedMotion: prefersReducedMotion(),
+      fit: () => fitJourneyBounds(0),
       styleForSegment: segment => {
         const style = modeStyles[segment.mode] || {color:palette.route,width:4.7};
         return {color:style.color,width:style.width,casing:palette.casing,casingWidth:style.width+3.8,

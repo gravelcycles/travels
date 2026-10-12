@@ -58,10 +58,15 @@ test('three-second opening trace inherits resolved routes for reference, city at
     for (const segment of journey.segments) if (overrides.routes[segment.id]?.geometry) segment.geometry=overrides.routes[segment.id].geometry;
     const context=vm.createContext({journey,window:{JOURNEY_ATLAS_ROUTE_GEOMETRY:routes}});
     vm.runInContext(appFunction('placeById')+'\n'+appFunction('segmentCoordinates'),context);
-    const h=openingRouteHarness(journey,context.segmentCoordinates);h.start();
+    const h=openingRouteHarness(journey,context.segmentCoordinates), animation=h.start();
     assert.match(renderJourneyPage(root,journey,{preview:true}),/opening-route\.js/);
     assert.deepEqual(h.plan.legs.map(leg=>leg.segment.id),[...new Set(journey.days.flatMap(day=>day.segmentIds))],journey.id);
-    h.tick(0);h.tick(1500);assert.equal(h.frames.at(-1).progress,0.5);assert.equal(h.destroyed,0);
+    h.tick(0);h.tick(450);
+    h.events.get('movestart')({type:'movestart'});h.events.get('resize')({type:'resize'});
+    for(const id of h.layers.keys())h.layers.set(id,'visible');
+    animation.syncLayers();
+    assert.ok([...h.layers.values()].every(value=>value==='none'),journey.id);
+    h.tick(1500);assert.equal(h.frames.at(-1).progress,0.5);assert.equal(h.destroyed,0);
     h.tick(3000);assert.deepEqual(h.frames.at(-1).position,h.plan.legs.at(-1).coordinates.at(-1));
     assert.equal(h.destroyed,1);assert.equal(h.pending.size,0);
   }

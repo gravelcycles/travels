@@ -1,5 +1,17 @@
 # Changelog
 
+## 12 October 2026 — preserve the mobile opening trace through layout updates
+
+- Fix the reported trace-to-full-map flash: MapLibre resize movement no longer
+  interrupts playback, and delayed map redraws keep native routes hidden until
+  the original three-second trace finishes. Deliberate input still cancels.
+- Refit the overview immediately on resize and reproject the existing drawing;
+  retain the same clock, route order, geometry and transport styles.
+- Record the owner’s follow-up in O06 and current journey/framework/feature docs.
+- Validation: 595 passing tests and production build; an actual MapLibre resize
+  that previously stopped at 455 ms now permits completion at approximately
+  3,000 ms. Deployment verification remains tracked in WIP.
+
 ## 12 October 2026 — three-second opening route trace
 
 - Trace the full visible itinerary on the initial map reveal on desktop/phone,
