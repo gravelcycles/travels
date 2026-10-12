@@ -16,6 +16,68 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Mobile opening-trace interruption — 12 October 2026
+
+Owner follow-up: “the trace starts and then flashes to show the full map.”
+This reopens the mobile acceptance of the initial trace release below. Reproduced
+with actual MapLibre: an automatic resize at 455 ms ended playback at 15%.
+Shared opening code now ignores internal movestart events, refits immediately on
+resize, and hides rebuilt native routes without cancelling or restarting the
+clock. Deliberate input/navigation still interrupts. O06 and the opening-route
+contract own the correction. Work remains in `build/opening-route-trace` on
+`codex/opening-route-trace-20261012`, initially based on main `d74d489`.
+Integrated main through `f1584cb`; all **615 tests** and the production build pass, including resize/redraw checks
+on reference, city atlas, demo and an independent draft. Actual MapLibre phone
+checks now complete at 100% after approximately 3,000 ms through the same resize.
+Browser coverage includes reference, Heading East, Alpine demo and an independent
+populated draft at 320/390px, desktop and 844px landscape. Playback reaches 100%
+through resize; navigation cancels both pending entry and an active trace.
+Private photo loads were excluded from map QA. Deployed as `f360382` through
+successful [Pages run 38217199004](https://github.com/gravelcycles/travels/actions/runs/38217199004).
+Fresh public reference/Heading East/Florence/demo pages and opening runtime
+assets match the tested build byte-for-byte. The public demo retains its active
+trace through a phone viewport resize. No implementation or delivery work remains.
+
+## Photo and view sharing — 12 October 2026
+
+Authorized under O18: current day/photo/view URLs, Share with device sheet and
+copy fallback, private access preserved, no history entry per photo swipe.
+Implemented in `/private/tmp/travels-photo-sharing` on
+`codex/photo-sharing-20261012`, starting at remote main `9143387`; primary-checkout
+concurrent edits remain untouched. Integrated main through `7e3df65`; all
+**616 tests** and the production build pass. Headless Chrome checks with labelled synthetic media cover reference,
+Heading East, Alpine demo and an independently populated draft: selected/fullscreen
+fresh links and reload, native-share payload/cancellation, copy and denied-clipboard
+fallback, 320/390px phone and landscape, grid Back/Forward, manual hash changes,
+cross-event links, deleted IDs, bare entry and empty albums. A separate locked
+photo check retained the target URL and made zero private-media requests; auth
+regressions verify the target hash survives remembered/locked login returns.
+A simulated browser login round trip also checks prompt stacking and the exact
+selected/fullscreen target before and after Continue without photos.
+Next: deploy the integrated release and verify fresh public output. Exact map
+framing and automatic saved visitor resume remain excluded.
+
+## Mobile photo grid continuity — 12 October 2026
+
+Owner follow-up: returning from fullscreen flashes when the “N photos” grid was
+open and makes the previous screen feel impermanent. O08 and PHOTO_WORKFLOW now
+require the presenting grid to remain behind the photo throughout the gesture.
+Implemented in `/private/tmp/travels-mobile-dismiss` on
+`codex/mobile-photo-dismiss`, based on main `c3c1083`. Shared code retains the
+actual grid nodes, source collection, selection and scroll while its foreground
+photo changes. Its photo background fades over that grid, preserving protected
+image bindings. Integrated main through `b96c448`; all **604 tests** and the
+production build pass. Browser checks on Heading East, Switzerland–Italy,
+Alpine demo and an independently populated
+draft cover 320/390px portrait, 844px landscape, scrolled source grids, cross-day
+browsing, nested grid/photo Back/Forward, cancellation and direct story return.
+Fixtures use labelled synthetic photos; the integrated browser smoke check also
+passes. Deployed as `e4a7596` through successful
+[Pages run 38216313781](https://github.com/gravelcycles/travels/actions/runs/38216313781).
+Fresh public Heading East/reference/Florence/demo pages and all three changed
+viewer assets match the tested build byte-for-byte. No implementation or delivery
+work remains.
+
 ## Studio photo navigation and save feedback — 12 October 2026
 
 Data-safety follow-up authorized: “ensure there's no data loss paths here.”
@@ -480,8 +542,8 @@ preview runs at [port 4185](http://127.0.0.1:4185/studio/). These loopback links
 work only while the corresponding local servers are running.
 
 This section supersedes pending-status claims in the historical cleanup and
-family-publication checkpoints below. Remaining design work includes explicit
-sharing and the delight mockup; named Replay seeking was implemented on 11 October. Framework W04–W06
+family-publication checkpoints below. Explicit day/photo sharing is now authorized under O18. Remaining design work includes
+the delight mockup; named Replay seeking was implemented on 11 October. Framework W04–W06
 and paired Live Photos W09 remain open.
 
 ## Publication update — 8 October 2026
@@ -631,7 +693,7 @@ for demos before putting the proposed new features on the live site.
 | Proposal | Current status |
 | --- | --- |
 | Studio recovery, readable draft comparison, save-conflict review | Subsequently authorized and shipped on 14–15 September (`06f5d63`, `94f5f27`, `df5740d`). Do not reimplement the older mockup. |
-| Explicit day/photo/moment sharing | Demo only. Preserve group/photo access context; do not infer permission for automatic visitor resume. |
+| Explicit day/photo/moment sharing | Day/photo/view sharing authorized 12 October under O18; see current workstream above. Moment/Replay sharing and saved visitor resume remain excluded. |
 | Batch photo editing / larger contact sheet | Demo only. Existing single-photo edits and album ordering are already delivered. |
 | Publishing readiness / agent handoff | Demo only. Keep local/saved/live distinctions explicit; publishing remains agent-operated. |
 | Private video intake | Demo only; see W07 below. Hosted public video playback already works. |

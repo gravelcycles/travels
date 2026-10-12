@@ -13,6 +13,45 @@
 - Updated the owner decision, photo workflow, feature inventory and persistence
   contract with the follow-up requirement and tested behavior.
 
+## 12 October 2026 — preserve the mobile opening trace through layout updates
+
+- Fix the reported trace-to-full-map flash: MapLibre resize movement no longer
+  interrupts playback, and delayed map redraws keep native routes hidden until
+  the original three-second trace finishes. Deliberate input still cancels.
+- Refit the overview immediately on resize and reproject the existing drawing;
+  retain the same clock, route order, geometry and transport styles.
+- Record the owner’s follow-up in O06 and current journey/framework/feature docs.
+- Validation: 615 passing tests after current-main integration and production build; an actual MapLibre resize
+  that previously stopped at 455 ms now permits completion at approximately
+  3,000 ms. Pages release `f360382` succeeded; fresh public pages/assets match the
+  build, and the live phone trace survives viewport resizing.
+
+## 12 October 2026 — share photos and the current view
+
+- Preserve the exact shared view through an immediate login redirect and keep
+  a pending unlock prompt above a directly opened fullscreen photo.
+- Keep the address bar aligned with the day/city, selected photo and map/sidebar
+  or fullscreen view; preserve legacy links and the normal photo unlock.
+- Add quiet Share controls using the device share sheet, copy fallback and a
+  selectable link when clipboard access is unavailable. Share page identifiers
+  only; retain existing Back/Forward without one history entry per photo swipe.
+- Record authorization and acceptance in O18, the photo workflow and shared
+  feature/architecture guidance. Exact map framing and saved resume stay excluded.
+- Validation: 616 passing tests after current-main integration, successful production build, and desktop/phone
+  browser checks across reference, city atlas, demo and an independent populated
+  draft, including locked access, invalid IDs, history and share/copy failures.
+
+## 12 October 2026 — keep the photo grid behind fullscreen
+
+- Remove the map flash during photo dismissal by retaining the presenting grid
+  behind the photo for the entire gesture and return.
+- Preserve its thumbnail nodes, protected-image bindings, selection and scroll
+  through cross-day browsing, cancellation and Back/Forward.
+- Record the owner’s continuity correction in O08 and the current photo contract.
+- Validation: 604 passing tests after current-main integration, successful build and phone/landscape browser
+  checks on Heading East, reference, demo and an independently populated draft.
+  Pages release `e4a7596` succeeded; fresh public pages/assets match the build.
+
 ## 12 October 2026 — Studio photo navigation and save feedback
 
 - Add filtered, bounded left/right photo browsing and Previous/Next controls,

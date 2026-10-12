@@ -58,10 +58,15 @@ test('three-second opening trace inherits resolved routes for reference, city at
     for (const segment of journey.segments) if (overrides.routes[segment.id]?.geometry) segment.geometry=overrides.routes[segment.id].geometry;
     const context=vm.createContext({journey,window:{JOURNEY_ATLAS_ROUTE_GEOMETRY:routes}});
     vm.runInContext(appFunction('placeById')+'\n'+appFunction('segmentCoordinates'),context);
-    const h=openingRouteHarness(journey,context.segmentCoordinates);h.start();
+    const h=openingRouteHarness(journey,context.segmentCoordinates), animation=h.start();
     assert.match(renderJourneyPage(root,journey,{preview:true}),/opening-route\.js/);
     assert.deepEqual(h.plan.legs.map(leg=>leg.segment.id),[...new Set(journey.days.flatMap(day=>day.segmentIds))],journey.id);
-    h.tick(0);h.tick(1500);assert.equal(h.frames.at(-1).progress,0.5);assert.equal(h.destroyed,0);
+    h.tick(0);h.tick(450);
+    h.events.get('movestart')({type:'movestart'});h.events.get('resize')({type:'resize'});
+    for(const id of h.layers.keys())h.layers.set(id,'visible');
+    animation.syncLayers();
+    assert.ok([...h.layers.values()].every(value=>value==='none'),journey.id);
+    h.tick(1500);assert.equal(h.frames.at(-1).progress,0.5);assert.equal(h.destroyed,0);
     h.tick(3000);assert.deepEqual(h.frames.at(-1).position,h.plan.legs.at(-1).coordinates.at(-1));
     assert.equal(h.destroyed,1);assert.equal(h.pending.size,0);
   }
@@ -144,6 +149,8 @@ test('pull-to-dismiss inherits reference, city atlas, demo and independently pop
     f.history.go(1);assert.equal(f.node('#photo-dialog').open,true,journey.id);
     assert.equal(f.api.day().id,journey.photos[0].dayId);
     f.node('#mobile-photo-grid').onclick();f.node('#viewer-filmstrip').scrollTop=410;f.controller.gridSelected();
+    assert.equal(f.node('.photo-viewer').dataset.gridOrigin,'true',journey.id);
+    assert.equal(f.controller.gridOrigin().dayId,journey.photos[0].dayId);
     f.drag('.photo-stage',0,180,600);f.flush();
     assert.equal(f.controller.gridVisible(),true,journey.id);
     assert.equal(f.node('#viewer-filmstrip').scrollTop,410);
@@ -1372,5 +1379,36 @@ test('visibility projections and synchronized controls work for reference, demo 
     assert.equal(JSON.stringify(journey),snapshot,'Projection and controller preserve traveler sources');
     const html=renderJourneyPage(root,original,{preview:true});
     for(const id of ['planning-filter','map-planning-filter','show-past','show-locked','show-tbd','map-show-past','map-show-locked','map-show-tbd']) assert.ok(html.includes(`id="${id}"`));
+  }
+});
+
+
+test('current-view sharing is inherited by reference, city atlas, demo and a populated fresh draft', async t => {
+  await import('../dist/assets/view-sharing.js');
+  const sharing=globalThis.JOURNEY_ATLAS_SHARING;
+  const root=fixture(t), draft=createJourney(root,input), {data}=loadContent(root);
+  draft.photos=[{id:'independent-share-photo',dayId:draft.days[1].id,src:'https://example.test/fixture.webp',caption:''}];
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo'),draft]) {
+    const html=renderJourneyPage(root,journey,{preview:journey===draft});
+    for(const id of ['share-lead-photo','share-photo','mobile-share-photo','share-link-dialog']) assert.ok(ids(html).includes(id),`${journey.id}: ${id}`);
+    assert.ok(assets(html).includes('view-sharing.js'));assert.ok(assets(html).includes('view-sharing.css'));
+    const photo=journey.photos[0], nodes=new Map();
+    const $=selector=>{if(!nodes.has(selector))nodes.set(selector,{hidden:false,dataset:{mobileTab:'map'}});return nodes.get(selector);};
+    const context=vm.createContext({$,
+      activeDayId:photo.dayId,mapScope:'day',photoDialog:{open:false},viewerPhotoIndex:0,
+      photosForDay:id=>journey.photos.filter(p=>p.dayId===id),viewerPhotos:()=>journey.photos,
+      photoBubbles:{currentPhoto:()=>photo},document:{body:{classList:{contains:()=>false}}},
+      window:{JOURNEY_ATLAS_MOBILE_UI:{gridVisible:()=>false}}
+    });
+    vm.runInContext(appFunction('currentSharedView'),context);
+    for(const fullscreen of [false,true]) {
+      context.photoDialog.open=fullscreen;
+      const state=JSON.parse(JSON.stringify(context.currentSharedView()));
+      const url=sharing.urlFor(`https://atlas.test/${journey.slug}`,state,{share:true});
+      assert.equal(sharing.read(url).photoId,photo.id);
+      assert.equal(sharing.read(url).dayId,photo.dayId);
+      assert.equal(sharing.read(url).view,fullscreen?'photo':'map');
+      assert.ok(!url.includes(photo.src),'Share references the page, never the media object');
+    }
   }
 });

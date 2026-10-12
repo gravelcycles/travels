@@ -29,7 +29,7 @@
     const media = matchMedia('(max-width: 900px)'), reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const dialog = $('#photo-dialog'), viewer = $('.photo-viewer'), stage = $('.photo-stage'), img = $('#modal-photo');
     const panel = $('#photo-location-panel'), strip = $('#viewer-filmstrip');
-    let current = { photos: [], index: 0, day: null }, locationOpen = false, grid = false, chrome = true;
+    let current = { photos: [], index: 0, day: null }, locationOpen = false, grid = false, chrome = true, gridOrigin = null;
     let reveal = 0, locationHeight = 300, scale = 1, panX = 0, panY = 0;
     let gesture = null, pointers = new Map(), pinch = null, suppressClick = false;
     let locationTimer, swipeTimer, swipeFrame, zoomFrame, dismissTimer;
@@ -43,13 +43,14 @@
     const enabled = () => media.matches;
     function snapshot() {
       return {overlay, overlayDepth, dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
-        viewerDay: current.day?.id, collection: dialog.open ? api.collection?.() || null : null, index: current.index, scope:api.scope(), mapView:api.captureMapView?.() || null, depth:dialog.open?viewerDepth:0, fromAlbum, gridScroll:grid ? {top:strip.scrollTop || 0,left:strip.scrollLeft || 0} : null, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
+        viewerDay: current.day?.id, collection: dialog.open ? api.collection?.() || null : null, index: current.index, scope:api.scope(), mapView:api.captureMapView?.() || null, depth:dialog.open?viewerDepth:0, fromAlbum, gridOrigin:dialog.open ? gridOrigin : null, gridScroll:grid ? {top:strip.scrollTop || 0,left:strip.scrollLeft || 0} : null, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
     }
     function save(push = false) {
       if (restoring) return;
       const state = snapshot();
       history[push ? 'pushState' : 'replaceState']({...history.state, mobileAtlas: state}, '', location.href);
       previousState = state;
+      api.viewChanged?.();
     }
     function presentOverlay(id) {
       const surface = $(`#${id}`);
@@ -62,7 +63,7 @@
       afterDismiss = after || null;
       $(`#${id}`).close();
     }
-    for (const id of ['album-dialog', 'replay-dialog', 'notes-dialog', 'comments-dialog', 'experience-unlock', 'trip-notifications-dialog']) {
+    for (const id of ['album-dialog', 'replay-dialog', 'notes-dialog', 'comments-dialog', 'experience-unlock', 'trip-notifications-dialog', 'share-link-dialog']) {
       $(`#${id}`).addEventListener('close', () => {
         // Native close events are queued. A replacement may already own the entry.
         if ($(`#${id}`).open || overlay !== id) return;
@@ -258,9 +259,16 @@
       // a traversal that can later restore an obsolete location or grid state.
       if (record && changed) save();
     }
+    function renderGridTitle() {
+      const photos = current.gridPhotos || current.photos;
+      const videos = photos.filter(item => item.mediaType === 'video').length, stills = photos.length - videos;
+      $('#mobile-grid-title').textContent = gridOrigin?.title || (current.collectionLabel ? `${current.collectionLabel} · ` : '') + [stills ? `${stills} photo${stills === 1 ? '' : 's'}` : '', videos ? `${videos} video${videos === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ') || 'No photos or videos';
+    }
     function setGrid(value, record = true) {
       const changed = grid !== value;
       if (!changed) return;
+      const origin = !value && record ? {dayId:current.day.id, collection:api.collection?.() || null, index:current.index,
+        title:$('#mobile-grid-title').textContent, scroll:{top:strip.scrollTop || 0,left:strip.scrollLeft || 0}} : null;
       if (record && !restoring && dialog.open && enabled()) {
         // Preserve the screen being left before media refreshes can save the
         // new layer. Grid selection and Back must never skip this entry.
@@ -270,6 +278,10 @@
       }
       if (value) api.pauseMedia?.();
       resetDismiss(); grid = value; viewer.dataset.grid = String(value);
+      if (value || record) gridOrigin = origin;
+      viewer.dataset.gridOrigin = String(Boolean(gridOrigin));
+      renderGridTitle();
+      $('.mobile-grid-heading').inert = !value; $('.mobile-grid-heading').setAttribute('aria-hidden',String(!value));
       stage.inert = value; $('.mobile-photo-header').inert = value || !chrome; $('.mobile-photo-footer').inert = value || !chrome;
       panel.inert = value || !locationOpen; $('#album-continue').inert = value || !chrome; strip.inert = !value && enabled();
       if (value) { setChrome(true); $('.mobile-photo-header').inert = true; $('.mobile-photo-footer').inert = true; $('#mobile-grid-back').focus({preventScroll:true}); }
@@ -282,13 +294,14 @@
       current = data; resetDismiss(); stopSwipe(); stopZoom(); lastTap = null;
       if (!enabled()) { save(); return; }
       pointers.clear(); gesture = pinch = null; zoom(1);
+      viewer.dataset.gridOrigin = String(Boolean(gridOrigin));
+      $('.mobile-grid-heading').inert = !grid; $('.mobile-grid-heading').setAttribute('aria-hidden',String(!grid));
       panel.inert=!locationOpen||grid;panel.setAttribute('aria-hidden',String(!locationOpen||grid));strip.inert=!grid;
       $('#mobile-photo-back .button-label').textContent = 'Back';
       $('#mobile-photo-count').textContent = data.photos.length ? `${data.index + 1} of ${data.photos.length}` : 'No photos';
       $('#mobile-grid-back .button-label').textContent = 'Back';
-      const gridPhotos = data.gridPhotos || data.photos;
-      const videoCount = gridPhotos.filter(item => item.mediaType === 'video').length, photoCount = gridPhotos.length - videoCount;
-      $('#mobile-grid-title').textContent = (data.collectionLabel ? `${data.collectionLabel} · ` : '') + [photoCount ? `${photoCount} photo${photoCount === 1 ? '' : 's'}` : '', videoCount ? `${videoCount} video${videoCount === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ') || 'No photos or videos';
+      renderGridTitle();
+      if (gridOrigin) { strip.scrollTop = gridOrigin.scroll.top; strip.scrollLeft = gridOrigin.scroll.left; }
       const previousEvent = data.scoped ? null : eventPhotoTarget(data.photos, api.days(), data.day.id, -1);
       const nextEvent = data.scoped ? null : eventPhotoTarget(data.photos, api.days(), data.day.id, 1);
       const eventName = eventWord() === 'stop' ? 'City' : 'Day';
@@ -337,6 +350,7 @@
         preparedEntry = null;
         if (overlay) { const previousOverlay = overlay; overlay = null; overlayDepth = 0; $(`#${previousOverlay}`).close(); }
         viewerDepth = 1;
+        if (!restoring) gridOrigin = null;
         if (!enabled()) return;
         locationOpen = false; grid = Boolean(options.grid && enabled()); viewer.dataset.grid = String(grid); setChrome(true); revealTo(0);
         panel.inert = true; panel.setAttribute('aria-hidden','true'); strip.inert = !grid; stage.inert = grid; $('.mobile-photo-header').inert = $('.mobile-photo-footer').inert = grid;
@@ -347,6 +361,7 @@
     }
     function closed() {
       resetDismiss();
+      gridOrigin = null; viewer.dataset.gridOrigin = 'false';
       neighbors.forEach(({node}) => {node.hidden=true;api.clearImage(node);node.removeAttribute('src');});
       stopSwipe(); stopZoom(); pointers.clear(); gesture = pinch = null; lastTap = null;
       if (!restoring && history.state?.mobileAtlas?.viewer) history.go(-Math.max(1, viewerDepth + (history.state.mobileAtlas.overlayDepth || 0)));
@@ -359,6 +374,7 @@
       // Leave its camera and focused input alone; that surface restores itself.
       if (JSON.stringify(state) === JSON.stringify(previousState) && !afterDismiss) return;
       const old = previousState; restoring = true;
+      gridOrigin = state.gridOrigin || null;
       const collectionChanged = JSON.stringify(api.collection?.() || null) !== JSON.stringify(state.collection || null);
       // A conversation can browse an explicit collection across days. Closing
       // it reveals the current photograph, not the image saved before opening.
@@ -390,6 +406,7 @@
       else if(state.viewer && old?.layer === 'location' && state.layer !== 'location')$('#mobile-photo-location').focus({preventScroll:true});
       renderDay();
       restoring = false; previousState = state;
+      api.viewChanged?.();
       // Direct cross-event browsing deliberately changes the returning event.
       // Save that actual return, so the next viewer cannot resurrect an old day.
       if (leavingViewer || sidebarPhoto) save();
@@ -535,7 +552,7 @@
     window.addEventListener('resize',()=>{resetDismiss(); pointers.clear(); gesture = pinch = null; measure();measureReplay();});
     new ResizeObserver(()=>{ $('.map-panel').style.setProperty('--day-summary-height',`${$('.mobile-day-summary').offsetHeight}px`); }).observe($('.mobile-day-summary'));
     save();
-    return {enabled,presentOverlay,dismissOverlay,renderDay,tabChanged,update,prepareOpen,open,closed,openGrid,replayControlsChanged,locationVisible:()=>locationOpen,gridVisible:()=>enabled()&&grid,
+    return {enabled,presentOverlay,dismissOverlay,renderDay,tabChanged,update,prepareOpen,open,closed,openGrid,replayControlsChanged,locationVisible:()=>locationOpen,gridVisible:()=>enabled()&&grid,gridOrigin:()=>enabled()?gridOrigin:null,
       fromAlbum:()=>{fromAlbum=true;},selectedDay:()=>navigate('map'),gridSelected:()=>{if(grid)setGrid(false);}, keyTarget:event=>enabled()&&(grid||event.target.closest('#photo-map'))};
   }
   const exported = {gestureAxis,swipeStep,panLimit,eventPhotoTarget,create};

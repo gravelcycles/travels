@@ -56,6 +56,10 @@ The cover remains the single entry action. Wait for map readiness if entry is
 early; do not spend the trace behind the cover or replay it on All days, resize
 or map Retry. Day/photo links retain direct entry. Pointer, keyboard, wheel,
 navigation and backgrounding interrupt and restore the complete map immediately.
+Automatic map/browser resizing and delayed route-source redraws must keep the
+same three-second clock; MapLibre emits movestart during resize even without
+user movement. Reproject/refit the trace and hide rebuilt native route layers
+until completion; do not cancel or restart it for these internal updates.
 Reduced motion and route-less drafts skip motion. Full-trip Replay stays disabled.
 Verify reference, city-stay atlas, demo and an independently populated fresh draft
 at desktop/phone sizes, including early entry, interruption and empty routes.
@@ -457,7 +461,8 @@ a closed location; a new deliberate upward drag must reopen it.
 Location changes update the photo entry; grid/photo navigation uses separate
 history entries. The fullscreen top-left control says Back, and Back/pull-down
 return to the preceding screen (including the presenting grid). Preserve grid
-scroll/selection and the presenting map/story/Places surface; browser
+scroll/selection and keep that grid mounted beneath the photo throughout
+dismissal, without a map or thumbnail-reload flash. Preserve the presenting map/story/Places surface; browser
 Back/Forward follows the same layers. Escape collapses location first, then goes
 Back. See [the photo return contract](PHOTO_WORKFLOW.md#automated-publishing-after-review).
 Check these flows on the reference trip, a demo and a fresh empty draft.

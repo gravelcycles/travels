@@ -135,3 +135,24 @@ test('header swipes ignore button starts, cancellation, vertical drags, diagonal
   assert.equal(collection.node('.mobile-photo-event-nav').hidden,true);
   assert.deepEqual(collection.moves,[]);
 });
+
+test('the presenting grid keeps its thumbnail nodes while the photo crosses days and returns',()=>{
+  for(const collection of [null,{ids:['b','a'],label:'Linked photos'}]) {
+    const photos=[{id:'a',dayId:'one'},{id:'b',dayId:'two'}];
+    let origin=null,dayId='one',builds=0,loads=0,buttons=[];
+    const strip={dataset:{},scrollTop:380,querySelectorAll:()=>buttons,set innerHTML(html){builds++;buttons=[...html.matchAll(/data-viewer-index="(\d+)"/g)].map(m=>({dataset:{viewerIndex:m[1]},classList:{toggle(){}},setAttribute(){}}));}};
+    const context=vm.createContext({viewerPhotoIndex:0,viewerCollection:collection,viewerDay:()=>({id:dayId}),orderedPhotos:()=>photos,
+      window:{JOURNEY_ATLAS_MOBILE_UI:{gridOrigin:()=>origin}},$:selector=>selector==='#viewer-filmstrip'?strip:null,
+      mediaUtils:{isVideo:()=>false},escapeHtml:value=>value||'',photoImageMarkup:()=>'<img>',prepareProgressiveImages(){loads++;}});
+    vm.runInContext(viewerFunction('renderViewerFilmstrip'),context);
+    const ordered=collection?[photos[1],photos[0]]:photos;
+    context.renderViewerFilmstrip(ordered);const original=[...buttons];
+    origin={dayId:'one',index:0,collection};dayId='two';context.viewerPhotoIndex=1;
+    context.renderViewerFilmstrip(ordered);
+    assert.equal(builds,1);assert.equal(loads,1);assert.deepEqual(buttons,original);
+    assert.equal(strip.scrollTop,380);
+    dayId='one';context.viewerPhotoIndex=0;origin=null;context.renderViewerFilmstrip(ordered);
+    assert.equal(builds,1);assert.equal(loads,1,'Return does not reload thumbnails or restart their reveal');
+    assert.deepEqual(buttons,original);
+  }
+});

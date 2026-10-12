@@ -144,7 +144,12 @@ The grid shows the current event (or that explicit collection). The top-left
 photo and grid control says **Back**, with no destination name. Back and
 pull-to-dismiss return one screen: a photo opened from a grid returns to that
 grid with its scroll/selection, then Back returns to the grid’s presenting
-screen. Direct photo entry returns to its presenting map/story/Places surface.
+screen. Keep that source grid mounted behind the fullscreen photo, with the
+same thumbnail nodes, selection and scroll, even while foreground browsing
+crosses days. Fade the photo background over this grid; never reveal the map or
+a blank frame before the grid appears. Reuse the existing protected-image
+bindings instead of cloning image pixels. Direct photo entry returns to its
+presenting map/story/Places surface.
 Grid/photo transitions have distinct history entries, so browser Back/Forward
 matches these controls; location reveal stays within its photo entry. Rapid Back
 requests coalesce while a traversal is pending. Save the departing layer before
@@ -528,6 +533,41 @@ until selection; swipe neighbors use the full-photo cache without promoting
 speculative work to a foreground download. Public-photo Retry uses the public
 loader and never asks for private-photo access.
 
+
+## Sharing a photo or view
+
+Owner-approved under [O18](docs/OWNER_DECISIONS.md#photo-and-view-sharing--12-october-2026),
+12 October 2026. The address bar follows day/city selection, a selected sidebar
+or map-card photo, and fullscreen/grid entry. The shared hash uses stable `day`
+and optional `photo` IDs, `view=map|story|photo|grid`, and `scope=journey` for an
+overview. Existing `#photo=…`, `?photo=…` and day links remain supported. Explicit
+view links survive reload; bare journey URLs keep the usual introduction.
+
+Share photo sits beside the lead/selected photo and in fullscreen. It shares the
+atlas page through the native device sheet where available. Otherwise it copies
+the link with a brief “Link copied” status; denied clipboard access opens a
+selectable link. Cancelling the share sheet does nothing. Shared links carry only
+journey/group context and the view hash, never media URLs, access credentials or
+local preview switches. Local previews still yield local links; they do not
+claim a draft is published. Private media retains the normal unlock flow and
+returns to the requested view. Restoring a link writes its final URL synchronously
+before authentication can capture the return hash; a pending unlock prompt stays
+above the restored photo viewer. Ordinary navigation updates
+wait until the surface event settles. Removed/unknown photos fall back to a valid day.
+
+Photo browsing uses `replaceState`, preserving the existing surface history.
+Opening/closing photos, grids and conversations still follows O03/O08; Back does
+not walk through every swipe. URL synchronization runs after a selection settles,
+and history traversal is restored by the existing surface controllers. Exact
+map camera coordinates and collection membership are not serialized; recipients
+start the ordinary photo roll, while existing in-tab Places collections remain
+unchanged. No new visitor-resume storage is introduced.
+
+Check reference, city-stay atlas, demo and independently populated draft:
+selected photo versus fullscreen fresh links, day/overview, cross-event browsing,
+reload, grid → photo → Back, browser Back/Forward, locked/unlocked photo entry,
+invalid/deleted IDs, native share cancellation and clipboard denial. Verify a
+320px phone header, landscape and desktop controls without overlaps.
 
 ## Comment counts and read state
 

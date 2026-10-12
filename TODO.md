@@ -273,8 +273,8 @@ The owner requested demos before the proposed features changed the live site.
 Studio recovery drafts, readable comparisons and save-conflict review were
 subsequently authorized and delivered on 14–15 September. Batch editing,
 private video intake and Ready to share were authorized on 8 October and now
-have shared implementations. Explicit sharing (without automatic visitor reload
-persistence) remains a proposal. Named stops on the map-only Replay timeline
+have shared implementations. Day/photo/view sharing was authorized 12 October
+under O18; delivery status is in WIP. Saved visitor resume remains excluded. Named stops on the map-only Replay timeline
 were authorized with the 11 October UX fixes and now use the shared player.
 Replay playback and its slider are already shipped. The six-feature demo and
 separate delight/day-experience prototypes are preserved on branches listed in

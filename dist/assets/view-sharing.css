@@ -1,0 +1,24 @@
+.share-photo,.share-lead-photo { display:inline-flex; align-items:center; gap:7px; min-height:44px; border:0; border-radius:22px; padding:9px 13px; font:12px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; cursor:pointer; }
+.share-photo { position:absolute; z-index:8; top:17px; left:18px; color:#fff; background:#153437de; backdrop-filter:blur(10px); }
+.share-photo:hover { background:#285052; }
+.share-photo svg,.share-lead-photo svg { width:19px; height:19px; }
+.share-lead-photo { color:#375554; background:transparent; margin:0 14px 8px; }
+.share-lead-photo:hover { background:#e4ece8; }
+.share-status { position:fixed; z-index:20; bottom:24px; left:50%; transform:translateX(-50%); padding:10px 16px; border-radius:22px; background:#153437; color:white; font:13px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; pointer-events:none; }
+.share-status:empty { display:none; }
+.share-link-dialog { width:min(420px,calc(100vw - 32px)); border:0; border-radius:18px; padding:24px; color:#253d3b; background:#fffdf8; box-shadow:0 14px 50px #102e3240; }
+.share-link-dialog::backdrop { background:#102e3260; }
+.share-link-dialog h2 { margin:0 0 12px; }
+.share-link-dialog p { line-height:1.5; }
+.share-link-dialog input { box-sizing:border-box; width:100%; min-height:44px; padding:10px; border:1px solid #b8cac6; border-radius:8px; font-size:16px; }
+.share-link-dialog button { float:right; min-height:44px; margin-top:16px; padding:8px 18px; border:0; border-radius:22px; background:#153437; color:white; cursor:pointer; }
+@media(min-width:901px) { .bubble-card-open .share-lead-photo { display:none; } }
+@media(max-width:900px) {
+  #share-photo { display:none; }
+  .photo-viewer .mobile-photo-header,.photo-viewer .mobile-photo-header:has(.mobile-photo-event-nav:not([hidden])) { grid-template-columns:74px minmax(0,1fr) auto 44px 44px; gap:4px; }
+  .photo-viewer .mobile-photo-header #mobile-photo-count { grid-column:3; grid-row:1; }
+  .photo-viewer .mobile-photo-header #mobile-share-photo { grid-column:4; grid-row:1; }
+  .photo-viewer .mobile-photo-header #mobile-photo-grid { grid-column:5; grid-row:1; }
+  .share-status { bottom:calc(env(safe-area-inset-bottom,0px) + 85px); }
+  .viewer-share-status { bottom:calc(var(--photo-foot,84px) + 60px); }
+}

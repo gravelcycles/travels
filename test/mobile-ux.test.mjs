@@ -406,6 +406,44 @@ test('rapid Back requests cannot skip the source grid while history is pending',
   assert.equal(f.node('#photo-dialog').open,true);assert.equal(f.controller.gridVisible(),true);
 });
 
+test('the source grid stays under the photo through browsing, a cancelled pull and queued Back',()=>{
+  const f=viewerFixture({deferredHistory:true});f.controller.openGrid('one');
+  f.node('#viewer-filmstrip').scrollTop=350;f.api.selectPhoto(1);f.controller.gridSelected();
+  const origin=JSON.stringify(f.controller.gridOrigin());
+  assert.equal(f.node('.photo-viewer').dataset.gridOrigin,'true');
+  assert.equal(f.node('.mobile-grid-heading').inert,true);
+  assert.equal(f.node('.mobile-grid-heading')['aria-hidden'],'true');
+  f.api.selectDay('two');f.api.selectPhoto(2);
+  assert.equal(JSON.stringify(f.controller.gridOrigin()),origin,'The source grid does not follow the foreground photo to a different day');
+  f.drag('.photo-stage',0,28,800);f.flush();
+  assert.equal(f.node('.photo-viewer').dataset.gridOrigin,'true');
+  assert.equal(f.node('#viewer-filmstrip').scrollTop,350);
+  f.drag('.photo-stage',0,180);f.flush();
+  assert.equal(f.node('#photo-dialog').classList.contains('is-photo-dismissing'),true);
+  assert.equal(f.node('.photo-viewer').dataset.gridOrigin,'true','Even a delayed history traversal keeps the source grid behind the faded photo');
+  f.flushHistory();
+  assert.equal(f.controller.gridVisible(),true);assert.equal(f.controller.gridOrigin(),null);
+  assert.equal(f.node('.mobile-grid-heading').inert,false);
+  assert.equal(f.node('#viewer-filmstrip').scrollTop,350);
+  f.history.go(1);f.flushHistory();
+  assert.equal(JSON.stringify(f.controller.gridOrigin()),origin,'Forward restores the same source grid');
+});
+
+test('Back from a grid opened inside a direct photo never invents a grid background',()=>{
+  const f=viewerFixture();f.api.openDay();f.click('#mobile-photo-grid');f.click('#mobile-grid-back');
+  assert.equal(f.controller.gridOrigin(),null);
+  assert.equal(f.node('.photo-viewer').dataset.gridOrigin,'false');
+});
+
+test('opening the current event grid replaces the retained source grid title',()=>{
+  const f=viewerFixture();f.controller.openGrid('one');f.controller.gridSelected();
+  f.controller.update({day:f.api.days()[1],photos:[{id:'another'}],gridPhotos:[{id:'another'}],index:0});
+  assert.equal(f.node('#mobile-grid-title').textContent,'3 photos');
+  f.click('#mobile-photo-grid');
+  assert.equal(f.node('#mobile-grid-title').textContent,'1 photo');
+  assert.equal(f.controller.gridOrigin(),null);
+});
+
 test('grid return restores its source event and explicit collection across photo browsing',()=>{
   const f=viewerFixture();const collection={ids:['p2','p0','p1'],label:'Linked place photos'};
   f.api.collection=()=>collection;f.controller.openGrid('one');f.node('#viewer-filmstrip').scrollTop=350;
