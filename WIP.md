@@ -16,6 +16,23 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Mobile photo grid continuity — 12 October 2026
+
+Owner follow-up: returning from fullscreen flashes when the “N photos” grid was
+open and makes the previous screen feel impermanent. O08 and PHOTO_WORKFLOW now
+require the presenting grid to remain behind the photo throughout the gesture.
+Work continues in `/private/tmp/travels-mobile-dismiss` on
+`codex/mobile-photo-dismiss`, based on main `c3c1083`. Shared code retains the
+actual grid nodes, source collection, selection and scroll while its foreground
+photo changes. Its photo background fades over that grid, preserving protected
+image bindings. Integrated main through `b96c448`; all **604 tests** and the
+production build pass. Browser checks
+on Heading East, Switzerland–Italy, Alpine demo and an independently populated
+draft cover 320/390px portrait, 844px landscape, scrolled source grids, cross-day
+browsing, nested grid/photo Back/Forward, cancellation and direct story return.
+Fixtures use labelled synthetic photos; the integrated browser smoke check also
+passes. Next: deploy and verify fresh public output.
+
 ## Studio photo navigation and save feedback — 12 October 2026
 
 Implemented under O11's Studio follow-up: filtered left/right browsing, labeled

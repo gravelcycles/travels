@@ -144,7 +144,12 @@ The grid shows the current event (or that explicit collection). The top-left
 photo and grid control says **Back**, with no destination name. Back and
 pull-to-dismiss return one screen: a photo opened from a grid returns to that
 grid with its scroll/selection, then Back returns to the grid’s presenting
-screen. Direct photo entry returns to its presenting map/story/Places surface.
+screen. Keep that source grid mounted behind the fullscreen photo, with the
+same thumbnail nodes, selection and scroll, even while foreground browsing
+crosses days. Fade the photo background over this grid; never reveal the map or
+a blank frame before the grid appears. Reuse the existing protected-image
+bindings instead of cloning image pixels. Direct photo entry returns to its
+presenting map/story/Places surface.
 Grid/photo transitions have distinct history entries, so browser Back/Forward
 matches these controls; location reveal stays within its photo entry. Rapid Back
 requests coalesce while a traversal is pending. Save the departing layer before

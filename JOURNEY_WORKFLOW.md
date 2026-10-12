@@ -457,7 +457,8 @@ a closed location; a new deliberate upward drag must reopen it.
 Location changes update the photo entry; grid/photo navigation uses separate
 history entries. The fullscreen top-left control says Back, and Back/pull-down
 return to the preceding screen (including the presenting grid). Preserve grid
-scroll/selection and the presenting map/story/Places surface; browser
+scroll/selection and keep that grid mounted beneath the photo throughout
+dismissal, without a map or thumbnail-reload flash. Preserve the presenting map/story/Places surface; browser
 Back/Forward follows the same layers. Escape collapses location first, then goes
 Back. See [the photo return contract](PHOTO_WORKFLOW.md#automated-publishing-after-review).
 Check these flows on the reference trip, a demo and a fresh empty draft.

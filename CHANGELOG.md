@@ -1,5 +1,15 @@
 # Changelog
 
+## 12 October 2026 — keep the photo grid behind fullscreen
+
+- Remove the map flash during photo dismissal by retaining the presenting grid
+  behind the photo for the entire gesture and return.
+- Preserve its thumbnail nodes, protected-image bindings, selection and scroll
+  through cross-day browsing, cancellation and Back/Forward.
+- Record the owner’s continuity correction in O08 and the current photo contract.
+- Validation: 604 passing tests after current-main integration, successful build and phone/landscape browser
+  checks on Heading East, reference, demo and an independently populated draft.
+
 ## 12 October 2026 — Studio photo navigation and save feedback
 
 - Add filtered, bounded left/right photo browsing and Previous/Next controls,
