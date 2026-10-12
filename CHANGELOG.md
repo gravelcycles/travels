@@ -10,6 +10,7 @@
 - Record the owner's request in O08 and the photo/feature/framework guidance.
 - Validation: 584 passing tests, successful build and phone/landscape browser
   checks on Heading East, reference, demo and an independently populated draft.
+  Pages release `7df08e8` succeeded; fresh public pages/assets match the build.
 
 ## 11 October 2026 — desktop photos beyond map clusters
 

@@ -32,8 +32,11 @@ Alpine demo and an independently populated draft verify 320/390px portrait,
 844px landscape, portrait/landscape images, short-pull snap-back, dismissal,
 location collapse, zoomed pan, cross-event return and retained desktop behavior.
 Browser fixtures used labelled synthetic photos; no content/media was changed.
-Latest remote main `b934c07` is integrated. Next: commit, deploy Pages and verify
-fresh public HTML/assets; deployment is not yet complete.
+Integrated latest main and deployed as `7df08e8` through successful
+[Pages run 38212316035](https://github.com/gravelcycles/travels/actions/runs/38212316035).
+Fresh public Heading East/reference/Florence/demo HTML and both changed runtime
+assets match the tested build byte-for-byte. No implementation or delivery work
+remains for this gesture.
 
 ## Desktop photo navigation — 11 October 2026
 
