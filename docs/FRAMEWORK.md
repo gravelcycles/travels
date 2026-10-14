@@ -136,6 +136,16 @@ reviewed assets in `content/branding/`. Edit their `content/` sources and rebuil
 content hashes to public asset URLs; template authors do not maintain version
 strings. Studio serves live assets with no-store caching.
 
+## Explicit remote experiment — 14 October 2026
+
+`prototypes/depth/index.html` builds to `dist/experiments/depth/index.html` for
+the owner-requested [fullscreen depth-motion review](DEPTH_FULLSCREEN_DEMO.md).
+Its JS/CSS/sample assets live only below that experiment directory and are not
+loaded by the catalog, journey template or Studio. This bounded review artifact
+is not a second journey implementation. Integration remains undecided; if
+approved, use the shared viewer and protected derivative pipeline rather than
+copying this demo shell into a trip. No speculative journey flag/schema added.
+
 ## Rules for adding features
 
 1. Classify the request: trip content, a generally useful capability, or a true

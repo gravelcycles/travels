@@ -27,6 +27,10 @@ activation work.
 
 ## Independent project workstreams
 
+- [ ] **Owner review — fullscreen depth motion.** Review the
+      [remote experiment](docs/DEPTH_FULLSCREEN_DEMO.md). Integration is not yet
+      authorized; do not add it to journey viewers or process private photos.
+
 - [x] **Atlas continuity guidance — 11 October 2026.** Audit available owner
       corrections; require a shared decision/supersession record and area
       workflows before content intake; reconcile current quickstarts and mark

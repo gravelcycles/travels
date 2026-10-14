@@ -1,5 +1,16 @@
 # Changelog
 
+## 14 October 2026 — remote fullscreen depth-motion preview
+
+- Add an isolated review page with still-by-default photos, opt-in browser
+  parallax, gentle drift/pointer movement, pause and hold-for-original comparison.
+- Generate genuine depth from public samples once; no visitor model download or
+  private photo exposure. Live journey viewers remain unchanged.
+- Record the owner's demo-only authorization and off-by-default boundary, the
+  processing tradeoffs and conditional future integration in current guidance.
+- Validation: 640 tests, production build, actual-depth WebGL/state/failure
+  browser checks and desktop/phone/landscape visual inspection pass.
+
 ## 12 October 2026 — visible mobile Places results
 
 - Open Places with room to read and select results. Keep search/scope visible,

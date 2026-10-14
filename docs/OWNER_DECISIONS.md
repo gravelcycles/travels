@@ -66,6 +66,17 @@ large useful imagery, restrained copy, continuous geographic context, responsive
 interruptible motion, obvious navigation and reliable recovery. It does not mean
 adding decorative animation, labels, another panel or another confirmation step.
 
+## Fullscreen depth-motion review — 14 October 2026
+
+The owner requested a remotely accessible DepthFlow-inspired demo before
+deciding on integration: “off by default” and user-enabled in fullscreen.
+Publish only the separate review artifact; this does not authorize adding the
+effect to live journey viewers, thumbnails, maps or Replay. Keep private photos
+and derived depth private. Any later approved integration must extend the shared
+fullscreen viewer and preserve O03/O04/O08, with still-image fallback and reduced
+motion. [Demo scope and processing assessment](DEPTH_FULLSCREEN_DEMO.md) own the
+experiment details; WIP records delivery/review status.
+
 ## Photo and view sharing — 12 October 2026
 
 **O18 · Share the current view.** The owner approved the proposed day/city and

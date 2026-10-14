@@ -84,6 +84,9 @@ export function buildSite(root) {
   if (demo) outputs.set("demo.html", versioned(renderJourneyPage(root, demo)));
   else outputs.set("demo.html", versioned(renderCatalogPage(root, "demo.html")));
   outputs.set("index.html", versioned(renderCatalogPage(root)));
+  // Explicitly requested remote review artifact; never loaded by journey pages.
+  const depthDemo = path.join(root, "prototypes/depth/index.html");
+  if (fs.existsSync(depthDemo)) outputs.set("experiments/depth/index.html", fs.readFileSync(depthDemo, "utf8"));
   // Track only generated detail pages; never remove hand-authored public files.
   const manifestFile = path.join(root, "dist/generated-pages.json");
   const oldPages = readJson(manifestFile, []);

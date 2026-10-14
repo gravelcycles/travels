@@ -16,6 +16,25 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Fullscreen depth-motion preview — 14 October 2026
+
+Owner requested a remote DepthFlow-inspired demonstration, off by default,
+before deciding on integration. Scope and current guidance are in
+[the demo record](docs/DEPTH_FULLSCREEN_DEMO.md) and the owner decisions.
+Work is isolated in `/private/tmp/travels-depth-demo-20261014` on
+`codex/depth-fullscreen-demo`, starting from remote main `56aaf3f`; unrelated
+primary-checkout edits remain untouched. Separate demo shell, live WebGL renderer,
+lazy depth loading, still fallback, compare/pause/pointer controls and sample
+switching are implemented. Two genuine Depth Anything V2 Small maps add 16,224
+and 23,291 bytes. All 640 tests, production build and actual-asset Chrome browser
+checks pass: initial off/no depth fetch, rendered pixels, compare, pause/resume,
+off/close cleanup, selection/Back/Forward, native fullscreen, touch steering,
+reduced motion, failed-depth retry, stale requests and WebGL fallback. Desktop,
+320/390 px phone and landscape layouts were inspected; physical-device Safari
+has not been tested. Remote main remains `56aaf3f` at pre-release refresh.
+Next: deploy the verified review artifact and verify Pages/public content.
+Native viewer integration is pending owner review, not approved implementation.
+
 ## Mobile Places visibility — 12 October 2026
 
 Owner request: opening Places must expose places on iPhone 12 and larger phones.

@@ -120,6 +120,13 @@ demonstrate different transport combinations; full-trip Replay is disabled.
 Their sparse illustrative media is intentional. They are not source templates
 to duplicate and they do not certify route or photo-location accuracy.
 
+## Separate review artifact — 14 October 2026
+
+[Fullscreen depth-motion preview](DEPTH_FULLSCREEN_DEMO.md) is a standalone,
+remotely published experiment using public samples. It starts off, lazy-loads
+precomputed depth on activation and renders in WebGL. It is **not an inherited
+journey capability**; integration awaits owner review. No live viewer changes.
+
 ## Authoring and publishing references
 
 - [JOURNEY_WORKFLOW.md](../JOURNEY_WORKFLOW.md): intake through reviewed promotion.

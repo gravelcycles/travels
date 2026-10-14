@@ -408,6 +408,16 @@ Keep originals private. Review day/location assignments, strip derivative
 metadata, upload through the private publisher, then deploy the matching manifest.
 Trashing alone is not permanent media erasure; the old Hide feature is retired.
 
+## Depth-motion review boundary — 14 October 2026
+
+The [standalone fullscreen preview](docs/DEPTH_FULLSCREEN_DEMO.md) uses public
+sample photographs and precomputed depth with live browser rendering. Motion
+starts off. It is remotely published for owner review; integration into trip
+photos is not yet approved. Do not infer bulk depth processing or new public
+photo publication from this experiment. If integration is approved, depth
+derivatives inherit the photograph's private access, review, loading and expiry
+rules; keep still-image fallback and existing gallery gestures/state intact.
+
 ## Apple references
 
 - [Share photos and videos on iPhone](https://support.apple.com/guide/iphone/iphf28f17237/ios)

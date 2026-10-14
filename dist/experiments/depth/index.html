@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f4f1ea">
+  <title>Depth motion · Journey Atlas preview</title>
+  <link rel="icon" href="../../assets/brand/icon.svg">
+  <link rel="stylesheet" href="./demo.css">
+</head>
+<body>
+  <header class="site-header"><a href="../../" class="brand"><img src="../../assets/brand/icon.svg" alt="" width="30" height="30">Journey Atlas</a><span class="preview-tag">Fullscreen preview</span></header>
+  <main id="intro">
+    <div class="intro-copy"><p class="eyebrow">A little perspective</p><h1>A photograph.<br>A sense of depth.</h1><p class="lede">Open a photo, then turn on Depth motion.<br>A small shift brings its layers into view.</p></div>
+    <div class="samples" id="samples" aria-label="Sample photographs"></div>
+    <p class="intro-note">Always still until you turn it on. Public sample photography; your trip photos are unchanged.</p>
+    <details class="about"><summary>About this preview</summary><div>
+      <p>This explores a DepthFlow-style effect for the atlas’s fullscreen viewer. A depth map is prepared once; your browser draws the moving perspective live. There is no video download or AI model running on your device in this demo.</p>
+      <p>Depth is an estimate. Small movements work best; edges, thin structures and reflections can stretch. The effect uses a slight crop to keep image edges covered.</p>
+      <p>On the atlas, this would be an optional fullscreen control. This standalone preview has no connection to your private photo library. Integration awaits your review.</p>
+      <p><a href="https://github.com/BrokenSource/DepthFlow">DepthFlow inspiration</a> · <a href="https://huggingface.co/depth-anything/Depth-Anything-V2-Small-hf">Depth Anything V2 Small model</a> · <a href="./assets/manifest.json">Sample credits &amp; provenance</a></p>
+    </div></details>
+  </main>
+  <dialog id="viewer" aria-label="Fullscreen photo preview">
+    <div class="viewer-layout">
+      <header class="viewer-header"><button id="back" type="button">← Back</button><span id="photo-count"></span><button id="expand" type="button" aria-label="Use device fullscreen">⛶ <span>Full screen</span></button></header>
+      <div class="stage" id="stage"><div class="image-frame" id="image-frame"><img id="still" alt="" draggable="false"><canvas id="depth-canvas" aria-hidden="true"></canvas></div><div class="stage-badge" id="stage-badge" aria-hidden="true">Original</div></div>
+      <aside class="controls">
+        <div class="panel-heading"><p class="eyebrow">Fullscreen preview</p><h2>Depth motion</h2><p class="muted">A different way to look.</p></div>
+        <button id="depth-toggle" class="toggle-row" type="button" role="switch" aria-checked="false"><span>Depth motion <small id="toggle-label">Off</small></span><span class="switch" aria-hidden="true"></span></button>
+        <p id="status" role="status" aria-live="polite">The original photograph.</p>
+        <fieldset id="motion-controls" disabled>
+          <legend class="sr-only">Motion settings</legend>
+          <div class="segmented" aria-label="Movement"><button id="drift-mode" type="button" aria-pressed="true">Slow drift</button><button id="pointer-mode" type="button" aria-pressed="false">Follow you</button></div>
+          <label class="strength-label" for="strength">Movement <span id="strength-value">Gentle</span></label><input id="strength" type="range" min="10" max="100" value="45">
+          <div class="action-row"><button id="pause" type="button" aria-pressed="false">Pause</button><button id="compare" type="button">Hold for original</button></div>
+        </fieldset>
+        <div class="photo-nav"><button id="previous" aria-label="Previous photo" type="button">←</button><span>Sample photos</span><button id="next" aria-label="Next photo" type="button">→</button></div>
+        <div class="filmstrip" id="filmstrip" aria-label="Choose a sample photo"></div>
+        <p class="credit" id="credit"></p>
+      </aside>
+    </div>
+  </dialog>
+  <script type="module" src="./demo.js"></script>
+</body>
+</html>
