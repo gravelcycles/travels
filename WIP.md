@@ -32,8 +32,14 @@ off/close cleanup, selection/Back/Forward, native fullscreen, touch steering,
 reduced motion, failed-depth retry, stale requests and WebGL fallback. Desktop,
 320/390 px phone and landscape layouts were inspected; physical-device Safari
 has not been tested. Remote main remains `56aaf3f` at pre-release refresh.
-Next: deploy the verified review artifact and verify Pages/public content.
-Native viewer integration is pending owner review, not approved implementation.
+Released as `8c98c67` through successful
+[Pages run 38608368833](https://github.com/gravelcycles/travels/actions/runs/38608368833).
+Fresh public demo HTML, runtime/style, manifest, both photos and both depth maps
+match the tested build byte-for-byte; the catalog/reference HTML also matches.
+A fresh public 390 × 844 Chrome load passes off → live depth → off with no
+runtime errors. The remotely accessible demo is complete. Next action is owner
+review at [the demo](https://gravelcycles.github.io/travels/experiments/depth/).
+Native viewer integration is pending that review, not approved implementation.
 
 ## Mobile Places visibility — 12 October 2026
 

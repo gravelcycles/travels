@@ -10,6 +10,8 @@
   processing tradeoffs and conditional future integration in current guidance.
 - Validation: 640 tests, production build, actual-depth WebGL/state/failure
   browser checks and desktop/phone/landscape visual inspection pass.
+- Release `8c98c67` passed Pages run `38608368833`; fresh public files match the
+  tested build, and a fresh phone-sized browser passes off → motion → off.
 
 ## 12 October 2026 — visible mobile Places results
 
