@@ -124,7 +124,9 @@ to duplicate and they do not certify route or photo-location accuracy.
 
 [Fullscreen depth-motion preview](DEPTH_FULLSCREEN_DEMO.md) is a standalone,
 remotely published experiment using public samples. It starts off, lazy-loads
-precomputed depth on activation and renders in WebGL. It is **not an inherited
+precomputed depth on activation and renders in WebGL. Direct mouse/touch drag
+holds its viewpoint on release, with reset, keyboard control, optional drift and
+adjustable 0–3× depth/presets. It is **not an inherited
 journey capability**; integration awaits owner review. No live viewer changes.
 
 ## Authoring and publishing references

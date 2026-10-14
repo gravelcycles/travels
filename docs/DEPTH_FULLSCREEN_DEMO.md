@@ -8,13 +8,30 @@ private photo service are unchanged. Publication of this review artifact is
 explicitly requested; it is an exception to keeping unrequested prototypes local.
 
 Review URL: <https://gravelcycles.github.io/travels/experiments/depth/>.
-Open either sample, then turn on **Depth motion**. Slow drift, pointer/touch
-steering, movement strength, pause and hold-for-original support comparison.
-Each newly selected photo and every reopened viewer starts off. Reduced motion
-selects pointer mode with no automatic drift; deliberate selection of Slow drift
-remains available. Motion stops when off, closed, paused/settled or backgrounded.
+Open either sample, then turn on **Depth motion**. **Drag to explore** is the
+default: mouse/one-finger drags move the viewpoint in two axes, release holds it,
+and **Reset view** centers it. Hover alone does not move the photo. Dragging during
+**Slow drift** takes control without jumping to an absolute pointer position.
+The focused photo accepts arrow keys (Shift for larger steps) and Home to reset;
+arrows outside it retain photo navigation. Multi-touch/native pinch, cancellation,
+blur, resize, mode changes and dismissal release any captured drag.
+
+**3D depth** spans flat (0×) to dramatic (3×), starting at 1×. Gentle (0.6×),
+Deep (1.5×) and Dramatic (3×) presets make comparison easy. This is relative
+parallax strength, not a measured scene-depth multiplier. Depth remains editable
+while paused; **Hold for original** shows the uncropped source. The level persists
+while trying another sample in the same page, but the effect itself starts off
+for each newly selected photo and every reopened viewer. No preference is saved
+across reload. Deliberately selected Slow drift has Pause/Resume. Reduced motion
+uses direct drag with no automatic drift or easing; explicitly choosing drift is
+still possible. Motion stops when off, flat, closed, paused/settled or backgrounded.
 WebGL/asset failure retains the still image. Native device fullscreen is optional;
 the modal already fills the browser on devices without that API.
+
+These direct-drag and adjustable-depth controls implement the owner's same-day
+follow-up asking to “drag the photo” and “play with the level of 3d,” superseding
+the first preview's hover steering and narrow Movement slider. They do not
+authorize shared-viewer integration.
 
 This is a visual interaction prototype, not a replacement gallery. It does not
 implement the atlas's swipe/pinch, map return, event navigation or private unlock
@@ -48,8 +65,13 @@ in-browser AI inference. Neither mobile performance nor inference latency is
 promised without representative physical-device measurements.
 
 Depth estimates are relative, not measured geometry. They cannot reconstruct
-hidden pixels. Small motion and 7.5% overscan limit exposed edges; thin structures,
-reflections and depth boundaries can still stretch. The WebGL canvas is capped
+hidden pixels. The renderer scales parallax from 0–3× with camera offsets bounded
+to ±0.04 horizontally and ±0.03 vertically. At a fixed level, framing stays
+constant during drag: source span is `1 - 0.044 * activation * level`, about
+1.046× zoom at level 1 and 1.152× at level 3. Zero depth is uncropped/unwarped.
+This keeps source edges covered without zoom pumping; stronger depth requires
+more crop and can stretch thin structures, reflections and depth boundaries.
+The shader uses 96 coarse samples plus six refinements. The WebGL canvas is capped
 at 1.4 million pixels and device pixel ratio 1.5. No video encoder, server GPU,
 visitor uploads, tracking or external model request is involved in playback.
 
@@ -59,6 +81,9 @@ visitor uploads, tracking or external model request is involved in playback.
   `dist/experiments/depth/index.html`.
 - Demo-only runtime/style: `dist/experiments/depth/`. Nothing in the journey
   template or catalog imports or links to the preview.
+- The build content-hashes the demo runtime/style and renderer together. The
+  lazy renderer import carries that version, so returning visitors fetch matching
+  code when the remote preview changes.
 - Image/model provenance and reproducible generation:
   [DEPTH_DEMO_ASSETS.md](DEPTH_DEMO_ASSETS.md) and the public sample manifest.
 - Delivery evidence and exact remaining scope: [WIP](../WIP.md#fullscreen-depth-motion-preview--14-october-2026).
@@ -75,8 +100,9 @@ port and never accesses private media. The 640-test suite, build and browser
 checks pass. Desktop/phone/landscape screenshot inspection also passed.
 
 Before any subsequent delivery, run the full suite/build and check desktop, phone/landscape,
-initial off state, lazy depth loading, on/off, both photos, comparison, pointer,
-pause, close/reopen, rapid changes, reduced motion, unavailable WebGL and a failed
+initial off state, lazy depth loading, on/off, both photos, comparison, relative
+mouse/touch drag, hover/release hold, reset/keyboard, depth 0/1/3 and presets,
+pause, capture cancellation, close/reopen, rapid changes, reduced motion, unavailable WebGL and a failed
 depth request. Check public assets after the successful Pages deployment.
 Physical iOS Safari/Android GPU performance remains an integration acceptance
 check. If approved, implement once in the existing shared fullscreen viewer and

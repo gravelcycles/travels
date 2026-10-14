@@ -8,19 +8,29 @@ uniform sampler2D photo;
 uniform sampler2D depth;
 uniform vec2 offset;
 uniform float amount;
+uniform float depthLevel;
 float surface(vec2 p){return 1.-texture2D(depth,clamp(p,0.,1.)).r;}
 void main(){
-  // Modest overscan conceals the image boundary; no invented background pixels.
-  vec2 base=(uv-.5)/(1.+.075*amount)+.5;
-  vec2 ray=offset*amount;
+  float strength=amount*depthLevel;
+  // Zero depth is the uncropped original, including while the camera is moved.
+  if(strength<=0.){
+    gl_FragColor=vec4(texture2D(photo,uv).rgb,1.);
+    return;
+  }
+  // The maximum horizontal ray is .04*strength; centering at t=.5 needs
+  // .020*strength of edge margin. Reserve .022*strength on every side.
+  // This depends only on depth/activation, never camera position, so dragging
+  // cannot pump the zoom. Even at level 3 every ray stays inside the source.
+  vec2 base=(uv-.5)*(1.-.044*strength)+.5;
+  vec2 ray=offset*strength;
   float hit=1.;
-  for(int i=0;i<48;i++){
-    float t=float(i)/47.;
+  for(int i=0;i<96;i++){
+    float t=float(i)/95.;
     if(t>=surface(base+ray*(t-.5))){hit=t;break;}
   }
-  float lo=max(0.,hit-1./47.);
+  float lo=max(0.,hit-1./95.);
   float hi=hit;
-  for(int j=0;j<5;j++){
+  for(int j=0;j<6;j++){
     float mid=(lo+hi)*.5;
     if(mid>=surface(base+ray*(mid-.5)))hi=mid;else lo=mid;
   }
@@ -46,7 +56,7 @@ export class DepthRenderer {
     this.buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,this.buffer);
     gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
     const location=gl.getAttribLocation(program,'position');gl.enableVertexAttribArray(location);gl.vertexAttribPointer(location,2,gl.FLOAT,false,0,0);
-    this.uniforms=Object.fromEntries(['photo','depth','offset','amount'].map(name=>[name,gl.getUniformLocation(program,name)]));
+    this.uniforms=Object.fromEntries(['photo','depth','offset','amount','depthLevel'].map(name=>[name,gl.getUniformLocation(program,name)]));
     gl.uniform1i(this.uniforms.photo,0);gl.uniform1i(this.uniforms.depth,1);
     this.textures=[];
   }
@@ -66,8 +76,14 @@ export class DepthRenderer {
     this.canvas.width=Math.max(1,Math.round(width*ratio));this.canvas.height=Math.max(1,Math.round(height*ratio));
     this.gl.viewport(0,0,this.canvas.width,this.canvas.height);
   }
-  draw(x,y,amount){
-    const gl=this.gl;gl.uniform2f(this.uniforms.offset,x,y);gl.uniform1f(this.uniforms.amount,amount);gl.drawArrays(gl.TRIANGLES,0,6);
+  draw(x,y,amount,depthLevel=1){
+    // Keep the camera contract bounded so overscan also protects external calls.
+    const clamp=(value,min,max)=>Math.min(max,Math.max(min,Number.isFinite(value)?value:0));
+    const gl=this.gl;
+    gl.uniform2f(this.uniforms.offset,clamp(x,-.04,.04),clamp(y,-.03,.03));
+    gl.uniform1f(this.uniforms.amount,clamp(amount,0,1));
+    gl.uniform1f(this.uniforms.depthLevel,clamp(depthLevel,0,3));
+    gl.drawArrays(gl.TRIANGLES,0,6);
   }
   dispose(){
     this.textures.forEach(texture=>this.gl.deleteTexture(texture));this.gl.deleteBuffer(this.buffer);this.gl.deleteProgram(this.program);

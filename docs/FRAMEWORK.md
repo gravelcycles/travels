@@ -144,7 +144,10 @@ Its JS/CSS/sample assets live only below that experiment directory and are not
 loaded by the catalog, journey template or Studio. This bounded review artifact
 is not a second journey implementation. Integration remains undecided; if
 approved, use the shared viewer and protected derivative pipeline rather than
-copying this demo shell into a trip. No speculative journey flag/schema added.
+copying this demo shell into a trip. Its direct drag and 0–3× depth controls remain
+experiment-only. The build versions the demo modules/style together, including
+the lazy shader import, to keep subsequent remote revisions consistent.
+No speculative journey flag/schema added.
 
 ## Rules for adding features
 

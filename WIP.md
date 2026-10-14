@@ -18,6 +18,22 @@ must read current files and reconcile any later corrections before continuing.
 
 ## Fullscreen depth-motion preview — 14 October 2026
 
+Same-day follow-up: owner requested direct photo dragging and more dramatic,
+adjustable 3D. The demo now has relative mouse/touch drag, held viewpoint/reset,
+keyboard arrows/Home, 0–3× depth with presets, and drag takeover from drift.
+Higher levels use fixed framing per level to cover source edges; level 0 is
+uncropped. Versioned demo modules prevent stale browser code. Current guidance
+was updated in place. All 640 tests and the production build pass. Actual WebGL
+browser checks verify two-axis drag, held release/hover, rapid keyboard input,
+reset, flat/1×/3× pixels, presets, drift takeover, bounded/cancelled capture,
+reduced motion, failed/stale loads and existing lifecycle/history behavior.
+Desktop, 390/320 px phone and landscape screenshots were reviewed at maximum
+depth; the portrait sample tolerates more depth than the bridge's hard outlines.
+Maximum travel was tuned down after visual review; strong settings still show
+the documented edge stretching. Updated remote release verification is pending;
+the prior receipt below covers the first demo. Next: publish this verified
+revision at the same review URL. Shared journey integration remains unapproved.
+
 Owner requested a remote DepthFlow-inspired demonstration, off by default,
 before deciding on integration. Scope and current guidance are in
 [the demo record](docs/DEPTH_FULLSCREEN_DEMO.md) and the owner decisions.

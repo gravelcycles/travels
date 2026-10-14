@@ -12,12 +12,13 @@
 <body>
   <header class="site-header"><a href="../../" class="brand"><img src="../../assets/brand/icon.svg" alt="" width="30" height="30">Journey Atlas</a><span class="preview-tag">Fullscreen preview</span></header>
   <main id="intro">
-    <div class="intro-copy"><p class="eyebrow">A little perspective</p><h1>A photograph.<br>A sense of depth.</h1><p class="lede">Open a photo, then turn on Depth motion.<br>A small shift brings its layers into view.</p></div>
+    <div class="intro-copy"><p class="eyebrow">A little perspective</p><h1>A photograph.<br>A sense of depth.</h1><p class="lede">Turn on Depth motion, then drag the photo.<br>Explore the layers. Turn up the depth.</p></div>
     <div class="samples" id="samples" aria-label="Sample photographs"></div>
     <p class="intro-note">Always still until you turn it on. Public sample photography; your trip photos are unchanged.</p>
     <details class="about"><summary>About this preview</summary><div>
       <p>This explores a DepthFlow-style effect for the atlas’s fullscreen viewer. A depth map is prepared once; your browser draws the moving perspective live. There is no video download or AI model running on your device in this demo.</p>
-      <p>Depth is an estimate. Small movements work best; edges, thin structures and reflections can stretch. The effect uses a slight crop to keep image edges covered.</p>
+      <p>Drag with a mouse or one finger, then release to hold that viewpoint. Adjust 3D depth from flat to 3×, or try the presets. Slow drift explores the photo automatically; dragging takes over at any time.</p>
+      <p>Depth is an estimate. Stronger settings crop in further and can stretch edges, thin structures and reflections. Hold for original to compare the untouched photograph.</p>
       <p>On the atlas, this would be an optional fullscreen control. This standalone preview has no connection to your private photo library. Integration awaits your review.</p>
       <p><a href="https://github.com/BrokenSource/DepthFlow">DepthFlow inspiration</a> · <a href="https://huggingface.co/depth-anything/Depth-Anything-V2-Small-hf">Depth Anything V2 Small model</a> · <a href="./assets/manifest.json">Sample credits &amp; provenance</a></p>
     </div></details>
@@ -25,16 +26,18 @@
   <dialog id="viewer" aria-label="Fullscreen photo preview">
     <div class="viewer-layout">
       <header class="viewer-header"><button id="back" type="button">← Back</button><span id="photo-count"></span><button id="expand" type="button" aria-label="Use device fullscreen">⛶ <span>Full screen</span></button></header>
-      <div class="stage" id="stage"><div class="image-frame" id="image-frame"><img id="still" alt="" draggable="false"><canvas id="depth-canvas" aria-hidden="true"></canvas></div><div class="stage-badge" id="stage-badge" aria-hidden="true">Original</div></div>
+      <div class="stage" id="stage"><div class="image-frame" id="image-frame" tabindex="-1" role="group" aria-label="Photo viewpoint" aria-describedby="status"><img id="still" alt="" draggable="false"><canvas id="depth-canvas" aria-hidden="true"></canvas></div><div class="stage-badge" id="stage-badge" aria-hidden="true">Original</div></div>
       <aside class="controls">
         <div class="panel-heading"><p class="eyebrow">Fullscreen preview</p><h2>Depth motion</h2><p class="muted">A different way to look.</p></div>
         <button id="depth-toggle" class="toggle-row" type="button" role="switch" aria-checked="false"><span>Depth motion <small id="toggle-label">Off</small></span><span class="switch" aria-hidden="true"></span></button>
         <p id="status" role="status" aria-live="polite">The original photograph.</p>
         <fieldset id="motion-controls" disabled>
           <legend class="sr-only">Motion settings</legend>
-          <div class="segmented" aria-label="Movement"><button id="drift-mode" type="button" aria-pressed="true">Slow drift</button><button id="pointer-mode" type="button" aria-pressed="false">Follow you</button></div>
-          <label class="strength-label" for="strength">Movement <span id="strength-value">Gentle</span></label><input id="strength" type="range" min="10" max="100" value="45">
-          <div class="action-row"><button id="pause" type="button" aria-pressed="false">Pause</button><button id="compare" type="button">Hold for original</button></div>
+          <div class="segmented" aria-label="Movement"><button id="drag-mode" type="button" aria-pressed="true">Drag to explore</button><button id="drift-mode" type="button" aria-pressed="false">Slow drift</button></div>
+          <label class="strength-label" for="strength">3D depth <output id="strength-value" for="strength">1.0×</output></label><input id="strength" type="range" min="0" max="300" value="100" step="5" aria-valuetext="1.0 times depth">
+          <div class="depth-presets" role="group" aria-label="3D depth presets"><button type="button" data-depth="60" aria-pressed="false">Gentle</button><button type="button" data-depth="150" aria-pressed="false">Deep</button><button type="button" data-depth="300" aria-pressed="false">Dramatic</button></div>
+          <p class="depth-note" id="depth-note" hidden>High depth can stretch edges.</p>
+          <div class="action-row"><button id="reset-view" type="button">Reset view</button><button id="pause" type="button" aria-pressed="false" hidden>Pause</button><button id="compare" type="button">Hold for original</button></div>
         </fieldset>
         <div class="photo-nav"><button id="previous" aria-label="Previous photo" type="button">←</button><span>Sample photos</span><button id="next" aria-label="Next photo" type="button">→</button></div>
         <div class="filmstrip" id="filmstrip" aria-label="Choose a sample photo"></div>

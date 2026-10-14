@@ -412,7 +412,9 @@ Trashing alone is not permanent media erasure; the old Hide feature is retired.
 
 The [standalone fullscreen preview](docs/DEPTH_FULLSCREEN_DEMO.md) uses public
 sample photographs and precomputed depth with live browser rendering. Motion
-starts off. It is remotely published for owner review; integration into trip
+starts off. Its reviewed experiment now includes direct two-axis drag with a held
+viewpoint/reset and adjustable 0–3× parallax strength; high depth uses more crop
+and may stretch edges. It is remotely published for owner review; integration into trip
 photos is not yet approved. Do not infer bulk depth processing or new public
 photo publication from this experiment. If integration is approved, depth
 derivatives inherit the photograph's private access, review, loading and expiry

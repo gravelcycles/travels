@@ -1,5 +1,18 @@
 # Changelog
 
+## 14 October 2026 — drag and adjustable 3D in the remote preview
+
+- Replace hover steering with direct mouse/touch drag, hold the released
+  viewpoint, and add reset plus keyboard arrows/Home. Drag takes over from drift.
+- Add flat-to-3× depth and Gentle/Deep/Dramatic presets, fixed framing per level,
+  and more accurate ray sampling. Higher levels expose the stronger effect and
+  its edge-stretching tradeoff. Version remote demo assets together.
+- Record the owner's follow-up in current demo/owner/photo/framework guidance;
+  this remains off by default and separate from the shared journey viewer.
+- Validation: all 640 tests, production build and actual WebGL drag/strength/
+  capture/fallback checks pass; maximum-depth desktop/phone/landscape screenshots
+  were inspected and camera travel tuned to limit distortion.
+
 ## 14 October 2026 — remote fullscreen depth-motion preview
 
 - Add an isolated review page with still-by-default photos, opt-in browser

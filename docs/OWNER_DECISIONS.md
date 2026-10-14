@@ -74,7 +74,12 @@ Publish only the separate review artifact; this does not authorize adding the
 effect to live journey viewers, thumbnails, maps or Replay. Keep private photos
 and derived depth private. Any later approved integration must extend the shared
 fullscreen viewer and preserve O03/O04/O08, with still-image fallback and reduced
-motion. [Demo scope and processing assessment](DEPTH_FULLSCREEN_DEMO.md) own the
+motion. In the same-day follow-up the owner requested dragging the photo while
+3D is enabled and more dramatic, adjustable 3D levels. This extends only the
+remote demo: support direct mouse/touch drag, hold the released viewpoint, offer
+reset and a visible depth control, and preserve the off-by-default boundary.
+Check drag in both axes, high/zero depth, touch/cancel, keyboard and comparison.
+[Demo scope and processing assessment](DEPTH_FULLSCREEN_DEMO.md) own the
 experiment details; WIP records delivery/review status.
 
 ## Photo and view sharing — 12 October 2026
