@@ -12,6 +12,8 @@
 - Validation: all 640 tests, production build and actual WebGL drag/strength/
   capture/fallback checks pass; maximum-depth desktop/phone/landscape screenshots
   were inspected and camera travel tuned to limit distortion.
+- Release `4f64065` passed Pages run `38615056035`; fresh public files match the
+  build and the phone-sized live viewer passes drag/3×/reset/flat/off checks.
 
 ## 14 October 2026 — remote fullscreen depth-motion preview
 

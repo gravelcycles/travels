@@ -30,9 +30,12 @@ reduced motion, failed/stale loads and existing lifecycle/history behavior.
 Desktop, 390/320 px phone and landscape screenshots were reviewed at maximum
 depth; the portrait sample tolerates more depth than the bridge's hard outlines.
 Maximum travel was tuned down after visual review; strong settings still show
-the documented edge stretching. Updated remote release verification is pending;
-the prior receipt below covers the first demo. Next: publish this verified
-revision at the same review URL. Shared journey integration remains unapproved.
+the documented edge stretching. Released as `4f64065` through successful
+[Pages run 38615056035](https://github.com/gravelcycles/travels/actions/runs/38615056035).
+Fresh public demo HTML/JS/CSS/renderer and unchanged catalog/reference pages
+match the tested build. A fresh public 390 px browser verifies off → 3× drag
+(both shader axes) → reset → flat → off, without runtime errors. This follow-up
+is complete; next is owner review. Shared journey integration remains unapproved.
 
 Owner requested a remote DepthFlow-inspired demonstration, off by default,
 before deciding on integration. Scope and current guidance are in
@@ -47,7 +50,7 @@ checks pass: initial off/no depth fetch, rendered pixels, compare, pause/resume,
 off/close cleanup, selection/Back/Forward, native fullscreen, touch steering,
 reduced motion, failed-depth retry, stale requests and WebGL fallback. Desktop,
 320/390 px phone and landscape layouts were inspected; physical-device Safari
-has not been tested. Remote main remains `56aaf3f` at pre-release refresh.
+has not been tested. Remote main was `56aaf3f` before the initial release.
 Released as `8c98c67` through successful
 [Pages run 38608368833](https://github.com/gravelcycles/travels/actions/runs/38608368833).
 Fresh public demo HTML, runtime/style, manifest, both photos and both depth maps
