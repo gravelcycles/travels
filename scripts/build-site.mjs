@@ -87,7 +87,7 @@ export function buildSite(root) {
   // Explicitly requested remote review artifact; never loaded by journey pages.
   const depthDemo = path.join(root, "prototypes/depth/index.html");
   if (fs.existsSync(depthDemo)) {
-    const depthVersion = assetHash(Buffer.concat(["demo.js", "renderer.js", "demo.css"].map(file => fs.readFileSync(path.join(root, "dist/experiments/depth", file)))));
+    const depthVersion = assetHash(Buffer.concat(["demo.js", "renderer.js", "demo.css", "assets/manifest.json"].map(file => fs.readFileSync(path.join(root, "dist/experiments/depth", file)))));
     outputs.set("experiments/depth/index.html", fs.readFileSync(depthDemo, "utf8").replace(/\.\/(demo\.(?:js|css))/g, (_, file) => `./${file}?v=${depthVersion}`));
   }
   // Track only generated detail pages; never remove hand-authored public files.

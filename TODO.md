@@ -27,9 +27,15 @@ activation work.
 
 ## Independent project workstreams
 
-- [ ] **Owner review — fullscreen depth motion.** Review the
-      [remote experiment](docs/DEPTH_FULLSCREEN_DEMO.md). Integration is not yet
-      authorized; do not add it to journey viewers or process private photos.
+- [ ] **Fullscreen depth motion — gentle revision and owner review.** Complete
+      and verify the 15 October correction in the
+      [remote experiment](docs/DEPTH_FULLSCREEN_DEMO.md): original gentle motion,
+      retained drag/mouse controls, and seven protected website photographs
+      beside the two public samples. Follow [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026)
+      for the expired Cloudflare login blocking private upload and its exact
+      remaining publish/verification steps. Only those seven
+      photo/depth pairs are authorized; bulk processing and shared journey-viewer
+      integration remain unapproved.
 
 - [x] **Atlas continuity guidance — 11 October 2026.** Audit available owner
       corrections; require a shared decision/supersession record and area

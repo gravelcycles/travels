@@ -1,6 +1,24 @@
 # Changelog
 
+## 15 October 2026 — restore gentle depth motion and add website samples
+
+- Record the owner's rejection of the stronger 3D range. Return the separate
+  preview to the original gentle movement, capped by a 0–100% slider, and remove
+  the 3× presets while retaining drag/held viewpoint, reset and keyboard controls.
+  Offer Mouse move separately from Drag to explore and Slow drift.
+- Authorize seven existing website photographs alongside the two public samples;
+  keep the photographs and generated depth behind the existing private-photo
+  access and gateway. No public protected pixels or shared-viewer integration.
+- Update current owner, demo, photo and framework guidance in the same change.
+  All 640 tests, build and local nine-photo browser/privacy checks pass. Seven
+  private maps are prepared; their upload awaits restored Cloudflare OAuth.
+  Remote hosts hide unpublished samples so the gentle correction can ship safely.
+  Deployment receipt and exact remaining work are in [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026).
+
 ## 14 October 2026 — drag and adjustable 3D in the remote preview
+
+The stronger range/presets below were superseded by the 15 October correction;
+drag, held viewpoint, reset and keyboard controls are retained.
 
 - Replace hover steering with direct mouse/touch drag, hold the released
   viewpoint, and add reset plus keyboard arrows/Home. Drag takes over from drift.

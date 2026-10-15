@@ -74,11 +74,21 @@ Publish only the separate review artifact; this does not authorize adding the
 effect to live journey viewers, thumbnails, maps or Replay. Keep private photos
 and derived depth private. Any later approved integration must extend the shared
 fullscreen viewer and preserve O03/O04/O08, with still-image fallback and reduced
-motion. In the same-day follow-up the owner requested dragging the photo while
-3D is enabled and more dramatic, adjustable 3D levels. This extends only the
-remote demo: support direct mouse/touch drag, hold the released viewpoint, offer
-reset and a visible depth control, and preserve the off-by-default boundary.
-Check drag in both axes, high/zero depth, touch/cancel, keyboard and comparison.
+motion. The **15 October follow-up supersedes the 14 October request for more
+dramatic 3D**: the stronger result was too extreme; return to the original gentle
+motion while retaining drag and mouse interaction. Keep relative mouse/touch
+drag as the default, hold the released viewpoint, retain reset/keyboard controls,
+and offer Mouse move and Slow drift separately. Movement may be reduced to zero
+but must not exceed the original gentle range; remove the 3× presets.
+
+The same follow-up authorizes **seven existing website photographs** in this
+remote demo, alongside the two public samples. Their photographs and derived
+depth remain behind the normal existing photo access, through private R2 and
+the same authenticated gateway; do not expose their pixels in public assets.
+This is bounded sample preparation, not approval for bulk processing or shared
+viewer integration. Check gentle maximum/zero movement, both drag axes and held
+release, Mouse move, touch/cancel, keyboard, comparison, all nine samples,
+remembered/anonymous access, failed requests and expiry cleanup.
 [Demo scope and processing assessment](DEPTH_FULLSCREEN_DEMO.md) own the
 experiment details; WIP records delivery/review status.
 

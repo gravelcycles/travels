@@ -18,47 +18,58 @@ must read current files and reconcile any later corrections before continuing.
 
 ## Fullscreen depth-motion preview — 14 October 2026
 
-Same-day follow-up: owner requested direct photo dragging and more dramatic,
-adjustable 3D. The demo now has relative mouse/touch drag, held viewpoint/reset,
-keyboard arrows/Home, 0–3× depth with presets, and drag takeover from drift.
-Higher levels use fixed framing per level to cover source edges; level 0 is
-uncropped. Versioned demo modules prevent stale browser code. Current guidance
-was updated in place. All 640 tests and the production build pass. Actual WebGL
-browser checks verify two-axis drag, held release/hover, rapid keyboard input,
-reset, flat/1×/3× pixels, presets, drift takeover, bounded/cancelled capture,
-reduced motion, failed/stale loads and existing lifecycle/history behavior.
-Desktop, 390/320 px phone and landscape screenshots were reviewed at maximum
-depth; the portrait sample tolerates more depth than the bridge's hard outlines.
-Maximum travel was tuned down after visual review; strong settings still show
-the documented edge stretching. Released as `4f64065` through successful
-[Pages run 38615056035](https://github.com/gravelcycles/travels/actions/runs/38615056035).
-Fresh public demo HTML/JS/CSS/renderer and unchanged catalog/reference pages
-match the tested build. A fresh public 390 px browser verifies off → 3× drag
-(both shader axes) → reset → flat → off, without runtime errors. This follow-up
-is complete; next is owner review. Shared journey integration remains unapproved.
+**15 October correction — in progress.** The owner found the stronger result
+too extreme and requested the original gentle motion while retaining drag/mouse
+interaction, plus seven existing website photographs. This supersedes the
+14 October dramatic range/presets. Current requirements live in
+[the owner decision](docs/OWNER_DECISIONS.md#fullscreen-depth-motion-review--14-october-2026)
+and [demo contract](docs/DEPTH_FULLSCREEN_DEMO.md).
 
-Owner requested a remote DepthFlow-inspired demonstration, off by default,
-before deciding on integration. Scope and current guidance are in
-[the demo record](docs/DEPTH_FULLSCREEN_DEMO.md) and the owner decisions.
-Work is isolated in `/private/tmp/travels-depth-demo-20261014` on
-`codex/depth-fullscreen-demo`, starting from remote main `56aaf3f`; unrelated
-primary-checkout edits remain untouched. Separate demo shell, live WebGL renderer,
-lazy depth loading, still fallback, compare/pause/pointer controls and sample
-switching are implemented. Two genuine Depth Anything V2 Small maps add 16,224
-and 23,291 bytes. All 640 tests, production build and actual-asset Chrome browser
-checks pass: initial off/no depth fetch, rendered pixels, compare, pause/resume,
-off/close cleanup, selection/Back/Forward, native fullscreen, touch steering,
-reduced motion, failed-depth retry, stale requests and WebGL fallback. Desktop,
-320/390 px phone and landscape layouts were inspected; physical-device Safari
-has not been tested. Remote main was `56aaf3f` before the initial release.
-Released as `8c98c67` through successful
-[Pages run 38608368833](https://github.com/gravelcycles/travels/actions/runs/38608368833).
-Fresh public demo HTML, runtime/style, manifest, both photos and both depth maps
-match the tested build byte-for-byte; the catalog/reference HTML also matches.
-A fresh public 390 × 844 Chrome load passes off → live depth → off with no
-runtime errors. The remotely accessible demo is complete. Next action is owner
-review at [the demo](https://gravelcycles.github.io/travels/experiments/depth/).
-Native viewer integration is pending that review, not approved implementation.
+Work is isolated in `/Users/dg/code/travels/build/depth-gentle-review`, branch
+`codex/depth-gentle-photos-20261015`, from `a609987`; the primary checkout and its
+unrelated changes remain untouched. The required revision retains relative
+mouse/touch drag, held viewpoint/reset and keyboard control, adds Mouse move
+beside Slow drift, and replaces 0–3× presets with 0–100% Movement at the original
+gentle maximum. Zero remains the uncropped original and every photo/reopened
+viewer starts off. The sample set must contain the two public examples plus
+seven existing website photographs. Their new depth derivatives stay in private
+R2 behind the existing photo gateway and normal photo access; no protected
+pixels belong in public output. The selected-photo preparation/publication record
+is [DEPTH_DEMO_ASSETS.md](docs/DEPTH_DEMO_ASSETS.md).
+
+The gentle controls and private-access lifecycle are implemented. All 640
+repository tests and the production build pass. All nine actual-photo/depth
+fixtures pass WebGL/browser checks, including gentle limits, mouse steering,
+drag/hold, zero movement, login returns and Back/Forward, missing-cookie recovery,
+failed-map retry, lock/expiry cleanup, cancelled private requests and public-output
+privacy scans. Desktop/phone/landscape and all seven additions were inspected;
+close foreground outlines can still stretch at maximum travel. Physical-device
+Safari/Android performance remains unverified.
+
+Seven actual depth WebPs (183,664 bytes total) are generated and checksum-verified;
+the private publisher dry-run passes. **Private upload is blocked by expired
+Cloudflare publishing OAuth.** The owner was asked to sign in through the existing
+browser flow; no new account/password or public workaround is needed. Remote
+hosts hide unpublished protected samples, so the gentle correction can be released
+with the original two examples while local review exercises all nine. The path-only
+manifest keeps the seven records `assetStatus: "local"`; no protected pixels are
+committed or publicly served. Pages deployment and fresh-public verification are
+pending for the gentle revision.
+
+Next: after the owner restores Wrangler authorization, run
+`node build/depth-gentle-review/scripts/experiments/depth/publish-depth-assets.mjs --source-root /Users/dg/code/travels --publish`
+from the primary checkout. It verifies existing photos, uploads/checksums seven
+depth objects, checks anonymous 401/no-store and marks the manifest published only
+after success. Rebuild, test, integrate latest main, publish the changed manifest/
+HTML and verify the live protected nine-photo flow. Shared journey-viewer
+integration remains unapproved; only this remote review artifact is authorized.
+
+Previous release evidence is historical, not verification of the correction:
+`4f64065` passed [Pages run 38615056035](https://github.com/gravelcycles/travels/actions/runs/38615056035)
+with 640 tests, build, drag/0–3× browser checks and fresh public verification.
+Its stronger range is superseded. The original two-public-photo preview shipped
+as `8c98c67` in [Pages run 38608368833](https://github.com/gravelcycles/travels/actions/runs/38608368833).
+Review URL remains <https://gravelcycles.github.io/travels/experiments/depth/>.
 
 ## Mobile Places visibility — 12 October 2026
 

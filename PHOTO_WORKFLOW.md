@@ -410,15 +410,26 @@ Trashing alone is not permanent media erasure; the old Hide feature is retired.
 
 ## Depth-motion review boundary — 14 October 2026
 
-The [standalone fullscreen preview](docs/DEPTH_FULLSCREEN_DEMO.md) uses public
-sample photographs and precomputed depth with live browser rendering. Motion
-starts off. The preview includes direct two-axis drag with a held
-viewpoint/reset and adjustable 0–3× parallax strength; high depth uses more crop
-and may stretch edges. It is remotely published for owner review; integration into trip
-photos is not yet approved. Do not infer bulk depth processing or new public
-photo publication from this experiment. If integration is approved, depth
-derivatives inherit the photograph's private access, review, loading and expiry
-rules; keep still-image fallback and existing gallery gestures/state intact.
+The [standalone fullscreen preview](docs/DEPTH_FULLSCREEN_DEMO.md) uses
+precomputed depth with live browser rendering and starts off. The 15 October
+owner correction returns motion to the original gentle range while keeping
+drag/held viewpoint/reset and mouse interaction; it supersedes the stronger
+0–3× experiment. Exact controls and limits belong in the demo record.
+
+The owner also authorized seven existing website photographs alongside the two
+public samples. Prepare depth only for those selected photographs, preserving
+their source pixels, metadata choices and traveler-written/blank copy. Keep
+source derivatives and new depth maps in private R2 behind the existing photo
+gateway and normal shared unlock; do not copy protected image/depth pixels into
+the public demo, its manifest or encoded previews. Verify authenticated hashes,
+anonymous rejection and expiry cleanup. The exact selection and preparation
+record belong in [DEPTH_DEMO_ASSETS.md](docs/DEPTH_DEMO_ASSETS.md).
+
+The remote demo remains a bounded review artifact. This authorization does not
+extend to bulk depth processing, new public photo publication or integration
+into trip viewers. Any later approved integration must retain the photograph's
+private access, review, loading and expiry rules, still-image fallback and the
+existing gallery gestures/state.
 
 ## Apple references
 

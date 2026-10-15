@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate public demo depth maps, never load or publish traveler media.
+"""Generate the two public and seven protected review-demo depth maps.
 
 Run in an isolated environment with numpy, Pillow and onnxruntime installed.
 See docs/DEPTH_DEMO_ASSETS.md for pinned model downloads and reproduction.
@@ -11,6 +11,8 @@ import json
 from pathlib import Path
 import shutil
 import time
+from io import BytesIO
+import re
 
 import numpy as np
 import onnxruntime as ort
@@ -43,18 +45,64 @@ SAMPLES = [
         "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
     },
 ]
+JOURNEY = "backpacking-europe-heading-east"
+PRIVATE_PREFIX = "/private-photos/assets/v1/"
+PRIVATE_PHOTO_IDS = [
+    "backpacking-europe-heading-east-upload-cb7a62b4305fd9464031",
+    "backpacking-europe-heading-east-upload-089d06cf9fc8eb426463",
+    "backpacking-europe-heading-east-snapseed-camera-capture-20260926-162050-471",
+    "backpacking-europe-heading-east-upload-0c9ecf49de2111a7051c",
+    "backpacking-europe-heading-east-upload-d90b1f16a88de07cee13",
+    "backpacking-europe-heading-east-upload-063e6cbbb7fe4d1371a3",
+    "backpacking-europe-heading-east-img-3520",
+]
 
 
 def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def private_sources():
+    photos = {}
+    for suffix in ["", "-uploads"]:
+        for photo in json.loads((ROOT / f"content/photo-manifests/{JOURNEY}{suffix}.json").read_text()):
+            photos[photo["id"]] = photo
+    overrides = json.loads((ROOT / "content/photo-overrides.json").read_text())
+    sources = []
+    for number, photo_id in enumerate(PRIVATE_PHOTO_IDS, 1):
+        photo = photos[photo_id]
+        override = overrides.get(photo_id, {})
+        if not photo.get("protected") or photo.get("assetStatus") != "published" or override.get("trashed"):
+            raise ValueError("Selected photo is no longer eligible: " + photo_id)
+        variants = sorted(photo["srcset"], key=lambda item: item["width"])
+        image = next(item["src"] for item in variants if item["width"] >= 1280)
+        thumbnail = next(item["src"] for item in variants if item["width"] >= 480)
+        day_id = override.get("dayId", photo["dayId"])
+        sources.append({
+            "id": f"east-{number:02d}", "protected": True,
+            "sourcePhotoId": photo_id, "journeyId": JOURNEY,
+            "image": image, "thumbnail": thumbnail,
+            "alt": override.get("alt", photo.get("alt")) or f"Photo {number}",
+            "credit": "Trip photograph", "license": "Private photo",
+            "sourceUrl": f"https://gravelcycles.github.io/travels/{JOURNEY}.html#day={day_id}&photo={photo_id}&view=photo",
+            "takenAt": photo.get("takenAt", ""),
+        })
+    return sources
+
+
 def main():
     ort.disable_telemetry_events()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model-dir", type=Path, required=True)
+    parser.add_argument("--private-source-root", type=Path, required=True,
+                        help="Checkout whose ignored build/private-photo-assets/v1 contains the existing photographs and receives protected depth WebPs")
     parser.add_argument("--output", type=Path, default=ROOT / "dist/experiments/depth/assets")
     args = parser.parse_args()
+    private_dir = args.private_source_root.resolve() / "build/private-photo-assets/v1"
+    if "dist" in private_dir.parts or not (args.private_source_root / "AGENTS.md").is_file():
+        raise ValueError("Protected derivatives must remain outside public output")
+    previous_manifest = args.output / "manifest.json"
+    previous = {sample["id"]: sample for sample in json.loads(previous_manifest.read_text()).get("samples", [])} if previous_manifest.exists() else {}
     model_path = args.model_dir / "model_q4.onnx"
     for filename, expected in MODEL_SHA256.items():
         if sha256(args.model_dir / filename) != expected:
@@ -69,16 +117,22 @@ def main():
     mean = np.asarray(config["image_mean"], dtype=np.float32)
     std = np.asarray(config["image_std"], dtype=np.float32)
     samples = []
-    for source in SAMPLES:
+    for source in SAMPLES + private_sources():
         name = source["id"]
-        original = ROOT / "dist/assets/places" / (name + ".webp")
-        image_path = args.output / (name + ".webp")
+        protected = source.get("protected", False)
+        if protected and not re.fullmatch(r"/private-photos/assets/v1/[a-f0-9]{64}\.webp", source["image"]):
+            raise ValueError("Invalid protected source path")
+        original = private_dir / source["image"].removeprefix(PRIVATE_PREFIX) if protected else ROOT / "dist/assets/places" / (name + ".webp")
+        image_path = original if protected else args.output / (name + ".webp")
+        if protected and (not source["image"].startswith(PRIVATE_PREFIX) or sha256(original) != original.stem):
+            raise ValueError("Protected source checksum mismatch")
         # Existing public derivatives are already below 1600px. Copy bytes to
         # preserve the credited source, its framing, and the artist watermark.
         image = Image.open(original).convert("RGB")
-        if max(image.size) > 1600:
+        if not protected and max(image.size) > 1600:
             raise ValueError("Public source exceeds the reviewed demo size")
-        shutil.copyfile(original, image_path)
+        if not protected:
+            shutil.copyfile(original, image_path)
         width, height = image.size
         scale = max(config["size"]["width"] / width, config["size"]["height"] / height)
         multiple = config["ensure_multiple_of"]
@@ -96,12 +150,25 @@ def main():
         depth = Image.fromarray(np.round(normalized * 255).astype(np.uint8), mode="L")
         depth_size = (round(width * 518 / max(width, height)), round(height * 518 / max(width, height)))
         depth = depth.resize(depth_size, Image.Resampling.BICUBIC)
-        depth_path = args.output / (name + "-depth.png")
-        depth.save(depth_path, optimize=True)
+        if protected:
+            encoded = BytesIO()
+            depth.convert("RGB").save(encoded, format="WEBP", lossless=True, method=6)
+            data = encoded.getvalue()
+            digest = hashlib.sha256(data).hexdigest()
+            depth_path = private_dir / (digest + ".webp")
+            if depth_path.exists() and depth_path.read_bytes() != data:
+                raise ValueError("Protected derivative hash collision")
+            depth_path.parent.mkdir(parents=True, exist_ok=True)
+            depth_path.write_bytes(data)
+            depth_source = PRIVATE_PREFIX + depth_path.name
+        else:
+            depth_path = args.output / (name + "-depth.png")
+            depth.save(depth_path, optimize=True)
+            depth_source = depth_path.name
         record = {
             **source,
-            "image": image_path.name,
-            "depth": depth_path.name,
+            "image": source["image"] if protected else image_path.name,
+            "depth": depth_source,
             "width": width,
             "height": height,
             "depthWidth": depth_size[0],
@@ -115,14 +182,17 @@ def main():
             "modelFile": model_path.name,
             "inferenceSeconds": elapsed,
             "inferenceInput": [model_width, model_height],
-            "changes": "Previously resized to WebP; unchanged public photo copied; AI-estimated relative depth generated and resized to 518px maximum edge. Motion is a browser rendering of these derivatives.",
+            "changes": "Existing protected 1280px photo reused; AI-estimated relative depth generated as protected lossless WebP at 518px maximum edge." if protected else "Previously resized to WebP; unchanged public photo copied; AI-estimated relative depth generated and resized to 518px maximum edge. Motion is a browser rendering of these derivatives.",
         }
+        if protected:
+            old = previous.get(name, {})
+            record["assetStatus"] = "published" if old.get("depth") == depth_source and old.get("assetStatus") == "published" else "local"
         samples.append(record)
         print(name, "inference", elapsed, "seconds;", record["imageBytes"], "+", record["depthBytes"], "bytes", flush=True)
     manifest = {
         "schemaVersion": 1,
-        "generatedDate": "2026-10-14",
-        "purpose": "Public illustrative fullscreen depth-motion demo; not traveler photographs or trip memories.",
+        "generatedDate": "2026-10-15",
+        "purpose": "Fullscreen depth-motion review: two public illustrative photographs and seven existing protected traveler photographs; all traveler pixels and depth remain authenticated.",
         "depthConvention": "Normalized relative inverse depth: black=far, white=near; not metric distance.",
         "model": {
             "id": MODEL,

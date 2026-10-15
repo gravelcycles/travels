@@ -140,13 +140,19 @@ strings. Studio serves live assets with no-store caching.
 
 `prototypes/depth/index.html` builds to `dist/experiments/depth/index.html` for
 the owner-requested [fullscreen depth-motion review](DEPTH_FULLSCREEN_DEMO.md).
-Its JS/CSS/sample assets live only below that experiment directory and are not
-loaded by the catalog, journey template or Studio. This bounded review artifact
+Its demo JS/CSS and two public sample pairs live only below that experiment
+directory and are not loaded by the catalog, journey template or Studio. The
+15 October revision also references seven existing protected website photographs;
+their depth derivatives stay in private R2 and use the existing authenticated
+photo gateway, never the public experiment directory. Reuse the normal photo
+access and expiry lifecycle; no separate demo password or public pixel fallback.
+This bounded review artifact
 is not a second journey implementation. Integration remains undecided; if
 approved, use the shared viewer and protected derivative pipeline rather than
-copying this demo shell into a trip. Its direct drag and 0–3× depth controls remain
-experiment-only. The build versions the demo modules/style together, including
-the lazy shader import, to keep subsequent remote revisions consistent.
+copying this demo shell into a trip. Its drag, Mouse move, Slow drift and gentle
+0–100% Movement controls remain experiment-only. The 15 October owner correction
+supersedes the former 0–3× range/presets. The build versions the demo modules/style and sample manifest together, including
+the lazy shader import and manifest request, to keep subsequent remote revisions consistent.
 No speculative journey flag/schema added.
 
 ## Rules for adding features

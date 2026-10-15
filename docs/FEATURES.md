@@ -123,11 +123,16 @@ to duplicate and they do not certify route or photo-location accuracy.
 ## Separate review artifact — 14 October 2026
 
 [Fullscreen depth-motion preview](DEPTH_FULLSCREEN_DEMO.md) is a standalone,
-remotely published experiment using public samples. It starts off, lazy-loads
+remotely published experiment. It starts off, lazy-loads
 precomputed depth on activation and renders in WebGL. Direct mouse/touch drag
-holds its viewpoint on release, with reset, keyboard control, optional drift and
-adjustable 0–3× depth/presets. It is **not an inherited
-journey capability**; integration awaits owner review. No live viewer changes.
+holds its viewpoint on release, with reset and keyboard control. The 15 October
+revision returns motion to the original gentle range with a 0–100% Movement
+slider, adds a separate Mouse move option alongside Slow drift, and removes
+the rejected 3× presets. The sample set expands to two public examples plus
+seven existing website photographs using normal protected photo access for
+both photo and depth. This revision's verification/deployment is tracked in
+[WIP](../WIP.md#fullscreen-depth-motion-preview--14-october-2026). It is **not an
+inherited journey capability**; shared-viewer integration remains unapproved.
 
 ## Authoring and publishing references
 

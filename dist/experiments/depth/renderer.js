@@ -17,11 +17,9 @@ void main(){
     gl_FragColor=vec4(texture2D(photo,uv).rgb,1.);
     return;
   }
-  // The maximum horizontal ray is .04*strength; centering at t=.5 needs
-  // .020*strength of edge margin. Reserve .022*strength on every side.
-  // This depends only on depth/activation, never camera position, so dragging
-  // cannot pump the zoom. Even at level 3 every ray stays inside the source.
-  vec2 base=(uv-.5)*(1.-.044*strength)+.5;
+  // Restore the original gentle framing, fixed at each movement setting.
+  // The camera is bounded to the first preview's default .45 movement range.
+  vec2 base=(uv-.5)/(1.+.075*strength)+.5;
   vec2 ray=offset*strength;
   float hit=1.;
   for(int i=0;i<96;i++){
@@ -80,9 +78,9 @@ export class DepthRenderer {
     // Keep the camera contract bounded so overscan also protects external calls.
     const clamp=(value,min,max)=>Math.min(max,Math.max(min,Number.isFinite(value)?value:0));
     const gl=this.gl;
-    gl.uniform2f(this.uniforms.offset,clamp(x,-.04,.04),clamp(y,-.03,.03));
+    gl.uniform2f(this.uniforms.offset,clamp(x,-.0234,.0234),clamp(y,-.0117,.0117));
     gl.uniform1f(this.uniforms.amount,clamp(amount,0,1));
-    gl.uniform1f(this.uniforms.depthLevel,clamp(depthLevel,0,3));
+    gl.uniform1f(this.uniforms.depthLevel,clamp(depthLevel,0,1));
     gl.drawArrays(gl.TRIANGLES,0,6);
   }
   dispose(){
