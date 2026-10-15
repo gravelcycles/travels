@@ -63,6 +63,8 @@ but never uploaded or overwritten. Every remote object is checksum-verified;
 anonymous gateway HEAD requests must return 401/no-store. Only after all checks
 pass are the seven manifest records marked `assetStatus: "published"`.
 The normal photo-auth loader owns access, expiry and pixel cleanup in the demo.
+Remote hosts hide protected records until that verified publication status is set;
+localhost review can exercise all nine prepared samples.
 
 The website's other venue images remain external linked references. No new
 redistribution license was inferred from their being visible on the website.

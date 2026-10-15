@@ -13,7 +13,9 @@
   All 640 tests, build and local nine-photo browser/privacy checks pass. Seven
   private maps are prepared; their upload awaits restored Cloudflare OAuth.
   Remote hosts hide unpublished samples so the gentle correction can ship safely.
-  Deployment receipt and exact remaining work are in [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026).
+  Gentle release `2404389` passed [Pages run 38795728873](https://github.com/gravelcycles/travels/actions/runs/38795728873).
+  Fresh public hashes and phone drag/mouse checks pass; two samples are live.
+  The seven additions remain blocked on private upload; exact next steps are in [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026).
 
 ## 14 October 2026 — drag and adjustable 3D in the remote preview
 

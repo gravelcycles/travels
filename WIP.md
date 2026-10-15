@@ -18,7 +18,7 @@ must read current files and reconcile any later corrections before continuing.
 
 ## Fullscreen depth-motion preview — 14 October 2026
 
-**15 October correction — in progress.** The owner found the stronger result
+**15 October correction — gentle release live; seven additions await private upload.** The owner found the stronger result
 too extreme and requested the original gentle motion while retaining drag/mouse
 interaction, plus seven existing website photographs. This supersedes the
 14 October dramatic range/presets. Current requirements live in
@@ -53,8 +53,14 @@ browser flow; no new account/password or public workaround is needed. Remote
 hosts hide unpublished protected samples, so the gentle correction can be released
 with the original two examples while local review exercises all nine. The path-only
 manifest keeps the seven records `assetStatus: "local"`; no protected pixels are
-committed or publicly served. Pages deployment and fresh-public verification are
-pending for the gentle revision.
+committed or publicly served. Gentle release `2404389` passed
+[Pages run 38795728873](https://github.com/gravelcycles/travels/actions/runs/38795728873).
+Fresh public HTML/JS/CSS/renderer/manifest and both public image/depth pairs match
+the tested build, as do the unchanged catalog/reference pages (11 verified files).
+A fresh 390 × 844 Chrome load verifies off → gentle drag → Mouse move → off,
+maximum camera bounds, two visible samples, no private/auth request and no runtime
+errors. This completes the gentle remote correction; the seven protected additions
+are prepared and locally tested but **not yet remotely available**.
 
 Next: after the owner restores Wrangler authorization, run
 `node build/depth-gentle-review/scripts/experiments/depth/publish-depth-assets.mjs --source-root /Users/dg/code/travels --publish`

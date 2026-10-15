@@ -10,6 +10,9 @@ The 15 October correction authorizes seven existing website photographs in this
 demo, with their depth derivatives kept behind normal existing photo access.
 
 Review URL: <https://gravelcycles.github.io/travels/experiments/depth/>.
+The gentle revision is live with the two public examples. Seven protected samples
+are prepared and tested locally; their private upload awaits restored Cloudflare
+publishing authorization, so they are not yet offered on the remote page.
 Open a sample, then turn on **Depth motion**. **Drag** is the
 default: mouse/one-finger drags move the viewpoint in two axes, release holds it,
 and **Reset view** centers it. Hover alone does not move the photo in Drag mode.
