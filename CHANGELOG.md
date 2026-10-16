@@ -1,5 +1,22 @@
 # Changelog
 
+## 16 October 2026 — smoother phone photo swipes and draggable Places headers
+
+- Prepare adjacent fullscreen photos when the existing public/private cache
+  becomes ready, including the first swipe after entry. Keep a blur while cold
+  pixels load, move the loading backdrop with the photo, pace drag transforms
+  to display frames and ease the release over 220 ms. Preserve full-photo
+  readiness, protected access, reduced motion and the existing gesture/history flow.
+- Let the Places handle and broad list/detail header follow vertical dragging,
+  including after Show map. Retain tap/keyboard switching, working header buttons,
+  result scroll, the explored map camera and the landscape side sheet. Include
+  Places CSS in build content hashing so returning visitors receive the new styles.
+- Record the owner's follow-up in O04/O08, photo and Places workflows, feature
+  inventory and framework ownership. Verification and release status are tracked
+  in [WIP](WIP.md#mobile-photo-swipes-and-places-dragging--16-october-2026).
+  Integrated current main; all 723 tests, the build and 30 rendered browser cases
+  pass. Manual map input immediately after Show map cancels its delayed recenter.
+
 ## 16 October 2026 — fullscreen photo controls and focal zoom
 
 - Place mobile Share beside Comments on the left and Close at the top-right,

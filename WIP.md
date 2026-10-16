@@ -16,6 +16,31 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Mobile photo swipes and Places dragging — 16 October 2026
+
+Owner correction: make the first fullscreen phone photo swipe continuous and
+later swipes slightly smoother; after Show map, allow direct Places-sheet
+dragging across a large part of its top bar. Current requirements are in
+[O04/O08](docs/OWNER_DECISIONS.md#mobile-swipe-continuity--16-october-2026)
+and the [Places correction](docs/OWNER_DECISIONS.md#mobile-places-visibility--12-october-2026).
+Implementation is isolated in `/private/tmp/travels-mobile-swipe-places` on
+`codex/mobile-swipe-places`, based on main `d3a7af1`; the primary checkout's
+unrelated work remains intact. Shared gestures and cache-ready neighbors are
+implemented; integrated main through `34b72b2`. All **723 tests** and the
+production build pass, including Places stylesheet cache invalidation. Rendered
+checks pass **16 Places and 14 fullscreen cases** across reference, Heading East,
+Alpine demo and an independently populated fresh draft at 320/390px, landscape
+and desktop. They use synthetic public/protected-local images and a blank
+MapLibre basemap; no real private pixels or comments were accessed. Additional
+checks cover reduced motion, delayed neighbors, pinch, retained grid nodes and
+list scrolling. An immediate map pan 50 ms after Show map now cancels delayed
+recentering and retains its exact camera. QA scripts/results are in
+`/private/tmp/mobile-swipe-places-browser-qa/` and adjacent task `.mjs` files.
+The combined fullscreen-controls/focal-zoom release also passes first/cached
+swipes, hidden-chrome swipes and restoration, full-viewport geometry, grid Back
+and Places dragging/map panning on Heading East and Alpine. Next: deploy and
+verify fresh public assets. Physical-device Safari was not used.
+
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
 **Implemented; public delivery pending.** The owner requested mobile fullscreen
@@ -120,8 +145,8 @@ and [demo contract](docs/DEPTH_FULLSCREEN_DEMO.md).
 
 Work is isolated in `/Users/dg/code/travels/build/depth-gentle-review`, branch
 `codex/depth-gentle-photos-20261015`, originally from `a609987`; the release
-integrated remote main `12398b3`, and the receipt preserves later main through
-`b6df1ec`. The primary checkout and its
+integrated remote main `12398b3`, and the receipt preserves subsequent concurrent
+shared releases. The primary checkout and its
 unrelated changes remain untouched. The required revision retains relative
 mouse/touch drag, held viewpoint/reset and keyboard control, adds Mouse move
 beside Slow drift, and replaces 0–3× presets with 0–100% Movement at the original

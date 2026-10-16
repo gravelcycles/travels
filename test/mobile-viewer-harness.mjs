@@ -50,10 +50,12 @@ export function viewerFixture({deferredHistory=false, reducedMotion=false, video
     return event;
   }
   function dispatch(selector,type,values={}) {
+    if (!type) return events.get(selector)?.({type:selector});
     const target=node(selector),event={target,currentTarget:target,type,pointerId:1,pointerType:mobile?'touch':'mouse',button:0,clientX:width/2,clientY:height/2,preventDefault(){this.prevented=true;},stopImmediatePropagation(){this.stopped=true;},...values};
     target.captures.get(type)?.(event);if(!event.stopped)target.handlers.get(type)?.(event);return event;
   }
-  function flush(elapsed=300){clock+=elapsed;const raf=[...frames.values()];frames.clear();raf.forEach(fn=>fn(clock));for(const [id,work] of [...timers])if(work.due<=clock&&timers.has(id)){timers.delete(id);work.fn();}}
+  function frame(elapsed=16){clock+=elapsed;const raf=[...frames.values()];frames.clear();raf.forEach(fn=>fn(clock));}
+  function flush(elapsed=300){frame(elapsed);for(const [id,work] of [...timers])if(work.due<=clock&&timers.has(id)){timers.delete(id);work.fn();}}
   function keydown(key) { events.get('keydown')?.({key}); }
-  return {api,node,controller,history,drag,click,dispatch,flush,keydown,get now(){return clock;},get neighborLoads(){return neighborLoads;},get mediaPauses(){return mediaPauses;},resize(mobile){const query=queries.get('(max-width: 900px)');query.matches=mobile;query.changed();},resizeViewport(){events.get('resize')?.();},get tabs(){return tabs;},get pauses(){return pauses;},flushHistory(){while(traversals.length)traversals.shift()();},get index(){return index;},get locations(){return locations;}};
+  return {api,node,controller,history,drag,click,dispatch,frame,flush,keydown,get now(){return clock;},get neighborLoads(){return neighborLoads;},get mediaPauses(){return mediaPauses;},resize(mobile){const query=queries.get('(max-width: 900px)');query.matches=mobile;query.changed();},resizeViewport(){events.get('resize')?.();},get tabs(){return tabs;},get pauses(){return pauses;},flushHistory(){while(traversals.length)traversals.shift()();},get index(){return index;},get locations(){return locations;}};
 }
