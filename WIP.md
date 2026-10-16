@@ -88,7 +88,7 @@ complete. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
-**Button-style follow-up — verified locally; deployment pending.** The
+**Button-style follow-up — deployed and verified.** The
 owner rejected the translucent buttons as a regression after the release below.
 Restore the original solid mobile header/footer and opaque Close/Share/Comments
 surfaces, retaining layout, tap-to-hide and focal zoom. Direction is recorded
@@ -98,7 +98,11 @@ demo and an independently populated draft at 320/390 px, landscape and desktop)
 pass solid-surface/no-blur assertions, tap recovery, full-viewport geometry and
 focal zoom; phone and landscape screenshots were inspected. Independent review
 found no cascade or scope issues. Physical-device testing is not claimed.
-Next: integrate current main, deploy and verify fresh public output.
+Released as `1f9a8bf`; [Pages run 38938835608](https://github.com/gravelcycles/travels/actions/runs/38938835608)
+succeeded. Fresh public mobile CSS and all four journey/demo pages match the
+tested build. A fresh public Alpine photo at 390 × 844 confirms opaque surfaces,
+no backdrop blur, the full-viewport stage and tap-to-hide/restore. Delivery is
+complete; the primary checkout remains untouched.
 
 **Completed and deployed.** The owner requested mobile fullscreen
 Share beside Comments on the left, top-right Close, one tap to hide all buttons
