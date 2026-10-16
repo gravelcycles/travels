@@ -343,6 +343,18 @@ spare capacity alongside thumbnails once the current image is ready. Other
 warming remains idle-only. Cancellation, AVIF fallback and the bandwidth tradeoff
 are documented in [the post-AVIF measurements](PERFORMANCE_FOLLOWUP_2026-10-16.md).
 
+Mobile fullscreen reuses the actual prepared neighbor element when changing
+selection. The three mounted images rotate roles; app/zoom/Comments references
+and loader authorization metadata follow the selected element. Only the far
+neighbor receives a new source. Unready neighbors retain the normal loader path.
+Recognized horizontal photo swipes and photo-stage pinches finish the current
+ready image's reveal; new cold selections retain their own reveal policy.
+Main-map label and bubble controllers suspend queued geometry work while the
+viewer covers them, retain latest state, and refresh after final close. This
+does not suspend the separate photo map, main-map camera, or MapLibre renderer.
+See [the first-swipe measurements](PERFORMANCE_READINESS_2026-10-16.md) for
+operation counters, rejected decoding experiment and timing limits.
+
 Routing-data intake remains agent-operated: empty journeys show an actionable
 setup state until their own mode network has been prepared. A guided retrieval
 flow with access/direction-aware routing is future work (W06); the present local

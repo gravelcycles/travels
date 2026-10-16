@@ -4,7 +4,12 @@ export function viewerFixture({deferredHistory=false, reducedMotion=false, video
   const nodes = new Map(), events = new Map(), timers = new Map(), frames = new Map(), traversals = [], queries = new Map();
   let clock = 0, timer = 0, controller;
   function node(selector) {
+    if (selector === '#modal-photo') {
+      const current = [...nodes.values()].find(value => value.id === 'modal-photo');
+      if (current) return current;
+    }
     if (!nodes.has(selector)) nodes.set(selector, {
+      id:selector.startsWith('#') ? selector.slice(1) : '',
       dataset:{},style:{setProperty(name,value){this[name]=value;},removeProperty(name){delete this[name];}},classList:{names:new Set(),add(name){this.names.add(name);},remove(name){this.names.delete(name);},contains(name){return this.names.has(name);},toggle(name,force){const add=force===undefined?!this.names.has(name):force;if(add)this.names.add(name);else this.names.delete(name);return add;}},getBoundingClientRect(){return {left:this.left||0,top:this.top||0,width:this.clientWidth,height:this.clientHeight};},clientWidth:width,clientHeight:height,offsetHeight:160,naturalWidth:1200,naturalHeight:800,
       open:false,hidden:false,handlers:new Map(),captures:new Map(),textContent:'',inert:false,
       setAttribute(name,value){this[name]=value;},removeAttribute(name){delete this[name];},children:[],append(child){child.parentElement=this;this.children.push(child);},focus(){},setPointerCapture(){},
@@ -34,7 +39,7 @@ export function viewerFixture({deferredHistory=false, reducedMotion=false, video
   vm.runInContext(fs.readFileSync(new URL('../dist/assets/mobile-ux.js',import.meta.url),'utf8'),context);
   node('.atlas-shell').dataset.mobileTab='map';
   controller=context.window.JOURNEY_ATLAS_MOBILE.create(api);
-  function update(){controller.update({day,photos,index});}
+  function update(){controller.preparePhoto(photos[index]);controller.update({day,photos,index});}
   function drag(selector,dx,dy,elapsed=500,type='pointerup') {
     const target=node(selector),event={pointerId:1,pointerType:mobile?'touch':'mouse',button:0,clientX:200,clientY:350,target,currentTarget:target};
     target.handlers.get('pointerdown')(event);clock+=elapsed;

@@ -12,7 +12,7 @@ export function viewerFunction(name) {
 export function photoEntryFixture(journey, media = journey.photos || [], {mobile = false} = {}) {
   const events = [], active = journey.days[0];
   const mediaJourney = {...journey, photos:media, videos:[]};
-  const context = vm.createContext({journey, viewerDayId:active.id, activeDayId:active.id, viewerPhotoIndex:0, viewerCollection:null,
+  const context = vm.createContext({journey, viewerDayId:active.id, activeDayId:active.id, viewerPhotoIndex:0, viewerCollection:null,mainMapCovered:false,
     photosForDay:id=>media.filter(photo=>photo.dayId===id), orderedPhotos:()=>media,
     photoById:id=>media.find(photo=>photo.id===id), dayById:id=>journey.days.find(day=>day.id===id),
     activeDay:()=>journey.days.find(day=>day.id===context.activeDayId),
@@ -20,10 +20,11 @@ export function photoEntryFixture(journey, media = journey.photos || [], {mobile
     setActiveDay(id,_focus,options){context.activeDayId=id;events.push({day:id,options});},
     arrivalChapter:{phase:'explore'},settleAtCity(){events.push('camera');},
     mediaUtils:{...globalThis.JOURNEY_ATLAS_MEDIA,items:()=>media,index:()=>globalThis.JOURNEY_ATLAS_MEDIA.index(mediaJourney)},photoStrip:{},storyMedia:{},
-    photoBubbles:{open(photos,id,options){events.push({selection:id,photos:photos.map(photo=>photo.id),options});}},
+    locationLabels:{setSuspended:value=>events.push({labelsSuspended:value})},
+    photoBubbles:{setSuspended:value=>events.push({bubblesSuspended:value}),open(photos,id,options){events.push({selection:id,photos:photos.map(photo=>photo.id),options});}},
     updateViewer(){const photo=context.viewerPhotos()[context.viewerPhotoIndex];if(photo)context.viewerDayId=photo.dayId;events.push('render');},
     initViewerMap(){},window:{requestAnimationFrame(){},JOURNEY_ATLAS_MOBILE:globalThis.JOURNEY_ATLAS_MOBILE,JOURNEY_ATLAS_MOBILE_UI:{enabled:()=>mobile,open(){events.push('entry');}}}
   });
-  vm.runInContext(['photosForDay','orderedPhotos','viewerPhotos','viewerDay','selectPhoto','handlePhotoEntry','openCommentPhoto','openPhoto','moveViewer','openDayViewer','moveViewerDay'].map(viewerFunction).join('\n'),context);
+  vm.runInContext(['photosForDay','orderedPhotos','viewerPhotos','viewerDay','selectPhoto','handlePhotoEntry','openCommentPhoto','setMainMapCovered','openPhoto','moveViewer','openDayViewer','moveViewerDay'].map(viewerFunction).join('\n'),context);
   return {context,events,open:(id,options)=>context.openPhoto(id,options),click:(surface,id)=>context.handlePhotoEntry({currentTarget:context[surface],target:{closest:()=>({dataset:{openPhoto:id}})}}),photos:()=>Array.from(context.viewerPhotos())};
 }

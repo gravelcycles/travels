@@ -1,5 +1,25 @@
 # Current workstreams
 
+## First fullscreen photo readiness follow-up — 16 October 2026
+
+Owner reports that the first swipe to the next fullscreen photo still pauses,
+as if it is not rendered yet, and movement remains laggy after `a940395`.
+Mobile Chrome is known; phone OS/model is being clarified. Investigation is
+isolated on `codex/fullscreen-photo-readiness`, based on `f3dd926`, with earlier
+measurement artifacts retained. The candidate retains prepared incoming/outgoing
+elements in three carousel slots (handoff source assignments 5→2, incoming 2→0),
+defers covered label/bubble layouts (one each→zero), and lets actual horizontal
+swipe/pinch intent finish a ready photo's reveal (0–0.1 ms switch in three trials).
+Idle reveal duration, full-size media, fallback, authorization, camera/history,
+Comments and drafts are preserved. The explicit async-decoding hint was tested
+and rejected. [The measurements](docs/PERFORMANCE_READINESS_2026-10-16.md) retain
+every comparison's limits: first-swipe long frames remain, and physical-phone
+performance is unverified. Reference/demo browser flows pass 16/16 each; the
+current-template independently populated draft passes 15/15. All 869 tests pass,
+two builds preserve all 78 public files and independent review is clean.
+Publication and fresh live checks are pending. Remaining device profiling is
+tracked in TODO; the completed AVIF follow-up automation stays paused.
+
 ## Later saved Heading East Studio edits — 16 October 2026
 
 Owner requested publication after another saved Studio review. The isolated

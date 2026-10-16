@@ -56,6 +56,13 @@ identifies full-screen swiping on mobile Chrome as still laggy and suspects
 rendering. Profile cached swipes and interruption continuity independently of
 download readiness; do not present network improvements as resolving rendering
 stutter. Desktop Chrome viewport checks do not certify the physical phone.
+After release `a940395`, the owner still reports a delay on the first swipe to
+the next fullscreen photo, “almost like it's not rendered first,” followed by
+laggy movement. This extends the same requirement: test first presentation with
+the production cache/neighbor lifecycle, separately from retained, prewarmed
+repeats. Bytes in cache and a prior image's load event do not prove that the next
+displayed image is decoded or painted. Preserve numeric before/after evidence
+without treating a warm synthetic gesture as proof of first-swipe smoothness.
 See WIP for delivery status.
 
 ## Standing decisions and acceptance checks

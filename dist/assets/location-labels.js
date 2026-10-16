@@ -95,6 +95,7 @@
   function create({ map, maplibregl, onSelectDay, onPreviewDays = () => {}, obstacles = () => [], eventWord = form => ({title:'Day',plural:'days'}[form] || 'day') }) {
     const container = map.getContainer();
     let groups = [], routes = [], routeStrokes = [], entries = [], frame = null, card = null, cardEntry = null, cardKey = '', persistent = false;
+    let suspended = false, dirty = false;
     const coordinateKey = coordinate => coordinate.map(value => value.toFixed(7)).join(',');
     let endpoints = new Set();
     let previewIds = [], pendingFocus = false, closeTimer = null, openTimer = null, suppressedEntry = null;
@@ -137,7 +138,7 @@
       card.style.left = `${best.left}px`; card.style.top = `${best.top}px`;
     };
     const showCard = (entry, { pinned = false, dayIds = [], origin = 'pin' } = {}) => {
-      if (!entry || !entries.includes(entry) || map.isMoving() || entry.element.style.visibility === 'hidden') return;
+      if (suspended || !entry || !entries.includes(entry) || map.isMoving() || entry.element.style.visibility === 'hidden') return;
       cancelTimers();
       const key = `${entry.group.key}:${dayIds.join(',')}:${pinned}:${origin}`;
       if (key === cardKey) return;
@@ -199,7 +200,9 @@
     }
     const refresh = () => {
       frame = null;
+      if (suspended) { dirty = true; return; }
       if (map.isMoving()) return;
+      dirty = false;
       closeCard(); entries.forEach(entry => entry.marker.remove()); entries = [];
       const width = container.clientWidth, height = container.clientHeight;
       if (!width || !height) return;
@@ -260,7 +263,16 @@
         pendingFocus = false;
       }
     };
-    const schedule = () => { if (frame === null) frame = requestAnimationFrame(refresh); };
+    const schedule = () => { dirty = true; if (!suspended && frame === null) frame = requestAnimationFrame(refresh); };
+    function setSuspended(value) {
+      if (suspended === value) return;
+      suspended = value;
+      if (value) {
+        cancelTimers();
+        if (frame !== null) cancelAnimationFrame(frame);
+        frame = null;
+      } else if (dirty) schedule();
+    }
     const moving = () => closePreview({ preserveSelectionFocus: true });
     const outside = event => { if (card && !card.contains(event.target) && !cardEntry.element.contains(event.target)) dismiss(); };
     const escape = event => { if (event.key === 'Escape' && card) { event.stopPropagation(); suppressedEntry = cardEntry; closeCard(true); endPreview(); } };
@@ -271,7 +283,7 @@
         groups = nextGroups; routes = nextRoutes; endpoints = new Set(endpointCoordinates.map(coordinateKey));
         previewIds = []; closeCard(); schedule();
       },
-      setPreview, closePreview, refresh: schedule,
+      setPreview, closePreview, refresh: schedule, setSuspended,
       destroy() {
         closeCard(); if (frame !== null) cancelAnimationFrame(frame);
         entries.forEach(entry => entry.marker.remove());

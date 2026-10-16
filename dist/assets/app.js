@@ -105,6 +105,7 @@
   let locationLabels;
   let placesUI;
   let photoBubbles;
+  let mainMapCovered = false;
   let previewDayIds = [], previewSource = null, previewShowCard = false, previewClearTimer = null;
   let previewSegmentId = null;
   let pendingMapAction = null;
@@ -220,6 +221,10 @@
     window.JOURNEY_ATLAS_AUTH?.clearImage(image);
     const src = new URL(preferredPhotoUrl(photo, Infinity), document.baseURI).href;
     const state = value => { image.dataset.photoState = value; image.dispatchEvent(new Event('atlas-photo-state')); };
+    if (image.src === src && image.dataset.photoState === 'ready' && image.complete && image.naturalWidth &&
+        (!image.currentSrc || image.currentSrc === src)) {
+      image.dataset.photoReveal = 'instant'; image.classList.add('is-loaded'); state('ready'); return;
+    }
     const ready = () => {
       if (image.onload !== loaded || image.src !== src || image.dataset.photoState === 'ready') return;
       decodedPhotoUrls.add(src);
@@ -609,6 +614,7 @@
             .map(element => { const r = element.getBoundingClientRect(); return { left: r.left - mapRect.left, right: r.right - mapRect.left, top: r.top - mapRect.top, bottom: r.bottom - mapRect.top }; });
         }
       });
+      locationLabels.setSuspended(mainMapCovered);
       drawMainMap(false);
       placesUI?.mapReady();
       photoBubbles?.mapReady();
@@ -1626,6 +1632,8 @@
     const photos = viewerPhotos();
     viewerPhotoIndex = Math.max(0, Math.min(photos.length - 1, viewerPhotoIndex));
     const photo = photos[viewerPhotoIndex];
+    const preparedImage = window.JOURNEY_ATLAS_MOBILE_UI?.preparePhoto?.(photo);
+    if (preparedImage) { viewerImage = preparedImage; photoZoom?.setImage(preparedImage); }
     photoZoom?.setPhoto(photo);
     if (photo) viewerDayId = photo.dayId;
     const day = viewerDay();
@@ -1661,10 +1669,12 @@
         modalPhoto.removeAttribute('src'); modalPhoto.removeAttribute('srcset');
         videoPlayer.show(photo);
       } else {
-        modalPhoto.onload = null;
-        modalPhoto.onerror = null;
-        modalPhoto.className = photo.blur ? "progressive-image" : "";
-        modalPhoto.srcset = "";
+        if (!preparedImage) {
+          modalPhoto.onload = null;
+          modalPhoto.onerror = null;
+          modalPhoto.className = photo.blur ? "progressive-image" : "";
+          modalPhoto.srcset = "";
+        } else modalPhoto.classList.toggle('progressive-image', Boolean(photo.blur));
         modalPhoto.alt = photo.alt;
         modalPhoto.sizes = "(max-width: 900px) 100vw, 75vw";
         if (photo.width) modalPhoto.width = photo.width;
@@ -1837,10 +1847,20 @@
     return true;
   }
 
+  function setMainMapCovered(value) {
+    if (mainMapCovered === value || !value && photoDialog.open) return;
+    mainMapCovered = value;
+    photoBubbles?.setSuspended(value);
+    // Bubble layout may resize the map. Queue it first so its resize event
+    // joins the labels' pending frame instead of rebuilding labels twice.
+    locationLabels?.setSuspended(value);
+  }
+
   function openPhoto(photoId, { photos: collection, collectionLabel = '', preserveCollection = false } = {}) {
     const photo = photoById(photoId);
     if (!photo) return;
     window.JOURNEY_ATLAS_MOBILE_UI?.prepareOpen?.();
+    setMainMapCovered(true);
     // Ordinary entry uses the journey roll; only deliberate Places collections
     // constrain navigation through Comments and Back.
     if (!preserveCollection || !photoDialog.open) {
@@ -1870,6 +1890,7 @@
 
   function openDayViewer(dayId = activeDayId, options = {}) {
     window.JOURNEY_ATLAS_MOBILE_UI?.prepareOpen?.();
+    setMainMapCovered(true);
     viewerCollection = options.collection || null;
     if (dayId !== activeDayId) setActiveDay(dayId, true, {animateArrival:false});
     if (arrivalChapter?.phase !== "stay") settleAtCity();
@@ -2456,20 +2477,21 @@
     openAlbum();
   });
   $("#close-route-inspector").addEventListener("click", () => clearSegmentInspection(true));
-  const viewerImage = $('#modal-photo');
+  let viewerImage = $('#modal-photo');
   photoZoom = window.JourneyPhotoZoom?.createController({
     dialog: photoDialog, frame: $('#viewer-photo-frame'), image: viewerImage,
     viewer: $('.photo-viewer'), onSwipe: moveViewer
   });
   new ResizeObserver(sizeViewerBackdrop).observe($('#viewer-photo-frame'));
-  viewerImage.addEventListener('atlas-photo-state', () => {
+  $('#viewer-photo-frame').addEventListener('atlas-photo-state', event => {
+    if (event.target !== viewerImage) return;
     const state=viewerImage.dataset.photoState, feedback=$('#viewer-photo-feedback');
     viewerImage.closest('.photo-stage').classList.toggle('is-photo-loading', state === 'loading');
     feedback.hidden=!['error','locked'].includes(state);
     $('#viewer-photo-message').textContent=state==='error'?'This photo could not load. Try again.':state==='locked'?'Unlock photos to see this photograph.':'';
     $('#viewer-photo-retry').hidden=state==='loading';
     $('#viewer-photo-retry').textContent=state==='locked'?'Unlock photos':'Retry photo';
-  });
+  }, true);
   $('#viewer-photo-retry').addEventListener('click', () => {
     const photo = viewerPhotos()[viewerPhotoIndex];
     if (!photo) return;
@@ -2482,6 +2504,7 @@
     if (photoDialog.open) return; // Ignore a queued close after a replacement entry.
     videoPlayer.stop();
     window.JOURNEY_ATLAS_MOBILE_UI?.closed();
+    setMainMapCovered(false);
     window.JOURNEY_ATLAS_SHARING_UI?.changed();
     viewerTransition?.cancel();viewerCameraPhoto = null;preloadSelection = null;preloadDirection = 1;
     window.JOURNEY_ATLAS_AUTH?.clearImage(viewerImage);viewerImage.removeAttribute('src');
@@ -2608,7 +2631,7 @@
       window.JOURNEY_ATLAS_SHARING_UI?.changed();
       // The modal viewer owns selection while it is open. Background map
       // refreshes must not move Comments back to the map anchor photograph.
-      if (photoDialog.open) return;
+      if (mainMapCovered || photoDialog.open) return;
       for(const button of photoStrip.querySelectorAll('[data-open-photo]')) {
         if(button.dataset.openPhoto===photo?.id){
           button.setAttribute('aria-current','true');
@@ -2620,6 +2643,7 @@
       placesUI.photoChanged(photo);
     },comments:()=>placesUI.openComments(),commentsAvailable:()=>placesUI.commentsAvailable()
   });
+  photoBubbles.setSuspended(mainMapCovered);
   arrivalChapter = window.JOURNEY_ATLAS_ARRIVAL.create({
     onState: renderArrivalChapter,
     onArrival: drawArrival,

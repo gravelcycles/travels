@@ -2,6 +2,37 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { photoBubbleFixture as fixture } from './photo-bubble-harness.mjs';
 
+test('covered bubbles cancel queued geometry and coalesce resize and latest selection on return',()=>{
+ const f=fixture({ready:true});f.controller.mapReady();f.controller.open(f.photos.slice(0,2),'a',{browseJourney:true});f.flush();
+ const initial={...f.work},markers=f.liveMarkers();
+ f.controller.refresh();assert.equal(f.pendingFrames,1);
+ f.controller.setSuspended(true);
+ f.controller.viewerPhotoChanged(f.photos[1]);
+ for(let i=0;i<5;i++){f.controller.refresh();f.resize(false);f.mapEvent('moveend');}
+ f.flush();assert.deepEqual(f.work,initial,'Hidden callbacks do not project, measure or resize');
+ assert.deepEqual(f.liveMarkers(),markers);assert.equal(f.controller.currentPhoto().id,'b');
+ f.controller.setSuspended(false);f.controller.setSuspended(false);
+ assert.equal(f.pendingFrames,1);f.flush();
+ assert.equal(f.work.resizes,initial.resizes+1,'Repeated layout requests collapse to one resize');
+ assert.equal(f.work.geometry,initial.geometry+1,'Resize-triggered events share one draw');
+ assert.equal(f.node('map-photo-card').dataset.photoId,'b');
+});
+
+test('a map initialized behind fullscreen waits to create bubbles and protected pixels clear while covered',()=>{
+ const f=fixture({ready:true});f.controller.setSuspended(true);f.controller.mapReady();f.flush();
+ assert.equal(f.liveMarkers().length,0);assert.deepEqual(f.work,{projects:0,geometry:0,resizes:0});
+ f.controller.setSuspended(false);f.flush();
+ const thumbnail=f.liveMarkers()[0].element.children[0].children[1];
+ f.controller.open(f.photos.slice(0,2),'b',{browseJourney:true});f.flush();
+ f.controller.setSuspended(true);const before={...f.work};
+ f.lock();f.flush();
+ assert.equal(thumbnail.src,undefined);assert.equal(thumbnail.hidden,true);
+ assert.equal(f.node('img').src,undefined);assert.equal(f.node('img').hidden,true);
+ assert.deepEqual(f.work,before,'Access cleanup performs no hidden map layout');
+ f.unlock();f.controller.setSuspended(false);f.flush();
+ assert.equal(thumbnail.src,'blob:a');assert.equal(f.node('img').src,'blob:b');
+});
+
 test('stationary refreshes keep bubble focus, decoded pixels and pending image requests',()=>{
  const f=fixture({ready:true});f.controller.mapReady();f.flush();
  const marker=f.liveMarkers()[0],button=marker.element.children[0],thumbnail=button.children[1];

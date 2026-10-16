@@ -149,8 +149,14 @@
       const next = `${frame.clientWidth}:${frame.clientHeight}`;
       if (previousSize && next !== previousSize) reset(); previousSize = next;
     }).observe(frame);
-    image.addEventListener('atlas-photo-state', () => { if (['locked', 'error'].includes(image.dataset.photoState)) reset(); });
+    const imageStateChanged = () => { if (['locked', 'error'].includes(image.dataset.photoState)) reset(); };
+    image.addEventListener('atlas-photo-state', imageStateChanged);
     return {reset,
+      setImage(next) {
+        if (!next || next === image) return;
+        reset(); image.removeEventListener('atlas-photo-state', imageStateChanged);
+        image = next; image.addEventListener('atlas-photo-state', imageStateChanged);
+      },
       setPhoto(photo) { if ((photo?.id || null) !== photoId) { reset(); photoId = photo?.id || null; } },
       zoomed: () => active() && state.scale > 1, state: () => ({...state})};
   }

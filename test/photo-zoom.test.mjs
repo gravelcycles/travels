@@ -11,6 +11,7 @@ function fixture({mobile = false, reducedMotion = false, normalizeTransform = fa
   let now = 0, nextFrame = 0, resize;
   function node() { return {dataset: {}, style: {}, hidden: false, handlers: new Map(),
     addEventListener(type, handler) { this.handlers.set(type, handler); },
+    removeEventListener(type, handler) { if(this.handlers.get(type) === handler)this.handlers.delete(type); },
     closest() { return null; }, setPointerCapture() {},
     getAttribute(name) { return this[name]; }}; }
   const frame = node(), image = node(), dialog = node(), viewer = node();
@@ -36,7 +37,7 @@ function fixture({mobile = false, reducedMotion = false, normalizeTransform = fa
       deltaX: 0, deltaY: 0, deltaMode: 0, preventDefault() { this.prevented = true; }, ...detail};
     targetNode.handlers.get(type)?.(event); return event;
   }
-  return {controller, frame, image, dialog, viewer, swipes, send,
+  return {controller, frame, image, dialog, viewer, swipes, send, node,
     tick(ms = 200) { now += ms; const tasks = [...frames.values()]; frames.clear(); tasks.forEach(task => task(now)); },
     resize() { events.get('resize')(); }, observeResize() { resize(); },
     mobile(value) { const query = queries.get('(min-width: 901px)'); query.matches = !value; query.changed(); },
@@ -162,6 +163,22 @@ test('unchanged selection preserves zoom and a desktop-to-mobile change releases
   f.image.style.transform = 'mobile-owned'; f.controller.setPhoto({id: 'c'}); f.resize();
   assert.equal(f.image.style.transform, 'mobile-owned');
   assert.equal(f.send('wheel', {ctrlKey: true, deltaY: -80}).prevented, undefined);
+});
+
+test('changing the displayed image rebinds desktop zoom and removes the old image access listener', () => {
+  const f=fixture({reducedMotion:true}), next=f.node();
+  Object.assign(next,{width:1250,height:1000});
+  f.send('dblclick'); near(f.controller.state().scale,2.5);
+  f.controller.setImage(next);
+  near(f.controller.state().scale,1); assert.equal(f.image.style.transform,'');
+  assert.equal(f.image.handlers.has('atlas-photo-state'),false);
+  f.send('dblclick'); near(f.controller.state().scale,2.5);
+  assert.match(next.style.transform,/scale\(2\.5\)/);
+  f.image.dataset.photoState='locked';f.send('atlas-photo-state',{},f.image);
+  near(f.controller.state().scale,2.5,'An old neighbor event cannot reset current zoom');
+  next.dataset.photoState='locked';f.send('atlas-photo-state',{},next);
+  near(f.controller.state().scale,1);assert.equal(next.style.transform,'');
+  f.controller.setImage(f.image); assert.equal(next.handlers.has('atlas-photo-state'),false);
 });
 
 test('close releases a browser-normalized desktop transform and same-photo reopen stays fitted', () => {

@@ -519,8 +519,9 @@
     document.addEventListener('click', event => {
       for (const details of document.querySelectorAll('.experience-menu[open], .comment-actions[open]')) if (!details.contains(event.target)) details.open = false;
     });
-    $('#modal-photo')?.addEventListener('load', () => { if (dialog.open) syncThumbnail(); });
-    $('#modal-photo')?.addEventListener('atlas-photo-state', () => { if (dialog.open) syncThumbnail(); });
+    for (const type of ['load', 'atlas-photo-state']) $('#viewer-photo-frame')?.addEventListener(type, event => {
+      if (event.target.id === 'modal-photo' && dialog.open) syncThumbnail();
+    }, true);
     $('#comments-photo-image').addEventListener('error', event => { thumbnailKey = ''; event.target.hidden = true; });
     $('#photo-dialog')?.addEventListener('close', () => { if (!$('#photo-dialog').open && dialog.open) dialog.close(); });
     root.addEventListener('atlas-photos-locked', () => {
