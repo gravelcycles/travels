@@ -138,18 +138,31 @@ checkpoint and an agent-operated message generator for manual sharing. It
 supersedes the earlier proposal-only scope for that bounded work; it does not
 authorize an outbound provider, recipient import or sending messages.
 
+Later on 16 October the owner clarified: “we'll break it up by trip usually
+(different ppl to notifiy for each trip)” and “ask for an update for each trip.”
+Prepare and acknowledge each trip independently in the shared ledger. This
+supersedes the initial single-audience assumption: sharing one trip's update
+must leave every other trip pending. Combining trips is an explicit option.
+Preserve the existing starting baseline and history; this correction requires
+neither a reset nor a new ledger for each trip. Separate audiences within the
+same trip still need separate histories.
+
 Track the current live site as the starting baseline, then count stable new
 trip/photo IDs by authored city/stop. Count additions rather than net album
 growth; edits, reordering, album moves and restoration of already acknowledged
 photos are not new. Drafts/local-only/trashed media do not enter a public update.
 Preparing or copying a message must not advance acknowledgment. Only an explicit
-owner statement that a prepared update was shared acknowledges its frozen
-contents; later additions remain pending. Preserve recoverable local history.
+owner statement that a prepared update was shared acknowledges its frozen,
+selected-trip contents; other trips and later additions remain pending. Preserve
+recoverable local history.
 
 Acceptance: an unchanged live site yields no update; old capture dates added
 later count; additions plus deletions count correctly; repeated places group;
 new trips are distinct; failed/interrupted reads cannot replace the baseline;
 repeated prepare/mark-shared cannot duplicate or consume later additions.
+With multiple published trips, require a trip choice or deliberate combined
+update; verify that preparing/sharing A leaves B pending, including after reload.
+Existing history remains readable and the original baseline stays intact.
 [Update workflow](UPDATE_ANNOUNCEMENTS.md) owns the command/state contract.
 O18 remains current-view sharing and O17 remains in-site comment notifications.
 The uncommitted 14 October exploration temporarily used O18 for announcements;
@@ -332,6 +345,31 @@ Show list control, and discloses category filters on demand. Automatic map fits
 must not collapse browsing. Check populated city/daily trips, empty filters,
 list/detail/gallery Back and Forward, scroll retention, safe areas, keyboard,
 short landscape and larger phones; preserve the existing desktop sidebar.
+
+Owner follow-up, 16 October 2026: after Show map, the sheet should be draggable,
+and “a large part of that top bar should be draggable.” The handle and broad
+non-control areas of both list and detail headers must follow the finger while
+resizing between map and reading views. Keep Show map / Show list as accessible
+tap alternatives, preserve working header buttons and content scrolling, and
+leave the exposed map pannable. This supersedes release-only dragging from the
+narrow handle; it does not change the expanded opening or landscape side sheet.
+Check drags in both directions before/after Show map, cancellation, taps,
+list/detail transitions and map panning at 320/390px and landscape.
+
+## Mobile swipe continuity — 16 October 2026
+
+The owner reported that “the first photo swipe isn't smooth” and requested
+slightly smoother subsequent swipes. This extends O04/O08 across every atlas:
+the first horizontal drag after fullscreen entry must have the same continuous
+photo handoff as later drags, including when adjacent images finish loading
+after the viewer opens. Prepare bounded neighbors through the existing full-photo
+cache, keep the preview until full pixels are ready, and let the image follow
+the finger without layout work on every pointer event. Preserve quick repeated
+swipes, cancelled gestures, collection ends, pinch/pan, pull-to-dismiss and reduced
+motion. Check a cold first entry as well as cached revisits and slow images;
+a warmed second swipe alone does not satisfy this correction. Implementation
+details and verification belong in [the photo workflow](../PHOTO_WORKFLOW.md)
+and [WIP](../WIP.md#mobile-photo-swipes-and-places-dragging--16-october-2026).
 
 ## Mobile pull-to-dismiss — 12 October 2026
 

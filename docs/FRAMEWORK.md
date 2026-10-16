@@ -113,8 +113,8 @@ password system.
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |
 | `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching |
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |
-| `dist/assets/mobile-ux.js`, `dist/assets/mobile.css` | Shared mobile day navigation, full-viewport photo stage with overlay controls and single-tap chrome toggling, focal zoom through photo-zoom.js, continuous journey photo gestures including downward still-photo dismissal with cancellation/pinch arbitration, separate event jumps, event grids retained beneath fullscreen photos with one-level grid/photo history and scroll restoration, location panel, exact map-camera restoration on same-event Back/close and retained cross-event sidebar selection when dismissing Comments |
-| `dist/assets/community-client.js`, `photo-comments.js` / `.css`, `places-comments.css`, `places-panel.js` | Shared floating photo conversations and place reviews; immediate presentation, authorized memory caches and retry behavior |
+| `dist/assets/mobile-ux.js`, `dist/assets/mobile.css` | Shared mobile day navigation, full-viewport photo stage with overlay controls and single-tap chrome toggling, focal zoom through photo-zoom.js, continuous journey photo gestures with cache-ready neighbors and frame-paced swipe transforms, including downward still-photo dismissal with cancellation/pinch arbitration, separate event jumps, event grids retained beneath fullscreen photos with one-level grid/photo history and scroll restoration, location panel, exact map-camera restoration on same-event Back/close and retained cross-event sidebar selection when dismissing Comments |
+| `dist/assets/community-client.js`, `photo-comments.js` / `.css`, `places-comments.css`, `places-panel.js` | Shared floating photo conversations and place reviews; immediate presentation, authorized memory caches and retry behavior; Places owns direct phone sheet resizing from its handle and list/detail header |
 | `dist/assets/comment-notifications.js`, `trip-notifications.js` / `.css` | Shared journey-scoped local read IDs, exact photo/trip counts, cached trip metadata and recent-feed presentation; no per-photo count requests or public comment text |
 | `dist/assets/input-mode.js` | Shared pointer/keyboard focus presentation for catalog, journeys and draft previews |
 | `studio/` | Local authoring UI for any selected journey |
@@ -135,7 +135,9 @@ files are public HTML, `generated-pages.json`, and these data bundles:
 `photo-service.js`. `dist/assets/brand/` is also generated: exact copies of the
 reviewed assets in `content/branding/`. Edit their `content/` sources and rebuild. The build assigns
 content hashes to public asset URLs; template authors do not maintain version
-strings. Studio serves live assets with no-store caching.
+strings. This includes the Places sheet stylesheet; a gesture/style release must
+invalidate its cached CSS alongside the runtime. Studio serves live assets with
+no-store caching.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
@@ -258,6 +260,10 @@ membership, authored destination grouping, diffs and plain text;
 `update-announcements.mjs` owns a private ignored local ledger, retained backups
 and frozen drafts. This is shared tooling for every real trip, separate from
 viewer comment notifications and Studio's unverified-public review state.
+The ledger's known IDs are already keyed by trip. Selecting `--trip` filters the
+inventory before freezing a draft, so acknowledging it cannot consume another
+trip's additions. Multiple published trips require a selection or explicit
+`--all`; the original baseline and schema 1 history need no reset or migration.
 It does not modify source content, fetch protected media or send notifications.
 The [workflow](UPDATE_ANNOUNCEMENTS.md) defines initialization, prepare/copy versus
 acknowledgment, recovery and public-metadata verification limits. Studio UI and
