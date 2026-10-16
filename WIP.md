@@ -16,6 +16,26 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Unselected map opening — 16 October 2026
+
+Owner correction: first map opening must not show Stop 1 already selected,
+on phone or desktop. [O06](docs/OWNER_DECISIONS.md) and the
+[opening workflow](JOURNEY_WORKFLOW.md#opening-route-trace) own the shared rule.
+The isolated `codex/map-entry-overview` checkout gates row/route/signpost and
+journal selection on map scope, uses neutral phone overview labels, and starts
+next-event navigation at the first event. Explicit day/photo links retain entry.
+Implemented and locally verified: shared navigation/trace/history regressions,
+production build, and eight headless Chrome cases at 1440 × 1000 and 390 × 844
+across Switzerland–Italy, Heading East, Alpine demo and an independently created
+populated draft. Checks cover neutral opening, first/second-event selection,
+All days/stops, direct entry and zero JavaScript errors. Public demo photo-card
+selection clears on overview on both sizes. Heading East's phone Places count
+and list follow overview 20 → Stop 1's 2 → overview 20; no event filter is
+selected in overview. These are Chrome viewport checks, not physical-device QA.
+Next: finish final regression check, publish only this fix after integrating
+latest remote main, and record successful Pages/fresh-public-page verification.
+The primary checkout's unrelated pending changes remain untouched.
+
 ## Fullscreen depth-motion preview — 14 October 2026
 
 **15 October correction — gentle release live; seven additions await private upload.** The owner found the stronger result

@@ -1,5 +1,15 @@
 # Changelog
 
+## 16 October 2026 — open the map without a selected stop
+
+- Keep the whole-trip overview neutral on desktop and phone: no first-event
+  row, signpost or route emphasis, and journey context in the existing sidebar.
+- Show All days/stops in the phone picker. Next starts at the first event;
+  explicit selection and deep links still open their intended event, and a
+  return to overview clears selection.
+- Carry the correction into O06, the feature inventory and opening workflow;
+  verify shared behavior across the reference, city atlas, demo and fresh draft.
+
 ## 15 October 2026 — restore gentle depth motion and add website samples
 
 - Record the owner's rejection of the stronger 3D range. Return the separate

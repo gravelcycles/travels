@@ -50,7 +50,16 @@ trace the visible route from start to end over **3,000 ms**, on desktop and phon
 Fit the complete route immediately and hold the camera steady during the trace.
 Reuse resolved route geometry and transport styling; order legs by the visible
 events and their segment IDs, draw each leg separately and never connect gaps.
-The final overview restores its normal routes, endpoints and signposts.
+The final overview restores its normal routes, endpoints and signposts, with no
+selected day/stop. Keep the internal fallback event separate from visible map
+selection: overview rows and signposts have no active/aria-current state, routes
+have no selected-event emphasis, the existing desktop sidebar introduces the
+journey, and the phone picker says All days/stops. The contextual Places action
+uses the whole journey while no event is selected. Choosing an event or opening
+a direct day/photo link selects that event; returning to overview clears it.
+The phone next arrow from overview begins with the first event, even when the
+journey contains only one. Verify these states before/during/after the opening
+trace and after returning from a selected event. See [O06](docs/OWNER_DECISIONS.md).
 
 The cover remains the single entry action. Wait for map readiness if entry is
 early; do not spend the trace behind the cover or replay it on All days, resize
@@ -434,12 +443,13 @@ be mixed into the two-dimensional map coordinate array.
 The shared day map keeps a persistent compact header with the Journey Atlas
 link. Full-trip Replay has no entry action; the normal map retains arrival
 playback. Below the map are the compact date/title, Day details
-and Photos, plus the bottom Day N of M picker and previous/next arrows. The
-picker lists all days and the other journey-wide actions
+and Photos, plus the bottom event picker and previous/next arrows. The picker
+shows All days/stops in overview and names the event after a deliberate
+selection. It lists all days and the other journey-wide actions
 (whole map, all photos, unlock and about). Its Day button also returns to the current map. Transport
 and stop keys live in Day details; pinch/drag operate the uncluttered map.
 Tap **All days** at the top of a focused day map to show the whole journey again.
-Tap **Day N of M** at the bottom to return to the all-days list. Mobile route
+Tap the bottom event picker to open the all-days/stops list. Mobile route
 taps select the day without opening a tooltip; mobile travel cards also omit
 tooltips. Desktop map routes retain inspection. In Travel details, desktop legs
 are focusable rows: hover or keyboard focus highlights only that leg and greys
