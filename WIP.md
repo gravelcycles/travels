@@ -38,6 +38,27 @@ recentering and retains its exact camera. QA scripts/results are in
 `/private/tmp/mobile-swipe-places-browser-qa/` and adjacent task `.mjs` files.
 Next: deploy and verify fresh public assets. Physical-device Safari was not used.
 
+## Unselected map opening — 16 October 2026
+
+Owner correction: first map opening must not show Stop 1 already selected,
+on phone or desktop. [O06](docs/OWNER_DECISIONS.md) and the
+[opening workflow](JOURNEY_WORKFLOW.md#opening-route-trace) own the shared rule.
+The isolated `codex/map-entry-overview` checkout gates row/route/signpost and
+journal selection on map scope, uses neutral phone overview labels, and starts
+next-event navigation at the first event. Explicit day/photo links retain entry.
+Implemented and locally verified: shared navigation/trace/history regressions,
+production build, and eight headless Chrome cases at 1440 × 1000 and 390 × 844
+across Switzerland–Italy, Heading East, Alpine demo and an independently created
+populated draft. Checks cover neutral opening, first/second-event selection,
+All days/stops, direct entry and zero JavaScript errors. Public demo photo-card
+selection clears on overview on both sizes. Heading East's phone Places count
+and list follow overview 20 → Stop 1's 2 → overview 20; no event filter is
+selected in overview. These are Chrome viewport checks, not physical-device QA.
+Integrated remote main through `3fb52f2`; all **682 tests** and the production
+build pass with reproducible checked-in output. Pending delivery: push the
+release and verify successful Pages plus fresh public HTML/assets and phone entry.
+The primary checkout's unrelated pending changes remain untouched.
+
 ## Outbound trip update checkpoints — 16 October 2026
 
 Authorized: start checkpointing and calculate useful messages, likely for manual

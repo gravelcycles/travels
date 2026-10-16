@@ -17,6 +17,18 @@
   Integrated current main; all 693 tests, the build and 30 rendered browser cases
   pass. Manual map input immediately after Show map cancels its delayed recenter.
 
+## 16 October 2026 — open the map without a selected stop
+
+- Keep the whole-trip overview neutral on desktop and phone: no first-event
+  row, signpost or route emphasis, and journey context in the existing sidebar.
+- Show All days/stops in the phone picker. Next starts at the first event;
+  explicit selection and deep links still open their intended event, and a
+  return to overview clears selection.
+- Carry the correction into O06, the feature inventory and opening workflow;
+  verify shared behavior across the reference, city atlas, demo and fresh draft.
+  All 682 integrated tests, the production build and desktop/phone browser
+  checks pass, including whole-trip Places scope and selected-card cleanup.
+
 ## 16 October 2026 — publish seven protected depth samples
 
 - Publish and checksum-verify the seven prepared depth WebPs (183,664 bytes)

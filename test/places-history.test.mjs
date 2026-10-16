@@ -154,7 +154,7 @@ test('place-only history changes do not refit an unchanged whole-journey map', (
   assert.equal(f.overviewCalls, 0, 'Independent places navigation cannot reset its camera through the mobile controller');
 });
 
-function placeHistoryFixture({ mobile = false, landscape = false, cameraReady = null, scope = 'journey', photos = [], visibleDayIds, interactiveMap = false } = {}) {
+function placeHistoryFixture({ mobile = false, landscape = false, cameraReady = null, scope = 'journey', photos = [], visibleDayIds, interactiveMap = false, dayIdProvider } = {}) {
   const nodes = new Map(), events = new Map(), queue = [], timers = new Map(); let timerId = 0;
   const mobileState = { viewer: false, dayId: 'one', scope: 'journey', tab: 'map' };
   const stack = [{ priorPage: true }, { mobileAtlas: mobileState }];
@@ -167,7 +167,7 @@ function placeHistoryFixture({ mobile = false, landscape = false, cameraReady = 
       dataset: {}, hidden: false, open: false, isConnected: true, scrollTop: 0, offsetTop: 0, innerHTML: '', value: '',
       style: { setProperty: (name, value) => styles.set(name, value), removeProperty: name => styles.delete(name), getPropertyValue: name => styles.get(name) || '' },
       classList: { add(...names) { names.forEach(name => classes.add(name)); }, remove(...names) { names.forEach(name => classes.delete(name)); }, contains: name => classes.has(name) },
-      querySelector: child => node(child), querySelectorAll: () => [], append() {},
+      querySelector: child => node(child), querySelectorAll: query => query === '[data-place-scope]' ? ['day','all'].map(scope => { const button=node(`[data-place-scope="${scope}"]`); button.dataset.placeScope=scope; return button; }) : [], append() {},
       setAttribute(name, content) { this[name] = content; }, getClientRects: () => [{ width: 44, height: 44 }],
       getBoundingClientRect() {
         if (selector !== '#places-panel') return { left: 0, top: 0, right: 44, bottom: 44, width: 44, height: 44 };
@@ -220,7 +220,7 @@ function placeHistoryFixture({ mobile = false, landscape = false, cameraReady = 
   let journey = { id: 'journey', days: [{ id: 'one', number: 1, date: 'Today' }], pointsOfInterest: [point] };
   const controller = context.window.JOURNEY_ATLAS_PLACE_PANEL.create({
     journey: () => journey,
-    photos:()=>photos, preview: true, mapScope:()=>scope, visibleDayIds:()=>visibleDayIds, openPhoto:(id, options)=>openedPhotos.push({id, options}), dayId: () => currentDay, store: () => store, explore() {}, map: () => map,
+    photos:()=>photos, preview: true, mapScope:()=>typeof scope === 'function' ? scope() : scope, visibleDayIds:()=>visibleDayIds, openPhoto:(id, options)=>openedPhotos.push({id, options}), dayId: () => dayIdProvider ? dayIdProvider() : currentDay, store: () => store, explore() {}, map: () => map,
     canRestoreMapCamera: () => cameraReady === true, restoreMap() { restoreCalls++; }
   });
   return {
@@ -670,4 +670,30 @@ test('Places header buttons, nonprimary input, desktop and landscape retain thei
   assert.equal(f.node('#places-panel').style.getPropertyValue('--pp-sheet-drag-height'), '722px', 'A second pointer and horizontal movement do not resize');
   heading.fire('pointerup', { pointerId: 3, clientX: 200, clientY: 102 });
   assert.equal(f.node('#places-panel').dataset.expanded, 'true');
+});
+
+test('overview Places uses the whole trip and disables event filtering until a stop is selected',()=>{
+  const app=fs.readFileSync(new URL('../dist/assets/app.js',import.meta.url),'utf8');
+  const wiring=app.slice(app.indexOf('placesUI = window.JOURNEY_ATLAS_PLACES.create({')).match(/dayId: (.*?), map:/)[1];
+  const selection=vm.createContext({mapScope:'journey',activeDayId:'one'});
+  const dayIdProvider=vm.runInContext(`(${wiring})`,selection);
+  const f=placeHistoryFixture({mobile:true,scope:()=>selection.mapScope,dayIdProvider});
+  const first=f.journey.pointsOfInterest[0];
+  f.setJourney({...f.journey,days:[{id:'one',number:1,title:'First stop'},{id:'two',number:2,title:'Second stop'}],
+    pointsOfInterest:[first,{...first,id:'second-cafe',name:'Second café'},{...first,id:'far-cafe',name:'Later café',dayIds:['two']}]});
+  assert.equal(f.node('#mobile-day-places').textContent,'Places · 3');
+  f.controller.open({scope:'day'});
+  assert.equal(f.history.state.atlasPlaces.dayOnly,false,'Event-specific entry falls back to all places without a selected event');
+  assert.equal(f.node('[data-place-scope="day"]').disabled,true);
+  assert.equal(f.node('#places-all-count').textContent,'3');
+  f.controller.dayChanged();selection.mapScope='day';f.controller.update();f.controller.open();
+  assert.equal(f.node('#mobile-day-places').textContent,'Places · 2');
+  assert.equal(f.history.state.atlasPlaces.dayOnly,true);
+  assert.equal(f.node('[data-place-scope="day"]').disabled,false);
+  f.click('',{placeScope:'all'});f.controller.close({historyWrite:false});f.controller.open();
+  assert.equal(f.history.state.atlasPlaces.dayOnly,false,'An explicit All places choice persists while reopening the same event');
+  f.controller.dayChanged();selection.mapScope='journey';f.controller.update();f.controller.open();
+  assert.equal(f.node('#mobile-day-places').textContent,'Places · 3');
+  assert.equal(f.history.state.atlasPlaces.dayOnly,false);
+  assert.equal(f.node('[data-place-scope="day"]').disabled,true);
 });

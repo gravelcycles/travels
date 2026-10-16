@@ -110,7 +110,8 @@
     replayLayoutObserver.observe($('.replay-controls')); replayLayoutObserver.observe($('.replay-story'));
     new ResizeObserver(() => { if (enabled() && $('#replay-dialog').open) api.replayMap?.(); }).observe($('#replay-map'));
     function renderDay() {
-      const day = api.day(), info = api.dayInfo(day), index = api.days().findIndex(d => d.id === day.id);
+      const day = api.day(), info = api.dayInfo(day), focused = api.scope() === 'day';
+      const index = focused ? api.days().findIndex(d => d.id === day.id) : -1;
       for (const prefix of ['mobile-day', 'mobile-story']) {
         $(`#${prefix}-date`).textContent = prefix === 'mobile-day' ? day.date : `${eventWord('title')} ${day.number} · ${day.date}`;
         $(`#${prefix}-title`).textContent = day.title;
@@ -130,7 +131,8 @@
       $('#mobile-day-details').textContent=api.scope()==='journey'?`Choose a ${eventWord()}`:`${eventWord('title')} details`;
       $('#mobile-previous-day').disabled = index <= 0;
       $('#mobile-next-day').disabled = index >= api.days().length - 1;
-      $('#mobile-day-picker .button-label').textContent = `${eventWord('title')} ${day.number} · ${day.title || day.date || ''}`;
+      $('#mobile-day-picker .button-label').textContent = focused ? `${eventWord('title')} ${day.number} · ${day.title || day.date || ''}` : `All ${eventWord('plural')}`;
+      $('.mobile-day-summary').setAttribute('aria-label', focused ? `Selected ${eventWord()}` : 'Whole journey');
       $('.map-panel').style.setProperty('--day-summary-height', `${$('.mobile-day-summary').offsetHeight}px`);
       tabChanged();
       // Deep links and desktop day selection use the same renderer. Keep the
@@ -141,9 +143,11 @@
     function tabChanged() {
       const tab = $('.atlas-shell').dataset.mobileTab;
       $('.atlas-shell').dataset.mapScope = api.scope();
-      $('#mobile-back .button-label').textContent = tab === 'map' ? `All ${eventWord('plural')}` : `${eventWord('title')} map`;
+      $('#mobile-back .button-label').textContent = tab === 'map' ? `All ${eventWord('plural')}` : api.scope() === 'journey' ? 'Whole journey map' : `${eventWord('title')} map`;
       $('#mobile-day-picker').setAttribute('aria-expanded', String(tab === 'route'));
-      $('#mobile-day-picker').setAttribute('aria-label', `${tab === 'route' ? 'Return to' : `Choose a ${eventWord()}, current`} ${eventWord('title')} ${api.day().number}`);
+      $('#mobile-day-picker').setAttribute('aria-label', api.scope() === 'journey'
+        ? tab === 'route' ? 'Return to whole journey map' : `Choose a ${eventWord()}`
+        : `${tab === 'route' ? 'Return to' : `Choose a ${eventWord()}, current`} ${eventWord('title')} ${api.day().number}`);
       $('[data-journey-action=unlock]').hidden = Boolean(window.JOURNEY_ATLAS_AUTH?.unlocked);
       if (enabled() && tab === 'story') requestAnimationFrame(api.preview);
     }
