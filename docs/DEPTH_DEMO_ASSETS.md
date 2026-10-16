@@ -111,8 +111,17 @@ added photograph. Every private map has 255 or 256 distinct gray values and
 was visually checked against its exact source photograph. All nine image/depth
 hashes, dimensions and byte counts match the generated manifest. The local
 publisher dry run passed for the seven selected photographs and seven depth
-objects; this does not establish remote publication, which requires the normal
-Wrangler authorization and the publisher's remote checks.
+objects.
+
+On **16 October 2026**, restored Wrangler authorization allowed the bounded
+publisher to upload and checksum-verify all seven depth objects. It also verified
+the 14 existing image/thumbnail objects without republishing them, confirmed
+public R2 access was disabled, and recorded 327,914,048 account-storage bytes
+before the upload, below the existing ceiling. All seven anonymous gateway HEAD
+requests returned **401/no-store**. Only then were the seven demo records marked
+`assetStatus: "published"`. The updated Pages manifest and live nine-photo
+verification remain pending; private R2 publication alone does not make the
+additional samples available on the remote review page.
 
 | Protected sample | Depth size | Additional bytes | Local CPU inference |
 | --- | --- | --- | --- |
