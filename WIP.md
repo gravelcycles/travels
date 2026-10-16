@@ -69,9 +69,15 @@ selection clears on overview on both sizes. Heading East's phone Places count
 and list follow overview 20 → Stop 1's 2 → overview 20; no event filter is
 selected in overview. These are Chrome viewport checks, not physical-device QA.
 Integrated remote main through `3fb52f2`; all **682 tests** and the production
-build pass with reproducible checked-in output. Pending delivery: push the
-release and verify successful Pages plus fresh public HTML/assets and phone entry.
-The primary checkout's unrelated pending changes remain untouched.
+build pass with reproducible checked-in output. Released as `8d5a117` through
+successful [Pages run 38936565821](https://github.com/gravelcycles/travels/actions/runs/38936565821).
+Fresh public reference/Heading East/Florence/demo HTML and both changed runtime
+assets match the tested release byte-for-byte. A fresh 390 × 844 guest Chrome
+load of Heading East shows zero selected rows/markers, All stops, the whole
+journey card and Places · 20, with no JavaScript errors or protected-media
+requests. Implementation and delivery are complete. The subsequent fullscreen
+release has integrated this correction; its verification belongs to that
+workstream above. The primary checkout's unrelated pending changes remain untouched.
 
 ## Outbound trip update checkpoints — 16 October 2026
 
