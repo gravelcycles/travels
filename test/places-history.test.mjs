@@ -155,7 +155,7 @@ test('place-only history changes do not refit an unchanged whole-journey map', (
 });
 
 function placeHistoryFixture({ mobile = false, landscape = false, cameraReady = null, scope = 'journey', photos = [], visibleDayIds, interactiveMap = false } = {}) {
-  const nodes = new Map(), events = new Map(), queue = [];
+  const nodes = new Map(), events = new Map(), queue = [], timers = new Map(); let timerId = 0;
   const mobileState = { viewer: false, dayId: 'one', scope: 'journey', tab: 'map' };
   const stack = [{ priorPage: true }, { mobileAtlas: mobileState }];
   let cursor = 1, restoreCalls = 0, currentDay = 'one';
@@ -198,7 +198,8 @@ function placeHistoryFixture({ mobile = false, landscape = false, cameraReady = 
     FormData: class { constructor(form) { this.values = form.values || {}; } get(name) { return this.values[name]; } },
     location: { href: 'https://example.test/journey' }, matchMedia: query => ({ matches: mobile && query.includes('900px') && (!query.includes('landscape') || landscape) }),
     getComputedStyle: () => ({ minHeight: '240px', maxHeight: '724px' }),
-    requestAnimationFrame(fn) { if(interactiveMap)frames.push(fn); return 1; }, cancelAnimationFrame() {}, setTimeout() {}, clearTimeout() {}
+    requestAnimationFrame(fn) { if(interactiveMap)frames.push(fn); return 1; }, cancelAnimationFrame() {},
+    setTimeout(fn) { timers.set(++timerId, fn); return timerId; }, clearTimeout(id) { timers.delete(id); }
   });
   for (const file of ['photo-places.js','places-comments.js', 'places-panel.js']) vm.runInContext(fs.readFileSync(new URL(`../dist/assets/${file}`, import.meta.url), 'utf8'), context);
   const stored = new Map();
@@ -224,7 +225,8 @@ function placeHistoryFixture({ mobile = false, landscape = false, cameraReady = 
   });
   return {
     controller, history, node, mobileState, store, originalCamera, cameraJumps, cameraMoves, journey, openedPhotos, pinButtons, popups,
-    flushFrames() { while(frames.length)frames.shift()(); }, flushFrame() { frames.shift()?.(); }, mapEvent(name){mapEvents.get(name)?.();},
+    flushFrames() { while(frames.length)frames.shift()(); }, flushFrame() { frames.shift()?.(); }, mapEvent(name, event = {}){mapEvents.get(name)?.(event);},
+    flushTimers() { const work = [...timers.values()]; timers.clear(); work.forEach(fn => fn()); },
     setJourney(value) { journey = value; controller.update(); },
     get restoreCalls() { return restoreCalls; }, setDay(id) { currentDay = id; },
     click(id, dataset = {}, attributes = []) {
@@ -625,6 +627,29 @@ test('phone Places drag bounds, cancellation and closing clear temporary movemen
   assert.equal(heading.hasPointerCapture(8), false);
   assert.equal(panel.style.getPropertyValue('--pp-sheet-drag-height'), '');
   assert.equal(panel.classList.contains('pp-sheet-dragging'), false);
+});
+
+test('map input immediately after Show map cancels deferred recentering for lists and place details', () => {
+  for (const detail of [false, true]) {
+    for (const inputBeforeTimer of [false, true]) {
+      const f = placeHistoryFixture({ mobile: true, cameraReady: true, interactiveMap: true });
+      f.controller.open(); f.flushFrames();
+      if (detail) f.controller.openPlace('cafe');
+      f.flushFrames();
+      f.node('#places-sheet-toggle').fire('click');
+      const before = f.cameraMoves.length;
+      if (!inputBeforeTimer && !detail) f.flushTimers(); // List fit has queued its frame, but has not moved the map yet.
+      f.mapEvent('movestart', { originalEvent: { type: 'touchmove' } });
+      f.flushTimers(); f.flushFrames();
+      assert.equal(f.cameraMoves.length, before, 'The traveler’s pan wins over the delayed map request');
+      assert.equal(f.node('#places-panel').dataset.expanded, 'false');
+    }
+  }
+  const f = placeHistoryFixture({ mobile: true, cameraReady: true, interactiveMap: true });
+  f.controller.open(); f.flushFrames();
+  f.node('#places-sheet-toggle').fire('click'); const before = f.cameraMoves.length;
+  f.mapEvent('movestart'); f.flushTimers(); f.flushFrames();
+  assert.equal(f.cameraMoves.length, before + 1, 'An ordinary programmatic move does not cancel an intentional Show map fit');
 });
 
 test('Places header buttons, nonprimary input, desktop and landscape retain their existing gestures', () => {

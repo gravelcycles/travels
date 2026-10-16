@@ -467,8 +467,14 @@
       if (visible && selectedId) renderDetail({preserveScroll:true});
       scheduleMarkers();
     }
+    function mapMoveStarted(event) {
+      closeCluster();
+      // A pan/zoom begun while Show map is settling owns the camera. Its
+      // delayed fit (or the fit's queued frame) must not undo that input.
+      if (event?.originalEvent) { sheetMapRequest++; cameraVersion++; }
+    }
     function mapReady() {
-      const map = options.map(); if (map && map !== markerMap) { markerMap?.off('moveend', scheduleMarkers); markerMap?.off('movestart', closeCluster); markerMap = map; map.on('moveend', scheduleMarkers); map.on('movestart', closeCluster); }
+      const map = options.map(); if (map && map !== markerMap) { markerMap?.off('moveend', scheduleMarkers); markerMap?.off('movestart', mapMoveStarted); markerMap = map; map.on('moveend', scheduleMarkers); map.on('movestart', mapMoveStarted); }
       scheduleMarkers();if (visible) { current() ? focusPlace(current()) : fitPlaces(); }
     }
     for (const id of ['open-places', 'mobile-open-places']) document.getElementById(id)?.addEventListener('click', () => open());
