@@ -10,10 +10,9 @@
   retain desktop context and bounded pan.
 - Reconcile current owner/workflow/feature/framework guidance and supersede the
   old visible-on-tap and omitted-Close rules.
-- Validation so far: 664 tests, the production build and 16 synthetic-fixture browser
+- Validation: 707 integrated tests, the production build and 16 synthetic-fixture browser
   combinations pass; 320 px/landscape screenshots were visually checked. Physical
-  iPhone/Safari device testing is not claimed. Current-main integration and
-  public delivery remain in
+  iPhone/Safari device testing is not claimed. Public delivery remains in
   [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
 
 ## 16 October 2026 — open the map without a selected stop

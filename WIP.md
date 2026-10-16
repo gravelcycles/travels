@@ -36,20 +36,21 @@ shared focal math and the desktop Ctrl+wheel/trackpad, Safari gesture-event,
 two-pointer pinch, double-click and pan controller. Mobile uses the same focal
 math; desktop zoom keeps its existing stage and context sidebar.
 
-Verification so far: **664 tests and `npm run build` pass**. Synthetic-fixture browser checks
+Integrated remote main through `8d5a117`, preserving the concurrent map-overview,
+manual-update and protected-depth-demo releases. **All 707 tests and the production
+build pass**, with reproducible public output. Synthetic-fixture browser checks
 pass all **16 combinations** of Switzerland–Italy, Heading East, Alpine demo and
 an independently populated city draft at **320 × 568, 390 × 844, 844 × 390 and
-1360 × 900**. Screenshots at 320 px and landscape were visually inspected,
-including actual Share/Comments adjacency. These checks do not claim physical
-iPhone or Safari-device testing. A native touch-input moving-pinch check also
-passes on Alpine at 390 px; expanded touch/portrait/event-bar checks are running.
-No public deployment receipt is claimed yet.
+1360 × 900**. These include full-viewport geometry, native moving-pinch input,
+portrait/landscape zoom, city controls, Share/Comments adjacency and top-right
+Close. Screenshots were visually inspected. The post-integration Alpine phone
+check also verifies keyboard restoration after hiding controls. Regressions
+cover cancelled taps, remaining-finger pinch release, grid return and private
+access lifecycle. Physical iPhone or Safari-device testing is not claimed.
 
-Next: integrate latest remote main (`d451b58` at this checkpoint), reconcile any
-changed guidance, complete `npm test` and `npm run build`, include regenerated
-output, commit and push, then verify the Pages run and a fresh public journey.
-Record the final test/build and deployment receipts here and in CHANGELOG;
-complete the delivery item in TODO only after public verification.
+Next: push the validated release, verify successful Pages and fresh public
+HTML/asset hashes, then record the delivery receipt and complete TODO. The
+primary checkout's unrelated edits remain untouched.
 
 ## Unselected map opening — 16 October 2026
 
