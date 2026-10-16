@@ -10,8 +10,10 @@
   on AVIF success. Preserve all photo IDs, originals and editorial data.
 - Upgrade 223 visible protected photos with 57.6% more pixels and 4.3% more
   full-photo download bytes; retain the full WebP fallbacks. Record availability,
-  verification, staged rollout and rollback in current guidance. The release
-  receipt is tracked in WIP.
+  verification, staged rollout and rollback in current guidance. Release `62d8c69`
+  passed 825 tests, Pages run `38946882288`, fresh public file comparisons and both
+  real authenticated galleries, including zoom/swipe and automatic WebP recovery.
+  The full release and local-pipeline receipt is recorded in WIP.
 
 ## 16 October 2026 — clarify the photo-selection proposal on both devices
 

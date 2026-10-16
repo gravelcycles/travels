@@ -28,8 +28,8 @@ Location/Comments, photo navigation and fitted reopen after 2.5× zoom; Heading 
 also verifies existing signed-in full-size image access, empty-thread loading,
 mobile Location and retained grid selection. No console errors or live comment
 writes. The known long-notes/short-landscape map-height issue remains in TODO.
-This implementation batch is delivered. The AVIF assets are uploaded and verified;
-its rollout is recorded in the migration workstream below. The existing follow-up will
+This implementation batch is delivered. The AVIF migration is now live and
+verified; its release receipt is recorded in the migration workstream below. The existing follow-up will
 measure its image bytes, fallback, decode and neighbor readiness after deployment
 before any justified bounded preload-scheduling change. Preserve its WebP fallback
 and originals; do not count its savings as this performance batch.
@@ -84,10 +84,24 @@ real authenticated candidate galleries pass native AVIF decoding, portrait/lands
 mobile swipe, desktop/mobile focal zoom, lock clearing and forced AVIF 404 recovery
 to real WebP, with zero page errors; Heading East includes two RAW derivatives.
 Earlier browser checks also cover unsupported AVIF, wrong MIME and corrupt images.
-Deploy Pages and verify fresh public assets plus both real-photo galleries.
-Physical iPhone/Safari behavior is not certified by Chrome viewport emulation.
-The local Studio sync has a guarded patch/backup plan validated with 668 tests
-and ten conflict/preservation rehearsals; apply after live verification and retest.
+Published as `62d8c69` through successful
+[Pages run 38946882288](https://github.com/gravelcycles/travels/actions/runs/38946882288).
+Five fresh public pages, all 43 referenced script/style assets, three legacy data
+bundles and the scoped-data inventory match the tested release byte-for-byte
+(52 files total). Both actual public galleries pass all the real-photo checks
+above, including six distinct native-resolution samples, two RAW derivatives and
+one forced AVIF failure recovering full WebP per gallery. No page errors or
+service interruption were observed. Physical iPhone/Safari behavior is not
+certified by Chrome viewport emulation.
+
+The guarded local Studio sync applied 32 scoped files, copied 223 verified AVIFs
+and merged only their descriptors into four manifests, with backups and an
+incremental journal. All 668 tests and the local build pass in the owner's shared checkout. The
+preservation audit confirms 294 unrelated files, including 44 tracked dirty files
+and all three override files, are byte-identical; all 244 local photo records retain
+their existing fields and order. The shared checkout remains uncommitted on its
+original branch and HEAD; the migration does not publish its unrelated edits. Future photo imports now prepare
+AVIF upgrades through the shared encoder; existing WebP delivery remains available.
 
 ## Saved Heading East photo data — 16 October 2026
 
