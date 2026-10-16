@@ -8,6 +8,8 @@
   clicks after moved/cancelled drags. Keep thread scrolling, map input, drafts,
   photo selection and one-level history intact. Record the clarification in
   O17/O08 and the photo/conversation workflows; verification is tracked in WIP.
+- All 750 tests and the build pass. Release `5667d26` passed Pages, fresh public
+  asset comparisons and live phone/landscape/desktop header interactions.
 
 ## 16 October 2026 — align fullscreen city and comment controls
 
