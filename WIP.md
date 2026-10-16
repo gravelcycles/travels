@@ -31,9 +31,20 @@ for SHA-256 verification. All **740 tests**, the production build and actual
 Worker runtime checks pass. Two build-test fixtures now preserve unrelated saved
 photo assignments instead of erasing them. Generated public metadata/order
 matches the saved sources exactly; the gallery and comments index contain the
-same 120 visible IDs, with all trashed IDs excluded. Worker/index activation and
-Pages/public-bundle verification remain pending. Preserve the outbound-update
-ledger and acknowledgment history; publication does not mark any message shared.
+same 120 visible IDs, with all trashed IDs excluded. Integrated the concurrent
+solid-controls release through `1f9a8bf`; all 740 tests and the build still pass.
+
+Published as `0cef1bb` through successful
+[Pages run 38939110454](https://github.com/gravelcycles/travels/actions/runs/38939110454).
+Worker version `680b93ec-0a1c-4116-a54e-5f37dbd766d3` activated the matching index
+before Pages. Fresh public catalog/Heading East HTML and all three metadata
+bundles match the release byte-for-byte. Anonymous photo/comment reads return
+401. A fresh authenticated browser load shows 120 total photos, Berlin's 24-photo
+album and the newly added river photo at its saved second position, with the
+actual July timestamp and saved map pin. Studio's four verified uploads are now
+marked published locally and its generated output is refreshed. The primary
+checkout's unrelated work is preserved. Delivery is complete. Preserve the
+outbound-update ledger and history; no message was sent or marked shared.
 
 ## Photo intermediate screens — 16 October 2026
 
@@ -114,6 +125,21 @@ complete. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
+**Alignment follow-up — verified locally; deployment pending.** The owner
+clarified that the next-city and Comments buttons must be right-aligned. Keep
+Share immediately left of Comments, replacing the mistaken left-aligned action
+group. Give city/day navigation its own full-width row in portrait and landscape;
+reserve Close’s space only in the top row. Current rules live in O08/O18 and the
+photo workflow. All **740 tests**, the build and **16 rendered browser cases**
+pass across reference, Heading East, Alpine demo and an independently populated
+city draft at 320/390 px, short landscape and desktop. Geometry checks verify
+the city buttons’ opposite safe edges, centered label, Close clearance and
+Comments-right/Share adjacency, alongside solid styling, hiding and focal zoom.
+Phone and landscape screenshots were inspected. Independent review found no
+cascade issue; an extra browser case passes hidden event-nav/Comments layouts.
+No physical-device claim. Next: integrate main, deploy and check fresh public
+output.
+
 **Button-style follow-up — deployed and verified.** The
 owner rejected the translucent buttons as a regression after the release below.
 Restore the original solid mobile header/footer and opaque Close/Share/Comments
@@ -130,8 +156,8 @@ tested build. A fresh public Alpine photo at 390 × 844 confirms opaque surfaces
 no backdrop blur, the full-viewport stage and tap-to-hide/restore. Delivery is
 complete; the primary checkout remains untouched.
 
-**Completed and deployed.** The owner requested mobile fullscreen
-Share beside Comments on the left, top-right Close, one tap to hide all buttons
+**Initial release completed; later alignment is corrected above.** The owner requested mobile fullscreen
+Share beside Comments, top-right Close, one tap to hide all buttons
 for just the photo, and zoom that uses fullscreen. The follow-up adds pinch
 focus that follows the fingers on mobile and desktop. Current requirements and
 supersessions live in
@@ -255,12 +281,15 @@ remain optional future work.
 The owner rejected and requested removal of the experiment; the current rule is
 [the retirement decision](docs/OWNER_DECISIONS.md#depth-motion-experiment-rejected--16-october-2026).
 Source and seven private depth maps are archived locally under ignored
-`build/archives/depth-demo-20261016/`. Removal covers the standalone code/assets,
-build hook, detailed demo docs and both experiment branches. Original trip
-photographs and concurrent site work remain intact. All 740 tests and the build
-pass; the build no longer emits the experiment. Pending: Pages deployment and
-404 checks, removal of the seven unreferenced private depth
-objects, then branch/worktree cleanup and chat archival.
+`build/archives/depth-demo-20261016/`, with its inference tools. The standalone
+code/assets, build hook and detailed demo docs are removed; both experiment
+branches are deleted. Original trip photographs and concurrent site work remain
+intact. All 740 tests and the build pass. Removal release `0542c09` passed
+[Pages run 38939247380](https://github.com/gravelcycles/travels/actions/runs/38939247380):
+all ten former demo/asset URLs return 404 and three normal atlas pages return 200.
+All seven unreferenced private depth objects were removed and verified absent;
+their archived checksums match. This experiment is closed, with no integration
+or further implementation pending.
 
 ## Mobile Places visibility — 12 October 2026
 

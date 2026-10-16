@@ -145,7 +145,8 @@ Accepted shared behavior is recorded in
 [O03/O08/O18](OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
 and the [photo workflow](../PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom).
 The shared implementation extends the existing journey template and styles:
-mobile Share/Comments sit together on the left, Close sits top-right, and a
+mobile Comments aligns right with Share immediately to its left; city/day
+buttons span their own full-width row, Close sits top-right, and a
 single tap toggles chrome over the full-viewport photo stage. `photo-zoom.js`
 owns `focalZoom` and image-aware pan bounds; `mobile-ux.js` uses this math for
 moving-midpoint pinch and double-tap. Its desktop controller supports

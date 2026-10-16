@@ -25,7 +25,16 @@ pipeline, then deploy the regenerated comments eligibility index before Pages.
 The expected visible total is 120 photos: Luzern 9, Freiburg 17, Hamburg 16,
 Köln 10, Düsseldorf 1, Berlin 24 and Prague 43. Verify the saved metadata and
 ordering against fresh public bundles, including the absence of every trashed
-photo. Verification and the deployment receipt are tracked in WIP.
+photo. Published as `0cef1bb` through successful
+[Pages run 38939110454](https://github.com/gravelcycles/travels/actions/runs/38939110454)
+after 740 passing tests, a reproducible build and real Worker runtime checks.
+All 11 visible derivatives (4,643,194 bytes) were checksum-verified remotely.
+The matching Worker index was activated before Pages. Fresh public HTML and
+metadata bundles match the release exactly; authenticated browser review confirms
+Berlin's 24 photos and the new second photo with its actual timestamp and pin.
+Anonymous photo/comment access remains denied. Studio's four published statuses
+are synchronized; unrelated local work and update-announcement history remain
+intact. WIP retains the full service/deployment receipt.
 
 ## Chronological city albums — 12 October 2026
 

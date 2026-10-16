@@ -578,8 +578,11 @@ Implemented and deployed in the shared viewer. Verification and
 deployment status live in
 [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
 
-In mobile fullscreen, place Share immediately beside Comments on the left and
-Close at the top-right of the photograph, clear of safe areas. Preserve the
+In mobile fullscreen, align Comments to the right safe edge and place Share
+immediately to its left. Keep previous/next city/day buttons at opposite safe
+edges of their own full-width row, with the event label centered between them,
+including in short landscape. Reserve Close’s space only in the top control
+row; Close stays at the top-right of the photograph, clear of safe areas. Preserve the
 top-left Back label and the existing presenting-screen history. Close and Back
 return to that same preceding screen, including its mounted grid, scroll and
 selection. The grid does not acquire a second dismissal control. Desktop Share
@@ -630,8 +633,8 @@ view links survive reload; bare journey URLs keep the usual introduction.
 
 Share photo sits beside the lead/selected photo. In desktop fullscreen it sits
 in the right sidebar beside the photo count, below the day controls. The
-16 October phone correction places fullscreen Share beside Comments on the
-left; see the [fullscreen contract](#fullscreen-controls-and-focal-zoom) and WIP
+16 October phone correction places fullscreen Share immediately left of
+right-aligned Comments; see the [fullscreen contract](#fullscreen-controls-and-focal-zoom) and WIP
 for public delivery status. It shares the atlas page through the
 native device sheet where available. Otherwise it copies the link with a brief “Link copied” status; denied clipboard access opens a
 selectable link. Cancelling the share sheet does nothing. Shared links carry only

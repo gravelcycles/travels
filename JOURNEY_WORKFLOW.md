@@ -470,7 +470,8 @@ Desktop headers omit Sample journeys, the trip badge and About this atlas.
 
 Photo and grid headers use Back to return one screen, including the presenting
 grid. The [16 October fullscreen correction](PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom)
-adds mobile Share beside Comments on the left, top-right Close, single-tap
+adds right-aligned mobile Comments with Share immediately to its left,
+full-width city/day controls, top-right Close, single-tap
 hiding/restoring of photo chrome and full-viewport focal zoom. These behaviors
 are implemented; public delivery status remains in WIP. Double-tap zooms around the tapped point and
 back out; pinch follows the moving midpoint and desktop zoom follows the pointer.

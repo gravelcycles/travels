@@ -9,13 +9,24 @@
   photo selection and one-level history intact. Record the clarification in
   O17/O08 and the photo/conversation workflows; verification is tracked in WIP.
 
+## 16 October 2026 — align fullscreen city and comment controls
+
+- Keep next-city/day at the right safe edge and previous-city/day at the left,
+  in their own full-width row. Reserve the Close button’s space in the top row.
+- Align Comments right with Share immediately to its left, correcting the
+  earlier left-aligned group. Preserve solid styling, tap hiding and focal zoom.
+- Update current owner, photo, journey and framework guidance. All 740 tests,
+  the build, 16 browser cases and hidden-control geometry checks pass. Delivery
+  is tracked in [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+
 ## 16 October 2026 — retire the depth experiment
 
 - Archive the rejected demo locally and remove its source, public assets, build
   hook and detailed experiment guidance from main. Preserve source trip photos
   and unrelated shared features. Record the owner’s rejection as the current rule.
-- Deployment, private-derivative cleanup and branch removal are tracked in WIP.
-  All 740 tests and the production build pass after removal.
+- All 740 tests and the build pass. Removal release `0542c09` passed Pages;
+  all ten old demo/asset URLs return 404. Delete both experiment branches and
+  seven unreferenced private depth objects, preserving the local archive.
 
 ## 16 October 2026 — restore solid fullscreen photo controls
 
