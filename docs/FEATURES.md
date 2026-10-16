@@ -87,6 +87,7 @@ uses the existing album-order overrides, with no shared renderer change.
 | Route authoring | Endpoint/control-point editing, undo/redo, routing readiness with actionable setup messages, point cleanup and mode-aware replacement proposals, reviewed geometry preservation until acceptance, GPX import | Per-journey network extracts/manifest or private GPX; missing inputs disable generation with a visible next step; preserve applies to unattended builds and permits explicit Studio previews | Studio, routing scripts |
 | Editorial safety | Automatic unpublished drafts (detached immediate browser copy and acknowledged local disk autosave), separate streams even for duplicated tabs, reload recovery, grouped saved/draft review including unfinished photo fields, discard with confirmed recovery archive, draft download, one-click Save without Preview, local backups, automatic merging of independent disk edits and field choices for actual conflicts | Editing waits for successful recovery; delayed restore/discard cannot replace new edits. Storage failures retain close protection; unreadable drafts are preserved. Stable namespaced IDs; originals and local draft assets remain ignored | journey-content, Studio recovery/server |
 | Review for sharing | Concise summary with required fixes first, grouped editorial choices and expandable source details; read-only review of the current Studio draft and trip plan against saved sources; real local-asset blockers, optional editorial choices, links to the affected editor, revision-bound acknowledgements and a copyable publishing handoff | Works for real trips, samples and empty drafts. Blank captions/stories and photo-only days are valid. Local draft promotion and protected-asset publication remain agent-operated. Public deployment is explicitly unverified until the agent checks it | Studio ready-to-share, studio-readiness; [workflow](../JOURNEY_WORKFLOW.md#ready-to-share-review) |
+| Update checkpoints and message drafts | Agent-operated live-site baseline, stable-ID new-trip/photo counts by city/stop, compact manual WhatsApp text, frozen drafts and explicit shared acknowledgment with recoverable local history | All real published trips; demos/drafts/local-only/trashed photos excluded. Prepare/copy never acknowledges or sends. No Studio UI or provider integration | update-inventory, update-public-snapshot, update-announcements; [workflow](UPDATE_ANNOUNCEMENTS.md) |
 | Reproducible delivery | Validated generation, cache-busted assets, Pages CI, bounded orphan-deployment recovery/retry and public verification | Reviewed published sources; no private originals/network fetch needed for site build; GitHub service failures remain visible | build-site, Pages workflow, recover-pages |
 
 Comment notifications extend photo conversations with red unread-number badges
@@ -138,9 +139,9 @@ revision returns motion to the original gentle range with a 0–100% Movement
 slider, adds a separate Mouse move option alongside Slow drift, and removes
 the rejected 3× presets. The sample set expands to two public examples plus
 seven existing website photographs using normal protected photo access for
-both photo and depth. The gentle correction is live with two public samples;
-the seven additions are prepared locally and hidden remotely until their private
-upload is verified. This revision's verification/deployment is tracked in
+both photo and depth. The gentle correction is live with two public samples.
+The seven protected depth maps were uploaded and verified on 16 October; the
+updated Pages manifest and live nine-photo checks remain pending. Delivery is tracked in
 [WIP](../WIP.md#fullscreen-depth-motion-preview--14-october-2026). It is **not an
 inherited journey capability**; shared-viewer integration remains unapproved.
 

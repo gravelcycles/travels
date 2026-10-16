@@ -127,6 +127,34 @@ remembered/anonymous access, failed requests and expiry cleanup.
 [Demo scope and processing assessment](DEPTH_FULLSCREEN_DEMO.md) own the
 experiment details; WIP records delivery/review status.
 
+## Outbound trip updates — 16 October 2026
+
+**O19 · Checkpoint additions for manual announcements.** On 14 October the owner
+requested automatic counts of new photos across populated locations while
+retaining manual notification triggering. On 16 October: “let's start
+checkpointing for now / finding a way to calculate a useful diff message” and
+“i'll probably use whastapp broadcast for now.” This authorizes a starting
+checkpoint and an agent-operated message generator for manual sharing. It
+supersedes the earlier proposal-only scope for that bounded work; it does not
+authorize an outbound provider, recipient import or sending messages.
+
+Track the current live site as the starting baseline, then count stable new
+trip/photo IDs by authored city/stop. Count additions rather than net album
+growth; edits, reordering, album moves and restoration of already acknowledged
+photos are not new. Drafts/local-only/trashed media do not enter a public update.
+Preparing or copying a message must not advance acknowledgment. Only an explicit
+owner statement that a prepared update was shared acknowledges its frozen
+contents; later additions remain pending. Preserve recoverable local history.
+
+Acceptance: an unchanged live site yields no update; old capture dates added
+later count; additions plus deletions count correctly; repeated places group;
+new trips are distinct; failed/interrupted reads cannot replace the baseline;
+repeated prepare/mark-shared cannot duplicate or consume later additions.
+[Update workflow](UPDATE_ANNOUNCEMENTS.md) owns the command/state contract.
+O18 remains current-view sharing and O17 remains in-site comment notifications.
+The uncommitted 14 October exploration temporarily used O18 for announcements;
+that collision is resolved here without changing the released sharing decision.
+
 ## Photo and view sharing — 12 October 2026
 
 **O18 · Share the current view.** The owner approved the proposed day/city and
