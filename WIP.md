@@ -159,12 +159,30 @@ Released as `d451b58` after integrating current main through `d3a7af1`.
 succeeded. A fresh public catalog, reference page and all three metadata bundles
 match the release byte-for-byte and still produce an empty diff. The same tooling
 is installed in the primary checkout; all 38 focused checks pass there with its
-unrelated changes preserved. This bounded implementation is complete. Studio UI
-and automated sending remain future options, not unfinished authorized work.
+unrelated changes preserved. This completed the initial checkpoint release.
+
+**Later 16 October correction — trip-specific updates:** the owner normally
+notifies different people for each trip and will ask for an update per trip.
+O19 and the workflow now require selection before freezing a prepared inventory;
+sharing A must leave B and subsequent additions pending. With multiple published
+trips, `diff`/`prepare` require `--trip ID` or deliberate `--all`; `status` reports
+trip IDs/titles, known photo counts and last-shared times. Preserve the baseline
+above and existing schema 1 history without reset or migration. Multiple audiences
+within the same trip still need separate state directories.
+
+Implemented in the same managed worktree after integrating main through
+`1b5ab7e`. All **730 tests** and the production build pass, including cross-trip
+isolation, later additions, legacy history and selection errors. Generated
+public output and the Worker index remain unchanged. Independent review caught
+combined snapshots attributing a share to unchanged trips omitted from the
+message; status now uses only the actual announced trip list, with malformed
+lists rejected without modifying history. The original ledger checksum remains
+unchanged. Next: release and record fresh Pages/public checks. Studio UI and
+automated sending remain optional future work.
 
 ## Fullscreen depth-motion preview — 14 October 2026
 
-**16 October checkpoint — private upload verified; nine-photo Pages release pending.** The owner found the stronger result
+**16 October delivery — nine-photo gentle demo live and verified.** The owner found the stronger result
 too extreme and requested the original gentle motion while retaining drag/mouse
 interaction, plus seven existing website photographs. This supersedes the
 14 October dramatic range/presets. Current requirements live in
@@ -172,8 +190,9 @@ interaction, plus seven existing website photographs. This supersedes the
 and [demo contract](docs/DEPTH_FULLSCREEN_DEMO.md).
 
 Work is isolated in `/Users/dg/code/travels/build/depth-gentle-review`, branch
-`codex/depth-gentle-photos-20261015`, originally from `a609987` and now integrated
-through remote main `d451b58`; the primary checkout and its
+`codex/depth-gentle-photos-20261015`, originally from `a609987`; the release
+integrated remote main `12398b3`, and the receipt preserves subsequent concurrent
+shared releases. The primary checkout and its
 unrelated changes remain untouched. The required revision retains relative
 mouse/touch drag, held viewpoint/reset and keyboard control, adds Mouse move
 beside Slow drift, and replaces 0–3× presets with 0–100% Movement at the original
@@ -205,22 +224,26 @@ integrated **678-test suite** passes with no skipped tests, and the production
 build passes. Generated HTML only updates the demo asset version for the seven
 published statuses.
 
-The previously deployed gentle release `2404389` passed
-[Pages run 38795728873](https://github.com/gravelcycles/travels/actions/runs/38795728873).
-Fresh public HTML/JS/CSS/renderer/manifest and both public image/depth pairs match
-the tested build, as do the unchanged catalog/reference pages (11 verified files).
-A fresh 390 × 844 Chrome load verifies off → gentle drag → Mouse move → off,
-maximum camera bounds, two visible samples, no private/auth request and no runtime
-errors. This completes the gentle remote correction; the seven protected additions
-are verified in private R2 but **not yet offered on the remote page** until the
-updated manifest is deployed.
+Release `3fb52f2` passed
+[Pages run 38936435746](https://github.com/gravelcycles/travels/actions/runs/38936435746).
+Fresh public HTML/JS/CSS/renderer/manifest, both public image/depth pairs and the
+unchanged catalog/reference pages match the tested build (11 verified files).
+A later concurrent shared-viewer deployment changed the reference page; a
+second check still matched all nine demo files and passed the guest flow.
+A fresh 390 × 844 Chrome session shows nine samples, seven locked, the normal
+remembered-access check/unlock prompt, no private pixel requests, gentle public
+drag → Mouse move → off, and no runtime errors. The owner's existing browser
+session restored normal photo access: all seven private 1280 px images and their
+depth maps loaded on the live site, each newly selected photo started off, and
+direct drag worked. No new demo credential was used; browser error logs were empty.
 
-Next: fetch and integrate any newer main, publish the changed manifest/HTML,
-then verify successful Pages deployment,
-fresh public output and the live protected nine-photo flow. Shared journey-viewer
-integration remains unapproved; only this remote review artifact is authorized.
+The requested remote demo is complete and ready for owner review. Shared
+journey-viewer integration remains unapproved; physical-device Safari/Android
+performance is a future integration check, not a claim of this desktop review.
 
 Previous release evidence is historical, not verification of the correction:
+the two-sample gentle release `2404389` passed
+[Pages run 38795728873](https://github.com/gravelcycles/travels/actions/runs/38795728873).
 `4f64065` passed [Pages run 38615056035](https://github.com/gravelcycles/travels/actions/runs/38615056035)
 with 640 tests, build, drag/0–3× browser checks and fresh public verification.
 Its stronger range is superseded. The original two-public-photo preview shipped

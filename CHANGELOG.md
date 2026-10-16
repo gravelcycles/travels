@@ -45,6 +45,18 @@
   iPhone/Safari device testing is not claimed. Public delivery remains in
   [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
 
+## 16 October 2026 — prepare updates separately for each trip
+
+- Carry the owner's different-audiences-by-trip correction into O19 and the
+  [update workflow](docs/UPDATE_ANNOUNCEMENTS.md). Select a trip before freezing
+  a message; acknowledging it leaves other trips and later additions pending.
+- Require a trip choice or deliberate combined `--all` when multiple trips are
+  published, and show per-trip status. Preserve the original 3-trip/222-photo
+  baseline and schema 1 history. Status attributes a share only to trips actually
+  mentioned in the message, including legacy combined drafts.
+- All 730 integrated tests and the production build pass with unchanged generated output.
+  WIP tracks deployment and fresh public verification.
+
 ## 16 October 2026 — open the map without a selected stop
 
 - Keep the whole-trip overview neutral on desktop and phone: no first-event
@@ -66,8 +78,10 @@
 - All 678 integrated tests, the production build and all-nine local
   browser/auth/privacy fixtures pass. Preserve gentle,
   off-by-default motion and the demo-only scope; no shared-viewer integration.
-  The updated Pages manifest and live nine-photo verification remain pending
-  in [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026).
+  Release `3fb52f2` passed [Pages run 38936435746](https://github.com/gravelcycles/travels/actions/runs/38936435746).
+  Fresh public hashes, anonymous locked/unlock behavior and all seven private
+  photos' live depth playback with remembered access pass; the nine-photo demo
+  is ready for owner review. [Receipt](WIP.md#fullscreen-depth-motion-preview--14-october-2026).
 
 ## 16 October 2026 — update checkpoints for manual broadcasts
 
