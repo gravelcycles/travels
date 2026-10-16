@@ -15,8 +15,16 @@ Exact-source comparison verifies all 19 exclusions and both notes; surviving
 photo records/AVIF fallbacks, journey, routes and album order are unchanged.
 The generated comment and share indexes match all 101 visible IDs. Rollback
 Worker: `2187bc98-1bdb-48a8-9991-9473158ed84a`.
-Next: deploy regenerated comment/share eligibility before Pages, then verify the
-deployment and fresh public metadata. Publication is pending.
+Published as `75f4e04` after integrating main `6860c88`, through successful
+[Pages run 38955013712](https://github.com/gravelcycles/travels/actions/runs/38955013712).
+Worker `2229eb8d-8d54-47f6-b3b6-46e6a4593910` was activated before Pages.
+Live authenticated checks reject all 19 removed discussions and share targets;
+retained comments and WebP/AVIF respond successfully, with anonymous access denied.
+Nine fresh public files (all five pages and the four changed data bundles)
+match the tested release byte-for-byte. Both notes match the saved text exactly;
+the live browser shows 101 total photos, Köln 8 and Prague 26. The source still
+matches the Studio snapshot. Trip guidance and delivery are complete; unrelated
+shared-checkout edits and private originals remain intact.
 
 ## Photo share thumbnails — 16 October 2026
 

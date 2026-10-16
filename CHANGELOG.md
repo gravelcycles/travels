@@ -6,6 +6,9 @@
   notes exactly as saved. Retain photo records, original media, pins and order.
 - Regenerate public content and discussion/share eligibility for the 101 visible
   Heading East photos. Record the scoped selection in the trip intake guidance.
+- Release `75f4e04` passed 837 tests, production build, real Worker runtime and
+  Pages run `38955013712`. Nine fresh public files match; both saved notes and
+  all 19 exclusions are verified live, with private access preserved.
 
 ## 16 October 2026 — photo thumbnails in shared links
 
