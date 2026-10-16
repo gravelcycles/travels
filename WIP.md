@@ -23,16 +23,17 @@ comments above it, simplify repeated photo information in that sheet, and allow
 dragging it closed. [O17](docs/OWNER_DECISIONS.md#comment-notifications--11-october-2026)
 and [the conversation contract](docs/PLACES_AND_COMMENTS.md#comment-notifications)
 own the requirements. Implemented on `codex/photo-intermediate-cleanup` in
-`build/photo-intermediate-cleanup`, integrating current main through `1b5ab7e`
+`build/photo-intermediate-cleanup`, integrating current main through `4c5f44c`
 and preserving the fullscreen focal-zoom, map-opening and swipe/Places corrections.
-The primary checkout's unrelated edits remain untouched. All **733 tests** and the production
+The primary checkout's unrelated edits remain untouched. All **740 tests** and the production
 build pass. Browser checks pass all 16 reference/demo/populated fresh draft/
 Heading East × desktop/320/390px/landscape cases, plus ordinary-motion phone
 checks. They cover direct entry, compact layout, target
 comments beyond page one, draft preservation, scrolling, drag cancellation,
 Close/Back/Forward and fullscreen retention on reference/demo/populated fresh
 draft/Heading East at desktop, 320/390px and landscape. A final seven-case delta
-check covers the later swipe integration. QA uses synthetic comments/images,
+check passes with the later swipe integration, including swiping after sheet
+dismissal. QA uses synthetic comments/images,
 not real visitor writes; it is Chrome viewport coverage, not physical-device
 certification. Next: verify Pages and fresh public assets before marking delivery complete.
 

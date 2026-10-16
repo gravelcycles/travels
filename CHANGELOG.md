@@ -9,7 +9,7 @@
   ordinary map/sidebar selection. Record the correction in O17 and the photo/
   conversation workflows. The location-group cleanup remains a design proposal.
 - Integrate concurrent fullscreen focal zoom, neutral map opening and smoother
-  photo swipes/Places dragging; all 733
+  photo swipes/Places dragging and trip-specific update tooling; all 740
   tests and the production build pass. Browser checks and the publication receipt
   are recorded in WIP.
 
