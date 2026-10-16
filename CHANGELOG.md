@@ -5,8 +5,9 @@
 - Archive the rejected demo locally and remove its source, public assets, build
   hook and detailed experiment guidance from main. Preserve source trip photos
   and unrelated shared features. Record the owner’s rejection as the current rule.
-- Deployment, private-derivative cleanup and branch removal are tracked in WIP.
-  All 740 tests and the production build pass after removal.
+- All 740 tests and the build pass. Removal release `0542c09` passed Pages;
+  all ten old demo/asset URLs return 404. Delete both experiment branches and
+  seven unreferenced private depth objects, preserving the local archive.
 
 ## 16 October 2026 — restore solid fullscreen photo controls
 

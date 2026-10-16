@@ -248,12 +248,15 @@ remain optional future work.
 The owner rejected and requested removal of the experiment; the current rule is
 [the retirement decision](docs/OWNER_DECISIONS.md#depth-motion-experiment-rejected--16-october-2026).
 Source and seven private depth maps are archived locally under ignored
-`build/archives/depth-demo-20261016/`. Removal covers the standalone code/assets,
-build hook, detailed demo docs and both experiment branches. Original trip
-photographs and concurrent site work remain intact. All 740 tests and the build
-pass; the build no longer emits the experiment. Pending: Pages deployment and
-404 checks, removal of the seven unreferenced private depth
-objects, then branch/worktree cleanup and chat archival.
+`build/archives/depth-demo-20261016/`, with its inference tools. The standalone
+code/assets, build hook and detailed demo docs are removed; both experiment
+branches are deleted. Original trip photographs and concurrent site work remain
+intact. All 740 tests and the build pass. Removal release `0542c09` passed
+[Pages run 38939247380](https://github.com/gravelcycles/travels/actions/runs/38939247380):
+all ten former demo/asset URLs return 404 and three normal atlas pages return 200.
+All seven unreferenced private depth objects were removed and verified absent;
+their archived checksums match. This experiment is closed, with no integration
+or further implementation pending.
 
 ## Mobile Places visibility — 12 October 2026
 
