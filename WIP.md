@@ -16,6 +16,25 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Saved Heading East photo data — 16 October 2026
+
+Authorized: publish the owner's saved local photo data/metadata. The release is
+isolated in `/Users/dg/Documents/Codex/2026-10-16/i-m/work/travels-release`
+from remote main `22a88b6`; primary-checkout feature work remains untouched.
+The [trip record](docs/HEADING_EAST.md#saved-photo-and-metadata-publication--16-october-2026)
+documents four visible Berlin additions, two new trashed uploads, three existing
+photos moved to Trash, and the owner's saved pins, notes and order. Preserve the
+four additions' actual capture timestamps and explicit Berlin placement.
+
+All 11 private derivatives (4,643,194 bytes) were uploaded/reused and downloaded
+for SHA-256 verification. All **740 tests**, the production build and actual
+Worker runtime checks pass. Two build-test fixtures now preserve unrelated saved
+photo assignments instead of erasing them. Generated public metadata/order
+matches the saved sources exactly; the gallery and comments index contain the
+same 120 visible IDs, with all trashed IDs excluded. Worker/index activation and
+Pages/public-bundle verification remain pending. Preserve the outbound-update
+ledger and acknowledgment history; publication does not mark any message shared.
+
 ## Photo intermediate screens — 16 October 2026
 
 Authorized correction: notification rows open the fullscreen photograph with
@@ -88,7 +107,7 @@ complete. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
-**Button-style follow-up — verified locally; deployment pending.** The
+**Button-style follow-up — deployed and verified.** The
 owner rejected the translucent buttons as a regression after the release below.
 Restore the original solid mobile header/footer and opaque Close/Share/Comments
 surfaces, retaining layout, tap-to-hide and focal zoom. Direction is recorded
@@ -98,7 +117,11 @@ demo and an independently populated draft at 320/390 px, landscape and desktop)
 pass solid-surface/no-blur assertions, tap recovery, full-viewport geometry and
 focal zoom; phone and landscape screenshots were inspected. Independent review
 found no cascade or scope issues. Physical-device testing is not claimed.
-Next: integrate current main, deploy and verify fresh public output.
+Released as `1f9a8bf`; [Pages run 38938835608](https://github.com/gravelcycles/travels/actions/runs/38938835608)
+succeeded. Fresh public mobile CSS and all four journey/demo pages match the
+tested build. A fresh public Alpine photo at 390 × 844 confirms opaque surfaces,
+no backdrop blur, the full-viewport stage and tap-to-hide/restore. Delivery is
+complete; the primary checkout remains untouched.
 
 **Completed and deployed.** The owner requested mobile fullscreen
 Share beside Comments on the left, top-right Close, one tap to hide all buttons

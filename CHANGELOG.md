@@ -15,8 +15,18 @@
   floating action blur while retaining the new layout, tap-to-hide and focal zoom.
 - Record the correction in O03/O08/O18, the photo workflow and feature inventory.
   All 740 tests, the build and 16 rendered browser cases pass; screenshots
-  confirm solid surfaces. Delivery is tracked in
+  confirm solid surfaces. Release `1f9a8bf` passed Pages and fresh public
+  file/mobile-viewer verification. The receipt is tracked in
   [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+
+## 16 October 2026 — saved Heading East photo data
+
+- Publish the saved map pins, zoom levels, traveler note, album order and Trash
+  choices, plus four visible Berlin uploads through private photo hosting.
+- Retain the two new trashed uploads locally and preserve all originals/capture
+  times. Record the saved Berlin order as an exception to automatic chronology.
+- Regenerate the public data and comments eligibility index; verification and
+  deployment receipts are recorded in WIP and the Heading East trip record.
 
 ## 16 October 2026 — direct notification conversations
 

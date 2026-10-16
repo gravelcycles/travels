@@ -71,7 +71,8 @@ test('place saving preserves split photo manifests and excludes local/trashed li
  const next=structuredClone(base);next.pointsOfInterest[0].note='A changed memory';next.pointsOfInterest[0].photoIds=[base.photos[0].id];
  const sourcesBefore=fs.readFileSync(path.join(root,'content/photo-manifests/alpine-crossing.json'),'utf8');const planned=prepareJourneyPlan(data,base,globalThis.JOURNEY_ATLAS_PLAN_EXTRAS.changes(next),state);writePlanSources(root,base,planned.journey);
  assert.equal(fs.readFileSync(path.join(root,'content/photo-manifests/alpine-crossing.json'),'utf8'),sourcesBefore);assert.equal(loadContent(root).data.journeys.find(j=>j.id===base.id).pointsOfInterest[0].note,'A changed memory');
- fs.writeFileSync(path.join(root,'content/photo-overrides.json'),JSON.stringify({[base.photos[0].id]:{trashed:true}}));buildSite(root);
+ const photoOverridesFile=path.join(root,'content/photo-overrides.json');
+ fs.writeFileSync(photoOverridesFile,JSON.stringify({...JSON.parse(fs.readFileSync(photoOverridesFile,'utf8')),[base.photos[0].id]:{trashed:true}}));buildSite(root);
  const bundle=fs.readFileSync(path.join(root,'dist/assets/journeys.js'),'utf8');const publicData=JSON.parse(bundle.slice(bundle.indexOf(' = ')+3).trim().slice(0,-1));assert.deepEqual(publicData.journeys.find(j=>j.id===base.id).pointsOfInterest[0].photoIds,[]);
  assert.deepEqual(loadContent(root).data.journeys.find(j=>j.id===base.id).pointsOfInterest[0].photoIds,[base.photos[0].id]);
  const diff=studioDraftDiff(data,state,{state,plans:[[base.id,{draft:next}]]});assert.ok(diff.some(row=>row.kind==='Place' && row.field==='Memory'));
