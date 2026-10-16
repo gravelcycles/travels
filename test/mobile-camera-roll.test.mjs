@@ -92,7 +92,7 @@ function gestureFixture({scoped=false}={}) {
   const nodes=new Map(), events=new Map();let now=0, index=0, moves=[], controller;
   const photos=[{id:'a1',dayId:'harbor'},{id:'a2',dayId:'harbor'},{id:'b1',dayId:'hill'}];
   const node=selector=>{
-    if(!nodes.has(selector))nodes.set(selector,{dataset:{},style:{setProperty(){}},classList:{add(){},remove(){}},clientWidth:390,clientHeight:706,offsetHeight:80,naturalWidth:1200,naturalHeight:800,open:false,handlers:new Map(),
+    if(!nodes.has(selector))nodes.set(selector,{dataset:{},style:{setProperty(){}},classList:{values:new Set(),add(name){this.values.add(name);},remove(name){this.values.delete(name);},contains(name){return this.values.has(name);}},clientWidth:390,clientHeight:706,offsetHeight:80,naturalWidth:1200,naturalHeight:800,open:false,handlers:new Map(),
       addEventListener(type,fn){this.handlers.set(type,fn);},setAttribute(name,value){this[name]=value;},removeAttribute(){},append(){},focus(){},setPointerCapture(){},getBoundingClientRect(){return {left:0,top:0,width:390,height:706};},closest:()=>null});
     return nodes.get(selector);
   };

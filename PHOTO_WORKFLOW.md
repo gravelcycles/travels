@@ -247,6 +247,14 @@ The first mobile swipe must be as continuous as later swipes (owner correction,
 preloads become ready, including public sample images, without refetching or
 promoting speculative downloads. Prepare the drag width once, coalesce pointer
 updates to display frames, and preserve the incoming image through release.
+If a new touch interrupts the 220 ms settle, capture the visible horizontal
+translation before canceling its transition and continue from that position.
+Do not snap to the declared endpoint. Keep that offset through reversal,
+stationary cancellation and pinch takeover; read geometry only at interruption,
+not on each drag update. Cached-image tests must separate positional continuity
+from frame-time and download claims.
+Resetting a photo to fitted scale clears pan directly; do not measure zoomed
+pan bounds whose result is necessarily zero. Zoomed images retain focal bounds.
 Check cold entry with delayed neighbors, cached revisits, rapid direction changes,
 cancelled swipes, collection ends and reduced motion. Slow or failed images
 retain the existing preview/access lifecycle; do not substitute sharp thumbnails
@@ -497,6 +505,17 @@ password maintenance. Derivatives use content hashes and identical bytes reuse o
 The shared loader prioritizes visible media and bounded full-screen neighbors,
 then warms event previews/thumbnails within its cache/request limits after
 authentication. Replay performs no photo preloading.
+
+Once the selected fullscreen photo is ready, only the explicitly marked nearest
+full neighbor in the current browsing direction may share the four-request
+budget with visible thumbnails. It remains speculative: new selected-photo work
+reclaims its slot, selecting that same neighbor reuses its request, and stale
+plans, private-access locking, hidden tabs, data saving and 2G still cancel or
+suppress warming. Its full-WebP fallback keeps the same marker. Finishing it
+does not promote farther entries; all other warming remains idle-only. No
+thumbnail is canceled or deliberately held, although shared bandwidth can make
+thumbnail completion later. This policy applies only to fullscreen still-photo
+browsing; journal, grid, video and Replay do not mark an immediate neighbor.
 
 The old public GitHub Release publisher is retired. Do not create or repopulate
 `trip-photos-v1` or `<journey-id>-uploads-v1`. Both historical Releases were

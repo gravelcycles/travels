@@ -51,7 +51,12 @@ controller benchmarks and browser-visible latency. Do not claim an FPS or
 end-to-end speedup from fewer operations alone. Preserve the reviewed reveals,
 private access, draft recovery, view state and focal zoom. Integrate concurrent
 changes and re-evaluate the WebP-to-AVIF migration separately so its savings are
-not attributed to unrelated runtime work. See WIP for delivery status.
+not attributed to unrelated runtime work. The owner's later 16 October follow-up
+identifies full-screen swiping on mobile Chrome as still laggy and suspects
+rendering. Profile cached swipes and interruption continuity independently of
+download readiness; do not present network improvements as resolving rendering
+stutter. Desktop Chrome viewport checks do not certify the physical phone.
+See WIP for delivery status.
 
 ## Standing decisions and acceptance checks
 

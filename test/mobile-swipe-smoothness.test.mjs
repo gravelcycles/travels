@@ -81,6 +81,71 @@ test('release preserves incoming and outgoing positions, including the cold prev
   assert.equal(f.node('#mobile-photo-count').textContent, '1 of 4', 'A rapid reversal remains responsive');
 });
 
+test('an interrupted release follows the visible position through a reverse drag and commit', () => {
+  const f = cachedFixture(); f.api.openDay(); f.drag('.photo-stage',-150,0); f.frame();
+  const image = f.node('#modal-photo'), stage = f.node('.photo-stage');
+  image.computedTransform = 'matrix(1, 0, 0, 1, 53.0267, 0)';
+  f.dispatch('.photo-stage','pointerdown',{clientX:100,clientY:300});
+  assert.match(image.style.transform,/^translate3d\(53\.0267px/);
+  assert.equal(stage.style['--photo-swipe-x'],'53.0267px');
+  assert.equal(f.neighbors[0].style.transform,'translate3d(-352.9733px,0,0)');
+  f.dispatch('.photo-stage','pointermove',{clientX:140,clientY:300}); f.frame();
+  assert.match(image.style.transform,/^translate3d\(93\.0267px/,'The next movement adds only the finger delta');
+  f.dispatch('.photo-stage','pointermove',{clientX:250,clientY:300}); f.frame();
+  f.dispatch('.photo-stage','pointerup',{clientX:250,clientY:300});
+  assert.equal(f.node('#mobile-photo-count').textContent,'1 of 4');
+  assert.match(image.style.transform,/^translate3d\(-202\.9733px/,'The outgoing position survives the selection change');
+  f.frame(); assert.match(image.style.transform,/^translate3d\(0px/);
+});
+
+test('interrupted taps and cancelled drags settle without changing selection or stranding the photo', () => {
+  for (const end of ['pointerup','pointercancel','lostpointercapture']) {
+    for (const move of [false,true]) {
+      const f = cachedFixture(); f.api.openDay(); f.drag('.photo-stage',-150,0); f.frame();
+      const image = f.node('#modal-photo');
+      image.computedTransform = 'matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,53,0,0,1)';
+      f.dispatch('.photo-stage','pointerdown',{clientX:200,clientY:300});
+      if (move) { f.dispatch('.photo-stage','pointermove',{clientX:220,clientY:300}); f.frame(); }
+      f.dispatch('.photo-stage',end,{clientX:move ? 220 : 200,clientY:300});
+      assert.equal(f.node('#mobile-photo-count').textContent,'2 of 4',end);
+      assert.match(image.style.transform,new RegExp(`^translate3d\\(${move ? 73 : 53}px`),end);
+      f.frame(); assert.match(image.style.transform,/^translate3d\(0px/,end);
+      f.flush(); assert.equal(f.node('.photo-viewer').classList.contains('is-swipe-settling'),false,end);
+    }
+  }
+});
+
+test('touch before the first settle frame preserves the release position, and pinch can take over it', () => {
+  const f = cachedFixture(); f.api.openDay(); f.drag('.photo-stage',-150,0);
+  const image = f.node('#modal-photo');
+  f.dispatch('.photo-stage','pointerdown',{pointerId:1,clientX:100,clientY:300});
+  assert.match(image.style.transform,/^translate3d\(256px/);
+  f.frame(); assert.match(image.style.transform,/^translate3d\(256px/,'The canceled settle frame cannot snap to zero');
+  f.dispatch('.photo-stage','pointerdown',{pointerId:2,clientX:200,clientY:300});
+  assert.match(image.style.transform,/^translate3d\(256px/,'Pinch takes ownership without a pointer-down jump');
+  f.dispatch('.photo-stage','pointermove',{pointerId:2,clientX:300,clientY:300});
+  assert.match(image.style.transform,/scale\(2\)/);
+  f.dispatch('.photo-stage','pointercancel',{pointerId:2}); f.flush();
+  assert.equal(f.node('#mobile-photo-count').textContent,'2 of 4');
+});
+
+test('fitted selection resets pan without measuring image bounds, including a not-yet-decoded photo', () => {
+  for (const [width,height] of [[390,844],[844,390]]) {
+    const f = cachedFixture({width,height}); f.api.openDay();
+    f.click('.photo-stage'); f.click('.photo-stage'); f.flush(320);
+    assert.equal(f.node('.photo-viewer').dataset.zoomed,'true');
+    const stage = f.node('.photo-stage'); let widthReads = 0, heightReads = 0;
+    Object.defineProperty(stage,'clientWidth',{get(){widthReads++;return width;}});
+    Object.defineProperty(stage,'clientHeight',{get(){heightReads++;return height;}});
+    f.node('#modal-photo').naturalWidth = f.node('#modal-photo').naturalHeight = 0;
+    f.api.selectPhoto(1);
+    assert.equal(f.node('#modal-photo').style.transform,'translate3d(0px,0px,0) scale(1)');
+    assert.equal(f.node('.photo-viewer').dataset.zoomed,'false');
+    assert.equal(heightReads,0,'Fitted resets do not need vertical pan bounds');
+    assert.equal(widthReads,3,'Only the three transform placements need the stage width');
+  }
+});
+
 test('reduced motion selects immediately and cancelling a queued frame cannot move a new photo', () => {
   const f = cachedFixture({reducedMotion:true}); f.api.openDay(); f.drag('.photo-stage',-150,0);
   assert.match(f.node('#modal-photo').style.transform, /^translate3d\(0px/);

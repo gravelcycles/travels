@@ -17,7 +17,7 @@ function fixture({ scope = 'day', tab = 'map' } = {}) {
   function node(selector) {
     if (nodes.has(selector)) return nodes.get(selector);
     const listeners = new Map(), value = {
-      dataset:{},style:{setProperty(){}},classList:{add(){},remove(){}},open:false,children:[],
+      dataset:{},style:{setProperty(){}},classList:{values:new Set(),add(name){this.values.add(name);},remove(name){this.values.delete(name);},contains(name){return this.values.has(name);}},open:false,children:[],
       clientWidth:390,clientHeight:706,offsetHeight:150,naturalWidth:1200,naturalHeight:800,
       setAttribute(name,value){this[name]=value;},removeAttribute(name){delete this[name];},append(child){this.children.push(child);},focus(){},
       setPointerCapture(){},closest(){return null;},

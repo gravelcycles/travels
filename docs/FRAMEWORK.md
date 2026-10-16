@@ -336,6 +336,12 @@ membership uses media references/indices and changes only affected selection
 attributes, retaining decoded grid images. Larger collection and hidden-surface
 work remains subject to measured profiling, not speculative rewrites.
 
+The private loader retains its four-request cap and selected-photo priority.
+Only the fullscreen caller's explicitly marked nearest full neighbor may use
+spare capacity alongside thumbnails once the current image is ready. Other
+warming remains idle-only. Cancellation, AVIF fallback and the bandwidth tradeoff
+are documented in [the post-AVIF measurements](PERFORMANCE_FOLLOWUP_2026-10-16.md).
+
 Routing-data intake remains agent-operated: empty journeys show an actionable
 setup state until their own mode network has been prepared. A guided retrieval
 flow with access/direction-aware routing is future work (W06); the present local

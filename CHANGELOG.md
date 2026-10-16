@@ -1,5 +1,23 @@
 # Changelog
 
+## 16 October 2026 — continuous mobile swipes and bounded neighbor loading
+
+- Preserve a settling photo's visible position when another touch interrupts it,
+  including reversal, cancellation and pinch takeover. Eight cached browser
+  checks reduce the interruption jump from 52–53 px to 0 px while retaining the
+  220 ms duration. Fitted zoom resets skip redundant pan-bound calculations,
+  reducing geometry reads per cached swipe from 34 to 18; no FPS gain is claimed.
+- Let only the nearest directional full photo share spare request capacity with
+  thumbnails after the selected image is ready. Preserve selected-photo priority,
+  cancellation, auth, AVIF/WebP fallback and data-saving guards. The recurring
+  thumbnail model reduces discarded bytes 784,000→0 and next-photo bytes-ready
+  time 14.00→9.26 s, with the last thumbnail 0.24 s later.
+- Record AVIF as a resolution upgrade (+57.60% pixels, +4.28% bytes), separate
+  browser decode, revalidation and cached-render measurements, and remaining
+  device/frame-time limits in [the follow-up](docs/PERFORMANCE_FOLLOWUP_2026-10-16.md).
+  All 836 tests pass and the build is reproducible across 71 files. WIP records
+  the combined browser checks and publication status.
+
 ## 16 October 2026 — original-resolution photo delivery
 
 - Add native-resolution AVIF from untouched originals for the full viewer,

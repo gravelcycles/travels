@@ -26,7 +26,7 @@ export function viewerFixture({deferredHistory=false, reducedMotion=false, video
     location(){locations++;},pauseLocation(){pauses++;},pauseMedia(){mediaPauses++;},clearImage(){},loadImage(){neighborLoads++;},restoreOverlay:id=>controller.presentOverlay(id),
     resumePhoto(){update();},move(delta){index+=delta;update();},selectPhoto(value){index=value;update();},
     openDay(id=day.id,options){controller.open(options);day=days.find(d=>d.id===id);index=0;node('#photo-dialog').open=true;update();}};
-  const context=vm.createContext({window:{addEventListener:(name,fn)=>events.set(name,fn)},document:{querySelector:node,querySelectorAll:()=>[],createElement:()=>node(`image${nodes.size}`),addEventListener:(name,fn)=>events.set(name,fn)},
+  const context=vm.createContext({window:{addEventListener:(name,fn)=>events.set(name,fn),getComputedStyle:node=>({transform:node.computedTransform || node.style.transform || 'none'})},document:{querySelector:node,querySelectorAll:()=>[],createElement:()=>node(`image${nodes.size}`),addEventListener:(name,fn)=>events.set(name,fn)},
     matchMedia:query=>{if(!queries.has(query))queries.set(query,{matches:mobile && query.includes('900px') || reducedMotion && query.includes('reduced-motion'),addEventListener(_name,fn){this.changed=fn;}});return queries.get(query);},ResizeObserver:class{observe(){}},
     history,location:{href:'https://example.test/day'},performance:{now:()=>clock},requestAnimationFrame:fn=>{frames.set(++timer,fn);return timer;},cancelAnimationFrame:id=>frames.delete(id),
     setTimeout:(fn,delay=0)=>{timers.set(++timer,{fn,due:clock+delay});return timer;},clearTimeout:id=>timers.delete(id)});

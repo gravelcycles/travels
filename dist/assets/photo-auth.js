@@ -15,6 +15,7 @@
   const MAX_PREFETCH = 80, MAX_PHOTO_BYTES = 16 * 1024 * 1024;
   const preloadTargets = new Set(), preloadCompleted = new Set(), preloadFailures = new Set(), freshSources = new Set();
   const preloadFallbacks = new Map(), avifFailures = new Set();
+  let immediatePreload = '';
   let avifSupported = false;
   // Probe a tiny local image once, without blocking existing WebP startup or
   // fetching a second full photo when capability detection finishes late.
@@ -74,7 +75,7 @@
   }
   function lock(broadcast=true) {
     token='';expiresAt=0;generation++;lastCheck=0;checkPending=null;restoreAfterExpiry=false;navigationPending=false;clearTimeout(expiryTimer);
-    preloadTargets.clear();preloadCompleted.clear();preloadFailures.clear();preloadFallbacks.clear();
+    preloadTargets.clear();preloadCompleted.clear();preloadFailures.clear();preloadFallbacks.clear();immediatePreload='';
     try{sessionStorage.removeItem(ACCESS_KEY);}catch{}
     if(broadcast)rememberGuest();
     for(const [img,item] of images){item.cleanup?.();img.removeAttribute('srcset');img.src=item.blur;img.classList.remove('is-loaded');item.entry=null;item.loading=false;imageState(img,'locked');}
@@ -122,16 +123,19 @@
     if (cache.get(src) === entry) cache.delete(src);
     entry.controller.abort();
   }
-  function speculationAllowed() {
+  function speculationAllowed(immediate = false) {
     const connection = window.navigator?.connection;
     return !document.hidden && !connection?.saveData && !['slow-2g', '2g'].includes(connection?.effectiveType)
       && ![...images].some(([img, item]) => img.isConnected && item.priority === 0 && ['loading', 'error'].includes(img.dataset.photoState))
-      && !downloadQueue.some(entry => entry.priority < 2)
-      && ![...activeDownloads].some(entry => entry.priority < 2);
+      && !downloadQueue.some(entry => entry.priority <= (immediate ? 0 : 1))
+      && ![...activeDownloads].some(entry => entry.priority <= (immediate ? 0 : 1));
   }
   function setPreloadSources(sources) {
     const choices = new Map(sources.filter(({src}) => protectedPath.test(src)).map(({src,fallback}) => [src,fallback]));
     const next = new Set([...choices.keys()].slice(0, MAX_PREFETCH));
+    // Only the explicitly marked nearest full photo may share spare capacity
+    // with thumbnails. The rest of the bounded plan remains idle-only.
+    immediatePreload = sources.find(item => item.immediate && next.has(item.src))?.src || '';
     for (const src of preloadFailures) if (!next.has(src)) preloadFailures.delete(src);
     for (const src of preloadCompleted) if (!next.has(src)) preloadCompleted.delete(src);
     for (const src of next) if (cache.get(src)?.url) preloadCompleted.add(src);
@@ -141,36 +145,41 @@
     pumpDownloads();
   }
   function setPreloads(requests = []) {
-    setPreloadSources(requests.filter(request => isProtected(request.photo)).map(({photo, width}) => selection(photo, width)));
+    setPreloadSources(requests.filter(request => isProtected(request.photo)).map(({photo, width, immediate}) => ({...selection(photo, width), immediate:Boolean(immediate && width === Infinity)})));
   }
   function rejectAvif(src, replan=true) {
     avifFailures.delete(src);avifFailures.add(src);
     while(avifFailures.size>MAX_CACHE+MAX_PREFETCH)avifFailures.delete(avifFailures.values().next().value);
     const fallback=preloadFallbacks.get(src);
-    if(fallback&&replan)setPreloadSources([...preloadTargets].map(key=>key===src?{src:fallback}:{src:key,fallback:preloadFallbacks.get(key)}));
+    if(fallback&&replan)setPreloadSources([...preloadTargets].map(key=>key===src?{src:fallback,immediate:key===immediatePreload}:{src:key,fallback:preloadFallbacks.get(key),immediate:key===immediatePreload}));
   }
   function pumpDownloads() {
     if (pumping || (!local && !token)) return;
     pumping = true;
     try {
       const speculative = speculationAllowed();
-      if (!speculative) for (const entry of activeDownloads) if (entry.priority === 2) abortEntry(entry.src, entry);
+      const immediate = speculationAllowed(true);
+      const allowed = src => speculative || immediate && src === immediatePreload;
+      for (const entry of activeDownloads) if (entry.priority === 2 && !allowed(entry.src)) abortEntry(entry.src, entry);
       downloadQueue.sort((a, b) => a.priority - b.priority);
       while (activeDownloads.size < MAX_DOWNLOADS) {
         const next = downloadQueue[0];
         if (!next) break;
-        if (next.priority === 2 && (!speculative || activeDownloads.size)) break;
+        if (next.priority === 2 && (!allowed(next.src) || [...activeDownloads].some(entry => entry.priority === 2) || next.src !== immediatePreload && activeDownloads.size)) break;
         // One slot remains available for the selected photo, even with many thumbnails.
         if (next.priority === 1 && [...activeDownloads].filter(entry => entry.priority === 1).length >= MAX_DOWNLOADS - 1) break;
         downloadQueue.shift();activeDownloads.add(next);next.run();
       }
-      // Only one speculative transfer, and only after all visible work is ready.
-      if (speculative && !activeDownloads.size && !downloadQueue.length) {
-        const src = [...preloadTargets].find(src => !cache.has(src) && !preloadCompleted.has(src) && !preloadFailures.has(src));
+      // One marked neighbor may use the spare fourth slot after the selected
+      // image is ready. Selecting another image immediately reclaims that slot.
+      if (activeDownloads.size < MAX_DOWNLOADS && ![...activeDownloads].some(entry => entry.priority === 2)) {
+        const needed = src => src && !cache.has(src) && !preloadCompleted.has(src) && !preloadFailures.has(src);
+        const src = immediate && needed(immediatePreload) ? immediatePreload : speculative && !activeDownloads.size && !downloadQueue.length ? [...preloadTargets].find(needed) : '';
         if (src) {
           const epoch=generation;
           fetchPhoto(src, 2).then(prune, error => {if(!error.photoCancelled&&epoch===generation&&(local||token)&&preloadTargets.has(src)&&preloadFallbacks.has(src))rejectAvif(src);prune();});
-          const next = downloadQueue.shift();
+          const index = downloadQueue.findIndex(entry => entry.src === src);
+          const next = index < 0 ? null : downloadQueue.splice(index, 1)[0];
           if (next) { activeDownloads.add(next);next.run(); }
         }
       }
@@ -475,7 +484,7 @@
     let released=false;
     return {url:entry.url,release(){if(released)return;released=true;entry.refs.delete(lease);prune();}};
   }
-  window.JOURNEY_ATLAS_AUTH={communityRequest,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets].map(src=>({src,fallback:preloadFallbacks.get(src)})).concat(selection(photo,width)).slice(-MAX_PREFETCH));},lock,showPrompt,raisePrompt,get unlocked(){return local||Boolean(token);}};
+  window.JOURNEY_ATLAS_AUTH={communityRequest,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets].map(src=>({src,fallback:preloadFallbacks.get(src),immediate:src===immediatePreload})).concat(selection(photo,width)).slice(-MAX_PREFETCH));},lock,showPrompt,raisePrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
 })();
