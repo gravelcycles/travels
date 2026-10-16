@@ -88,6 +88,35 @@ measure its image bytes, fallback, decode and neighbor readiness after deploymen
 before any justified bounded preload-scheduling change. Preserve its WebP fallback
 and originals; do not count its savings as this performance batch.
 
+Post-migration follow-up is active on `codex/avif-performance-followup`, based on
+`504bd26` (deployed application `62d8c69`). Independently verified all 223 pairs:
+AVIF adds 57.60% pixels and 4.28% full-photo bytes; existing WebP metadata is
+unchanged. Matched local browser runs compare fresh/304/application-Blob reuse
+and decode at phone/desktop frame sizes, with physical-device limits recorded.
+The bounded nearest-neighbor sharing candidate passes 87 loader/plan tests and
+independent review. In a deterministic recurring-thumbnail workload it reduces
+neighbor attempts 7→1, discarded bytes 784,000→0 and bytes-ready time 14.00→9.26 s,
+with the last thumbnail 0.24 s later; this is not an observed browser speedup.
+The owner's later clarification identifies full-screen swiping on mobile Chrome
+as still laggy. Eight real-app cached interruptions reproduce 52–53 px jumps
+before the correction and 0 px after, with zero photo requests/decodes. Fitted
+zoom resets reduce geometry reads 34→18 per cached swipe; the small handler-time
+differences do not establish an overall latency/FPS gain. Integrated current
+main `75f4e04`, retaining thumbnail sharing and all saved Heading East selections
+and notes. The merged loader is the exact union of the scheduler and sharing API;
+comment/share eligibility indexes match incoming main byte-for-byte.
+All **848 tests pass**; two builds are identical across 78 public files. Family, Heading East, the Alpine
+demo and an independently generated populated draft each pass all 14 browser
+gesture/zoom/Location/grid/history/event-boundary checks at 390×844, without page
+errors. Landscape has an identical pre-existing partially clipped thumbnail
+scroll adjustment (20→8 px before entry) on baseline and candidate; recorded in
+TODO. Physical phone performance and the baseline long-frame outliers remain
+explicit limits. [Methods and results](docs/PERFORMANCE_FOLLOWUP_2026-10-16.md).
+Merged browser verification also passes: eight final interruptions have 0 px
+jumps and the updated 101-photo Heading East gallery passes 14/14 checks. The
+later docs-only publication receipt `0854113` is integrated. Next: publish and
+verify. No follow-up code is deployed at this checkpoint.
+
 Status checkpoint reconciled: **11 October 2026**. Start with
 [AGENTS.md](AGENTS.md) and [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md), then
 read the relevant workstream here before resuming it.

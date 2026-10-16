@@ -35,7 +35,7 @@
     let locationTimer, locationFrame, revealFrame, settleLocation = false, swipeTimer, swipeFrame, dragFrame, zoomFrame, dismissTimer, tapTimer;
     let locationFoot = 84, viewerHeight = 0, locationWidth = 0, locationStageHeight = 0;
     let locationAnimating = false, revealDragging = false, locationVisualHeight = null;
-    let dragOffset = 0, dragWidth = 0;
+    let dragOffset = 0, dragWidth = 0, swipeOffset = 0;
     let replayState = null;
     let overlay = null, overlayDepth = 0, afterDismiss = null;
     const overlayScrolls = new Map();
@@ -155,6 +155,7 @@
       if (enabled() && tab === 'story') requestAnimationFrame(api.preview);
     }
     function transform(dx = 0, width = stage.clientWidth) {
+      swipeOffset = dx;
       viewer.dataset.zoomed = String(scale > 1);
       img.style.transform = `translate3d(${dx + panX}px,${panY}px,0) scale(${scale})`;
       stage.style.setProperty('--photo-swipe-x', `${dx}px`);
@@ -195,6 +196,10 @@
       }
     });
     function zoom(next) {
+      // At fitted size all pan bounds collapse to zero, even while the next
+      // photo's natural dimensions are not ready. Avoid measuring those bounds
+      // twice during each selection update.
+      if (next <= 1) { scale = 1; panX = panY = 0; transform(); return; }
       const ratio = img.naturalWidth / img.naturalHeight || 1;
       const width = Math.min(stage.clientWidth, stage.clientHeight * ratio), height = width / ratio;
       const cover = Math.max(stage.clientWidth / Math.max(1, width), stage.clientHeight / Math.max(1, height));
@@ -251,9 +256,19 @@
       zoom(scale);
       $('.map-panel').style.setProperty('--day-summary-height', `${$('.mobile-day-summary').offsetHeight}px`);
     }
-    function stopSwipe() {
-      cancelAnimationFrame(swipeFrame); cancelAnimationFrame(dragFrame); dragFrame = null; clearTimeout(swipeTimer);
+    function stopSwipe(preserveVisual = false) {
+      let offset = preserveVisual ? swipeOffset : 0;
+      if (preserveVisual && viewer.classList.contains('is-swipe-settling')) {
+        // The declared transform is already the endpoint. Read the rendered
+        // translation before removing its transition so a new touch can take
+        // over at the visible position, including a reversal halfway through.
+        const matrix = root.getComputedStyle(img).transform.match(/^matrix(3d)?\((.+)\)$/);
+        if (matrix) offset = Number(matrix[2].split(',')[matrix[1] ? 12 : 4]) - panX;
+      }
+      cancelAnimationFrame(swipeFrame); cancelAnimationFrame(dragFrame); swipeFrame = dragFrame = null; clearTimeout(swipeTimer);
       viewer.classList.remove('is-swipe-settling');
+      if (preserveVisual && offset) transform(offset);
+      return offset;
     }
     function animateLocation() {
       stopLocation(true); settleLocation = true;
@@ -289,6 +304,7 @@
       // already changed; another gesture can interrupt this visual settling.
       img.getBoundingClientRect();
       swipeFrame = requestAnimationFrame(() => {
+        swipeFrame = null;
         viewer.classList.add('is-swipe-settling'); transform();
         swipeTimer = setTimeout(() => viewer.classList.remove('is-swipe-settling'), 220);
       });
@@ -556,7 +572,9 @@
       suppressClick = false;
       const locationHeader = event.currentTarget === locationHeading;
       if ((!locationHeader && event.target.closest('button:not(#mobile-photo-location)')) || event.target.closest('#viewer-video')) return;
-      resetDismiss(); stopSwipe(); stopZoom(); stopLocation(true);
+      resetDismiss();
+      const offset = stopSwipe(event.currentTarget === stage && scale === 1);
+      stopZoom(); stopLocation(true);
       refreshNeighbors();
       pointers.set(event.pointerId, {x:event.clientX,y:event.clientY});
       // Keep button-origin capture on that button: native taps still reach it,
@@ -571,12 +589,15 @@
       }
       if (pointers.size === 2) {
         if (current.photos[current.index]?.mediaType === "video") return;
+        // A pinch takes ownership of the visible translation, not the swipe's
+        // old endpoint. Subsequent focal zoom keeps that image point anchored.
+        if (offset) { panX += offset; transform(); }
         const [a,b] = [...pointers.values()];
         pinch = {distance:Math.hypot(a.x-b.x,a.y-b.y),scale,x:panX,y:panY,center:photoPoint((a.x+b.x)/2,(a.y+b.y)/2)};
         gesture = null; cancelTap(); suppressClick = true; return;
       }
       if (pointers.size > 2) return;
-      gesture = {x:event.clientX,y:event.clientY,time:performance.now(),axis:null,dx:0,dy:0,width:stage.clientWidth,startReveal:reveal,panX,panY,handle:event.currentTarget !== stage,locationHeader};
+      gesture = {x:event.clientX,y:event.clientY,time:performance.now(),axis:null,dx:0,dy:0,width:stage.clientWidth,startReveal:reveal,panX,panY,swipeOffset:offset,handle:event.currentTarget !== stage,locationHeader};
     }
     function pointerMove(event) {
       if (!pointers.has(event.pointerId)) return;
@@ -609,13 +630,16 @@
           current.photos[current.index] && current.photos[current.index].mediaType !== 'video';
       }
       if (!gesture.axis) return;
+      if (gesture.axis === 'y' && gesture.swipeOffset) {
+        settleSwipe(gesture.swipeOffset); gesture.swipeOffset = 0;
+      }
       cancelTap();
       suppressClick = true;
       if (scale > 1 && !gesture.handle) {panX=gesture.panX+gesture.dx;panY=gesture.panY+gesture.dy;zoom(scale);return;}
       if (gesture.dismiss) { dragDismiss(gesture.dx, gesture.dy); return; }
       if (gesture.axis === 'x' && !gesture.handle) {
         const edge = gesture.dx > 0 ? current.index === 0 : current.index === current.photos.length-1;
-        queueSwipe(gesture.dx * (edge ? .2 : 1), gesture.width);
+        queueSwipe(gesture.swipeOffset + gesture.dx * (edge ? .2 : 1), gesture.width);
       } else if (gesture.axis === 'y' && current.photos.length) {
         setChrome(true); queueReveal(gesture.startReveal - gesture.dy);
       }
@@ -640,13 +664,14 @@
       if (!action.axis && locationVisualHeight !== null) {
         animateLocation(); revealTo(locationOpen ? locationHeight : 0); return;
       }
+      if (!action.axis && action.swipeOffset) { settleSwipe(action.swipeOffset); return; }
       if (scale > 1 && !action.handle) return;
       if (action.dismiss) { settleDismiss(action, cancelled); return; }
       if (action.axis === 'x' && !action.handle) {
         const delta = cancelled ? 0 : swipeStep(action.dx, performance.now()-action.time, stage.clientWidth, current.index, current.photos.length);
-        const offset = action.dx + delta * (stage.clientWidth + 16);
+        const offset = action.swipeOffset + action.dx + delta * (stage.clientWidth + 16);
         if (delta) api.move(delta);
-        settleSwipe(delta ? offset : action.dx * (current.index === 0 && action.dx > 0 || current.index === current.photos.length - 1 && action.dx < 0 ? .2 : 1));
+        settleSwipe(delta ? offset : action.swipeOffset + action.dx * (current.index === 0 && action.dx > 0 || current.index === current.photos.length - 1 && action.dx < 0 ? .2 : 1));
       } else if (action.axis === 'y') {
         const target = cancelled ? locationOpen : action.dy < -35 ? true : action.dy > 35 ? false : reveal > locationHeight*.45;
         setLocation(target);

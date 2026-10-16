@@ -51,12 +51,12 @@ import vm from 'node:vm';
 const appSource=fs.readFileSync(new URL('../dist/assets/app.js',import.meta.url),'utf8');
 const refreshStart=appSource.indexOf('  function refreshPreloads(');
 const refreshSource=appSource.slice(refreshStart,appSource.indexOf('\n  function ',refreshStart+1));
-function appPlan(mode){
+function appPlan(mode,{index=2,previous=null,direction=1,day=0}={}){
  let result;
- const context=vm.createContext({journey:{days:journalDays},activeDayId:'day-0',preloadSelection:null,preloadDirection:1,
-  photoDialog:{open:mode==='viewer'||mode==='video'},replayDialog:{open:mode==='replay'},viewerPhotoIndex:2,viewerDay:()=>journalDays[0],
+ const context=vm.createContext({journey:{days:journalDays},activeDayId:journalDays[day].id,preloadSelection:previous,preloadDirection:direction,
+  photoDialog:{open:['viewer','video','grid'].includes(mode)},replayDialog:{open:mode==='replay'},viewerPhotoIndex:index,viewerDay:()=>journalDays[day],
   photosForDay:id=>journalDays.find(day=>day.id===id).photos.map((photo,index)=>mode==='video'&&index===2?{...photo,mediaType:'video'}:photo),orderedPhotos:()=>days.flatMap(day=>day.photos),
-  window:{JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS},applyPreloads:requests=>{result=requests;}});
+  window:{JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS,JOURNEY_ATLAS_MOBILE_UI:{gridVisible:()=>mode==='grid'}},applyPreloads:requests=>{result=requests;}});
  context.viewerPhotos=()=>context.photosForDay(context.viewerDay().id);
  vm.runInContext(refreshSource+'\nrefreshPreloads()',context);return result;
 }
@@ -73,4 +73,12 @@ test('Replay cancels photo preloads instead of downloading chapter images or alb
 
 test('video viewing cancels image preloads so they do not compete with playback',()=>{
  assert.deepEqual(Array.from(appPlan('video')),[]);
+});
+
+test('only the nearest fullscreen full photo is marked immediate, never journal, day warmers, grid or video',()=>{
+ const viewer=appPlan('viewer');assert.deepEqual(Array.from(viewer.filter(r=>r.immediate).map(r=>r.photo.id)),['d']);
+ assert.equal(viewer.find(r=>r.immediate).width,Infinity);
+ assert.ok(appPlan('journal').every(r=>!r.immediate));assert.deepEqual(Array.from(appPlan('video')),[]);assert.deepEqual(Array.from(appPlan('grid')),[]);
+ assert.deepEqual(Array.from(appPlan('viewer',{day:3,index:0}).filter(r=>r.immediate).map(r=>r.photo.id)),['e'],'The end uses the previous real neighbor');
+ assert.deepEqual(Array.from(appPlan('viewer',{day:2,index:0,previous:'e'}).filter(r=>r.immediate).map(r=>r.photo.id)),['c'],'Backward browsing marks the previous real neighbor');
 });

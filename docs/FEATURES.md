@@ -23,6 +23,14 @@ cached reader media order/lookups and retained filmstrip selection, plus unchang
 comment-row/draft reuse. Numeric before/after comparisons are required by the
 owner; validation and publication status are tracked in WIP. AVIF migration
 results and any subsequent preload-priority change are evaluated separately.
+The post-AVIF loader allows one explicitly marked fullscreen neighbor to share
+spare request capacity with thumbnails after the selected image is ready;
+farther warming stays idle-only and current-photo selection retains priority.
+This reduces neighbor cancellation/starvation at a measured thumbnail-bandwidth
+cost. Mobile image swipes preserve the visible position when a new touch
+interrupts their settle, including reversal, cancellation and pinch takeover.
+Cached rendering measurements and physical-device limits are recorded in
+[the follow-up](PERFORMANCE_FOLLOWUP_2026-10-16.md) and WIP.
 Phone Location uses transform motion with frame-paced dragging and deferred map
 setup; settled same-photo reopen retains the map camera and decoded photo state.
 

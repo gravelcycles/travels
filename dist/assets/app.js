@@ -296,7 +296,8 @@
       if (previous >= 0 && previous !== current) preloadDirection = current > previous ? 1 : -1;
       preloadSelection = photo.id;
       applyPreloads([
-        ...window.JOURNEY_ATLAS_UTILS.photoPreloadPlan(days, photo.id, preloadDirection),
+        ...window.JOURNEY_ATLAS_UTILS.photoPreloadPlan(days, photo.id, preloadDirection).map((request, index) =>
+          index === 0 && request.width === Infinity ? {...request, immediate:true} : request),
         ...window.JOURNEY_ATLAS_UTILS.dayPreloadPlan(days, viewerDay().id, preloadDirection)
       ]);
       return;

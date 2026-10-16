@@ -645,3 +645,78 @@ test('a cached-only AVIF decode failure starts no fallback transfer until foregr
  const img=new Element();img.decode=()=>Promise.resolve();f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();
  assert.equal(f.calls.length,2);assert.ok(f.calls[1][0].endsWith(photo.src));assert.equal(img.dataset.photoState,'ready');
 });
+
+function pendingFixture(options) {
+ const pending=[];
+ const f=fixture((url,options)=>new Promise((resolve,reject)=>{
+  pending.push({url,options,resolve});options.signal.addEventListener('abort',()=>reject(new Error('Cancelled')),{once:true});
+ }),options);
+ const thumbnail=index=>{const img=new Element();img.decode=()=>Promise.resolve();img.dataset.privateSrc=albumPhoto(index).src;f.auth.hydrate(img);return img;};
+ const finish=item=>item.resolve(mediaResponse(item.url));
+ return {...f,pending,thumbnail,finish};
+}
+
+test('only one explicitly marked full neighbor shares thumbnail capacity; far warmers still wait',async()=>{
+ const f=pendingFixture();await f.unlock();for(let i=10;i<14;i++)f.thumbnail(i);
+ f.auth.setPreloads([{photo:albumPhoto(1),width:Infinity,immediate:true},{photo:albumPhoto(2),width:Infinity,immediate:true},{photo:albumPhoto(3),width:480}]);await settle();
+ assert.equal(f.pending.length,4);assert.ok(f.pending[3].url.endsWith(albumPhoto(1).src));assert.equal(f.pending[3].options.priority,'low');
+ f.finish(f.pending[3]);await settle();assert.equal(f.pending.length,4,'Finishing the marked neighbor cannot promote the next warmer');
+ for(let i=0;i<3;i++){f.finish(f.pending[i]);await settle();}
+ assert.ok(f.pending[4].url.endsWith(albumPhoto(13).src));assert.equal(f.pending.length,5,'Queued visible thumbnail remains ahead of far preloads');
+ f.finish(f.pending[4]);await settle();assert.ok(f.pending[5].url.endsWith(albumPhoto(2).src));f.auth.lock();await settle();
+});
+
+test('a new selected photo reclaims the neighbor slot while an in-flight selected neighbor is reused',async()=>{
+ for(const selected of [1,2]){
+  const f=pendingFixture();await f.unlock();for(let i=10;i<13;i++)f.thumbnail(i);
+  f.auth.setPreloads([{photo:albumPhoto(1),width:Infinity,immediate:true}]);await settle();
+  const neighbor=f.pending[3],image=new Element();image.decode=()=>Promise.resolve();
+  f.auth.setImage(image,albumPhoto(selected),Infinity,{fullOnly:true});await settle();
+  if(selected===1){assert.equal(f.pending.length,4);assert.equal(neighbor.options.signal.aborted,false,'Selecting that neighbor promotes its existing request');}
+  else {assert.equal(neighbor.options.signal.aborted,true);assert.equal(f.pending.length,5);assert.ok(f.pending[4].url.endsWith(albumPhoto(2).src));assert.equal(f.pending[4].options.priority,'high');}
+  assert.equal(f.pending.filter(item=>!item.options.signal.aborted).length,4,'The selected photo immediately gets the reserved capacity');
+  f.auth.lock();await settle();
+ }
+});
+
+test('the marked neighbor waits for the actual selected full image readiness, including decode',async()=>{
+ const f=pendingFixture();await f.unlock();for(let i=10;i<13;i++)f.thumbnail(i);
+ let decoded;const image=new Element();image.decode=()=>new Promise(resolve=>decoded=resolve);
+ f.auth.setImage(image,albumPhoto(5),Infinity,{fullOnly:true});f.auth.setPreloads([{photo:albumPhoto(1),width:Infinity,immediate:true}]);await settle();
+ assert.equal(f.pending.length,4);f.finish(f.pending[3]);await settle();assert.equal(f.pending.length,4,'Transferred bytes alone do not release neighbor speculation');
+ decoded();await settle();assert.equal(f.pending.length,5);assert.ok(f.pending[4].url.endsWith(albumPhoto(1).src));f.auth.lock();await settle();
+});
+
+test('marked AVIF failure retains one low-priority full-WebP fallback opportunity',async()=>{
+ const f=pendingFixture({avifSupport:true});await f.unlock();for(let i=10;i<13;i++)f.thumbnail(i);
+ f.auth.setPreloads([{photo:avifPhoto,width:Infinity,immediate:true}]);await settle();assert.ok(f.pending[3].url.endsWith(avifPhoto.fullAvif.src));
+ f.pending[3].resolve(new Response('',{status:404}));await settle();await settle();
+ assert.equal(f.pending.length,5);assert.ok(f.pending[4].url.endsWith(photo.src));assert.equal(f.pending[4].options.priority,'low');
+ assert.equal(f.pending.filter(item=>!item.options.signal.aborted).length,4);f.auth.lock();await settle();
+});
+
+test('marked neighbors retain data-saving, hidden-tab, current-error and stale-plan cancellation guards',async()=>{
+ for(const guard of ['saveData','slow-2g','2g','hidden']){
+  const f=pendingFixture();await f.unlock();f.window.navigator={connection:{saveData:guard==='saveData',effectiveType:guard}};f.document.hidden=guard==='hidden';
+  f.auth.setPreloads([{photo:albumPhoto(1),width:Infinity,immediate:true}]);await settle();assert.equal(f.pending.length,0,guard);
+  f.window.navigator.connection={effectiveType:'4g'};f.document.hidden=false;f.events.get('visibilitychange')();await settle();assert.equal(f.pending.length,1);
+  f.document.hidden=true;f.events.get('visibilitychange')();await settle();assert.equal(f.pending[0].options.signal.aborted,true);f.auth.lock();await settle();
+ }
+ const f=pendingFixture();await f.unlock();f.auth.setPreloads([{photo:albumPhoto(1),width:Infinity,immediate:true}]);await settle();
+ f.auth.setPreloads([{photo:albumPhoto(2),width:Infinity,immediate:true}]);await settle();assert.equal(f.pending[0].options.signal.aborted,true);assert.ok(f.pending[1].url.endsWith(albumPhoto(2).src));
+ const image=new Element();f.auth.setImage(image,albumPhoto(3),Infinity,{fullOnly:true});await settle();assert.equal(f.pending[1].options.signal.aborted,true);
+ f.pending[2].resolve(new Response('',{status:404}));await settle();assert.equal(image.dataset.photoState,'error');assert.equal(f.pending.length,3);f.auth.lock();await settle();
+});
+
+
+test('refreshing the same immediate marker retains its request and later refreshes retain the full-WebP fallback',async()=>{
+ const f=pendingFixture({avifSupport:true});await f.unlock();for(let i=10;i<13;i++)f.thumbnail(i);
+ const plan=()=>[{photo:avifPhoto,width:Infinity,immediate:true},{photo:albumPhoto(4),width:Infinity}];
+ f.auth.setPreloads(plan());await settle();const avif=f.pending[3];
+ for(let i=0;i<5;i++)f.auth.setPreloads(plan());await settle();
+ assert.equal(f.pending.length,4);assert.equal(avif.options.signal.aborted,false);
+ avif.resolve(new Response('',{status:404}));await settle();await settle();const fallback=f.pending[4];
+ for(let i=0;i<5;i++)f.auth.setPreloads(plan());await settle();
+ assert.equal(f.pending.length,5);assert.ok(fallback.url.endsWith(photo.src));assert.equal(fallback.options.signal.aborted,false);
+ f.auth.lock();await settle();
+});
