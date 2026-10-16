@@ -21,7 +21,7 @@ page-load or physical-iPhone speed claim.
 | Phone Comments warm-open handler (4× CPU), median | 42.00 ms | 27.90 ms |
 | Desktop Comments warm-open handler, median | 8.15 ms | 4.45 ms |
 | Cached media ordering/lookups, Heading East benchmark action | 0.727 ms | 0.163 ms |
-| Filmstrip reuse, same action after ordering cache | 0.163 ms | 0.022 ms |
+| Filmstrip reuse, same action after ordering cache | 0.163 ms | 0.024 ms |
 | Filmstrip metadata serialized per repeated benchmark action | 51,820 B | 0 B |
 | Journey scripts/styles without an exact content hash | 5 | 0 |
 | Catalog cover files, matched desktop 1× / phone 2× crops | 899,586 B | 123,960 B |
@@ -35,7 +35,8 @@ Style-recalculation time was **14.72 → 25.18 ms** open and
 **12.75 → 25.79 ms** close; not every submetric improves.
 Median maximum warm frame gap was **16.8 → 16.8 ms** on open.
 The reviewed 220 ms sheet motion and 350 ms full-photo reveal remain unchanged;
-these results do not establish an FPS increase.
+these results do not establish an FPS increase. First-open maximum frame gap was
+83.3 → 83.4 ms, so cold WebGL setup did not improve in this comparison.
 
 Phone Comments click-to-next-animation-frame callback was
 **43.60 → 29.55 ms**.
@@ -51,10 +52,10 @@ isolate bundle splitting; total script/style bytes include the runtime changes.
 | Page | Data before | Data after | Reduction | All initial JS/CSS before → after |
 | --- | ---: | ---: | ---: | ---: |
 | index.html | 250,805 B | 2,176 B | 99.1% | 283,201 → 35,233 B |
-| switzerland-italy.html | 542,573 B | 72,136 B | 86.7% | 1,006,402 → 538,036 B |
-| backpacking-europe-heading-east.html | 542,573 B | 441,121 B | 18.7% | 1,006,402 → 907,021 B |
-| florence-genoa.html | 542,573 B | 22,724 B | 95.8% | 1,006,402 → 488,624 B |
-| demo.html | 542,573 B | 8,337 B | 98.5% | 1,006,402 → 474,237 B |
+| switzerland-italy.html | 542,573 B | 72,136 B | 86.7% | 1,006,402 → 539,152 B |
+| backpacking-europe-heading-east.html | 542,573 B | 441,121 B | 18.7% | 1,006,402 → 908,137 B |
+| florence-genoa.html | 542,573 B | 22,724 B | 95.8% | 1,006,402 → 489,740 B |
+| demo.html | 542,573 B | 8,337 B | 98.5% | 1,006,402 → 475,353 B |
 
 Journey script/style requests fall from 41 to 38; catalog from 9 to 7.
 The family data reduction alone saves 470,437 compressed bytes: about 2.35 seconds
@@ -94,12 +95,25 @@ the build. This is cache correctness; no independent latency percentage is claim
   draft, group/planning projections, videos, source-grid retention and collection
   order. New media records and replaced arrays invalidate caches; old-helper
   compatibility keeps cached-HTML deployment transitions usable.
+- The location timing pair precedes integration of the concurrent zoom-chrome fix
+  and a narrow release-before-queued-frame guard. Those paths are covered by
+  regressions and the final browser smoke; the warm-click timing path is unchanged.
 - Location checks include rapid reversals, canceled header drags, same-photo manual
   camera retention, interrupted automatic camera movement, grid/close/resize cleanup
   and reduced motion. Layers are promoted only while moving.
 - Scoped bundles preserve whole image records, including future format/fallback
   fields. Legacy data and old/new publication-snapshot verification remain available
   for Studio and administrative workflows without loading all trips for visitors.
+
+## Desktop integration correction
+
+The combined browser pass also reproduced a preexisting desktop reset defect in
+`9dc7827`: a settled 2.5× photo stayed at 2.5× after Close and same-photo reopen.
+The controller now records its transform after browser CSSOM normalization, so
+it can safely release its own transform without erasing a mobile takeover.
+The corrected browser sequence is **2.5× → Close → 1× fitted reopen**, with a
+regression that fails on the original code. This is a correctness fix, not a
+measured animation-speed improvement.
 
 ## Remaining AVIF comparison
 

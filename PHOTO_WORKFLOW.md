@@ -35,6 +35,11 @@ it closes first. Unchanged reopening retains the explored camera and avoids a
 canvas resize; an interrupted automatic move remains eligible to finish. Check
 rapid reversal, canceled drags, orientation changes, zoom and reduced motion.
 
+Desktop Close releases its zoom transform, so reopening the same photo restores
+the fitted image (verified at 2.5× → 1×). Compare ownership with the transform
+stored by the browser after CSSOM normalization, while preserving a later mobile
+transform. This fixes reset correctness; it is not an animation-speed result.
+
 ## Upload and delete in Studio
 
 Open **Photos → Upload photos**, leave **Automatically match capture dates**
