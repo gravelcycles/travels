@@ -350,7 +350,7 @@ boundary. Expired/revoked cached tokens never authorize images.
 Every image GET/HEAD checks token signature, audience, lifetime and active
 credential before touching R2. Requests use Authorization headers and credentials
 omitted. Successful image responses use `private, no-cache` with ETag revalidation;
-authentication and error responses remain `no-store`. The browser displays WebP blobs through
+authentication and error responses remain `no-store`. The browser displays authenticated WebP or AVIF blobs through
 object URLs. No public image fallback or signed image URLs. Production CORS
 allows only https://gravelcycles.github.io; scripts across that origin share
 its security boundary. Return navigation is restricted to /travels/.
@@ -367,11 +367,16 @@ Previously saved or screenshotted photographs cannot be recalled.
 
 `photo-variants.mjs` is shared by Studio and bulk imports. Up to three WebPs:
 480 px thumbnails, 1280 px previews and full photos capped at a 3200 px longest
-edge. No upscaling; duplicate sizes collapse. Metadata is stripped. Follow
+edge, plus an optional original-resolution AVIF for supported full viewers.
+Existing WebP paths remain as fallbacks; failed AVIF downloads or decoding
+recover the full WebP without bypassing authentication. No upscaling; duplicate
+sizes collapse. Metadata is stripped. Follow
 [PHOTO_WORKFLOW.md](PHOTO_WORKFLOW.md#generated-image-sizes-and-private-publishing)
 for current intake; do not recompress existing derivatives for a copy-only edit.
 
-Names are SHA-256 hashes of derivative bytes under `v1/<hash>.webp`. Identical
+Names are SHA-256 hashes of derivative bytes under `v1/<hash>.webp` or
+`v1/<hash>.avif`. AVIF publication status is independent of the existing WebP
+photo; local upgrades never leak into public manifests. Identical
 outputs reuse one object even across journeys. Studio also detects repeated
 source uploads. Visually similar but different photos still require editorial
 review; no perceptual duplicate deletion is automated. Embedded 32-pixel blur
@@ -429,13 +434,17 @@ rotation save locally; `auth:credentials -- deploy` uploads them and explicitly 
 deployment; do not treat the saved secret binding alone as activation.
 Revoking the last password intentionally leaves the service unavailable/locked.
 
-The publisher refuses public R2 settings, uploads only reviewed visible WebPs,
-verifies object hashes, resumes matching uploads, and marks manifests published
+The publisher refuses public R2 settings, uploads only reviewed visible WebP/AVIF
+derivatives, verifies object hashes and exact MIME, resumes matching uploads, and
+marks each format published
 only after successful verification. It never uploads originals or commits or
 pushes. Trash removes an album entry, not the private object; authenticated
 holders of an old key may still fetch it. Erasure requires reviewing all journey
 references, deleting the exact unreferenced objects, and checking their URLs.
-There is no automatic destructive prune command.
+There is no automatic destructive prune command. For an additive quality upgrade,
+use `--avif-only` after generation completes and deploy compatible Worker support
+before the Pages descriptor/loader release; see the
+[ordered migration and rollback](PHOTO_WORKFLOW.md#full-resolution-avif-upgrades).
 
 ## Acceptance and deployment receipts
 

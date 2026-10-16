@@ -463,9 +463,11 @@ with a 40 ms apex pause. Replay continues to frame its routes and days.
 
 ## Generated image sizes and private publishing
 
-The shared pipeline makes up to three sizes: 480 px thumbnails, 1280 px previews
-and full photos capped at a 3200 px longest edge, without upscaling. Unloaded
-photos use embedded 32 px blur placeholders. See
+The shared pipeline makes up to three WebP sizes: 480 px thumbnails, 1280 px
+previews and a full fallback capped at a 3200 px longest edge, without upscaling.
+An optional original-resolution AVIF serves supported full viewers after verified
+publication; see [AVIF upgrades](#full-resolution-avif-upgrades). Unloaded photos
+use embedded 32 px blur placeholders. See
 [PHOTO_AUTH_HANDOFF.md](PHOTO_AUTH_HANDOFF.md) for authenticated loading and
 password maintenance. Derivatives use content hashes and identical bytes reuse one object.
 The shared loader prioritizes visible media and bounded full-screen neighbors,

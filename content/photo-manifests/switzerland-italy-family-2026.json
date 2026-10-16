@@ -27,7 +27,14 @@
     "takenAt": "13 Aug · 16:08",
     "sourceFilename": "IMG_1425.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/547610d13ebda5fbfbee0ec543ee02361b2b3aefd824ffc75f129678edadc475.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 950968,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1426",
@@ -57,7 +64,14 @@
     "takenAt": "13 Aug · 18:00",
     "sourceFilename": "IMG_1426.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/e86292082e8bcac3bac533a00d6f9e36f6a1ecd786f229566996ff8c649e29ad.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 995847,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1434",
@@ -87,7 +101,14 @@
     "takenAt": "13 Aug · 20:31",
     "sourceFilename": "IMG_1434.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/afe936aa1ca257660545bb3924d4e4a07dcf9fe1c428185f31cd65e5d73b8c5c.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 929272,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5032",
@@ -117,7 +138,14 @@
     "takenAt": "13 Aug · 21:12",
     "sourceFilename": "IMG_5032.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/aa396722430038861f9fecd456b57d66223d56cbf5bc29dc0158fe409212cc3a.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 488319,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-2793",
@@ -147,7 +175,14 @@
     "takenAt": "13 Aug · 21:17",
     "sourceFilename": "IMG_2793.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/90d8b4691aa7a9c9d8b4d0e6ad2821eaf7695d54456602dbe22423ff3e46cdec.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 883566,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1463",
@@ -177,7 +212,14 @@
     "takenAt": "13 Aug · 21:38",
     "sourceFilename": "IMG_1463.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/f7802bbf54f7508584dfa36aa465e1bf9f1a35bfdaa281bb1be9101ffe2326b3.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 449990,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260814-122648-102",
@@ -207,7 +249,14 @@
     "takenAt": "14 Aug · 12:26",
     "sourceFilename": "snapseed_camera_capture_20260814_122648_102.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/98115e4b8ea73fbc773694eb04beb08ebd66426527b618dea31706d3a1a04cdd.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1010640,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1469",
@@ -237,7 +286,14 @@
     "takenAt": "14 Aug · 12:28",
     "sourceFilename": "IMG_1469.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/bdcc5ea375a819a379e7d54aed4719f5629805ae32fc5dfbad7ef3445bc1334e.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1136854,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1472",
@@ -267,7 +323,14 @@
     "takenAt": "14 Aug · 13:36",
     "sourceFilename": "IMG_1472.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/eb33d24c69edc113313e5e0c49c81e3d3a4fdeb66618e4a8b26fe5abe5564e23.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1963346,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260814-142431-686",
@@ -297,7 +360,14 @@
     "takenAt": "14 Aug · 14:24",
     "sourceFilename": "snapseed_camera_capture_20260814_142431_686.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/e1fb2d9b9e3c6b4e4f9821c6e0088ee94d8fb1110cab18d06a0d4c08adab3508.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1278435,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5036",
@@ -327,7 +397,14 @@
     "takenAt": "14 Aug · 17:07",
     "sourceFilename": "IMG_5036.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/61c036271895ce532043bb1325a909726c245f7b4a83708c8fee48b0fa1a6d69.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1389743,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260815-075345-241",
@@ -357,7 +434,14 @@
     "takenAt": "15 Aug · 07:53",
     "sourceFilename": "snapseed_camera_capture_20260815_075345_241.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/fee29bbc192cee50114b2c3e79407ce99e6d22b84623df9041405815d73e778c.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1045956,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260815-080433-893",
@@ -387,7 +471,14 @@
     "takenAt": "15 Aug · 08:04",
     "sourceFilename": "snapseed_camera_capture_20260815_080433_893.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/18c24e8c0a94cfe2858e25cf7b1e463e64f60e4e5dbf85c543954623eaebafd6.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 943738,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260815-082220-931",
@@ -417,7 +508,14 @@
     "takenAt": "15 Aug · 08:16",
     "sourceFilename": "snapseed_camera_capture_20260815_082220_931.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/39762a6d994d865833e91e12697f7666a2fdbd83d99ef942f8ccecb609286c86.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1098783,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260815-082238-670",
@@ -447,7 +545,14 @@
     "takenAt": "15 Aug · 08:22",
     "sourceFilename": "snapseed_camera_capture_20260815_082238_670.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/55b84ca27ac46575a9f57604da5fee26bf221f244a144e9f23ae934bb4fcdadd.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1037479,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5040",
@@ -477,7 +582,14 @@
     "takenAt": "15 Aug · 15:51",
     "sourceFilename": "IMG_5040.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/0b810785f7255159e4f94729fd892f279efc3237d4c8f4d452ab9528615b02d1.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 2076260,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5044",
@@ -507,7 +619,14 @@
     "takenAt": "15 Aug · 15:51",
     "sourceFilename": "IMG_5044.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/475ba426964957b7357d571c3683781fbce25fe63651d6fd4af40640399da5af.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1353853,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260815-155638-313",
@@ -537,7 +656,14 @@
     "takenAt": "15 Aug · 15:56",
     "sourceFilename": "snapseed_camera_capture_20260815_155638_313.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/cf4985e31115abf2cfdc832a92bd4512834082f93252b7990d5aaa6ade51e519.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 936332,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1488",
@@ -567,7 +693,14 @@
     "takenAt": "15 Aug · 16:15",
     "sourceFilename": "IMG_1488.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/472d1a90d2772ea35e16f5e131875d1c9dfaa693413d28eedffa9fc742c201b8.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1592399,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260815-161546-091",
@@ -597,7 +730,14 @@
     "takenAt": "15 Aug · 16:15",
     "sourceFilename": "snapseed_camera_capture_20260815_161546_091.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/dfc4d344d6b91c1a1fc99b9b89d28f872e418960ac1a9d07ed9913eb7af869ad.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1322849,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260815-161856-649",
@@ -627,7 +767,14 @@
     "takenAt": "15 Aug · 16:18",
     "sourceFilename": "snapseed_camera_capture_20260815_161856_649.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b00681a9e7887bfc6b3ed0a5c15d7b9e6fd5a57f4cd213c45a8f97f3f0cfe52c.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1073730,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260815-162103-557",
@@ -657,7 +804,14 @@
     "takenAt": "15 Aug · 16:20",
     "sourceFilename": "snapseed_camera_capture_20260815_162103_557.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/51841ac49c5aaec933a43dd2d29b50f41ecc217cd824c6f1a78567a9a158c06e.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1026537,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260815-162408-750",
@@ -687,7 +841,14 @@
     "takenAt": "15 Aug · 16:22",
     "sourceFilename": "snapseed_camera_capture_20260815_162408_750.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/e2acdb03a91a8d9fa76fe4fe711841db88d80b6b95650da43b6212e0b76e33ac.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1226988,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1496",
@@ -717,7 +878,14 @@
     "takenAt": "15 Aug · 16:28",
     "sourceFilename": "IMG_1496.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/019cb294323ecb6e0e81930d26f1a166e216a1f3448bfde16967eedca8e0a4cf.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1742448,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5047",
@@ -777,7 +945,14 @@
     "takenAt": "15 Aug · 16:29",
     "sourceFilename": "IMG_5048.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/849ccc6d9463f0c115b14923d35db51fd4a8a958687732db9a05da1f88df172f.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1207997,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-2834",
@@ -807,7 +982,14 @@
     "takenAt": "16 Aug · 11:00",
     "sourceFilename": "IMG_2834.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/240e72cca5ac519ad7dcef8dbb090c5aba53655b2f60a28126215501af65b83b.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1280962,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-2836",
@@ -837,7 +1019,14 @@
     "takenAt": "16 Aug · 11:01",
     "sourceFilename": "IMG_2836.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/928b0c08cec2e6d73c0d2f6f0db90a5d13729b892c4e86ddc937679a4688072c.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 740460,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1504",
@@ -867,7 +1056,14 @@
     "takenAt": "16 Aug · 13:32",
     "sourceFilename": "IMG_1504.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/dd399398c479b20b172989cd019bff3531c1362ec45e1afcf1af6e74496eb892.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1246461,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5050",
@@ -897,7 +1093,14 @@
     "takenAt": "16 Aug · 16:21",
     "sourceFilename": "IMG_5050.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b56eb681e23a10dd83b301fd30664917ec1ada5e7ca239ec8131cba6a7f12028.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 688673,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5052",
@@ -927,7 +1130,14 @@
     "takenAt": "16 Aug · 16:47",
     "sourceFilename": "IMG_5052.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/9ceadcc4371ed6c3d0db3db27320eb56dc0b9dae7a92fb7acbb39625d79d1ea5.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 852013,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5055",
@@ -987,7 +1197,14 @@
     "takenAt": "16 Aug · 16:48",
     "sourceFilename": "IMG_5056.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/a389805911435851e143716c0f4ae994a2bad4b2815a65d09ce95ddb24319ec9.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1287258,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5063",
@@ -1017,7 +1234,14 @@
     "takenAt": "16 Aug · 16:49",
     "sourceFilename": "IMG_5063.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/0f1f12da2e48ba5161f44143239aaceb9d19f7ad0837992d2eabd31fb17d519a.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1141541,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5069",
@@ -1047,7 +1271,14 @@
     "takenAt": "16 Aug · 17:57",
     "sourceFilename": "IMG_5069.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ca0c9b06a44cb28924f0e1d94d166119ab100ebbd6523a2248ccf005c4cf50d6.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 547359,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5071",
@@ -1077,7 +1308,14 @@
     "takenAt": "16 Aug · 18:09",
     "sourceFilename": "IMG_5071.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/a736409df36195efe58d5a9b9e0b91750c2850d517cec8160d622bc2bcfa21fd.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 2010709,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5075",
@@ -1107,7 +1345,14 @@
     "takenAt": "16 Aug · 20:49",
     "sourceFilename": "IMG_5075.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b3dbe1b3d045d3b5ca81e2db948adcc8cc038bd44a21a8800786ce8cd1d93338.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 616326,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5076",
@@ -1137,7 +1382,14 @@
     "takenAt": "16 Aug · 20:49",
     "sourceFilename": "IMG_5076.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/e307b752804f3cb279b4f438273ebfd9007e28b9a1f7a44a2dd730dacc73ae8c.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 933964,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1520",
@@ -1167,7 +1419,14 @@
     "takenAt": "17 Aug · 15:57",
     "sourceFilename": "IMG_1520.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/dd21d4fceec78168fc56dab8a1f343641afa0deb294558a6967f2e129d9040fb.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1453280,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260818-081450-402",
@@ -1197,7 +1456,14 @@
     "takenAt": "18 Aug · 08:02",
     "sourceFilename": "snapseed_camera_capture_20260818_081450_402.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/70c0214910e346d0b8cf790442eb3a8344bf9fbd977becc35e6d1f9eef2832c0.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 959274,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1525",
@@ -1227,7 +1493,14 @@
     "takenAt": "18 Aug · 09:35",
     "sourceFilename": "IMG_1525.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/39b534be077dc083e0e4d991b395bd396d365d4b3ce2ae1c4abae00c193f9bad.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1070838,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260818-104535-118",
@@ -1257,7 +1530,14 @@
     "takenAt": "18 Aug · 10:45",
     "sourceFilename": "snapseed_camera_capture_20260818_104535_118.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/9fe41bc569124fdeb7da67699c6822c6a2234eebb18386da8098d0a485a2630a.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1289821,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5081",
@@ -1287,7 +1567,14 @@
     "takenAt": "18 Aug · 10:49",
     "sourceFilename": "IMG_5081.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/737991602fb0f5e3f79bab2a0ff7357aab6b71f3f4164338046f6352a95c1d19.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 514808,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260818-105419-043",
@@ -1317,7 +1604,14 @@
     "takenAt": "18 Aug · 10:54",
     "sourceFilename": "snapseed_camera_capture_20260818_105419_043.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/3ba9da13249b0b7197544a620cc519db75fbb1a16f44964a4e89d91331cf3c2f.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 641564,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260818-105455-450",
@@ -1347,7 +1641,14 @@
     "takenAt": "18 Aug · 10:54",
     "sourceFilename": "snapseed_camera_capture_20260818_105455_450.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/f5078a5764cf0a2c0c9a850fe6dd68a2bc329c6a5cbf0f8b5e08d29adf707922.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 685948,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-2870",
@@ -1377,7 +1678,14 @@
     "takenAt": "18 Aug · 11:02",
     "sourceFilename": "IMG_2870.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/971bf1079b91cf97db0e972f5f08e4758c18f9920d5b0eeab778585bd5bd9afb.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 526074,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260818-110323-609",
@@ -1407,7 +1715,14 @@
     "takenAt": "18 Aug · 11:03",
     "sourceFilename": "snapseed_camera_capture_20260818_110323_609.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/08248ea512f4a1a1546df9696453b0076c02c3297161108729885901010e4372.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1274522,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-2880",
@@ -1437,7 +1752,14 @@
     "takenAt": "18 Aug · 11:04",
     "sourceFilename": "IMG_2880.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/dd12f9a4e5dc972f20bef4286bd641efee26df1662247ad013d31dfccceeb4be.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 737373,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-2881",
@@ -1467,7 +1789,14 @@
     "takenAt": "18 Aug · 11:10",
     "sourceFilename": "IMG_2881.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/67e17f6e69eb8602644f07508b579a52c5c007ccaa376492dfa2f8f821d24d47.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 626293,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260818-111028-981",
@@ -1527,7 +1856,14 @@
     "takenAt": "18 Aug · 12:15",
     "sourceFilename": "IMG_2883.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ab995e7933123e389399827d037c3a3789810c71c63e7f28e81d28da04282949.avif",
+      "width": 2316,
+      "height": 3088,
+      "bytes": 772664,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1559",
@@ -1557,7 +1893,14 @@
     "takenAt": "18 Aug · 14:48",
     "sourceFilename": "IMG_1559.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d6f869f03eab7466c0bd8ba47051bcb3cc1b266d6ec809732424e00eb0525cbc.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1709651,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-2886",
@@ -1587,7 +1930,14 @@
     "takenAt": "18 Aug · 15:39",
     "sourceFilename": "IMG_2886.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/3e35e17f6c1025e0b7ce5e520b7fde9ca161ea502a087d43b08caf9e807d2867.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 657020,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-2887",
@@ -1617,7 +1967,14 @@
     "takenAt": "18 Aug · 15:40",
     "sourceFilename": "IMG_2887.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/4d68e15eebaf451e4f7766fcf1f2d5e295ced60d86e0d3f5191839493bc0cc51.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1041328,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260818-162911-897",
@@ -1647,7 +2004,14 @@
     "takenAt": "18 Aug · 16:28",
     "sourceFilename": "snapseed_camera_capture_20260818_162911_897.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/63e388300001d3c8a5f80683ea89180fa8d228eda88dd720091ae31a8ea456a4.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1313804,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260818-162931-975",
@@ -1677,7 +2041,14 @@
     "takenAt": "18 Aug · 16:29",
     "sourceFilename": "snapseed_camera_capture_20260818_162931_975.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c802d498cf3b6af35e5e015be96e0af0f5eb4202435cd5cf32c0bc02077617a3.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1217518,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5098",
@@ -1737,7 +2108,14 @@
     "takenAt": "18 Aug · 16:32",
     "sourceFilename": "IMG_5099.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/be4f5449ac59190af35a22bac8843d7805e0432a12226198e0461322f00486e1.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1165014,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1584",
@@ -1767,7 +2145,14 @@
     "takenAt": "18 Aug · 19:38",
     "sourceFilename": "IMG_1584.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/a6d1c1057be5eeb775e545bf7ca196667ebc21a5f4a61d9fdc55963852e842c4.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1037469,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1589",
@@ -1797,7 +2182,14 @@
     "takenAt": "18 Aug · 19:39",
     "sourceFilename": "IMG_1589.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/820cece0de021fc7ce138a371208d481a515e94936b52724b17261b7bb87b285.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1834266,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5102",
@@ -1827,7 +2219,14 @@
     "takenAt": "18 Aug · 20:24",
     "sourceFilename": "IMG_5102.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/68c8997931fe87f9f636f8ccbc1904e5f9892c8d80fb3737c2a78763f750c6d6.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1123296,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1596",
@@ -1857,7 +2256,14 @@
     "takenAt": "19 Aug · 14:48",
     "sourceFilename": "IMG_1596.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/19a49c69f629cc8636f11db81ef4832996836b4f0c7362ffec01686176b3499b.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1631280,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1598",
@@ -1887,7 +2293,14 @@
     "takenAt": "19 Aug · 15:15",
     "sourceFilename": "IMG_1598.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/4ee34da277d8690134ad6e8be5a7bcda88b53795a4a4255b94d8345269e805bd.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1062402,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1605",
@@ -1917,7 +2330,14 @@
     "takenAt": "19 Aug · 15:44",
     "sourceFilename": "IMG_1605.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/8649091d3839b5a52ca7c1b6d47558b2bbb38eed67605132931f97141012a37e.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1082150,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1606",
@@ -1947,7 +2367,14 @@
     "takenAt": "19 Aug · 19:55",
     "sourceFilename": "IMG_1606.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/54e8fb9ba8213c77c022763504814644f5e390da30a877eef671069a28862fb6.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 770980,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260819-203544-659",
@@ -2007,7 +2434,14 @@
     "takenAt": "19 Aug · 19:56",
     "sourceFilename": "IMG_1607.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/792cd3b1feca14e79a4830adf2c7ffc5d4554c89d69ae8335d732ff27a1443bd.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1077681,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1611",
@@ -2037,7 +2471,14 @@
     "takenAt": "19 Aug · 20:05",
     "sourceFilename": "IMG_1611.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/f352f6f15d3a51eb424eb7e0743a6cbe5f8ffec7a04e8ce73ca00ab2e8773cfd.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 984287,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260819-201947-521",
@@ -2097,7 +2538,14 @@
     "takenAt": "19 Aug · 20:19",
     "sourceFilename": "snapseed_camera_capture_20260819_202000_680.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/3d61720c25fa9114d7730cccd445f75bf1948527c18e2708b28da7e37cb93207.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 622893,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260819-203738-977",
@@ -2157,7 +2605,14 @@
     "takenAt": "19 Aug · 20:37",
     "sourceFilename": "snapseed_camera_capture_20260819_203744_788.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6c8fbd5a3f949450e332c57b0b55ee1f2fa70f50f5ab0225d6c733d61b1b31d4.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 972098,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260819-211851-678",
@@ -2217,7 +2672,14 @@
     "takenAt": "19 Aug · 21:19",
     "sourceFilename": "snapseed_camera_capture_20260819_211902_057.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/de18e9481b62262e16864a71c2117b8c479b3aba7790d4bf73e258f2c35ddc34.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 559780,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1613",
@@ -2247,7 +2709,14 @@
     "takenAt": "20 Aug · 08:30",
     "sourceFilename": "IMG_1613.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/35a38be4ac485f49bd45b29e1351a6da400ad1ee419252aa2505307110bac54c.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1234664,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260822-140341-832",
@@ -2277,7 +2746,14 @@
     "takenAt": "22 Aug · 14:03",
     "sourceFilename": "snapseed_camera_capture_20260822_140341_832.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/491d08fc7fb0cc476bf3621d49e36ccd4f6ea892d4dc6ce2bba42ff9a75ad1ed.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 901527,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5119",
@@ -2307,7 +2783,14 @@
     "takenAt": "22 Aug · 14:09",
     "sourceFilename": "IMG_5119.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/03552d88ac4fb7070898a20aa1962a532cb9590e268387a18fb2e7b9d8d57910.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 874690,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5123",
@@ -2367,7 +2850,14 @@
     "takenAt": "22 Aug · 14:11",
     "sourceFilename": "IMG_5127.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c6e0523b7b46e68b6b039b5fa371d91be2378f1db08d85d31e1d42427f4a7c77.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1028242,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5130",
@@ -2427,7 +2917,14 @@
     "takenAt": "22 Aug · 15:09",
     "sourceFilename": "IMG_5134.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ce6639cb2acfb175d0b7c3e31b32dfdd8bf9e07274fa7d0b76c718dc7f3775e8.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1109691,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260822-151053-865",
@@ -2457,7 +2954,14 @@
     "takenAt": "22 Aug · 15:10",
     "sourceFilename": "snapseed_camera_capture_20260822_151053_865.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/57fa7ff805021d3b7817a7768a9364888c48c0858165393e85eed5ce898405fa.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 984598,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5136",
@@ -2487,7 +2991,14 @@
     "takenAt": "22 Aug · 15:25",
     "sourceFilename": "IMG_5136.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ce11db4f8433a0ea635ca8495eb65de2625ea8b95c5f8ce47bd52afc85ee9d95.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 953005,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260822-154412-930",
@@ -2517,7 +3028,14 @@
     "takenAt": "22 Aug · 15:44",
     "sourceFilename": "snapseed_camera_capture_20260822_154412_930.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/687c6f1ea6a021b1798b0e3b71f53a31b776ab3c8a603599db68b3c4400e0a30.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1069739,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260822-174404-292",
@@ -2547,7 +3065,14 @@
     "takenAt": "22 Aug · 17:43",
     "sourceFilename": "snapseed_camera_capture_20260822_174404_292.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/97f79bb7d130c065be68ac84f61f3f53f061ec9c13fa00ebd8249eac2a81552d.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1319384,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260822-175328-988",
@@ -2577,7 +3102,14 @@
     "takenAt": "22 Aug · 17:51",
     "sourceFilename": "snapseed_camera_capture_20260822_175328_988.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ece2257273dc5d1eab1b61ed8364bf664f8a460b7559d6bcb70e04e65e47b4a8.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1307382,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260824-114638-775",
@@ -2637,7 +3169,14 @@
     "takenAt": "24 Aug · 11:46",
     "sourceFilename": "snapseed_camera_capture_20260824_114643_710.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/90942ec7d6eaa8d63bce5ccd149a5bee83a4205bd57828628e0e1ec4ee3765dc.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 978277,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5149",
@@ -2667,7 +3206,14 @@
     "takenAt": "24 Aug · 11:53",
     "sourceFilename": "IMG_5149.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b198306d8651a53c1024891323ce30b18faf5c1344998f7368ada5cf8898b31b.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1513877,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5153",
@@ -2727,7 +3273,14 @@
     "takenAt": "24 Aug · 12:50",
     "sourceFilename": "IMG_5157.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/414cdd598a7161546a602693088989d88ef9633b449fce51d6c6487778671104.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 818494,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5158",
@@ -2817,7 +3370,14 @@
     "takenAt": "24 Aug · 14:23",
     "sourceFilename": "IMG_2987.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/8161c51a63c3ae1a63c9c7008912baa3a8fa631178370ce3c02acf36abb5d076.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1264220,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1750",
@@ -2847,7 +3407,14 @@
     "takenAt": "24 Aug · 14:27",
     "sourceFilename": "IMG_1750.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/1c0a3805292c4550b9fc57eb7f4c60b8ad21200131186f74387dffd63fdacb67.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1133953,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1754",
@@ -2877,7 +3444,14 @@
     "takenAt": "24 Aug · 14:52",
     "sourceFilename": "IMG_1754.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/856b82922ed0789ca745e45bcc8f134391c228ae056d7cd8d7562d51d5b68cd3.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1080382,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1756",
@@ -2907,7 +3481,14 @@
     "takenAt": "24 Aug · 15:05",
     "sourceFilename": "IMG_1756.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/4780f453613f33c642b73181536043fe68f940cbf1dc6a54c81da513e80004eb.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1055618,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1759",
@@ -2967,7 +3548,14 @@
     "takenAt": "24 Aug · 15:07",
     "sourceFilename": "snapseed_camera_capture_20260824_150714_906.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/5847e5148c6e61de97a0b936a900af88e3fe7ab5605d1407b1e3c6fa8eb34a9d.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 697800,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1761",
@@ -2997,7 +3585,14 @@
     "takenAt": "24 Aug · 15:30",
     "sourceFilename": "IMG_1761.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/caed80c412806aa2a4a027ae25b08315cda47e1b228d47393b6a534feb7d284d.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 719532,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260824-153232-772",
@@ -3027,7 +3622,14 @@
     "takenAt": "24 Aug · 15:32",
     "sourceFilename": "snapseed_camera_capture_20260824_153232_772.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d1c527ad291bec1e829ae6873a3f07e3fd03ab08a681451e0679a82bec16f8be.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 664462,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-1768",
@@ -3057,7 +3659,14 @@
     "takenAt": "24 Aug · 15:48",
     "sourceFilename": "IMG_1768.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/63548b50c5477c0a5789b5083f6b9a088106d773cbefbc68835a33bb0ca66281.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1244813,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-img-5165",
@@ -3087,7 +3696,14 @@
     "takenAt": "24 Aug · 15:59",
     "sourceFilename": "IMG_5165.HEIC",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/73e33dc3bd727ef412e579b3778d4f4c41e10a3ae9b470def659cca464f664ef.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 748017,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "family-snapseed-camera-capture-20260825-111042-909",
@@ -3117,6 +3733,13 @@
     "takenAt": "25 Aug · 10:54",
     "sourceFilename": "snapseed_camera_capture_20260825_111042_909.heic",
     "protected": true,
-    "assetStatus": "published"
+    "assetStatus": "published",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/bce0df3bbf88b1631bd475ad69e6df7f3cfb52fb9f8b7cb819b7dbc86e0efbdc.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1135037,
+      "assetStatus": "published"
+    }
   }
 ]

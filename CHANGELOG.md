@@ -8,9 +8,10 @@
 - Add resumable, additive migration and independently verified AVIF publication;
   future imports prepare the same upgrade without making a WebP import depend
   on AVIF success. Preserve all photo IDs, originals and editorial data.
-- Record the owner’s availability/regression requirement, staged rollout and
-  rollback in current guidance. Verification and release receipt are tracked
-  in WIP.
+- Upgrade 223 visible protected photos with 57.6% more pixels and 4.3% more
+  full-photo download bytes; retain the full WebP fallbacks. Record availability,
+  verification, staged rollout and rollback in current guidance. The release
+  receipt is tracked in WIP.
 
 ## 16 October 2026 — let zoom fill the screen behind visible controls
 

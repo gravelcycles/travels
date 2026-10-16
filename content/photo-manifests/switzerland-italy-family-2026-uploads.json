@@ -29,7 +29,14 @@
     "sourceFilename": "IMG_2845.HEIC",
     "takenAt": "2026-08-17 · 15:42",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/f1eef802309f2c10188fb5d0cacd1028f45c5d623bbcbac4a768844c5ae0afdc.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1439919,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-128e1446001d7e77e4bc",
@@ -61,7 +68,14 @@
     "sourceFilename": "IMG_1632.HEIC",
     "takenAt": "2026-08-21 · 16:31",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/36972417b9be31e2f9951d15a91f96a8a8e4346e07bf6d176b0ea49120923124.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 885291,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-a11cac9b929269431afb",
@@ -93,7 +107,14 @@
     "sourceFilename": "IMG_1630.HEIC",
     "takenAt": "2026-08-21 · 09:58",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/7ce7d6ae794707aca58c410ac48d956e23d570ead6e90beccfc8e6152b73f155.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1062376,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-1fedc4120b23bfe606e5",
@@ -125,7 +146,14 @@
     "sourceFilename": "IMG_1628.HEIC",
     "takenAt": "2026-08-20 · 19:20",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/bd60c6e0698af0024ce6717a282480da778a3a8476b66a28e45099bdf9a680cb.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1244818,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-883c43b88ab656138936",
@@ -157,7 +185,14 @@
     "sourceFilename": "IMG_1627.HEIC",
     "takenAt": "2026-08-20 · 14:27",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/4cc6bb3a0a4ccaf641118fa2c765c0d5158cb8c6cb214ded03e7f467b7eafa2f.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1057782,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-94c8ffbac0c29f07e4d1",
@@ -189,7 +224,14 @@
     "sourceFilename": "IMG_1619.HEIC",
     "takenAt": "2026-08-20 · 11:42",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/faa0f9d15f8cbd470c4da298a262618a3ace05dd95de031142358557c3215b11.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1579684,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-6f6f6bec798531f5ca8f",
@@ -221,7 +263,14 @@
     "sourceFilename": "IMG_1708.HEIC",
     "takenAt": "2026-08-23 · 14:43",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/542b2b9691131e4939f64c6e7a220c391466d3f0e8e5cf1d2e168f05912dc8a1.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1367832,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-8764504b8b9143c0aa8e",
@@ -253,7 +302,14 @@
     "sourceFilename": "IMG_1705.HEIC",
     "takenAt": "2026-08-23 · 13:58",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/e2b7675433e9dbcc7585e734003eecb46c5b8802051e02721517058e9f97dc16.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1080443,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-f4dfd2a21679d6502302",
@@ -285,7 +341,14 @@
     "sourceFilename": "IMG_1702.HEIC",
     "takenAt": "2026-08-23 · 13:21",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/8716c2b1a5cf9db886934cf0c122fd55b88f7bcc9dae973af0eee313131f1ee5.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1088219,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-d3ccf5723bbd79156476",
@@ -317,7 +380,14 @@
     "sourceFilename": "IMG_1697.HEIC",
     "takenAt": "2026-08-23 · 10:40",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/726154fdeeaa929c4120d85e8dc95b31ef75aed10302bb3abdb76c682a6ca977.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1294020,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-c8cc01cd3b3c122c972b",
@@ -349,7 +419,14 @@
     "sourceFilename": "IMG_1786.HEIC",
     "takenAt": "2026-08-26 · 08:20",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/7192c935726e7250041c8e9552dc77040156d8911274ee4be3ae0e6a96c47484.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1274600,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-fdce47e807c178c97e9e",
@@ -381,7 +458,14 @@
     "sourceFilename": "IMG_1783.HEIC",
     "takenAt": "2026-08-25 · 20:26",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/1cb256a4b56684193543a759d61d789c095b70ec7f6afb1056fb13478fa6f769.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 590209,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-2529256de2831fabc58a",
@@ -413,7 +497,14 @@
     "sourceFilename": "IMG_1782.HEIC",
     "takenAt": "2026-08-25 · 20:25",
     "assetStatus": "published",
-    "protected": true
+    "protected": true,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/a7a1dac3d0264673687b13d6754567c471657745d99460af25f5c0e5a45037d0.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 613555,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "switzerland-italy-family-2026-upload-720e515e95e64fea8985",
@@ -444,6 +535,13 @@
     "takenAt": "2026-08-14 · 13:32",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "720e515e95e64fea8985e66e8887ffb2e1ca28741e546d6ade9e06d1b0e0ad12"
+    "sourceHash": "720e515e95e64fea8985e66e8887ffb2e1ca28741e546d6ade9e06d1b0e0ad12",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/8f369ce515bb29bd2aeb7fb94d2e446bc6df175e155bea484f1cd867a60ed126.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 2398309,
+      "assetStatus": "published"
+    }
   }
 ]

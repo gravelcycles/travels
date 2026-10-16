@@ -28,7 +28,14 @@
     "takenAt": "2026-08-28 · 17:03",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "dac5328bfb16461d32ae7ecce4795e902694e9dba1b69dc0f3b0d018cf413e5b"
+    "sourceHash": "dac5328bfb16461d32ae7ecce4795e902694e9dba1b69dc0f3b0d018cf413e5b",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/96a2019d16cfd31bf4a806ec3cfdeabe8bb950db32c99146a2210eab5a7bde10.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 824529,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-2a03b43fdddc123d7f10",
@@ -59,7 +66,14 @@
     "takenAt": "2026-08-28 · 21:12",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "2a03b43fdddc123d7f10c5f31f9248b74031779926f67dd9e9aa78e48dd9d382"
+    "sourceHash": "2a03b43fdddc123d7f10c5f31f9248b74031779926f67dd9e9aa78e48dd9d382",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/7bb4b1b0a4a87f1d019550df15f1298e57f05043056712ca822125f61e2c0c0f.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 361666,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-53e3ef59716aef8e1bf6",
@@ -90,7 +104,14 @@
     "takenAt": "2026-08-29 · 20:46",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "53e3ef59716aef8e1bf68c70c44a0f41100cedb4543fed49a46f42bf62624dbb"
+    "sourceHash": "53e3ef59716aef8e1bf68c70c44a0f41100cedb4543fed49a46f42bf62624dbb",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/8c75190dac4d7bacf39a8e860a00dc6b4fea84896050b5a24ba7e09f859f5870.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 2038904,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-2f29a9d5459cb43f2e59",
@@ -121,7 +142,14 @@
     "takenAt": "2026-08-30 · 13:54",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "2f29a9d5459cb43f2e597db9313e2c9ebb829ddf3ee1866d66ed29c83b6cd948"
+    "sourceHash": "2f29a9d5459cb43f2e597db9313e2c9ebb829ddf3ee1866d66ed29c83b6cd948",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/5f420871e167ca960f038d696ff4c861fc9bc0c80b078606c295dc0f0f517f05.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1125943,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-cb7a62b4305fd9464031",
@@ -152,7 +180,14 @@
     "takenAt": "2026-08-30 · 14:41",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "cb7a62b4305fd94640312b143f65bd52f1f016c83e3962ae71afea86c184c87f"
+    "sourceHash": "cb7a62b4305fd94640312b143f65bd52f1f016c83e3962ae71afea86c184c87f",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/13423ab9d06e5ada6d5ef738818f50474007acc0221b65466e13d53b0cbceb3d.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 806822,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-1fc9bea6c00885f793a5",
@@ -214,7 +249,14 @@
     "takenAt": "2026-08-30 · 15:51",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "d14fdc183832a9832e73256defca8dcd0896b4be611edf353e4bc5dba962cec1"
+    "sourceHash": "d14fdc183832a9832e73256defca8dcd0896b4be611edf353e4bc5dba962cec1",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/937ee20520c39afae0ee6a7fe07f38847db83c554067899cca93330ab9b228f5.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1056264,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-f06a4bc17c775929637e",
@@ -245,7 +287,14 @@
     "takenAt": "2026-08-30 · 17:12",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "f06a4bc17c775929637e83af14eba61557705f2aac163da5b71b0cf89c7d96b6"
+    "sourceHash": "f06a4bc17c775929637e83af14eba61557705f2aac163da5b71b0cf89c7d96b6",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/15ed0233ac5ae8bfb3cfec7fa6f693a2b2f9c313aa961c85b4d7c9fa65812720.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 875613,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-2b43f07d4a7a9be0266e",
@@ -276,7 +325,14 @@
     "takenAt": "2026-08-30 · 20:34",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "2b43f07d4a7a9be0266eb11ae4778d464e27256cf0693a23511a1dd1ea4300bf"
+    "sourceHash": "2b43f07d4a7a9be0266eb11ae4778d464e27256cf0693a23511a1dd1ea4300bf",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d9fccb689c1cdb7aacd2acec7b748118d5c526295a2ae8676ef5304b8aa70ce4.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 621891,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-8737ad531c2de7c5781c",
@@ -307,7 +363,14 @@
     "takenAt": "2026-09-01 · 18:01",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "8737ad531c2de7c5781c3933ec663cf42a077b207841a0dfe500b1b35c8e34fd"
+    "sourceHash": "8737ad531c2de7c5781c3933ec663cf42a077b207841a0dfe500b1b35c8e34fd",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/472f6891fc89715745a8aa6185df03cf7234a0c59ef24b48e0dbb32ec785796a.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1114356,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-1840b516b3f506867764",
@@ -338,7 +401,14 @@
     "takenAt": "2026-09-01 · 19:02",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "1840b516b3f506867764a19cdad40b6cff9131e018635b9ed941597762412900"
+    "sourceHash": "1840b516b3f506867764a19cdad40b6cff9131e018635b9ed941597762412900",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/eddf665ecc87640554271a779041b9c1d7021b1da6bab6197a6ec0e276f5d595.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 972517,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-4e2d816c02acd347f7c9",
@@ -369,7 +439,14 @@
     "takenAt": "2026-09-03 · 12:45",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "4e2d816c02acd347f7c9272ebb2fc632bb48e78800a4f0abef4bcd77206a7d58"
+    "sourceHash": "4e2d816c02acd347f7c9272ebb2fc632bb48e78800a4f0abef4bcd77206a7d58",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/f7315fd14850995545240f6ae9dc7e1d463c1665f3a9a4210a85039397e3ceb7.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 749136,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-3b685b801eb1413875df",
@@ -400,7 +477,14 @@
     "takenAt": "2026-09-03 · 14:00",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "3b685b801eb1413875df4daef92833dfd2ac7dd69d59b83744d7734335f09d84"
+    "sourceHash": "3b685b801eb1413875df4daef92833dfd2ac7dd69d59b83744d7734335f09d84",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/312880805950ac5d826fbf99ff5ca70a52cd15443d5f790c5aef10f36a63fe78.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 665551,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-f366c54e409d8006ec77",
@@ -431,7 +515,14 @@
     "takenAt": "2026-09-03 · 20:13",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "f366c54e409d8006ec7700e15026530d61367412bd6962e470b66b547a390c74"
+    "sourceHash": "f366c54e409d8006ec7700e15026530d61367412bd6962e470b66b547a390c74",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/cac6b05696468016d6ef22e68815a5cf520f846c55b3fefd11ce0fdcd875a452.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1297449,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-089d06cf9fc8eb426463",
@@ -462,7 +553,14 @@
     "takenAt": "2026-09-03 · 20:15",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "089d06cf9fc8eb426463c10c5bcd9c502415142f2158c227bf338b30cb1e6ac7"
+    "sourceHash": "089d06cf9fc8eb426463c10c5bcd9c502415142f2158c227bf338b30cb1e6ac7",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/fae317fd75bc6ff335d24461872cddc1ffef8bd536618d7112dec34016a9ceaa.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1512873,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-80285f87ffa7fdb23498",
@@ -493,7 +591,14 @@
     "takenAt": "2026-09-03 · 20:15",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "80285f87ffa7fdb23498db630a0c29d23426e37c3fc4409105401ed868f51b75"
+    "sourceHash": "80285f87ffa7fdb23498db630a0c29d23426e37c3fc4409105401ed868f51b75",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/69c705f3637be99b2c58354f434cdae0a7848c3bb8220b4f0f0e887fcc23a5f2.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1045002,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-7e6a083c2e87656530fe",
@@ -524,7 +629,14 @@
     "takenAt": "2026-09-03 · 21:08",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "7e6a083c2e87656530fe6b662160fcfc524cc7e45054a79961ea98ef1915c976"
+    "sourceHash": "7e6a083c2e87656530fe6b662160fcfc524cc7e45054a79961ea98ef1915c976",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b0394ddefbd8c435af6b41d3e7ea347f4af9c86ca0ba3d4630ee3ad40ff22266.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1386017,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-7b4bda268048a2860a01",
@@ -555,7 +667,14 @@
     "takenAt": "2026-09-06 · 15:32",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "7b4bda268048a2860a01aec144674b7c76e3446ba7225c00a7da2b65ecfa46eb"
+    "sourceHash": "7b4bda268048a2860a01aec144674b7c76e3446ba7225c00a7da2b65ecfa46eb",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/10280151687de4c10db83855c2a2c75704ed30f52ca14af8b3f80cbbba5bd74f.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 822705,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-b39442e6909598636ce8",
@@ -586,7 +705,14 @@
     "takenAt": "2026-09-11 · 15:15",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "b39442e6909598636ce8052200319eb7fb8791df12be100542605ddcd8c44207"
+    "sourceHash": "b39442e6909598636ce8052200319eb7fb8791df12be100542605ddcd8c44207",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/dc3809029950e2dd33db10411477ee2181e487a1ceaaff24a6c7cb5bf400302a.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1303978,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-4ac1954e2fd63e56e303",
@@ -617,7 +743,14 @@
     "takenAt": "2026-09-11 · 15:15",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "4ac1954e2fd63e56e3035339719a2485674b41ffdde99e3f2eb9107fea8df823"
+    "sourceHash": "4ac1954e2fd63e56e3035339719a2485674b41ffdde99e3f2eb9107fea8df823",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/87a4edea825680f88c2c30731f3b1a5ba19fa2bc839fa4bb37250c9d27962fda.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1210173,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-f49a8470552a28c77773",
@@ -648,7 +781,14 @@
     "takenAt": "2026-09-18 · 11:53",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "f49a8470552a28c777735d54cfe9babf400907eae783bd165631dc4487ee9078"
+    "sourceHash": "f49a8470552a28c777735d54cfe9babf400907eae783bd165631dc4487ee9078",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/a194d20c20cd5b17f718f22c408f037ae8930782e2e47d352dc7dcf0ee1390bf.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1049970,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-30a203d3b04bbb23130a",
@@ -710,7 +850,14 @@
     "takenAt": "2026-09-18 · 19:33",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "330fa9862b3be5e57bf75f888fbc996a25e88ca949a18465391d791dc2930e61"
+    "sourceHash": "330fa9862b3be5e57bf75f888fbc996a25e88ca949a18465391d791dc2930e61",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/52205366481fa16d910be978594b4bff13ff942e2f6893c3eda7aa1200c8413b.avif",
+      "width": 2160,
+      "height": 3840,
+      "bytes": 833223,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-7588ee13f66da3fd61ad",
@@ -741,7 +888,14 @@
     "takenAt": "2026-09-19 · 16:42",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "7588ee13f66da3fd61ada46b32d8fc22663fec30a1d35975aab3d6511bf61b90"
+    "sourceHash": "7588ee13f66da3fd61ada46b32d8fc22663fec30a1d35975aab3d6511bf61b90",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/613232fd84fb8d042b8c3c69abead55069e95ceb93ea484259af92303ad966e1.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 915349,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-481c05b8a76da50ac12d",
@@ -772,7 +926,14 @@
     "takenAt": "2026-09-22 · 14:57",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "481c05b8a76da50ac12d32332aaba68e5654386760a28ceebf9ef95a7ab17532"
+    "sourceHash": "481c05b8a76da50ac12d32332aaba68e5654386760a28ceebf9ef95a7ab17532",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/7ebc2fc37ff45796d0d91ab10064e9300a15c2c4148562b7ba0ce7ca3ee7813c.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 842713,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-93ec5b3135fb8393ca59",
@@ -803,7 +964,14 @@
     "takenAt": "2026-09-25 · 15:50",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "93ec5b3135fb8393ca596b456a017a96a651016b6c9fa00753b662466fef1fad"
+    "sourceHash": "93ec5b3135fb8393ca596b456a017a96a651016b6c9fa00753b662466fef1fad",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d2cae03de660fbed75eef1d98fb06db0fb75894ba83ee905b66937338e6314d3.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 2525987,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-58ad83d0d444b3b213fc",
@@ -834,7 +1002,14 @@
     "takenAt": "2026-09-26 · 16:26",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "58ad83d0d444b3b213fcd2f5c627853a5fc81dbd8aa8591b1bd74277ab2edc10"
+    "sourceHash": "58ad83d0d444b3b213fcd2f5c627853a5fc81dbd8aa8591b1bd74277ab2edc10",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/7a0d1237389a5aab9d53e743f864bbc07e018215396cdea30690e182a876f2cf.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 621043,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-142bf5bf67c6bd3ecd06",
@@ -865,7 +1040,14 @@
     "takenAt": "2026-09-30 · 11:00",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "142bf5bf67c6bd3ecd06674804e7a56e3858fb91520e74ebe400862c1e5fcf5f"
+    "sourceHash": "142bf5bf67c6bd3ecd06674804e7a56e3858fb91520e74ebe400862c1e5fcf5f",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/234ce9cad7ca2d0d217a7627b7a895b2acfbc8950b6702b1ee971ce328d27411.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 827597,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-ab2453ea4fd4a7552c6a",
@@ -896,7 +1078,14 @@
     "takenAt": "2026-09-30 · 11:05",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "ab2453ea4fd4a7552c6ae57abb03de75f4ebe11f69d04074f6ddd3a93921ede2"
+    "sourceHash": "ab2453ea4fd4a7552c6ae57abb03de75f4ebe11f69d04074f6ddd3a93921ede2",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/22e2b1bcce6045e13ba666fce3ab595b87bfbc789898cfda9effd92fdebc56c9.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 757122,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-280a6cade6fef125d77d",
@@ -927,7 +1116,14 @@
     "takenAt": "2026-09-30 · 11:09",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "280a6cade6fef125d77d6d893ceb1502e03d86c077a223e4aac9d400989a4edf"
+    "sourceHash": "280a6cade6fef125d77d6d893ceb1502e03d86c077a223e4aac9d400989a4edf",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/77ca87288b6809e6562d82e2e72fd4d2b98b74f484bae183873e7b3c636c913b.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 780913,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-dfafd690e7c87ac396da",
@@ -958,7 +1154,14 @@
     "takenAt": "2026-09-30 · 11:51",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "dfafd690e7c87ac396dad4fec9d7207db3761f85952ff97f0bb10d9086bd2197"
+    "sourceHash": "dfafd690e7c87ac396dad4fec9d7207db3761f85952ff97f0bb10d9086bd2197",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/54f9205b04b634d14ae865ae568683a026d083bd6962fb1d78ad66484e5bf705.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1020619,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-fbd2c1a168f7bb4ca247",
@@ -989,7 +1192,14 @@
     "takenAt": "2026-09-30 · 12:00",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "fbd2c1a168f7bb4ca2479ff0628279bf1ca7887e0447ef456df379776ebc407b"
+    "sourceHash": "fbd2c1a168f7bb4ca2479ff0628279bf1ca7887e0447ef456df379776ebc407b",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ddbb293c0e299d4b6ad10b6733156e28464081c38bb50961ee1e568bd027920a.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 2873052,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-2fb907bac028aaa4c35b",
@@ -1020,7 +1230,14 @@
     "takenAt": "2026-09-30 · 12:01",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "2fb907bac028aaa4c35b6b96b80b4d30339f2621a2c7280824530e475af41fb4"
+    "sourceHash": "2fb907bac028aaa4c35b6b96b80b4d30339f2621a2c7280824530e475af41fb4",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/cc228dd56a91040a4cc27183b3d9e1dbbe827c148fb5a2a62b6476664e63a3a8.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 796359,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-2b172e17c2b67e01486c",
@@ -1082,7 +1299,14 @@
     "takenAt": "2026-10-02 · 15:12",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "a81c31ea658c9c00bd316bab09462cafefa79ab3e76e89db6a4e0149bd6c8a26"
+    "sourceHash": "a81c31ea658c9c00bd316bab09462cafefa79ab3e76e89db6a4e0149bd6c8a26",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/58af9d3946c93a1c430c9e105673940a472cbfb83e09375ac16d042966fbe62f.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1030401,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-557750833b6af45b0a12",
@@ -1113,7 +1337,14 @@
     "takenAt": "2026-10-02 · 15:15",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "557750833b6af45b0a1290086932d0eb915067ec3eefbcfed60d0768c7de93e9"
+    "sourceHash": "557750833b6af45b0a1290086932d0eb915067ec3eefbcfed60d0768c7de93e9",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d8a46fd52faffa1cdb49ac2d6de7c9821d90cbd95ee54a75849b69cf02cd4d36.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 979777,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-d1bfc7b17b18e99966f7",
@@ -1144,7 +1375,14 @@
     "takenAt": "2026-10-02 · 15:19",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "d1bfc7b17b18e99966f7be61c19dc95047fc55b94692ecafdb229acdf391e1f0"
+    "sourceHash": "d1bfc7b17b18e99966f7be61c19dc95047fc55b94692ecafdb229acdf391e1f0",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/f06c286b977f20eb3fe1da683690f965e233adfc42184dd1194f5960493244a5.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 757264,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-dca5df75def57377629a",
@@ -1175,7 +1413,14 @@
     "takenAt": "2026-10-02 · 15:20",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "dca5df75def57377629ab9959ae1fc635ac4c970e79245cac5c8ec11ba308d53"
+    "sourceHash": "dca5df75def57377629ab9959ae1fc635ac4c970e79245cac5c8ec11ba308d53",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d123ed282030d2fdb9261224cbea8d30fcb94997b5d209340cab7e5d6f24c105.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 845121,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-0c9ecf49de2111a7051c",
@@ -1206,7 +1451,14 @@
     "takenAt": "2026-10-02 · 16:44",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "0c9ecf49de2111a7051c8739efabe58de9cd8a949401edf0212358beefe015e3"
+    "sourceHash": "0c9ecf49de2111a7051c8739efabe58de9cd8a949401edf0212358beefe015e3",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/5cc3656837852fc0c3b5ac3066fc058ec8105ee821ab9ff05159279aebd6f827.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1261106,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-6f56542ec603d8e8416c",
@@ -1237,7 +1489,14 @@
     "takenAt": "2026-10-02 · 17:11",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "6f56542ec603d8e8416c9e65e3281986eb5fab722f834bff09f378d82894b615"
+    "sourceHash": "6f56542ec603d8e8416c9e65e3281986eb5fab722f834bff09f378d82894b615",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6c53aebd28987cf633ba561cee9129307a2748f58493c54b40a04607725136fc.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 820393,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-e7933d9919705cc8c8c2",
@@ -1268,7 +1527,14 @@
     "takenAt": "2026-10-02 · 18:05",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "e7933d9919705cc8c8c2843ae3b99cc7c01af0df0969ad6dc60c3df603117a37"
+    "sourceHash": "e7933d9919705cc8c8c2843ae3b99cc7c01af0df0969ad6dc60c3df603117a37",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/bfaa8be9244fde47d830df2d33b6a4cd5724b5f7305f641d8d80969f22821550.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 643909,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-15149e681863db8700fc",
@@ -1299,7 +1565,14 @@
     "takenAt": "2026-10-03 · 16:21",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "15149e681863db8700fc771036cf1ef4fd5578b79f30e877e4bce17347a53696"
+    "sourceHash": "15149e681863db8700fc771036cf1ef4fd5578b79f30e877e4bce17347a53696",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6905881590226a4ed86dec8b66b24f8fd467d9a2cf3b9eb4b542edf191edd853.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 956333,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-d7f767a0fb643ee3bcb9",
@@ -1330,7 +1603,14 @@
     "takenAt": "2026-10-03 · 17:49",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "d7f767a0fb643ee3bcb928465fa63473df9601918497f2946f42b594e7fecb8d"
+    "sourceHash": "d7f767a0fb643ee3bcb928465fa63473df9601918497f2946f42b594e7fecb8d",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/2551c92bfb035f230cba4c7b3db7485ea26233959e87326aaa96b2456ace0345.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1214538,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-4195865909aa4d1826d7",
@@ -1361,7 +1641,14 @@
     "takenAt": "2026-10-04 · 13:20",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "4195865909aa4d1826d7ec36b409772cdcd481d782f36919b95abefffc0c78e4"
+    "sourceHash": "4195865909aa4d1826d7ec36b409772cdcd481d782f36919b95abefffc0c78e4",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/945777c09ab125af180d0eeb4cbf4a3fc9acb25dbada9d93f00e5f4d9e01bb67.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 623075,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-d90b1f16a88de07cee13",
@@ -1392,7 +1679,14 @@
     "takenAt": "2026-10-04 · 13:50",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "d90b1f16a88de07cee135792072bb3a7d50d3625a768b3fec765d513f16fadf0"
+    "sourceHash": "d90b1f16a88de07cee135792072bb3a7d50d3625a768b3fec765d513f16fadf0",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6ced16cd42eb240e845058cb5259c5173eb74be6b8aea7eeead30fbc26982245.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1695803,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-0ab10b9f55a41157406f",
@@ -1423,7 +1717,14 @@
     "takenAt": "2026-10-04 · 14:25",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "0ab10b9f55a41157406f924f4f1c8e2bb36649219b1707e6b82800d0e653323d"
+    "sourceHash": "0ab10b9f55a41157406f924f4f1c8e2bb36649219b1707e6b82800d0e653323d",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ca124661fe8527c9900b9685a0d2c61bbaf29de49a74160616665e38efa75c82.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 2824518,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-24a4b78a71da6f618417",
@@ -1454,7 +1755,14 @@
     "takenAt": "2026-10-04 · 18:00",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "24a4b78a71da6f618417277a8c88af2e422392a26c9bb93681da872677c5ade6"
+    "sourceHash": "24a4b78a71da6f618417277a8c88af2e422392a26c9bb93681da872677c5ade6",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ca84be3ec212fdb8448c1783b8336b1fdafebe95439bbf68c0463935d05114e2.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1329693,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-6ef4f40ebee07e386979",
@@ -1485,7 +1793,14 @@
     "takenAt": "2026-10-06 · 12:05",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "6ef4f40ebee07e386979eaa95fb0a933f1467710a2121e66710046d92d42ee76"
+    "sourceHash": "6ef4f40ebee07e386979eaa95fb0a933f1467710a2121e66710046d92d42ee76",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/4134930371f258e5004e3cbddb37ef2cbf1dd5c42da38a45c4d5d53126f7eff8.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1909112,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-74d4a535adb64b0f5a9e",
@@ -1516,7 +1831,14 @@
     "takenAt": "2026-10-06 · 12:41",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "74d4a535adb64b0f5a9e17889c8c4fdc7ae503f48ec315628760fa87708c75e2"
+    "sourceHash": "74d4a535adb64b0f5a9e17889c8c4fdc7ae503f48ec315628760fa87708c75e2",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/28803604c0d5a1f4e90dcef5c3082cfadba1fae999c5d8c6f1a5b4c6f738d325.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1355955,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-d2783ec63dd5b93dfc54",
@@ -1547,7 +1869,14 @@
     "takenAt": "2026-10-06 · 15:18",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "d2783ec63dd5b93dfc5406b6e39d6a4a817909c5feec4b43c6b3e45524a7947f"
+    "sourceHash": "d2783ec63dd5b93dfc5406b6e39d6a4a817909c5feec4b43c6b3e45524a7947f",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c665cf9a10bee8571bd5f59bb7ed1b09f962e1f4eeb7a6942dc010a48a26e4e1.avif",
+      "width": 2621,
+      "height": 3369,
+      "bytes": 855979,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-063e6cbbb7fe4d1371a3",
@@ -1578,7 +1907,14 @@
     "takenAt": "2026-10-06 · 16:40",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "063e6cbbb7fe4d1371a383afb3d8d65ce65553e66b118f5670e18b4dd7845b38"
+    "sourceHash": "063e6cbbb7fe4d1371a383afb3d8d65ce65553e66b118f5670e18b4dd7845b38",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/9f33b24a6285d3656dca859abe46c5f68f34b7dd3370f97bf5c28878dbccc3b5.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1107871,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-f47a88409ddac4a0c2ab",
@@ -1609,7 +1945,14 @@
     "takenAt": "2026-10-06 · 16:40",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "f47a88409ddac4a0c2abe9fab7e85005158eff22240ee123a9cc4625e137ffbe"
+    "sourceHash": "f47a88409ddac4a0c2abe9fab7e85005158eff22240ee123a9cc4625e137ffbe",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/3c47d96d72fab931f30f812d01d25c5964d635d203ac9440418dc4d569b51ff2.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1131247,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-417cf5674986dd58cfff",
@@ -1640,7 +1983,14 @@
     "takenAt": "2026-10-06 · 16:42",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "417cf5674986dd58cfff847a48edcfa643ef72d985909b366660ef6f84685c96"
+    "sourceHash": "417cf5674986dd58cfff847a48edcfa643ef72d985909b366660ef6f84685c96",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b5346d54eb7cbf3241f52129fbbd3c9006c8cb8e38ebbe73b0c3cacbf3d582ea.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1284021,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-62513dfcefb3187b4fdd",
@@ -1671,7 +2021,14 @@
     "takenAt": "2026-10-06 · 16:44",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "62513dfcefb3187b4fddbf485608da91c758941ba8469cb80375a722d941d9ea"
+    "sourceHash": "62513dfcefb3187b4fddbf485608da91c758941ba8469cb80375a722d941d9ea",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/fc588076bcd609a1053742dfc8fd5c4740ceeaf4f29699b32ae463c9fffda130.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1244125,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-9e770bbe690385232c71",
@@ -1702,7 +2059,14 @@
     "takenAt": "2026-10-06 · 20:44",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "9e770bbe690385232c7155ed54fb13447f233a2bfd6b74a350ef59319c28e06c"
+    "sourceHash": "9e770bbe690385232c7155ed54fb13447f233a2bfd6b74a350ef59319c28e06c",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d9c8809ac50c230028747690f0c759b05c2a3fd3b5ff63b0f0d8f4ec2348b69a.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 528477,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-757931beb711138b93da",
@@ -1733,7 +2097,14 @@
     "takenAt": "2026-10-06 · 21:09",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "757931beb711138b93da0e3e5cd67888802cc7efaa7d857356936c53bca29e25"
+    "sourceHash": "757931beb711138b93da0e3e5cd67888802cc7efaa7d857356936c53bca29e25",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/afba607ea333e3fa63a6aab7e161724686d2d59b7bd3bdeeb87127137c81e26b.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 703689,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-716d4ebd72dac31fe710",
@@ -1764,7 +2135,14 @@
     "takenAt": "2026-10-07 · 09:26",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "716d4ebd72dac31fe710b44b25d7e8907ce6a3d8e257140f4db8283d1eddb03d"
+    "sourceHash": "716d4ebd72dac31fe710b44b25d7e8907ce6a3d8e257140f4db8283d1eddb03d",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c47ab1953c517aecbbd31a4cffe713629e837f14bcd9d756ae3cfeb4d2e487cd.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 610142,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-5bd26e15b32ba75fa8db",
@@ -1795,7 +2173,14 @@
     "takenAt": "2026-10-07 · 19:43",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "5bd26e15b32ba75fa8db6fc3a180dc5fd87e00fc44051430c63628313d2b9497"
+    "sourceHash": "5bd26e15b32ba75fa8db6fc3a180dc5fd87e00fc44051430c63628313d2b9497",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/daae70430af27b6cc4835560650f9def1f4cc1085d14ae92b7701918888a1095.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 881609,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-0551f1a46aa18fcb2016",
@@ -1826,7 +2211,14 @@
     "takenAt": "2026-10-09 · 10:38",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "0551f1a46aa18fcb20160b30bc57d1f32e79765f7a3890cb2e5d2891b5a5f55f"
+    "sourceHash": "0551f1a46aa18fcb20160b30bc57d1f32e79765f7a3890cb2e5d2891b5a5f55f",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ebf23b61fac61b3782ef35404549b68fc8e96bc15cb96b80f17e443927e28323.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 567486,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-1a03138481fcd53b8ab4",
@@ -1857,7 +2249,14 @@
     "takenAt": "2026-10-09 · 11:18",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "1a03138481fcd53b8ab4d42ea1ff6057cc64e7dca350d330ff74980d31371dd2"
+    "sourceHash": "1a03138481fcd53b8ab4d42ea1ff6057cc64e7dca350d330ff74980d31371dd2",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/120af823052a4e2c6bba1d600102492494fce12aa1e1f47f8f46fdff58651738.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 899872,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-86d4743441a90233c419",
@@ -1888,7 +2287,14 @@
     "takenAt": "2026-10-09 · 12:16",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "86d4743441a90233c419371d3326944fa070da76175b2591fd3e8e80cca45485"
+    "sourceHash": "86d4743441a90233c419371d3326944fa070da76175b2591fd3e8e80cca45485",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/47c73d267c8d717f2470f35aeeea62473c056b9301dce5854a97dbb5367b6e11.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1337507,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-5343397c368402809d2a",
@@ -1919,7 +2325,14 @@
     "takenAt": "2026-10-09 · 13:34",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "5343397c368402809d2aeda5944a450e47ca0f42453fe80ebf6977d954b8c67a"
+    "sourceHash": "5343397c368402809d2aeda5944a450e47ca0f42453fe80ebf6977d954b8c67a",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6a61e4927a424253c4fd9763ce48daaa5718c65feaa512df69fa1e43991532a7.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1099085,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-f0d82fef0369cbc84d0f",
@@ -1950,7 +2363,14 @@
     "takenAt": "2026-10-09 · 14:15",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "f0d82fef0369cbc84d0f8126f4d2b12dffd5c469cc774a19f15e084dd65975a8"
+    "sourceHash": "f0d82fef0369cbc84d0f8126f4d2b12dffd5c469cc774a19f15e084dd65975a8",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b37301999d9038b0116a05ccff35c59b37a7e1e3c2e9cce91ef767155521fdbb.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1881768,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-947a2f80c83b67206389",
@@ -1981,7 +2401,14 @@
     "takenAt": "2026-10-10 · 10:41",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "947a2f80c83b672063896cefb90ac24e2b69c1c2d14a06c3acb972dd4498ebf0"
+    "sourceHash": "947a2f80c83b672063896cefb90ac24e2b69c1c2d14a06c3acb972dd4498ebf0",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/9a4934039eec99791337213719b34d098fc354450f919eb6cdc8ac45ba7b21d2.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 826396,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-31ce5d3b4d168273dfc9",
@@ -2012,7 +2439,14 @@
     "takenAt": "2026-10-10 · 10:57",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "31ce5d3b4d168273dfc923fda5bed31548d271090d8f46e25721708fbf9a29ec"
+    "sourceHash": "31ce5d3b4d168273dfc923fda5bed31548d271090d8f46e25721708fbf9a29ec",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d238356091f68d71b789f722b56720c5f981195b7b4eea67f4e2ed745eb66014.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1147398,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-b0163f478bb000ae5b1a",
@@ -2043,7 +2477,14 @@
     "takenAt": "2026-10-10 · 11:08",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "b0163f478bb000ae5b1a2213e32856c35c6b1861b95979ca16da3f85e9947d05"
+    "sourceHash": "b0163f478bb000ae5b1a2213e32856c35c6b1861b95979ca16da3f85e9947d05",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d03446ec5ff27a4ba5cbffc6217d98c93827c3e7343b335408a970de99c351e2.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 839227,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-9c627896e6668676374b",
@@ -2074,7 +2515,14 @@
     "takenAt": "2026-10-10 · 11:41",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "9c627896e6668676374b879f80fbd28f7d240f39b783c2902c092419f9b95801"
+    "sourceHash": "9c627896e6668676374b879f80fbd28f7d240f39b783c2902c092419f9b95801",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/9db9d6f3a7d88f455e13cd0795a38c0c2a72d92247dc7b757a43ad9fb1739881.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 580252,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-44a6acd6868ad45977e9",
@@ -2105,7 +2553,14 @@
     "takenAt": "2026-10-10 · 11:44",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "44a6acd6868ad45977e9c7c2803ea7a08542ced044c05615023d70c26038989e"
+    "sourceHash": "44a6acd6868ad45977e9c7c2803ea7a08542ced044c05615023d70c26038989e",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/e2ee4ace309c97459ff98f8e7495847e256e1efda5c08e53df07307eae61fc59.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1222236,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-b7c42825209ea8fe8638",
@@ -2136,7 +2591,14 @@
     "takenAt": "2026-10-10 · 11:57",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "b7c42825209ea8fe86385fc9a3b7f79557da8bc868485a6269aa29dabe4959fc"
+    "sourceHash": "b7c42825209ea8fe86385fc9a3b7f79557da8bc868485a6269aa29dabe4959fc",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/574a42adb08399fcc56084d782a1f5e5649c5c2aba552ea52cb29383c32b97e8.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1126757,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-8a26476119188765154e",
@@ -2167,7 +2629,14 @@
     "takenAt": "2026-10-10 · 11:58",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "8a26476119188765154efb4d115e63f185abe084e3dccfb22201da275932817f"
+    "sourceHash": "8a26476119188765154efb4d115e63f185abe084e3dccfb22201da275932817f",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ab62c9f56153371351ddf6f8ad8894172dff4214e47dfc06cbaf26d37aaf343e.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1322604,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-902541c590ad25c12aa4",
@@ -2198,7 +2667,14 @@
     "takenAt": "2026-10-10 · 12:00",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "902541c590ad25c12aa4e16ba7531a9ee25c23fbd3fff20162bc35eb1424fac9"
+    "sourceHash": "902541c590ad25c12aa4e16ba7531a9ee25c23fbd3fff20162bc35eb1424fac9",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c6a2f5be56c92988da7fdea1b36fb92c0948d4176db310903a91ec449bb79cde.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1628008,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-7adee45845c1d871ccad",
@@ -2229,7 +2705,14 @@
     "takenAt": "2026-10-10 · 12:08",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "7adee45845c1d871ccadca0fc60ace9f0a536e661f58a22494bceca61fb4fde8"
+    "sourceHash": "7adee45845c1d871ccadca0fc60ace9f0a536e661f58a22494bceca61fb4fde8",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/7118454a02b7ae591e83ea85d32222f2e7be97867fc3aa2d2a014cbfaf53b210.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 754558,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-9275ed6a35a6ef263039",
@@ -2260,7 +2743,14 @@
     "takenAt": "2026-10-10 · 12:41",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "9275ed6a35a6ef2630396389f073fee844a9f99701bf6b6dc546d67f09728efa"
+    "sourceHash": "9275ed6a35a6ef2630396389f073fee844a9f99701bf6b6dc546d67f09728efa",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ee2aa481a79c7ed04c916df2082bef898500471bad451e86680ecd6e7da8f92c.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 733485,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-6cafa206240643c99779",
@@ -2291,7 +2781,14 @@
     "takenAt": "2026-10-10 · 13:27",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "6cafa206240643c99779a4e580ce914d3de8398fd3ee9145a87fc8fa170ca168"
+    "sourceHash": "6cafa206240643c99779a4e580ce914d3de8398fd3ee9145a87fc8fa170ca168",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/48fc2ef3d838cd3d971f2c3fe647f74e6ae08aeb734ddb611fe5d91c2d6abe38.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1084626,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-dfb6bd907ec217c15fe0",
@@ -2322,7 +2819,14 @@
     "takenAt": "2026-10-10 · 17:39",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "dfb6bd907ec217c15fe0f4435d54ca3dfc68b51f2638f9b1fba28f0ecdd318b6"
+    "sourceHash": "dfb6bd907ec217c15fe0f4435d54ca3dfc68b51f2638f9b1fba28f0ecdd318b6",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/03de8ddea5cf813e1f3cea193217970e6351beec6dbec92b92206fe5605f7374.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 725425,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-4bd1855b7f117fbb0697",
@@ -2353,7 +2857,14 @@
     "takenAt": "2026-10-10 · 19:04",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "4bd1855b7f117fbb069742b55bcd4c91ab314da60e07dd28188f8ef18c844cc9"
+    "sourceHash": "4bd1855b7f117fbb069742b55bcd4c91ab314da60e07dd28188f8ef18c844cc9",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/40a7b1b9f6860c85183ed981586717a5c5c53f86e041e04bbd0c14f7da969dd6.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 663676,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-d0dde9ac9b1fc05fbafe",
@@ -2380,7 +2891,14 @@
     "takenAt": "",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "d0dde9ac9b1fc05fbafe294c94dd969564e1b586c34e9b061e230e74deabc615"
+    "sourceHash": "d0dde9ac9b1fc05fbafe294c94dd969564e1b586c34e9b061e230e74deabc615",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/4286266b57866c6b3278899f3837e33acc48c95df715309bde0abba74fd091c7.avif",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 247104,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-014b5cb7071a814989c4",
@@ -2411,7 +2929,14 @@
     "takenAt": "2026-07-29 · 06:17",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "014b5cb7071a814989c412c2cd6711f59589628e1ad9a67b8aef4f740a295ecb"
+    "sourceHash": "014b5cb7071a814989c412c2cd6711f59589628e1ad9a67b8aef4f740a295ecb",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6f288fb2757a7fbf36dcfdabbdc22fc9a68d6accd0ee0f996760e2727ba69b5f.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 694892,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-fcb2e7f68a05e4fc8731",
@@ -2469,7 +2994,14 @@
     "takenAt": "2026-07-29 · 06:51",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "6934713d07f04c3af0f77ed6d703602f438c01bcad23faae6fb89ff06a339153"
+    "sourceHash": "6934713d07f04c3af0f77ed6d703602f438c01bcad23faae6fb89ff06a339153",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ab10c5318f87302cf4fa96a74c608404b6a87ce1a7b017fc01043ff1c058881f.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 992103,
+      "assetStatus": "published"
+    }
   },
   {
     "id": "backpacking-europe-heading-east-upload-d8d9b6efb27115da808a",
@@ -2531,6 +3063,13 @@
     "takenAt": "2026-07-29 · 06:51",
     "assetStatus": "published",
     "protected": true,
-    "sourceHash": "ab4ac181b05f99d4597a414a43c13ecc26a4dd6e75a4ab5ff68c8af0bf124a4e"
+    "sourceHash": "ab4ac181b05f99d4597a414a43c13ecc26a4dd6e75a4ab5ff68c8af0bf124a4e",
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c837ddea4522ba4c97c622c233d14fd409ce13b328d597fd0270b7a603d7a455.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 954903,
+      "assetStatus": "published"
+    }
   }
 ]
