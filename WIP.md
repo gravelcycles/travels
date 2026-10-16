@@ -16,6 +16,24 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Photo intermediate screens — 16 October 2026
+
+Authorized correction: notification rows open the fullscreen photograph with
+comments above it, simplify repeated photo information in that sheet, and allow
+dragging it closed. [O17](docs/OWNER_DECISIONS.md#comment-notifications--11-october-2026)
+and [the conversation contract](docs/PLACES_AND_COMMENTS.md#comment-notifications)
+own the requirements. Implementation is in progress on
+`codex/photo-intermediate-cleanup` in `build/photo-intermediate-cleanup`, based on
+current main `d451b58`; the primary checkout's unrelated edits remain untouched.
+Next: verify direct entry, compact layout, draft preservation, drag cancellation,
+Close/Back/Forward and fullscreen retention on reference/demo/populated fresh
+draft/Heading East, run tests/build, integrate main and verify Pages/public assets.
+
+The location-group card is a separate design-review request. The
+[selected-photo tray proposal](docs/PHOTO_SELECTION_PROPOSAL.md) reduces duplicate information and actions;
+preserve O03's map selection boundary and continuous journey browsing. Do not
+publish a replacement for that card until the owner chooses the direction.
+
 ## Outbound trip update checkpoints — 16 October 2026
 
 Authorized: start checkpointing and calculate useful messages, likely for manual

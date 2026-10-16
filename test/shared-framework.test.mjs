@@ -18,7 +18,7 @@ import '../dist/assets/atlas-utils.js';
 import '../dist/assets/map-style.js';
 import { mapStyleHarness } from './map-style-harness.mjs';
 import { viewerFixture } from './mobile-viewer-harness.mjs';
-import { photoEntryFixture } from './viewer-flow-harness.mjs';
+import { photoEntryFixture, viewerFunction } from './viewer-flow-harness.mjs';
 import { photoBubbleFixture } from './photo-bubble-harness.mjs';
 import '../dist/assets/group-travel.js';
 import '../dist/assets/media-utils.js';
@@ -47,6 +47,25 @@ function bundle(source, key) {
   return JSON.parse(JSON.stringify(context.window[key]));
 }
 const app = read(repo, 'dist/assets/app.js');
+
+test('notification photo entry opens fullscreen directly across reference, city, demo and populated fresh draft', t => {
+  const root = fixture(t), draft = createJourney(root, { ...input, eventMode: 'city' });
+  draft.photos = [1, 2].map(n => ({ id: `${draft.id}-notice-${n}`, dayId: draft.days[0].id, caption: '', src: `https://images.example.test/notice-${n}.jpg` }));
+  const { data } = loadContent(root);
+  for (const journey of [data.journeys.find(j => j.id === 'switzerland-italy-family-2026'), data.journeys.find(j => j.id === 'backpacking-europe-heading-east'), data.journeys.find(j => j.kind === 'demo' && j.photos.length), draft]) {
+    for (const mobile of [false, true]) {
+      const f = photoEntryFixture(journey, journey.photos, { mobile }), photo = f.photos().at(-1);
+      Object.assign(f.context, { sourceJourney: journey, planningVisibility: { past: true, locked: true, tbd: true }, activeGroupId: '' });
+      f.context.window.JOURNEY_ATLAS_UTILS = globalThis.JOURNEY_ATLAS_UTILS;
+      vm.runInContext(viewerFunction('openNotificationPhoto'), f.context);
+      assert.equal(f.context.openNotificationPhoto(photo.id), true, journey.id);
+      assert.equal(f.context.photoDialog.open, true, 'The comment destination already has a fullscreen photograph');
+      assert.equal(f.photos()[f.context.viewerPhotoIndex].id, photo.id);
+      assert.equal(f.events.some(event => event?.selection), false, 'No intermediate sidebar/card selection');
+      assert.equal(f.context.viewerCollection, null, 'Trip-wide notification entry uses ordinary journey browsing');
+    }
+  }
+});
 
 test('three-second opening trace inherits resolved routes for reference, city atlas, demo and independent fresh draft', t => {
   const root = fixture(t), draft = createJourney(root, {...input,slug:'opening-route-fixture'});

@@ -1,5 +1,16 @@
 # Changelog
 
+## 16 October 2026 — direct notification conversations
+
+- Open notification targets as fullscreen photographs with comments immediately
+  above them. Remove repeated photo thumbnail/title/navigation over fullscreen,
+  and allow a deliberate downward header drag to close just the comment sheet.
+- Preserve drafts, target-comment reveal, photo access, event/filter entry and
+  ordinary map/sidebar selection. Record the correction in O17 and the photo/
+  conversation workflows. The location-group cleanup remains a design proposal.
+- All 688 tests pass. Browser checks and the publication receipt are recorded
+  in WIP.
+
 ## 16 October 2026 — update checkpoints for manual broadcasts
 
 - Add a live-site baseline and new-trip/photo diffs grouped by authored location,

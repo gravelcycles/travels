@@ -171,6 +171,24 @@ whole-trip scope, desktop/phone keyboard and Back behavior, and locked/error/emp
 states. Check the reference, a demo and an independently populated fresh draft.
 Implementation/deployment status remains in [WIP](../WIP.md).
 
+**16 October follow-up:** notification entry must “always go right to the comment
+screen on top of the fullscreen photo”; that sheet can show less photo information
+because the photo is already behind it, and “can also be dragged close”. This
+supersedes notification entry that selected only the sidebar/compact card before
+opening comments. Open the target fullscreen photo and then its conversation in
+one activation. Keep a compact heading/count, thread and composer; omit the
+duplicate photo thumbnail, title and photo-navigation row over fullscreen.
+Closing, Back, Escape or a deliberate downward header drag dismisses only the
+conversation, retaining the photograph and draft. Short/cancelled drags return
+the sheet; thread scrolling and text editing must not initiate dismissal.
+O03's ordinary map/reel entry and explicit Places collection rules still apply.
+
+The same message rejects the clutter of the “group of photos in this location
+spot” screen and asks to explore simplifying/removing it “like a product
+designer”. That is a design-review request; a proposed replacement is not yet
+the chosen production behavior. Preserve O03/O08 while reviewing a selected-photo
+tray that makes the image primary and removes repeated context/actions.
+
 
 ## UX corrections — 11 October 2026
 

@@ -31,7 +31,8 @@ function fixture({ hidden = 'past', otherGroup = false, visibility } = {}) {
     locationLabels: { closePreview: noOp }, placesUI: { dayChanged: noOp },
     photoBubbles: { clearMap: noOp, close: noOp }, videoPlayer: { stop: noOp }, photoDialog: { open: false },
     renderPlanningFilters: noOp, renderAll: () => renderCalls.push('render'),
-    focusDay: noOp, fitJourneyBounds: noOp, openCommentPhoto: id => calls.push(['open', id]),
+    focusDay: noOp, fitJourneyBounds: noOp, openPhoto: id => calls.push(['fullscreen', id]),
+    openCommentPhoto: () => assert.fail('Notifications must not stop at sidebar selection'),
     dayById: id => context.journey.days.find(day => day.id === id),
     activeDay: () => context.journey.days.find(day => day.id === context.activeDayId),
     photoById: id => context.journey.photos.find(photo => photo.id === id)
@@ -46,7 +47,7 @@ function fixture({ hidden = 'past', otherGroup = false, visibility } = {}) {
 for (const category of ['past', 'locked', 'tbd']) test(`notification reveals only hidden ${category} events and preserves the route group`, () => {
   const f = fixture({ hidden: category });
   assert.equal(f.context.openNotificationPhoto(`photo-${category}`), true);
-  assert.deepEqual(f.calls, [['category', category, true], ['open', `photo-${category}`]]);
+  assert.deepEqual(f.calls, [['category', category, true], ['fullscreen', `photo-${category}`]]);
   assert.equal(f.context.activeGroupId, 'a');
   assert.deepEqual({ ...f.context.planningVisibility }, { ...f.selected, [category]: true });
   assert.ok(f.context.photoById(`photo-${category}`));
@@ -56,7 +57,7 @@ for (const category of ['past', 'locked', 'tbd']) test(`notification reveals onl
 test('notification reveals a photo excluded by both event category and route group through existing setters', () => {
   const f = fixture({ hidden: 'tbd', otherGroup: true });
   assert.equal(f.context.openNotificationPhoto('photo-tbd'), true);
-  assert.deepEqual(f.calls, [['category', 'tbd', true], ['group', ''], ['open', 'photo-tbd']]);
+  assert.deepEqual(f.calls, [['category', 'tbd', true], ['group', ''], ['fullscreen', 'photo-tbd']]);
   assert.equal(f.context.activeGroupId, '');
   assert.deepEqual({ ...f.context.planningVisibility }, { ...f.selected, tbd: true });
   assert.ok(f.context.photoById('photo-tbd'));
@@ -65,7 +66,7 @@ test('notification reveals a photo excluded by both event category and route gro
 test('notification excluded only by route group leaves all planning category choices intact', () => {
   const f = fixture({ hidden: 'past', otherGroup: true, visibility: { past: true, locked: false, tbd: false } });
   assert.equal(f.context.openNotificationPhoto('photo-past'), true);
-  assert.deepEqual(f.calls, [['group', ''], ['open', 'photo-past']]);
+  assert.deepEqual(f.calls, [['group', ''], ['fullscreen', 'photo-past']]);
   assert.deepEqual({ ...f.context.planningVisibility }, f.selected);
   assert.ok(f.context.photoById('photo-past'));
 });
@@ -74,6 +75,6 @@ test('visible notifications preserve every filter, while missing photos make no 
   const f = fixture({ visibility: { past: true, locked: false, tbd: false } });
   assert.equal(f.context.openNotificationPhoto('photo-past'), true);
   assert.equal(f.context.openNotificationPhoto('missing'), false);
-  assert.deepEqual(f.calls, [['open', 'photo-past']]); assert.deepEqual(f.renderCalls, []);
+  assert.deepEqual(f.calls, [['fullscreen', 'photo-past']]); assert.deepEqual(f.renderCalls, []);
   assert.deepEqual({ ...f.context.planningVisibility }, f.selected); assert.equal(f.context.activeGroupId, 'a');
 });
