@@ -139,6 +139,22 @@ complete. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
+**Visible-control zoom follow-up — verified locally; deployment pending.** The
+owner wants zoom to fill the black background even with controls shown. Mobile
+zoom now removes continuous header/footer backgrounds, keeps every button and
+label opaque, and lets image input pass through gaps. Fitted photos retain solid
+bars; right alignment and Share/Comments order stay intact. This supersedes the
+intermediate requirement for opaque bars during zoom; current guidance is in
+O03/O08 and the photo workflow. All **751 tests**, the production build and
+**16 browser fixtures** pass across reference, Heading East, Alpine demo and an
+independently populated city draft at 320/390 px, landscape and desktop. Pixel
+checks confirm photo coverage at top/bottom edges with visible chrome; computed
+styles confirm opaque buttons, including disabled controls. Native input checks
+cover gap panning, focal pinch, hiding/restoration, zoom-out and active-pinch
+access reset. Bright/dark screenshots were inspected; close/resize/breakpoint
+reset regressions pass. Independent review passes; no physical-device claim.
+Next: integrate main, deploy and verify fresh public output.
+
 **Alignment follow-up — deployed and verified.** The owner
 clarified that the next-city and Comments buttons must be right-aligned. Keep
 Share immediately left of Comments, replacing the mistaken left-aligned action

@@ -587,10 +587,13 @@ top-left Back label and the existing presenting-screen history. Close and Back
 return to that same preceding screen, including its mounted grid, scroll and
 selection. The grid does not acquire a second dismissal control. Desktop Share
 keeps its right-sidebar placement.
-The later 16 October correction restores opaque header/footer bars and solid
-Close/Share/Comments surfaces; do not add translucent fills or backdrop blur.
-The photo stage still spans the viewport beneath the controls and remains
-unobstructed when they are hidden.
+The later 16 October corrections retain solid individual buttons and resting
+header/footer bars, but remove the continuous bar backgrounds while zoomed.
+The zoomed photograph reaches the screen edges behind visible controls; labels
+use compact opaque backgrounds and disabled buttons stay opaque too. Do not add
+glass fills or backdrop blur. Exposed image between controls remains pannable,
+pinchable and tappable. Zooming out restores the bars without moving controls.
+
 
 On phones, a single tap on the photograph toggles all viewer chrome: navigation, event and
 photo labels, Share/Comments, Back/Close and location affordances. The hidden
