@@ -132,6 +132,12 @@ pending protected assets, fetch/integrate current remote main, run tests/build,
 commit generated output, deploy, and verify the Pages run and a fresh public
 page and its media. Report the verified public commit and URL separately.
 
+After publication, use [update checkpoints](docs/UPDATE_ANNOUNCEMENTS.md) when
+the owner wants a manual broadcast message. `updates prepare` compares live
+trip/photo IDs with the saved baseline; it does not save, publish or send.
+Only the owner's confirmation of sharing a specific prepared update permits
+`mark-shared`. Keep the ignored checkpoint/history across release worktrees.
+
 ## Stable data model
 
 Use stable, slug-like IDs for journeys, days, places, route segments, and

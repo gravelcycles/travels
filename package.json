@@ -13,6 +13,7 @@
     "build": "node scripts/build-site.mjs",
     "test": "node --test test/*.test.mjs",
     "journey:new": "node scripts/create-journey.mjs",
+    "updates": "node scripts/update-announcements.mjs",
     "photos:publish": "node scripts/publish-photo-assets.mjs",
     "community:admin": "node scripts/community-admin.mjs",
     "community:index": "node scripts/build-community-index.mjs",

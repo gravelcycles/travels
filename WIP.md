@@ -36,6 +36,36 @@ Next: finish final regression check, publish only this fix after integrating
 latest remote main, and record successful Pages/fresh-public-page verification.
 The primary checkout's unrelated pending changes remain untouched.
 
+## Outbound trip update checkpoints — 16 October 2026
+
+Authorized: start checkpointing and calculate useful messages, likely for manual
+WhatsApp broadcasts. [O19](docs/OWNER_DECISIONS.md#outbound-trip-updates--16-october-2026)
+and the [workflow](docs/UPDATE_ANNOUNCEMENTS.md) supersede the proposal-only state
+for this bounded work. No outbound provider, recipient list or sending is
+authorized. Implementation is isolated in the managed `update-checkpoints`
+worktree from `d3a7af1`, preserving the primary checkout's pending photo edits.
+
+Implemented public-metadata snapshots, stable-ID diffs/messages and a recoverable
+local ledger. Prepare does not acknowledge; mark-shared acknowledges only a frozen
+draft after owner confirmation. All **678 tests** and the production build pass;
+generated public output and the Worker index are unchanged. Independent review
+identified malformed shared timestamps; validation now rejects them, with a
+regression covering the previously misleading pending/acknowledged state.
+
+The initial live baseline was captured **16 October 2026, 18:54 Vienna time**:
+**3 real trips, 222 visible photos**. Its durable local file is
+`/Users/dg/code/travels/build/update-announcements/whatsapp/ledger.json`, outside
+the disposable release worktree. A second fresh public read returns no new trips
+or photos. No draft is marked shared, and no message was sent. Preserve this
+ignored directory and its backups; do not recreate the baseline in a new worktree.
+Released as `d451b58` after integrating current main through `d3a7af1`.
+[Pages run 38935849640](https://github.com/gravelcycles/travels/actions/runs/38935849640)
+succeeded. A fresh public catalog, reference page and all three metadata bundles
+match the release byte-for-byte and still produce an empty diff. The same tooling
+is installed in the primary checkout; all 38 focused checks pass there with its
+unrelated changes preserved. This bounded implementation is complete. Studio UI
+and automated sending remain future options, not unfinished authorized work.
+
 ## Fullscreen depth-motion preview — 14 October 2026
 
 **15 October correction — gentle release live; seven additions await private upload.** The owner found the stronger result
