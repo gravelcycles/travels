@@ -16,6 +16,41 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Fullscreen photo controls and focal zoom — 16 October 2026
+
+**Implemented; public delivery pending.** The owner requested mobile fullscreen
+Share beside Comments on the left, top-right Close, one tap to hide all buttons
+for just the photo, and zoom that uses fullscreen. The follow-up adds pinch
+focus that follows the fingers on mobile and desktop. Current requirements and
+supersessions live in
+[O03/O08/O18](docs/OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
+and the [photo workflow](PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom).
+Back/pull/grid continuity, location gestures, sharing semantics, photo loading,
+private access and the separate depth-demo boundary are retained.
+
+Work is isolated in `/Users/dg/.codex/worktrees/photo-fullscreen-gestures/travels`
+on `codex/photo-fullscreen-gestures`. The shared template/mobile layout now
+places Share beside Comments and Close top-right, overlays controls on the
+full-viewport stage and toggles chrome on single tap. `photo-zoom.js` provides
+shared focal math and the desktop Ctrl+wheel/trackpad, Safari gesture-event,
+two-pointer pinch, double-click and pan controller. Mobile uses the same focal
+math; desktop zoom keeps its existing stage and context sidebar.
+
+Verification so far: **664 tests and `npm run build` pass**. Synthetic-fixture browser checks
+pass all **16 combinations** of Switzerland–Italy, Heading East, Alpine demo and
+an independently populated city draft at **320 × 568, 390 × 844, 844 × 390 and
+1360 × 900**. Screenshots at 320 px and landscape were visually inspected,
+including actual Share/Comments adjacency. These checks do not claim physical
+iPhone or Safari-device testing. A native touch-input moving-pinch check also
+passes on Alpine at 390 px; expanded touch/portrait/event-bar checks are running.
+No public deployment receipt is claimed yet.
+
+Next: integrate latest remote main (`d451b58` at this checkpoint), reconcile any
+changed guidance, complete `npm test` and `npm run build`, include regenerated
+output, commit and push, then verify the Pages run and a fresh public journey.
+Record the final test/build and deployment receipts here and in CHANGELOG;
+complete the delivery item in TODO only after public verification.
+
 ## Fullscreen depth-motion preview — 14 October 2026
 
 **15 October correction — gentle release live; seven additions await private upload.** The owner found the stronger result
@@ -164,8 +199,9 @@ trace through a phone viewport resize. No implementation or delivery work remain
 
 Fullscreen-desktop follow-up: Share now belongs in the right sidebar beside
 the photo count, below the day controls (O18). Shared markup/styles updated in
-`codex/photo-sharing-20261012` after integrating main `07d1896`; phone retains its
-header control. All **637 tests** and the production build pass. Browser checks
+`codex/photo-sharing-20261012` after integrating main `07d1896`; the phone
+header placement from this release is superseded by the
+[16 October correction](#fullscreen-photo-controls-and-focal-zoom--16-october-2026). All **637 tests** and the production build pass. Browser checks
 cover sidebar containment and share/copy at 1360/1024/901px, plus existing phone,
 link and Back/Forward flows on the reference, Heading East, Alpine demo and an
 independently populated draft. Deployed as `2797e75` through successful

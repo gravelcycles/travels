@@ -1,5 +1,21 @@
 # Changelog
 
+## 16 October 2026 — fullscreen photo controls and focal zoom
+
+- Place mobile Share beside Comments on the left and Close at the top-right,
+  retaining Back, one-screen grid return and the mounted source grid.
+- Let a single tap hide/restore photo chrome over the full-viewport mobile
+  stage. Share focal-zoom math across mobile pinch/double-tap and desktop
+  Ctrl+wheel/trackpad, Safari gesture events, two-pointer pinch and double-click;
+  retain desktop context and bounded pan.
+- Reconcile current owner/workflow/feature/framework guidance and supersede the
+  old visible-on-tap and omitted-Close rules.
+- Validation so far: 664 tests, the production build and 16 synthetic-fixture browser
+  combinations pass; 320 px/landscape screenshots were visually checked. Physical
+  iPhone/Safari device testing is not claimed. Current-main integration and
+  public delivery remain in
+  [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+
 ## 15 October 2026 — restore gentle depth motion and add website samples
 
 - Record the owner's rejection of the stronger 3D range. Return the separate

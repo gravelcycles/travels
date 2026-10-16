@@ -94,7 +94,7 @@
   let viewerDayId = activeDayId;
   let viewerPhotoIndex = 0;
   let viewerCollection = null;
-  let swipeStartX = null;
+  let photoZoom = null;
   let storyMap, storyMapReady = false;
   let storyMapDay = null;
   let storyDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
@@ -1552,6 +1552,7 @@
     const photos = viewerPhotos();
     viewerPhotoIndex = Math.max(0, Math.min(photos.length - 1, viewerPhotoIndex));
     const photo = photos[viewerPhotoIndex];
+    photoZoom?.setPhoto(photo);
     if (photo) viewerDayId = photo.dayId;
     const day = viewerDay();
     const dayChanged = activeDayId !== day.id;
@@ -2377,6 +2378,10 @@
   });
   $("#close-route-inspector").addEventListener("click", () => clearSegmentInspection(true));
   const viewerImage = $('#modal-photo');
+  photoZoom = window.JourneyPhotoZoom?.createController({
+    dialog: photoDialog, frame: $('#viewer-photo-frame'), image: viewerImage,
+    viewer: $('.photo-viewer'), onSwipe: moveViewer
+  });
   new ResizeObserver(sizeViewerBackdrop).observe($('#viewer-photo-frame'));
   viewerImage.addEventListener('atlas-photo-state', () => {
     const state=viewerImage.dataset.photoState, feedback=$('#viewer-photo-feedback');
@@ -2432,13 +2437,6 @@
   });
   photoDialog.addEventListener("click", (event) => {
     if (event.target === photoDialog) photoDialog.close();
-  });
-  $(".photo-stage").addEventListener("pointerdown", (event) => { if (!window.JOURNEY_ATLAS_MOBILE_UI?.enabled() && !event.target.closest('#viewer-video')) swipeStartX = event.clientX; });
-  $(".photo-stage").addEventListener("pointerup", (event) => {
-    if (swipeStartX === null) return;
-    const distance = event.clientX - swipeStartX;
-    if (Math.abs(distance) > 60) moveViewer(distance < 0 ? 1 : -1);
-    swipeStartX = null;
   });
   document.addEventListener("keydown", (event) => {
     if (event.target.closest('#viewer-video')) return;

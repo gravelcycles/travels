@@ -450,10 +450,14 @@ same-day leg transitions, keyboard focus, day changes and desktop/phone resizing
 on the reference trip, a demo and a fresh draft. Mobile rows retain tap-to-map.
 Desktop headers omit Sample journeys, the trip badge and About this atlas.
 
-Photo and grid headers use the Day N button to return to the day map. The
-photo header keeps its count and grid button. Double-tap smoothly zooms around
-the tapped point and back out; pinch and drag remain immediate and interrupt
-an in-progress zoom. Reduced motion uses immediate double-tap zoom. Pull up
+Photo and grid headers use Back to return one screen, including the presenting
+grid. The [16 October fullscreen correction](PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom)
+adds mobile Share beside Comments on the left, top-right Close, single-tap
+hiding/restoring of photo chrome and full-viewport focal zoom. These behaviors
+are implemented; public delivery status remains in WIP. Double-tap zooms around the tapped point and
+back out; pinch follows the moving midpoint and desktop zoom follows the pointer.
+Pinch and drag remain immediate and interrupt an in-progress zoom. Reduced
+motion uses immediate double-tap zoom. Pull up
 on an unzoomed photo, tap Photo location, or drag its handle to reveal the map.
 Pull down on the photo or panel heading to dismiss it. When zoomed, dragging
 the photo pans it instead. Sideways swipes and grid round trips must not reopen
@@ -465,7 +469,8 @@ scroll/selection and keep that grid mounted beneath the photo throughout
 dismissal, without a map or thumbnail-reload flash. Preserve the presenting map/story/Places surface; browser
 Back/Forward follows the same layers. Escape collapses location first, then goes
 Back. See [the photo return contract](PHOTO_WORKFLOW.md#automated-publishing-after-review).
-Check these flows on the reference trip, a demo and a fresh empty draft.
+Check these flows on the reference trip, city-stay atlas, a demo and an
+independently populated fresh draft, with the empty draft fallback as well.
 
 ## Editing and regeneration
 
