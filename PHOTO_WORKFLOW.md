@@ -431,29 +431,6 @@ Keep originals private. Review day/location assignments, strip derivative
 metadata, upload through the private publisher, then deploy the matching manifest.
 Trashing alone is not permanent media erasure; the old Hide feature is retired.
 
-## Depth-motion review boundary — 14 October 2026
-
-The [standalone fullscreen preview](docs/DEPTH_FULLSCREEN_DEMO.md) uses
-precomputed depth with live browser rendering and starts off. The 15 October
-owner correction returns motion to the original gentle range while keeping
-drag/held viewpoint/reset and mouse interaction; it supersedes the stronger
-0–3× experiment. Exact controls and limits belong in the demo record.
-
-The owner also authorized seven existing website photographs alongside the two
-public samples. Prepare depth only for those selected photographs, preserving
-their source pixels, metadata choices and traveler-written/blank copy. Keep
-source derivatives and new depth maps in private R2 behind the existing photo
-gateway and normal shared unlock; do not copy protected image/depth pixels into
-the public demo, its manifest or encoded previews. Verify authenticated hashes,
-anonymous rejection and expiry cleanup. The exact selection and preparation
-record belong in [DEPTH_DEMO_ASSETS.md](docs/DEPTH_DEMO_ASSETS.md).
-
-The remote demo remains a bounded review artifact. This authorization does not
-extend to bulk depth processing, new public photo publication or integration
-into trip viewers. Any later approved integration must retain the photograph's
-private access, review, loading and expiry rules, still-image fallback and the
-existing gallery gestures/state.
-
 ## Apple references
 
 - [Share photos and videos on iPhone](https://support.apple.com/guide/iphone/iphf28f17237/ios)
@@ -607,6 +584,10 @@ top-left Back label and the existing presenting-screen history. Close and Back
 return to that same preceding screen, including its mounted grid, scroll and
 selection. The grid does not acquire a second dismissal control. Desktop Share
 keeps its right-sidebar placement.
+The later 16 October correction restores opaque header/footer bars and solid
+Close/Share/Comments surfaces; do not add translucent fills or backdrop blur.
+The photo stage still spans the viewport beneath the controls and remains
+unobstructed when they are hidden.
 
 On phones, a single tap on the photograph toggles all viewer chrome: navigation, event and
 photo labels, Share/Comments, Back/Close and location affordances. The hidden

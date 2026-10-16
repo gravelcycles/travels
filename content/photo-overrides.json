@@ -1855,7 +1855,7 @@
     },
     "dayId": "backpacking-europe-heading-east-freiburg-stay",
     "caption": "",
-    "description": "",
+    "description": "It's hard to walk even 10 mins with all that weight 💪",
     "zoom": 13.13
   },
   "backpacking-europe-heading-east-bed4a0a8-76cd-4410-a3c0-f8ded20fec54": {
@@ -1869,7 +1869,8 @@
     "dayId": "backpacking-europe-heading-east-freiburg-stay",
     "caption": "",
     "description": "",
-    "zoom": 13.13
+    "zoom": 13.13,
+    "trashed": true
   },
   "backpacking-europe-heading-east-34d92b6e-8842-43d9-994c-1f59af75a0cb": {
     "reviewed": true,
@@ -2443,7 +2444,8 @@
     "dayId": "backpacking-europe-heading-east-luzern-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.04
+    "zoom": 12.04,
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-f366c54e409d8006ec77": {
     "reviewed": true,
@@ -2567,13 +2569,13 @@
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
     "location": {
-      "lat": 52.509276,
-      "lng": 13.429509
+      "lat": 52.501771,
+      "lng": 13.445722
     },
     "dayId": "backpacking-europe-heading-east-berlin-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.47
+    "zoom": 12.8
   },
   "backpacking-europe-heading-east-upload-6f56542ec603d8e8416c": {
     "reviewed": true,
@@ -2593,52 +2595,52 @@
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
     "location": {
-      "lat": 52.520054,
-      "lng": 13.389382
+      "lat": 52.499232,
+      "lng": 13.384574
     },
     "dayId": "backpacking-europe-heading-east-berlin-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.47
+    "zoom": 12.66
   },
   "backpacking-europe-heading-east-upload-d90b1f16a88de07cee13": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
     "location": {
-      "lat": 52.497062,
-      "lng": 13.399414
+      "lat": 52.512259,
+      "lng": 13.341879
     },
     "dayId": "backpacking-europe-heading-east-berlin-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.47
+    "zoom": 12.66
   },
   "backpacking-europe-heading-east-upload-0ab10b9f55a41157406f": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
     "location": {
-      "lat": 52.496308,
-      "lng": 13.409693
+      "lat": 52.512523,
+      "lng": 13.344051
     },
     "dayId": "backpacking-europe-heading-east-berlin-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.47
+    "zoom": 12.66
   },
   "backpacking-europe-heading-east-upload-24a4b78a71da6f618417": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
     "location": {
-      "lat": 52.496082,
-      "lng": 13.408455
+      "lat": 52.514176,
+      "lng": 13.417927
     },
     "dayId": "backpacking-europe-heading-east-berlin-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.47
+    "zoom": 12.66
   },
   "backpacking-europe-heading-east-upload-6ef4f40ebee07e386979": {
     "reviewed": true,
@@ -3289,72 +3291,73 @@
     "dayId": "backpacking-europe-heading-east-berlin-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.47
+    "zoom": 12.47,
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-a81c31ea658c9c00bd31": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
     "location": {
-      "lat": 52.51116,
-      "lng": 13.426785
+      "lat": 52.505661,
+      "lng": 13.438532
     },
     "dayId": "backpacking-europe-heading-east-berlin-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.47
+    "zoom": 12.66
   },
   "backpacking-europe-heading-east-upload-557750833b6af45b0a12": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
     "location": {
-      "lat": 52.511235,
-      "lng": 13.426785
+      "lat": 52.506058,
+      "lng": 13.438532
     },
     "dayId": "backpacking-europe-heading-east-berlin-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.47
+    "zoom": 12.66
   },
   "backpacking-europe-heading-east-upload-d1bfc7b17b18e99966f7": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
     "location": {
-      "lat": 52.510934,
-      "lng": 13.427156
+      "lat": 52.505661,
+      "lng": 13.439075
     },
     "dayId": "backpacking-europe-heading-east-berlin-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.47
+    "zoom": 12.66
   },
   "backpacking-europe-heading-east-upload-dca5df75def57377629a": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
     "location": {
-      "lat": 52.511537,
-      "lng": 13.426413
+      "lat": 52.505541,
+      "lng": 13.439234
     },
     "dayId": "backpacking-europe-heading-east-berlin-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.47
+    "zoom": 12.8
   },
   "backpacking-europe-heading-east-upload-e7933d9919705cc8c8c2": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
     "location": {
-      "lat": 52.523068,
-      "lng": 13.395698
+      "lat": 52.513251,
+      "lng": 13.377513
     },
     "dayId": "backpacking-europe-heading-east-berlin-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.47
+    "zoom": 12.66
   },
   "backpacking-europe-heading-east-upload-15149e681863db8700fc": {
     "reviewed": true,
@@ -3374,12 +3377,47 @@
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
     "location": {
-      "lat": 52.517567,
-      "lng": 13.407216
+      "lat": 52.506638,
+      "lng": 13.34655
     },
     "dayId": "backpacking-europe-heading-east-berlin-stay",
     "caption": "",
     "description": "",
-    "zoom": 12.47
+    "zoom": 12.66
+  },
+  "backpacking-europe-heading-east-upload-6934713d07f04c3af0f7": {
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "location": {
+      "lat": 52.497063,
+      "lng": 13.400507
+    },
+    "zoom": 12.66
+  },
+  "backpacking-europe-heading-east-upload-fcb2e7f68a05e4fc8731": {
+    "trashed": true
+  },
+  "backpacking-europe-heading-east-upload-d8d9b6efb27115da808a": {
+    "trashed": true
+  },
+  "backpacking-europe-heading-east-upload-014b5cb7071a814989c4": {
+    "location": {
+      "lat": 52.51267,
+      "lng": 13.422996
+    },
+    "zoom": 12.66
+  },
+  "backpacking-europe-heading-east-upload-ab4ac181b05f99d4597a": {
+    "location": {
+      "lat": 52.496865,
+      "lng": 13.400833
+    },
+    "zoom": 12.66
+  },
+  "backpacking-europe-heading-east-upload-d0dde9ac9b1fc05fbafe": {
+    "location": {
+      "lat": 52.496468,
+      "lng": 13.40507
+    },
+    "zoom": 12.66
   }
 }

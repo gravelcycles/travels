@@ -5,6 +5,28 @@ Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 
 Each city is one event. Taglines remain blank; the owner added the first seven
 city stories in Studio on 11 October. The photo intake is recorded below.
 
+## Saved photo and metadata publication — 16 October 2026
+
+The owner requested publication of the local photo data/metadata. Preserve the
+saved notes, pins, zoom levels, Trash choices and album ordering in the photo/day
+overrides. Six new Studio source records are retained: four visible photos are
+assigned to Berlin, while two remain in recoverable Trash. Three previously
+visible photos are also trashed. Originals and capture timestamps stay intact;
+the July timestamps on the Berlin additions do not override the owner's saved
+city assignment or placement among the October photos.
+
+This saved Berlin order is an explicit exception to the chronological default
+below. Do not automatically re-sort it from capture dates on a later build or
+import. The other cities retain their existing relative ordering. Preserve the
+already released opening description and other concurrent content.
+
+Publish only the four visible additions through the existing private derivative
+pipeline, then deploy the regenerated comments eligibility index before Pages.
+The expected visible total is 120 photos: Luzern 9, Freiburg 17, Hamburg 16,
+Köln 10, Düsseldorf 1, Berlin 24 and Prague 43. Verify the saved metadata and
+ordering against fresh public bundles, including the absence of every trashed
+photo. Verification and the deployment receipt are tracked in WIP.
+
 ## Chronological city albums — 12 October 2026
 
 The owner requested: “order them chrono-wise within each city”. Each populated
@@ -17,7 +39,8 @@ journey cover, city assignments, actual timestamps, pins, frames, copy and Trash
 choices remain unchanged. The August photos still belong to Luzern and the
 six reassigned 30 September photos still belong to Köln.
 
-Keep this chronological order when adding another Heading East batch: merge
+Except for later explicitly saved ordering, including the 16 October Berlin
+selection above, keep this chronological order when adding another batch: merge
 new photos into their assigned city's sequence rather than appending a separate
 batch. This is a trip-specific editorial choice, not a change to other trips'
 reviewed album orders. Source orders retain trashed IDs so an explicit restore

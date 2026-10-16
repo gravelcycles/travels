@@ -16,6 +16,25 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Saved Heading East photo data — 16 October 2026
+
+Authorized: publish the owner's saved local photo data/metadata. The release is
+isolated in `/Users/dg/Documents/Codex/2026-10-16/i-m/work/travels-release`
+from remote main `22a88b6`; primary-checkout feature work remains untouched.
+The [trip record](docs/HEADING_EAST.md#saved-photo-and-metadata-publication--16-october-2026)
+documents four visible Berlin additions, two new trashed uploads, three existing
+photos moved to Trash, and the owner's saved pins, notes and order. Preserve the
+four additions' actual capture timestamps and explicit Berlin placement.
+
+All 11 private derivatives (4,643,194 bytes) were uploaded/reused and downloaded
+for SHA-256 verification. All **740 tests**, the production build and actual
+Worker runtime checks pass. Two build-test fixtures now preserve unrelated saved
+photo assignments instead of erasing them. Generated public metadata/order
+matches the saved sources exactly; the gallery and comments index contain the
+same 120 visible IDs, with all trashed IDs excluded. Worker/index activation and
+Pages/public-bundle verification remain pending. Preserve the outbound-update
+ledger and acknowledgment history; publication does not mark any message shared.
+
 ## Photo intermediate screens — 16 October 2026
 
 Later owner clarification: make the **whole header** on Comments and Photo
@@ -95,6 +114,22 @@ complete. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
+**Button-style follow-up — deployed and verified.** The
+owner rejected the translucent buttons as a regression after the release below.
+Restore the original solid mobile header/footer and opaque Close/Share/Comments
+surfaces, retaining layout, tap-to-hide and focal zoom. Direction is recorded
+in O03/O08/O18 and the photo workflow. All **740 tests** and the production build
+pass. All **16 browser fixture combinations** (reference, Heading East, Alpine
+demo and an independently populated draft at 320/390 px, landscape and desktop)
+pass solid-surface/no-blur assertions, tap recovery, full-viewport geometry and
+focal zoom; phone and landscape screenshots were inspected. Independent review
+found no cascade or scope issues. Physical-device testing is not claimed.
+Released as `1f9a8bf`; [Pages run 38938835608](https://github.com/gravelcycles/travels/actions/runs/38938835608)
+succeeded. Fresh public mobile CSS and all four journey/demo pages match the
+tested build. A fresh public Alpine photo at 390 × 844 confirms opaque surfaces,
+no backdrop blur, the full-viewport stage and tap-to-hide/restore. Delivery is
+complete; the primary checkout remains untouched.
+
 **Completed and deployed.** The owner requested mobile fullscreen
 Share beside Comments on the left, top-right Close, one tap to hide all buttons
 for just the photo, and zoom that uses fullscreen. The follow-up adds pinch
@@ -103,7 +138,7 @@ supersessions live in
 [O03/O08/O18](docs/OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
 and the [photo workflow](PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom).
 Back/pull/grid continuity, location gestures, sharing semantics, photo loading,
-private access and the separate depth-demo boundary are retained.
+private access are retained.
 
 Work is isolated in `/Users/dg/.codex/worktrees/photo-fullscreen-gestures/travels`
 on `codex/photo-fullscreen-gestures`. The shared template/mobile layout now
@@ -114,7 +149,7 @@ two-pointer pinch, double-click and pan controller. Mobile uses the same focal
 math; desktop zoom keeps its existing stage and context sidebar.
 
 Integrated remote main through `8d5a117`, preserving the concurrent map-overview,
-manual-update and protected-depth-demo releases. **All 707 tests and the production
+manual-update releases. **All 707 tests and the production
 build pass**, with reproducible public output. Synthetic-fixture browser checks
 pass all **16 combinations** of Switzerland–Italy, Heading East, Alpine demo and
 an independently populated city draft at **320 × 568, 390 × 844, 844 × 390 and
@@ -215,75 +250,17 @@ same tooling and scoped guidance; all **45 focused checks** pass with unrelated
 edits preserved. This correction is complete. Studio UI and automated sending
 remain optional future work.
 
-## Fullscreen depth-motion preview — 14 October 2026
+## Depth experiment retirement — 16 October 2026
 
-**16 October delivery — nine-photo gentle demo live and verified.** The owner found the stronger result
-too extreme and requested the original gentle motion while retaining drag/mouse
-interaction, plus seven existing website photographs. This supersedes the
-14 October dramatic range/presets. Current requirements live in
-[the owner decision](docs/OWNER_DECISIONS.md#fullscreen-depth-motion-review--14-october-2026)
-and [demo contract](docs/DEPTH_FULLSCREEN_DEMO.md).
-
-Work is isolated in `/Users/dg/code/travels/build/depth-gentle-review`, branch
-`codex/depth-gentle-photos-20261015`, originally from `a609987`; the release
-integrated remote main `12398b3`, and the receipt preserves subsequent concurrent
-shared releases. The primary checkout and its
-unrelated changes remain untouched. The required revision retains relative
-mouse/touch drag, held viewpoint/reset and keyboard control, adds Mouse move
-beside Slow drift, and replaces 0–3× presets with 0–100% Movement at the original
-gentle maximum. Zero remains the uncropped original and every photo/reopened
-viewer starts off. The sample set must contain the two public examples plus
-seven existing website photographs. Their new depth derivatives stay in private
-R2 behind the existing photo gateway and normal photo access; no protected
-pixels belong in public output. The selected-photo preparation/publication record
-is [DEPTH_DEMO_ASSETS.md](docs/DEPTH_DEMO_ASSETS.md).
-
-The gentle controls and private-access lifecycle are implemented. The 15 October
-release passed all 640 repository tests and the production build. All nine actual-photo/depth
-fixtures pass WebGL/browser checks, including gentle limits, mouse steering,
-drag/hold, zero movement, login returns and Back/Forward, missing-cookie recovery,
-failed-map retry, lock/expiry cleanup, cancelled private requests and public-output
-privacy scans. Desktop/phone/landscape and all seven additions were inspected;
-close foreground outlines can still stretch at maximum travel. Physical-device
-Safari/Android performance remains unverified.
-
-On **16 October**, the owner restored Cloudflare publishing authorization. The
-bounded publisher uploaded and checksum-verified all seven depth WebPs
-(183,664 bytes), verified the 14 existing photo/thumbnail objects without
-republishing them, confirmed disabled public bucket access, and passed anonymous
-gateway **401/no-store** checks. Pre-upload account storage was 327,914,048 bytes.
-It atomically marked all seven path-only manifest records
-`assetStatus: "published"`; no protected pixels enter Git or public output.
-All-nine local browser/auth/privacy fixtures passed again on 16 October. The
-integrated **678-test suite** passes with no skipped tests, and the production
-build passes. Generated HTML only updates the demo asset version for the seven
-published statuses.
-
-Release `3fb52f2` passed
-[Pages run 38936435746](https://github.com/gravelcycles/travels/actions/runs/38936435746).
-Fresh public HTML/JS/CSS/renderer/manifest, both public image/depth pairs and the
-unchanged catalog/reference pages match the tested build (11 verified files).
-A later concurrent shared-viewer deployment changed the reference page; a
-second check still matched all nine demo files and passed the guest flow.
-A fresh 390 × 844 Chrome session shows nine samples, seven locked, the normal
-remembered-access check/unlock prompt, no private pixel requests, gentle public
-drag → Mouse move → off, and no runtime errors. The owner's existing browser
-session restored normal photo access: all seven private 1280 px images and their
-depth maps loaded on the live site, each newly selected photo started off, and
-direct drag worked. No new demo credential was used; browser error logs were empty.
-
-The requested remote demo is complete and ready for owner review. Shared
-journey-viewer integration remains unapproved; physical-device Safari/Android
-performance is a future integration check, not a claim of this desktop review.
-
-Previous release evidence is historical, not verification of the correction:
-the two-sample gentle release `2404389` passed
-[Pages run 38795728873](https://github.com/gravelcycles/travels/actions/runs/38795728873).
-`4f64065` passed [Pages run 38615056035](https://github.com/gravelcycles/travels/actions/runs/38615056035)
-with 640 tests, build, drag/0–3× browser checks and fresh public verification.
-Its stronger range is superseded. The original two-public-photo preview shipped
-as `8c98c67` in [Pages run 38608368833](https://github.com/gravelcycles/travels/actions/runs/38608368833).
-Review URL remains <https://gravelcycles.github.io/travels/experiments/depth/>.
+The owner rejected and requested removal of the experiment; the current rule is
+[the retirement decision](docs/OWNER_DECISIONS.md#depth-motion-experiment-rejected--16-october-2026).
+Source and seven private depth maps are archived locally under ignored
+`build/archives/depth-demo-20261016/`. Removal covers the standalone code/assets,
+build hook, detailed demo docs and both experiment branches. Original trip
+photographs and concurrent site work remain intact. All 740 tests and the build
+pass; the build no longer emits the experiment. Pending: Pages deployment and
+404 checks, removal of the seven unreferenced private depth
+objects, then branch/worktree cleanup and chat archival.
 
 ## Mobile Places visibility — 12 October 2026
 

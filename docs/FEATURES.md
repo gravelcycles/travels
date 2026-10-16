@@ -21,9 +21,9 @@ The [16 October fullscreen photo correction](OWNER_DECISIONS.md#fullscreen-photo
 is implemented in shared code: mobile Share beside Comments on the left,
 top-right Close, single-tap hiding/restoring of photo chrome and full-viewport
 mobile zoom. Phone and desktop zoom follow the pinch or pointer focus; desktop
-retains its context sidebar. Deployed and publicly verified; see
-[WIP](../WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026) for
-verification and deployment status.
+retains its context sidebar. The later button-style correction restores solid
+mobile bars and controls; verification and deployment status are in
+[WIP](../WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
 
 Shared [Arrival → city](ARRIVAL_CITY_DEMO.md) playback traces the incoming
 route with a plain orange tracking circle at display cadence after one direct
@@ -132,22 +132,6 @@ Alpine Crossing retains an explicit cover and saved chapter data. The samples
 demonstrate different transport combinations; full-trip Replay is disabled.
 Their sparse illustrative media is intentional. They are not source templates
 to duplicate and they do not certify route or photo-location accuracy.
-
-## Separate review artifact — 14 October 2026
-
-[Fullscreen depth-motion preview](DEPTH_FULLSCREEN_DEMO.md) is a standalone,
-remotely published experiment. It starts off, lazy-loads
-precomputed depth on activation and renders in WebGL. Direct mouse/touch drag
-holds its viewpoint on release, with reset and keyboard control. The 15 October
-revision returns motion to the original gentle range with a 0–100% Movement
-slider, adds a separate Mouse move option alongside Slow drift, and removes
-the rejected 3× presets. The sample set expands to two public examples plus
-seven existing website photographs using normal protected photo access for
-both photo and depth. All nine samples are live and verified as of 16 October,
-including authenticated private depth playback and anonymous unlock behavior.
-Delivery evidence is tracked in
-[WIP](../WIP.md#fullscreen-depth-motion-preview--14-october-2026). It is **not an
-inherited journey capability**; shared-viewer integration remains unapproved.
 
 ## Authoring and publishing references
 

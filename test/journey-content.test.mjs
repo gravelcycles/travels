@@ -25,7 +25,8 @@ test('photo frames validate the pin and survive source serialization and public 
   const override = { location: { lng:8, lat:47 }, zoom:14.25, mapFrame };
   const state = { photos: { [p.id]: override }, days: {}, routes: {} };
   validateOverrides(state, data);
-  writeJson(path.join(root, 'content/photo-overrides.json'), state.photos);
+  const photoOverridesFile = path.join(root, 'content/photo-overrides.json');
+  writeJson(photoOverridesFile, { ...JSON.parse(fs.readFileSync(photoOverridesFile, 'utf8')), ...state.photos });
   buildSite(root);
   assert.deepEqual(generated(root, 'content-overrides', 'JOURNEY_ATLAS_CONTENT_OVERRIDES').photos[p.id].mapFrame, mapFrame);
   for (const bounds of [[], [[8,47],[8,48]], [[8,48],[9,47]], [[8,47],[400,48]], [[7,-90],[9,48]], [[9,48],[10,49]], [[8,47],[9,NaN]]]) {
