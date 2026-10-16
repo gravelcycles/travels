@@ -31,9 +31,20 @@ for SHA-256 verification. All **740 tests**, the production build and actual
 Worker runtime checks pass. Two build-test fixtures now preserve unrelated saved
 photo assignments instead of erasing them. Generated public metadata/order
 matches the saved sources exactly; the gallery and comments index contain the
-same 120 visible IDs, with all trashed IDs excluded. Worker/index activation and
-Pages/public-bundle verification remain pending. Preserve the outbound-update
-ledger and acknowledgment history; publication does not mark any message shared.
+same 120 visible IDs, with all trashed IDs excluded. Integrated the concurrent
+solid-controls release through `1f9a8bf`; all 740 tests and the build still pass.
+
+Published as `0cef1bb` through successful
+[Pages run 38939110454](https://github.com/gravelcycles/travels/actions/runs/38939110454).
+Worker version `680b93ec-0a1c-4116-a54e-5f37dbd766d3` activated the matching index
+before Pages. Fresh public catalog/Heading East HTML and all three metadata
+bundles match the release byte-for-byte. Anonymous photo/comment reads return
+401. A fresh authenticated browser load shows 120 total photos, Berlin's 24-photo
+album and the newly added river photo at its saved second position, with the
+actual July timestamp and saved map pin. Studio's four verified uploads are now
+marked published locally and its generated output is refreshed. The primary
+checkout's unrelated work is preserved. Delivery is complete. Preserve the
+outbound-update ledger and history; no message was sent or marked shared.
 
 ## Photo intermediate screens — 16 October 2026
 
