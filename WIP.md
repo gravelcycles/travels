@@ -22,17 +22,80 @@ Authorized correction: notification rows open the fullscreen photograph with
 comments above it, simplify repeated photo information in that sheet, and allow
 dragging it closed. [O17](docs/OWNER_DECISIONS.md#comment-notifications--11-october-2026)
 and [the conversation contract](docs/PLACES_AND_COMMENTS.md#comment-notifications)
-own the requirements. Implementation is in progress on
-`codex/photo-intermediate-cleanup` in `build/photo-intermediate-cleanup`, based on
-current main `d451b58`; the primary checkout's unrelated edits remain untouched.
-Next: verify direct entry, compact layout, draft preservation, drag cancellation,
+own the requirements. Implemented on `codex/photo-intermediate-cleanup` in
+`build/photo-intermediate-cleanup`, integrating current main through `34b72b2`
+and preserving the fullscreen focal-zoom/map-opening corrections. The primary
+checkout's unrelated edits remain untouched. All **717 tests** and the production
+build pass. Final browser checks cover direct entry, compact layout, target
+comments beyond page one, draft preservation, scrolling, drag cancellation,
 Close/Back/Forward and fullscreen retention on reference/demo/populated fresh
-draft/Heading East, run tests/build, integrate main and verify Pages/public assets.
+draft/Heading East at desktop, 320/390px and landscape. Next: finish that browser
+matrix, then verify Pages and fresh public assets before marking delivery complete.
 
 The location-group card is a separate design-review request. The
-[selected-photo tray proposal](docs/PHOTO_SELECTION_PROPOSAL.md) reduces duplicate information and actions;
+[selected-photo tray proposal](docs/PHOTO_SELECTION_PROPOSAL.md) reduces duplicate
+information and actions. The interactive review was checked at 320/390px and
+desktop with selection, image opening, event grid and dismissal. It remains a
+proposal, not a production change;
 preserve O03's map selection boundary and continuous journey browsing. Do not
 publish a replacement for that card until the owner chooses the direction.
+
+## Fullscreen photo controls and focal zoom — 16 October 2026
+
+**Implemented; public delivery pending.** The owner requested mobile fullscreen
+Share beside Comments on the left, top-right Close, one tap to hide all buttons
+for just the photo, and zoom that uses fullscreen. The follow-up adds pinch
+focus that follows the fingers on mobile and desktop. Current requirements and
+supersessions live in
+[O03/O08/O18](docs/OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
+and the [photo workflow](PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom).
+Back/pull/grid continuity, location gestures, sharing semantics, photo loading,
+private access and the separate depth-demo boundary are retained.
+
+Work is isolated in `/Users/dg/.codex/worktrees/photo-fullscreen-gestures/travels`
+on `codex/photo-fullscreen-gestures`. The shared template/mobile layout now
+places Share beside Comments and Close top-right, overlays controls on the
+full-viewport stage and toggles chrome on single tap. `photo-zoom.js` provides
+shared focal math and the desktop Ctrl+wheel/trackpad, Safari gesture-event,
+two-pointer pinch, double-click and pan controller. Mobile uses the same focal
+math; desktop zoom keeps its existing stage and context sidebar.
+
+Integrated remote main through `8d5a117`, preserving the concurrent map-overview,
+manual-update and protected-depth-demo releases. **All 707 tests and the production
+build pass**, with reproducible public output. Synthetic-fixture browser checks
+pass all **16 combinations** of Switzerland–Italy, Heading East, Alpine demo and
+an independently populated city draft at **320 × 568, 390 × 844, 844 × 390 and
+1360 × 900**. These include full-viewport geometry, native moving-pinch input,
+portrait/landscape zoom, city controls, Share/Comments adjacency and top-right
+Close. Screenshots were visually inspected. The post-integration Alpine phone
+check also verifies keyboard restoration after hiding controls. Regressions
+cover cancelled taps, remaining-finger pinch release, grid return and private
+access lifecycle. Physical iPhone or Safari-device testing is not claimed.
+
+Next: push the validated release, verify successful Pages and fresh public
+HTML/asset hashes, then record the delivery receipt and complete TODO. The
+primary checkout's unrelated edits remain untouched.
+
+## Unselected map opening — 16 October 2026
+
+Owner correction: first map opening must not show Stop 1 already selected,
+on phone or desktop. [O06](docs/OWNER_DECISIONS.md) and the
+[opening workflow](JOURNEY_WORKFLOW.md#opening-route-trace) own the shared rule.
+The isolated `codex/map-entry-overview` checkout gates row/route/signpost and
+journal selection on map scope, uses neutral phone overview labels, and starts
+next-event navigation at the first event. Explicit day/photo links retain entry.
+Implemented and locally verified: shared navigation/trace/history regressions,
+production build, and eight headless Chrome cases at 1440 × 1000 and 390 × 844
+across Switzerland–Italy, Heading East, Alpine demo and an independently created
+populated draft. Checks cover neutral opening, first/second-event selection,
+All days/stops, direct entry and zero JavaScript errors. Public demo photo-card
+selection clears on overview on both sizes. Heading East's phone Places count
+and list follow overview 20 → Stop 1's 2 → overview 20; no event filter is
+selected in overview. These are Chrome viewport checks, not physical-device QA.
+Integrated remote main through `3fb52f2`; all **682 tests** and the production
+build pass with reproducible checked-in output. Pending delivery: push the
+release and verify successful Pages plus fresh public HTML/assets and phone entry.
+The primary checkout's unrelated pending changes remain untouched.
 
 ## Outbound trip update checkpoints — 16 October 2026
 
@@ -56,14 +119,17 @@ The initial live baseline was captured **16 October 2026, 18:54 Vienna time**:
 the disposable release worktree. A second fresh public read returns no new trips
 or photos. No draft is marked shared, and no message was sent. Preserve this
 ignored directory and its backups; do not recreate the baseline in a new worktree.
-Current remote main through `d3a7af1` is integrated. Remaining delivery: commit
-only this work, verify Pages/public output and install the tooling into the
-primary checkout without changing its unrelated pending edits. Studio UI and
-automated sending remain future options, not unfinished authorized work.
+Released as `d451b58` after integrating current main through `d3a7af1`.
+[Pages run 38935849640](https://github.com/gravelcycles/travels/actions/runs/38935849640)
+succeeded. A fresh public catalog, reference page and all three metadata bundles
+match the release byte-for-byte and still produce an empty diff. The same tooling
+is installed in the primary checkout; all 38 focused checks pass there with its
+unrelated changes preserved. This bounded implementation is complete. Studio UI
+and automated sending remain future options, not unfinished authorized work.
 
 ## Fullscreen depth-motion preview — 14 October 2026
 
-**15 October correction — gentle release live; seven additions await private upload.** The owner found the stronger result
+**16 October checkpoint — private upload verified; nine-photo Pages release pending.** The owner found the stronger result
 too extreme and requested the original gentle motion while retaining drag/mouse
 interaction, plus seven existing website photographs. This supersedes the
 14 October dramatic range/presets. Current requirements live in
@@ -71,7 +137,8 @@ interaction, plus seven existing website photographs. This supersedes the
 and [demo contract](docs/DEPTH_FULLSCREEN_DEMO.md).
 
 Work is isolated in `/Users/dg/code/travels/build/depth-gentle-review`, branch
-`codex/depth-gentle-photos-20261015`, from `a609987`; the primary checkout and its
+`codex/depth-gentle-photos-20261015`, originally from `a609987` and now integrated
+through remote main `d451b58`; the primary checkout and its
 unrelated changes remain untouched. The required revision retains relative
 mouse/touch drag, held viewpoint/reset and keyboard control, adds Mouse move
 beside Slow drift, and replaces 0–3× presets with 0–100% Movement at the original
@@ -82,8 +149,8 @@ R2 behind the existing photo gateway and normal photo access; no protected
 pixels belong in public output. The selected-photo preparation/publication record
 is [DEPTH_DEMO_ASSETS.md](docs/DEPTH_DEMO_ASSETS.md).
 
-The gentle controls and private-access lifecycle are implemented. All 640
-repository tests and the production build pass. All nine actual-photo/depth
+The gentle controls and private-access lifecycle are implemented. The 15 October
+release passed all 640 repository tests and the production build. All nine actual-photo/depth
 fixtures pass WebGL/browser checks, including gentle limits, mouse steering,
 drag/hold, zero movement, login returns and Back/Forward, missing-cookie recovery,
 failed-map retry, lock/expiry cleanup, cancelled private requests and public-output
@@ -91,28 +158,31 @@ privacy scans. Desktop/phone/landscape and all seven additions were inspected;
 close foreground outlines can still stretch at maximum travel. Physical-device
 Safari/Android performance remains unverified.
 
-Seven actual depth WebPs (183,664 bytes total) are generated and checksum-verified;
-the private publisher dry-run passes. **Private upload is blocked by expired
-Cloudflare publishing OAuth.** The owner was asked to sign in through the existing
-browser flow; no new account/password or public workaround is needed. Remote
-hosts hide unpublished protected samples, so the gentle correction can be released
-with the original two examples while local review exercises all nine. The path-only
-manifest keeps the seven records `assetStatus: "local"`; no protected pixels are
-committed or publicly served. Gentle release `2404389` passed
+On **16 October**, the owner restored Cloudflare publishing authorization. The
+bounded publisher uploaded and checksum-verified all seven depth WebPs
+(183,664 bytes), verified the 14 existing photo/thumbnail objects without
+republishing them, confirmed disabled public bucket access, and passed anonymous
+gateway **401/no-store** checks. Pre-upload account storage was 327,914,048 bytes.
+It atomically marked all seven path-only manifest records
+`assetStatus: "published"`; no protected pixels enter Git or public output.
+All-nine local browser/auth/privacy fixtures passed again on 16 October. The
+integrated **678-test suite** passes with no skipped tests, and the production
+build passes. Generated HTML only updates the demo asset version for the seven
+published statuses.
+
+The previously deployed gentle release `2404389` passed
 [Pages run 38795728873](https://github.com/gravelcycles/travels/actions/runs/38795728873).
 Fresh public HTML/JS/CSS/renderer/manifest and both public image/depth pairs match
 the tested build, as do the unchanged catalog/reference pages (11 verified files).
 A fresh 390 × 844 Chrome load verifies off → gentle drag → Mouse move → off,
 maximum camera bounds, two visible samples, no private/auth request and no runtime
 errors. This completes the gentle remote correction; the seven protected additions
-are prepared and locally tested but **not yet remotely available**.
+are verified in private R2 but **not yet offered on the remote page** until the
+updated manifest is deployed.
 
-Next: after the owner restores Wrangler authorization, run
-`node build/depth-gentle-review/scripts/experiments/depth/publish-depth-assets.mjs --source-root /Users/dg/code/travels --publish`
-from the primary checkout. It verifies existing photos, uploads/checksums seven
-depth objects, checks anonymous 401/no-store and marks the manifest published only
-after success. Rebuild, test, integrate latest main, publish the changed manifest/
-HTML and verify the live protected nine-photo flow. Shared journey-viewer
+Next: fetch and integrate any newer main, publish the changed manifest/HTML,
+then verify successful Pages deployment,
+fresh public output and the live protected nine-photo flow. Shared journey-viewer
 integration remains unapproved; only this remote review artifact is authorized.
 
 Previous release evidence is historical, not verification of the correction:
@@ -209,8 +279,9 @@ trace through a phone viewport resize. No implementation or delivery work remain
 
 Fullscreen-desktop follow-up: Share now belongs in the right sidebar beside
 the photo count, below the day controls (O18). Shared markup/styles updated in
-`codex/photo-sharing-20261012` after integrating main `07d1896`; phone retains its
-header control. All **637 tests** and the production build pass. Browser checks
+`codex/photo-sharing-20261012` after integrating main `07d1896`; the phone
+header placement from this release is superseded by the
+[16 October correction](#fullscreen-photo-controls-and-focal-zoom--16-october-2026). All **637 tests** and the production build pass. Browser checks
 cover sidebar containment and share/copy at 1360/1024/901px, plus existing phone,
 link and Back/Forward flows on the reference, Heading East, Alpine demo and an
 independently populated draft. Deployed as `2797e75` through successful

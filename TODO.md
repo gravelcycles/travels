@@ -27,13 +27,21 @@ activation work.
 
 ## Independent project workstreams
 
+- [ ] **Fullscreen photo controls and focal zoom — 16 October: public delivery.**
+      Shared mobile controls/chrome, full-viewport mobile zoom and focal
+      phone/desktop zoom are implemented; focused tests and 16 browser fixture
+      combinations pass; all 707 integrated tests and the build pass. Complete
+      Pages and fresh public verification. Follow
+      [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
+      for source state, acceptance checks and deployment steps.
+
 - [ ] **Fullscreen depth motion — gentle revision and owner review.** Complete
       and verify the 15 October correction in the
       [remote experiment](docs/DEPTH_FULLSCREEN_DEMO.md): original gentle motion,
       retained drag/mouse controls, and seven protected website photographs
       beside the two public samples. Follow [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026)
-      for the expired Cloudflare login blocking private upload and its exact
-      remaining publish/verification steps. Only those seven
+      for the verified 16 October private upload and remaining Pages delivery/
+      live-verification steps. Only those seven
       photo/depth pairs are authorized; bulk processing and shared journey-viewer
       integration remain unapproved.
 

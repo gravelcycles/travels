@@ -46,7 +46,7 @@ function fixture({ scope = 'day', tab = 'map' } = {}) {
     $:node,clearTimeout:id=>timers.delete(id),setTimeout:schedule,
     settleAtCity(){camera=defaultCamera(context.activeDayId);calls.push('city');},restoreDayCamera(){camera=defaultCamera(context.activeDayId);calls.push('city');},
     fitJourneyBounds(){camera={...defaultCamera('one'),zoom:4};calls.push('overview');},startArrival(){camera=defaultCamera(context.activeDayId);calls.push('arrival');},
-    drawMainMap(){calls.push('draw');},renderArrivalChapter(){},renderDayNavigator(){},placesUI:{isOpen:()=>false},activeDay:()=>days.find(day=>day.id===context.activeDayId),
+    drawMainMap(){calls.push('draw');},renderDays(){},renderStory(){},renderArrivalChapter(){},renderDayNavigator(){},placesUI:{isOpen:()=>false},activeDay:()=>days.find(day=>day.id===context.activeDayId),
     window:{addEventListener:(name,handler)=>events.set(name,handler),setTimeout:schedule},
     document:{querySelector:node,createElement:()=>node(`image-${nodes.size}`)},
     history,location:{href:'https://example.test/journey'},matchMedia:query=>({matches:query.includes('900px'),addEventListener(){}}),
