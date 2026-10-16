@@ -27,14 +27,13 @@ activation work.
 
 ## Independent project workstreams
 
-- [ ] **Post-AVIF loading comparison.** After the concurrent migration deploys,
-      compare the same full photographs/dimensions under cold, revalidated and
-      same-page cache states. Measure queue/header/body/decode and next-photo
-      readiness; if thumbnails still starve the immediate neighbor, evaluate a
-      bounded scheduling change with numeric before/after evidence. Keep current
-      photo priority, cancellation, private authorization and fallback. The
-      current performance pass handles scoped data, catalog sizing and redundant
-      interaction work separately; physical iPhone/Safari remains a device check.
+- [x] **Post-AVIF loading comparison and mobile swipes.** Published in `a940395`
+      after 848 passing tests, reproducible builds, successful Pages and fresh
+      public-file/live-viewer checks. Matched format/cache measurements, bounded
+      neighbor scheduling and interruption/zoom-reset rendering fixes are recorded
+      in [the follow-up](docs/PERFORMANCE_FOLLOWUP_2026-10-16.md). Numeric browser
+      and modeled results remain distinct; physical mobile Chrome/iPhone/Safari
+      performance is not certified. The follow-up automation is paused.
 
 - [ ] **Photo location with long notes in short landscape.** Reserve usable map
       space without losing scroll access to authored copy. The 844 × 390 layout

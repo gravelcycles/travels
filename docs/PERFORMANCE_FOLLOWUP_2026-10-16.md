@@ -6,7 +6,11 @@ whose deployed application is `62d8c69531289cd34c8a3b248d35401794babdc7`
 ([Pages run](https://github.com/gravelcycles/travels/actions/runs/38946882288)).
 The owner requires numeric before/after evaluation and later clarified that
 full-screen swiping on mobile Chrome still feels laggy, likely from rendering.
-Publication and combined verification status are tracked in WIP.
+Published through [PR #3](https://github.com/gravelcycles/travels/pull/3) as
+`a940395c562f2f70ae3f4384709eb6c6c8d1df1b`, with tested head
+`00c0005474341782918255ee85008d1cbb08c1a6`. [Pages run 38956100537](https://github.com/gravelcycles/travels/actions/runs/38956100537)
+succeeded. Five fresh public pages and 43 script/style assets match the tested
+release exactly; live verification is recorded below and in WIP.
 
 ## Resolution and loading comparison
 
@@ -107,8 +111,8 @@ Physical mobile Chrome, including device/OS-specific GPU and memory pressure,
 and physical iPhone/Safari are not certified by desktop viewport tests.
 
 The initial complete **836-test suite passed** after updating older test DOM fixtures
-to implement the browser's classList.contains behavior. The final build is
-reproducible across 71 public files. Focused review covers current-photo
+to implement the browser's classList.contains behavior. That pre-integration build
+was reproducible across 71 public files. Focused review covers current-photo
 preemption/fallback and mobile interruption, pinch, cancellation and zoom reset.
 
 ## Concurrent release integration
@@ -132,3 +136,18 @@ fresh draft passes 13/14 identically before/after: selecting a partially clipped
 first thumbnail scrolls 20→8 px before saving the presenting grid, so Back returns
 to 8 px. Grid dimensions are unchanged. This pre-existing active-thumbnail reveal
 is recorded separately in TODO; it is not caused by the swipe correction.
+
+## Live release verification
+
+The deployed 390×844 desktop Chromium viewport passes native forward/reverse
+photo drags (Berlin 55→56→55 of 101), Location open/close, read-only empty Comments,
+and gallery selection/reopening/browser Back. At 1360×900, double-click zoom reaches
+2.5× and Next advances while resetting the image transform. The selected native
+AVIF is ready at 3024×4032 with instant cached reveal. There are no captured
+console errors. These are smoke checks, not additional numeric frame-time or
+physical-phone evidence. No comment or account state was changed.
+
+This follow-up deploys Pages only; the incoming Worker and its comment/share
+indexes are preserved. The post-AVIF follow-up automation is paused after the
+completed comparison and release. Existing landscape and physical-device limits
+remain explicit above.

@@ -82,13 +82,12 @@ Location/Comments, photo navigation and fitted reopen after 2.5× zoom; Heading 
 also verifies existing signed-in full-size image access, empty-thread loading,
 mobile Location and retained grid selection. No console errors or live comment
 writes. The known long-notes/short-landscape map-height issue remains in TODO.
-This implementation batch is delivered. The AVIF migration is now live and
-verified; its release receipt is recorded in the migration workstream below. The existing follow-up will
-measure its image bytes, fallback, decode and neighbor readiness after deployment
-before any justified bounded preload-scheduling change. Preserve its WebP fallback
-and originals; do not count its savings as this performance batch.
+This implementation batch is delivered. The AVIF migration and measured
+follow-up below are also delivered. Their byte, decode and neighbor-readiness
+results remain separate from this first performance batch; WebP fallback and
+originals are preserved.
 
-Post-migration follow-up is active on `codex/avif-performance-followup`, based on
+Post-migration follow-up was developed on `codex/avif-performance-followup`, based on
 `504bd26` (deployed application `62d8c69`). Independently verified all 223 pairs:
 AVIF adds 57.60% pixels and 4.28% full-photo bytes; existing WebP metadata is
 unchanged. Matched local browser runs compare fresh/304/application-Blob reuse
@@ -114,8 +113,17 @@ TODO. Physical phone performance and the baseline long-frame outliers remain
 explicit limits. [Methods and results](docs/PERFORMANCE_FOLLOWUP_2026-10-16.md).
 Merged browser verification also passes: eight final interruptions have 0 px
 jumps and the updated 101-photo Heading East gallery passes 14/14 checks. The
-later docs-only publication receipt `0854113` is integrated. Next: publish and
-verify. No follow-up code is deployed at this checkpoint.
+later docs-only publication receipt `0854113` is integrated. Published through
+[PR #3](https://github.com/gravelcycles/travels/pull/3) as `a940395`, following
+successful [Pages run 38956100537](https://github.com/gravelcycles/travels/actions/runs/38956100537).
+Five fresh public pages and 43 referenced script/style assets match the tested
+release byte-for-byte. Live 390×844 checks pass forward/reverse full-screen
+swipes, Location open/close, empty Comments loading and gallery selection/history.
+At 1360×900, desktop navigation resets 2.5× zoom and reveals the ready native
+AVIF immediately. No console errors or comment writes. The existing Worker and
+all concurrent content remain intact. The post-AVIF follow-up automation is paused;
+this release is complete, with physical-device and existing landscape limits
+retained in the report/TODO.
 
 Status checkpoint reconciled: **11 October 2026**. Start with
 [AGENTS.md](AGENTS.md) and [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md), then

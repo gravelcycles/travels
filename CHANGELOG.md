@@ -15,8 +15,9 @@
 - Record AVIF as a resolution upgrade (+57.60% pixels, +4.28% bytes), separate
   browser decode, revalidation and cached-render measurements, and remaining
   device/frame-time limits in [the follow-up](docs/PERFORMANCE_FOLLOWUP_2026-10-16.md).
-  All 836 tests pass and the build is reproducible across 71 files. WIP records
-  the combined browser checks and publication status.
+  All 848 integrated tests pass and two builds match across 78 files. Published
+  as `a940395` through Pages run `38956100537`; five pages and 43 referenced
+  assets match the tested release. Live phone-layout and desktop checks pass.
 
 ## 16 October 2026 — publish later Heading East Studio review
 
