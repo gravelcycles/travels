@@ -7,6 +7,7 @@ const ASSETS = {
   photos: ['trip-photos.js', 'JOURNEY_ATLAS_PHOTOS'],
   overrides: ['content-overrides.js', 'JOURNEY_ATLAS_CONTENT_OVERRIDES']
 };
+const REFERENCES = { ...ASSETS, catalog: ['catalog-data.js', 'JOURNEY_ATLAS_CATALOG'] };
 const HTML_LIMIT = 1024 * 1024;
 const ASSET_LIMIT = 16 * 1024 * 1024;
 const REQUEST_TIMEOUT_MS = 10_000;
@@ -48,14 +49,14 @@ function assetReferences(html, pageUrl, root, requiredKeys) {
     if (!src) continue;
     let url;
     try { url = new URL(src, pageUrl); } catch { throw fail('invalid script URL in public HTML.'); }
-    const key = Object.keys(ASSETS).find(name => url.pathname.endsWith(`/${ASSETS[name][0]}`));
+    const key = Object.keys(REFERENCES).find(name => url.pathname.endsWith(`/${REFERENCES[name][0]}`));
     if (!key) continue;
     withinSite(url, root);
-    if (url.pathname !== `${root.pathname}assets/${ASSETS[key][0]}`) throw fail('unexpected generated asset path.');
-    if (refs[key]) throw fail(`duplicate ${ASSETS[key][0]} asset reference.`);
+    if (url.pathname !== `${root.pathname}assets/${REFERENCES[key][0]}`) throw fail('unexpected generated asset path.');
+    if (refs[key]) throw fail(`duplicate ${REFERENCES[key][0]} asset reference.`);
     const values = [...url.searchParams.entries()];
     if (values.length !== 1 || values[0][0] !== 'v' || !/^[a-f0-9]{12}$/.test(values[0][1])) {
-      throw fail(`${ASSETS[key][0]} must have one 12-character content hash version.`);
+      throw fail(`${REFERENCES[key][0]} must have one 12-character content hash version.`);
     }
     refs[key] = { url: url.href, version: values[0][1] };
   }
@@ -63,20 +64,46 @@ function assetReferences(html, pageUrl, root, requiredKeys) {
   return refs;
 }
 
-function parseAssignment(text, key) {
-  const prefix = `window.${ASSETS[key][1]}`;
+function parseAssignment(text, key, assets = REFERENCES) {
+  const prefix = `window.${assets[key][1]}`;
   let source = text.trim();
   if (source.startsWith(GENERATED_HEADER)) source = source.slice(GENERATED_HEADER.length).trim();
-  if (!source.startsWith(prefix)) throw fail(`unexpected assignment in ${ASSETS[key][0]}.`);
+  if (!source.startsWith(prefix)) throw fail(`unexpected assignment in ${assets[key][0]}.`);
   source = source.slice(prefix.length).trimStart();
-  if (!source.startsWith('=')) throw fail(`invalid assignment in ${ASSETS[key][0]}.`);
+  if (!source.startsWith('=')) throw fail(`invalid assignment in ${assets[key][0]}.`);
   source = source.slice(1).trim();
-  if (!source.endsWith(';')) throw fail(`missing assignment terminator in ${ASSETS[key][0]}.`);
+  if (!source.endsWith(';')) throw fail(`missing assignment terminator in ${assets[key][0]}.`);
   let parsed;
   try { parsed = JSON.parse(source.slice(0, -1)); }
-  catch { throw fail(`${ASSETS[key][0]} must contain only a generated JSON assignment.`); }
-  if (!object(parsed)) throw fail(`${ASSETS[key][0]} must contain a JSON object.`);
+  catch { throw fail(`${assets[key][0]} must contain only a generated JSON assignment.`); }
+  if (!object(parsed)) throw fail(`${assets[key][0]} must contain a JSON object.`);
   return parsed;
+}
+
+function scopedReference(html, pageUrl, root, id) {
+  const clean = html.replace(/<!--[\s\S]*?-->/g, '');
+  const refs = [];
+  for (const match of clean.matchAll(/<script\b([^>]*)>[\s\S]*?<\/script\s*>/gi)) {
+    const src = attribute(` ${match[1]}`, 'src');
+    if (!src) continue;
+    const url = new URL(src, pageUrl);
+    if (!url.pathname.includes('/journey-data/')) continue;
+    withinSite(url, root);
+    if (url.pathname !== `${root.pathname}assets/journey-data/trip-${id}.js`) throw fail('unexpected scoped journey data path.');
+    const params = [...url.searchParams];
+    if (params.length !== 1 || params[0][0] !== 'v' || !/^[a-f0-9]{12}$/.test(params[0][1])) throw fail('scoped data must have one content hash version.');
+    refs.push({ url: url.href, version: params[0][1] });
+  }
+  if (refs.length !== 1) throw fail('missing or duplicate scoped journey data.');
+  return refs[0];
+}
+
+function parseScopedData(text) {
+  const lines = text.trim().split(/\r?\n/);
+  if (lines.length !== 8 || [0,2,4,6].some(index => lines[index] !== GENERATED_HEADER)) throw fail('scoped data must contain four generated JSON assignments.');
+  const parts = [1,3,5,7].map(index => lines[index]);
+  const assets = { journeys: ASSETS.journeys, routes: ['route-geometry.js', 'JOURNEY_ATLAS_ROUTE_GEOMETRY'], photos: ASSETS.photos, overrides: ASSETS.overrides };
+  return Object.fromEntries(Object.keys(assets).map((key, index) => [key, parseAssignment(parts[index], key, assets)]));
 }
 
 function selectJourney(data, root) {
@@ -109,7 +136,7 @@ export async function fetchPublicSnapshot(siteUrl, { fetchImpl = globalThis.fetc
 
   async function read(url, kind) {
     withinSite(new URL(url), root);
-    if (++requests > 10) throw fail('request limit exceeded.');
+    if (++requests > 14) throw fail('request limit exceeded.');
     const remaining = SNAPSHOT_TIMEOUT_MS - (Date.now() - startedAt);
     if (remaining <= 0) throw fail('snapshot timed out; try again after deployment settles.');
     const freshUrl = new URL(url);
@@ -164,20 +191,53 @@ export async function fetchPublicSnapshot(siteUrl, { fetchImpl = globalThis.fetc
 
   async function readAsset(key, ref) {
     const fetched = await read(ref.url, 'asset');
-    if (fetched.sha256.slice(0, 12) !== ref.version) throw fail(`content hash mismatch for ${ASSETS[key][0]}; deployment may be changing. Retry later.`);
+    if (fetched.sha256.slice(0, 12) !== ref.version) throw fail(`content hash mismatch for ${REFERENCES[key][0]}; deployment may be changing. Retry later.`);
     return { value: parseAssignment(fetched.text, key), receipt: { url: ref.url, version: ref.version, sha256: fetched.sha256 } };
   }
 
   const catalog = await read(root.href, 'html');
-  const catalogRefs = assetReferences(catalog.text, root.href, root, ['journeys']);
-  const journeys = await readAsset('journeys', catalogRefs.journeys);
+  const catalogRefs = assetReferences(catalog.text, root.href, root, []);
+  let catalogData, metadataRefs = catalogRefs;
+  if (catalogRefs.catalog) {
+    if (Object.keys(catalogRefs).length !== 1) throw fail('catalog mixes legacy and scoped metadata.');
+    catalogData = await readAsset('catalog', catalogRefs.catalog);
+    // Reuse the same strict URL/hash validation as real script references;
+    // these three receipt URLs are never requested by the visitor runtime.
+    if (!object(catalogData.value.metadata) || Object.keys(catalogData.value.metadata).length !== 3) throw fail('missing catalog metadata receipt URLs.');
+    const tags = Object.keys(ASSETS).map(key => {
+      const src = catalogData.value.metadata[key];
+      if (typeof src !== 'string' || /[<>"']/.test(src)) throw fail('invalid catalog metadata receipt URL.');
+      return `<script src="${src}"></script>`;
+    }).join('');
+    metadataRefs = assetReferences(tags, root.href, root, Object.keys(ASSETS));
+  } else if (!catalogRefs.journeys) throw fail('missing journeys.js in public HTML.');
+  const journeys = await readAsset('journeys', metadataRefs.journeys);
   const selected = selectJourney(journeys.value, root);
   const journey = await read(selected.url, 'html');
   verifyJourneyPage(journey.text, selected.id);
-  const refs = assetReferences(journey.text, selected.url, root, Object.keys(ASSETS));
-  if (refs.journeys.url !== catalogRefs.journeys.url) throw fail('catalog and journey versions differ; deployment may be changing. Retry later.');
-  for (const key of Object.keys(catalogRefs)) if (catalogRefs[key].url !== refs[key].url) throw fail('catalog and journey asset versions differ; retry after deployment settles.');
+  let scoped;
+  const refs = catalogData ? metadataRefs : assetReferences(journey.text, selected.url, root, Object.keys(ASSETS));
+  if (catalogData) {
+    const ref = scopedReference(journey.text, selected.url, root, selected.id);
+    const fetched = await read(ref.url, 'asset');
+    if (fetched.sha256.slice(0, 12) !== ref.version) throw fail('content hash mismatch for scoped journey data.');
+    scoped = { ref, fetched, value: parseScopedData(fetched.text) };
+  } else {
+    if (refs.journeys.url !== catalogRefs.journeys.url) throw fail('catalog and journey versions differ; deployment may be changing. Retry later.');
+    for (const key of Object.keys(catalogRefs)) if (catalogRefs[key].url !== refs[key].url) throw fail('catalog and journey asset versions differ; retry after deployment settles.');
+  }
   const [photos, overrides] = await Promise.all(['photos', 'overrides'].map(key => readAsset(key, refs[key])));
+  if (scoped) {
+    const expected = journeys.value.journeys.find(item => item.id === selected.id);
+    if (JSON.stringify(scoped.value.journeys.journeys) !== JSON.stringify([expected]) || JSON.stringify(scoped.value.photos) !== JSON.stringify({ [selected.id]: photos.value[selected.id] })) throw fail('scoped journey metadata differs from the catalog release.');
+    const ids = { photos: new Set((photos.value[selected.id] || []).map(photo => photo.id)), days: new Set((expected.days || []).map(day => day.id)), routes: new Set((expected.segments || []).map(segment => segment.id)) };
+    for (const key of Object.keys(ids)) {
+      const subset = Object.fromEntries(Object.entries(overrides.value[key] || {}).filter(([id]) => ids[key].has(id)).sort(([a], [b]) => a.localeCompare(b)));
+      if (JSON.stringify(scoped.value.overrides[key]) !== JSON.stringify(subset)) throw fail('scoped journey overrides differ from the catalog release.');
+    }
+    const catalogJourney = catalogData.value.journeys?.find(item => item.id === selected.id);
+    if (!catalogJourney || catalogJourney.slug !== expected.slug || catalogData.value.defaultJourneyId !== journeys.value.defaultJourneyId) throw fail('catalog summary differs from the journey release.');
+  }
 
   // Re-read the entry points and bundles with distinct cache-busters. A publish
   // between requests must fail, not silently mix two deployments into a baseline.
@@ -186,6 +246,10 @@ export async function fetchPublicSnapshot(siteUrl, { fetchImpl = globalThis.fetc
   const repeated = await Promise.all(Object.keys(ASSETS).map(key => readAsset(key, refs[key])));
   const initial = [journeys, photos, overrides];
   if (repeated.some((value, index) => value.receipt.sha256 !== initial[index].receipt.sha256)) throw fail('public assets changed during capture; retry after deployment settles.');
+  if (catalogData) {
+    const [again, pageAgain] = await Promise.all([readAsset('catalog', catalogRefs.catalog), read(scoped.ref.url, 'asset')]);
+    if (again.receipt.sha256 !== catalogData.receipt.sha256 || pageAgain.sha256 !== scoped.fetched.sha256) throw fail('scoped public assets changed during capture; retry after deployment settles.');
+  }
   const capturedAt = now();
   if (!(capturedAt instanceof Date) || !Number.isFinite(capturedAt.getTime())) throw fail('capture time must be a valid Date.');
   return {
@@ -195,7 +259,8 @@ export async function fetchPublicSnapshot(siteUrl, { fetchImpl = globalThis.fetc
       kind: 'public-metadata', verification: 'versioned-public-metadata-only',
       catalog: { url: root.href, sha256: catalog.sha256 },
       journey: { ...selected, sha256: journey.sha256 },
-      assets: Object.fromEntries(Object.keys(ASSETS).map((key, index) => [key, initial[index].receipt]))
+      assets: Object.fromEntries(Object.keys(ASSETS).map((key, index) => [key, initial[index].receipt])),
+      ...(catalogData ? { catalogData: catalogData.receipt, journeyData: { ...scoped.ref, sha256: scoped.fetched.sha256 } } : {})
     }
   };
 }

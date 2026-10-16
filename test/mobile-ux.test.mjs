@@ -67,6 +67,7 @@ test('the entire location header accepts downward drags after a sideways start, 
     f.dispatch(header,'pointerdown',start);
     f.dispatch(header,'pointermove',{...start,clientX:118,clientY:352});
     f.dispatch(header,'pointermove',{...start,clientX:155,clientY:420});
+    f.frame();
     assert.equal(parseFloat(f.node('.photo-viewer').style['--reveal']),initialReveal-70,'The panel follows the finger');
     f.dispatch(header,'pointerup',{...start,clientX:155,clientY:420});
     assert.equal(f.controller.locationVisible(),false,selector);

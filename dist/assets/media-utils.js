@@ -4,6 +4,30 @@
   const isVideo = item => item?.mediaType === 'video';
   const videoItem = video => ({ ...video, mediaType:'video', videoSrc:video.src, src:video.poster || '', alt:video.title, caption:video.title, description:video.caption });
   const items = journey => [...(journey.photos || []), ...(journey.videos || []).filter(video => !video.hidden).map(videoItem)];
+  const indexes = new WeakMap();
+  // Reader projections are immutable. A group/planning change creates a new
+  // journey; replacing any source array also invalidates this derived index.
+  function index(journey) {
+    const cached = indexes.get(journey);
+    if (cached && cached.photos === journey.photos && cached.videos === journey.videos && cached.days === journey.days) return cached;
+    const media = items(journey), byDay = new Map(), byId = new Map();
+    for (const photo of media) {
+      if (!byId.has(photo.id)) byId.set(photo.id, photo);
+      if (!byDay.has(photo.dayId)) byDay.set(photo.dayId, []);
+      byDay.get(photo.dayId).push(photo);
+    }
+    for (const day of journey.days || []) {
+      const photos = byDay.get(day.id) || [], order = day.photoOrder || [];
+      const positions = new Map(order.map((id, position) => [id, position]));
+      byDay.set(day.id, photos.map((photo, position) => ({photo, position})).sort((a, b) =>
+        (positions.get(a.photo.id) ?? order.length + a.position) - (positions.get(b.photo.id) ?? order.length + b.position) || a.position - b.position
+      ).map(entry => entry.photo));
+    }
+    const result = {photos:journey.photos, videos:journey.videos, days:journey.days, byDay, byId,
+      ordered:(journey.days || []).flatMap(day => byDay.get(day.id) || [])};
+    indexes.set(journey, result);
+    return result;
+  }
   const label = media => {
     const videos = media.filter(isVideo).length, photos = media.length - videos;
     return [photos ? `${photos} photo${photos === 1 ? '' : 's'}` : '', videos ? `${videos} video${videos === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ') || 'No photos or videos';
@@ -114,5 +138,5 @@
     root.addEventListener?.('atlas-photos-unlocked',()=>{if(current?.protected){const item=current;stop();show(item);}});
     return { show, stop, pause };
   }
-  root.JOURNEY_ATLAS_MEDIA = { isVideo, videoItem, items, label, duration, thumbnail, createPosterLoader, createVideoPlayer,captionVtt };
+  root.JOURNEY_ATLAS_MEDIA = { isVideo, videoItem, items, index, label, duration, thumbnail, createPosterLoader, createVideoPlayer,captionVtt };
 })(typeof window !== 'undefined' ? window : globalThis);

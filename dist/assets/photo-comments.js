@@ -137,17 +137,22 @@
     const script = document.querySelector('script[src*="/photo-comments.js"]');
     const assetBase = new URL('.', script?.src || location.href);
     let currentPhoto = null, journeyId = '', store, lastPhotoId = '', afterUnlock = null, unlockMode = 'unlock', busy = false, editingId = '', deleted = null, photoOpener = null;
-    const transientDrafts = new Map(), editsByPhoto = new Map();
+    const transientDrafts = new Map(), persistedDrafts = new Map(), editsByPhoto = new Map();
+    const renderedRows = new Map();
+    let renderedThread = '', emptyMarkup = '';
     let loadState = 'idle', loadRevision = 0, thumbnailKey = '', identityRequired = false, unsubscribeStore, visibility, revealCommentId = '';
     const draftKey = (photoId = currentPhoto?.id) => `photo-comment:${photoId}`;
     const fallbackKey = key => `${journeyId}:${key}`;
     function readDraft(key, fallback = '') {
       if (transientDrafts.has(fallbackKey(key))) { const value = transientDrafts.get(fallbackKey(key)); return typeof value === 'string' ? value : fallback; }
-      try { const value = store?.draft(key); return typeof value === 'string' ? value : fallback; } catch { return fallback; }
+      try { const value = store?.draft(key); persistedDrafts.set(fallbackKey(key), value ?? null); return typeof value === 'string' ? value : fallback; } catch { return fallback; }
     }
     function saveDraft(key, value) {
-      transientDrafts.set(fallbackKey(key), value);
-      try { store?.draft(key, value); return true; } catch { return false; }
+      const scoped = fallbackKey(key);
+      transientDrafts.set(scoped, value);
+      // Only confirmed writes are memoized; a failed save must remain retryable.
+      if (persistedDrafts.has(scoped) && persistedDrafts.get(scoped) === value) return true;
+      try { store.draft(key, value); persistedDrafts.set(scoped, value); return true; } catch { return false; }
     }
     function present(id) {
       if ($(`#${id}`).open) return;
@@ -188,7 +193,7 @@
     function persistComposer() {
       if (!currentPhoto || !store) return;
       const body = $('#comment-body').value;
-      const persisted = saveDraft(draftKey(), body);
+      const persisted = saveDraft(draftKey(), body || null);
       $('#comment-draft-state').textContent = body ? (persisted ? 'Draft saved' : 'Draft kept on this page') : '';
     }
     function clearUndo() { deleted = null; $('#comment-undo').hidden = true; }
@@ -255,22 +260,57 @@
       const readable = Number.isFinite(date.getTime()) ? date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '';
       return `<time${readable ? ` datetime="${date.toISOString()}" title="${escape(date.toLocaleString())}"` : ''}>${escape(readable)}${comment.editedAt ? ' · edited' : ''}</time>`;
     }
+    function resetThread() {
+      renderedRows.clear(); renderedThread = ''; emptyMarkup = '';
+      $('#comments-list').replaceChildren();
+    }
+    function renderRows(comments, visitor) {
+      const list = $('#comments-list'), thread = `${journeyId}:${currentPhoto?.id || ''}`;
+      let changed = false;
+      if (thread !== renderedThread) { resetThread(); renderedThread = thread; changed = true; }
+      if (!comments.length) {
+        const markup = live && !store?.hasLoaded(currentPhoto?.id) ? `<div class="comments-empty"><span class="comments-empty-symbol" aria-hidden="true">${icon('comment')}</span><h3>${loadState === 'error' ? 'Comments unavailable' : 'Loading comments…'}</h3><p>${loadState === 'error' ? 'Try again when your connection is ready.' : 'You can start writing while we fetch the conversation.'}</p></div>` : `<div class="comments-empty"><span class="comments-empty-symbol" aria-hidden="true">${icon('comment')}</span><h3>No comments yet</h3><p>Share a memory or start the conversation.</p><button id="write-first-comment" type="button">Write the first comment ${icon('arrow')}</button></div>`;
+        if (emptyMarkup !== markup || renderedRows.size) {
+          list.innerHTML = markup; emptyMarkup = markup; renderedRows.clear(); changed = true;
+        }
+        return changed;
+      }
+      if (emptyMarkup) { list.replaceChildren(); emptyMarkup = ''; changed = true; }
+      const retained = new Set();
+      for (const [index, comment] of comments.entries()) {
+        retained.add(comment.id);
+        const own = comment.visitorId === visitor?.id, editing = own && editingId === comment.id;
+        // Keep a live editor intact while another comment or profile refreshes.
+        // Its text, selection, disabled state and error belong to the editing flow.
+        const signature = JSON.stringify(editing ? [comment.id, own, true] :
+          [comment.id, comment.displayName, comment.body, comment.createdAt, comment.editedAt, own, false]);
+        let record = renderedRows.get(comment.id);
+        if (!record || record.signature !== signature) {
+          const node = document.createElement('article');
+          node.className = `photo-comment${own ? ' is-own' : ''}`; node.dataset.commentId = comment.id;
+          node.innerHTML = `<span class="comment-avatar" aria-hidden="true">${escape(initials(comment.displayName))}</span><div class="photo-comment-content"><header><div><strong>${escape(comment.displayName)}</strong>${own ? '<span class="comment-you">you</span>' : ''}${dateHtml(comment)}</div>${own && !editing ? `<details class="comment-actions"><summary aria-label="Options for your comment">${icon('more')}</summary><div><button data-edit-comment="${escape(comment.id)}" type="button">Edit comment</button><button data-delete-comment="${escape(comment.id)}" type="button">Delete comment</button></div></details>` : ''}</header>${editing ? `<form class="comment-edit-form" data-edit-form="${escape(comment.id)}"><label class="comments-sr-only" for="comment-edit-body">Edit your comment</label><textarea id="comment-edit-body" maxlength="1000" rows="3">${escape(readDraft(`comment-edit:${comment.id}`, comment.body))}</textarea><div><span id="comment-edit-count"></span><button data-cancel-edit type="button">Cancel</button><button class="experience-primary" type="submit">Save</button></div><p class="comment-edit-status" role="status"></p></form>` : `<p>${escape(comment.body)}</p>`}</div>`;
+          record?.node.replaceWith(node);
+          record = {node, signature}; renderedRows.set(comment.id, record); changed = true;
+        }
+        if (list.children[index] !== record.node) { list.insertBefore(record.node, list.children[index] || null); changed = true; }
+      }
+      for (const [id, record] of renderedRows) if (!retained.has(id)) {
+        record.node.remove(); renderedRows.delete(id); changed = true;
+      }
+      return changed;
+    }
     function renderComments({ revealId } = {}) {
       updateIdentity(); renderPhotoContext(); refreshCounts();
       const visitor = identity.get(), comments = currentPhoto && store ? store.comments(currentPhoto.id) : [];
       $('#comments-list').setAttribute('aria-busy', String(loadState === 'loading'));
-      $('#comments-list').innerHTML = comments.length ? comments.map(comment => {
-        const own = comment.visitorId === visitor?.id;
-        const editing = own && editingId === comment.id;
-        return `<article class="photo-comment${own ? ' is-own' : ''}" data-comment-id="${escape(comment.id)}"><span class="comment-avatar" aria-hidden="true">${escape(initials(comment.displayName))}</span><div class="photo-comment-content"><header><div><strong>${escape(comment.displayName)}</strong>${own ? '<span class="comment-you">you</span>' : ''}${dateHtml(comment)}</div>${own && !editing ? `<details class="comment-actions"><summary aria-label="Options for your comment">${icon('more')}</summary><div><button data-edit-comment="${escape(comment.id)}" type="button">Edit comment</button><button data-delete-comment="${escape(comment.id)}" type="button">Delete comment</button></div></details>` : ''}</header>${editing ? `<form class="comment-edit-form" data-edit-form="${escape(comment.id)}"><label class="comments-sr-only" for="comment-edit-body">Edit your comment</label><textarea id="comment-edit-body" maxlength="1000" rows="3">${escape(readDraft(`comment-edit:${comment.id}`, comment.body))}</textarea><div><span id="comment-edit-count"></span><button data-cancel-edit type="button">Cancel</button><button class="experience-primary" type="submit">Save</button></div><p class="comment-edit-status" role="status"></p></form>` : `<p>${escape(comment.body)}</p>`}</div></article>`;
-      }).join('') : live && !store?.hasLoaded(currentPhoto?.id) ? `<div class="comments-empty"><span class="comments-empty-symbol" aria-hidden="true">${icon('comment')}</span><h3>${loadState === 'error' ? 'Comments unavailable' : 'Loading comments…'}</h3><p>${loadState === 'error' ? 'Try again when your connection is ready.' : 'You can start writing while we fetch the conversation.'}</p></div>` : `<div class="comments-empty"><span class="comments-empty-symbol" aria-hidden="true">${icon('comment')}</span><h3>No comments yet</h3><p>Share a memory or start the conversation.</p><button id="write-first-comment" type="button">Write the first comment ${icon('arrow')}</button></div>`;
+      const changed = renderRows(comments, visitor);
       const targetId = revealId || revealCommentId;
       if (targetId) requestAnimationFrame(() => {
         const row = [...$('#comments-list').querySelectorAll('[data-comment-id]')].find(node => node.dataset.commentId === targetId);
         row?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
         if (row && revealCommentId && loadState === 'idle') { row.tabIndex = -1; row.focus({ preventScroll: true }); revealCommentId = ''; }
       });
-      visibility?.refresh();
+      if (changed || targetId) visibility?.refresh();
       if (editingId) updateEditForm();
     }
     function beginUnlock(mode = 'unlock', after) {
@@ -402,7 +442,7 @@
         activeStore.markRead?.([comment]);
         const key = `${postingJourney}:photo-comment:${photoId}`;
         if (transientDrafts.get(key) === submitted) transientDrafts.set(key, null);
-        try { if (activeStore.draft(`photo-comment:${photoId}`) === submitted) activeStore.draft(`photo-comment:${photoId}`, null); } catch { /* The confirmed comment remains visible; a local draft is harmless. */ }
+        try { if (activeStore.draft(`photo-comment:${photoId}`) === submitted) { activeStore.draft(`photo-comment:${photoId}`, null); persistedDrafts.set(key, null); } } catch { /* The confirmed comment remains visible; a local draft is harmless. */ }
         if (currentPhoto?.id !== photoId || store !== activeStore) return;
         if ($('#comment-body').value === submitted) $('#comment-body').value = ''; persistComposer(); renderComments({ revealId: comment.id });
         status('Comment added.'); $('#comment-body').focus();
@@ -418,7 +458,7 @@
       }
       if (event.target.closest('#experience-use-demo')) { $('#experience-password').value = 'demo'; $('#experience-password').focus(); }
       if (event.target.closest('#experience-confirm-reset')) {
-        try { store.reset(); transientDrafts.clear(); editsByPhoto.clear(); editingId = ''; $('#comment-body').value = ''; clearUndo(); renderComments(); updateComposer(); options.onReset?.(); dismiss('experience-unlock', () => announce('Your preview edits have been reset.')); }
+        try { store.reset(); transientDrafts.clear(); persistedDrafts.clear(); editsByPhoto.clear(); editingId = ''; $('#comment-body').value = ''; clearUndo(); renderComments(); updateComposer(); options.onReset?.(); dismiss('experience-unlock', () => announce('Your preview edits have been reset.')); }
         catch (error) { $('#experience-unlock-error').textContent = error.message; }
       }
     });
@@ -484,7 +524,7 @@
     $('#comments-photo-image').addEventListener('error', event => { thumbnailKey = ''; event.target.hidden = true; });
     $('#photo-dialog')?.addEventListener('close', () => { if (!$('#photo-dialog').open && dialog.open) dialog.close(); });
     root.addEventListener('atlas-photos-locked', () => {
-      persistComposer(); loadRevision++; thumbnailKey = ''; identityRequired = false; identity.lock(); $('#comments-list').replaceChildren(); refreshCounts(); afterUnlock = null; $('#comments-photo-image').removeAttribute('src'); $('#comments-photo-image').hidden = true;
+      persistComposer(); loadRevision++; thumbnailKey = ''; identityRequired = false; identity.lock(); resetThread(); refreshCounts(); afterUnlock = null; $('#comments-photo-image').removeAttribute('src'); $('#comments-photo-image').hidden = true;
       const finish = () => { if (dialog.open) dismiss('comments-dialog'); };
       if (unlock.open) dismiss('experience-unlock', finish); else finish();
     });
@@ -497,7 +537,7 @@
       if (journeyId !== nextId) {
         if (dialog.open) { persistComposer(); dialog.close(); }
         if (unlock.open) unlock.close();
-        unsubscribeStore?.(); journeyId = nextId; store = options.store(); unsubscribeStore = store.subscribe?.(refreshCounts); if (live) identity = store.identity; currentPhoto = null; lastPhotoId = ''; editingId = ''; editsByPhoto.clear(); clearUndo(); $('#comment-body').value = '';
+        unsubscribeStore?.(); resetThread(); journeyId = nextId; store = options.store(); unsubscribeStore = store.subscribe?.(refreshCounts); if (live) identity = store.identity; currentPhoto = null; lastPhotoId = ''; editingId = ''; editsByPhoto.clear(); clearUndo(); $('#comment-body').value = '';
       } else store = options.store();
       $('#open-photo-comments').hidden = !enabled || !currentPhoto;
       refreshCounts(); updateToolbar();
@@ -520,7 +560,7 @@
       },
       restore(id) {
         dismissGesture.reset();
-        if (id === 'comments-dialog') { if (!currentPhoto || !identity.allowed()) return; renderComments(); if (live) refreshComments(); document.body.classList.add('comments-open'); present(id); $('#open-photo-comments').setAttribute('aria-expanded', 'true'); updateComposer(); }
+        if (id === 'comments-dialog') { if (!currentPhoto || !identity.allowed()) return; renderComments(); if (live) refreshComments(); document.body.classList.add('comments-open'); present(id); visibility?.refresh(); $('#open-photo-comments').setAttribute('aria-expanded', 'true'); updateComposer(); }
         else if (id === 'experience-unlock') { if (unlockMode === 'unlock') afterUnlock = openComments; else if (unlockMode === 'name') afterUnlock = () => { updateIdentity(); updateComposer(); }; present(id); }
         updateToolbar();
       },

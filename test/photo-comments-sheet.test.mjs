@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { commentChildren } from './photo-comments-dom-harness.mjs';
 import '../dist/assets/photo-comments.js';
 
 const { bindDismissGesture } = globalThis.JOURNEY_ATLAS_PHOTO_COMMENTS;
@@ -128,14 +129,14 @@ function conversationFixture({ fullscreen = true, known = true } = {}) {
   const nodes = new Map(), drafts = new Map(), imageRequests = [], dismissed = [], rootEvents = new Map();
   const node = selector => {
     if (!nodes.has(selector)) {
-      const el = element(); el.open = false; el.id = selector.slice(1);
+      const el = commentChildren(element()); el.open = false; el.id = selector.slice(1);
       el.querySelector = child => node(child.startsWith('.') ? child : `${selector} ${child}`);
       nodes.set(selector, el);
     }
     return nodes.get(selector);
   };
   const classes = new Set();
-  const document = { querySelector: node, querySelectorAll: () => [], activeElement: null, addEventListener() {},
+  const document = { createElement: tag => node(`${tag}-${nodes.size}`), querySelector: node, querySelectorAll: () => [], activeElement: null, addEventListener() {},
     body: { classList: { add: name => classes.add(name), remove: name => classes.delete(name), contains: name => classes.has(name) } }, documentElement: { style: element().style } };
   const photo = { id: 'picture', dayId: 'day', caption: 'Traveler caption', src: '/photo.jpg' };
   const store = {

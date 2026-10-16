@@ -1,5 +1,18 @@
 # Current workstreams
 
+## Measured performance pass — 16 October 2026
+
+Owner authorized executing the phone/desktop interaction and loading priorities,
+with numeric before/after evaluation for every fix. Work is isolated on
+`codex/performance-pass`; the frozen comparison is `9dc7827`. Implementing scoped
+page data and catalog covers, complete asset hashing, comment row/draft reuse,
+cached reader media ordering/filmstrip identity, and compositor movement for the
+phone Location sheet. Local measurements are in progress; this is not yet a
+deployment receipt. Next: finish behavior/browser checks, integrate current main
+(including mobile zoom and AVIF work), run full tests/build, publish and verify
+Pages plus public assets. AVIF's image-byte/decode results remain a separate
+comparison; preserve its WebP fallback and all originals.
+
 Status checkpoint reconciled: **11 October 2026**. Start with
 [AGENTS.md](AGENTS.md) and [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md), then
 read the relevant workstream here before resuming it.
