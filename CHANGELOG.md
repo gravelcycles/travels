@@ -9,8 +9,10 @@
 - All 678 integrated tests, the production build and all-nine local
   browser/auth/privacy fixtures pass. Preserve gentle,
   off-by-default motion and the demo-only scope; no shared-viewer integration.
-  The updated Pages manifest and live nine-photo verification remain pending
-  in [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026).
+  Release `3fb52f2` passed [Pages run 38936435746](https://github.com/gravelcycles/travels/actions/runs/38936435746).
+  Fresh public hashes, anonymous locked/unlock behavior and all seven private
+  photos' live depth playback with remembered access pass; the nine-photo demo
+  is ready for owner review. [Receipt](WIP.md#fullscreen-depth-motion-preview--14-october-2026).
 
 ## 16 October 2026 — update checkpoints for manual broadcasts
 
