@@ -16,6 +16,23 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Mobile photo swipes and Places dragging — 16 October 2026
+
+Owner correction: make the first fullscreen phone photo swipe continuous and
+later swipes slightly smoother; after Show map, allow direct Places-sheet
+dragging across a large part of its top bar. Current requirements are in
+[O04/O08](docs/OWNER_DECISIONS.md#mobile-swipe-continuity--16-october-2026)
+and the [Places correction](docs/OWNER_DECISIONS.md#mobile-places-visibility--12-october-2026).
+Implementation is isolated in `/private/tmp/travels-mobile-swipe-places` on
+`codex/mobile-swipe-places`, based on main `d3a7af1`; the primary checkout's
+unrelated work remains intact. Shared gestures and cache-ready neighbors are
+implemented; all **654 tests** and the production build pass, including Places
+stylesheet cache invalidation. Rendered phone checks are verifying cold/cached
+swipes and wide-header dragging on reference, city atlas, demo and an independent
+populated draft, using synthetic media and a blank basemap. Next: finish the
+browser matrix, integrate current main, deploy and verify fresh public assets.
+Publication and physical-device Safari verification remain unverified.
+
 ## Fullscreen depth-motion preview — 14 October 2026
 
 **15 October correction — gentle release live; seven additions await private upload.** The owner found the stronger result

@@ -279,6 +279,7 @@
       const state = snapshot(); history[push ? 'pushState' : 'replaceState']({ ...history.state, atlasPlaces: state }, '', location.href); lastHistory = JSON.stringify(state);
     }
     function setExpanded(value) {
+      resetSheetDrag();
       expanded = value; panel.dataset.expanded = String(value);
       $('#places-sheet-toggle').setAttribute('aria-expanded', String(value));
       $('#places-sheet-toggle').setAttribute('aria-label', value ? 'Show map' : 'Show list');
@@ -425,6 +426,7 @@
       if (!visible) return;
       if (historyWrite && history.state?.atlasPlaces?.open) { history.go(-Math.max(1, history.state.atlasPlaces.depth || 1)); return; }
       panelVersion++; cameraVersion++;
+      resetSheetDrag();
       if (!selectedId) { if (nearbyIds) nearbyScroll = content.scrollTop; else listScroll = content.scrollTop; }
       if (reviewDialog.open) closeReviews(false, false);
       if (gallery.open) closeGallery(false); visible = false; historyDepth = 0; panel.hidden = true; document.body.classList.remove('places-open'); renderMarkers();
@@ -532,19 +534,80 @@
       changeTab(tabs[event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length], { scroll: false });
     });
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && visible && !document.querySelector('dialog[open]')) { event.preventDefault(); selectedId ? $('#places-back-to-list').click() : close(); } });
-    const handle = $('#places-sheet-toggle'); let startY = null, ignoreClick = false;
+    const handle = $('#places-sheet-toggle');
+    let sheetDrag = null, sheetDragFrame = 0, ignoreClick = false, sheetMapRequest = 0;
+    function resetSheetDrag() {
+      if (sheetDragFrame) cancelAnimationFrame(sheetDragFrame);
+      sheetDragFrame = 0;
+      const drag = sheetDrag; sheetDrag = null;
+      if (drag?.surface.hasPointerCapture?.(drag.pointerId)) drag.surface.releasePointerCapture(drag.pointerId);
+      panel.classList.remove('pp-sheet-dragging');
+      panel.style?.removeProperty('--pp-sheet-drag-height');
+    }
+    function paintSheetDrag() {
+      sheetDragFrame = 0;
+      if (sheetDrag?.moved) panel.style.setProperty('--pp-sheet-drag-height', `${sheetDrag.height}px`);
+    }
+    function startSheetDrag(event) {
+      if (!visible || !mobile() || event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+      // Short landscape keeps its full-height side sheet. Its controls and map
+      // remain independent, rather than applying a bottom-sheet drag sideways.
+      if (matchMedia('(max-height:560px) and (max-width:900px) and (orientation:landscape)').matches) return;
+      const surface = event.currentTarget;
+      if (surface !== handle && event.target.closest('button,a,input,select,textarea,[contenteditable="true"]')) return;
+      resetSheetDrag(); sheetMapRequest++; cameraVersion++;
+      const frame = panel.getBoundingClientRect(), style = getComputedStyle(panel);
+      sheetDrag = { surface, pointerId: event.pointerId, x: event.clientX, y: event.clientY, startHeight: frame.height, height: frame.height,
+        min: parseFloat(style.minHeight) || 0, max: parseFloat(style.maxHeight) || frame.height, expanded, moved: false };
+      // Catch an in-progress map/list animation at its visible height, so a
+      // new drag starts under the finger rather than from the animation target.
+      panel.classList.add('pp-sheet-dragging');
+      panel.style.setProperty('--pp-sheet-drag-height', `${frame.height}px`);
+      surface.setPointerCapture(event.pointerId);
+    }
+    function moveSheetDrag(event) {
+      const drag = sheetDrag;
+      if (!drag || event.pointerId !== drag.pointerId) return;
+      const dy = event.clientY - drag.y, dx = event.clientX - drag.x;
+      if (!drag.moved && (Math.abs(dy) < 6 || Math.abs(dy) < Math.abs(dx))) return;
+      if (!drag.moved) { drag.moved = true; options.map()?.stop?.(); }
+      event.preventDefault();
+      drag.height = Math.max(drag.min, Math.min(drag.max, drag.startHeight - dy));
+      if (!sheetDragFrame) sheetDragFrame = requestAnimationFrame(paintSheetDrag);
+    }
+    function endSheetDrag(event, cancelled = false) {
+      const drag = sheetDrag;
+      if (!drag || event.pointerId !== drag.pointerId) return;
+      const moved = drag.moved, dy = event.clientY - drag.y;
+      if (moved) {
+        if (sheetDragFrame) cancelAnimationFrame(sheetDragFrame);
+        paintSheetDrag();
+        // Commit the finger-following height before reenabling the short snap.
+        panel.getBoundingClientRect();
+        ignoreClick = true;
+        setTimeout(() => { ignoreClick = false; }, 0);
+      }
+      const next = !cancelled && moved && Math.abs(dy) > 28 ? dy < 0 : drag.expanded;
+      resetSheetDrag(); setExpanded(next);
+      if (moved) scheduleMarkers();
+    }
     function toggleSheet(value) {
       setExpanded(value);
+      const request = ++sheetMapRequest;
       // Reframe only on a deliberate map request, after the sheet has settled.
       if (!value) {
         const version = panelVersion;
-        setTimeout(() => { if (visible && !expanded && version === panelVersion) current() ? focusPlace(current()) : fitPlaces(); }, duration(300));
+        setTimeout(() => { if (visible && !expanded && version === panelVersion && request === sheetMapRequest) current() ? focusPlace(current()) : fitPlaces(); }, duration(300));
       }
     }
     handle.addEventListener('click', () => { if (!ignoreClick) toggleSheet(!expanded); ignoreClick = false; });
-    handle.addEventListener('pointerdown', event => { startY = event.clientY; handle.setPointerCapture(event.pointerId); });
-    handle.addEventListener('pointerup', event => { if (startY !== null && Math.abs(event.clientY - startY) > 28) { toggleSheet(event.clientY < startY); ignoreClick = true; setTimeout(() => { ignoreClick = false; }, 0); } startY = null; });
-    handle.addEventListener('pointercancel', () => { startY = null; });
+    for (const surface of [handle, $('.pp-heading'), $('.pp-detail-nav')]) {
+      surface.addEventListener('pointerdown', startSheetDrag);
+      surface.addEventListener('pointermove', moveSheetDrag);
+      surface.addEventListener('pointerup', event => endSheetDrag(event));
+      surface.addEventListener('pointercancel', event => endSheetDrag(event, true));
+      surface.addEventListener('lostpointercapture', event => endSheetDrag(event, true));
+    }
     gallery.addEventListener('cancel', event => { event.preventDefault(); requestGalleryClose(); });
     gallery.addEventListener('click', event => {
       if (event.target.closest('[data-gallery-close]')) requestGalleryClose();
@@ -560,6 +623,7 @@
     window.addEventListener('resize', () => {
       const changedWidth = Math.abs(root.innerWidth - viewportWidth) > 1, changedHeight = Math.abs(root.innerHeight - viewportHeight) > 100;
       if (!changedWidth && (!changedHeight || document.activeElement?.matches('input,textarea,[contenteditable="true"]'))) return;
+      resetSheetDrag();
       viewportWidth = root.innerWidth; viewportHeight = root.innerHeight; clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => { if (visible && !gallery.open) { options.map()?.resize(); current() ? focusPlace(current()) : fitPlaces(); } }, 180);
     });

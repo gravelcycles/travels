@@ -77,8 +77,10 @@
  .photo-stage { position:absolute; top:var(--photo-head); bottom:calc(var(--photo-foot) + var(--reveal)); left:0; right:0; display:block; width:100%; background:#091113; touch-action:none; user-select:none; -webkit-user-select:none; }
  .photo-stage figure,.viewer-photo-frame { width:100%; height:100%; }
  .viewer-photo-frame { overflow:visible; }
+ .viewer-photo-frame::before { transform:translate3d(var(--photo-swipe-x,0px),0,0); will-change:transform; }
  .photo-stage #modal-photo { position:relative; z-index:1; object-fit:contain; will-change:transform; -webkit-user-drag:none; }
- .photo-stage .mobile-photo-neighbor:not([hidden]) { position:absolute; inset:0; display:block; pointer-events:none; object-fit:contain; }
+ .photo-stage .mobile-photo-neighbor:not([hidden]) { position:absolute; inset:0; display:block; pointer-events:none; object-fit:contain; will-change:transform; }
+ .photo-stage .mobile-photo-neighbor:not(.is-loaded) { filter:blur(24px); }
  .photo-context { display:contents; border:0; }
  .photo-location-panel { position:absolute; display:grid; grid-template-rows:auto minmax(0,1fr) auto; height:var(--location-height,320px); bottom:calc(var(--photo-foot) - var(--location-height,320px) + var(--reveal)); left:0; right:0; background:var(--panel); color:var(--ink); border-radius:18px 18px 0 0; overflow:hidden; visibility:hidden; }
  .photo-viewer[data-location-visible="true"] .photo-location-panel { visibility:visible; }
@@ -108,9 +110,9 @@
  .mobile-grid-heading button { font-size:15px; }
  .photo-viewer.is-location-settling .photo-stage { transition:bottom 220ms cubic-bezier(.2,.75,.25,1); }
  .photo-viewer.is-location-settling .photo-location-panel { transition:bottom 220ms cubic-bezier(.2,.75,.25,1); }
- .photo-viewer.is-swipe-settling #modal-photo,.photo-viewer.is-swipe-settling .mobile-photo-neighbor { transition:transform 160ms cubic-bezier(.2,.75,.25,1); }
+ .photo-viewer.is-swipe-settling #modal-photo,.photo-viewer.is-swipe-settling .mobile-photo-neighbor,.photo-viewer.is-swipe-settling .viewer-photo-frame::before { transition:transform 220ms cubic-bezier(.22,.68,.25,1); }
  @media(max-height:600px) { .photo-dialog .photo-viewer[data-location-visible="true"] { --photo-foot:calc(64px + env(safe-area-inset-bottom)); } .mobile-day-summary { padding:9px 16px; } .mobile-day-summary h2 { font-size:20px; margin:4px 0; } .mobile-day-summary p { margin-bottom:7px; } .photo-viewer { --photo-head:44px; --photo-foot:calc(64px + env(safe-area-inset-bottom)); } .mobile-photo-footer { padding-top:0; } #mobile-photo-time { min-height:16px; line-height:16px; } }
- @media(prefers-reduced-motion:reduce) { .photo-viewer.is-location-settling .photo-stage,.photo-viewer.is-location-settling .photo-location-panel,.photo-viewer.is-swipe-settling #modal-photo,.photo-viewer.is-swipe-settling .mobile-photo-neighbor { transition:none; } }
+ @media(prefers-reduced-motion:reduce) { .photo-viewer.is-location-settling .photo-stage,.photo-viewer.is-location-settling .photo-location-panel,.photo-viewer.is-swipe-settling #modal-photo,.photo-viewer.is-swipe-settling .mobile-photo-neighbor,.photo-viewer.is-swipe-settling .viewer-photo-frame::before { transition:none; } }
 }
 
 /* A common drawn icon set keeps navigation legible at every density. */

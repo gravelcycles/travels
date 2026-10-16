@@ -48,6 +48,6 @@ export function viewerFixture({deferredHistory=false, reducedMotion=false, video
     if(!event.stopped){currentTarget.handlers.get('click')?.(event);target.onclick?.(event);}
     return event;
   }
-  return {api,node,controller,history,drag,click,get neighborLoads(){return neighborLoads;},get mediaPauses(){return mediaPauses;},resize(mobile){const query=queries.get('(max-width: 900px)');query.matches=mobile;query.changed();},get tabs(){return tabs;},get pauses(){return pauses;},flushHistory(){while(traversals.length)traversals.shift()();},get index(){return index;},get locations(){return locations;},flush(elapsed=300){clock+=elapsed;const raf=[...frames.values()];frames.clear();raf.forEach(fn=>fn(clock));const work=[...timers.values()];timers.clear();work.forEach(fn=>fn());}};
+  function frame(elapsed=16){clock+=elapsed;const raf=[...frames.values()];frames.clear();raf.forEach(fn=>fn(clock));}
+  return {api,node,controller,history,drag,click,frame,dispatch:type=>events.get(type)?.({type}),get neighborLoads(){return neighborLoads;},get mediaPauses(){return mediaPauses;},resize(mobile){const query=queries.get('(max-width: 900px)');query.matches=mobile;query.changed();},get tabs(){return tabs;},get pauses(){return pauses;},flushHistory(){while(traversals.length)traversals.shift()();},get index(){return index;},get locations(){return locations;},flush(elapsed=300){frame(elapsed);const work=[...timers.values()];timers.clear();work.forEach(fn=>fn());}};
 }
-

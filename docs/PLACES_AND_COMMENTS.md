@@ -66,6 +66,12 @@ screen-space clustering with accessible place choices. On phones Places opens ex
 Show list explicitly switches space between the map and results; automatic
 pin fitting never collapses the list. Search and event scope stay directly
 available; Filters reveals the category choices, with an active-filter count.
+The handle and broad non-control areas of the list heading and detail top bar
+also drag the sheet directly, including after Show map (owner follow-up,
+16 October 2026). The sheet follows the finger, then settles into the map or
+reading position; a cancelled gesture restores its starting position. Header
+buttons remain taps, result content remains scrollable, and exposed map space
+remains pannable. Show map / Show list remains the keyboard/tap alternative.
 The compact map sheet keeps result cards and hides browse controls. Short
 landscape uses a side sheet so the map and readable results remain reachable. Tabs support arrow keys, Home and End.
 Browser Back and Forward follow place details and galleries. A return from

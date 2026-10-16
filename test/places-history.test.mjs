@@ -154,7 +154,7 @@ test('place-only history changes do not refit an unchanged whole-journey map', (
   assert.equal(f.overviewCalls, 0, 'Independent places navigation cannot reset its camera through the mobile controller');
 });
 
-function placeHistoryFixture({ mobile = false, cameraReady = null, scope = 'journey', photos = [], visibleDayIds, interactiveMap = false } = {}) {
+function placeHistoryFixture({ mobile = false, landscape = false, cameraReady = null, scope = 'journey', photos = [], visibleDayIds, interactiveMap = false } = {}) {
   const nodes = new Map(), events = new Map(), queue = [];
   const mobileState = { viewer: false, dayId: 'one', scope: 'journey', tab: 'map' };
   const stack = [{ priorPage: true }, { mobileAtlas: mobileState }];
@@ -162,16 +162,22 @@ function placeHistoryFixture({ mobile = false, cameraReady = null, scope = 'jour
   const cameraJumps = [], cameraMoves = [], openedPhotos = [], frames = [], mapEvents = new Map(), pinButtons = [], popups = []; let elementId = 0;
   function node(selector) {
     if (nodes.has(selector)) return nodes.get(selector);
-    const listeners = new Map(), classes = new Set();
+    const listeners = new Map(), classes = new Set(), styles = new Map(), captures = new Set();
     const value = {
       dataset: {}, hidden: false, open: false, isConnected: true, scrollTop: 0, offsetTop: 0, innerHTML: '', value: '',
+      style: { setProperty: (name, value) => styles.set(name, value), removeProperty: name => styles.delete(name), getPropertyValue: name => styles.get(name) || '' },
       classList: { add(...names) { names.forEach(name => classes.add(name)); }, remove(...names) { names.forEach(name => classes.delete(name)); }, contains: name => classes.has(name) },
       querySelector: child => node(child), querySelectorAll: () => [], append() {},
       setAttribute(name, content) { this[name] = content; }, getClientRects: () => [{ width: 44, height: 44 }],
-      getBoundingClientRect: () => ({ left: 0, top: 0, right: 44, bottom: 44, width: 44, height: 44 }),
+      getBoundingClientRect() {
+        if (selector !== '#places-panel') return { left: 0, top: 0, right: 44, bottom: 44, width: 44, height: 44 };
+        const height = Number.parseFloat(styles.get('--pp-sheet-drag-height')) || (this.dataset.expanded === 'true' ? 722 : 354);
+        return { left: 0, top: 786 - height, right: 390, bottom: 786, width: 390, height };
+      },
+      setPointerCapture: id => captures.add(id), hasPointerCapture: id => captures.has(id), releasePointerCapture: id => captures.delete(id),
       focus() { document.activeElement = this; }, closest() { return null; }, contains: () => false,
       addEventListener(name, listener) { if (!listeners.has(name)) listeners.set(name, []); listeners.get(name).push(listener); },
-      fire(name, event) { (listeners.get(name) || []).forEach(listener => listener(event)); },
+      fire(name, event = {}) { (listeners.get(name) || []).forEach(listener => listener({ target: this, currentTarget: this, preventDefault() {}, ...event })); },
       showModal() { this.open = true; }, close() { this.open = false; }, scrollIntoView() {}
     };
     nodes.set(selector, value); return value;
@@ -190,7 +196,8 @@ function placeHistoryFixture({ mobile = false, cameraReady = null, scope = 'jour
   const context = vm.createContext({
     window: { JOURNEY_ATLAS_UTILS:globalThis.JOURNEY_ATLAS_UTILS, addEventListener: (name, listener) => events.set(name, listener) }, document, history, URL,
     FormData: class { constructor(form) { this.values = form.values || {}; } get(name) { return this.values[name]; } },
-    location: { href: 'https://example.test/journey' }, matchMedia: query => ({ matches: mobile && query.includes('900px') }),
+    location: { href: 'https://example.test/journey' }, matchMedia: query => ({ matches: mobile && query.includes('900px') && (!query.includes('landscape') || landscape) }),
+    getComputedStyle: () => ({ minHeight: '240px', maxHeight: '724px' }),
     requestAnimationFrame(fn) { if(interactiveMap)frames.push(fn); return 1; }, cancelAnimationFrame() {}, setTimeout() {}, clearTimeout() {}
   });
   for (const file of ['photo-places.js','places-comments.js', 'places-panel.js']) vm.runInContext(fs.readFileSync(new URL(`../dist/assets/${file}`, import.meta.url), 'utf8'), context);
@@ -566,4 +573,76 @@ test('phone category disclosure preserves filtering and returns space to results
   f.click('', {}, ['data-clear-filters']);
   assert.match(f.node('#places-content').innerHTML, /A café/);
   assert.equal(target.textContent, 'Filters');
+});
+
+test('phone Places follows header and handle drags continuously after Show map without refitting the map', () => {
+  for (const selector of ['#places-sheet-toggle', '.pp-heading', '.pp-detail-nav']) {
+    const f = placeHistoryFixture({ mobile: true, cameraReady: true, interactiveMap: true });
+    f.controller.open(); f.flushFrames();
+    if (selector === '.pp-detail-nav') f.controller.openPlace('cafe');
+    f.node('#places-sheet-toggle').fire('click'); f.flushFrames();
+    const panel = f.node('#places-panel'), surface = f.node(selector), content = f.node('#places-content');
+    content.scrollTop = 80;
+    const mapMoves = f.cameraMoves.length;
+    surface.fire('pointerdown', { pointerId: 1, clientX: 120, clientY: 500 });
+    surface.fire('pointermove', { pointerId: 1, clientX: 122, clientY: 450 });
+    assert.equal(panel.style.getPropertyValue('--pp-sheet-drag-height'), '354px', 'The initial height is frozen; movement is coalesced to a frame');
+    f.flushFrames();
+    assert.equal(panel.style.getPropertyValue('--pp-sheet-drag-height'), '404px', selector);
+    assert.equal(panel.classList.contains('pp-sheet-dragging'), true);
+    surface.fire('pointermove', { pointerId: 1, clientX: 122, clientY: 400 }); f.flushFrames();
+    assert.equal(panel.style.getPropertyValue('--pp-sheet-drag-height'), '454px', 'The sheet continues to track the finger');
+    surface.fire('pointerup', { pointerId: 1, clientX: 122, clientY: 400 }); f.flushFrames();
+    assert.equal(panel.dataset.expanded, 'true');
+    assert.equal(f.node('#places-sheet-label').textContent, 'Show map');
+    assert.equal(panel.style.getPropertyValue('--pp-sheet-drag-height'), '');
+    assert.equal(panel.classList.contains('pp-sheet-dragging'), false);
+    assert.equal(surface.hasPointerCapture(1), false);
+    assert.equal(content.scrollTop, 80);
+    assert.equal(f.cameraMoves.length, mapMoves, 'Manual sheet dragging never recenters an explored map');
+    if (selector === '#places-sheet-toggle') {
+      surface.fire('click');
+      assert.equal(panel.dataset.expanded, 'true', 'The synthetic click after dragging does not reverse the resize');
+      surface.fire('click');
+      assert.equal(panel.dataset.expanded, 'false', 'Ordinary button/keyboard activation still switches map/list');
+    }
+  }
+});
+
+test('phone Places drag bounds, cancellation and closing clear temporary movement', () => {
+  const f = placeHistoryFixture({ mobile: true, interactiveMap: true }), panel = f.node('#places-panel'), heading = f.node('.pp-heading');
+  f.controller.open(); f.flushFrames();
+  heading.fire('pointerdown', { pointerId: 7, clientX: 90, clientY: 100 });
+  heading.fire('pointermove', { pointerId: 7, clientX: 90, clientY: 2000 }); f.flushFrames();
+  assert.equal(panel.style.getPropertyValue('--pp-sheet-drag-height'), '240px');
+  heading.fire('pointercancel', { pointerId: 7, clientY: 2000 });
+  assert.equal(panel.dataset.expanded, 'true');
+  assert.equal(panel.style.getPropertyValue('--pp-sheet-drag-height'), '');
+  heading.fire('pointerdown', { pointerId: 8, clientX: 90, clientY: 100 });
+  heading.fire('pointermove', { pointerId: 8, clientX: 90, clientY: -1000 }); f.flushFrames();
+  assert.equal(panel.style.getPropertyValue('--pp-sheet-drag-height'), '724px');
+  f.controller.close({ historyWrite: false });
+  assert.equal(heading.hasPointerCapture(8), false);
+  assert.equal(panel.style.getPropertyValue('--pp-sheet-drag-height'), '');
+  assert.equal(panel.classList.contains('pp-sheet-dragging'), false);
+});
+
+test('Places header buttons, nonprimary input, desktop and landscape retain their existing gestures', () => {
+  for (const options of [{ mobile: false }, { mobile: true, landscape: true }, { mobile: true, button: true }, { mobile: true, primary: false }]) {
+    const f = placeHistoryFixture({ ...options, interactiveMap: true }), heading = f.node('.pp-heading');
+    f.controller.open(); f.flushFrames();
+    const target = options.button ? { closest: () => f.node('#close-places') } : heading;
+    heading.fire('pointerdown', { target, pointerId: 1, clientX: 100, clientY: 100, isPrimary: options.primary });
+    heading.fire('pointermove', { pointerId: 1, clientX: 100, clientY: 300 }); f.flushFrames();
+    assert.equal(heading.hasPointerCapture(1), false);
+    assert.equal(f.node('#places-panel').style.getPropertyValue('--pp-sheet-drag-height'), '');
+  }
+  const f = placeHistoryFixture({ mobile: true, interactiveMap: true }), heading = f.node('.pp-heading');
+  f.controller.open(); f.flushFrames();
+  heading.fire('pointerdown', { pointerId: 3, clientX: 100, clientY: 100 });
+  heading.fire('pointermove', { pointerId: 4, clientX: 100, clientY: 300 });
+  heading.fire('pointermove', { pointerId: 3, clientX: 200, clientY: 102 }); f.flushFrames();
+  assert.equal(f.node('#places-panel').style.getPropertyValue('--pp-sheet-drag-height'), '722px', 'A second pointer and horizontal movement do not resize');
+  heading.fire('pointerup', { pointerId: 3, clientX: 200, clientY: 102 });
+  assert.equal(f.node('#places-panel').dataset.expanded, 'true');
 });

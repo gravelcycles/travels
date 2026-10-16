@@ -194,6 +194,7 @@
         entry.url = URL.createObjectURL(blob);freshSources.delete(src);
         // Memory eviction must not turn a completed background plan into a fetch loop.
         if (preloadTargets.has(src)) preloadCompleted.add(src);
+        window.dispatchEvent(new Event('atlas-photo-cache-ready'));
         return entry;
       } catch (error) {
         if (controller.signal.aborted && !entry.controller.signal.aborted) error.photoFailure = 'timeout';
@@ -295,7 +296,7 @@
     const src = selected(photo, Infinity), entry = (local || token) && cache.get(src);
     clearImage(img);
     if (!entry?.url) return false;
-    const item = {src, fullOnly:true, entry:null, priority:2};
+    const item = {src, fullOnly:true, blur:photo.blur||placeholder, entry:null, priority:2};
     images.set(img, item); img.dataset.privateSrc = src;
     display(img, item, entry); return true;
   }

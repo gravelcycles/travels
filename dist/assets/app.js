@@ -260,8 +260,16 @@
     if (!url || preloadedPhotoUrls.has(url)) return;
     preloadedPhotoUrls.add(url);
     const image = new Image();
+    const src = new URL(url, document.baseURI).href;
+    const ready = () => {
+      if (decodedPhotoUrls.has(src)) return;
+      decodedPhotoUrls.add(src);
+      window.dispatchEvent(new Event('atlas-photo-cache-ready'));
+    };
+    image.onload = () => { if (image.complete && image.naturalWidth) ready(); };
     image.decoding = "async";
     image.src = url;
+    if (image.decode) image.decode().then(ready, () => {});
   }
 
   function applyPreloads(requests) {
@@ -2493,7 +2501,7 @@
     refreshGrid:()=>renderViewerFilmstrip(viewerPhotos()),
     suspendPhotos:()=>{videoPlayer.pause();window.JOURNEY_ATLAS_AUTH?.clearImage(viewerImage);viewerImage.onload=viewerImage.onerror=null;viewerImage.removeAttribute('src');applyPreloads([]);},
     clearImage:node=>{delete node.dataset.videoPoster;window.JOURNEY_ATLAS_AUTH?.clearImage(node);},
-    loadImage:(node,photo)=>{if(mediaUtils.isVideo(photo))return;if(window.JOURNEY_ATLAS_AUTH?.isProtected(photo))window.JOURNEY_ATLAS_AUTH.setCachedImage(node,photo);else if(decodedPhotoUrls.has(new URL(preferredPhotoUrl(photo,Infinity),document.baseURI).href))setPublicFullImage(node,photo);}
+    loadImage:(node,photo)=>{if(mediaUtils.isVideo(photo))return false;if(window.JOURNEY_ATLAS_AUTH?.isProtected(photo))return window.JOURNEY_ATLAS_AUTH.setCachedImage(node,photo);if(!decodedPhotoUrls.has(new URL(preferredPhotoUrl(photo,Infinity),document.baseURI).href))return false;setPublicFullImage(node,photo);return true;}
   });
   window.addEventListener("resize", () => {
     if (mainMap) mainMap.resize();

@@ -201,6 +201,16 @@ ready. Completion, cancellation and reduced motion clear this temporary backdrop
 loaded full-screen photos must have clean edges after the reveal.
 Mobile swipe-neighbor images stay hidden on desktop, before initialization and
 after closing; also check resizing an open viewer from phone to desktop width.
+The first mobile swipe must be as continuous as later swipes (owner correction,
+16 October 2026). Refresh adjacent image bindings when bounded full-photo
+preloads become ready, including public sample images, without refetching or
+promoting speculative downloads. Prepare the drag width once, coalesce pointer
+updates to display frames, and preserve the incoming image through release.
+Check cold entry with delayed neighbors, cached revisits, rapid direction changes,
+cancelled swipes, collection ends and reduced motion. Slow or failed images
+retain the existing preview/access lifecycle; do not substitute sharp thumbnails
+for full derivatives. Pinch/pan, pull-to-dismiss, location and grid return keep
+their existing behavior.
 Check taps/clicks through the grid, location panel and Back without lingering
 focus rings; Tab/Shift-Tab must still visibly identify the focused control with
 the shared slim slate outline, including in dialogs. Focus indicators are never

@@ -10,7 +10,7 @@ class Element extends EventTarget {
 function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/webp'}}),{startup=false,tabStorage=new Map(),clock=Date,hash=''}={}){
  const elements=[],header=new Element(),events=new Map(),calls=[],revoked=[],timers=new Map();let loginFlow,timerId=0;
  const document={body:new Element(),hidden:false,activeElement:new Element(),createElement(){const e=new Element();elements.push(e);return e;},querySelector(){return header;},querySelectorAll(){return [elements[0].querySelector('[data-unlock]'),elements[1].querySelector('[data-unlock]')];},addEventListener(n,fn){events.set(n,fn);}};
- const window={JOURNEY_ATLAS_PHOTO_SERVICE:{origin:'https://photos.example.com'},addEventListener(n,fn){events.set(n,fn);},dispatchEvent(){},open(){throw new Error('Login should not require a popup');}};
+ const window={JOURNEY_ATLAS_PHOTO_SERVICE:{origin:'https://photos.example.com'},addEventListener(n,fn){events.set(n,fn);},dispatchEvent(event){events.get(event.type)?.(event);},open(){throw new Error('Login should not require a popup');}};
  const Url=class extends URL{};Url.createObjectURL=()=>`blob:fixture-${calls.length}`;Url.revokeObjectURL=u=>revoked.push(u);
  document.body.dataset.journeyScope=startup?'real':'demo';
  const navigations=[],historyUrls=[];const location=new URL('https://gravelcycles.github.io/travels/');location.hash=hash;location.assign=url=>navigations.push(url);
@@ -438,6 +438,27 @@ test('swipe neighbors use cached full photos without starting or promoting downl
   assert.equal(f.auth.setCachedImage(neighbor,photo),true);assert.match(neighbor.src,/^blob:/);assert.equal(f.calls.length,loaded);
   assert.ok(f.calls.every(([,options])=>options.priority==='low'));
   f.auth.lock();assert.equal(f.auth.setCachedImage(neighbor,photo),false);
+});
+
+test('a completed private preload notifies a waiting neighbor without promoting work; locking clears its pixels',async()=>{
+  let finish;
+  const f=fixture(()=>new Promise(resolve=>{finish=resolve;}));await f.unlock();
+  const neighbor=new Element();neighbor.decode=()=>Promise.resolve();let notifications=0;
+  f.window.addEventListener('atlas-photo-cache-ready',()=>{notifications++;f.auth.setCachedImage(neighbor,photo);});
+  f.auth.preload(photo,Infinity);await settle();assert.equal(notifications,0);
+  finish(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));await settle();
+  assert.equal(notifications,1);assert.equal(neighbor.dataset.photoState,'ready');assert.match(neighbor.src,/^blob:/);
+  assert.equal(f.calls.length,1);assert.equal(f.calls[0][1].priority,'low');
+  f.auth.lock();assert.equal(neighbor.src,photo.blur);assert.equal(neighbor.dataset.photoState,'locked');
+});
+
+test('a cancelled private preload cannot publish cache readiness after access is locked',async()=>{
+  let finish;
+  const f=fixture(()=>new Promise(resolve=>{finish=resolve;}));await f.unlock();let notifications=0;
+  f.window.addEventListener('atlas-photo-cache-ready',()=>{notifications++;});
+  f.auth.preload(photo,Infinity);await settle();f.auth.lock();
+  finish(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));await settle();
+  assert.equal(notifications,0);
 });
 
 test('private videos obtain only short-lived scoped grants while poster bytes use the existing private cache',async()=>{

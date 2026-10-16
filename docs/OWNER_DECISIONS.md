@@ -252,6 +252,31 @@ must not collapse browsing. Check populated city/daily trips, empty filters,
 list/detail/gallery Back and Forward, scroll retention, safe areas, keyboard,
 short landscape and larger phones; preserve the existing desktop sidebar.
 
+Owner follow-up, 16 October 2026: after Show map, the sheet should be draggable,
+and “a large part of that top bar should be draggable.” The handle and broad
+non-control areas of both list and detail headers must follow the finger while
+resizing between map and reading views. Keep Show map / Show list as accessible
+tap alternatives, preserve working header buttons and content scrolling, and
+leave the exposed map pannable. This supersedes release-only dragging from the
+narrow handle; it does not change the expanded opening or landscape side sheet.
+Check drags in both directions before/after Show map, cancellation, taps,
+list/detail transitions and map panning at 320/390px and landscape.
+
+## Mobile swipe continuity — 16 October 2026
+
+The owner reported that “the first photo swipe isn't smooth” and requested
+slightly smoother subsequent swipes. This extends O04/O08 across every atlas:
+the first horizontal drag after fullscreen entry must have the same continuous
+photo handoff as later drags, including when adjacent images finish loading
+after the viewer opens. Prepare bounded neighbors through the existing full-photo
+cache, keep the preview until full pixels are ready, and let the image follow
+the finger without layout work on every pointer event. Preserve quick repeated
+swipes, cancelled gestures, collection ends, pinch/pan, pull-to-dismiss and reduced
+motion. Check a cold first entry as well as cached revisits and slow images;
+a warmed second swipe alone does not satisfy this correction. Implementation
+details and verification belong in [the photo workflow](../PHOTO_WORKFLOW.md)
+and [WIP](../WIP.md#mobile-photo-swipes-and-places-dragging--16-october-2026).
+
 ## Mobile pull-to-dismiss — 12 October 2026
 
 The owner reported that fullscreen is hard to exit on mobile and requested
