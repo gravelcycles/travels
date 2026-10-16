@@ -75,7 +75,13 @@ scrolling/map panning and photo/draft/history retention, without browser errors.
 Current main's saved photo metadata, solid controls, right-aligned actions and
 experiment retirement are preserved. Evidence is in ignored
 `build/header-drag-qa/`; these are Chrome viewport checks, not physical-device
-certification. Next: deploy and verify fresh public interactions.
+certification. Released as `5667d26` through successful
+[Pages run 38940462823](https://github.com/gravelcycles/travels/actions/runs/38940462823).
+All four fresh public journey/demo pages and six runtime/style assets match the
+tested build. Public demo checks at 390px, short landscape and desktop verify
+whole-header and Close-origin dragging, native taps, short-pull return,
+secondary-touch cancellation, retained photo/draft/history and keyboard Close,
+with no browser errors or real comment writes. This follow-up is complete.
 
 Separate existing layout gap found during verification: long photo notes can
 consume the entire location panel at 844 × 390, leaving its map zero-height.
@@ -152,6 +158,27 @@ requests occurred. Screenshots and results are in
 complete. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
+
+**Visible-control zoom follow-up — deployed and verified.** The
+owner wants zoom to fill the black background even with controls shown. Mobile
+zoom now removes continuous header/footer backgrounds, keeps every button and
+label opaque, and lets image input pass through gaps. Fitted photos retain solid
+bars; right alignment and Share/Comments order stay intact. This supersedes the
+intermediate requirement for opaque bars during zoom; current guidance is in
+O03/O08 and the photo workflow. All **751 tests**, the production build and
+**16 browser fixtures** pass across reference, Heading East, Alpine demo and an
+independently populated city draft at 320/390 px, landscape and desktop. Pixel
+checks confirm photo coverage at top/bottom edges with visible chrome; computed
+styles confirm opaque buttons, including disabled controls. Native input checks
+cover gap panning, focal pinch, hiding/restoration, zoom-out and active-pinch
+access reset. Bright/dark screenshots were inspected; close/resize/breakpoint
+reset regressions pass. Independent review passes; no physical-device claim.
+Released as `fa27585` through successful
+[Pages run 38941740860](https://github.com/gravelcycles/travels/actions/runs/38941740860).
+All four fresh public journey/demo pages and both changed shared assets match
+the tested build. A fresh public demo at 390px and short landscape confirms
+full-screen photo coverage behind opaque controls, tap hiding/restoration and
+solid bars returning on zoom-out, with no browser errors. Delivery is complete.
 
 **Alignment follow-up — deployed and verified.** The owner
 clarified that the next-city and Comments buttons must be right-aligned. Keep
