@@ -18,9 +18,18 @@ All **781 tests pass** after the final browser-discovered desktop correction:
 CSSOM-normalized transform ownership restores fitted same-photo reopen (2.5×→1×).
 The build passes; phone 390×844, landscape 844×390 and desktop 1360×900 browser
 checks pass with no page exceptions, including Location reversal/cancel, zoom
-controls, close/reopen and grid return. Pages/public verification remains the
-delivery step; this paragraph is not yet a deployment receipt. AVIF is still
-uploading/verifying assets in its own workstream. The existing follow-up will
+controls, close/reopen and grid return. The owner explicitly approved merging,
+deploying and verifying [PR #1](https://github.com/gravelcycles/travels/pull/1).
+Published as `6fefc36` through successful
+[Pages run 38945230961](https://github.com/gravelcycles/travels/actions/runs/38945230961).
+Five fresh public pages and 43 unique script/style assets match the tested release
+byte-for-byte. Fresh demo checks at phone, short landscape and desktop verify
+Location/Comments, photo navigation and fitted reopen after 2.5× zoom; Heading East
+also verifies existing signed-in full-size image access, empty-thread loading,
+mobile Location and retained grid selection. No console errors or live comment
+writes. The known long-notes/short-landscape map-height issue remains in TODO.
+This implementation batch is delivered. AVIF is still uploading/verifying assets
+in its own workstream. The existing follow-up will
 measure its image bytes, fallback, decode and neighbor readiness after deployment
 before any justified bounded preload-scheduling change. Preserve its WebP fallback
 and originals; do not count its savings as this performance batch.
