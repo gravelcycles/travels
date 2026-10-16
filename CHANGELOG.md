@@ -1,5 +1,13 @@
 # Changelog
 
+## 16 October 2026 — retire the depth experiment
+
+- Archive the rejected demo locally and remove its source, public assets, build
+  hook and detailed experiment guidance from main. Preserve source trip photos
+  and unrelated shared features. Record the owner’s rejection as the current rule.
+- Deployment, private-derivative cleanup and branch removal are tracked in WIP.
+  All 740 tests and the production build pass after removal.
+
 ## 16 October 2026 — direct notification conversations
 
 - Open notification targets as fullscreen photographs with comments immediately
@@ -73,20 +81,6 @@
   All 682 integrated tests, the production build and desktop/phone browser
   checks pass, including whole-trip Places scope and selected-card cleanup.
 
-## 16 October 2026 — publish seven protected depth samples
-
-- Publish and checksum-verify the seven prepared depth WebPs (183,664 bytes)
-  in private R2 after restoring publishing authorization. Verify the 14 existing
-  photo/thumbnail objects, disabled public bucket access and anonymous gateway
-  401/no-store responses before marking all seven demo records published.
-- All 678 integrated tests, the production build and all-nine local
-  browser/auth/privacy fixtures pass. Preserve gentle,
-  off-by-default motion and the demo-only scope; no shared-viewer integration.
-  Release `3fb52f2` passed [Pages run 38936435746](https://github.com/gravelcycles/travels/actions/runs/38936435746).
-  Fresh public hashes, anonymous locked/unlock behavior and all seven private
-  photos' live depth playback with remembered access pass; the nine-photo demo
-  is ready for owner review. [Receipt](WIP.md#fullscreen-depth-motion-preview--14-october-2026).
-
 ## 16 October 2026 — update checkpoints for manual broadcasts
 
 - Add a live-site baseline and new-trip/photo diffs grouped by authored location,
@@ -100,55 +94,6 @@
   generated-output changes. Save the initial verified public-metadata checkpoint
   locally for 3 trips/222 photos; a fresh read produces an empty diff. See WIP
   for the checkpoint location and release verification.
-
-## 15 October 2026 — restore gentle depth motion and add website samples
-
-- Record the owner's rejection of the stronger 3D range. Return the separate
-  preview to the original gentle movement, capped by a 0–100% slider, and remove
-  the 3× presets while retaining drag/held viewpoint, reset and keyboard controls.
-  Offer Mouse move separately from Drag to explore and Slow drift.
-- Authorize seven existing website photographs alongside the two public samples;
-  keep the photographs and generated depth behind the existing private-photo
-  access and gateway. No public protected pixels or shared-viewer integration.
-- Update current owner, demo, photo and framework guidance in the same change.
-  All 640 tests, build and local nine-photo browser/privacy checks pass. Seven
-  private maps are prepared; their upload awaits restored Cloudflare OAuth.
-  Remote hosts hide unpublished samples so the gentle correction can ship safely.
-  Gentle release `2404389` passed [Pages run 38795728873](https://github.com/gravelcycles/travels/actions/runs/38795728873).
-  Fresh public hashes and phone drag/mouse checks pass; two samples are live.
-  Private upload was blocked at this release; the 16 October entry above records
-  its resolution. Current delivery status is in [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026).
-
-## 14 October 2026 — drag and adjustable 3D in the remote preview
-
-The stronger range/presets below were superseded by the 15 October correction;
-drag, held viewpoint, reset and keyboard controls are retained.
-
-- Replace hover steering with direct mouse/touch drag, hold the released
-  viewpoint, and add reset plus keyboard arrows/Home. Drag takes over from drift.
-- Add flat-to-3× depth and Gentle/Deep/Dramatic presets, fixed framing per level,
-  and more accurate ray sampling. Higher levels expose the stronger effect and
-  its edge-stretching tradeoff. Version remote demo assets together.
-- Record the owner's follow-up in current demo/owner/photo/framework guidance;
-  this remains off by default and separate from the shared journey viewer.
-- Validation: all 640 tests, production build and actual WebGL drag/strength/
-  capture/fallback checks pass; maximum-depth desktop/phone/landscape screenshots
-  were inspected and camera travel tuned to limit distortion.
-- Release `4f64065` passed Pages run `38615056035`; fresh public files match the
-  build and the phone-sized live viewer passes drag/3×/reset/flat/off checks.
-
-## 14 October 2026 — remote fullscreen depth-motion preview
-
-- Add an isolated review page with still-by-default photos, opt-in browser
-  parallax, gentle drift/pointer movement, pause and hold-for-original comparison.
-- Generate genuine depth from public samples once; no visitor model download or
-  private photo exposure. Live journey viewers remain unchanged.
-- Record the owner's demo-only authorization and off-by-default boundary, the
-  processing tradeoffs and conditional future integration in current guidance.
-- Validation: 640 tests, production build, actual-depth WebGL/state/failure
-  browser checks and desktop/phone/landscape visual inspection pass.
-- Release `8c98c67` passed Pages run `38608368833`; fresh public files match the
-  tested build, and a fresh phone-sized browser passes off → motion → off.
 
 ## 12 October 2026 — visible mobile Places results
 

@@ -131,22 +131,6 @@ demonstrate different transport combinations; full-trip Replay is disabled.
 Their sparse illustrative media is intentional. They are not source templates
 to duplicate and they do not certify route or photo-location accuracy.
 
-## Separate review artifact — 14 October 2026
-
-[Fullscreen depth-motion preview](DEPTH_FULLSCREEN_DEMO.md) is a standalone,
-remotely published experiment. It starts off, lazy-loads
-precomputed depth on activation and renders in WebGL. Direct mouse/touch drag
-holds its viewpoint on release, with reset and keyboard control. The 15 October
-revision returns motion to the original gentle range with a 0–100% Movement
-slider, adds a separate Mouse move option alongside Slow drift, and removes
-the rejected 3× presets. The sample set expands to two public examples plus
-seven existing website photographs using normal protected photo access for
-both photo and depth. All nine samples are live and verified as of 16 October,
-including authenticated private depth playback and anonymous unlock behavior.
-Delivery evidence is tracked in
-[WIP](../WIP.md#fullscreen-depth-motion-preview--14-october-2026). It is **not an
-inherited journey capability**; shared-viewer integration remains unapproved.
-
 ## Authoring and publishing references
 
 - [JOURNEY_WORKFLOW.md](../JOURNEY_WORKFLOW.md): intake through reviewed promotion.

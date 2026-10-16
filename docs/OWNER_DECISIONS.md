@@ -86,7 +86,7 @@ keeps the same photo point beneath the fingers' moving midpoint; desktop zoom
 anchors at the pointer or touch midpoint too, including repeated zoom from an
 already panned position. Pan bounds may constrain the edges but must not cause
 an avoidable jump toward the center. This is shared photo-viewer behavior, not
-approval to integrate the separate depth-motion experiment.
+approval to restore the rejected depth experiment.
 
 Check 320/390 px portrait, phone landscape and desktop with portrait/landscape
 photos: Share/Comments remain adjacent on the left and Close stays top-right;
@@ -101,31 +101,15 @@ Implementation and delivery status are tracked in
 [PHOTO_WORKFLOW.md](../PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom)
 owns the interaction contract.
 
-## Fullscreen depth-motion review — 14 October 2026
+## Depth-motion experiment rejected — 16 October 2026
 
-The owner requested a remotely accessible DepthFlow-inspired demo before
-deciding on integration: “off by default” and user-enabled in fullscreen.
-Publish only the separate review artifact; this does not authorize adding the
-effect to live journey viewers, thumbnails, maps or Replay. Keep private photos
-and derived depth private. Any later approved integration must extend the shared
-fullscreen viewer and preserve O03/O04/O08, with still-image fallback and reduced
-motion. The **15 October follow-up supersedes the 14 October request for more
-dramatic 3D**: the stronger result was too extreme; return to the original gentle
-motion while retaining drag and mouse interaction. Keep relative mouse/touch
-drag as the default, hold the released viewpoint, retain reset/keyboard controls,
-and offer Mouse move and Slow drift separately. Movement may be reduced to zero
-but must not exceed the original gentle range; remove the 3× presets.
-
-The same follow-up authorizes **seven existing website photographs** in this
-remote demo, alongside the two public samples. Their photographs and derived
-depth remain behind the normal existing photo access, through private R2 and
-the same authenticated gateway; do not expose their pixels in public assets.
-This is bounded sample preparation, not approval for bulk processing or shared
-viewer integration. Check gentle maximum/zero movement, both drag axes and held
-release, Mouse move, touch/cancel, keyboard, comparison, all nine samples,
-remembered/anonymous access, failed requests and expiry cleanup.
-[Demo scope and processing assessment](DEPTH_FULLSCREEN_DEMO.md) own the
-experiment details; WIP records delivery/review status.
+The owner rejected the fullscreen depth experiment: “let's archive this project”
+and “delete this branch / don't leave any of it on master/main.” This supersedes
+all earlier demo publication, intensity and sample-expansion requests. Remove its
+code, build hook, public assets and experiment branches; do not restore or
+integrate it without new explicit owner direction. Preserve the original trip
+photographs and unrelated shared-viewer work. Historical source remains in Git
+history and the ignored local archive, not in the current main tree.
 
 ## Outbound trip updates — 16 October 2026
 
