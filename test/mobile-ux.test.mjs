@@ -120,18 +120,21 @@ test('a second finger cancels a location-header drag without zooming or closing 
   assert.equal(f.node('#photo-dialog').open,true);
 });
 
-test('a second finger on the location map cancels the header pull without intercepting the map',()=>{
+test('a second finger on the map or native video cancels the header pull without intercepting content',()=>{
+  for(const nativeVideo of [false,true]) {
   const f=viewerFixture();f.api.openDay();f.click('#mobile-photo-location');
   const header='.photo-location-heading';
   f.dispatch(header,'pointerdown',{clientX:120,clientY:350});
   f.dispatch(header,'pointermove',{clientX:125,clientY:410});
-  const second=f.dispatch('#photo-dialog','pointerdown',{target:f.node('#photo-map'),pointerId:2,clientX:240,clientY:500});
+  const target=nativeVideo?{closest:query=>query==='.photo-stage'?f.node('.photo-stage'):query==='button,#viewer-video'?f.node('#viewer-video'):null}:f.node('#photo-map');
+  const second=f.dispatch('#photo-dialog','pointerdown',{target,pointerId:2,clientX:240,clientY:500});
   assert.equal(second.prevented,undefined);assert.equal(second.stopped,undefined);
   f.dispatch(header,'pointermove',{clientX:125,clientY:490});
   f.dispatch(header,'pointerup',{clientX:125,clientY:490});
   assert.equal(f.controller.locationVisible(),true);
   assert.equal(f.node('.photo-viewer').style['--reveal'],f.node('.photo-viewer').style['--location-height']);
   assert.equal(f.node('#photo-dialog').open,true);
+  }
 });
 
 test('cancelled and ambiguous drags settle without navigating or opening location',()=>{

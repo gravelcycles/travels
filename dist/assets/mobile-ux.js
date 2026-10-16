@@ -572,7 +572,8 @@
       // The registered photo/header surfaces already arbitrate two fingers.
       // A second touch on the map or body must also cancel the header pull,
       // while retaining that surface's native interaction.
-      if (event.target.closest('.photo-location-heading,.photo-stage,#mobile-photo-location')) return;
+      if (event.target.closest('.photo-location-heading,#mobile-photo-location') ||
+          event.target.closest('.photo-stage') && !event.target.closest('button,#viewer-video')) return;
       gesture = pinch = null; cancelTap(); suppressClick = true;
       animateLocation(); revealTo(locationOpen ? locationHeight : 0);
     }, true);
