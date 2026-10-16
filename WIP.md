@@ -32,8 +32,9 @@ All days/stops, direct entry and zero JavaScript errors. Public demo photo-card
 selection clears on overview on both sizes. Heading East's phone Places count
 and list follow overview 20 → Stop 1's 2 → overview 20; no event filter is
 selected in overview. These are Chrome viewport checks, not physical-device QA.
-Next: finish final regression check, publish only this fix after integrating
-latest remote main, and record successful Pages/fresh-public-page verification.
+Integrated remote main through `12398b3`; all **682 tests** and the production
+build pass with reproducible checked-in output. Pending delivery: push the
+release and verify successful Pages plus fresh public HTML/assets and phone entry.
 The primary checkout's unrelated pending changes remain untouched.
 
 ## Outbound trip update checkpoints — 16 October 2026

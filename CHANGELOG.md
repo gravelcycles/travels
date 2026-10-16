@@ -9,6 +9,8 @@
   return to overview clears selection.
 - Carry the correction into O06, the feature inventory and opening workflow;
   verify shared behavior across the reference, city atlas, demo and fresh draft.
+  All 682 integrated tests, the production build and desktop/phone browser
+  checks pass, including whole-trip Places scope and selected-card cleanup.
 
 ## 16 October 2026 — update checkpoints for manual broadcasts
 
