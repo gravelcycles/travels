@@ -106,6 +106,25 @@ test('resize, desktop and grid transitions cancel a queued drag before it can mo
   }
 });
 
+test('pinch takes over a queued swipe, and late neighbor readiness preserves focal zoom and hidden controls', () => {
+  const f = cachedFixture(); f.api.openDay();
+  f.click('.photo-stage'); f.flush(300);
+  assert.equal(f.node('.photo-viewer').dataset.chrome,'false');
+  f.node('#modal-photo').naturalHeight = 1200;
+  const touch = (type, pointerId, clientX, clientY) => f.dispatch('.photo-stage',type,{pointerId,clientX,clientY,pointerType:'touch'});
+  touch('pointerdown',1,180,353); touch('pointermove',1,150,353);
+  touch('pointerdown',2,250,353);
+  touch('pointermove',1,120,363); touch('pointermove',2,320,363);
+  const zoom = f.node('#modal-photo').style.transform;
+  assert.match(zoom,/scale\(2\)/);
+  f.cached.add('p1'); f.dispatch('atlas-photo-cache-ready'); f.frame();
+  assert.equal(f.neighbors[1].src,'blob:p1');
+  assert.equal(f.node('#modal-photo').style.transform,zoom,'No queued swipe frame or readiness update resets the focal zoom');
+  touch('pointerup',1,120,363); touch('pointerup',2,320,363); f.flush(400);
+  assert.equal(f.node('.photo-viewer').dataset.chrome,'false');
+  assert.equal(f.node('#mobile-photo-count').textContent,'1 of 4');
+});
+
 test('public preload readiness publishes the decoded full URL once without another request', async () => {
   let decoded; const images = [], events = [];
   const context = vm.createContext({window:{navigator:{},dispatchEvent:event=>events.push(event.type)},document:{hidden:false,baseURI:'https://example.test/trip/'},

@@ -26,7 +26,7 @@ and the [Places correction](docs/OWNER_DECISIONS.md#mobile-places-visibility--12
 Implementation is isolated in `/private/tmp/travels-mobile-swipe-places` on
 `codex/mobile-swipe-places`, based on main `d3a7af1`; the primary checkout's
 unrelated work remains intact. Shared gestures and cache-ready neighbors are
-implemented; integrated main through `8d5a117`. All **697 tests** and the
+implemented; integrated main through `34b72b2`. All **723 tests** and the
 production build pass, including Places stylesheet cache invalidation. Rendered
 checks pass **16 Places and 14 fullscreen cases** across reference, Heading East,
 Alpine demo and an independently populated fresh draft at 320/390px, landscape
@@ -36,7 +36,10 @@ checks cover reduced motion, delayed neighbors, pinch, retained grid nodes and
 list scrolling. An immediate map pan 50 ms after Show map now cancels delayed
 recentering and retains its exact camera. QA scripts/results are in
 `/private/tmp/mobile-swipe-places-browser-qa/` and adjacent task `.mjs` files.
-Next: deploy and verify fresh public assets. Physical-device Safari was not used.
+The combined fullscreen-controls/focal-zoom release also passes first/cached
+swipes, hidden-chrome swipes and restoration, full-viewport geometry, grid Back
+and Places dragging/map panning on Heading East and Alpine. Next: deploy and
+verify fresh public assets. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 

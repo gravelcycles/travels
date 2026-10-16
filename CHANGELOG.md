@@ -14,7 +14,7 @@
 - Record the owner's follow-up in O04/O08, photo and Places workflows, feature
   inventory and framework ownership. Verification and release status are tracked
   in [WIP](WIP.md#mobile-photo-swipes-and-places-dragging--16-october-2026).
-  Integrated current main; all 697 tests, the build and 30 rendered browser cases
+  Integrated current main; all 723 tests, the build and 30 rendered browser cases
   pass. Manual map input immediately after Show map cancels its delayed recenter.
 
 ## 16 October 2026 — fullscreen photo controls and focal zoom
