@@ -253,6 +253,15 @@ selected element as the reverse neighbor and recycle only the far slot; keep the
 carousel bounded to three images. Selected/neighbor authorization, fallback,
 priority, retry, zoom and Comments ownership must follow the new roles. If the
 neighbor is unavailable, use the existing full-photo loading path.
+Mark a prepared image's reveal `instant` **before** assigning `modal-photo`.
+The app measures backdrop geometry before promoting the loader binding; a
+layout flush in that interval otherwise starts `photo-resolve` on an already
+sharp image, then cancels it again. Keep both mobile roles absolutely positioned
+in the same frame so promotion/demotion does not change their layout model.
+The owner's later 16 October report isolates this loaded-next-photo case and
+notes possible iPhone-only reproduction. Check for transient animation creation
+during selection, not only animation state after the handler returns; desktop
+browser checks alone cannot certify the physical-iPhone outcome.
 Suspend main-map label/bubble layout while the photo dialog covers the map,
 including work queued before entry. Keep current selection and model updates,
 clear protected pixels on lock, and coalesce pending layout after final close.

@@ -1,5 +1,23 @@
 # Current workstreams
 
+## Loaded-next-photo jump correction — 16 October 2026
+
+Owner clarified that the next full image is already loaded and sharp when the
+jump occurs, and reproduction may require an iPhone. The isolated checkout
+starts at published `eefc647`; unrelated shared working changes remain intact.
+The app's backdrop geometry read starts `photo-resolve` after a prepared node
+receives the selected ID but before the loader sets its instant reveal policy.
+Set that policy before the ID and retain absolute positioning for both roles.
+The new ordering regression fails before the fix and passes afterward; all
+870 tests pass, including the loader, gestures, history and shared-framework
+checks. The matched four-handoff browser comparison observes unintended reveal
+creation 2→0 and position-model changes 4→0, retaining the incoming node/source
+4/4. Reference/demo affected flows pass 16/16 each and the freshly generated
+independently populated draft passes 15/15. Build passes; publication and fresh
+public verification are pending. Physical-iPhone smoothness remains unverified;
+do not equate removal
+of this observed transient animation with eliminating every device frame stall.
+
 ## First fullscreen photo readiness follow-up — 16 October 2026
 
 Owner reports that the first swipe to the next fullscreen photo still pauses,
@@ -17,7 +35,9 @@ every comparison's limits: first-swipe long frames remain, and physical-phone
 performance is unverified. Reference/demo browser flows pass 16/16 each; the
 current-template independently populated draft passes 15/15. All 869 tests pass,
 two builds preserve all 78 public files and independent review is clean.
-Publication and fresh live checks are pending. Remaining device profiling is
+Published through [PR #4](https://github.com/gravelcycles/travels/pull/4) as
+`eefc647`. Its recorded first-swipe limits remain; the later loaded-image
+correction is tracked above. Remaining device profiling is
 tracked in TODO; the completed AVIF follow-up automation stays paused.
 
 ## Later saved Heading East Studio edits — 16 October 2026

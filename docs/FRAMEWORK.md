@@ -347,6 +347,10 @@ Mobile fullscreen reuses the actual prepared neighbor element when changing
 selection. The three mounted images rotate roles; app/zoom/Comments references
 and loader authorization metadata follow the selected element. Only the far
 neighbor receives a new source. Unready neighbors retain the normal loader path.
+Prepared nodes receive their instant reveal policy before the selected ID;
+backdrop measurements must never start a cold filter/opacity animation between
+role change and loader promotion. Both mobile image roles use absolute
+positioning within the existing frame, retaining geometry through the handoff.
 Recognized horizontal photo swipes and photo-stage pinches finish the current
 ready image's reveal; new cold selections retain their own reveal policy.
 Main-map label and bubble controllers suspend queued geometry work while the

@@ -1,5 +1,16 @@
 # Changelog
 
+## 16 October 2026 — steady loaded-photo swipe handoff
+
+- Set a ready neighbor's instant reveal policy before it becomes the selected
+  image. Backdrop layout previously started a new blur/opacity animation and
+  the loader immediately canceled it, even though the image was already sharp.
+- Keep selected and neighboring mobile images absolutely positioned through
+  role changes. Preserve the same full-size image elements, source bindings,
+  cold reveals, zoom, private access and desktop layout.
+- Add a regression for the exact role-change ordering. Record browser evidence
+  and physical-iPhone limits in the readiness measurements and current workflow.
+
 ## 16 October 2026 — retain prepared fullscreen images
 
 - Promote the actual ready swipe-neighbor element and retain the old selected

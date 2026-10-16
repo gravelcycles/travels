@@ -63,6 +63,13 @@ the production cache/neighbor lifecycle, separately from retained, prewarmed
 repeats. Bytes in cache and a prior image's load event do not prove that the next
 displayed image is decoded or painted. Preserve numeric before/after evidence
 without treating a warm synthetic gesture as proof of first-swipe smoothness.
+Later 16 October clarification: the jump occurs when the **next full photo is
+already loaded** and appears sharp immediately, rather than while its blurred
+preview is displayed; it may require an actual iPhone to reproduce. Treat that
+as a loaded-image presentation problem. A prepared photo must not restart the
+cold reveal or change its positioning model when it becomes selected. Verify
+the style/layout handoff as well as source continuity, and distinguish browser
+regression evidence from physical-iPhone confirmation.
 See WIP for delivery status.
 
 ## Standing decisions and acceptance checks

@@ -1,5 +1,43 @@
 # First fullscreen swipe readiness — 16 October 2026
 
+## Later correction: already loaded next photograph
+
+The owner clarified that the jump occurs with an already loaded, immediately
+sharp next photo, and may require a physical iPhone. Inspection found a separate
+presentation error after `eefc647`: `preparePhoto` assigns `modal-photo` while
+the ready neighbor has no instant-reveal marker. `updateViewer` then calls
+`sizeViewerBackdrop`, flushing styles before `setImage` installs that marker.
+This starts `photo-resolve` and immediately cancels it on sharp existing pixels.
+The node also switches absolute → relative positioning and reverses that change
+when demoted. Both are unnecessary rendering changes at swipe release.
+
+Set the instant marker before the ID and retain absolute positioning for the
+mobile selected image. A regression intercepts the role assignment itself; it
+fails on the previous implementation and passes on the correction. The same
+image/source, three-node limit, private loader, full derivatives and normal cold
+reveal remain in use.
+
+Matched loopback Chromium checks at 390×844/DPR 2 use normal production preloads,
+local verified full derivatives, no CPU/network throttling, an already ready
+neighbor and a 1,000 ms initial wait. Four handoffs cover two first promotions
+and two returns. At the existing backdrop layout read, unintended running
+`photo-resolve` animations fall **2 → 0**; role changes between absolute/relative
+positioning fall **4 → 0**. Incoming elements and sources remain unchanged in
+**4/4** handoffs on both sides. The initial pilot's incoming-identity selector
+matched the wrong neighbor; those identity results are excluded and the matched
+comparison uses signed computed translation instead. No frame-rate improvement
+is claimed from this instrumentation, whose per-frame snapshots force layout.
+
+The shared reference and sample each pass 16/16 affected browser-flow checks;
+the newly rendered, independently populated draft passes 15/15, all at 390×844.
+These cover swipes/reversal, pinch/reset, Location, read-only Comments where
+available, grid/Back, event boundaries, map resumption and camera preservation.
+All 870 automated tests pass. Physical-iPhone presentation remains unverified;
+this removes a demonstrated transient animation/layout change, rather than
+establishing that every previously recorded native-render stall is resolved.
+
+## Earlier readiness investigation
+
 The owner still observed a first-swipe pause and laggy movement after `a940395`.
 This follow-up starts at `f3dd926857cea0db35174efe1246d420a0007958`, the documentation
 receipt for that release. The earlier [runtime pass](PERFORMANCE_PASS_2026-10-16.md)

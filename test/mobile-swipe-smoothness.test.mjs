@@ -123,6 +123,27 @@ test('a ready incoming photo keeps its element and source through release and im
   assert.equal(f.node('#mobile-photo-count').textContent,'1 of 4');
 });
 
+test('a loaded neighbor never starts a cold reveal while taking the selected role', () => {
+  const f = preparedFixture(), incoming = f.node('#viewer-photo-frame').children[2];
+  let id = incoming.id, promotions = 0;
+  Object.defineProperty(incoming, 'id', {
+    get: () => id,
+    set(value) {
+      if (value === 'modal-photo') {
+        promotions++;
+        assert.equal(incoming.dataset.photoReveal, 'instant',
+          'Role changes can flush layout before the foreground loader runs');
+      }
+      id = value;
+    }
+  });
+  assert.equal(incoming.dataset.photoState, 'ready');
+  f.drag('.photo-stage', -150, 0);
+  assert.equal(promotions, 1);
+  assert.equal(f.node('#modal-photo'), incoming);
+  assert.equal(f.writes.get(incoming) || 0, 0);
+});
+
 test('promotion requires a matching complete full still and leaves unready, stale and inactive slots alone', () => {
   for (const condition of ['loading','locked','error','incomplete','noPixels','differentSource','preview','hiddenGrid','desktop','closed','video','changedPhoto']) {
     const f=preparedFixture(), next=f.node('#viewer-photo-frame').children[2], photo=f.photos[1];

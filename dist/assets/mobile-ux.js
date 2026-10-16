@@ -205,6 +205,11 @@
       opposite.node = outgoing; opposite.photo = previous; opposite.bound = Boolean(api.loadImage(outgoing, previous));
       outgoing.removeAttribute('id'); outgoing.classList.remove('progressive-image');
       outgoing.classList.add('mobile-photo-neighbor'); outgoing.setAttribute('aria-hidden', 'true'); outgoing.alt = '';
+      // The role change makes the ready node match the opening-reveal CSS.
+      // App layout reads can start that filter/opacity animation before the
+      // foreground loader promotes it. Keep its already visible pixels steady
+      // from the very first style resolution, including on iPhone/WebKit.
+      prepared.dataset.photoReveal = 'instant';
       prepared.id = 'modal-photo'; prepared.classList.remove('mobile-photo-neighbor'); prepared.removeAttribute('aria-hidden');
       img = prepared;
       return img;

@@ -38,6 +38,9 @@ The later first-swipe follow-up retains the prepared full-photo element through
 selection and the previous image for reversal, using the existing three-node
 carousel. Hidden main-map label/bubble layout waits until final viewer close;
 the photo Location map and return-camera behavior remain available.
+The loaded-neighbor correction sets its instant reveal before changing roles
+and retains absolute positioning, avoiding a transient cold reveal and layout
+model change while an already sharp photo becomes selected.
 An intentional horizontal photo swipe or photo-stage pinch finishes the current
 ready image's opening reveal; idle entry keeps the normal 350 ms animation. Numeric
 results and physical-device limits are recorded in
