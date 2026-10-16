@@ -677,6 +677,10 @@ Photo Comments actions inherit the shared notification contract: a red numbered
 badge for unread comments and a plain total otherwise. Read IDs stay locally
 scoped to the trip; the top-right bell opens its most recent conversations.
 Preserve the presenting collection and unfinished text when opening a comment.
+Notification entry opens the target fullscreen photograph with its compact
+comment sheet immediately above it. The sheet omits repeated photo details and
+supports a downward header drag to close back to the same photograph; scrolling
+and typing remain independent. See the 16 October correction in O17.
 See [the complete contract](docs/PLACES_AND_COMMENTS.md#comment-notifications)
 and [owner decision O17](docs/OWNER_DECISIONS.md#comment-notifications--11-october-2026).
 

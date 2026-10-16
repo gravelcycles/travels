@@ -277,6 +277,10 @@ reads. `comment-notifications.js` owns local read membership and count helpers;
 The coordinator connects the same model to photo/sidebar badges and conversation
 visibility. Trip scope is independent of the selected event or route group.
 No journey-specific template or backend instance is introduced.
+Notification selection opens the shared fullscreen viewer before the conversation;
+the comment component derives its compact presentation from that open viewer.
+Header dragging uses the existing history-aware overlay dismissal, preserving
+the underlying photo and draft. It introduces no separate notification viewer.
 
 The Worker serves 500-row compact metadata pages and a separate newest-first
 30-comment feed. Both use the partial trip-order D1 index and filter eligible

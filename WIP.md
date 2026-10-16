@@ -16,6 +16,35 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Photo intermediate screens — 16 October 2026
+
+Authorized correction: notification rows open the fullscreen photograph with
+comments above it, simplify repeated photo information in that sheet, and allow
+dragging it closed. [O17](docs/OWNER_DECISIONS.md#comment-notifications--11-october-2026)
+and [the conversation contract](docs/PLACES_AND_COMMENTS.md#comment-notifications)
+own the requirements. Implemented on `codex/photo-intermediate-cleanup` in
+`build/photo-intermediate-cleanup`, integrating current main through `4c5f44c`
+and preserving the fullscreen focal-zoom, map-opening and swipe/Places corrections.
+The primary checkout's unrelated edits remain untouched. All **740 tests** and the production
+build pass. Browser checks pass all 16 reference/demo/populated fresh draft/
+Heading East × desktop/320/390px/landscape cases, plus ordinary-motion phone
+checks. They cover direct entry, compact layout, target
+comments beyond page one, draft preservation, scrolling, drag cancellation,
+Close/Back/Forward and fullscreen retention on reference/demo/populated fresh
+draft/Heading East at desktop, 320/390px and landscape. A final seven-case delta
+check passes with the later swipe integration, including swiping after sheet
+dismissal. QA uses synthetic comments/images,
+not real visitor writes; it is Chrome viewport coverage, not physical-device
+certification. Next: verify Pages and fresh public assets before marking delivery complete.
+
+The location-group card is a separate design-review request. The
+[selected-photo tray proposal](docs/PHOTO_SELECTION_PROPOSAL.md) reduces duplicate
+information and actions. The interactive review was checked at 320/390px and
+desktop with selection, image opening, event grid and dismissal. It remains a
+proposal, not a production change;
+preserve O03's map selection boundary and continuous journey browsing. Do not
+publish a replacement for that card until the owner chooses the direction.
+
 ## Mobile photo swipes and Places dragging — 16 October 2026
 
 Owner correction: make the first fullscreen phone photo swipe continuous and

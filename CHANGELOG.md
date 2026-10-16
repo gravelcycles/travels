@@ -1,5 +1,18 @@
 # Changelog
 
+## 16 October 2026 — direct notification conversations
+
+- Open notification targets as fullscreen photographs with comments immediately
+  above them. Remove repeated photo thumbnail/title/navigation over fullscreen,
+  and allow a deliberate downward header drag to close just the comment sheet.
+- Preserve drafts, target-comment reveal, photo access, event/filter entry and
+  ordinary map/sidebar selection. Record the correction in O17 and the photo/
+  conversation workflows. The location-group cleanup remains a design proposal.
+- Integrate concurrent fullscreen focal zoom, neutral map opening and smoother
+  photo swipes/Places dragging and trip-specific update tooling; all 740
+  tests and the production build pass. Browser checks and the publication receipt
+  are recorded in WIP.
+
 ## 16 October 2026 — smoother phone photo swipes and draggable Places headers
 
 - Prepare adjacent fullscreen photos when the existing public/private cache

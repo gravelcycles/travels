@@ -216,7 +216,9 @@ request must not imply that there are no comments.
 
 The top-right bell opens **Most recent comments**, newest first across the whole
 current trip, irrespective of day or route-group filters. Each row identifies
-the author, comment, time and photo context and opens that photo's conversation.
+the author, comment, time and photo context. One activation opens that photograph
+fullscreen with its conversation already layered above it; there is no sidebar
+or compact-card detour (owner correction, 16 October 2026).
 If its event is hidden, enable only that event's Past / Future locked in /
 Future TBD category through the shared filter controls. Preserve the other
 category choices and the current route group; reveal all routes only if the
@@ -224,7 +226,17 @@ target photo is still excluded by that group.
 Only traveler photo copy or actual capture-time/event context supplies a label;
 no venue guesses or generated captions. The clicked comment remains visible even
 when it falls beyond the oldest conversation page. Close/Back preserves the
-underlying photo/map flow and unfinished drafts.
+underlying photo/map flow and unfinished drafts. Over fullscreen, the conversation
+uses a compact Comments/count heading, thread and composer without repeating the
+thumbnail, photo title, position or photo navigation. Contextual sidebar comments
+retain their photo context. A deliberate downward drag from the sheet header
+dismisses just the conversation through the same history path as Close; short,
+horizontal or cancelled drags leave it open. Scrolling the thread and editing
+text do not drag the sheet. Keep Close, Escape, Back and reduced-motion behavior.
+Load more belongs inside the thread scroller; short screens use a compact inline
+composer so the target comment remains readable. On portrait phones the existing
+full image and matching blurred preview align above the sheet without changing
+their source, dimensions or zoom transform; dismissal restores their alignment.
 
 Read state is an explicit set of comment IDs in local browser storage, scoped by
 journey. Mark only displayed rows, including those brought into the scroll viewport;
