@@ -131,9 +131,9 @@ revision returns motion to the original gentle range with a 0–100% Movement
 slider, adds a separate Mouse move option alongside Slow drift, and removes
 the rejected 3× presets. The sample set expands to two public examples plus
 seven existing website photographs using normal protected photo access for
-both photo and depth. The gentle correction is live with two public samples;
-the seven additions are prepared locally and hidden remotely until their private
-upload is verified. This revision's verification/deployment is tracked in
+both photo and depth. The gentle correction is live with two public samples.
+The seven protected depth maps were uploaded and verified on 16 October; the
+updated Pages manifest and live nine-photo checks remain pending. Delivery is tracked in
 [WIP](../WIP.md#fullscreen-depth-motion-preview--14-october-2026). It is **not an
 inherited journey capability**; shared-viewer integration remains unapproved.
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## 16 October 2026 — publish seven protected depth samples
+
+- Publish and checksum-verify the seven prepared depth WebPs (183,664 bytes)
+  in private R2 after restoring publishing authorization. Verify the 14 existing
+  photo/thumbnail objects, disabled public bucket access and anonymous gateway
+  401/no-store responses before marking all seven demo records published.
+- All 678 integrated tests, the production build and all-nine local
+  browser/auth/privacy fixtures pass. Preserve gentle,
+  off-by-default motion and the demo-only scope; no shared-viewer integration.
+  The updated Pages manifest and live nine-photo verification remain pending
+  in [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026).
+
 ## 16 October 2026 — update checkpoints for manual broadcasts
 
 - Add a live-site baseline and new-trip/photo diffs grouped by authored location,
@@ -29,7 +41,8 @@
   Remote hosts hide unpublished samples so the gentle correction can ship safely.
   Gentle release `2404389` passed [Pages run 38795728873](https://github.com/gravelcycles/travels/actions/runs/38795728873).
   Fresh public hashes and phone drag/mouse checks pass; two samples are live.
-  The seven additions remain blocked on private upload; exact next steps are in [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026).
+  Private upload was blocked at this release; the 16 October entry above records
+  its resolution. Current delivery status is in [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026).
 
 ## 14 October 2026 — drag and adjustable 3D in the remote preview
 
