@@ -34,6 +34,15 @@ Cached rendering measurements and physical-device limits are recorded in
 Phone Location uses transform motion with frame-paced dragging and deferred map
 setup; settled same-photo reopen retains the map camera and decoded photo state.
 
+The later first-swipe follow-up retains the prepared full-photo element through
+selection and the previous image for reversal, using the existing three-node
+carousel. Hidden main-map label/bubble layout waits until final viewer close;
+the photo Location map and return-camera behavior remain available.
+An intentional horizontal photo swipe or photo-stage pinch finishes the current
+ready image's opening reveal; idle entry keeps the normal 350 ms animation. Numeric
+results and physical-device limits are recorded in
+[the readiness measurements](PERFORMANCE_READINESS_2026-10-16.md).
+
 The [16 October fullscreen photo correction](OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
 is implemented in shared code: mobile right-aligned Comments with Share immediately to its left,
 top-right Close, single-tap hiding/restoring of photo chrome and full-viewport

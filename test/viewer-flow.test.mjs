@@ -9,10 +9,25 @@ test('the large sidebar photograph opens full screen and leaves the presenting m
   const f=photoEntryFixture(journey);
   f.click('storyMedia','second');
   assert.equal(f.context.photoDialog.open,true);
-  assert.deepEqual(f.events,['entry','fullscreen','render']);
+  assert.deepEqual(f.events,[{bubblesSuspended:true},{labelsSuspended:true},'entry','fullscreen','render']);
   assert.equal(f.context.viewerPhotoIndex,1);
   assert.deepEqual(f.photos().map(photo=>photo.id),['first','second','clip','fourth']);
   assert.equal(f.context.viewerCollection,null);
+});
+
+test('fullscreen covers decorations before event changes and ignores a stale close after reopening',()=>{
+  for(const dayEntry of [false,true]){
+    const f=photoEntryFixture(journey);
+    f.context.window.JOURNEY_ATLAS_MOBILE_UI.prepareOpen=()=>f.events.push('capture-return');
+    if(dayEntry)f.context.openDayViewer('hill');else f.open('fourth');
+    assert.deepEqual(f.events.slice(0,3),['capture-return',{bubblesSuspended:true},{labelsSuspended:true}]);
+    assert.ok(f.events.findIndex(event=>event?.day==='hill')>2);
+    f.context.setMainMapCovered(false);
+    assert.equal(f.context.mainMapCovered,true,'A queued close cannot uncover a replacement viewer');
+    f.context.photoDialog.open=false;f.context.setMainMapCovered(false);f.context.setMainMapCovered(false);
+    assert.deepEqual(f.events.slice(-2),[{bubblesSuspended:false},{labelsSuspended:false}]);
+    assert.equal(f.events.filter(event=>event?.labelsSuspended===false).length,1);
+  }
 });
 
 test('explicit Places collections preserve their order, boundaries, and current-photo day',()=>{

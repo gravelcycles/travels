@@ -347,6 +347,15 @@
   function setCachedImage(img, photo) {
     if (token && expiresAt <= Date.now()/1000) expireAccess();
     const {src,fallback} = selection(photo, Infinity), entry = (local || token) && (cache.get(src)||cache.get(fallback));
+    const previous = images.get(img);
+    if (entry?.url && previous?.entry === entry && previous.src === src && img.src === entry.url) {
+      // A former selected image can become a swipe neighbor without losing its
+      // decoded element or Blob reference. Only the binding changes priority;
+      // the shared cache entry may still have another foreground consumer.
+      Object.assign(previous, {fallback, preview:src, fullOnly:true, cachedOnly:true, blur:photo.blur||placeholder, priority:2});
+      img.dataset.privateBlur = previous.blur;
+      pumpDownloads();return true;
+    }
     clearImage(img);
     if (!entry?.url) return false;
     const item = {src, fallback, fullOnly:true, cachedOnly:true, blur:photo.blur||placeholder, entry:null, priority:2};
@@ -358,9 +367,20 @@
     if(token&&expiresAt<=Date.now()/1000)expireAccess();
     const pending=cache.get(src);if(pending)pending.priority=0;
     const previous=images.get(img);
-    if(previous?.src===src&&previous.loading&&img.dataset.photoState!=='error'){for(const key of [src,preview]){const pending=cache.get(key);if(pending)pending.priority=0;}if(img.dataset.photoState==='ready')img.classList.add('is-loaded');imageState(img,img.dataset.photoState||'loading');pumpDownloads();return;}
     const ready=(local||token)?[src,preview,thumbnail].map(key=>cache.get(key)).find(entry=>entry?.url):null;
-    if(ready&&images.get(img)?.entry===ready&&images.get(img)?.src===src&&img.src===ready.url&&img.dataset.photoState==='ready'){img.classList.add('is-loaded');imageState(img,'ready');hydrate(img);return;}
+    if(ready&&previous?.entry===ready&&previous.src===src&&img.src===ready.url&&img.dataset.photoState==='ready'){
+      // Promote the actual prepared node, including its auth/fallback role,
+      // without assigning src again or restarting decode/reveal work.
+      Object.assign(previous, {fallback, preview, fullOnly, cachedOnly:false, blur:fullOnly?placeholder:photo.blur||placeholder, priority:0});
+      img.dataset.privateBlur=previous.blur;img.dataset.photoReveal='instant';
+      img.classList.add('is-loaded');imageState(img,'ready');hydrate(img);return;
+    }
+    if(previous?.src===src&&previous.loading&&img.dataset.photoState!=='error'){
+      Object.assign(previous, {fallback, preview, fullOnly, cachedOnly:false, blur:fullOnly?placeholder:photo.blur||placeholder, priority:0});
+      img.dataset.privateBlur=previous.blur;
+      for(const key of [src,preview]){const pending=cache.get(key);if(pending)pending.priority=0;}
+      if(img.dataset.photoState==='ready')img.classList.add('is-loaded');imageState(img,img.dataset.photoState||'loading');pumpDownloads();return;
+    }
     release(img);img.removeAttribute('srcset');delete img.dataset.src;delete img.dataset.srcset;delete img.dataset.photoError;
     img.dataset.privateSrc=src;img.dataset.privateBlur=fullOnly?placeholder:photo.blur||placeholder;
     const item={src,fallback,preview,fullOnly,blur:img.dataset.privateBlur,entry:null,priority:0};images.set(img,item);

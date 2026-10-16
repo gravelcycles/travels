@@ -247,6 +247,27 @@ The first mobile swipe must be as continuous as later swipes (owner correction,
 preloads become ready, including public sample images, without refetching or
 promoting speculative downloads. Prepare the drag width once, coalesce pointer
 updates to display frames, and preserve the incoming image through release.
+When an adjacent full-size image is ready on its actual element, promote that
+element to the selected role without assigning its source again. Retain the old
+selected element as the reverse neighbor and recycle only the far slot; keep the
+carousel bounded to three images. Selected/neighbor authorization, fallback,
+priority, retry, zoom and Comments ownership must follow the new roles. If the
+neighbor is unavailable, use the existing full-photo loading path.
+Suspend main-map label/bubble layout while the photo dialog covers the map,
+including work queued before entry. Keep current selection and model updates,
+clear protected pixels on lock, and coalesce pending layout after final close.
+The separate Photo location map remains interactive. Preserve the existing map
+camera and Back behavior; decoration suspension does not pause the map renderer.
+Measure first entry under the normal preload lifecycle separately from natural
+return/repeat swipes. Cached bytes, a load event, explicit decode completion and
+compositor presentation are different observations; do not infer physical-phone
+smoothness from a ready flag or desktop viewport timing.
+Once a horizontal photo swipe or photo-stage pinch takes ownership, finish the
+current ready image's opening reveal so the full-photo blur/opacity effect does
+not compete with direct manipulation. Idle entry retains the 350 ms reveal;
+taps and vertical Location gestures do not finish it. The next cold source
+selects its normal reveal policy independently. Check reduced motion, video,
+grid, desktop, loading and header gestures as exclusions.
 If a new touch interrupts the 220 ms settle, capture the visible horizontal
 translation before canceling its transition and continue from that position.
 Do not snap to the declared endpoint. Keep that offset through reversal,

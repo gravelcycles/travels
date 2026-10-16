@@ -8,12 +8,12 @@ function fixture({ photos, collection, selectedId } = {}) {
   const nodes=new Map(),calls=[],pending=[];let visitor=null,rows=[],loaded=false;
   function node(selector) {
     if(nodes.has(selector))return nodes.get(selector);
-    const listeners=new Map(),classes=new Set(),n={value:'',textContent:'',innerHTML:'',hidden:false,open:false,dataset:{},style:{setProperty(){}},scrollHeight:50,isConnected:true,
+    const listeners=new Map(),classes=new Set(),n={value:'',textContent:'',innerHTML:'',hidden:false,open:false,dataset:{},style:{setProperty(){}},scrollHeight:50,isConnected:true,listenerOptions:new Map(),
       src:'https://example.test/assets/photo-comments.js',
       classList:{add:k=>classes.add(k),remove:k=>classes.delete(k),contains:k=>classes.has(k)},
       setAttribute(k,v){this[k]=v;},removeAttribute(k){delete this[k];},
       querySelector:s=>node(s),querySelectorAll:()=>[],getClientRects:()=>[{}],contains:()=>false,
-      addEventListener(k,fn){listeners.set(k,fn);},fire(k,e={}){return listeners.get(k)?.(e);},
+      addEventListener(k,fn,options){listeners.set(k,fn);this.listenerOptions.set(k,options);},fire(k,e={}){return listeners.get(k)?.(e);},
       showModal(){this.open=true;},close(){this.open=false;this.fire('close');},focus(){document.activeElement=this;},replaceChildren(){this.innerHTML='';}
     };commentChildren(n);nodes.set(selector,n);return n;
   }
@@ -56,6 +56,18 @@ test('closing while comments load cannot reopen the panel or replace its latest 
   const f=fixture(),opening=f.controller.open();f.node('#comments-dialog').close();
   f.pending[0].resolve({id:'signed',name:'Alex'});f.pending[1].resolve([]);await opening;
   assert.equal(f.node('#comments-dialog').open,false);
+});
+
+test('photo readiness capture follows the current image role and ignores adjacent image loads',async()=>{
+  const f=fixture(),opening=f.controller.open();
+  f.pending[0].resolve({id:'signed',name:'Alex'});f.pending[1].resolve([]);await opening;
+  const frame=f.node('#viewer-photo-frame'),thumbnail=f.node('#comments-photo-image');
+  for (const type of ['load','atlas-photo-state']) {
+    assert.equal(frame.listenerOptions.get(type),true,'Non-bubbling image events are captured at the retained frame');
+    thumbnail.fire('error',{target:thumbnail});assert.equal(thumbnail.hidden,true);
+    frame.fire(type,{target:{id:'',className:'mobile-photo-neighbor'}});assert.equal(thumbnail.hidden,true);
+    frame.fire(type,{target:{id:'modal-photo'}});assert.equal(thumbnail.hidden,false,'A newly promoted image triggers the current context');
+  }
 });
 
 

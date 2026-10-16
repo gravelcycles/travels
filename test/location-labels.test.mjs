@@ -113,6 +113,7 @@ test('real and demo maps use clustered pins with separate touch targets and prot
 
 function previewFixture() {
   const frames = new Map(), timers = new Map(), mapEvents = new Map(), previews = [], selections = [];
+  const work = {projects:0,geometry:0,markers:0};
   let nextId = 1, moving = false, controller;
   function node(tag) {
     const listeners = new Map(), attributes = new Map(), classes = new Set();
@@ -123,7 +124,7 @@ function previewFixture() {
       append(...children) { children.forEach(child => { child.parent = this; this.children.push(child); }); },
       remove() { this.isConnected = false; if (this.parent) this.parent.children = this.parent.children.filter(child => child !== this); },
       setAttribute(name, value) { attributes.set(name, value); }, removeAttribute(name) { attributes.delete(name); }, getAttribute(name) { return attributes.get(name); },
-      getBoundingClientRect() { return { left: 0, top: 0, right: 800, bottom: 600, width: 800, height: 600 }; },
+      getBoundingClientRect() { work.geometry++; return { left: 0, top: 0, right: 800, bottom: 600, width: 800, height: 600 }; },
       contains(target) { return this === target || this.children.some(child => child.contains(target)); },
       querySelector(selector) { return this.children.find(child => child.tag === selector) || this.children.map(child => child.querySelector(selector)).find(Boolean); },
       addEventListener(name, listener) { if (!listeners.has(name)) listeners.set(name, []); listeners.get(name).push(listener); },
@@ -134,11 +135,11 @@ function previewFixture() {
   }
   const container = node('map');
   const document = { createElement: node, documentElement: { dataset: { inputMode: 'keyboard' } }, addEventListener() {}, removeEventListener() {}, activeElement: null };
-  const map = { getContainer: () => container, isMoving: () => moving, project: ([x,y]) => ({x,y}), on: (name, listener) => mapEvents.set(name, listener), off: name => mapEvents.delete(name) };
+  const map = { getContainer: () => container, isMoving: () => moving, project: ([x,y]) => {work.projects++;return {x,y};}, on: (name, listener) => mapEvents.set(name, listener), off: name => mapEvents.delete(name) };
   const maplibregl = { Marker: class {
     constructor({ element }) { this.element = element; }
     setLngLat() { return this; }
-    addTo() { container.append(this.element); return this; }
+    addTo() { work.markers++;container.append(this.element); return this; }
     remove() { this.element.remove(); }
   } };
   const context = vm.createContext({ window: {}, document, matchMedia: query => ({ matches: query.includes('hover: hover') }),
@@ -152,12 +153,27 @@ function previewFixture() {
   });
   const flush = queue => { while (queue.size) { const [id, callback] = queue.entries().next().value; queue.delete(id); callback(); } };
   controller.update([group], []); flush(frames);
-  return { controller, previews, selections, document, get button() { return container.children.find(child => child.className === 'location-label-anchor')?.children[0]; },
+  return { controller, previews, selections, document, work, group, get pendingFrames(){return frames.size;},get button() { return container.children.find(child => child.className === 'location-label-anchor')?.children[0]; },
     get card() { return container.children.find(child => child.className === 'map-place-card'); },
     flushTimers() { flush(timers); }, flushFrames() { flush(frames); },
     startMoving() { moving = true; mapEvents.get('movestart')(); }, stopMoving() { moving = false; mapEvents.get('moveend')(); flush(frames); }
   };
 }
+
+test('covered labels cancel queued geometry and resume once with the latest groups', () => {
+  const f=previewFixture(), initial={...f.work}, old=f.button;
+  f.button.fire('pointerenter',{pointerType:'mouse'});
+  f.controller.refresh();assert.equal(f.pendingFrames,1);
+  f.controller.setSuspended(true);
+  for(let i=0;i<5;i++)f.controller.update([{...f.group,name:`Latest ${i}`}],[]);
+  f.flushTimers();f.flushFrames();f.startMoving();f.stopMoving();
+  assert.deepEqual(f.work,initial,'Covered updates perform no projections, card geometry or marker rebuilding');
+  assert.equal(f.button,old);assert.equal(f.card,undefined);assert.equal(f.pendingFrames,0);
+  f.controller.setSuspended(false);f.controller.setSuspended(false);
+  assert.equal(f.pendingFrames,1);f.flushFrames();
+  assert.equal(f.work.markers,initial.markers+1,'One refresh consumes the latest model');
+  assert.match(f.button.getAttribute('aria-label'),/Latest 4/);
+});
 
 test('an event change dismisses the location preview before map movement and cancels pending hover', () => {
   const f = previewFixture();

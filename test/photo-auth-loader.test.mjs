@@ -523,6 +523,82 @@ const avifPhoto={...photo,fullAvif:{src:`/private-photos/assets/v1/${'d'.repeat(
 const avifBytes=Buffer.from(source.match(/data:image\/avif;base64,([^']+)/)[1],'base64');
 const mediaResponse=url=>new Response(url.endsWith('.avif')?avifBytes:new Uint8Array([1,2]),{headers:{'Content-Type':url.endsWith('.avif')?'image/avif':'image/webp'}});
 
+function measuredImage() {
+ const image=new Element();let value=image.src,srcWrites=0,decodeCalls=0;
+ Object.defineProperty(image,'src',{get:()=>value,set:next=>{value=next;srcWrites++;}});
+ image.decode=()=>{decodeCalls++;return Promise.resolve();};
+ return {image,counts:()=>({srcWrites,decodeCalls})};
+}
+
+for(const [format,value] of [['WebP',photo],['AVIF',avifPhoto]])test(`prepared ${format} nodes change selected/neighbor roles with zero src or decode work`,async()=>{
+ const f=fixture(mediaResponse,{avifSupport:true});await f.unlock();f.auth.preload(value,Infinity);await settle();
+ const {image,counts}=measuredImage();assert.equal(f.auth.setCachedImage(image,value),true);await settle();
+ assert.equal(image.dataset.photoState,'ready');const original=image.src,before=counts(),requests=f.calls.length;
+ for(let i=0;i<3;i++){
+  f.auth.setImage(image,value,Infinity,{fullOnly:true});
+  assert.equal(image.dataset.photoReveal,'instant');assert.equal(image.dataset.photoState,'ready');
+  assert.equal(f.auth.setCachedImage(image,value),true);
+ }
+ await settle();assert.deepEqual(counts(),before,'Role changes must retain the exact prepared image element');
+ assert.equal(image.src,original);assert.equal(f.calls.length,requests);assert.equal(f.revoked.length,0);
+});
+
+test('role promotion restores only the selected image after unlock and retains full AVIF fallback',async()=>{
+ let rejectAvif=false;
+ const f=fixture(url=>rejectAvif&&url.endsWith('.avif')?new Response('',{status:404}):mediaResponse(url),{avifSupport:true});
+ await f.unlock();const outgoing=measuredImage().image,incoming=measuredImage().image,oldPhoto=albumPhoto(31);
+ f.auth.setImage(outgoing,oldPhoto,Infinity,{fullOnly:true});await settle();
+ f.auth.preload(avifPhoto,Infinity);await settle();assert.equal(f.auth.setCachedImage(incoming,avifPhoto),true);await settle();
+ f.auth.setImage(incoming,avifPhoto,Infinity,{fullOnly:true});assert.equal(f.auth.setCachedImage(outgoing,oldPhoto),true);
+ f.auth.setPreloads([]);f.auth.lock();assert.equal(incoming.dataset.photoState,'locked');assert.equal(outgoing.dataset.photoState,'locked');
+ assert.ok(!incoming.src.startsWith('blob:'));assert.ok(!outgoing.src.startsWith('blob:'));
+ const before=f.calls.length;rejectAvif=true;await f.unlock();await settle();await settle();
+ const restored=f.calls.slice(before);assert.equal(restored.length,2,'Restore selected AVIF plus full WebP fallback only');
+ assert.ok(restored[0][0].endsWith(avifPhoto.fullAvif.src));assert.ok(restored[1][0].endsWith(photo.src));
+ assert.ok(restored.every(([,options])=>options.priority==='high'));
+ assert.equal(incoming.dataset.photoState,'ready');assert.equal(incoming.dataset.privateSrc,photo.src);
+ assert.equal(outgoing.dataset.photoState,'locked','A demoted neighbor must not restore as a foreground image');
+ assert.ok(!f.calls.some(([url])=>url.endsWith(photo.srcset[0].src)),'Fallback never uses the small preview');
+});
+
+test('demotion keeps in-progress decode on the same node and lock still rejects its late completion',async()=>{
+ const f=fixture();await f.unlock();const {image,counts}=measuredImage();let finish,decodeCalls=0;
+ image.decode=()=>{decodeCalls++;return new Promise(resolve=>finish=resolve);};
+ f.auth.setImage(image,photo,Infinity,{fullOnly:true});await settle();assert.equal(image.dataset.photoState,'loading');
+ const before=counts(),original=image.src,requests=f.calls.length;
+ assert.equal(f.auth.setCachedImage(image,photo),true);assert.deepEqual(counts(),before);assert.equal(image.src,original);assert.equal(decodeCalls,1);
+ assert.equal(f.calls.length,requests);f.auth.lock();finish();await settle();
+ assert.equal(image.dataset.photoState,'locked');assert.ok(!image.src.startsWith('blob:'));
+ await f.unlock();await settle();assert.equal(f.calls.length,requests,'A demoted decoding node cannot auto-restore');
+});
+
+test('clearing a promoted node releases its selected role before another unlock',async()=>{
+ const f=fixture();await f.unlock();f.auth.preload(photo,Infinity);await settle();
+ const image=measuredImage().image;f.auth.setCachedImage(image,photo);await settle();
+ f.auth.setImage(image,photo,Infinity,{fullOnly:true});f.auth.clearImage(image);image.src='';
+ const requests=f.calls.length;f.auth.lock();await f.unlock();await settle();
+ assert.equal(f.calls.length,requests);assert.equal(image.src,'');
+});
+
+test('reentrant ready selection promotes a demoted binding before foreground hydration finishes',async()=>{
+ const f=fixture();await f.unlock();const warmer=measuredImage().image,{image,counts}=measuredImage();let cycled=false;
+ // Another connected consumer decodes these shared bytes before the selected
+ // hydration continuation displays them. Its ready notification is synchronous.
+ f.events.set('atlas-photo-cache-ready',()=>f.auth.setCachedImage(warmer,photo));
+ image.addEventListener('atlas-photo-state',()=>{
+  if(cycled||image.dataset.photoState!=='ready')return;
+  cycled=true;const before=counts();
+  assert.equal(f.auth.setCachedImage(image,photo),true);
+  f.auth.setImage(image,photo,Infinity,{fullOnly:true});
+  assert.deepEqual(counts(),before,'A reentrant role change still preserves the source and decoding');
+ });
+ f.auth.setImage(image,photo,Infinity,{fullOnly:true});await settle();assert.equal(cycled,true);
+ f.events.delete('atlas-photo-cache-ready');f.auth.clearImage(warmer);const requests=f.calls.length;
+ f.auth.lock();await f.unlock();await settle();
+ assert.equal(f.calls.length,requests+1,'The promoted selected binding must restore after unlock');
+ assert.equal(image.dataset.photoState,'ready');
+});
+
 test('supported fullscreen AVIF keeps its MIME and uses one authenticated request while previews stay WebP',async()=>{
  const f=fixture(mediaResponse,{avifSupport:true});await f.unlock();
  assert.equal(f.probes.length,1);assert.match(f.probes[0].source,/^data:image\/avif;base64,/);

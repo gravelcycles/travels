@@ -1,5 +1,23 @@
 # Changelog
 
+## 16 October 2026 — retain prepared fullscreen images
+
+- Promote the actual ready swipe-neighbor element and retain the old selected
+  image for reversal. Keep three mounted images; handoff source assignments
+  fall from 5 to 2, and incoming-image assignments from 2 to 0. Preserve private
+  access recovery, full-WebP fallback, zoom, retry and Comments ownership.
+- Defer covered main-map label/bubble geometry and bubble-owned resize until
+  the viewer closes, retaining selection and immediate protected-image cleanup.
+  Keep existing camera/history behavior and the separate Photo location map.
+- Finish the current ready photo's opening reveal when a horizontal photo swipe
+  or photo-stage pinch takes over, while keeping the idle 350 ms animation.
+  Three browser trials switch reveal policy within 0–0.1 ms of swipe intent;
+  first-swipe long frames remain, so this is not an overall smoothness claim.
+- Record normal first-entry and natural repeat measurements separately in
+  [the readiness follow-up](docs/PERFORMANCE_READINESS_2026-10-16.md). An explicit
+  async-decoding hint showed no consistent benefit and was removed. Physical
+  phone smoothness remains unverified; operation savings are not FPS claims.
+
 ## 16 October 2026 — continuous mobile swipes and bounded neighbor loading
 
 - Preserve a settling photo's visible position when another touch interrupts it,

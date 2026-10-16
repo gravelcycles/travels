@@ -81,6 +81,141 @@ test('release preserves incoming and outgoing positions, including the cold prev
   assert.equal(f.node('#mobile-photo-count').textContent, '1 of 4', 'A rapid reversal remains responsive');
 });
 
+function preparedFixture(options = {}) {
+  const f = cachedFixture(options), writes = new Map();
+  const main = f.node('#modal-photo'), frame = f.node('#viewer-photo-frame');
+  frame.children.unshift(main); main.parentElement = frame;
+  for (const node of frame.children) {
+    let src = node.src || '';
+    Object.defineProperty(node,'src',{get:()=>src,set(value){src=value;writes.set(node,(writes.get(node)||0)+1);}});
+    const remove = node.removeAttribute;
+    node.removeAttribute = name => name === 'src' ? node.src = '' : remove.call(node,name);
+  }
+  const bind = (node,photo) => {
+    const src = `blob:${photo.id}`;
+    if (node.src !== src) node.src = src;
+    node.dataset.photoState = 'ready'; node.complete = true; node.classList.add('is-loaded');
+    return true;
+  };
+  f.api.loadImage = bind; f.api.openDay(); bind(main,f.photos[0]); writes.clear();
+  return {...f,main,writes};
+}
+
+test('a ready incoming photo keeps its element and source through release and immediate reversal', () => {
+  const f = preparedFixture(), nodes = [...f.node('#viewer-photo-frame').children];
+  const incoming = nodes[2], outgoing = f.main;
+  f.drag('.photo-stage',-150,0);
+  assert.equal(f.node('#modal-photo'),incoming);
+  assert.equal(incoming['aria-hidden'],undefined);
+  assert.equal(outgoing['aria-hidden'],'true');
+  assert.match(incoming.style.transform,/^translate3d\(256px/);
+  assert.equal(outgoing.style.transform,'translate3d(-150px,0,0)');
+  assert.equal(f.writes.get(incoming)||0,0,'Prepared pixels are never rebound at release');
+  assert.equal(f.writes.get(outgoing)||0,0,'The reverse neighbor retains the old main pixels');
+  assert.equal(nodes.filter(node=>node.id==='modal-photo').length,1);
+  f.frame(); f.drag('.photo-stage',150,0);
+  assert.equal(f.node('#modal-photo'),outgoing);
+  assert.equal(f.writes.get(outgoing)||0,0);
+  assert.equal(f.writes.get(incoming)||0,0);
+  assert.deepEqual(f.node('#viewer-photo-frame').children,nodes,'The same three elements are retained');
+  assert.equal(outgoing['aria-hidden'],undefined);
+  assert.equal(incoming['aria-hidden'],'true');
+  assert.equal(f.node('#mobile-photo-count').textContent,'1 of 4');
+});
+
+test('promotion requires a matching complete full still and leaves unready, stale and inactive slots alone', () => {
+  for (const condition of ['loading','locked','error','incomplete','noPixels','differentSource','preview','hiddenGrid','desktop','closed','video','changedPhoto']) {
+    const f=preparedFixture(), next=f.node('#viewer-photo-frame').children[2], photo=f.photos[1];
+    if (['loading','locked','error'].includes(condition)) next.dataset.photoState=condition;
+    if (condition==='incomplete') next.complete=false;
+    if (condition==='noPixels') next.naturalWidth=0;
+    if (condition==='differentSource') next.currentSrc='blob:stale';
+    if (condition==='preview') next.src='data:image/webp;base64,preview';
+    if (condition==='hiddenGrid') f.click('#mobile-photo-grid');
+    if (condition==='desktop') f.resize(false);
+    if (condition==='closed') f.node('#photo-dialog').open=false;
+    if (condition==='video') photo.mediaType='video';
+    assert.equal(f.controller.preparePhoto(condition==='changedPhoto'?{...photo}:photo),null,condition);
+    assert.equal(f.node('#modal-photo'),f.main,condition);
+  }
+});
+
+test('promoted images remain the target of pinch, grid and close cleanup in portrait and landscape', () => {
+  for (const [width,height] of [[390,844],[844,390]]) {
+    const f=preparedFixture({width,height}); f.drag('.photo-stage',-150,0); f.frame();
+    const selected=f.node('#modal-photo');
+    f.dispatch('.photo-stage','pointerdown',{pointerId:1,clientX:100,clientY:200});
+    f.dispatch('.photo-stage','pointerdown',{pointerId:2,clientX:200,clientY:200});
+    f.dispatch('.photo-stage','pointermove',{pointerId:2,clientX:300,clientY:200});
+    assert.match(selected.style.transform,/scale\(2\)/);
+    f.dispatch('.photo-stage','pointercancel',{pointerId:2});
+    f.click('#mobile-photo-grid');
+    assert.equal(f.node('#modal-photo'),selected);
+    assert.ok(f.node('#viewer-photo-frame').children.filter(node=>node!==selected).every(node=>node.hidden));
+    f.node('#photo-dialog').close();
+    assert.equal(f.node('.photo-viewer').dataset.zoomed,'false');
+  }
+});
+
+test('a prepared public image is reused without resetting its source or entering loading again', () => {
+  let writes=0, src='https://example.test/full.webp'; const states=[];
+  const image={dataset:{photoState:'ready'},complete:true,naturalWidth:1600,currentSrc:src,classList:{add(){}},dispatchEvent(){states.push(this.dataset.photoState);},get src(){return src;},set src(value){writes++;src=value;}};
+  const context=vm.createContext({window:{},document:{baseURI:'https://example.test/'},preferredPhotoUrl:photo=>photo.src,decodedPhotoUrls:new Set(),URL,Event});
+  vm.runInContext(viewerFunction('setPublicFullImage'),context);
+  context.setPublicFullImage(image,{src:'full.webp'});
+  assert.equal(writes,0); assert.deepEqual(states,['ready']); assert.equal(image.dataset.photoReveal,'instant');
+});
+
+test('horizontal photo intent finishes only the current reveal while taps and sub-threshold moves leave it alone',()=>{
+  const f=viewerFixture();f.api.openDay();
+  const image=f.node('#modal-photo'),neighbors=f.node('#viewer-photo-frame').children;
+  image.dataset.photoState='ready';image.dataset.photoReveal='soft';image.src='blob:current';
+  for(const node of neighbors)node.dataset.photoReveal='soft';
+  f.dispatch('.photo-stage','pointerdown',{clientX:200,clientY:300});
+  f.dispatch('.photo-stage','pointermove',{clientX:196,clientY:300});
+  assert.equal(image.dataset.photoReveal,'soft');
+  f.dispatch('.photo-stage','pointermove',{clientX:170,clientY:300});
+  assert.equal(image.dataset.photoReveal,'instant');
+  assert.equal(image.dataset.photoState,'ready');assert.equal(image.src,'blob:current');
+  assert.ok(neighbors.every(node=>node.dataset.photoReveal==='soft'));
+  f.dispatch('.photo-stage','pointercancel');
+});
+
+test('photo pinch takeover finishes the reveal without altering focal zoom',()=>{
+  const f=viewerFixture();f.api.openDay();const image=f.node('#modal-photo');
+  image.dataset.photoState='ready';image.dataset.photoReveal='soft';
+  f.dispatch('.photo-stage','pointerdown',{pointerId:1,clientX:100,clientY:300});
+  assert.equal(image.dataset.photoReveal,'soft');
+  f.dispatch('.photo-stage','pointerdown',{pointerId:2,clientX:200,clientY:300});
+  assert.equal(image.dataset.photoReveal,'instant');
+  f.dispatch('.photo-stage','pointermove',{pointerId:2,clientX:300,clientY:300});
+  assert.match(image.style.transform,/scale\(2\)/);
+});
+
+test('non-photo manipulation and unavailable images retain their reveal policy',()=>{
+  for(const condition of ['tap','vertical','header','grid','desktop','video','reduced','loading','closed']){
+    const f=viewerFixture({reducedMotion:condition==='reduced',videoIndex:condition==='video'?0:-1});f.api.openDay();
+    const image=f.node('#modal-photo');image.dataset.photoState=condition==='loading'?'loading':'ready';image.dataset.photoReveal='soft';
+    if(condition==='grid')f.click('#mobile-photo-grid');
+    if(condition==='desktop')f.resize(false);
+    if(condition==='closed')f.node('#photo-dialog').open=false;
+    if(condition==='tap')f.click('.photo-stage');
+    else if(condition==='vertical')f.drag('.photo-stage',0,-50);
+    else f.drag(condition==='header'?'.photo-location-heading':'.photo-stage',-50,0);
+    assert.equal(image.dataset.photoReveal,'soft',condition);
+  }
+});
+
+test('a later cold public image receives its own soft reveal after gesture interruption',()=>{
+  const image={dataset:{photoState:'ready',photoReveal:'instant'},src:'https://example.test/previous.webp',complete:false,naturalWidth:0,classList:{add(){}},dispatchEvent(){}};
+  const context=vm.createContext({window:{},document:{baseURI:'https://example.test/'},preferredPhotoUrl:photo=>photo.src,decodedPhotoUrls:new Set(),URL,Event});
+  vm.runInContext(viewerFunction('setPublicFullImage'),context);
+  context.setPublicFullImage(image,{src:'cold.webp'});
+  assert.equal(image.dataset.photoReveal,'soft');assert.equal(image.dataset.photoState,'loading');
+  image.complete=true;image.naturalWidth=1600;image.onload();
+  assert.equal(image.dataset.photoReveal,'soft');assert.equal(image.dataset.photoState,'ready');
+});
+
 test('an interrupted release follows the visible position through a reverse drag and commit', () => {
   const f = cachedFixture(); f.api.openDay(); f.drag('.photo-stage',-150,0); f.frame();
   const image = f.node('#modal-photo'), stage = f.node('.photo-stage');
