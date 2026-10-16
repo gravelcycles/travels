@@ -60,14 +60,17 @@ The initial live baseline was captured **16 October 2026, 18:54 Vienna time**:
 the disposable release worktree. A second fresh public read returns no new trips
 or photos. No draft is marked shared, and no message was sent. Preserve this
 ignored directory and its backups; do not recreate the baseline in a new worktree.
-Current remote main through `d3a7af1` is integrated. Remaining delivery: commit
-only this work, verify Pages/public output and install the tooling into the
-primary checkout without changing its unrelated pending edits. Studio UI and
-automated sending remain future options, not unfinished authorized work.
+Released as `d451b58` after integrating current main through `d3a7af1`.
+[Pages run 38935849640](https://github.com/gravelcycles/travels/actions/runs/38935849640)
+succeeded. A fresh public catalog, reference page and all three metadata bundles
+match the release byte-for-byte and still produce an empty diff. The same tooling
+is installed in the primary checkout; all 38 focused checks pass there with its
+unrelated changes preserved. This bounded implementation is complete. Studio UI
+and automated sending remain future options, not unfinished authorized work.
 
 ## Fullscreen depth-motion preview — 14 October 2026
 
-**15 October correction — gentle release live; seven additions await private upload.** The owner found the stronger result
+**16 October checkpoint — private upload verified; nine-photo Pages release pending.** The owner found the stronger result
 too extreme and requested the original gentle motion while retaining drag/mouse
 interaction, plus seven existing website photographs. This supersedes the
 14 October dramatic range/presets. Current requirements live in
@@ -75,7 +78,8 @@ interaction, plus seven existing website photographs. This supersedes the
 and [demo contract](docs/DEPTH_FULLSCREEN_DEMO.md).
 
 Work is isolated in `/Users/dg/code/travels/build/depth-gentle-review`, branch
-`codex/depth-gentle-photos-20261015`, from `a609987`; the primary checkout and its
+`codex/depth-gentle-photos-20261015`, originally from `a609987` and now integrated
+through remote main `d451b58`; the primary checkout and its
 unrelated changes remain untouched. The required revision retains relative
 mouse/touch drag, held viewpoint/reset and keyboard control, adds Mouse move
 beside Slow drift, and replaces 0–3× presets with 0–100% Movement at the original
@@ -86,8 +90,8 @@ R2 behind the existing photo gateway and normal photo access; no protected
 pixels belong in public output. The selected-photo preparation/publication record
 is [DEPTH_DEMO_ASSETS.md](docs/DEPTH_DEMO_ASSETS.md).
 
-The gentle controls and private-access lifecycle are implemented. All 640
-repository tests and the production build pass. All nine actual-photo/depth
+The gentle controls and private-access lifecycle are implemented. The 15 October
+release passed all 640 repository tests and the production build. All nine actual-photo/depth
 fixtures pass WebGL/browser checks, including gentle limits, mouse steering,
 drag/hold, zero movement, login returns and Back/Forward, missing-cookie recovery,
 failed-map retry, lock/expiry cleanup, cancelled private requests and public-output
@@ -95,28 +99,31 @@ privacy scans. Desktop/phone/landscape and all seven additions were inspected;
 close foreground outlines can still stretch at maximum travel. Physical-device
 Safari/Android performance remains unverified.
 
-Seven actual depth WebPs (183,664 bytes total) are generated and checksum-verified;
-the private publisher dry-run passes. **Private upload is blocked by expired
-Cloudflare publishing OAuth.** The owner was asked to sign in through the existing
-browser flow; no new account/password or public workaround is needed. Remote
-hosts hide unpublished protected samples, so the gentle correction can be released
-with the original two examples while local review exercises all nine. The path-only
-manifest keeps the seven records `assetStatus: "local"`; no protected pixels are
-committed or publicly served. Gentle release `2404389` passed
+On **16 October**, the owner restored Cloudflare publishing authorization. The
+bounded publisher uploaded and checksum-verified all seven depth WebPs
+(183,664 bytes), verified the 14 existing photo/thumbnail objects without
+republishing them, confirmed disabled public bucket access, and passed anonymous
+gateway **401/no-store** checks. Pre-upload account storage was 327,914,048 bytes.
+It atomically marked all seven path-only manifest records
+`assetStatus: "published"`; no protected pixels enter Git or public output.
+All-nine local browser/auth/privacy fixtures passed again on 16 October. The
+integrated **678-test suite** passes with no skipped tests, and the production
+build passes. Generated HTML only updates the demo asset version for the seven
+published statuses.
+
+The previously deployed gentle release `2404389` passed
 [Pages run 38795728873](https://github.com/gravelcycles/travels/actions/runs/38795728873).
 Fresh public HTML/JS/CSS/renderer/manifest and both public image/depth pairs match
 the tested build, as do the unchanged catalog/reference pages (11 verified files).
 A fresh 390 × 844 Chrome load verifies off → gentle drag → Mouse move → off,
 maximum camera bounds, two visible samples, no private/auth request and no runtime
 errors. This completes the gentle remote correction; the seven protected additions
-are prepared and locally tested but **not yet remotely available**.
+are verified in private R2 but **not yet offered on the remote page** until the
+updated manifest is deployed.
 
-Next: after the owner restores Wrangler authorization, run
-`node build/depth-gentle-review/scripts/experiments/depth/publish-depth-assets.mjs --source-root /Users/dg/code/travels --publish`
-from the primary checkout. It verifies existing photos, uploads/checksums seven
-depth objects, checks anonymous 401/no-store and marks the manifest published only
-after success. Rebuild, test, integrate latest main, publish the changed manifest/
-HTML and verify the live protected nine-photo flow. Shared journey-viewer
+Next: fetch and integrate any newer main, publish the changed manifest/HTML,
+then verify successful Pages deployment,
+fresh public output and the live protected nine-photo flow. Shared journey-viewer
 integration remains unapproved; only this remote review artifact is authorized.
 
 Previous release evidence is historical, not verification of the correction:

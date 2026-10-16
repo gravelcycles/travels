@@ -10,9 +10,10 @@ The 15 October correction authorizes seven existing website photographs in this
 demo, with their depth derivatives kept behind normal existing photo access.
 
 Review URL: <https://gravelcycles.github.io/travels/experiments/depth/>.
-The gentle revision is live with the two public examples. Seven protected samples
-are prepared and tested locally; their private upload awaits restored Cloudflare
-publishing authorization, so they are not yet offered on the remote page.
+The gentle revision is live with the two public examples. All seven protected
+depth maps were published and verified in private R2 on 16 October. The updated
+Pages manifest and live nine-photo checks remain pending, so the additions are
+not yet offered on the remote page.
 Open a sample, then turn on **Depth motion**. **Drag** is the
 default: mouse/one-finger drags move the viewpoint in two axes, release holds it,
 and **Reset view** centers it. Hover alone does not move the photo in Drag mode.
@@ -138,11 +139,14 @@ port. Set `DEPTH_PRIVATE_ASSET_DIR` to the ignored local private-assets `v1`
 directory for all-nine checks: the script uses the actual selected photos/maps,
 mock credentials and the real auth helper, intercepting authorized fixture
 requests without serving private files publicly or contacting the live gateway.
-The 640-test suite and build pass. Actual-asset checks cover gentle controls,
+The integrated 16 October release passes all 678 tests and the production build.
+Actual-asset checks cover gentle controls,
 all nine samples, login returns/history, failed-map retry, expiry/lock cleanup,
 stale private loads and absence of protected pixels in public output. Current
-release and private publication receipts remain in WIP; these local fixtures do
-not claim that the seven depth objects have been uploaded.
+release evidence remains in WIP. The 16 October private publisher separately
+verified all seven remote depth objects, the existing photos/thumbnails and
+anonymous 401/no-store rejection; its receipt is in the asset record. Local
+all-nine browser fixtures passed again that day. Pages delivery is still pending.
 
 Before any subsequent delivery, run the full suite/build and check desktop, phone/landscape,
 initial off state, lazy depth loading, on/off, all nine photos, comparison,
