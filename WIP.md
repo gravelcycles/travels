@@ -23,14 +23,18 @@ comments above it, simplify repeated photo information in that sheet, and allow
 dragging it closed. [O17](docs/OWNER_DECISIONS.md#comment-notifications--11-october-2026)
 and [the conversation contract](docs/PLACES_AND_COMMENTS.md#comment-notifications)
 own the requirements. Implemented on `codex/photo-intermediate-cleanup` in
-`build/photo-intermediate-cleanup`, integrating current main through `34b72b2`
-and preserving the fullscreen focal-zoom/map-opening corrections. The primary
-checkout's unrelated edits remain untouched. All **717 tests** and the production
-build pass. Final browser checks cover direct entry, compact layout, target
+`build/photo-intermediate-cleanup`, integrating current main through `1b5ab7e`
+and preserving the fullscreen focal-zoom, map-opening and swipe/Places corrections.
+The primary checkout's unrelated edits remain untouched. All **733 tests** and the production
+build pass. Browser checks pass all 16 reference/demo/populated fresh draft/
+Heading East × desktop/320/390px/landscape cases, plus ordinary-motion phone
+checks. They cover direct entry, compact layout, target
 comments beyond page one, draft preservation, scrolling, drag cancellation,
 Close/Back/Forward and fullscreen retention on reference/demo/populated fresh
-draft/Heading East at desktop, 320/390px and landscape. Next: finish that browser
-matrix, then verify Pages and fresh public assets before marking delivery complete.
+draft/Heading East at desktop, 320/390px and landscape. A final seven-case delta
+check covers the later swipe integration. QA uses synthetic comments/images,
+not real visitor writes; it is Chrome viewport coverage, not physical-device
+certification. Next: verify Pages and fresh public assets before marking delivery complete.
 
 The location-group card is a separate design-review request. The
 [selected-photo tray proposal](docs/PHOTO_SELECTION_PROPOSAL.md) reduces duplicate
@@ -39,6 +43,31 @@ desktop with selection, image opening, event grid and dismissal. It remains a
 proposal, not a production change;
 preserve O03's map selection boundary and continuous journey browsing. Do not
 publish a replacement for that card until the owner chooses the direction.
+
+## Mobile photo swipes and Places dragging — 16 October 2026
+
+Owner correction: make the first fullscreen phone photo swipe continuous and
+later swipes slightly smoother; after Show map, allow direct Places-sheet
+dragging across a large part of its top bar. Current requirements are in
+[O04/O08](docs/OWNER_DECISIONS.md#mobile-swipe-continuity--16-october-2026)
+and the [Places correction](docs/OWNER_DECISIONS.md#mobile-places-visibility--12-october-2026).
+Implementation is isolated in `/private/tmp/travels-mobile-swipe-places` on
+`codex/mobile-swipe-places`, based on main `d3a7af1`; the primary checkout's
+unrelated work remains intact. Shared gestures and cache-ready neighbors are
+implemented; integrated main through `34b72b2`. All **723 tests** and the
+production build pass, including Places stylesheet cache invalidation. Rendered
+checks pass **16 Places and 14 fullscreen cases** across reference, Heading East,
+Alpine demo and an independently populated fresh draft at 320/390px, landscape
+and desktop. They use synthetic public/protected-local images and a blank
+MapLibre basemap; no real private pixels or comments were accessed. Additional
+checks cover reduced motion, delayed neighbors, pinch, retained grid nodes and
+list scrolling. An immediate map pan 50 ms after Show map now cancels delayed
+recentering and retains its exact camera. QA scripts/results are in
+`/private/tmp/mobile-swipe-places-browser-qa/` and adjacent task `.mjs` files.
+The combined fullscreen-controls/focal-zoom release also passes first/cached
+swipes, hidden-chrome swipes and restoration, full-viewport geometry, grid Back
+and Places dragging/map panning on Heading East and Alpine. Next: deploy and
+verify fresh public assets. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
@@ -93,9 +122,15 @@ selection clears on overview on both sizes. Heading East's phone Places count
 and list follow overview 20 → Stop 1's 2 → overview 20; no event filter is
 selected in overview. These are Chrome viewport checks, not physical-device QA.
 Integrated remote main through `3fb52f2`; all **682 tests** and the production
-build pass with reproducible checked-in output. Pending delivery: push the
-release and verify successful Pages plus fresh public HTML/assets and phone entry.
-The primary checkout's unrelated pending changes remain untouched.
+build pass with reproducible checked-in output. Released as `8d5a117` through
+successful [Pages run 38936565821](https://github.com/gravelcycles/travels/actions/runs/38936565821).
+Fresh public reference/Heading East/Florence/demo HTML and both changed runtime
+assets match the tested release byte-for-byte. A fresh 390 × 844 guest Chrome
+load of Heading East shows zero selected rows/markers, All stops, the whole
+journey card and Places · 20, with no JavaScript errors or protected-media
+requests. Implementation and delivery are complete. The subsequent fullscreen
+release has integrated this correction; its verification belongs to that
+workstream above. The primary checkout's unrelated pending changes remain untouched.
 
 ## Outbound trip update checkpoints — 16 October 2026
 

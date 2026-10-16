@@ -539,6 +539,20 @@ test('one template supplies every control and asset to real trips, all samples, 
   assert.ok(!fs.existsSync(path.join(root, 'dist', draft.slug)));
 });
 
+test('Places sheet style changes invalidate the cached stylesheet across generated journey pages', t => {
+  const root = fixture(t), draft = createJourney(root, input);
+  const pages = ['switzerland-italy.html', 'backpacking-europe-heading-east.html', 'demo.html'];
+  const version = file => read(root, `dist/${file}`).match(/places-panel\.css\?v=([a-f0-9]{12})"/)?.[1];
+  buildSite(root);
+  const before = pages.map(version);
+  assert.ok(before.every(Boolean), 'Places CSS must use its content hash, not the fallback version');
+  fs.appendFileSync(path.join(root, 'dist/assets/places-panel.css'), '\n/* changed shared sheet style */\n');
+  buildSite(root);
+  for (const [index, file] of pages.entries()) assert.notEqual(version(file), before[index], file);
+  assert.equal(new Set(pages.map(version)).size, 1, 'Every public trip uses the same updated stylesheet');
+  assert.ok(assets(renderJourneyPage(root, draft, {preview:true})).includes('places-panel.css'), 'Draft previews load the same live stylesheet');
+});
+
 test('a shared template edit propagates on rebuild, replacing edited generated HTML', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const source = path.join(root, 'content/templates/journey.html');
