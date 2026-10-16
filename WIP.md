@@ -193,9 +193,14 @@ isolation, later additions, legacy history and selection errors. Generated
 public output and the Worker index remain unchanged. Independent review caught
 combined snapshots attributing a share to unchanged trips omitted from the
 message; status now uses only the actual announced trip list, with malformed
-lists rejected without modifying history. The original ledger checksum remains
-unchanged. Next: release and record fresh Pages/public checks. Studio UI and
-automated sending remain optional future work.
+lists rejected without modifying history. Released as `9614681` through successful
+[Pages run 38937572609](https://github.com/gravelcycles/travels/actions/runs/38937572609).
+A fresh public catalog, reference page and all metadata bundles match the release;
+each of the three trip-specific diffs is empty. The original ledger checksum is
+unchanged, with no prepared or shared messages. The primary checkout has the
+same tooling and scoped guidance; all **45 focused checks** pass with unrelated
+edits preserved. This correction is complete. Studio UI and automated sending
+remain optional future work.
 
 ## Fullscreen depth-motion preview — 14 October 2026
 
