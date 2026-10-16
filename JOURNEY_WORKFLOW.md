@@ -133,8 +133,10 @@ commit generated output, deploy, and verify the Pages run and a fresh public
 page and its media. Report the verified public commit and URL separately.
 
 After publication, use [update checkpoints](docs/UPDATE_ANNOUNCEMENTS.md) when
-the owner wants a manual broadcast message. `updates prepare` compares live
-trip/photo IDs with the saved baseline; it does not save, publish or send.
+the owner wants a manual broadcast message. `updates prepare --trip TRIP_ID`
+compares that trip's live photo IDs with its acknowledged history; it does not
+save content, publish or send. Different trips keep independent acknowledgment
+in the same ledger; combined updates require an explicit `--all` choice.
 Only the owner's confirmation of sharing a specific prepared update permits
 `mark-shared`. Keep the ignored checkpoint/history across release worktrees.
 

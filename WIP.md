@@ -131,8 +131,26 @@ Released as `d451b58` after integrating current main through `d3a7af1`.
 succeeded. A fresh public catalog, reference page and all three metadata bundles
 match the release byte-for-byte and still produce an empty diff. The same tooling
 is installed in the primary checkout; all 38 focused checks pass there with its
-unrelated changes preserved. This bounded implementation is complete. Studio UI
-and automated sending remain future options, not unfinished authorized work.
+unrelated changes preserved. This completed the initial checkpoint release.
+
+**Later 16 October correction — trip-specific updates:** the owner normally
+notifies different people for each trip and will ask for an update per trip.
+O19 and the workflow now require selection before freezing a prepared inventory;
+sharing A must leave B and subsequent additions pending. With multiple published
+trips, `diff`/`prepare` require `--trip ID` or deliberate `--all`; `status` reports
+trip IDs/titles, known photo counts and last-shared times. Preserve the baseline
+above and existing schema 1 history without reset or migration. Multiple audiences
+within the same trip still need separate state directories.
+
+Implemented in the same managed worktree after integrating main through
+`1b5ab7e`. All **730 tests** and the production build pass, including cross-trip
+isolation, later additions, legacy history and selection errors. Generated
+public output and the Worker index remain unchanged. Independent review caught
+combined snapshots attributing a share to unchanged trips omitted from the
+message; status now uses only the actual announced trip list, with malformed
+lists rejected without modifying history. The original ledger checksum remains
+unchanged. Next: release and record fresh Pages/public checks. Studio UI and
+automated sending remain optional future work.
 
 ## Fullscreen depth-motion preview — 14 October 2026
 
