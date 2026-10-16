@@ -118,7 +118,7 @@ complete. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
-**Alignment follow-up — verified locally; deployment pending.** The owner
+**Alignment follow-up — deployed and verified.** The owner
 clarified that the next-city and Comments buttons must be right-aligned. Keep
 Share immediately left of Comments, replacing the mistaken left-aligned action
 group. Give city/day navigation its own full-width row in portrait and landscape;
@@ -130,8 +130,13 @@ the city buttons’ opposite safe edges, centered label, Close clearance and
 Comments-right/Share adjacency, alongside solid styling, hiding and focal zoom.
 Phone and landscape screenshots were inspected. Independent review found no
 cascade issue; an extra browser case passes hidden event-nav/Comments layouts.
-No physical-device claim. Next: integrate main, deploy and check fresh public
-output.
+No physical-device claim. Released as `8a8efe8` after integrating the latest
+receipts. [Pages run 38939958806](https://github.com/gravelcycles/travels/actions/runs/38939958806)
+succeeded. Fresh public CSS and all four journey/demo pages match the build.
+The live Alpine photo in portrait and short landscape confirms previous/next
+buttons 10 px from the edges, Comments 12 px from the right and Share 8 px to its
+left. Screenshots and measured geometry pass; no comment writes were made.
+Delivery is complete.
 
 **Button-style follow-up — deployed and verified.** The
 owner rejected the translucent buttons as a regression after the release below.

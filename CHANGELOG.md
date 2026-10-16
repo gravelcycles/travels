@@ -7,8 +7,9 @@
 - Align Comments right with Share immediately to its left, correcting the
   earlier left-aligned group. Preserve solid styling, tap hiding and focal zoom.
 - Update current owner, photo, journey and framework guidance. All 740 tests,
-  the build, 16 browser cases and hidden-control geometry checks pass. Delivery
-  is tracked in [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+  the build, 16 browser cases and hidden-control geometry checks pass. Release
+  `8a8efe8` passed Pages, fresh public hashes and live portrait/landscape checks.
+  The receipt is in [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
 
 ## 16 October 2026 — retire the depth experiment
 
