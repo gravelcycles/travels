@@ -33,15 +33,12 @@ activation work.
       Pages and fresh public hash/mobile checks pass. See
       [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
 
-- [ ] **Fullscreen depth motion — gentle revision and owner review.** Complete
-      and verify the 15 October correction in the
-      [remote experiment](docs/DEPTH_FULLSCREEN_DEMO.md): original gentle motion,
-      retained drag/mouse controls, and seven protected website photographs
-      beside the two public samples. Follow [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026)
-      for the verified 16 October private upload and remaining Pages delivery/
-      live-verification steps. Only those seven
-      photo/depth pairs are authorized; bulk processing and shared journey-viewer
-      integration remain unapproved.
+- [x] **Fullscreen depth motion — gentle nine-photo demo.** Published and
+      verified 16 October: original gentle motion, drag/mouse controls, and seven
+      protected website photographs beside the two public samples in the
+      [remote experiment](docs/DEPTH_FULLSCREEN_DEMO.md). Ready for owner review;
+      [WIP](WIP.md#fullscreen-depth-motion-preview--14-october-2026) records live
+      checks. Bulk processing and shared journey-viewer integration remain unapproved.
 
 - [x] **Atlas continuity guidance — 11 October 2026.** Audit available owner
       corrections; require a shared decision/supersession record and area

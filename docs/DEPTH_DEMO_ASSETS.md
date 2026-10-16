@@ -119,9 +119,11 @@ the 14 existing image/thumbnail objects without republishing them, confirmed
 public R2 access was disabled, and recorded 327,914,048 account-storage bytes
 before the upload, below the existing ceiling. All seven anonymous gateway HEAD
 requests returned **401/no-store**. Only then were the seven demo records marked
-`assetStatus: "published"`. The updated Pages manifest and live nine-photo
-verification remain pending; private R2 publication alone does not make the
-additional samples available on the remote review page.
+`assetStatus: "published"`. Pages release `3fb52f2` then deployed the manifest;
+fresh public output matched the build. All seven private images and depth maps
+loaded through normal remembered access on the live demo, while a fresh anonymous
+browser showed seven locked samples and requested no private pixels. The release
+receipt is in [WIP](../WIP.md#fullscreen-depth-motion-preview--14-october-2026).
 
 | Protected sample | Depth size | Additional bytes | Local CPU inference |
 | --- | --- | --- | --- |
