@@ -61,7 +61,13 @@ scrolling/map panning and photo/draft/history retention, without browser errors.
 Current main's saved photo metadata, solid controls, right-aligned actions and
 experiment retirement are preserved. Evidence is in ignored
 `build/header-drag-qa/`; these are Chrome viewport checks, not physical-device
-certification. Next: deploy and verify fresh public interactions.
+certification. Released as `5667d26` through successful
+[Pages run 38940462823](https://github.com/gravelcycles/travels/actions/runs/38940462823).
+All four fresh public journey/demo pages and six runtime/style assets match the
+tested build. Public demo checks at 390px, short landscape and desktop verify
+whole-header and Close-origin dragging, native taps, short-pull return,
+secondary-touch cancellation, retained photo/draft/history and keyboard Close,
+with no browser errors or real comment writes. This follow-up is complete.
 
 Separate existing layout gap found during verification: long photo notes can
 consume the entire location panel at 844 × 390, leaving its map zero-height.
