@@ -16,8 +16,17 @@ photos and 12 sample stills have explicit small thumbnails; samples retain their
 full originals for fullscreen viewing. The shared reference/demo/fresh-draft
 checks pass. Worker `2187bc98-1bdb-48a8-9991-9473158ed84a` is deployed;
 rollback version is `33b135c6-21d7-4c6a-b366-2e217e6ab7b3`.
-Next: verify live metadata/thumbnail bytes and full-photo access, publish Pages,
-then compare fresh public output and native live preview. Pages delivery is pending.
+Published as `38b31a1` through successful
+[Pages run 38954219578](https://github.com/gravelcycles/travels/actions/runs/38954219578).
+All 59 checked public files, including five pages, referenced assets and seven
+sample thumbnails, match the tested release byte-for-byte. Both real trips pass
+live signed HTML, anonymous thumbnail GET/HEAD, exact thumbnail checksum and
+480px dimensions; full WebP/AVIF still reject anonymous access and accept valid
+access. Native macOS LinkPresentation fetched the live family share, read
+“Arrival in Luzern” and decoded its 480×360 WebP. This verifies Apple's preview
+framework, not an actual iMessage send or physical iPhone cache behavior.
+All five public demo journeys also pass live share-page and 480px thumbnail
+GET/HEAD checks. Implementation, deployment and current documentation are complete.
 
 ## Measured performance pass — 16 October 2026
 

@@ -3,7 +3,10 @@
 The shared mark is a white globe in a map pin with an orange tip, on route blue.
 The palette is blue `#006f92`, white `#ffffff`, and orange `#d4512c`. It has no
 destination dot. The same mark appears in catalog/journey headers, browser tabs,
-Apple touch icons and the public link-preview card.
+Apple touch icons and generic page link-preview cards. Explicit photo shares
+use the selected photo's low-resolution thumbnail, per
+[O18](OWNER_DECISIONS.md#photo-and-view-sharing--12-october-2026) and the
+[photo-sharing workflow](../PHOTO_WORKFLOW.md#sharing-a-photo-or-view).
 
 Edit `content/branding/icon.svg` and the matching embedded mark in `share.svg`.
 The share illustration includes the Journey Atlas name and existing tagline.
