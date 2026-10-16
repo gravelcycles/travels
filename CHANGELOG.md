@@ -12,8 +12,10 @@
   old visible-on-tap and omitted-Close rules.
 - Validation: 707 integrated tests, the production build and 16 synthetic-fixture browser
   combinations pass; 320 px/landscape screenshots were visually checked. Physical
-  iPhone/Safari device testing is not claimed. Public delivery remains in
-  [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+  iPhone/Safari device testing is not claimed. Release `34b72b2` passed
+  [Pages run 38936841288](https://github.com/gravelcycles/travels/actions/runs/38936841288);
+  fresh public hashes and live mobile photo/control/zoom/return checks pass.
+  See [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
 
 ## 16 October 2026 — open the map without a selected stop
 

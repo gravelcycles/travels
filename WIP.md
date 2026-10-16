@@ -18,7 +18,7 @@ must read current files and reconcile any later corrections before continuing.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
-**Implemented; public delivery pending.** The owner requested mobile fullscreen
+**Completed and deployed.** The owner requested mobile fullscreen
 Share beside Comments on the left, top-right Close, one tap to hide all buttons
 for just the photo, and zoom that uses fullscreen. The follow-up adds pinch
 focus that follows the fingers on mobile and desktop. Current requirements and
@@ -48,9 +48,15 @@ check also verifies keyboard restoration after hiding controls. Regressions
 cover cancelled taps, remaining-finger pinch release, grid return and private
 access lifecycle. Physical iPhone or Safari-device testing is not claimed.
 
-Next: push the validated release, verify successful Pages and fresh public
-HTML/asset hashes, then record the delivery receipt and complete TODO. The
-primary checkout's unrelated edits remain untouched.
+Released as `34b72b2` after integrating main through `8d5a117`.
+[Pages run 38936841288](https://github.com/gravelcycles/travels/actions/runs/38936841288)
+succeeded. Fresh public reference/Heading East/demo HTML and all six changed
+viewer assets match the tested build byte-for-byte. The fresh public Alpine
+photo loaded and passed 390 × 844 full-viewport, Share/Close, tap-to-hide,
+double-tap zoom, Tab recovery and Close-to-map checks in the in-app browser.
+Direct Node HTTP timed out; the system HTTP client and live browser checks
+succeeded. No implementation or delivery work remains. The primary checkout's
+unrelated edits remain untouched.
 
 ## Unselected map opening — 16 October 2026
 

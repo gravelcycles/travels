@@ -582,7 +582,7 @@ loader and never asks for private-photo access.
 
 Owner correction, **16 October 2026**, under
 [O03/O08/O18](docs/OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
-Implemented in the shared viewer; public delivery is pending. Verification and
+Implemented and deployed in the shared viewer. Verification and
 deployment status live in
 [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
 
