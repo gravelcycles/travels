@@ -96,12 +96,13 @@ certified by Chrome viewport emulation.
 
 The guarded local Studio sync applied 32 scoped files, copied 223 verified AVIFs
 and merged only their descriptors into four manifests, with backups and an
-incremental journal. All 668 tests and the local build pass in the owner's shared checkout. The
-preservation audit confirms 294 unrelated files, including 44 tracked dirty files
-and all three override files, are byte-identical; all 244 local photo records retain
-their existing fields and order. The shared checkout remains uncommitted on its
-original branch and HEAD; the migration does not publish its unrelated edits. Future photo imports now prepare
-AVIF upgrades through the shared encoder; existing WebP delivery remains available.
+incremental journal. All 668 tests and the local build pass in the owner's shared
+checkout. After rebuilding six intended public outputs, 288 unrelated files,
+including 38 tracked dirty files and all three override files, remain byte-identical.
+All 244 local photo records retain their existing fields and order. The shared
+checkout remains uncommitted on its original branch and HEAD; the migration does
+not publish its unrelated edits. Future photo imports now prepare AVIF upgrades
+through the shared encoder; existing WebP delivery remains available.
 
 ## Saved Heading East photo data — 16 October 2026
 
