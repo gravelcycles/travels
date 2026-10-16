@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import { validateJourneyExtras } from "./journey-extras.mjs";
+import { MAX_PHOTO_ASSET_BYTES } from "./photo-variants.mjs";
 import path from "node:path";
 import "../dist/assets/atlas-utils.js";
 
@@ -10,6 +11,20 @@ export const writeJson = (filename, value) => {
 };
 export const validId = (id) => typeof id === "string" && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id);
 export const validCoordinate = (p) => Array.isArray(p) && p.length === 2 && Number.isFinite(p[0]) && Number.isFinite(p[1]) && Math.abs(p[0]) <= 180 && Math.abs(p[1]) <= 90;
+export function validatePhotoAvif(photo) {
+  if (photo.fullAvif == null) return;
+  const asset = photo.fullAvif;
+  if (!asset || typeof asset !== "object" || Array.isArray(asset) ||
+    !/^\/private-photos\/assets\/v1\/[a-f0-9]{64}\.avif$/.test(asset.src || "") ||
+    !["local", "published"].includes(asset.assetStatus) ||
+    ![asset.width, asset.height, asset.bytes, photo.width, photo.height].every(value => Number.isSafeInteger(value) && value > 0) ||
+    asset.width * asset.height > 100_000_000 || asset.bytes > MAX_PHOTO_ASSET_BYTES ||
+    photo.protected !== true || !/^\/private-photos\/assets\/v1\/[a-f0-9]{64}\.webp$/.test(photo.src || "") ||
+    asset.width < photo.width || asset.height < photo.height ||
+    // Derivative resizing rounds to whole pixels. Allow one fallback pixel of
+    // ratio error while rejecting a different crop, rotation or orientation.
+    Math.abs(asset.width * photo.height - asset.height * photo.width) > Math.max(asset.width, asset.height)) throw new Error(`${photo.id}: invalid protected AVIF derivative`);
+}
 export function calendarDate(value) {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) throw new Error("Use dates in YYYY-MM-DD format");
   const date = new Date(`${value}T00:00:00Z`);
@@ -150,6 +165,7 @@ export function validateJourneys(data) {
     for (const p of j.photos) {
       if (!days.has(p.dayId)) fail(`${p.id}: photo references an unknown day`);
       if (p.mapFrame != null && !globalThis.JOURNEY_ATLAS_UTILS.validPhotoFrame(p.mapFrame)) fail(`${p.id}: invalid photo map frame`);
+      validatePhotoAvif(p);
     }
   }
   if (!ids.has(data.defaultJourneyId)) fail("Default journey does not exist");

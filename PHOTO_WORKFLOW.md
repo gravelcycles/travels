@@ -14,7 +14,7 @@ Stationary refreshes retain the bubble and its thumbnail load. A group can ancho
 to another visible member if its first photo is offscreen or crowded by a place
 pin, without reordering the album. Groups fully outside the view or without room
 remain available in the album. Preserve the original metadata during
-transfer, then publish a separate web-sized copy.
+transfer, then publish separate optimized derivatives.
 
 ## Upload and delete in Studio
 
@@ -37,11 +37,15 @@ uploaded bytes returns the existing photo and preserves its day and edits.
 
 The importer automatically rotates the image, makes the source-supported
 thumbnail (up to 480 px wide), preview (up to 1280 px wide) and full (up to 3200 px longest-edge) WebPs without enlarging small images, and creates
-a tiny blurred preview. It strips EXIF/XMP from derivatives. Untouched originals,
+a tiny blurred preview. It also prepares an original-resolution AVIF for the
+full viewer (quality 65, effort 5, 8-bit sRGB, 4:4:4; no enlargement). If that
+optional encode fails or exceeds the 16 MiB delivery limit, the WebP import
+succeeds with a warning and remains publishable. It strips private metadata
+from every derivative. Untouched originals,
 camera timestamps, and candidate GPS stay under ignored
 `photos/studio-uploads/<journey-id>/`. GPS is never turned into a public pin
-without a manual location edit. HEIC uses macOS Quick Look; other still formats
-use Sharp. Video and animated/multipage images are rejected.
+without a manual location edit. HEIC uses macOS ImageIO to decode the full
+source before resizing; other still formats use Sharp. Video and animated/multipage images are rejected.
 
 **Your caption** and **Your notes** start blank. They are optional and contain
 only the traveler's words. Place labels are optional traveler-written text too;
@@ -232,13 +236,17 @@ The next-day button has no pulsing halo at the end of an album.
 The selected thumbnail keeps its separate album-selection border.
 
 `--publish` uses Wrangler's owner authorization to upload to private R2. It
-refuses public bucket settings, checks WebP metadata and content hashes, uploads
+refuses public bucket settings, checks WebP/AVIF metadata and content hashes, uploads
 missing objects, then downloads and verifies every selected object before marking
-its manifest published. It skips trash, refuses draft publication, and
+its manifest published. It also verifies the exact serving MIME type. It skips
+trash, refuses draft publication, and
 never uploads originals, overwrites mismatched objects, commits or pushes.
 Retries reuse matching objects. Use `--all` for a complete reviewed migration;
 the default selects pending local photos. Both bulk imports and Studio share
-this publisher and three-size pipeline. Credentials never enter the atlas page.
+this publisher and derivative pipeline. Credentials never enter the atlas page.
+Photo status and optional AVIF status are independent; a published WebP stays
+visible while its AVIF upgrade is local. Publication rereads the source before
+changing status, preserves concurrent editorial edits and refuses replaced assets.
 
 On a slow or unreliable connection, append `--concurrency 1` to upload and
 verify one derivative at a time, with progress after every verified file. The
@@ -253,6 +261,45 @@ merge; conflicting fields require a saved/draft choice checked against the
 current revision. Reload restores the unpublished draft, not permission to
 overwrite newer work. Failed saves retain edits. See
 [editing and regeneration](JOURNEY_WORKFLOW.md#editing-and-regeneration).
+
+## Full-resolution AVIF upgrades
+
+The optional `fullAvif` descriptor contains `src`, `width`, `height`, `bytes` and
+source-only `assetStatus` (`local` or `published`). Builds expose only verified,
+published AVIF descriptors and strip the status. Existing `src`, `srcset` and
+photo dimensions continue to describe the WebP fallback. Both formats use the
+same authenticated private Worker and immutable SHA-256 object names; AVIF
+must remain within the existing 16 MiB / 100 megapixel delivery limits.
+
+The browser probes AVIF decoding without delaying initial image loading. Only
+full-viewer loads and their bounded neighbor preloads select a supported AVIF;
+thumbnail/preview requests keep WebP. Late support detection does not replace
+an already-started WebP load. Missing, failed, invalid-MIME or undecodable AVIF
+falls back to the existing full WebP; authentication failures still lock access.
+Photo IDs, captions, pins, order, originals and navigation remain unchanged.
+
+For an existing published collection, the agent runs:
+
+1. `npm run photos:avif -- --journey <id>` to verify original matches without
+   changing manifests. Never guess an ambiguous match.
+2. `npm run photos:avif -- --journey <id> --apply --concurrency 4` to add local
+   AVIFs only. The migration backs up manifests under ignored
+   `build/avif-migration/`, verifies original checksums after encoding and resumes
+   already-verified local files. Individual failures retain the published WebP.
+3. Fetch/integrate current main, test and deploy backward-compatible Worker
+   support before exposing any new descriptor. Capture the old Worker version.
+4. `npm run photos:publish -- --journey <id> --avif-only` to review the exact
+   visible, already-published upgrade set, then add `--publish` to upload and
+   download-verify it. This does not publish unrelated pending uploads or Trash.
+5. Run the full tests/build and rendered viewer/fallback checks, fetch/integrate
+   current main again, publish Pages and verify fresh authenticated AVIF/WebP
+   responses, phone swipes/zoom and unchanged albums. Record the release receipt.
+
+Keep every existing WebP object and path. To roll back the frontend, restore the
+previous Pages release/source without deleting the added AVIF objects; the new
+Worker remains compatible with old clients. For a Worker regression, restore
+its captured version and verify old WebP delivery. Do not rotate credentials,
+change privacy settings, or remove fallback assets during this migration.
 
 ## Removal of generated copy · 9 September 2026
 
@@ -350,10 +397,10 @@ ignored `build/draft-assets/<id>/photos.json` for drafts. GPS candidates remain
 in the private build report for review; no automatic precise map pin is exposed.
 Failed/empty imports retain the previous manifest and derivative directory;
 successful replacements keep a local backup. Review results, then run
-`npm run build` to generate the public bundle. Original HEIC decoding still
-uses macOS Quick Look; JPEG/PNG imports use Sharp directly.
+`npm run build` to generate the public bundle. Original HEIC decoding uses macOS ImageIO at source resolution; JPEG/PNG
+imports use Sharp directly.
 
-Bulk intake also accepts DNG stills through macOS Quick Look, preserving the
+Bulk intake also accepts DNG stills through macOS ImageIO, preserving the
 untouched RAW originals privately. Capture labels retain the actual ISO date
 and local time, including within multi-day city albums. Undated TBD stops are
 skipped during date matching, so a planned onward itinerary does not block

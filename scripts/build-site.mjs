@@ -61,7 +61,11 @@ export function buildSite(root) {
   if (!published.some(j => j.id === data.defaultJourneyId)) throw new Error("Default journey must be published");
   const routeIds = new Set(published.flatMap(j => j.segments.map(s => s.id)));
   const dayIds = new Set(published.flatMap(j => j.days.map(d => d.id)));
-  const visiblePhotos = new Map(published.map(j => [j.id, j.photos.filter(photo => !overrides.photos[photo.id]?.trashed && photo.assetStatus !== "local")]));
+  const visiblePhotos = new Map(published.map(j => [j.id, j.photos.filter(photo => !overrides.photos[photo.id]?.trashed && photo.assetStatus !== "local").map(({ fullAvif, ...photo }) => ({
+    ...photo,
+    // Keep the existing fallback public until its optional upgrade is verified.
+    ...(fullAvif?.assetStatus === "published" ? { fullAvif: { src: fullAvif.src, width: fullAvif.width, height: fullAvif.height, bytes: fullAvif.bytes } } : {})
+  }))]));
   const photoIds = new Set([...visiblePhotos.values()].flat().map(p => p.id));
   const select = (obj, ids) => Object.fromEntries(Object.entries(obj).filter(([id]) => ids.has(id)).sort(([a], [b]) => a.localeCompare(b)));
   const publicData = { ...data, journeys: published.map(({ photoImport, timeZone, ...j }) => ({ ...j, ...(j.pointsOfInterest ? {pointsOfInterest:j.pointsOfInterest.map(point=>({...point,...(point.photoIds ? {photoIds:point.photoIds.filter(id=>photoIds.has(id))} : {})}))} : {}), photos: [], ...(j.videos ? { videos: j.videos.filter(video => !video.hidden && video.assetStatus !== "local").map(({sourceHash,...video})=>{if(video.visibility==='private'){const {transcript,captions,captionLanguage,...safe}=video;return safe;}return video;}) } : {}) })) };

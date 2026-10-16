@@ -165,3 +165,49 @@ test('sharing review groups choices without hiding blockers or treating delibera
   assert.deepEqual(presentation({items:[]}).groups,[]);
   assert.equal(presentation({items:[]}).progress,'No choices left to review');
 });
+
+test('pending AVIF upgrades leave a published fallback usable and new-photo readiness counts every required derivative', t => {
+  const root = fixture(t), hash = 'a'.repeat(64), src = `/private-photos/assets/v1/${hash}.webp`, avif = `/private-photos/assets/v1/${hash}.avif`;
+  const photo = { id: 'upgrade', dayId: 'day', src, srcset: [{ src }], assetStatus: 'published', fullAvif: { src: avif, assetStatus: 'local' } };
+  const journey = { days: [{ id: 'day' }], photos: [photo] }, state = { photos: {} };
+  const collect = () => { const items = []; assessReadinessMedia(root, journey, state, (id, severity, title, detail) => items.push({ id, severity, title, detail })); return { items }; };
+  let report = collect();
+  assert.equal(issue(report, 'avif:upgrade').severity, 'review');
+  assert.match(issue(report, 'avif:upgrade').detail, /missing or empty/);
+  assert.ok(!report.items.some(item => item.severity === 'blocker'));
+  const directory = path.join(root, 'build/private-photo-assets/v1'); fs.mkdirSync(directory, { recursive: true });
+  fs.writeFileSync(path.join(directory, `${hash}.avif`), 'local fixture');
+  assert.match(issue(collect(), 'avif:upgrade').detail, /present locally/);
+  photo.assetStatus = 'local'; report = collect();
+  assert.match(issue(report, 'asset:upgrade').detail, /1 required photo derivative is missing/);
+  fs.writeFileSync(path.join(directory, `${hash}.webp`), 'local fallback');
+  assert.match(issue(collect(), 'asset:upgrade').detail, /Local derivatives are present/);
+  photo.assetStatus = 'published'; photo.fullAvif.assetStatus = 'published';
+  assert.equal(issue(collect(), 'avif:upgrade'), undefined);
+  photo.fullAvif.assetStatus = 'local'; state.photos.upgrade = { trashed: true };
+  assert.deepEqual(collect().items, []);
+});
+
+test('Studio serves only managed local AVIF derivatives with image/avif and no-store', { timeout: 30000 }, async t => {
+  const root = fixture(t), hash = 'c'.repeat(64), directory = path.join(root, 'build/private-photo-assets/v1');
+  fs.mkdirSync(directory, { recursive: true }); fs.writeFileSync(path.join(directory, `${hash}.avif`), 'synthetic local bytes');
+  const child = spawn(process.execPath, [path.join(repo, 'scripts/studio-server.mjs')], { env: { ...process.env, ATLAS_STUDIO_ROOT: root, ATLAS_STUDIO_PORT: '0' }, stdio: ['ignore', 'pipe', 'pipe'] });
+  t.after(() => child.kill()); let output = ''; child.stderr.on('data', chunk => output += chunk);
+  const origin = await new Promise((resolve, reject) => {
+    child.stdout.on('data', chunk => { const match = String(chunk).match(/http:\/\/127.0.0.1:\d+/); if (match) resolve(match[0]); });
+    child.on('error', reject); child.on('exit', code => reject(Error(`Server exited ${code}: ${output}`)));
+  });
+  const response = await fetch(`${origin}/build/private-photo-assets/v1/${hash}.avif`);
+  assert.equal(response.status, 200); assert.equal(response.headers.get('Content-Type'), 'image/avif');
+  assert.equal(response.headers.get('Cache-Control'), 'no-store'); assert.equal(await response.text(), 'synthetic local bytes');
+  assert.equal((await fetch(`${origin}/build/private-photo-assets/v1/${hash}.heic`)).status, 404);
+  assert.equal((await fetch(`${origin}/build/private-photo-assets/v1/original.avif`)).status, 404);
+});
+
+test('pending quality upgrades are grouped with photos without making a working published image a blocker', () => {
+  const item = { id: 'avif:photo', severity: 'review', title: 'A pending quality upgrade' };
+  const view = presentation({ items: [item] });
+  assert.deepEqual(view.required, []);
+  assert.equal(view.groups.length, 1); assert.equal(view.groups[0].id, 'media');
+  assert.deepEqual(view.groups[0].items, [item]);
+});

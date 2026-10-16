@@ -1588,3 +1588,76 @@ test('restoring an overview camera clears event selection and early entry remain
     assert.deepEqual(f.calls.at(-1),{camera},'Selection cleanup preserves the exact returning map camera');
   }
 });
+
+test('AVIF upgrades preserve public WebP until verified across reference, demo and an independent fresh draft', t => {
+  const root = fixture(t), draft = createJourney(root, { ...input, slug: 'avif-contract-fixture' });
+  const { data } = loadContent(root), state = readOverrides(root);
+  const targets = [data.journeys.find(journey => journey.id === 'switzerland-italy-family-2026'), data.journeys.find(journey => journey.kind === 'demo' && journey.photos.length), draft];
+  const upgrades = [];
+  for (const [index, journey] of targets.entries()) {
+    const fullAvif = { src: `/private-photos/assets/v1/${String(index + 1).repeat(64)}.avif`, width: journey.published ? 4032 : 3024, height: journey.published ? 3024 : 4032, bytes: 950000, assetStatus: 'local', localEncodingNote: 'Private preparation detail' };
+    const photo = journey.published ? { ...journey.photos.find(photo => !state.photos[photo.id]?.trashed && photo.assetStatus !== 'local') } : { id: `${draft.id}-own-photo`, dayId: draft.days[1].id, caption: '', src: `/private-photos/assets/v1/${'f'.repeat(64)}.webp`, srcset: [{ src: `/private-photos/assets/v1/${'f'.repeat(64)}.webp`, width: 2400 }], width: 2400, height: 3200, assetStatus: 'local', protected: true };
+    if (journey.kind === 'demo') Object.assign(photo, { protected: true, width: 3200, height: 2400, src: `/private-photos/assets/v1/${'e'.repeat(64)}.webp`, assetStatus: 'published', srcset: [{ src: `/private-photos/assets/v1/${'e'.repeat(64)}.webp`, width: 3200 }] });
+    const filename = path.join(root, journey.published ? `content/photo-manifests/${journey.id}.json` : `build/draft-assets/${journey.id}/photos.json`);
+    const photos = journey.published ? fs.existsSync(filename) ? JSON.parse(fs.readFileSync(filename, 'utf8')) : journey.photos : [photo];
+    const position = photos.findIndex(item => item.id === photo.id);
+    photos[position] = { ...photo, fullAvif };
+    writeJson(filename, photos);
+    upgrades.push({ journey, photo, filename, fullAvif });
+  }
+  buildSite(root);
+  let publicData = bundle(read(root, 'dist/assets/trip-photos.js'), 'JOURNEY_ATLAS_PHOTOS');
+  const preview = bundle(studioAsset(root, 'trip-photos'), 'JOURNEY_ATLAS_PHOTOS');
+  for (const { journey, photo, fullAvif } of upgrades) {
+    assert.deepEqual(preview[journey.id].find(item => item.id === photo.id).fullAvif, fullAvif, 'Each local preview retains its pending upgrade');
+    if (!journey.published) { assert.equal(publicData[journey.id], undefined); continue; }
+    const visible = publicData[journey.id].find(item => item.id === photo.id);
+    assert.equal(visible.src, photo.src); assert.deepEqual(visible.srcset, photo.srcset);
+    assert.equal(visible.fullAvif, undefined, 'Pending upgrades never introduce unavailable public URLs');
+  }
+  for (const { filename, photo } of upgrades) {
+    const photos = JSON.parse(fs.readFileSync(filename, 'utf8'));
+    photos.find(item => item.id === photo.id).fullAvif.assetStatus = 'published';
+    writeJson(filename, photos);
+  }
+  buildSite(root); publicData = bundle(read(root, 'dist/assets/trip-photos.js'), 'JOURNEY_ATLAS_PHOTOS');
+  for (const { journey, photo, fullAvif } of upgrades.filter(item => item.journey.published)) {
+    const visible = publicData[journey.id].find(item => item.id === photo.id);
+    const { assetStatus, localEncodingNote, ...expected } = fullAvif;
+    assert.deepEqual(visible.fullAvif, expected); assert.equal(visible.src, photo.src);
+  }
+  assert.equal(publicData[draft.id], undefined, 'Verified media never publishes an unpromoted draft');
+  // Independently authored draft data gets the same gate after normal promotion.
+  const source = JSON.parse(fs.readFileSync(path.join(root, `content/drafts/${draft.id}.json`), 'utf8'));
+  writeJson(path.join(root, `content/journeys/${draft.id}.json`), { ...source, published: true });
+  fs.rmSync(path.join(root, `content/drafts/${draft.id}.json`));
+  const own = upgrades.at(-1), ownPhotos = JSON.parse(fs.readFileSync(own.filename, 'utf8'));
+  ownPhotos[0].assetStatus = 'published'; ownPhotos[0].fullAvif.assetStatus = 'local';
+  writeJson(path.join(root, `content/photo-manifests/${draft.id}.json`), ownPhotos);
+  buildSite(root); publicData = bundle(read(root, 'dist/assets/trip-photos.js'), 'JOURNEY_ATLAS_PHOTOS');
+  assert.equal(publicData[draft.id][0].src, own.photo.src); assert.equal(publicData[draft.id][0].fullAvif, undefined);
+  ownPhotos[0].fullAvif.assetStatus = 'published';
+  writeJson(path.join(root, `content/photo-manifests/${draft.id}.json`), ownPhotos);
+  buildSite(root); publicData = bundle(read(root, 'dist/assets/trip-photos.js'), 'JOURNEY_ATLAS_PHOTOS');
+  assert.equal(publicData[draft.id][0].fullAvif.src, own.fullAvif.src);
+  assert.equal(publicData[draft.id][0].fullAvif.assetStatus, undefined);
+});
+
+test('public build rejects malformed or external AVIF descriptors before replacing existing output', t => {
+  const root = fixture(t), filename = path.join(root, 'content/photo-manifests/switzerland-italy-family-2026.json');
+  const photos = JSON.parse(fs.readFileSync(filename, 'utf8'));
+  const asset = { src: `/private-photos/assets/v1/${'a'.repeat(64)}.avif`, width: 4032, height: 3024, bytes: 950000, assetStatus: 'published' };
+  const publicBefore = read(root, 'dist/assets/trip-photos.js');
+  for (const invalid of [
+    { src: 'https://external.example/photo.avif' }, { src: `/private-photos/assets/v1/${'a'.repeat(64)}.webp` },
+    { src: `/private-photos/assets/v1/../../original.avif` }, { assetStatus: 'ready' }, { assetStatus: undefined },
+    { width: 0 }, { height: 2.5 }, { bytes: -1 }, { bytes: 16 * 1024 * 1024 + 1 }, { width: 10001, height: 10000 },
+    { width: 1600, height: 1200 }, { width: 3024, height: 4032 }, { width: 4032, height: 2688 },
+  ]) {
+    photos[0].fullAvif = { ...asset, ...invalid }; writeJson(filename, photos);
+    assert.throws(() => buildSite(root), /invalid protected AVIF derivative/);
+    assert.equal(read(root, 'dist/assets/trip-photos.js'), publicBefore);
+  }
+  photos[0].fullAvif = asset; photos[0].protected = false; writeJson(filename, photos);
+  assert.throws(() => buildSite(root), /invalid protected AVIF derivative/);
+});

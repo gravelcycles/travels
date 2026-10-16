@@ -18,15 +18,30 @@ try{
  const redeem=()=>mf.dispatchFetch('https://photos.example.com/private-photos/auth/redeem',{method:'POST',headers:{Origin:'https://gravelcycles.github.io','Content-Type':'application/json'},body:JSON.stringify({code:grant.code,verifier})});
  const exchange=await redeem();assert.equal(exchange.status,200);const access=await exchange.json();
  assert.equal((await redeem()).status,401,'A code can only be used once');
- const bucket=await mf.getR2Bucket('PHOTOS'),key=`v1/${'a'.repeat(64)}.webp`,bytes=new Uint8Array([82,73,70,70]);
- await bucket.put(key,bytes,{httpMetadata:{contentType:'image/webp'}});
- const asset='https://photos.example.com/private-photos/assets/'+key;
- assert.equal((await mf.dispatchFetch(asset)).status,401);
- const photo=await mf.dispatchFetch(asset,{headers:{Origin:'https://gravelcycles.github.io',Authorization:`Bearer ${access.token}`}});
- assert.equal(photo.status,200);assert.deepEqual(new Uint8Array(await photo.arrayBuffer()),bytes);assert.equal(photo.headers.get('Cache-Control'),'private, no-cache');
- const repeated=await mf.dispatchFetch(asset,{headers:{Origin:'https://gravelcycles.github.io',Authorization:`Bearer ${access.token}`,'If-None-Match':photo.headers.get('ETag')}});
- assert.equal(repeated.status,304);assert.equal((await repeated.arrayBuffer()).byteLength,0);
- assert.equal((await mf.dispatchFetch(asset,{headers:{Origin:'https://gravelcycles.github.io','If-None-Match':photo.headers.get('ETag')}})).status,401);
+ const bucket=await mf.getR2Bucket('PHOTOS'),bytes=new Uint8Array([82,73,70,70]);
+ const photoHeaders={Origin:'https://gravelcycles.github.io',Authorization:`Bearer ${access.token}`};
+ for(const format of ['webp','avif']) {
+  const key=`v1/${'a'.repeat(64)}.${format}`,contentType=`image/${format}`;
+  await bucket.put(key,bytes,{httpMetadata:{contentType}});
+  const asset='https://photos.example.com/private-photos/assets/'+key;
+  assert.equal((await mf.dispatchFetch(asset)).status,401);
+  const photo=await mf.dispatchFetch(asset,{headers:photoHeaders});
+  assert.equal(photo.status,200);assert.deepEqual(new Uint8Array(await photo.arrayBuffer()),bytes);assert.equal(photo.headers.get('Cache-Control'),'private, no-cache');
+  assert.equal(photo.headers.get('Content-Type'),contentType);assert.equal(photo.headers.get('X-Content-Type-Options'),'nosniff');
+  assert.equal(photo.headers.get('Access-Control-Allow-Origin'),photoHeaders.Origin);assert.equal(photo.headers.get('ETag'),`"${'a'.repeat(64)}"`);
+  const head=await mf.dispatchFetch(asset,{method:'HEAD',headers:photoHeaders});
+  assert.equal(head.status,200);assert.equal(head.headers.get('Content-Type'),contentType);assert.equal(head.headers.get('Content-Length'),String(bytes.length));assert.equal((await head.arrayBuffer()).byteLength,0);
+  const repeated=await mf.dispatchFetch(asset,{headers:{...photoHeaders,'If-None-Match':photo.headers.get('ETag')}});
+  assert.equal(repeated.status,304);assert.equal((await repeated.arrayBuffer()).byteLength,0);
+  assert.equal((await mf.dispatchFetch(asset,{headers:{Origin:photoHeaders.Origin,'If-None-Match':photo.headers.get('ETag')}})).status,401);
+  const mismatchedKey=`v1/${'c'.repeat(64)}.${format}`;
+  await bucket.put(mismatchedKey,bytes,{httpMetadata:{contentType:format==='avif'?'image/webp':'image/avif'}});
+  for(const method of ['GET','HEAD']) {
+   const rejected=await mf.dispatchFetch('https://photos.example.com/private-photos/assets/'+mismatchedKey,{method,headers:photoHeaders});
+   assert.equal(rejected.status,503);assert.equal(rejected.headers.get('Cache-Control'),'no-store');
+  }
+ }
+ console.log('Runtime protected WebP/AVIF GET, HEAD, revalidation and MIME mismatch checks passed.');
  const resumed=await mf.dispatchFetch('https://photos.example.com/private-photos/auth/session',{method:'POST',headers:{Origin:'https://photos.example.com',Cookie:cookie,'Content-Type':'application/json'},body:JSON.stringify({origin:'https://gravelcycles.github.io',challenge})});
  assert.equal(resumed.status,200);assert.ok((await resumed.json()).code);
  const videoKey=`video/v1/${'b'.repeat(64)}.mp4`,videoBytes=new Uint8Array([0,1,2,3,4,5,6,7,8,9]);

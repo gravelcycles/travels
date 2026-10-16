@@ -198,6 +198,24 @@ Back/Forward, private locked/unlocked entry, invalid/deleted IDs and share/copy
 cancellation/failure on desktop and phone, reference/demo/populated fresh draft.
 Technical details live in [the photo workflow](../PHOTO_WORKFLOW.md#sharing-a-photo-or-view).
 
+## Photo quality migration — 16 October 2026
+
+The owner approved the original-resolution AVIF proposal: “let's do the migration
+but pls ensure we don't have any downtime and there's no regressions.” This
+extends O04/O14. Preserve existing WebP assets, photo IDs, editorial metadata,
+album order and private access. Generate AVIF from untouched originals and keep
+the existing WebP fullscreen copy as a fallback. Publish immutable AVIF objects
+and verify their checksums before exposing their URLs. Deploy backward-compatible
+Worker support before the browser/manifests. Never make availability depend on
+AVIF support or decoding: unsupported/failed AVIF must fall back to the full WebP
+without a broken viewer, stale image, extra auth prompt or privacy bypass.
+
+Acceptance includes old/new manifests, old/new clients, anonymous/expired access,
+AVIF success and failure, rapid photo changes, phone swipes/zoom, and unchanged
+thumbnail/preview/reveal behavior. Keep rollback possible using the prior Pages
+release and retained WebP objects. The [photo workflow](../PHOTO_WORKFLOW.md)
+owns generation/publication details; [WIP](../WIP.md) records verified rollout.
+
 ## Comment notifications — 11 October 2026
 
 **O17 · Comment notifications.** The owner requested: “mark the number of

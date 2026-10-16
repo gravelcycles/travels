@@ -111,7 +111,7 @@ password system.
 | `dist/assets/group-travel.js`, `group-travel.css`, `scripts/journey-extras.mjs` | Shared group projection, roster/day route details, group/media presentation and optional data validation |
 | `dist/assets/media-utils.js` | Mixed gallery items, opening-frame thumbnail extraction/cache, native video playback and cleanup inside the shared photo viewer |
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |
-| `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching |
+| `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching; optional native-resolution AVIF for full loads with WebP fallback and unchanged authentication |
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |
 | `dist/assets/mobile-ux.js`, `dist/assets/mobile.css` | Shared mobile day navigation, full-viewport photo stage with overlay controls and single-tap chrome toggling, focal zoom through photo-zoom.js, continuous journey photo gestures with cache-ready neighbors and frame-paced swipe transforms, including downward still-photo dismissal with cancellation/pinch arbitration, separate event jumps, event grids retained beneath fullscreen photos with one-level grid/photo history and scroll restoration, location panel, exact map-camera restoration on same-event Back/close and retained cross-event sidebar selection when dismissing Comments |
 | `dist/assets/community-client.js`, `photo-comments.js` / `.css`, `places-comments.css`, `places-panel.js` | Shared floating photo conversations and place reviews; immediate presentation, authorized memory caches and retry behavior; Places owns direct phone sheet resizing from its handle and list/detail header |
@@ -138,6 +138,18 @@ content hashes to public asset URLs; template authors do not maintain version
 strings. This includes the Places sheet stylesheet; a gesture/style release must
 invalidate its cached CSS alongside the runtime. Studio serves live assets with
 no-store caching.
+
+## Full-resolution photo delivery — 16 October 2026
+
+`photo-decode.mjs` decodes untouched HEIC/DNG sources through macOS ImageIO;
+`photo-variants.mjs` owns the shared WebP and native-resolution AVIF encoders.
+`migrate-photo-avif.mjs` adds only optional derivatives to existing published
+photos with original-match and concurrent-edit guards. Source `fullAvif` status
+is independent of the existing photo's publication status. `journey-content.mjs`
+validates it, `build-site.mjs` exposes only published descriptors, and the private
+publisher verifies bytes, dimensions, hash and exact MIME before publication.
+The browser and Worker retain old WebP behavior and auth boundaries. Operational
+ordering and rollback live in the [photo workflow](../PHOTO_WORKFLOW.md#full-resolution-avif-upgrades).
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 

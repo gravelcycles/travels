@@ -35,7 +35,8 @@ const mimeTypes = {
   ".json": "application/json; charset=utf-8",
   ".svg": "image/svg+xml",
   ".png": "image/png",
-  ".webp": "image/webp"
+  ".webp": "image/webp",
+  ".avif": "image/avif"
   ,".mp4": "video/mp4"
 };
 
@@ -131,7 +132,7 @@ function staticFileFor(pathname) {
     const distRoot = path.join(repoRoot, "dist");
     if (resolved === distRoot || resolved.startsWith(`${distRoot}${path.sep}`)) return resolved;
   }
-  if (/^\/build\/private-photo-assets\/v1\/[a-f0-9]{64}\.webp$/.test(pathname) || /^\/build\/[a-z0-9-]+\/[^/]+\.webp$/.test(pathname)) {
+  if (/^\/build\/private-photo-assets\/v1\/[a-f0-9]{64}\.(?:webp|avif)$/.test(pathname) || /^\/build\/[a-z0-9-]+\/[^/]+\.webp$/.test(pathname)) {
     const resolved = path.resolve(repoRoot, pathname.slice(1));
     if (resolved.startsWith(`${path.join(repoRoot, "build")}${path.sep}`)) return resolved;
   }

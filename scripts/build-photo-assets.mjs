@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 
-import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import exifr from "exifr";
-import sharp from "sharp";
 
 import { fileURLToPath } from "node:url";
 import crypto from "node:crypto";
-import { buildPhotoVariants } from "./photo-variants.mjs";
+import { buildPhotoVariants, buildFullAvif } from "./photo-variants.mjs";
+import { decodePhotoSource } from "./photo-decode.mjs";
 import { loadJourneys, writeJson } from "./journey-content.mjs";
 import { photoImportConfig, captureDateParts } from "./photo-import-config.mjs";
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -35,6 +34,7 @@ const videos = fs.readdirSync(sourceDirectory).filter((filename) => /\.mov$/i.te
 const photos = [];
 const excluded = [];
 const errors = [];
+const warnings = [];
 const candidateLocations = [];
 const photoIds = new Set();
 
@@ -57,22 +57,16 @@ try {
       const slug = slugFor(filename);
       if (photoIds.has(slug)) throw new Error(`Duplicate photo filename slug: ${slug}`);
       photoIds.add(slug);
-      const temporaryImage = path.join(temporaryDirectory, `${filename}.png`);
-      if (/\.(heic|heif|dng)$/i.test(filename)) {
-        if (process.platform !== "darwin") throw new Error("HEIC/DNG conversion requires macOS Quick Look");
-        execFileSync("/usr/bin/qlmanage", ["-t", "-s", "3200", "-o", temporaryDirectory, sourcePath], { stdio: "ignore", timeout: 60000 });
-      }
-      else await sharp(sourcePath).rotate().png().toFile(temporaryImage);
-      const decoded = await sharp(temporaryImage).metadata();
-      const displayWidth = decoded.autoOrient?.width || decoded.width;
-      const displayHeight = decoded.autoOrient?.height || decoded.height;
-      if (!displayWidth || !displayHeight) throw new Error("Decoded image has no dimensions");
-      const statistics = await sharp(temporaryImage).stats();
+      const { image, width: displayWidth, height: displayHeight, decoded } = await decodePhotoSource(sourcePath, temporaryDirectory, { allowRaw: true });
+      const statistics = await image.clone().stats();
       if (statistics.entropy < 0.05) throw new Error("Decoded image is effectively blank");
 
-      const variants = await buildPhotoVariants(repoRoot, sharp(temporaryImage), displayWidth, displayHeight);
+      const variants = await buildPhotoVariants(repoRoot, image, displayWidth, displayHeight);
+      let fullAvif;
+      try { fullAvif = await buildFullAvif(repoRoot, image); }
+      catch (error) { warnings.push({ filename, reason: `AVIF unavailable; WebP retained: ${error.message}` }); }
 
-      const blurBuffer = await sharp(temporaryImage)
+      const blurBuffer = await image.clone()
         .resize({ width: 32 })
         .blur(1.1)
         .webp({ quality: 28, effort: 4 })
@@ -87,6 +81,7 @@ try {
         blur: `data:image/webp;base64,${blurBuffer.toString("base64")}`,
         width: largest.width,
         height: largest.height,
+        ...(fullAvif ? { fullAvif } : {}),
         alt: `Trip photograph from ${destination?.name || day.title}`,
         caption: "",
         description: "",
@@ -101,8 +96,8 @@ try {
         candidateLocations.push({ id: photo.id, lat: metadata.latitude, lng: metadata.longitude });
       }
       photos.push(photo);
-      fs.rmSync(temporaryImage, { force: true });
-      const totalBytes = variants.reduce((sum, item) => sum + item.bytes, 0);
+      if (decoded !== sourcePath) fs.rmSync(decoded, { force: true });
+      const totalBytes = variants.reduce((sum, item) => sum + item.bytes, fullAvif?.bytes || 0);
       console.log(`[${index + 1}/${files.length}] ${filename} → day ${day.number}, ${variants.length} sizes, ${(totalBytes / 1024 / 1024).toFixed(1)} MB`);
     } catch (error) {
       errors.push({ filename, reason: error.message });
@@ -124,6 +119,7 @@ const report = {
   photosBuilt: photos.length,
   excluded,
   errors,
+  warnings,
   candidateLocations,
   videosNotProcessed: videos
 };

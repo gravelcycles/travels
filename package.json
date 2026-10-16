@@ -23,7 +23,8 @@
     "auth:test": "node --test test/photo-auth-worker.test.mjs test/photo-auth-loader.test.mjs",
     "auth:runtime-test": "wrangler deploy --dry-run --outdir build/photo-worker --config workers/photo-auth/wrangler.jsonc && node test/photo-auth-runtime.mjs",
     "auth:deploy": "wrangler deploy --config workers/photo-auth/wrangler.jsonc",
-    "photos:migrate": "node scripts/migrate-private-photos.mjs"
+    "photos:migrate": "node scripts/migrate-private-photos.mjs",
+    "photos:avif": "node scripts/migrate-photo-avif.mjs"
   },
   "devDependencies": {
     "exifr": "7.1.3",

@@ -68,6 +68,7 @@ test('planner round-trips group/video edits and photo assignments through their 
 test('photo group edits preserve reviewed and upload manifests and cannot replace photos', t => {
   const root=fixture(t), {data}=loadContent(root), base=data.journeys.find(j=>j.kind==='real'), state=readOverrides(root);
   const upload={...base.photos[0],id:`${base.id}-fixture-upload`,src:'https://example.com/upload.webp',assetStatus:'local'};
+  delete upload.fullAvif;
   const uploadFile=path.join(root,`content/photo-manifests/${base.id}-uploads.json`);
   const existingUploads=fs.existsSync(uploadFile)?JSON.parse(fs.readFileSync(uploadFile,'utf8')):[];
   writeJson(uploadFile,[...existingUploads,upload]);

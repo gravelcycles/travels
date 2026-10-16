@@ -8,6 +8,7 @@ import { pbkdf2Sync } from 'node:crypto';
 const origin = 'https://gravelcycles.github.io', host = 'https://photos.example.com';
 const verifier=random(),challenge=base64url(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(verifier)));
 const key = `v1/${'a'.repeat(64)}.webp`;
+const avifKey = `v1/${'b'.repeat(64)}.avif`;
 const first = await createCredential('family', 'fixture-only-family-password');
 const second = await createCredential('friends', 'fixture-only-friends-password');
 test('browser derivation matches PBKDF2 and stored verifier cannot be submitted as proof', async () => {
@@ -20,7 +21,7 @@ test('browser derivation matches PBKDF2 and stored verifier cannot be submitted 
 function fixture() {
   const reads = [], grants = new Map();
   const AUTH_CODES={idFromName:id=>id,get:id=>({fetch:async(url,options)=>{const body=JSON.parse(options.body);if(url.endsWith('/create')){grants.set(id,body);return Response.json({ok:true});}const grant=grants.get(id);if(!grant||grant.exp<=Date.now()/1000||grant.origin!==body.origin||grant.challenge!==body.challenge)return Response.json(null,{status:401});grants.delete(id);return Response.json(grant);}})};
-  const env = { AUTH_CODES, PHOTO_CREDENTIALS: JSON.stringify({ version: 2, credentials: [first, second] }), SESSION_SIGNING_KEY: random(), ALLOWED_ORIGINS: JSON.stringify([origin]), LOGIN_LIMITER: { limit: async () => ({ success: true }) }, PHOTOS: { get: async k => { reads.push(k); return { body: new Uint8Array([1,2,3]), size: 3, httpMetadata: { contentType: 'image/webp' } }; }, head: async k => { reads.push(k); return { size: 3, httpMetadata: { contentType: 'image/webp' } }; } } };
+  const env = { AUTH_CODES, PHOTO_CREDENTIALS: JSON.stringify({ version: 2, credentials: [first, second] }), SESSION_SIGNING_KEY: random(), ALLOWED_ORIGINS: JSON.stringify([origin]), LOGIN_LIMITER: { limit: async () => ({ success: true }) }, PHOTOS: { get: async k => { reads.push(k); return { body: new Uint8Array([1,2,3]), size: 3, httpMetadata: { contentType: k.endsWith('.avif') ? 'image/avif' : 'image/webp' } }; }, head: async k => { reads.push(k); return { size: 3, httpMetadata: { contentType: k.endsWith('.avif') ? 'image/avif' : 'image/webp' } }; } } };
   const forwarded = [];
   const ctx = { exports: { PhotoCache: { fetch: async request => { forwarded.push(request); return cachedPhoto(request,env); } } } };
   const request = (route, options = {}) => worker.fetch(new Request(`${host}/private-photos/${route}`, options), env, ctx);
@@ -50,7 +51,7 @@ test('anonymous, tampered, expired, wrong-audience and revoked tokens never touc
   const wrong = await issueToken(f.env, first.id, 'https://other.example');
   const removed = await issueToken(f.env, 'removed', origin);
   const remembered = await issueToken(f.env, first.id, host, 'remember');
-  for (const token of ['', `${good.token.slice(0, -5)}abcde`, expired.token, wrong.token, removed.token, remembered.token]) for (const method of ['GET','HEAD']) for (const path of [key, 'v1/unknown.webp', '%252e%252e/secrets']) {
+  for (const token of ['', `${good.token.slice(0, -5)}abcde`, expired.token, wrong.token, removed.token, remembered.token]) for (const method of ['GET','HEAD']) for (const path of [key, avifKey, 'v1/unknown.webp', 'v1/unknown.avif', '%252e%252e/secrets']) {
     const response = await f.request(`assets/${path}`, { method, headers: { Origin: origin, Authorization: `Bearer ${token}` } }); assert.equal(response.status, 401); assert.equal(response.headers.get('cache-control'), 'no-store');
   }
   assert.equal(f.reads.length, 0);
@@ -71,7 +72,7 @@ test('rate limiting, malformed bodies, broken configuration and storage failures
   f.env.LOGIN_LIMITER.limit = async () => ({success:true});
   assert.equal((await f.post('login',{password:'x'.repeat(2500)})).status,400);
   const good = await issueToken(f.env, first.id, origin); const headers = { Origin:origin, Authorization:`Bearer ${good.token}` };
-  for (const path of ['v1/no.webp', `${key}?token=ignored`, 'v1/%61.webp']) assert.equal((await f.request(`assets/${path}`,{headers})).status,404);
+  for (const path of ['v1/no.webp', 'v1/no.avif', `${key}?token=ignored`, `${avifKey}?token=ignored`, 'v1/%61.webp', 'v1/%62.avif', avifKey.replace('.avif', '.AVIF'), avifKey.replace('v1/', 'v2/'), avifKey + '.webp', avifKey.replace('.avif', '.jpg')]) assert.equal((await f.request(`assets/${path}`,{headers})).status,404);
   assert.equal(f.reads.length,0);
   f.env.PHOTOS.get = async()=>null; assert.equal((await f.request(`assets/${key}`,{headers})).status,404);
   f.env.PHOTOS.get = async()=>{throw new Error('private internal detail');}; const failure = await f.request(`assets/${key}`,{headers}); assert.equal(failure.status,503); assert.ok(!(await failure.text()).includes('private internal'));
@@ -87,6 +88,39 @@ test('auth window validates return origin/state and blocks framing; valid HEAD s
   const token=await issueToken(f.env,first.id,origin);
   const head=await f.request(`assets/${key}`,{method:'HEAD',headers:{Origin:origin,Authorization:`Bearer ${token.token}`}});
   assert.equal(head.status,200);assert.equal((await head.arrayBuffer()).byteLength,0);assert.equal(head.headers.get('cache-control'),'private, no-cache');
+});
+test('WebP and AVIF GET and HEAD use the extension-matched MIME with the same access and cache policy', async () => {
+  const f=fixture(), token=await issueToken(f.env,first.id,origin);
+  const headers={Origin:origin,Authorization:`Bearer ${token.token}`};
+  for (const [assetKey,contentType] of [[key,'image/webp'],[avifKey,'image/avif']]) {
+    const preflight=await f.request(`assets/${assetKey}`,{method:'OPTIONS',headers:{Origin:origin,'Access-Control-Request-Method':'HEAD','Access-Control-Request-Headers':'authorization, if-none-match'}});
+    assert.equal(preflight.status,204);assert.equal(preflight.headers.get('Access-Control-Allow-Origin'),origin);
+    for (const method of ['GET','HEAD']) {
+      const response=await f.request(`assets/${assetKey}`,{method,headers});
+      assert.equal(response.status,200);assert.equal(response.headers.get('Content-Type'),contentType);
+      assert.equal(response.headers.get('Content-Length'),'3');assert.equal(response.headers.get('Cache-Control'),'private, no-cache');
+      assert.equal(response.headers.get('X-Content-Type-Options'),'nosniff');assert.equal(response.headers.get('Access-Control-Allow-Origin'),origin);
+      assert.equal(response.headers.get('Access-Control-Allow-Credentials'),null);assert.equal(response.headers.get('ETag'),`"${assetKey.slice(3,-5)}"`);
+      assert.equal((await response.arrayBuffer()).byteLength,method==='GET'?3:0);
+    }
+  }
+});
+test('mismatched photo MIME fails closed at R2 and the internal cache response boundary', async () => {
+  for (const [assetKey,wrongType] of [[key,'image/avif'],[avifKey,'image/webp']]) for (const method of ['GET','HEAD']) {
+    const f=fixture(),token=await issueToken(f.env,first.id,origin);
+    const request=new Request(`${host}/private-photos/assets/${assetKey}`,{method});
+    const object={body:new Uint8Array([1,2,3]),size:3,httpMetadata:{contentType:wrongType}};
+    f.env.PHOTOS.get=f.env.PHOTOS.head=async()=>object;
+    await assert.rejects(cachedPhoto(request,f.env),/Unexpected object type/);
+    const headers={Origin:origin,Authorization:`Bearer ${token.token}`};
+    const wrongObject=await f.request(`assets/${assetKey}`,{method,headers});
+    assert.equal(wrongObject.status,503);assert.equal(wrongObject.headers.get('Cache-Control'),'no-store');
+    f.ctx.exports.PhotoCache.fetch=async()=>new Response(null,{headers:{'Content-Type':wrongType}});
+    for (const extra of [{},{'If-None-Match':`"${assetKey.slice(3,-5)}"`}]) {
+      const wrongCache=await f.request(`assets/${assetKey}`,{method,headers:{...headers,...extra}});
+      assert.equal(wrongCache.status,503);assert.equal(wrongCache.headers.get('Cache-Control'),'no-store');
+    }
+  }
 });
 test('remembered access lasts 30 days and rotation invalidates access, cookies, and pending codes', async () => {
   const f=fixture(), now=Math.floor(Date.now()/1000);
@@ -119,7 +153,7 @@ test('server verification never derives passwords and rejects leaked stored veri
  assert.equal((await f.request('auth/login',{method:'POST',headers:{Origin:host,'Content-Type':'application/json'},body:JSON.stringify({origin,challenge,password:'fixture-only-family-password'})})).status,401);
 });
 
-test('internal cache hits remain behind auth; credentials and browser bypass headers never enter the cache', async () => {
+for (const key of [`v1/${'a'.repeat(64)}.webp`, avifKey]) test(`internal ${key.split('.').at(-1)} cache hits remain behind auth; credentials and browser bypass headers never enter the cache`, async () => {
   const f=fixture(), token=await issueToken(f.env,first.id,origin);
   let stored, calls=0;
   f.ctx.exports.PhotoCache.fetch=async request=>{
@@ -145,7 +179,7 @@ test('internal cache hits remain behind auth; credentials and browser bypass hea
   assert.equal(calls,2,'revoked and anonymous requests must not consult a warm cache');
 });
 
-test('only immutable successful photo bytes are cacheable internally', async () => {
+for (const key of [`v1/${'a'.repeat(64)}.webp`, avifKey]) test(`only immutable successful ${key.split('.').at(-1)} bytes are cacheable internally`, async () => {
   const f=fixture(),request=new Request(`${host}/private-photos/assets/${key}`);
   const good=await cachedPhoto(request,f.env);
   assert.equal(good.headers.get('Cache-Control'),'public, max-age=31536000, immutable');
@@ -155,12 +189,21 @@ test('only immutable successful photo bytes are cacheable internally', async () 
     assert.equal(response.status,404);assert.equal(response.headers.get('Cache-Control'),'no-store');
   }
 });
+test('internal cache rejects noncanonical photo keys and unsupported methods before storage', async () => {
+  const f=fixture();
+  for (const suffix of [avifKey+'?extra=1',avifKey+'.webp',avifKey.replace('.avif','.png'),avifKey.replace('.avif','.AVIF'),avifKey.replace('b','%62'),'v1/short.avif']) {
+    const response=await cachedPhoto(new Request(`${host}/private-photos/assets/${suffix}`),f.env);
+    assert.equal(response.status,404);assert.equal(response.headers.get('Cache-Control'),'no-store');
+  }
+  const response=await cachedPhoto(new Request(`${host}/private-photos/assets/${avifKey}`,{method:'POST'}),f.env);
+  assert.equal(response.status,404);assert.equal(f.reads.length,0);
+});
 
-test('browser revalidation reuses bytes only after successful authorization and existence checks', async () => {
+for (const key of [`v1/${'a'.repeat(64)}.webp`, avifKey]) test(`browser ${key.split('.').at(-1)} revalidation reuses bytes only after successful authorization and existence checks`, async () => {
   const f=fixture(), token=await issueToken(f.env,first.id,origin);
   const headers={Origin:origin,Authorization:`Bearer ${token.token}`};
   const initial=await f.request(`assets/${key}`,{headers}),etag=initial.headers.get('ETag');
-  assert.equal(initial.status,200);assert.equal(etag,`"${'a'.repeat(64)}"`);
+  assert.equal(initial.status,200);assert.equal(etag,`"${key.slice(3,-5)}"`);
   assert.equal(initial.headers.get('Cache-Control'),'private, no-cache');
   for(const tag of [etag,`W/${etag}`,`"different", ${etag}`]) {
     const response=await f.request(`assets/${key}`,{headers:{...headers,'If-None-Match':tag}});

@@ -1,13 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
-import sharp from 'sharp';
 import exifr from 'exifr';
 import { loadJourneys, readJson, writeJson } from './journey-content.mjs';
 import { photoImportConfig, captureDateParts } from './photo-import-config.mjs';
-import { buildPhotoVariants } from './photo-variants.mjs';
+import { buildPhotoVariants, buildFullAvif } from './photo-variants.mjs';
+import { decodePhotoSource } from './photo-decode.mjs';
 
 export const MAX_PHOTO_BYTES = 50 * 1024 * 1024;
 export function uploadManifestPath(root, journey) {
@@ -41,7 +39,7 @@ export function assignPhotoDay(journey, metadata, dayId = 'auto') {
 
 // Imports append separately from bulk camera imports. Originals and GPS stay
 // private; the public build excludes assetStatus:local until publishing succeeds.
-export async function importStudioPhoto(root, { journeyId, dayId = 'auto', filename, bytes }) {
+export async function importStudioPhoto(root, { journeyId, dayId = 'auto', filename, bytes }, { encodeAvif = buildFullAvif } = {}) {
   if (!Buffer.isBuffer(bytes) || !bytes.length || bytes.length > MAX_PHOTO_BYTES) throw new Error('Choose a nonempty photo up to 50 MB.');
   const extension = path.extname(filename || '').toLowerCase();
   if (!['.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif'].includes(extension)) throw new Error('Choose a JPEG, PNG, WebP, or HEIC photograph. Videos are not supported.');
@@ -67,21 +65,14 @@ export async function importStudioPhoto(root, { journeyId, dayId = 'auto', filen
     const assignment = assignPhotoDay(journey, metadata, dayId);
     const { day, captured } = assignment;
     warnings.push(...assignment.warnings);
-    let decoded = source;
-    if (['.heic', '.heif'].includes(extension)) {
-      if (process.platform !== 'darwin') throw new Error('HEIC conversion requires macOS. Export a JPEG and try again.');
-      await promisify(execFile)('/usr/bin/qlmanage', ['-t', '-s', '3200', '-o', staging, source], { timeout: 60000 });
-      decoded = `${source}.png`;
-    }
-    const image = sharp(decoded, { limitInputPixels: 100_000_000 }).rotate();
-    const info = await image.metadata();
-    const width = info.autoOrient?.width || info.width;
-    if (!width || !info.height || (info.pages || 1) > 1) throw new Error('Choose a single still photograph.');
-    const height = info.autoOrient?.height || info.height;
+    const { image, width, height } = await decodePhotoSource(source, staging);
     const variants = await buildPhotoVariants(root, image, width, height);
+    let fullAvif;
+    try { fullAvif = await encodeAvif(root, image); }
+    catch { warnings.push('The full-resolution AVIF could not be prepared. The WebP photograph is available and can still be published.'); }
     const blur = await image.clone().resize({ width: 32, withoutEnlargement: true }).blur(1.1).webp({ quality: 28 }).toBuffer();
     const largest = variants.at(-1);
-    const photo = { id, dayId: day.id, src: largest.src, srcset: variants.map(({ src, width }) => ({ src, width })), width: largest.width, height: largest.height,
+    const photo = { id, dayId: day.id, src: largest.src, srcset: variants.map(({ src, width }) => ({ src, width })), width: largest.width, height: largest.height, ...(fullAvif ? { fullAvif } : {}),
       blur: `data:image/webp;base64,${blur.toString('base64')}`, caption: '', description: '', captionSource: 'user',
       alt: `Photo from Day ${day.number}`, sourceFilename: path.basename(filename),
       takenAt: captured ? `${captured.date} · ${captured.time}` : '', assetStatus: 'local', protected: true, sourceHash: hash };

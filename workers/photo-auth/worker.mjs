@@ -3,9 +3,9 @@ import { credentials, verifyPasswordProofs, issueToken, validateToken, random, R
 import { base64url } from './crypto.mjs';
 import { loginWindow } from './window.mjs';
 import { videoRequest } from './video-service.mjs';
+import { photoAssetDetails } from './photo-cache.mjs';
 const PREFIX = '/private-photos/';
 const COOKIE = '__Host-travel_photo_session';
-const assetPattern = /^v1\/[a-f0-9]{64}\.webp$/;
 const cookie = (value, age) => `${COOKIE}=${value}; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=${age}`;
 function allowedOrigins(env) {
   const values = JSON.parse(env.ALLOWED_ORIGINS);
@@ -108,8 +108,9 @@ export default {
         if (!session || !corsOrigin) return json(401, { error: 'Photos are locked', unlocked: false }, corsOrigin);
         if (url.pathname.endsWith('/auth/status')) return json(200, { unlocked: true, expiresAt: session.exp }, corsOrigin);
         const key = url.pathname.slice(`${PREFIX}assets/`.length);
-        if (!assetPattern.test(key) || url.search) return json(404, { error: 'Photo not found' }, corsOrigin);
-        const etag = `"${key.slice(3,-5)}"`;
+        const asset = photoAssetDetails(key);
+        if (!asset || url.search) return json(404, { error: 'Photo not found' }, corsOrigin);
+        const etag = asset.etag;
         const unchanged = (request.headers.get('If-None-Match') || '').split(',').some(tag => tag.trim() === '*' || tag.trim().replace(/^W\//,'') === etag);
         stage = 'photo-cache';
         // A fresh header-free request keeps credentials, Origin, Range and browser
@@ -119,7 +120,7 @@ export default {
         // Check the photo service even on revalidation; unknown keys cannot claim 304.
         const response = await ctx.exports.PhotoCache.fetch(new Request(url.toString(), { method: unchanged ? 'HEAD' : request.method }));
         if (response.status === 404) return json(404, { error: 'Photo not found' }, corsOrigin);
-        if (!response.ok || response.headers.get('Content-Type') !== 'image/webp') throw new Error('Photo cache unavailable');
+        if (!response.ok || response.headers.get('Content-Type') !== asset.contentType) throw new Error('Photo cache unavailable');
         const cacheStatus = response.headers.get('Cf-Cache-Status') || 'UNKNOWN';
         const photoHeaders = headers(corsOrigin, {
           // Store bytes privately on the device, but revalidate authorization on
@@ -133,7 +134,7 @@ export default {
         });
         if (unchanged) return new Response(null, { status: 304, headers: photoHeaders });
         return new Response(request.method === 'HEAD' ? null : response.body, { headers: {
-          ...photoHeaders, 'Content-Type': 'image/webp', 'Content-Length': response.headers.get('Content-Length'), 'Content-Disposition': 'inline',
+          ...photoHeaders, 'Content-Type': asset.contentType, 'Content-Length': response.headers.get('Content-Length'), 'Content-Disposition': 'inline',
         } });
       }
       return json(404, { error: 'Not found' }, corsOrigin);

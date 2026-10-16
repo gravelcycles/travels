@@ -7,7 +7,7 @@ import '../studio/plan-extras.js';
 
 const changes = journey => globalThis.JOURNEY_ATLAS_PLAN_EXTRAS.changes(journey);
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-const photoAsset = /^\/private-photos\/assets\/(v1\/[a-f0-9]{64}\.webp)$/;
+const photoAsset = /^\/private-photos\/assets\/(v1\/[a-f0-9]{64}\.(?:webp|avif))$/;
 const videoAsset = /^\/private-videos\/assets\/(v1\/[a-f0-9]{64}\.mp4)$/;
 const named = item => item.sourceFilename ? String(item.sourceFilename).split(/[\\/]/).at(-1) : item.title || item.id;
 const scopedState = (state, journey) => Object.fromEntries([['days', journey.days], ['photos', journey.photos], ['routes', journey.segments]]
@@ -31,10 +31,11 @@ export function assessReadinessMedia(root, journey, state, add) {
     const action = { mode: kind === 'photo' ? 'photos' : 'media', id: item.id, label: kind === 'photo' ? 'Review photo' : 'Review video' };
     if (!dayIds.has(item.dayId)) add(`day:${item.id}`, 'blocker', `${named(item)} has no valid ${event}`, `Assign this item to a ${event} in this journey.`, action);
     if (item.assetStatus === 'local') {
-      const urls = kind === 'photo' ? [...new Set([item.src, ...(item.srcset || []).map(variant => variant.src)])] : [item.src, item.poster];
+      const urls = kind === 'photo' ? [...new Set([item.src, ...(item.srcset || []).map(variant => variant.src), ...(item.fullAvif?.assetStatus === 'local' ? [item.fullAvif.src] : [])])] : [item.src, item.poster];
       const missing = urls.filter(url => !localAssetExists(root, url)).length;
       add(`asset:${item.id}`, 'blocker', `${named(item)} is only stored locally`, missing ? `${missing} required ${kind === 'video' ? 'video/poster' : 'photo'} derivative${missing === 1 ? ' is' : 's are'} missing or empty. Restore or regenerate them before the agent publishes this item.` : 'Local derivatives are present. The agent must publish and verify the protected assets before deploying the journey.', action);
     } else if (!item.src) add(`source:${item.id}`, 'blocker', `${named(item)} has no media source`, 'Supply a usable source or remove this item from the published selection.', action);
+    if (kind === 'photo' && item.assetStatus !== 'local' && item.fullAvif?.assetStatus === 'local') add(`avif:${item.id}`, 'review', `${named(item)} has a pending quality upgrade`, localAssetExists(root, item.fullAvif.src) ? 'The higher-quality photo is present locally. Publish and verify it before deploying the upgrade; the existing photo remains available.' : 'The local higher-quality photo is missing or empty. Regenerate it before publishing the upgrade; the existing photo remains available.', action);
     if (kind === 'photo' && (!Number.isFinite(item.lat) || !Number.isFinite(item.lng))) add(`location:${item.id}`, 'review', `${named(item)} has no exact map location`, `Keep it in the ${event} album without an exact pin, or add a location you know. No coordinate is inferred.`, action);
   }
   return { visiblePhotos, visibleVideos };

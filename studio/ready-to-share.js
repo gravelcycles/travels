@@ -27,9 +27,9 @@
     const decisions = report.items.filter(item => item.severity === 'review');
     const remaining = decisions.filter(item => !acknowledged.has(item.id)).length;
     const groups = [
-      { id: 'media', title: 'Photos and videos', items: decisions.filter(item => /^(location:|media-selection$|cover$)/.test(item.id)) },
+      { id: 'media', title: 'Photos and videos', items: decisions.filter(item => /^(location:|avif:|media-selection$|cover$)/.test(item.id)) },
       { id: 'routes', title: 'Routes', items: decisions.filter(item => item.id.startsWith('route:')) },
-      { id: 'trip', title: 'Trip details', items: decisions.filter(item => !/^(location:|media-selection$|cover$|route:)/.test(item.id)) },
+      { id: 'trip', title: 'Trip details', items: decisions.filter(item => !/^(location:|avif:|media-selection$|cover$|route:)/.test(item.id)) },
     ].filter(group => group.items.length);
     return { required, decisions, remaining, groups,
       summary: required.length ? `${required.length} thing${required.length === 1 ? '' : 's'} to resolve before sharing` : remaining ? 'Local checks passed' : 'Ready for publishing review',

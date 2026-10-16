@@ -16,6 +16,20 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Original-resolution AVIF migration — 16 October 2026
+
+Authorized: migrate photo quality with no downtime or regressions, retaining full
+WebP fallbacks and all source/editorial data. See
+[owner direction](docs/OWNER_DECISIONS.md#photo-quality-migration--16-october-2026).
+Implementation is isolated on `codex/photo-avif-20261016` in this chat's
+`work/travels-avif` checkout from remote main `2cb4447`; the shared checkout's
+ongoing edits are untouched. Required order: implement/test compatible Worker
+and loader; generate original-resolution metadata-stripped AVIF additions;
+checksum-verify uploads; deploy Worker; publish verified optional AVIF metadata
+and loader; verify fresh production access, fallbacks and desktop/phone flows.
+Preserve existing WebP objects and previous deployment for rollback. Generation,
+upload, full regression and production verification are not yet complete.
+
 ## Saved Heading East photo data — 16 October 2026
 
 Authorized: publish the owner's saved local photo data/metadata. The release is
