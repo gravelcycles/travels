@@ -25,17 +25,23 @@ and [the conversation contract](docs/PLACES_AND_COMMENTS.md#comment-notification
 own the requirements. Implemented on `codex/photo-intermediate-cleanup` in
 `build/photo-intermediate-cleanup`, integrating current main through `4c5f44c`
 and preserving the fullscreen focal-zoom, map-opening and swipe/Places corrections.
-The primary checkout's unrelated edits remain untouched. All **740 tests** and the production
-build pass. Browser checks pass all 16 reference/demo/populated fresh draft/
-Heading East × desktop/320/390px/landscape cases, plus ordinary-motion phone
-checks. They cover direct entry, compact layout, target
-comments beyond page one, draft preservation, scrolling, drag cancellation,
-Close/Back/Forward and fullscreen retention on reference/demo/populated fresh
-draft/Heading East at desktop, 320/390px and landscape. A final seven-case delta
-check passes with the later swipe integration, including swiping after sheet
-dismissal. QA uses synthetic comments/images,
+The primary checkout's unrelated edits remain untouched. All **740 tests** and
+the production build pass. Browser checks pass all 16 reference/demo/populated
+fresh draft/Heading East × desktop/320/390px/landscape cases, plus ordinary-motion
+phone checks. They cover direct entry, compact layout, target comments beyond
+page one, draft preservation, independent scrolling, drag cancellation and
+Close/Back/Forward. Seven delta checks pass after the later swipe integration,
+including swiping after sheet dismissal. QA uses synthetic comments/images,
 not real visitor writes; it is Chrome viewport coverage, not physical-device
-certification. Next: verify Pages and fresh public assets before marking delivery complete.
+certification.
+
+Released as `27a88eb` through successful
+[Pages run 38937773058](https://github.com/gravelcycles/travels/actions/runs/38937773058).
+All four fresh public journey/demo pages and six runtime/style files match the
+tested build byte-for-byte. Fresh public demo checks at 390px and desktop verify
+notification → correct fullscreen photograph + compact comments, drag-close to
+the photograph, preserved drafts and Back/Forward, with no browser errors or
+live comment writes. The comment correction is complete.
 
 The location-group card is a separate design-review request. The
 [selected-photo tray proposal](docs/PHOTO_SELECTION_PROPOSAL.md) reduces duplicate
