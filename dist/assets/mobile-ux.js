@@ -551,7 +551,7 @@
       if (!enabled()) return;
       event.preventDefault(); event.stopImmediatePropagation(); cancelTap(); back();
     }, true);
-    document.addEventListener('keydown', event => {
+    window.addEventListener('keydown', event => {
       // Making the focused control inert can move focus out of the viewer.
       if (enabled() && dialog.open && !overlay && event.key === 'Tab' && !chrome) setChrome(true);
     });
