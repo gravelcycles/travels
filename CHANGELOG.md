@@ -15,6 +15,20 @@
   inventory and framework ownership. Verification and release status are tracked
   in [WIP](WIP.md#mobile-photo-swipes-and-places-dragging--16-october-2026).
 
+## 16 October 2026 — update checkpoints for manual broadcasts
+
+- Add a live-site baseline and new-trip/photo diffs grouped by authored location,
+  with a compact copyable WhatsApp message. Hash-check public metadata, preserve
+  stable identity through edits/deletions/restores and exclude unpublished media.
+- Keep frozen prepared updates and recoverable local history. Preparation never
+  sends or acknowledges; explicit mark-shared applies only that prepared content.
+- Record the owner's bounded implementation direction under O19 and the
+  [workflow](docs/UPDATE_ANNOUNCEMENTS.md). Provider automation and Studio UI are
+  outside this release. All 678 tests and the production build pass with no
+  generated-output changes. Save the initial verified public-metadata checkpoint
+  locally for 3 trips/222 photos; a fresh read produces an empty diff. See WIP
+  for the checkpoint location and release verification.
+
 ## 15 October 2026 — restore gentle depth motion and add website samples
 
 - Record the owner's rejection of the stronger 3D range. Return the separate

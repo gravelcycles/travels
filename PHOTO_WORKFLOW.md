@@ -92,6 +92,11 @@ across both manifests, saved through day `photoOrder` overrides. Preserve its
 reviewed city assignments and use actual capture times; other trips retain
 their existing editorial order.
 
+For manual announcements after publishing, [update checkpoints](docs/UPDATE_ANNOUNCEMENTS.md)
+count stable newly visible photo IDs by their saved city/day destination. Photo
+edits, moves, reordering and restoring an already acknowledged photo do not
+count as additions. Preparing or copying a message never advances the checkpoint.
+
 ## Batch editing in Studio
 
 Choose **Media → Photos → Select multiple** for a contact sheet. Search filenames,

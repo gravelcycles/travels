@@ -223,6 +223,20 @@ with `git diff --exit-code -- dist/`. Commit regenerated outputs with source
 changes. Preserve concurrent work, fetch/integrate remote main before each
 push, verify the Pages run, and check fresh public content before completion.
 
+## Manual update checkpoints
+
+The agent-operated `updates` command reads hash-verified public journey/photo/
+override bundles into a compact inventory. `update-inventory.mjs` owns stable-ID
+membership, authored destination grouping, diffs and plain text;
+`update-public-snapshot.mjs` owns consistent public reads;
+`update-announcements.mjs` owns a private ignored local ledger, retained backups
+and frozen drafts. This is shared tooling for every real trip, separate from
+viewer comment notifications and Studio's unverified-public review state.
+It does not modify source content, fetch protected media or send notifications.
+The [workflow](UPDATE_ANNOUNCEMENTS.md) defines initialization, prepare/copy versus
+acknowledgment, recovery and public-metadata verification limits. Studio UI and
+provider delivery remain optional future work, not part of this implementation.
+
 ## Comment notification architecture
 
 The shared comment store owns authenticated photo threads and trip notification
