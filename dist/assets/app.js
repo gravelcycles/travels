@@ -2630,19 +2630,40 @@
     },
     onStay: current => { if (current.key !== arrivalKey(activeDay())) return; restoreArrivalLine(); showCity(activeDay()); }
   });
+  let preparedShare = null;
+  function showShareLink(url, payload = null) {
+    preparedShare = payload;
+    $('#share-link-input').value = url;
+    $('#share-link-title').textContent = payload ? 'Share photo' : 'Copy link';
+    $('#share-link-description').textContent = payload ? 'Share this photo, or copy its link.' : 'Select and copy this link to share the current view.';
+    $('#retry-share-link').hidden = !payload;
+    if (!$('#share-link-dialog').open) window.JOURNEY_ATLAS_MOBILE_UI.presentOverlay('share-link-dialog');
+    if (payload) $('#retry-share-link').focus();
+    else { $('#share-link-input').focus(); $('#share-link-input').select(); }
+  }
   window.JOURNEY_ATLAS_SHARING_UI = window.JOURNEY_ATLAS_SHARING.create({
     state:currentSharedView, restore:restoreSharedView, title:()=>journey.title,
+    photoShareLink:(url,state)=>{
+      const photo = photoById(state.photoId);
+      if (!sourceJourney.published || !photo || mediaUtils.isVideo(photo) || photo.assetStatus === 'local' || ['localhost','127.0.0.1'].includes(location.hostname)) return '';
+      return window.JOURNEY_ATLAS_AUTH?.photoShareLink({journeyId:sourceJourney.id,photoId:photo.id,view:state.view,scope:state.scope,group:new URL(url).searchParams.get('group') || ''}, {protectedPhoto:window.JOURNEY_ATLAS_AUTH.isProtected(photo)});
+    },
     pending:()=>!photoDialog.open && history.state?.mobileAtlas?.viewer,
     announce:(message,button)=>{
       const status = button?.closest('dialog')?.querySelector('[data-share-status]') || $('#atlas-share-status');
       status.textContent = message;
       clearTimeout(status.shareTimer); status.shareTimer = setTimeout(()=>{status.textContent='';},3000);
     },
-    fallback:url=>{
-      $('#share-link-input').value = url;
-      window.JOURNEY_ATLAS_MOBILE_UI.presentOverlay('share-link-dialog');
-      $('#share-link-input').focus(); $('#share-link-input').select();
-    }
+    fallback:url=>showShareLink(url), ready:payload=>showShareLink(payload.url,payload)
+  });
+  $('#retry-share-link').addEventListener('click',()=>{
+    if (!preparedShare) return;
+    const button = $('#retry-share-link'); button.disabled = true;
+    // Invoke the native share synchronously in this fresh click, using the
+    // original photo's prepared URL even if selection has since changed.
+    window.JOURNEY_ATLAS_SHARING.shareLink(preparedShare, {navigator, fallback:url=>showShareLink(url), announce:()=>{}})
+      .then(result=>{if (result === 'shared' || result === 'copied') $('#share-link-dialog').close();})
+      .finally(()=>{button.disabled=false;});
   });
   document.querySelectorAll('[data-share-view]').forEach(button=>button.addEventListener('click',()=>window.JOURNEY_ATLAS_SHARING_UI.share(button)));
   $('#close-share-link').addEventListener('click',()=>$('#share-link-dialog').close());

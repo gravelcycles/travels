@@ -101,3 +101,44 @@ test('a fresh photo target is written before an asynchronous auth redirect can c
   assert.equal(read(env.location.href).photoId,'p2');
   assert.equal(read(env.location.href).view,'photo');
 });
+
+test('explicit sharing uses the clicked photo preview without changing navigation or sharing the next photo',async()=>{
+  const sent=[],prepared=[],announcements=[];
+  let state={dayId:'one',photoId:'p1',view:'photo',scope:'day'},finish;
+  const env={location:{href:'https://atlas.test/trip?group=walk&token=secret'},navigator:{share:async data=>sent.push(data)},addEventListener(){},setTimeout(){},history:{replaceState(){throw Error('Sharing must not change history');}}};
+  const ui=create({state:()=>state,title:()=> 'Journey',announce:message=>announcements.push(message),photoShareLink:(url,target)=>{prepared.push({url,target});return new Promise(resolve=>finish=resolve);}},env);
+  const pending=ui.share();
+  state={dayId:'two',photoId:'p2',view:'photo',scope:'day'};
+  await ui.share();assert.equal(prepared.length,1,'Repeated taps coalesce while the chosen share is preparing');
+  finish('https://photos.test/share/trip/p1/signed-preview');await pending;
+  assert.equal(prepared[0].target.photoId,'p1');assert.equal(read(prepared[0].url).photoId,'p1');
+  assert.ok(!prepared[0].url.includes('secret'));assert.deepEqual(sent,[{url:'https://photos.test/share/trip/p1/signed-preview',title:'Journey'}]);
+  assert.deepEqual(announcements,[]);
+});
+
+test('unavailable previews keep ordinary share/copy and non-photo views never request a thumbnail',async()=>{
+  const copied=[],messages=[];let attempts=0,state={photoId:'p1',dayId:'one',view:'map'};
+  const env={location:{href:'https://atlas.test/trip'},navigator:{clipboard:{writeText:async url=>copied.push(url)}},addEventListener(){},setTimeout(){}};
+  const ui=create({state:()=>state,title:()=> 'Journey',announce:message=>messages.push(message),photoShareLink:async()=>{attempts++;throw Error('Offline');}},env);
+  assert.equal(await ui.share(),'copied');assert.equal(read(copied[0]).photoId,'p1');
+  assert.deepEqual(messages,['Photo preview unavailable; sharing the link','Link copied']);
+  state={dayId:'one',photoId:'',view:'grid'};await ui.share();assert.equal(attempts,1);
+  assert.equal(read(copied[1]).view,'grid');
+});
+
+test('slow preview preparation retains a ready link for a fresh native-share tap without fetching again',async()=>{
+  const calls=[],ready=[];let attempts=0;
+  const navigator={userActivation:{isActive:true},share:async payload=>calls.push(payload)};
+  const env={location:{href:'https://atlas.test/trip'},navigator,addEventListener(){},setTimeout(){}};
+  const ui=create({state:()=>({photoId:'p1',view:'photo'}),title:()=> 'Journey',ready:payload=>ready.push(payload),photoShareLink:async()=>{
+    attempts++;navigator.userActivation.isActive=false;return 'https://photos.test/prepared';
+  }},env);
+  assert.equal(await ui.share(),'ready');assert.equal(calls.length,0);assert.equal(attempts,1);
+  navigator.userActivation.isActive=true;
+  const completion=shareLink(ready[0],{navigator});
+  assert.deepEqual(calls,[ready[0]],'Native share starts synchronously during the fresh click');
+  assert.equal(await completion,'shared');assert.equal(attempts,1);
+  calls.length=0;
+  assert.equal(await shareLink(ready[0],{navigator:{share:async()=>{throw {name:'NotAllowedError'};}},retry:payload=>calls.push(payload)}),'ready');
+  assert.deepEqual(calls,[ready[0]],'Browsers without userActivation expose the same fresh-tap recovery');
+});

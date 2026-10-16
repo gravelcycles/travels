@@ -3,6 +3,20 @@
     "id": "bike-break-demo",
     "dayId": "bike-d3",
     "src": "./assets/photos/bike-pass.webp",
+    "srcset": [
+      {
+        "src": "./assets/photos/bike-pass-thumb.webp",
+        "width": 480,
+        "height": 360
+      },
+      {
+        "src": "./assets/photos/bike-pass.webp",
+        "width": 1400,
+        "height": 1050
+      }
+    ],
+    "width": 1400,
+    "height": 1050,
     "alt": "A loaded touring bicycle on a scenic route",
     "caption": "Bags down for ten quiet minutes",
     "takenAt": "Sunday · 13:10",

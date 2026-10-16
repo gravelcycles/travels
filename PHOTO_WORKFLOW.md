@@ -733,16 +733,42 @@ Share photo sits beside the lead/selected photo. In desktop fullscreen it sits
 in the right sidebar beside the photo count, below the day controls. The
 16 October phone correction places fullscreen Share immediately left of
 right-aligned Comments; see the [fullscreen contract](#fullscreen-controls-and-focal-zoom) and WIP
-for public delivery status. It shares the atlas page through the
+for public delivery status. It shares the photo/view through the
 native device sheet where available. Otherwise it copies the link with a brief “Link copied” status; denied clipboard access opens a
 selectable link. Cancelling the share sheet does nothing. Shared links carry only
-journey/group context and the view hash, never media URLs, access credentials or
+journey/group context and view state, never session credentials or
 local preview switches. Local previews still yield local links; they do not
 claim a draft is published. Private media retains the normal unlock flow and
 returns to the requested view. Restoring a link writes its final URL synchronously
 before authentication can capture the return hash; a pending unlock prompt stays
 above the restored photo viewer. Ordinary navigation updates
 wait until the surface event settles. Removed/unknown photos fall back to a valid day.
+
+The 16 October correction gives explicit photo shares a small photo thumbnail
+in messaging previews. On Share, the existing service issues a stable signed
+link for the selected published still. Private-photo shares require current
+photo access; public sample photos need no private login. The signature permits
+only that indexed thumbnail, never full WebP/AVIF, originals or conversations.
+It is minted on the explicit Share action, not while browsing/preloading. The
+address bar and its history continue to use ordinary atlas view URLs.
+If preparing the link outlasts the browser's native-share activation, a small
+Share photo dialog retains the prepared link. Its Share photo button opens the
+device sheet from a fresh tap without another network request or changing the
+selected photo. Copying the displayed link remains available.
+
+`/share/<journey>/<photo>/<signature>` returns HTML with Open Graph/Twitter
+metadata before JavaScript. Its image route serves only the indexed WebP
+thumbnail (at most 480 pixels wide); no caller-supplied asset key or image URL
+is fetched. Opening the link returns to the canonical atlas page and selected
+view, retaining the normal unlock flow. The generated share index excludes
+unpublished/local/trashed photos and is rebuilt with the site. Deploy that Worker
+index before corresponding Pages changes. Removing an indexed photo or rotating
+the signing key invalidates its preview link; messaging clients may retain
+previously cached thumbnails. No new photo derivative or public media bucket is
+created for private photos. Public samples carry explicit small derivatives in
+their normal `srcset` alongside their full images. Videos, local drafts and unavailable preview requests keep the ordinary
+page-link fallback. Apple preview validation uses its native LinkPresentation
+framework; physical iPhone delivery still depends on the receiving app.
 
 Photo browsing uses `replaceState`, preserving the existing surface history.
 Opening/closing photos, grids and conversations still follows O03/O08; Back does

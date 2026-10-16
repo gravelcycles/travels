@@ -18,6 +18,22 @@
   All 836 tests pass and the build is reproducible across 71 files. WIP records
   the combined browser checks and publication status.
 
+## 16 October 2026 — publish later Heading East Studio review
+
+- Preserve the owner's 19 new recoverable Trash choices and two Prague photo
+  notes exactly as saved. Retain photo records, original media, pins and order.
+- Regenerate public content and discussion/share eligibility for the 101 visible
+  Heading East photos. Record the scoped selection in the trip intake guidance.
+
+## 16 October 2026 — photo thumbnails in shared links
+
+- Give explicit photo shares metadata for the selected low-resolution thumbnail
+  so messaging previews can show the photograph. Keep full-photo access private,
+  preserve the selected view and retain copy/manual-link fallbacks.
+- Add a generated published-photo index and signed thumbnail-only service
+  routes; local drafts, Trash, full images and originals cannot become public
+  preview assets. Record the correction in O18 and the photo workflow.
+
 ## 16 October 2026 — original-resolution photo delivery
 
 - Add native-resolution AVIF from untouched originals for the full viewer,

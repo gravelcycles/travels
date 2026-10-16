@@ -1,5 +1,51 @@
 # Current workstreams
 
+## Later saved Heading East Studio edits — 16 October 2026
+
+Owner requested publication after another saved Studio review. The isolated
+`codex/studio-edits-20261016` checkout starts from main `38b31a1`, preserving
+concurrent viewer and photo-share improvements. Scope: 19 new recoverable Trash
+choices and two exact traveler notes in `content/photo-overrides.json`; no route,
+day order, media upload or other journey change. The source snapshot is retained
+outside Git. [Heading East](docs/HEADING_EAST.md#later-studio-photo-selections-and-notes--16-october-2026)
+records the new 101-photo membership and preservation requirements.
+All **837 tests** and the production build pass. The actual Worker runtime
+passes authentication, WebP/AVIF, signed thumbnail sharing, video and D1 checks.
+Exact-source comparison verifies all 19 exclusions and both notes; surviving
+photo records/AVIF fallbacks, journey, routes and album order are unchanged.
+The generated comment and share indexes match all 101 visible IDs. Rollback
+Worker: `2187bc98-1bdb-48a8-9991-9473158ed84a`.
+Next: deploy regenerated comment/share eligibility before Pages, then verify the
+deployment and fresh public metadata. Publication is pending.
+
+## Photo share thumbnails — 16 October 2026
+
+Owner requested low-resolution thumbnails of the actual shared photo in message
+previews. O18 and PHOTO_WORKFLOW record the accepted behavior and limited preview
+access. Implementation is isolated on `codex/photo-share-thumbnails`, starting
+at remote main `504bd26`, preserving the shared checkout's unrelated edits.
+The client captures the clicked photo, requests its thumbnail-only share link,
+and preserves normal history, full-photo unlock and share/copy fallbacks.
+All **837 tests**, the production build and Cloudflare runtime checks pass.
+Apple's native macOS LinkPresentation reads the actual Worker HTML and decodes
+its 480px WebP without executing the recipient redirect. Slow native-share
+activation retains the prepared link for a fresh tap. All 223 real published
+photos and 12 sample stills have explicit small thumbnails; samples retain their
+full originals for fullscreen viewing. The shared reference/demo/fresh-draft
+checks pass. Worker `2187bc98-1bdb-48a8-9991-9473158ed84a` is deployed;
+rollback version is `33b135c6-21d7-4c6a-b366-2e217e6ab7b3`.
+Published as `38b31a1` through successful
+[Pages run 38954219578](https://github.com/gravelcycles/travels/actions/runs/38954219578).
+All 59 checked public files, including five pages, referenced assets and seven
+sample thumbnails, match the tested release byte-for-byte. Both real trips pass
+live signed HTML, anonymous thumbnail GET/HEAD, exact thumbnail checksum and
+480px dimensions; full WebP/AVIF still reject anonymous access and accept valid
+access. Native macOS LinkPresentation fetched the live family share, read
+“Arrival in Luzern” and decoded its 480×360 WebP. This verifies Apple's preview
+framework, not an actual iMessage send or physical iPhone cache behavior.
+All five public demo journeys also pass live share-page and 480px thumbnail
+GET/HEAD checks. Implementation, deployment and current documentation are complete.
+
 ## Measured performance pass — 16 October 2026
 
 Owner authorized executing the phone/desktop interaction and loading priorities,
@@ -47,14 +93,19 @@ The owner's later clarification identifies full-screen swiping on mobile Chrome
 as still laggy. Eight real-app cached interruptions reproduce 52–53 px jumps
 before the correction and 0 px after, with zero photo requests/decodes. Fitted
 zoom resets reduce geometry reads 34→18 per cached swipe; the small handler-time
-differences do not establish an overall latency/FPS gain. All **836 tests pass**;
-two builds are identical across 71 public files. Family, Heading East, the Alpine
+differences do not establish an overall latency/FPS gain. Integrated current
+main `75f4e04`, retaining thumbnail sharing and all saved Heading East selections
+and notes. The merged loader is the exact union of the scheduler and sharing API;
+comment/share eligibility indexes match incoming main byte-for-byte.
+All **848 tests pass**; two builds are identical across 78 public files. Family, Heading East, the Alpine
 demo and an independently generated populated draft each pass all 14 browser
 gesture/zoom/Location/grid/history/event-boundary checks at 390×844, without page
-errors. Physical phone performance and the baseline long-frame outliers remain
+errors. Landscape has an identical pre-existing partially clipped thumbnail
+scroll adjustment (20→8 px before entry) on baseline and candidate; recorded in
+TODO. Physical phone performance and the baseline long-frame outliers remain
 explicit limits. [Methods and results](docs/PERFORMANCE_FOLLOWUP_2026-10-16.md).
-Next: finish landscape/desktop verification, integrate current main, publish and
-verify. No follow-up code is deployed at this checkpoint.
+Next: finish merged browser verification, publish and verify. No follow-up code
+is deployed at this checkpoint.
 
 Status checkpoint reconciled: **11 October 2026**. Start with
 [AGENTS.md](AGENTS.md) and [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md), then

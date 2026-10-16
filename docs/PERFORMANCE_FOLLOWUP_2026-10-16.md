@@ -106,7 +106,29 @@ establish an overall FPS improvement or explain every long-frame outlier.
 Physical mobile Chrome, including device/OS-specific GPU and memory pressure,
 and physical iPhone/Safari are not certified by desktop viewport tests.
 
-The complete **836-test suite passes** after updating older test DOM fixtures
+The initial complete **836-test suite passed** after updating older test DOM fixtures
 to implement the browser's classList.contains behavior. The final build is
 reproducible across 71 public files. Focused review covers current-photo
 preemption/fallback and mobile interruption, pinch, cancellation and zoom reset.
+
+## Concurrent release integration
+
+Before publication, integrated `75f4e04` (Pages run 38955013712): explicit signed
+thumbnail sharing plus 19 saved Heading East exclusions and two traveler notes.
+The merged loader preserves the scheduler byte-for-byte and adds the incoming
+sharing function/export; sharing is still invoked only by the explicit action.
+The comment and thumbnail-share indexes match incoming main exactly. The final
+**848 tests pass**, including the new sharing tests, and **78 public files** are
+identical across two builds.
+
+The migration measurement above remains the historical 223-photo corpus at
+`62d8c69`. Current membership is 204 (103 family, 101 Heading East); all surviving
+WebP/AVIF descriptors match those measured files. That subset is 206,085,132 B
+WebP → 215,115,067 B AVIF (+4.38%) for +57.78% pixels. These membership changes
+come from the concurrent saved selections, not this performance patch.
+
+All four portrait fixture models pass 14/14 affected-flow checks. The landscape
+fresh draft passes 13/14 identically before/after: selecting a partially clipped
+first thumbnail scrolls 20→8 px before saving the presenting grid, so Back returns
+to 8 px. Grid dimensions are unchanged. This pre-existing active-thumbnail reveal
+is recorded separately in TODO; it is not caused by the swipe correction.

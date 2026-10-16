@@ -22,10 +22,13 @@
     url.hash = hash.toString();
     return url.href;
   }
-  async function shareLink({url, title}, {navigator, fallback, announce}) {
+  async function shareLink({url, title}, {navigator, fallback, announce, retry}) {
     if (typeof navigator.share === 'function') {
       try { await navigator.share({url, title}); return 'shared'; }
-      catch (error) { if (error?.name === 'AbortError') return 'cancelled'; }
+      catch (error) {
+        if (error?.name === 'AbortError') return 'cancelled';
+        if (error?.name === 'NotAllowedError' && retry) { retry({url,title}); return 'ready'; }
+      }
     }
     try {
       if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
@@ -73,9 +76,24 @@
     async function share(button) {
       if (busy) return;
       busy = true;
-      const url = urlFor(env.location.href, api.state(button), {share:true});
-      try { return await shareLink({url,title:api.title()}, {
+      const state = api.state(button), title = api.title();
+      let url = urlFor(env.location.href, state, {share:true});
+      try {
+        // Capture the clicked photo before any asynchronous work. Browsing and
+        // history keep their ordinary atlas URLs; only explicit sharing grants
+        // a messaging preview access to this photo's small thumbnail.
+        if (state?.photoId && api.photoShareLink) {
+          try { url = await api.photoShareLink(url, state) || url; }
+          catch (_) { api.announce('Photo preview unavailable; sharing the link', button); }
+        }
+        // A slow request can outlast Safari's user activation. Keep the prepared
+        // link and offer a fresh tap; retrying must not wait for another request.
+        if (typeof env.navigator.share === 'function' && env.navigator.userActivation?.isActive === false && api.ready) {
+          api.ready({url,title}); return 'ready';
+        }
+        return await shareLink({url,title}, {
         navigator:env.navigator, fallback:api.fallback,
+        retry:api.ready,
         announce:message => api.announce(message, button)
       }); } finally { busy = false; }
     }

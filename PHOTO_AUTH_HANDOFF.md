@@ -347,11 +347,19 @@ The long-lived remembered cookie remains HttpOnly on Cloudflare. Tab storage is
 JavaScript-readable, so same-origin script security remains part of the trust
 boundary. Expired/revoked cached tokens never authorize images.
 
-Every image GET/HEAD checks token signature, audience, lifetime and active
+Every ordinary protected-image GET/HEAD checks token signature, audience, lifetime and active
 credential before touching R2. Requests use Authorization headers and credentials
 omitted. Successful image responses use `private, no-cache` with ETag revalidation;
 authentication and error responses remain `no-store`. The browser displays authenticated WebP or AVIF blobs through
-object URLs. No public image fallback or signed image URLs. Production CORS
+object URLs. Full images have no public fallback or signed image URLs. The
+16 October O18 correction permits explicit shares to mint a separate signed
+capability for one indexed thumbnail at most 480 pixels wide. Anonymous preview
+fetches verify that signature and current published-photo membership before
+reading the mapped thumbnail; they cannot request another size or use the
+signature for ordinary photo access. Preview responses are `no-store`, although
+message clients can retain already fetched thumbnails. Removing the photo from
+the deployed index or rotating the signing key stops future preview access.
+See [photo sharing](PHOTO_WORKFLOW.md#sharing-a-photo-or-view). Production CORS
 allows only https://gravelcycles.github.io; scripts across that origin share
 its security boundary. Return navigation is restricted to /travels/.
 

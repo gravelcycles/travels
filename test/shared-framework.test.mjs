@@ -1484,7 +1484,7 @@ test('current-view sharing is inherited by reference, city atlas, demo and a pop
   draft.photos=[{id:'independent-share-photo',dayId:draft.days[1].id,src:'https://example.test/fixture.webp',caption:''}];
   for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo'),draft]) {
     const html=renderJourneyPage(root,journey,{preview:journey===draft});
-    for(const id of ['share-lead-photo','share-photo','mobile-share-photo','share-link-dialog']) assert.ok(ids(html).includes(id),`${journey.id}: ${id}`);
+    for(const id of ['share-lead-photo','share-photo','mobile-share-photo','share-link-dialog','retry-share-link','share-link-description']) assert.ok(ids(html).includes(id),`${journey.id}: ${id}`);
     assert.ok(assets(html).includes('view-sharing.js'));assert.ok(assets(html).includes('view-sharing.css'));
     assert.match(html, /<aside class="photo-context">[\s\S]*?id="share-photo"[\s\S]*?<\/aside>/, `${journey.id}: fullscreen Share belongs in the right sidebar`);
     const photo=journey.photos[0], nodes=new Map();

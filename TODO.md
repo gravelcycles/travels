@@ -41,6 +41,13 @@ activation work.
       can collapse the map to zero height; reproduced with release `27a88eb`
       while verifying header dragging. See the photo-intermediate workstream in WIP.
 
+- [ ] **Retain the exact grid scroll before photo entry.** At 844×390, selecting
+      a partially clipped first thumbnail can reveal it before capturing the
+      presenting grid's scroll (20→8 px in the populated draft fixture). Back
+      then restores 8 px. This reproduces identically on the pre-fix and corrected
+      swipe renderers; capture the origin before active-thumbnail scrolling.
+      See [the measured follow-up](docs/PERFORMANCE_FOLLOWUP_2026-10-16.md).
+
 - [x] **Fullscreen photo controls and focal zoom — 16 October.** Shared mobile
       controls/chrome, full-viewport mobile zoom and focal phone/desktop zoom
       deployed in `34b72b2`. All 707 tests, build, 16 browser fixtures, successful
