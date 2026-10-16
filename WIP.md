@@ -16,6 +16,33 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Outbound trip update checkpoints — 16 October 2026
+
+Authorized: start checkpointing and calculate useful messages, likely for manual
+WhatsApp broadcasts. [O19](docs/OWNER_DECISIONS.md#outbound-trip-updates--16-october-2026)
+and the [workflow](docs/UPDATE_ANNOUNCEMENTS.md) supersede the proposal-only state
+for this bounded work. No outbound provider, recipient list or sending is
+authorized. Implementation is isolated in the managed `update-checkpoints`
+worktree from `d3a7af1`, preserving the primary checkout's pending photo edits.
+
+Implemented public-metadata snapshots, stable-ID diffs/messages and a recoverable
+local ledger. Prepare does not acknowledge; mark-shared acknowledges only a frozen
+draft after owner confirmation. All **678 tests** and the production build pass;
+generated public output and the Worker index are unchanged. Independent review
+identified malformed shared timestamps; validation now rejects them, with a
+regression covering the previously misleading pending/acknowledged state.
+
+The initial live baseline was captured **16 October 2026, 18:54 Vienna time**:
+**3 real trips, 222 visible photos**. Its durable local file is
+`/Users/dg/code/travels/build/update-announcements/whatsapp/ledger.json`, outside
+the disposable release worktree. A second fresh public read returns no new trips
+or photos. No draft is marked shared, and no message was sent. Preserve this
+ignored directory and its backups; do not recreate the baseline in a new worktree.
+Current remote main through `d3a7af1` is integrated. Remaining delivery: commit
+only this work, verify Pages/public output and install the tooling into the
+primary checkout without changing its unrelated pending edits. Studio UI and
+automated sending remain future options, not unfinished authorized work.
+
 ## Fullscreen depth-motion preview — 14 October 2026
 
 **15 October correction — gentle release live; seven additions await private upload.** The owner found the stronger result
