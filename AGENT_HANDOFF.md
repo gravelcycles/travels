@@ -110,6 +110,11 @@ automated suite.
 
 ## Mobile cleanup — 10 September 2026
 
+Historical checkpoint: the 12 October Back/grid continuity rules and
+[16 October fullscreen control/zoom correction](docs/OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
+supersede the photo Close omission, map-only exit and single-entry history below.
+Use the current photo workflow; this record is not the active specification.
+
 Day maps retain a compact header with Journey Atlas and a direct Replay
 button, plus a compact summary and bottom Day picker, with other journey actions in
 that picker and the route key in Day details. The top menu, duplicate All days

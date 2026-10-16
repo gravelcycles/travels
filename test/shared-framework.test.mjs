@@ -173,6 +173,29 @@ test('stationary photo bubbles stay attached for reference, demo and freshly gen
   }
 });
 
+test('mobile fullscreen chrome and zoom inherit reference, demo and independently populated fresh draft',t=>{
+  const root=fixture(t),created=createJourney(root,{...input,slug:'fullscreen-gestures-fixture',eventMode:'city'}),{data}=loadContent(root,{includeDrafts:true});
+  const draft=data.journeys.find(journey=>journey.id===created.id);
+  draft.photos=[{id:'independent-fullscreen-photo',dayId:draft.days[0].id,src:'https://images.example.test/fullscreen-portrait.jpg',width:800,height:1200}];
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'&&j.photos.length),draft]) {
+    const html=renderJourneyPage(root,journey,{preview:true});
+    assert.equal(ids(html).filter(id=>id==='mobile-share-photo').length,1,journey.id);
+    assert.equal(ids(html).filter(id=>id==='open-photo-comments').length,1,journey.id);
+    assert.match(html,/class="mobile-photo-actions"[^]*?id="mobile-share-photo"[^]*?id="open-photo-comments"/,journey.id);
+    assert.match(html,/class="photo-close"[^]*?aria-label="Close photo and video viewer"/,journey.id);
+    const f=viewerFixture({journey,reducedMotion:true});f.api.openDay(journey.photos[0].dayId);
+    f.click('.photo-stage');f.flush(300);
+    assert.equal(f.node('.photo-viewer').dataset.chrome,'false',journey.id);
+    assert.equal(f.node('.mobile-photo-actions').inert,true,journey.id);
+    assert.equal(f.node('.photo-close').inert,true,journey.id);
+    f.click('.photo-stage');f.click('.photo-stage');
+    assert.ok(Number(f.node('#modal-photo').style.transform.match(/scale\(([^)]+)\)/)[1])>1,journey.id);
+    assert.equal(f.node('.photo-viewer').dataset.chrome,'false',journey.id);
+    f.click('.photo-stage');f.flush(300);
+    assert.equal(f.node('.photo-viewer').dataset.chrome,'true',journey.id);
+  }
+});
+
 test('reference, demo and fresh-draft photo cards keep visible copy separate from accessibility text', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const { data } = loadContent(root, { includeDrafts: true });
@@ -1409,7 +1432,7 @@ test('real, demo and independently populated draft albums retain their tiles thr
       eventWord:form=>globalThis.JOURNEY_ATLAS_UTILS.eventWord(journey,form),escapeHtml:s=>s||'',
       photoImageMarkup:p=>`<img src="${p.src||''}">`,mediaUtils:{label:items=>`${items.length} photos`},prepareProgressiveImages(){},window:{JOURNEY_ATLAS_MOBILE_UI:f.controller}});
     vm.runInContext(appFunction('openAlbum'),context);f.api.restoreOverlay=id=>id==='album-dialog'?context.openAlbum():f.controller.presentOverlay(id);
-    context.openAlbum();album.scrollTop=410;album.captures.get('scroll')({});
+    context.openAlbum();album.scrollTop=410;f.dispatch('#album-dialog','scroll');
     f.controller.openGrid(journey.days[0].id);f.history.back();
     assert.equal(builds,1,journey.id);assert.equal(album.scrollTop,410,journey.id);
     assert.equal((html.match(/data-album-day=/g)||[]).length,journey.days.length,journey.id);

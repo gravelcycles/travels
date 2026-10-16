@@ -109,16 +109,17 @@ test('swipe-neighbor placeholders stay hidden until mobile photos exist and when
   assert.ok(neighbors.every(node => node.hidden), 'Cleared sources stay hidden after closing');
 });
 
-test('single taps never hide controls; double taps still zoom',()=>{
+test('double taps cancel the pending chrome toggle and animate zoom',()=>{
   const f=viewerFixture();f.api.openDay();f.click('.photo-stage');
   assert.equal(f.node('.photo-viewer').dataset.chrome,'true');
   f.click('.photo-stage');
   assert.match(f.node('#modal-photo').style.transform,/scale\(1\)/,'zoom starts at the existing size');
   f.flush(150);
   const midway=f.node('#modal-photo').style.transform;
+  const coverScale=706/(390/(1200/800));
   assert.ok(Number(midway.match(/scale\(([^)]+)\)/)[1]) > 1);
-  assert.ok(Number(midway.match(/scale\(([^)]+)\)/)[1]) < 2);
-  f.flush(150);assert.match(f.node('#modal-photo').style.transform,/translate3d\(15px,0px,0\) scale\(2\)/);
+  assert.ok(Number(midway.match(/scale\(([^)]+)\)/)[1]) < coverScale);
+  f.flush(150);assert.equal(Number(f.node('#modal-photo').style.transform.match(/scale\(([^)]+)\)/)[1]),coverScale);
   assert.equal(f.node('.photo-viewer').dataset.chrome,'true');
 });
 
@@ -201,7 +202,7 @@ test('the bottom Day button opens and dismisses the day picker',()=>{
 test('double-tap zoom respects reduced motion and zooms back to the whole photo',()=>{
   const f=viewerFixture({reducedMotion:true});f.api.openDay();
   f.click('.photo-stage');f.click('.photo-stage');
-  assert.match(f.node('#modal-photo').style.transform,/scale\(2\)/);
+  assert.equal(Number(f.node('#modal-photo').style.transform.match(/scale\(([^)]+)\)/)[1]),706/(390/(1200/800)));
   f.click('.photo-stage');f.click('.photo-stage');
   assert.match(f.node('#modal-photo').style.transform,/translate3d\(0px,0px,0\) scale\(1\)/);
 });
@@ -358,7 +359,7 @@ test('location collapses before photo dismissal; zoom, grids, video and desktop 
   f.drag('.photo-stage',0,-160);f.drag('.photo-stage',0,200);f.flush();
   assert.equal(f.controller.locationVisible(),false);assert.equal(f.node('#photo-dialog').open,true);
   f.click('.photo-stage');f.click('.photo-stage');f.drag('.photo-stage',0,220);f.flush();
-  assert.equal(f.node('#photo-dialog').open,true);assert.match(f.node('#modal-photo').style.transform,/scale\(2\)/);
+  assert.equal(f.node('#photo-dialog').open,true);assert.ok(Number(f.node('#modal-photo').style.transform.match(/scale\(([^)]+)\)/)[1])>1);
   for(const state of ['grid','video','desktop','handle']) {
     const g=viewerFixture({videoIndex:state==='video'?0:-1});g.api.openDay();
     if(state==='grid')g.click('#mobile-photo-grid');if(state==='desktop')g.resize(false);
@@ -462,7 +463,7 @@ test('album and About history restores dialog scroll after native opening resets
     const surface=f.node(`#${id}`), original=surface.showModal;
     surface.showModal=function(){original.call(this);this.scrollTop=0;this.scrollLeft=0;};
     f.controller.presentOverlay(id);surface.scrollTop=844;surface.scrollLeft=12;
-    surface.captures.get('scroll')({});
+    f.dispatch(`#${id}`,'scroll');
     f.history.back();f.history.go(1);
     assert.equal(surface.scrollTop,844);assert.equal(surface.scrollLeft,12);
     if(id==='album-dialog'){

@@ -175,8 +175,10 @@ entry can settle or refit it. This supersedes the map-only exit from the initial
 Check grid → photo → pull/Back → grid → Back, direct map/story entry, album and
 explicit Places entry, browser Back/Forward, Escape, grid scroll and explored map
 cameras. Use the actual app callbacks, including synchronous media refresh.
-Controls stay visible when the photo is tapped. Double-tap or pinch to zoom, and
-drag upward or tap Photo location to reveal its map. Hide location collapses it without leaving the
+The [16 October fullscreen contract](#fullscreen-controls-and-focal-zoom)
+requires single-tap chrome toggling and full-viewport focal zoom; it supersedes
+the earlier rule that controls stay visible on photo taps. Double-tap or pinch
+to zoom, and drag upward or tap Photo location to reveal its map. Hide location collapses it without leaving the
 photo. Pull an unzoomed still photo downward to dismiss fullscreen: the photo
 follows the finger, shrinks slightly and fades the backdrop. A deliberate
 pull or quick downward flick returns to the preceding screen through history;
@@ -185,8 +187,9 @@ An open location panel collapses first; upward pulls reveal location, horizontal
 swipes browse, zoomed drags pan, and a second finger cancels dismissal for pinch.
 The gesture stays off grids, buttons and native videos. Reduced motion omits
 shrink/settling animation. New input, photo changes, close and resize cancel a
-pending dismissal so it cannot close a later viewer. Keep the visible Back
-control and check same-event camera return, cross-event return, Back/Forward,
+pending dismissal so it cannot close a later viewer. Keep Back and the added
+top-right Close visible when chrome is shown; both return one surface. Check
+same-event camera return, cross-event return, Back/Forward,
 short/cancelled pulls, portrait/landscape photos and 320/390px plus landscape.
 This implements the owner's 12 October “pull the photo away” request in O08.
 Verify a quick hide-then-swipe keeps location closed. Full-trip Replay is disabled under O09; arrival/city playback remains on the
@@ -585,6 +588,51 @@ speculative work to a foreground download. Public-photo Retry uses the public
 loader and never asks for private-photo access.
 
 
+## Fullscreen controls and focal zoom
+
+Owner correction, **16 October 2026**, under
+[O03/O08/O18](docs/OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+Implemented in the shared viewer; public delivery is pending. Verification and
+deployment status live in
+[WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+
+In mobile fullscreen, place Share immediately beside Comments on the left and
+Close at the top-right of the photograph, clear of safe areas. Preserve the
+top-left Back label and the existing presenting-screen history. Close and Back
+return to that same preceding screen, including its mounted grid, scroll and
+selection. The grid does not acquire a second dismissal control. Desktop Share
+keeps its right-sidebar placement.
+
+On phones, a single tap on the photograph toggles all viewer chrome: navigation, event and
+photo labels, Share/Comments, Back/Close and location affordances. The hidden
+state shows only the photograph; another tap restores the controls. Controls,
+grids and native videos keep their own input behavior. A double-tap, swipe,
+pan, pinch, cancelled gesture or completed dismissal must not schedule a stray
+single-tap toggle. Revealing controls and keyboard use must provide a reachable
+exit; hiding chrome must not lose the current photo or presenting screen.
+
+The fitted photograph remains complete and undistorted. Mobile zoomed photos
+use the full viewport, including the area behind overlaid controls; do not clip
+the zoom to a smaller resting photo frame. Desktop zoom fills the existing
+photo stage and retains its context sidebar. During pinch, preserve the photo point
+under the starting midpoint and keep it under the midpoint as both fingers move.
+Start from the current scale and pan so a second pinch does not jump. On desktop,
+zoom at the cursor or touch midpoint through Ctrl+wheel/trackpad pinch, Safari
+gesture events, two-pointer pinch and double-click. Drag or scroll pans the
+zoomed photo. Shared `photo-zoom.js` focal math serves both layouts. Clamp panning to the actual image bounds only;
+short axes remain centered when smaller than the viewport. Reset cleanly on
+photo change, dismissal and layout changes. The established blurred full-image
+reveal, private loader and expiry cleanup remain authoritative.
+
+Check reference, city-stay atlas, demo and an independently populated draft,
+with portrait/landscape photos at 320/390 px, short landscape and desktop.
+Exercise off-center zoom, a moving pinch midpoint, zoom after pan, both edges,
+zoom-out reset, double-tap versus single tap, buttons and hidden-chrome recovery.
+Preserve swipe order, location-first collapse, pinch takeover from pull-down,
+short-pull snap-back, one-level Back/Close/pull, grid continuity and reduced motion.
+Browser automation is not physical iPhone/trackpad certification; report the
+actual checks and any device limits with the delivery receipt.
+
 ## Sharing a photo or view
 
 Owner-approved under [O18](docs/OWNER_DECISIONS.md#photo-and-view-sharing--12-october-2026),
@@ -595,8 +643,10 @@ overview. Existing `#photo=…`, `?photo=…` and day links remain supported. Ex
 view links survive reload; bare journey URLs keep the usual introduction.
 
 Share photo sits beside the lead/selected photo. In desktop fullscreen it sits
-in the right sidebar beside the photo count, below the day controls; phone
-fullscreen uses its header Share control. It shares the atlas page through the
+in the right sidebar beside the photo count, below the day controls. The
+16 October phone correction places fullscreen Share beside Comments on the
+left; see the [fullscreen contract](#fullscreen-controls-and-focal-zoom) and WIP
+for public delivery status. It shares the atlas page through the
 native device sheet where available. Otherwise it copies the link with a brief “Link copied” status; denied clipboard access opens a
 selectable link. Cancelling the share sheet does nothing. Shared links carry only
 journey/group context and the view hash, never media URLs, access credentials or
@@ -619,7 +669,7 @@ Check reference, city-stay atlas, demo and independently populated draft:
 selected photo versus fullscreen fresh links, day/overview, cross-event browsing,
 reload, grid → photo → Back, browser Back/Forward, locked/unlocked photo entry,
 invalid/deleted IDs, native share cancellation and clipboard denial. Verify a
-320px phone header, landscape and desktop controls without overlaps.
+320px phone controls, landscape and desktop controls without overlaps.
 
 ## Comment counts and read state
 

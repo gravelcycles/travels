@@ -38,6 +38,42 @@ recentering and retains its exact camera. QA scripts/results are in
 `/private/tmp/mobile-swipe-places-browser-qa/` and adjacent task `.mjs` files.
 Next: deploy and verify fresh public assets. Physical-device Safari was not used.
 
+## Fullscreen photo controls and focal zoom — 16 October 2026
+
+**Implemented; public delivery pending.** The owner requested mobile fullscreen
+Share beside Comments on the left, top-right Close, one tap to hide all buttons
+for just the photo, and zoom that uses fullscreen. The follow-up adds pinch
+focus that follows the fingers on mobile and desktop. Current requirements and
+supersessions live in
+[O03/O08/O18](docs/OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
+and the [photo workflow](PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom).
+Back/pull/grid continuity, location gestures, sharing semantics, photo loading,
+private access and the separate depth-demo boundary are retained.
+
+Work is isolated in `/Users/dg/.codex/worktrees/photo-fullscreen-gestures/travels`
+on `codex/photo-fullscreen-gestures`. The shared template/mobile layout now
+places Share beside Comments and Close top-right, overlays controls on the
+full-viewport stage and toggles chrome on single tap. `photo-zoom.js` provides
+shared focal math and the desktop Ctrl+wheel/trackpad, Safari gesture-event,
+two-pointer pinch, double-click and pan controller. Mobile uses the same focal
+math; desktop zoom keeps its existing stage and context sidebar.
+
+Integrated remote main through `8d5a117`, preserving the concurrent map-overview,
+manual-update and protected-depth-demo releases. **All 707 tests and the production
+build pass**, with reproducible public output. Synthetic-fixture browser checks
+pass all **16 combinations** of Switzerland–Italy, Heading East, Alpine demo and
+an independently populated city draft at **320 × 568, 390 × 844, 844 × 390 and
+1360 × 900**. These include full-viewport geometry, native moving-pinch input,
+portrait/landscape zoom, city controls, Share/Comments adjacency and top-right
+Close. Screenshots were visually inspected. The post-integration Alpine phone
+check also verifies keyboard restoration after hiding controls. Regressions
+cover cancelled taps, remaining-finger pinch release, grid return and private
+access lifecycle. Physical iPhone or Safari-device testing is not claimed.
+
+Next: push the validated release, verify successful Pages and fresh public
+HTML/asset hashes, then record the delivery receipt and complete TODO. The
+primary checkout's unrelated edits remain untouched.
+
 ## Unselected map opening — 16 October 2026
 
 Owner correction: first map opening must not show Stop 1 already selected,
@@ -241,8 +277,9 @@ trace through a phone viewport resize. No implementation or delivery work remain
 
 Fullscreen-desktop follow-up: Share now belongs in the right sidebar beside
 the photo count, below the day controls (O18). Shared markup/styles updated in
-`codex/photo-sharing-20261012` after integrating main `07d1896`; phone retains its
-header control. All **637 tests** and the production build pass. Browser checks
+`codex/photo-sharing-20261012` after integrating main `07d1896`; the phone
+header placement from this release is superseded by the
+[16 October correction](#fullscreen-photo-controls-and-focal-zoom--16-october-2026). All **637 tests** and the production build pass. Browser checks
 cover sidebar containment and share/copy at 1360/1024/901px, plus existing phone,
 link and Back/Forward flows on the reference, Heading East, Alpine demo and an
 independently populated draft. Deployed as `2797e75` through successful

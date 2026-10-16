@@ -32,7 +32,7 @@
     let current = { photos: [], index: 0, day: null }, locationOpen = false, grid = false, chrome = true, gridOrigin = null;
     let reveal = 0, locationHeight = 300, scale = 1, panX = 0, panY = 0;
     let gesture = null, pointers = new Map(), pinch = null, suppressClick = false;
-    let locationTimer, swipeTimer, swipeFrame, dragFrame, zoomFrame, dismissTimer;
+    let locationTimer, swipeTimer, swipeFrame, dragFrame, zoomFrame, dismissTimer, tapTimer;
     let dragOffset = 0, dragWidth = 0;
     let replayState = null;
     let overlay = null, overlayDepth = 0, afterDismiss = null;
@@ -55,6 +55,7 @@
       api.viewChanged?.();
     }
     function presentOverlay(id) {
+      cancelTap();
       const surface = $(`#${id}`);
       if (!surface || surface.inert || surface.open) return;
       resetDismiss();
@@ -185,9 +186,10 @@
     window.addEventListener('atlas-photo-cache-ready', refreshNeighbors);
     window.addEventListener('atlas-photos-locked', () => { neighbors.forEach(neighbor => { neighbor.bound = false; }); });
     function zoom(next) {
-      scale = clamp(next, 1, 4); if (scale === 1) panX = panY = 0;
       const ratio = img.naturalWidth / img.naturalHeight || 1;
       const width = Math.min(stage.clientWidth, stage.clientHeight * ratio), height = width / ratio;
+      const cover = Math.max(stage.clientWidth / Math.max(1, width), stage.clientHeight / Math.max(1, height));
+      scale = clamp(next, 1, Math.max(4, cover)); if (scale === 1) panX = panY = 0;
       panX = clamp(panX, -panLimit(width,scale,stage.clientWidth), panLimit(width,scale,stage.clientWidth));
       panY = clamp(panY, -panLimit(height,scale,stage.clientHeight), panLimit(height,scale,stage.clientHeight));
       transform();
@@ -195,11 +197,13 @@
     function stopZoom() { cancelAnimationFrame(zoomFrame); zoomFrame = null; }
     function toggleZoom(event) {
       stopZoom();
-      const from = {scale, x:panX, y:panY}, next = scale > 1 ? 1 : 2;
-      const rect = stage.getBoundingClientRect(), factor = next / scale;
+      const ratio = img.naturalWidth / img.naturalHeight || 1;
+      const width = Math.min(stage.clientWidth, stage.clientHeight * ratio), height = width / ratio;
+      const from = {scale, x:panX, y:panY};
+      const next = scale > 1 ? 1 : Math.max(2, stage.clientWidth / Math.max(1,width), stage.clientHeight / Math.max(1,height));
       // Keep the tapped part of the image under the finger, within its edges.
-      panX = (event.clientX - rect.left - rect.width / 2) * (1 - factor) + panX * factor;
-      panY = (event.clientY - rect.top - rect.height / 2) * (1 - factor) + panY * factor;
+      const focal = root.JourneyPhotoZoom.focalZoom(from, next, photoPoint(event.clientX,event.clientY));
+      panX = focal.x; panY = focal.y;
       zoom(next);
       if (reduced.matches) return;
       const target = {scale, x:panX, y:panY}, start = performance.now();
@@ -215,10 +219,15 @@
     }
     function setChrome(value) {
       chrome = value; viewer.dataset.chrome = String(chrome);
-      $('.mobile-photo-header').inert = !chrome; $('.mobile-photo-footer').inert = !chrome;
-      $('#album-continue').inert = !chrome;
+      for (const selector of ['.mobile-photo-header', '.mobile-photo-footer', '.mobile-photo-actions', '.photo-close', '#album-continue']) {
+        $(selector).inert = enabled() && (grid || !chrome);
+      }
+    }
+    function cancelTap() {
+      clearTimeout(tapTimer); tapTimer = null; lastTap = null;
     }
     function measure() {
+      if (!enabled()) return;
       stopZoom();
       locationHeight = Math.min(360, Math.max(150, (viewer.clientHeight - 138) * .52));
       viewer.style.setProperty('--location-height', `${locationHeight}px`);
@@ -282,6 +291,7 @@
       viewer.dataset.locationVisible = String(reveal > 0);
     }
     function setLocation(value, record = true) {
+      cancelTap();
       if (value && !current.photos.length) return;
       const changed = value !== locationOpen;
       const target = value ? locationHeight : 0;
@@ -303,6 +313,7 @@
       $('#mobile-grid-title').textContent = gridOrigin?.title || (current.collectionLabel ? `${current.collectionLabel} · ` : '') + [stills ? `${stills} photo${stills === 1 ? '' : 's'}` : '', videos ? `${videos} video${videos === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ') || 'No photos or videos';
     }
     function setGrid(value, record = true) {
+      cancelTap();
       const changed = grid !== value;
       if (!changed) return;
       stopSwipe(); pointers.clear(); gesture = pinch = null;
@@ -323,14 +334,15 @@
       $('.mobile-grid-heading').inert = !value; $('.mobile-grid-heading').setAttribute('aria-hidden',String(!value));
       stage.inert = value; $('.mobile-photo-header').inert = value || !chrome; $('.mobile-photo-footer').inert = value || !chrome;
       panel.inert = value || !locationOpen; $('#album-continue').inert = value || !chrome; strip.inert = !value && enabled();
-      if (value) { setChrome(true); $('.mobile-photo-header').inert = true; $('.mobile-photo-footer').inert = true; $('#mobile-grid-back').focus({preventScroll:true}); }
+      setChrome(value ? true : chrome);
+      if (value) { $('#mobile-grid-back').focus({preventScroll:true}); }
       else if (enabled()) $('#mobile-photo-grid').focus({preventScroll:true});
       if (value) { api.suspendPhotos?.(); clearNeighbors(); api.refreshGrid?.(); }
       else api.resumePhoto?.();
       if (record && changed) save();
     }
     function update(data) {
-      current = data; resetDismiss(); stopSwipe(); stopZoom(); lastTap = null;
+      current = data; resetDismiss(); stopSwipe(); stopZoom(); cancelTap();
       if (!enabled()) { save(); return; }
       pointers.clear(); gesture = pinch = null; zoom(1);
       viewer.dataset.gridOrigin = String(Boolean(gridOrigin));
@@ -395,6 +407,7 @@
       }
     }
     function closed() {
+      cancelTap();
       resetDismiss();
       gridOrigin = null; viewer.dataset.gridOrigin = 'false';
       clearNeighbors();
@@ -402,6 +415,7 @@
       if (!restoring && history.state?.mobileAtlas?.viewer) history.go(-Math.max(1, viewerDepth + (history.state.mobileAtlas.overlayDepth || 0)));
     }
     window.addEventListener('popstate', event => {
+      cancelTap();
       backPending = false; resetDismiss();
       const state = event.state?.mobileAtlas;
       if (!state) return;
@@ -465,16 +479,26 @@
       event.currentTarget.setPointerCapture(event.pointerId);
       if (pointers.size === 2) {
         if (current.photos[current.index]?.mediaType === "video") return;
-        const [a,b] = [...pointers.values()]; pinch = {distance:Math.hypot(a.x-b.x,a.y-b.y),scale};
-        gesture = null; lastTap = null; suppressClick = true; return;
+        const [a,b] = [...pointers.values()];
+        pinch = {distance:Math.hypot(a.x-b.x,a.y-b.y),scale,x:panX,y:panY,center:photoPoint((a.x+b.x)/2,(a.y+b.y)/2)};
+        gesture = null; cancelTap(); suppressClick = true; return;
       }
+      if (pointers.size > 2) return;
       gesture = {x:event.clientX,y:event.clientY,time:performance.now(),axis:null,dx:0,dy:0,width:stage.clientWidth,startReveal:reveal,panX,panY,handle:event.currentTarget !== stage};
     }
     function pointerMove(event) {
       if (!pointers.has(event.pointerId)) return;
       pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
       if (pinch) {
-        if (pointers.size === 2) { const [a,b] = [...pointers.values()]; zoom(pinch.scale * Math.hypot(a.x-b.x,a.y-b.y) / Math.max(1,pinch.distance)); }
+        if (pointers.size === 2) {
+          const [a,b] = [...pointers.values()];
+          const ratio = img.naturalWidth / img.naturalHeight || 1;
+          const width = Math.min(stage.clientWidth, stage.clientHeight * ratio), height = width / ratio;
+          const next = clamp(pinch.scale * Math.hypot(a.x-b.x,a.y-b.y) / Math.max(1,pinch.distance), 1,
+            Math.max(4, stage.clientWidth / Math.max(1,width), stage.clientHeight / Math.max(1,height)));
+          const target = root.JourneyPhotoZoom.focalZoom(pinch, next, pinch.center, photoPoint((a.x+b.x)/2,(a.y+b.y)/2));
+          panX = target.x; panY = target.y; zoom(next);
+        }
         return;
       }
       if (!gesture) return;
@@ -486,7 +510,7 @@
           current.photos[current.index] && current.photos[current.index].mediaType !== 'video';
       }
       if (!gesture.axis) return;
-      lastTap = null;
+      cancelTap();
       suppressClick = true;
       if (scale > 1 && !gesture.handle) {panX=gesture.panX+gesture.dx;panY=gesture.panY+gesture.dy;zoom(scale);return;}
       if (gesture.dismiss) { dragDismiss(gesture.dx, gesture.dy); return; }
@@ -500,10 +524,20 @@
     function pointerEnd(event) {
       if (!pointers.has(event.pointerId)) return;
       pointers.delete(event.pointerId);
-      if (pinch) { if (!pointers.size) {pinch=null;zoom(scale < 1.1 ? 1 : scale);} return; }
+      const cancelled = event.type !== 'pointerup';
+      if (cancelled) cancelTap();
+      if (pinch) {
+        suppressClick = true;
+        if (cancelled) pointers.clear();
+        if (pointers.size < 2) {
+          pinch = null; zoom(scale < 1.1 ? 1 : scale);
+          const remaining = [...pointers.values()][0];
+          gesture = remaining && scale > 1 ? {x:remaining.x,y:remaining.y,time:performance.now(),axis:null,dx:0,dy:0,startReveal:reveal,panX,panY,handle:false} : null;
+        }
+        return;
+      }
       const action = gesture; gesture = null;
       if (!action) return;
-      const cancelled = event.type !== 'pointerup';
       if (scale > 1 && !action.handle) return;
       if (action.dismiss) { settleDismiss(action, cancelled); return; }
       if (action.axis === 'x' && !action.handle) {
@@ -530,8 +564,28 @@
     stage.addEventListener('click', event => {
       if (!enabled() || (event.target.closest('button') || event.target.closest('#viewer-video')) || current.photos[current.index]?.mediaType === 'video' || grid) return;
       const now = performance.now();
-      if (lastTap && now-lastTap.time < 280 && Math.hypot(event.clientX-lastTap.x,event.clientY-lastTap.y) < 40) { toggleZoom(event); lastTap=null; }
-      else lastTap={time:now,x:event.clientX,y:event.clientY};
+      if (lastTap && now-lastTap.time < 280 && Math.hypot(event.clientX-lastTap.x,event.clientY-lastTap.y) < 40) { cancelTap(); toggleZoom(event); }
+      else {
+        cancelTap(); lastTap={time:now,x:event.clientX,y:event.clientY};
+        tapTimer = setTimeout(() => {
+          const visible = !chrome;
+          cancelTap();
+          if (!visible && locationOpen) setLocation(false);
+          setChrome(visible);
+        }, 280);
+      }
+    });
+    function photoPoint(x, y) {
+      const rect = stage.getBoundingClientRect();
+      return {x:x-rect.left-rect.width/2,y:y-rect.top-rect.height/2};
+    }
+    $('.photo-close').addEventListener('click', event => {
+      if (!enabled()) return;
+      event.preventDefault(); event.stopImmediatePropagation(); cancelTap(); back();
+    }, true);
+    window.addEventListener('keydown', event => {
+      // Making the focused control inert can move focus out of the viewer.
+      if (enabled() && dialog.open && !overlay && event.key === 'Tab' && !chrome) setChrome(true);
     });
     // The event header owns city/day jumps; image gestures always browse or pan
     // photographs. Starting on a button remains a normal tap, never a swipe.
@@ -578,6 +632,7 @@
       else if(action==='about')presentOverlay('notes-dialog');
     };
     media.addEventListener('change',()=>{
+      cancelTap();
       resetDismiss(); stopSwipe(); pointers.clear(); gesture = pinch = null; stopZoom();
       if (dialog.open) api.layoutChanged?.(current.photos[current.index]?.id);
       if (!enabled()) {setGrid(false,false);setLocation(false,false);setChrome(true);panel.inert=false;panel.removeAttribute('aria-hidden');strip.inert=false;img.style.transform='';neighbors.forEach(({node})=>node.hidden=true);if(dialog.open)api.location();}
@@ -591,7 +646,7 @@
       if(replayState)replayControlsChanged(replayState);
       renderDay();save();
     });
-    window.addEventListener('resize',()=>{resetDismiss(); stopSwipe(); pointers.clear(); gesture = pinch = null; measure();measureReplay();});
+    window.addEventListener('resize',()=>{cancelTap(); resetDismiss(); stopSwipe(); pointers.clear(); gesture = pinch = null; measure();measureReplay();});
     new ResizeObserver(()=>{ $('.map-panel').style.setProperty('--day-summary-height',`${$('.mobile-day-summary').offsetHeight}px`); }).observe($('.mobile-day-summary'));
     save();
     return {enabled,presentOverlay,dismissOverlay,renderDay,tabChanged,update,prepareOpen,open,closed,openGrid,replayControlsChanged,locationVisible:()=>locationOpen,gridVisible:()=>enabled()&&grid,gridOrigin:()=>enabled()?gridOrigin:null,

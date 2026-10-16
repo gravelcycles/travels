@@ -20,7 +20,7 @@ function selection() {
   };
   const days = [{ id: 'd1', number: 1, segmentIds: [] }, { id: 'd2', number: 2, segmentIds: [] }];
   const context = vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),
-    window: {JOURNEY_ATLAS_MOBILE:globalThis.JOURNEY_ATLAS_MOBILE}, orderedPhotos:()=>[], clearDayPreview(){}, deferDayPreviewClear(){}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},
+    window: {JOURNEY_ATLAS_MOBILE:globalThis.JOURNEY_ATLAS_MOBILE}, orderedPhotos:()=>[], clearDayPreview(){}, deferDayPreviewClear(){}, mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA, videoPlayer:{stop(){},show(){}},photoZoom:{setPhoto(){}},
     arrivalChapter:null, arrivalKey:day=>day.id, cancelArrival(){}, settleAtCity(){}, startArrival(){}, mainMapReady:true, locationLabels:null,
     activeDayId: 'd1', mapScope: 'journey', inspectedSegmentId: null, mobileMapTimer:null, clearTimeout(){},
     viewerCollection:null,viewerDayId:'d2',viewerPhotoIndex: 0, viewerMapReady: false, pendingMapAction: null, placesUI: null, photoBubbles: null,
@@ -92,13 +92,14 @@ test('opening or changing a viewer day updates the atlas day and route scope', (
 });
 
 test('the same day viewer switches photo to video and back without sending video bytes to the image loader', () => {
-  const context = selection(), calls = [];
+  const context = selection(), calls = [], zoomPhotos = [];
   const media = globalThis.JOURNEY_ATLAS_MEDIA.items({photos:[{id:'photo',alt:'A photograph'}],videos:[{id:'clip',title:'A clip',src:'https://example.com/clip.mp4'}]});
   context.photosForDay = () => media;
   context.window.JOURNEY_ATLAS_UTILS = {photoCaption:item => item.caption || item.alt};
   context.sizeViewerBackdrop = () => {};
   context.setPublicFullImage = (_image,item) => calls.push(['image',item.id]);
   context.videoPlayer = {stop:()=>calls.push(['stop']),show:item=>calls.push(['video',item.id])};
+  context.photoZoom = {setPhoto:item=>zoomPhotos.push(item?.id || null)};
   context.updateViewer();
   assert.equal(context.$('#modal-photo').hidden,false);
   context.viewerPhotoIndex = 1; context.updateViewer();
@@ -110,6 +111,7 @@ test('the same day viewer switches photo to video and back without sending video
   assert.equal(context.$('#modal-photo').hidden,false);
   assert.equal(context.$('#viewer-media-title').hidden,true);
   assert.deepEqual(calls,[['stop'],['image','photo'],['video','clip'],['stop'],['image','photo']]);
+  assert.deepEqual(zoomPhotos,['photo','clip','photo'],'Every media change reaches the zoom controller');
 });
 
 test('returning to the mobile map positions day controls and frames the selected day after resize', () => {

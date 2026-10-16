@@ -101,6 +101,7 @@ password system.
 | `studio/place-editor.js` | Owner Places, credited images, curated reviews and ordered trip-photo links through the existing plan/save/recovery flow |
 | `dist/assets/view-sharing.js`, `view-sharing.css` | Shared view URL parsing/serialization, coalesced URL replacement and native share/copy fallback; surface controllers retain history ownership; no saved resume storage |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction; dormant full-trip Replay UI |
+| `dist/assets/photo-zoom.js` | Shared focal-zoom math and pan bounds used by mobile; desktop photo-stage controller for Ctrl+wheel/trackpad pinch, Safari gesture events, two-pointer pinch, double-click zoom and pan, with selection/resize/access reset |
 | `dist/assets/opening-route.js` | Shared three-second initial overview trace; reuses arrival geometry/clock/canvas, owns temporary route visibility and cleanup, survives automatic map resize/refitting and resynchronizes rebuilt native layers without restarting, preserves separate legs and disabled Replay |
 | `dist/assets/location-labels.js` | Shared destination grouping, screen-space clusters, upright signposts, compact previews and accessible day selection |
 | `dist/assets/map-feedback.js`, `map-feedback.css` | Shared map loading, recovery, Retry and no-location feedback; used in Studio too |
@@ -112,7 +113,7 @@ password system.
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |
 | `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching |
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |
-| `dist/assets/mobile-ux.js`, `dist/assets/mobile.css` | Shared mobile day navigation, continuous journey photo gestures with cache-ready neighbors and frame-paced swipe transforms, including downward still-photo dismissal with cancellation/pinch arbitration, separate event jumps, event grids retained beneath fullscreen photos with one-level grid/photo history and scroll restoration, location panel, exact map-camera restoration on same-event Back/close and retained cross-event sidebar selection when dismissing Comments |
+| `dist/assets/mobile-ux.js`, `dist/assets/mobile.css` | Shared mobile day navigation, full-viewport photo stage with overlay controls and single-tap chrome toggling, focal zoom through photo-zoom.js, continuous journey photo gestures with cache-ready neighbors and frame-paced swipe transforms, including downward still-photo dismissal with cancellation/pinch arbitration, separate event jumps, event grids retained beneath fullscreen photos with one-level grid/photo history and scroll restoration, location panel, exact map-camera restoration on same-event Back/close and retained cross-event sidebar selection when dismissing Comments |
 | `dist/assets/community-client.js`, `photo-comments.js` / `.css`, `places-comments.css`, `places-panel.js` | Shared floating photo conversations and place reviews; immediate presentation, authorized memory caches and retry behavior; Places owns direct phone sheet resizing from its handle and list/detail header |
 | `dist/assets/comment-notifications.js`, `trip-notifications.js` / `.css` | Shared journey-scoped local read IDs, exact photo/trip counts, cached trip metadata and recent-feed presentation; no per-photo count requests or public comment text |
 | `dist/assets/input-mode.js` | Shared pointer/keyboard focus presentation for catalog, journeys and draft previews |
@@ -137,6 +138,33 @@ content hashes to public asset URLs; template authors do not maintain version
 strings. This includes the Places sheet stylesheet; a gesture/style release must
 invalidate its cached CSS alongside the runtime. Studio serves live assets with
 no-store caching.
+
+## Fullscreen photo controls and focal zoom — 16 October 2026
+
+Accepted shared behavior is recorded in
+[O03/O08/O18](OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
+and the [photo workflow](../PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom).
+The shared implementation extends the existing journey template and styles:
+mobile Share/Comments sit together on the left, Close sits top-right, and a
+single tap toggles chrome over the full-viewport photo stage. `photo-zoom.js`
+owns `focalZoom` and image-aware pan bounds; `mobile-ux.js` uses this math for
+moving-midpoint pinch and double-tap. Its desktop controller supports
+Ctrl+wheel/trackpad pinch, Safari gesture events, two-pointer pinch, double-click
+zoom and bounded drag/wheel pan. Desktop zoom fills its existing photo stage and
+retains the context sidebar. Selection, close, resize and access loss release
+owned transforms so the phone and desktop controllers do not overwrite one
+another when the layout changes.
+
+No trip field, alternate viewer or depth-demo integration is introduced. The
+existing surface controllers continue to own one-level history, the retained
+source grid, map-camera restoration and explicit Places scope; the private
+loader continues to own image readiness and expiry cleanup.
+
+Synthetic-fixture browser checks pass for the reference, Heading East, Alpine
+demo and an independently populated city draft at four phone/desktop sizes.
+[WIP](../WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026) and
+[TODO](../TODO.md) record current-main integration, post-integration checks
+and public delivery. Physical iPhone/Safari device testing is not claimed.
 
 ## Explicit remote experiment — 14 October 2026
 

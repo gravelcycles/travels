@@ -17,6 +17,21 @@
   Integrated current main; all 697 tests, the build and 30 rendered browser cases
   pass. Manual map input immediately after Show map cancels its delayed recenter.
 
+## 16 October 2026 — fullscreen photo controls and focal zoom
+
+- Place mobile Share beside Comments on the left and Close at the top-right,
+  retaining Back, one-screen grid return and the mounted source grid.
+- Let a single tap hide/restore photo chrome over the full-viewport mobile
+  stage. Share focal-zoom math across mobile pinch/double-tap and desktop
+  Ctrl+wheel/trackpad, Safari gesture events, two-pointer pinch and double-click;
+  retain desktop context and bounded pan.
+- Reconcile current owner/workflow/feature/framework guidance and supersede the
+  old visible-on-tap and omitted-Close rules.
+- Validation: 707 integrated tests, the production build and 16 synthetic-fixture browser
+  combinations pass; 320 px/landscape screenshots were visually checked. Physical
+  iPhone/Safari device testing is not claimed. Public delivery remains in
+  [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+
 ## 16 October 2026 — open the map without a selected stop
 
 - Keep the whole-trip overview neutral on desktop and phone: no first-event
