@@ -22,8 +22,14 @@ previews. No new media upload is needed. Verification must compare all saved
 overrides and the visible membership with fresh public output; retain the two
 notes exactly as entered. All 837 tests, the production build and real Worker
 runtime checks pass. Exact-source and generated-data checks confirm the saved
-selection, notes and unchanged remaining photo/route/day data. Deployment
-verification is pending in WIP.
+selection, notes and unchanged remaining photo/route/day data. Published as
+`75f4e04` through successful
+[Pages run 38955013712](https://github.com/gravelcycles/travels/actions/runs/38955013712).
+The updated Worker was activated first. Nine fresh public files match the tested
+release exactly, including both notes; live browser counts confirm 101 total,
+Köln 8 and Prague 26. All 19 removed photos reject discussion and share requests.
+Retained private media still requires and accepts the existing access. WIP records
+the Worker version and rollback receipt.
 
 ## Saved photo and metadata publication — 16 October 2026
 
