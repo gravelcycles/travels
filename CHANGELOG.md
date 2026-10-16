@@ -11,6 +11,15 @@
   file/mobile-viewer verification. The receipt is tracked in
   [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
 
+## 16 October 2026 — saved Heading East photo data
+
+- Publish the saved map pins, zoom levels, traveler note, album order and Trash
+  choices, plus four visible Berlin uploads through private photo hosting.
+- Retain the two new trashed uploads locally and preserve all originals/capture
+  times. Record the saved Berlin order as an exception to automatic chronology.
+- Regenerate the public data and comments eligibility index; verification and
+  deployment receipts are recorded in WIP and the Heading East trip record.
+
 ## 16 October 2026 — direct notification conversations
 
 - Open notification targets as fullscreen photographs with comments immediately

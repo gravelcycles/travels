@@ -2354,5 +2354,183 @@
     "assetStatus": "published",
     "protected": true,
     "sourceHash": "4bd1855b7f117fbb069742b55bcd4c91ab314da60e07dd28188f8ef18c844cc9"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-d0dde9ac9b1fc05fbafe",
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "src": "/private-photos/assets/v1/57a983dad629d997026cd7d8ab13439639624d7a781b3a9e6c81b0fd90ca04ea.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/061f450fc17bace4bbb7e57b2ea56f31e640b631764836a5c23110724003ed79.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/57a983dad629d997026cd7d8ab13439639624d7a781b3a9e6c81b0fd90ca04ea.webp",
+        "width": 1086
+      }
+    ],
+    "width": 1086,
+    "height": 1448,
+    "blur": "data:image/webp;base64,UklGRugAAABXRUJQVlA4INwAAABwBwCdASogACsAPxmAtFOsqCSiqrgMAZAjCUAW/XrXt5NjaBvc5KHzRSbToD9JMqAict4sjkaCqupXSzCvo06DQo/EAAD+75V1Wdd72E4tbPTdYTpNw8xRMGg8vwn/P5sWpl6/uMj8icNKNFoz6LgnE74wXLpcD5kVq6KklQrPRZJOiacZH5caOTgGcZ9VSNQHCMm/XtsjS2tawVryodiUQ3toN58MJwALK3OkEemd8yhtmfkO1XkL9epQOaVBREMR1AoNjsqIhC2oMtPv3FShHAGqwbci4iS9J5gA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 6",
+    "sourceFilename": "D25CE7BF-4B02-4CC8-9F6C-997A3241A75D.PNG",
+    "takenAt": "",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "d0dde9ac9b1fc05fbafe294c94dd969564e1b586c34e9b061e230e74deabc615"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-014b5cb7071a814989c4",
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "src": "/private-photos/assets/v1/d8b4bce6eee16a27dd4ac6604db82f5b7f3c37bdc075bf470cf3e10935b97b95.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/9c67202d31ecd6e56b5002213a779f412e1e25866687a0adce457c5650226ee5.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/c2c9a6cfef9fca12f00644989642ed7784b71b51cacba9c1e52a1567b88385c6.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/d8b4bce6eee16a27dd4ac6604db82f5b7f3c37bdc075bf470cf3e10935b97b95.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "blur": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAADQBQCdASogACsAPxl6slMsp6QwKqoCACMJYwClrBZzxkXimvpU+PmmrkKrZdqlv3l8sv+xWRB8AP6vNWD4K+XLjRXwATKvwoOYQ5/JUoS+PJC0GjdB4v8WWy8vrx8FIz09TDAI7kMq9mLrRBS9Yov6TPQWmKV30zel0b1JppL/IMC4UNbTXgpXbLfPJzIGGz23G0p4Al0eAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 6",
+    "sourceFilename": "snapseed_camera_capture_20260729_061749_482.heic",
+    "takenAt": "2026-07-29 · 06:17",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "014b5cb7071a814989c412c2cd6711f59589628e1ad9a67b8aef4f740a295ecb"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-fcb2e7f68a05e4fc8731",
+    "dayId": "backpacking-europe-heading-east-luzern-stay",
+    "src": "/private-photos/assets/v1/3c7ab09abd40cf1a37d7c242047a93c1e9a9893f3fd625fbf95f3e0307bdd91e.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/c985bd1bdfad7de569e7afa92dcc540098c2e233aff8b9922c1ae2c77056e743.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/3c7ab09abd40cf1a37d7c242047a93c1e9a9893f3fd625fbf95f3e0307bdd91e.webp",
+        "width": 1170
+      }
+    ],
+    "width": 1170,
+    "height": 2532,
+    "blur": "data:image/webp;base64,UklGRvYAAABXRUJQVlA4IOoAAACwBQCdASogAEUAPwVup1CrpqMiuZQMAXAgiWIAyX/kQGY6zw1h5/4hX/duP+g58I12QJvNhYgA+dZ7epJg42ZUHGWhP/i7Uy34HL3lmRnHvOiVmWG6phsCoNWe8AF5cyuu8davXylPIBx8YG/+42JrS8ZgZ9V0R1WezGemQ2msXAExpcyNMurK0dazJWq1bkinbuUvOcVZl2KS92O/bg4eLGCtzE7mAwgYw6BXX+nq1xxyP4UuBsE1G+UMJQZttMWbDNKDtAvHUABfW2RN8HSMeltQEEPj7bq0wm1rC4Efipwq08BVVgSgAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 1",
+    "sourceFilename": "IMG_2605.PNG",
+    "takenAt": "2026-07-27 · 17:40",
+    "assetStatus": "local",
+    "protected": true,
+    "sourceHash": "fcb2e7f68a05e4fc8731d7ed987fc2f6f8d28ca3458dc60e559c987583ecbaac"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-6934713d07f04c3af0f7",
+    "dayId": "backpacking-europe-heading-east-luzern-stay",
+    "src": "/private-photos/assets/v1/7c66a5a83e6b30b63465f0ee157375175b10bc892b6d67f86efedfafefa4240c.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/59ed7e72f7c19dc0ff0d66b43e22d5250b8bb7921315c198c7b8ad96dad7599f.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/a0418f4eaf6ad95d253a9065ed206a02b3c5d9c47cf43ec4dd74bb57398693e0.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/7c66a5a83e6b30b63465f0ee157375175b10bc892b6d67f86efedfafefa4240c.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "blur": "data:image/webp;base64,UklGRtwAAABXRUJQVlA4INAAAAAwBwCdASogACsAPwVwpVCrpyMitVv8AXAgiWUAvzgdwJVpblC0hNnn010Ze0SYVkX/wuPQC3T82JG///MMtBplqAAA/ltIVbg9kJ0tNbJYLXgOqNOCpQDiahN+w08HG6vWWNGp1h/N00uvAzarhyLTdwxx3f0RpCnTMPTratKyq6vDfAxoBUQHZmYMINs3rVDYvVpgykCfqHgRDvFVXWhH6K+PprGBknBVgwI+AiQLkT2J+RsDr3vAzFFtQA7tlxc+OSS++O4Kp4D3hOP6AAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 1",
+    "sourceFilename": "snapseed_camera_capture_20260729_065134_800.heic",
+    "takenAt": "2026-07-29 · 06:51",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "6934713d07f04c3af0f77ed6d703602f438c01bcad23faae6fb89ff06a339153"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-d8d9b6efb27115da808a",
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "src": "/private-photos/assets/v1/8e4943175d077400c54d7287963268f042fdf45f4260ef63597288c11182dbb9.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/23d0745839337366ce443d853f383cc390dac4653c4e00809ee3ccf9216127d7.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/363c1c8b2b85e86b1108b93f3dfaac394d9d3039a2a16826915ec3675238869f.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/8e4943175d077400c54d7287963268f042fdf45f4260ef63597288c11182dbb9.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "blur": "data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAABwBQCdASogACsAPxlyslCspqSnMBqqqZAjCWcAxNg6fWHzAmqNX5Fs10SyhiEyvPVhZfAAAP7eS2VvAdKa/FrxZM81JCpHx5DBsQkObLstF/3DfK+wLPy6hpawY4xQ2xBjH+udaIDPG85if7H5UFvzkCJNdgxJMQ7/C6GAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 6",
+    "sourceFilename": "snapseed_camera_capture_20260729_061756_487.heic",
+    "takenAt": "2026-07-29 · 06:17",
+    "assetStatus": "local",
+    "protected": true,
+    "sourceHash": "d8d9b6efb27115da808af83f439e8bd70b73d9546f7981bd328a2334da2f4e7e"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-ab4ac181b05f99d4597a",
+    "dayId": "backpacking-europe-heading-east-berlin-stay",
+    "src": "/private-photos/assets/v1/fc299c226ae9ac80dfe75d85616d17a2ee3cd3b28c89339b6975f4a72970f001.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/d8354d02e9f8be9aaa98a7747313b963c3166ee6ccabf2dbd01ffbba00a47f8b.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/4532bcaf8ba45e71b2d8c4813046cc091b26023fd22f878b6a4fb9ccc4bad370.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/fc299c226ae9ac80dfe75d85616d17a2ee3cd3b28c89339b6975f4a72970f001.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "blur": "data:image/webp;base64,UklGRuIAAABXRUJQVlA4INYAAACQBgCdASogACsAPxl4tVIspyUipW5hkCMJQBe6EC+uPpf4m9jjOasUKRwwlpMyQhgaZ+eiAQNFYfNKdpgAAP7qirmFloSvwevSgbIMTIjJU23bMkYaZZWhvM1LR3dwH2nJMF2jN70N+lVi9ds+wmIPH1WALTkPOR7UtjlCEI7d0zE/arbmpdx45x/49CYhgDPR6PEwAllFVSVyw0z61wRsiuNTfNtIHYt6sAHtnkSp7oVaNiaXi/bV34FngvTvgvSGoQdmqWynUXYrYxjMIdMGPpbEKAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 6",
+    "sourceFilename": "snapseed_camera_capture_20260729_065121_340.heic",
+    "takenAt": "2026-07-29 · 06:51",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "ab4ac181b05f99d4597a414a43c13ecc26a4dd6e75a4ab5ff68c8af0bf124a4e"
   }
 ]
