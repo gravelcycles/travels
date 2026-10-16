@@ -132,3 +132,25 @@ test('photo-only browsing stays clean across swipes and hides an open location p
   assert.equal(f.node('.photo-viewer').dataset.chrome,'true');
   assert.equal(f.controller.locationVisible(),false,'Restoring controls does not reopen location');
 });
+
+
+test('zoomed chrome follows the photo through pan, hidden controls and reset boundaries',()=>{
+  for(const reset of ['zoom-out','photo','location','desktop','close']) {
+    const f=viewerFixture({reducedMotion:true});f.api.openDay();
+    f.click('.photo-stage');f.click('.photo-stage');
+    assert.equal(f.node('.photo-viewer').dataset.zoomed,'true');
+    f.drag('.photo-stage',30,20);
+    assert.equal(f.node('.photo-viewer').dataset.zoomed,'true');
+    f.click('.photo-stage');f.flush(300);
+    assert.equal(f.node('.photo-viewer').dataset.chrome,'false');
+    assert.equal(f.node('.photo-viewer').dataset.zoomed,'true');
+    f.click('.photo-stage');f.flush(300);
+    assert.equal(f.node('.photo-viewer').dataset.chrome,'true');
+    if(reset==='zoom-out'){f.click('.photo-stage');f.click('.photo-stage');}
+    if(reset==='photo')f.api.selectPhoto(1);
+    if(reset==='location')f.click('#mobile-photo-location');
+    if(reset==='desktop')f.resize(false);
+    if(reset==='close'){f.node('#photo-dialog').close();f.resizeViewport();}
+    assert.equal(f.node('.photo-viewer').dataset.zoomed,'false',reset);
+  }
+});

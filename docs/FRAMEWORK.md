@@ -148,7 +148,10 @@ and the [photo workflow](../PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom
 The shared implementation extends the existing journey template and styles:
 mobile Comments aligns right with Share immediately to its left; city/day
 buttons span their own full-width row, Close sits top-right, and a
-single tap toggles chrome over the full-viewport photo stage. `photo-zoom.js`
+single tap toggles chrome over the full-viewport photo stage. The mobile transform
+updates `data-zoomed`; zoomed chrome uses opaque individual controls and labels
+instead of full-width bar backgrounds, with image input passing through gaps.
+`photo-zoom.js`
 owns `focalZoom` and image-aware pan bounds; `mobile-ux.js` uses this math for
 moving-midpoint pinch and double-tap. Its desktop controller supports
 Ctrl+wheel/trackpad pinch, Safari gesture events, two-pointer pinch, double-click

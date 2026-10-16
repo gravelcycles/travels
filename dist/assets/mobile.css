@@ -246,6 +246,21 @@
 
 }
 
+/* Zoom reaches the screen edges; only the individual controls cover the photo. */
+@media(max-width:900px) {
+ .photo-viewer[data-zoomed="true"] :is(.mobile-photo-header,.mobile-photo-footer) { background:transparent; pointer-events:none; }
+ .photo-viewer[data-zoomed="true"] :is(.mobile-photo-header button,.mobile-photo-footer button) { pointer-events:auto; }
+ .photo-viewer[data-zoomed="true"] #mobile-photo-back,
+ .photo-viewer[data-zoomed="true"] .mobile-photo-header button,
+ .photo-viewer[data-zoomed="true"] #mobile-photo-location { background:#151d1f; }
+ .photo-viewer[data-zoomed="true"] :is(.mobile-photo-header button,#mobile-photo-prev,#mobile-photo-next):disabled { opacity:1; color:#6b7577; background:#172023; border-color:#2c383a; }
+ .photo-viewer[data-zoomed="true"] :is(#mobile-photo-count,#mobile-photo-event-label,#mobile-photo-time) { background:#091113; border-radius:12px; }
+ .photo-viewer[data-zoomed="true"] #mobile-photo-count { line-height:22px; }
+ .photo-viewer[data-zoomed="true"] #mobile-photo-event-label { width:max-content; max-width:100%; justify-self:center; padding:4px 8px; }
+ .photo-viewer[data-zoomed="true"] #mobile-photo-time { width:max-content; max-width:100%; margin-inline:auto; padding-inline:6px; }
+ .photo-viewer[data-zoomed="true"] #mobile-photo-time:empty { background:transparent; padding:0; }
+}
+
 /* Pull an unzoomed photo down to leave the shared fullscreen viewer. */
 @media(max-width:900px) {
  /* The grid stays in the same DOM and at the same scroll offset underneath

@@ -193,8 +193,10 @@ test('double taps cancel the pending chrome toggle and animate zoom',()=>{
   assert.equal(f.node('.photo-viewer').dataset.chrome,'true');
   f.click('.photo-stage');
   assert.match(f.node('#modal-photo').style.transform,/scale\(1\)/,'zoom starts at the existing size');
+  assert.equal(f.node('.photo-viewer').dataset.zoomed,'false','Resting chrome follows the rendered scale');
   f.flush(150);
   const midway=f.node('#modal-photo').style.transform;
+  assert.equal(f.node('.photo-viewer').dataset.zoomed,'true','Bars clear as soon as the photo starts enlarging');
   const coverScale=706/(390/(1200/800));
   assert.ok(Number(midway.match(/scale\(([^)]+)\)/)[1]) > 1);
   assert.ok(Number(midway.match(/scale\(([^)]+)\)/)[1]) < coverScale);

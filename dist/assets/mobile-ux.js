@@ -155,6 +155,7 @@
       if (enabled() && tab === 'story') requestAnimationFrame(api.preview);
     }
     function transform(dx = 0, width = stage.clientWidth) {
+      viewer.dataset.zoomed = String(scale > 1);
       img.style.transform = `translate3d(${dx + panX}px,${panY}px,0) scale(${scale})`;
       stage.style.setProperty('--photo-swipe-x', `${dx}px`);
       neighbors.forEach(({node,delta}) => { node.style.transform = `translate3d(${dx + delta * (width + 16)}px,0,0)`; });
@@ -186,7 +187,13 @@
       });
     }
     window.addEventListener('atlas-photo-cache-ready', refreshNeighbors);
-    window.addEventListener('atlas-photos-locked', () => { neighbors.forEach(neighbor => { neighbor.bound = false; }); });
+    window.addEventListener('atlas-photos-locked', () => {
+      neighbors.forEach(neighbor => { neighbor.bound = false; });
+      if (enabled() && dialog.open) {
+        pointers.clear(); gesture = pinch = null; cancelTap(); suppressClick = true;
+        stopZoom(); zoom(1);
+      }
+    });
     function zoom(next) {
       const ratio = img.naturalWidth / img.naturalHeight || 1;
       const width = Math.min(stage.clientWidth, stage.clientHeight * ratio), height = width / ratio;
@@ -480,6 +487,7 @@
       }
     }
     function closed() {
+      scale = 1; panX = panY = 0; viewer.dataset.zoomed = 'false';
       cancelTap();
       stopLocation(); api.pauseLocation?.();
       resetDismiss();
@@ -739,7 +747,7 @@
       cancelTap();
       resetDismiss(); stopSwipe(); pointers.clear(); gesture = pinch = null; stopZoom();
       if (dialog.open) api.layoutChanged?.(current.photos[current.index]?.id);
-      if (!enabled()) {setGrid(false,false);setLocation(false,false);setChrome(true);panel.inert=false;panel.removeAttribute('aria-hidden');strip.inert=false;img.style.transform='';neighbors.forEach(({node})=>node.hidden=true);if(dialog.open)api.location();}
+      if (!enabled()) {viewer.dataset.zoomed='false';setGrid(false,false);setLocation(false,false);setChrome(true);panel.inert=false;panel.removeAttribute('aria-hidden');strip.inert=false;img.style.transform='';neighbors.forEach(({node})=>node.hidden=true);if(dialog.open)api.location();}
       else if(dialog.open) {
         if(!history.state?.mobileAtlas?.viewer || !history.state.mobileAtlas.depth) {
           history.replaceState({...history.state,mobileAtlas:{...snapshot(),viewer:false,depth:0}},'',location.href);

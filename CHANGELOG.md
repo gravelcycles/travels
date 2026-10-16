@@ -1,5 +1,17 @@
 # Changelog
 
+## 16 October 2026 — let zoom fill the screen behind visible controls
+
+- Remove continuous mobile header/footer backgrounds while zoomed, retaining
+  opaque buttons and compact label backgrounds. Exposed photo accepts gestures;
+  zooming out restores the resting bars without moving controls.
+- Preserve right alignment, tap-to-hide, focal zoom and solid-button styling.
+  Update current owner, photo and framework guidance. All 751 tests, the build
+  and 16 rendered fixtures pass, including edge pixels and toolbar-gap panning.
+- Release `fa27585` passed Pages, fresh public page/asset comparisons and live
+  portrait/landscape checks for zoom coverage, solid buttons and chrome restoration.
+  Delivery is recorded in [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+
 ## 16 October 2026 — whole-header sheet dismissal
 
 - Make the full Comments and Photo location headers draggable, including their

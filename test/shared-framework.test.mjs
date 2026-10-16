@@ -227,6 +227,7 @@ test('mobile fullscreen chrome and zoom inherit reference, demo and independentl
     assert.equal(f.node('.photo-close').inert,true,journey.id);
     f.click('.photo-stage');f.click('.photo-stage');
     assert.ok(Number(f.node('#modal-photo').style.transform.match(/scale\(([^)]+)\)/)[1])>1,journey.id);
+    assert.equal(f.node('.photo-viewer').dataset.zoomed,'true',journey.id);
     assert.equal(f.node('.photo-viewer').dataset.chrome,'false',journey.id);
     f.click('.photo-stage');f.flush(300);
     assert.equal(f.node('.photo-viewer').dataset.chrome,'true',journey.id);
