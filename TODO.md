@@ -27,13 +27,11 @@ activation work.
 
 ## Independent project workstreams
 
-- [ ] **Fullscreen photo controls and focal zoom — 16 October: public delivery.**
-      Shared mobile controls/chrome, full-viewport mobile zoom and focal
-      phone/desktop zoom are implemented; focused tests and 16 browser fixture
-      combinations pass; all 707 integrated tests and the build pass. Complete
-      Pages and fresh public verification. Follow
-      [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
-      for source state, acceptance checks and deployment steps.
+- [x] **Fullscreen photo controls and focal zoom — 16 October.** Shared mobile
+      controls/chrome, full-viewport mobile zoom and focal phone/desktop zoom
+      deployed in `34b72b2`. All 707 tests, build, 16 browser fixtures, successful
+      Pages and fresh public hash/mobile checks pass. See
+      [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
 
 - [x] **Fullscreen depth motion — gentle nine-photo demo.** Published and
       verified 16 October: original gentle motion, drag/mouse controls, and seven

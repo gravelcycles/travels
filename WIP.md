@@ -58,10 +58,10 @@ later swipes slightly smoother; after Show map, allow direct Places-sheet
 dragging across a large part of its top bar. Current requirements are in
 [O04/O08](docs/OWNER_DECISIONS.md#mobile-swipe-continuity--16-october-2026)
 and the [Places correction](docs/OWNER_DECISIONS.md#mobile-places-visibility--12-october-2026).
-Implementation is isolated in `/private/tmp/travels-mobile-swipe-places` on
-`codex/mobile-swipe-places`, based on main `d3a7af1`; the primary checkout's
-unrelated work remains intact. Shared gestures and cache-ready neighbors are
-implemented; integrated main through `34b72b2`. All **723 tests** and the
+Implemented in `codex/mobile-swipe-places`, integrating concurrent overview and
+fullscreen-controls/focal-zoom changes through `34b72b2` and the map release
+receipt `b6df1ec`. The primary checkout's unrelated work remains intact.
+All **723 tests** and the
 production build pass, including Places stylesheet cache invalidation. Rendered
 checks pass **16 Places and 14 fullscreen cases** across reference, Heading East,
 Alpine demo and an independently populated fresh draft at 320/390px, landscape
@@ -73,12 +73,22 @@ recentering and retains its exact camera. QA scripts/results are in
 `/private/tmp/mobile-swipe-places-browser-qa/` and adjacent task `.mjs` files.
 The combined fullscreen-controls/focal-zoom release also passes first/cached
 swipes, hidden-chrome swipes and restoration, full-viewport geometry, grid Back
-and Places dragging/map panning on Heading East and Alpine. Next: deploy and
-verify fresh public assets. Physical-device Safari was not used.
+and Places dragging/map panning on Heading East and Alpine.
+
+Released as `1b5ab7e` through successful
+[Pages run 38937337942](https://github.com/gravelcycles/travels/actions/runs/38937337942).
+Fresh public catalog/reference/Heading East/Florence/demo HTML and nine shared
+assets match the tested build byte-for-byte. A fresh public Alpine phone check
+at 390 × 844 passes with live map tiles and public sample photos: first and
+cached/hidden-chrome swipes, control restoration, grid Back, Show map, broad
+header dragging and exposed-map panning. No page errors or private-media
+requests occurred. Screenshots and results are in
+`/private/tmp/mobile-swipe-places-public-qa/`. Implementation and delivery are
+complete. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
-**Implemented; public delivery pending.** The owner requested mobile fullscreen
+**Completed and deployed.** The owner requested mobile fullscreen
 Share beside Comments on the left, top-right Close, one tap to hide all buttons
 for just the photo, and zoom that uses fullscreen. The follow-up adds pinch
 focus that follows the fingers on mobile and desktop. Current requirements and
@@ -108,9 +118,15 @@ check also verifies keyboard restoration after hiding controls. Regressions
 cover cancelled taps, remaining-finger pinch release, grid return and private
 access lifecycle. Physical iPhone or Safari-device testing is not claimed.
 
-Next: push the validated release, verify successful Pages and fresh public
-HTML/asset hashes, then record the delivery receipt and complete TODO. The
-primary checkout's unrelated edits remain untouched.
+Released as `34b72b2` after integrating main through `8d5a117`.
+[Pages run 38936841288](https://github.com/gravelcycles/travels/actions/runs/38936841288)
+succeeded. Fresh public reference/Heading East/demo HTML and all six changed
+viewer assets match the tested build byte-for-byte. The fresh public Alpine
+photo loaded and passed 390 × 844 full-viewport, Share/Close, tap-to-hide,
+double-tap zoom, Tab recovery and Close-to-map checks in the in-app browser.
+Direct Node HTTP timed out; the system HTTP client and live browser checks
+succeeded. No implementation or delivery work remains. The primary checkout's
+unrelated edits remain untouched.
 
 ## Unselected map opening — 16 October 2026
 
@@ -183,9 +199,14 @@ isolation, later additions, legacy history and selection errors. Generated
 public output and the Worker index remain unchanged. Independent review caught
 combined snapshots attributing a share to unchanged trips omitted from the
 message; status now uses only the actual announced trip list, with malformed
-lists rejected without modifying history. The original ledger checksum remains
-unchanged. Next: release and record fresh Pages/public checks. Studio UI and
-automated sending remain optional future work.
+lists rejected without modifying history. Released as `9614681` through successful
+[Pages run 38937572609](https://github.com/gravelcycles/travels/actions/runs/38937572609).
+A fresh public catalog, reference page and all metadata bundles match the release;
+each of the three trip-specific diffs is empty. The original ledger checksum is
+unchanged, with no prepared or shared messages. The primary checkout has the
+same tooling and scoped guidance; all **45 focused checks** pass with unrelated
+edits preserved. This correction is complete. Studio UI and automated sending
+remain optional future work.
 
 ## Fullscreen depth-motion preview — 14 October 2026
 
