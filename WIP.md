@@ -31,9 +31,20 @@ for SHA-256 verification. All **740 tests**, the production build and actual
 Worker runtime checks pass. Two build-test fixtures now preserve unrelated saved
 photo assignments instead of erasing them. Generated public metadata/order
 matches the saved sources exactly; the gallery and comments index contain the
-same 120 visible IDs, with all trashed IDs excluded. Worker/index activation and
-Pages/public-bundle verification remain pending. Preserve the outbound-update
-ledger and acknowledgment history; publication does not mark any message shared.
+same 120 visible IDs, with all trashed IDs excluded. Integrated the concurrent
+solid-controls release through `1f9a8bf`; all 740 tests and the build still pass.
+
+Published as `0cef1bb` through successful
+[Pages run 38939110454](https://github.com/gravelcycles/travels/actions/runs/38939110454).
+Worker version `680b93ec-0a1c-4116-a54e-5f37dbd766d3` activated the matching index
+before Pages. Fresh public catalog/Heading East HTML and all three metadata
+bundles match the release byte-for-byte. Anonymous photo/comment reads return
+401. A fresh authenticated browser load shows 120 total photos, Berlin's 24-photo
+album and the newly added river photo at its saved second position, with the
+actual July timestamp and saved map pin. Studio's four verified uploads are now
+marked published locally and its generated output is refreshed. The primary
+checkout's unrelated work is preserved. Delivery is complete. Preserve the
+outbound-update ledger and history; no message was sent or marked shared.
 
 ## Photo intermediate screens — 16 October 2026
 
@@ -263,12 +274,15 @@ remain optional future work.
 The owner rejected and requested removal of the experiment; the current rule is
 [the retirement decision](docs/OWNER_DECISIONS.md#depth-motion-experiment-rejected--16-october-2026).
 Source and seven private depth maps are archived locally under ignored
-`build/archives/depth-demo-20261016/`. Removal covers the standalone code/assets,
-build hook, detailed demo docs and both experiment branches. Original trip
-photographs and concurrent site work remain intact. All 740 tests and the build
-pass; the build no longer emits the experiment. Pending: Pages deployment and
-404 checks, removal of the seven unreferenced private depth
-objects, then branch/worktree cleanup and chat archival.
+`build/archives/depth-demo-20261016/`, with its inference tools. The standalone
+code/assets, build hook and detailed demo docs are removed; both experiment
+branches are deleted. Original trip photographs and concurrent site work remain
+intact. All 740 tests and the build pass. Removal release `0542c09` passed
+[Pages run 38939247380](https://github.com/gravelcycles/travels/actions/runs/38939247380):
+all ten former demo/asset URLs return 404 and three normal atlas pages return 200.
+All seven unreferenced private depth objects were removed and verified absent;
+their archived checksums match. This experiment is closed, with no integration
+or further implementation pending.
 
 ## Mobile Places visibility — 12 October 2026
 
