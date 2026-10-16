@@ -38,10 +38,13 @@ The initial live baseline was captured **16 October 2026, 18:54 Vienna time**:
 the disposable release worktree. A second fresh public read returns no new trips
 or photos. No draft is marked shared, and no message was sent. Preserve this
 ignored directory and its backups; do not recreate the baseline in a new worktree.
-Current remote main through `d3a7af1` is integrated. Remaining delivery: commit
-only this work, verify Pages/public output and install the tooling into the
-primary checkout without changing its unrelated pending edits. Studio UI and
-automated sending remain future options, not unfinished authorized work.
+Released as `d451b58` after integrating current main through `d3a7af1`.
+[Pages run 38935849640](https://github.com/gravelcycles/travels/actions/runs/38935849640)
+succeeded. A fresh public catalog, reference page and all three metadata bundles
+match the release byte-for-byte and still produce an empty diff. The same tooling
+is installed in the primary checkout; all 38 focused checks pass there with its
+unrelated changes preserved. This bounded implementation is complete. Studio UI
+and automated sending remain future options, not unfinished authorized work.
 
 ## Fullscreen depth-motion preview — 14 October 2026
 
