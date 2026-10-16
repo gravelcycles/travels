@@ -3,6 +3,20 @@
     "id": "rail-window-demo",
     "dayId": "adriatic-d3",
     "src": "./assets/photos/train-window.webp",
+    "srcset": [
+      {
+        "src": "./assets/photos/train-window-thumb.webp",
+        "width": 480,
+        "height": 360
+      },
+      {
+        "src": "./assets/photos/train-window.webp",
+        "width": 1400,
+        "height": 1050
+      }
+    ],
+    "width": 1400,
+    "height": 1050,
     "alt": "A lake seen from a moving train",
     "caption": "Somewhere between Prague and Vienna",
     "takenAt": "6 Sep · 14:20",

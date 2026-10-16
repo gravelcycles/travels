@@ -1,5 +1,24 @@
 # Current workstreams
 
+## Photo share thumbnails — 16 October 2026
+
+Owner requested low-resolution thumbnails of the actual shared photo in message
+previews. O18 and PHOTO_WORKFLOW record the accepted behavior and limited preview
+access. Implementation is isolated on `codex/photo-share-thumbnails`, starting
+at remote main `504bd26`, preserving the shared checkout's unrelated edits.
+The client captures the clicked photo, requests its thumbnail-only share link,
+and preserves normal history, full-photo unlock and share/copy fallbacks.
+All **837 tests**, the production build and Cloudflare runtime checks pass.
+Apple's native macOS LinkPresentation reads the actual Worker HTML and decodes
+its 480px WebP without executing the recipient redirect. Slow native-share
+activation retains the prepared link for a fresh tap. All 223 real published
+photos and 12 sample stills have explicit small thumbnails; samples retain their
+full originals for fullscreen viewing. The shared reference/demo/fresh-draft
+checks pass. Worker `2187bc98-1bdb-48a8-9991-9473158ed84a` is deployed;
+rollback version is `33b135c6-21d7-4c6a-b366-2e217e6ab7b3`.
+Next: verify live metadata/thumbnail bytes and full-photo access, publish Pages,
+then compare fresh public output and native live preview. Pages delivery is pending.
+
 ## Measured performance pass — 16 October 2026
 
 Owner authorized executing the phone/desktop interaction and loading priorities,

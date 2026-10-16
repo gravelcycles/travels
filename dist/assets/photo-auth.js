@@ -459,6 +459,23 @@
     if (!response.ok) { if (response.status === 401) expireAccess(); throw Object.assign(new Error(data.error || 'Comments could not be saved. Try again.'), { status: response.status, code: data.code }); }
     return data;
   }
+  async function photoShareLink(target, {protectedPhoto = true} = {}) {
+    if (local || !service) return '';
+    if (protectedPhoto && (!token || expiresAt <= Date.now()/1000)) { if (token) expireAccess(); return ''; }
+    const epoch = generation;
+    const {response,data} = await requestJson(`${service}/private-photos/share`, {
+      method:'POST', credentials:'omit', cache:'no-store',
+      headers:{'Content-Type':'application/json', ...(protectedPhoto ? {Authorization:`Bearer ${token}`} : {})},
+      body:JSON.stringify(target)
+    }, 4000);
+    if (epoch !== generation) throw new Error('Photo access changed. Share again.');
+    if (response.status === 401) { expireAccess(); throw new Error('Photos are locked.'); }
+    if (!response.ok || typeof data?.url !== 'string') throw new Error('Photo preview is unavailable.');
+    const url = new URL(data.url);
+    const expected = `/share/${encodeURIComponent(target.journeyId)}/${encodeURIComponent(target.photoId)}/`;
+    if (url.origin !== service || url.username || url.password || url.hash || !url.pathname.startsWith(expected) || !/^[A-Za-z0-9_-]{43}$/.test(url.pathname.slice(expected.length))) throw new Error('Invalid photo preview link.');
+    return url.href;
+  }
   async function videoSource(src) {
     if (!/^\/private-videos\/assets\/v1\/[a-f0-9]{64}\.mp4$/.test(src || '')) throw new Error('Invalid private video');
     if (local) return `/build/private-video-assets/${src.slice('/private-videos/assets/'.length)}`;
@@ -475,7 +492,7 @@
     let released=false;
     return {url:entry.url,release(){if(released)return;released=true;entry.refs.delete(lease);prune();}};
   }
-  window.JOURNEY_ATLAS_AUTH={communityRequest,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets].map(src=>({src,fallback:preloadFallbacks.get(src)})).concat(selection(photo,width)).slice(-MAX_PREFETCH));},lock,showPrompt,raisePrompt,get unlocked(){return local||Boolean(token);}};
+  window.JOURNEY_ATLAS_AUTH={communityRequest,photoShareLink,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets].map(src=>({src,fallback:preloadFallbacks.get(src)})).concat(selection(photo,width)).slice(-MAX_PREFETCH));},lock,showPrompt,raisePrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
 })();

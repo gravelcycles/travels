@@ -195,7 +195,7 @@ photo URL updates plus a quiet Share action (“great lets do it”, 12 October)
 Every atlas keeps the address bar aligned with the selected day/stop, photo and
 map/sidebar versus fullscreen view. Sharing opens the device share sheet where
 available, with Copy link as a fallback. Recipients use the existing photo unlock;
-links contain identifiers, never photo bytes, access tokens or passwords. Browsing
+links contain identifiers, never photo bytes, session access tokens or passwords. Browsing
 photos replaces the current history entry instead of adding an entry per swipe.
 Existing one-level Back/Forward and map-camera restoration remain intact.
 
@@ -215,6 +215,20 @@ fresh/reloaded links, selected sidebar versus fullscreen, cross-event browsing,
 Back/Forward, private locked/unlocked entry, invalid/deleted IDs and share/copy
 cancellation/failure on desktop and phone, reference/demo/populated fresh draft.
 Technical details live in [the photo workflow](../PHOTO_WORKFLOW.md#sharing-a-photo-or-view).
+
+**16 October thumbnail correction:** “when sharing a photo, it should use the
+thumbnail of the photo (low res) in the shared image (i.e. on imessage when it
+displays a photo).” An explicit photo share now authorizes a low-resolution
+preview of that exact photo for recipients and messaging preview fetchers.
+Use the existing small thumbnail, never the full image, AVIF or original. The
+shared page must contain server-readable photo-specific metadata; client-only
+metadata and hash changes cannot supply a message preview. A thumbnail-only
+share signature is permitted by this correction; it grants no full-photo,
+comment or account access. Ordinary browsing and full photos retain O14's
+access boundary. Preserve the clicked photo and view through slow preparation,
+copy fallback and recipient navigation. Local drafts and unavailable previews
+retain ordinary links. Check locked access, altered links, deleted photos,
+GET/HEAD preview requests, reference/demo/fresh draft and Apple preview loading.
 
 ## Photo quality migration — 16 October 2026
 

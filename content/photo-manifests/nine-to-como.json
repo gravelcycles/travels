@@ -1,0 +1,47 @@
+[
+  {
+    "id": "nine-to-como-window",
+    "dayId": "nine-to-como-d1",
+    "src": "./assets/photos/train-window.webp",
+    "alt": "Illustrative mountain view through a train window",
+    "caption": "A window-seat day · sample illustration",
+    "groupIds": [
+      "mountain-rail"
+    ],
+    "srcset": [
+      {
+        "src": "./assets/photos/train-window-thumb.webp",
+        "width": 480,
+        "height": 360
+      },
+      {
+        "src": "./assets/photos/train-window.webp",
+        "width": 1400,
+        "height": 1050
+      }
+    ],
+    "width": 1400,
+    "height": 1050
+  },
+  {
+    "id": "nine-to-como-together",
+    "dayId": "nine-to-como-d2",
+    "src": "./assets/photos/alpine-route.webp",
+    "alt": "Illustration of travelers sharing an alpine valley",
+    "caption": "Different ways to the same place · sample illustration",
+    "srcset": [
+      {
+        "src": "./assets/photos/alpine-route-thumb.webp",
+        "width": 480,
+        "height": 270
+      },
+      {
+        "src": "./assets/photos/alpine-route.webp",
+        "width": 1672,
+        "height": 941
+      }
+    ],
+    "width": 1672,
+    "height": 941
+  }
+]

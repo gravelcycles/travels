@@ -28,6 +28,30 @@ function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:
  return {window,events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,blobs,probes,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,historyUrls,header:elements[1]};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
+test('photo sharing grants only the selected thumbnail after unlock and never forwards access in its link',async()=>{
+ const target={journeyId:'trip',photoId:'photo',view:'photo',scope:'day',group:''};
+ const url=`https://photos.example.com/share/trip/photo/${'s'.repeat(43)}?view=photo`;
+ const f=fixture(async()=>Response.json({url}));
+ assert.equal(await f.auth.photoShareLink(target),'');assert.equal(f.calls.length,0);
+ await f.unlock();assert.equal(await f.auth.photoShareLink(target),url);
+ assert.equal(f.calls.length,1);const [endpoint,options]=f.calls[0];
+ assert.equal(endpoint,'https://photos.example.com/private-photos/share');assert.equal(options.method,'POST');assert.equal(options.credentials,'omit');
+ assert.equal(options.headers.Authorization,'Bearer fixture-access-token');assert.deepEqual(JSON.parse(options.body),target);
+ assert.ok(!url.includes('fixture-access-token'));
+});
+test('public sample shares need no private token; malformed or stale responses cannot become share links',async()=>{
+ const target={journeyId:'sample',photoId:'photo',view:'map'};
+ const valid=`https://photos.example.com/share/sample/photo/${'s'.repeat(43)}`;
+ const publicFixture=fixture(async()=>Response.json({url:valid}));
+ assert.equal(await publicFixture.auth.photoShareLink(target,{protectedPhoto:false}),valid);
+ assert.equal(publicFixture.calls[0][1].headers.Authorization,undefined);
+ for(const url of ['https://evil.test/share/sample/photo/'+ 's'.repeat(43),valid.replace('/photo/','/other/'),valid+'#token=secret',valid+'/thumbnail.webp']) {
+  const f=fixture(async()=>Response.json({url}));await f.unlock();await assert.rejects(f.auth.photoShareLink(target),/Invalid photo preview/);
+ }
+ let respond;const f=fixture(()=>new Promise(resolve=>respond=resolve));await f.unlock();
+ const pending=f.auth.photoShareLink(target);f.auth.lock();respond(Response.json({url:valid}));
+ await assert.rejects(pending,/access changed/);
+});
 async function waitForNavigation(f) {
  // Web Crypto completes on a worker thread; a few event-loop turns are not a completion signal.
  for(let i=0;i<200&&!f.navigations.length;i++)await new Promise(resolve=>setTimeout(resolve,5));

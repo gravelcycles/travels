@@ -1,4 +1,5 @@
 import { buildCommunityIndex } from "./build-community-index.mjs";
+import { buildPhotoShareIndex } from "./build-photo-share-index.mjs";
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -126,6 +127,7 @@ export function buildSite(root) {
     fs.renameSync(`${target}.tmp`, target);
   }
   buildCommunityIndex(root);
+  buildPhotoShareIndex(root, { journeys: published, photos, overrides, site: readJson(path.join(root, 'content/site.json')) });
   return { journeys: published.length, drafts: data.journeys.length - published.length, pages };
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

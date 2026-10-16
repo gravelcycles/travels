@@ -13,6 +13,7 @@
 .share-link-dialog p { line-height:1.5; }
 .share-link-dialog input { box-sizing:border-box; width:100%; min-height:44px; padding:10px; border:1px solid #b8cac6; border-radius:8px; font-size:16px; }
 .share-link-dialog button { float:right; min-height:44px; margin-top:16px; padding:8px 18px; border:0; border-radius:22px; background:#153437; color:white; cursor:pointer; }
+.share-link-dialog #retry-share-link { margin-right:8px; }
 @media(min-width:901px) { .bubble-card-open .share-lead-photo { display:none; } }
 @media(max-width:900px) {
   #share-photo { display:none; }

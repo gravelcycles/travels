@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import communityIndex from '../workers/photo-auth/community-index.mjs';
+import photoShareIndex from '../workers/photo-auth/photo-share-index.mjs';
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import assert from 'node:assert/strict';
 import { createCredential, random, base64url } from '../workers/photo-auth/crypto.mjs';
@@ -42,6 +43,22 @@ try{
   }
  }
  console.log('Runtime protected WebP/AVIF GET, HEAD, revalidation and MIME mismatch checks passed.');
+ const [shareJourneyId,shareJourney]=Object.entries(photoShareIndex.journeys).find(([,journey])=>Object.values(journey.photos).some(photo=>photo.thumbnail.key));
+ const [sharePhotoId,sharePhoto]=Object.entries(shareJourney.photos).find(([,photo])=>photo.thumbnail.key);
+ await bucket.put(sharePhoto.thumbnail.key,bytes,{httpMetadata:{contentType:'image/webp'}});
+ const shareEndpoint='https://photos.example.com/private-photos/share',shareBody=JSON.stringify({journeyId:shareJourneyId,photoId:sharePhotoId,view:'photo'});
+ assert.equal((await mf.dispatchFetch(shareEndpoint,{method:'POST',headers:{Origin:photoHeaders.Origin,'Content-Type':'application/json'},body:shareBody})).status,401);
+ const shared=await mf.dispatchFetch(shareEndpoint,{method:'POST',headers:{...photoHeaders,'Content-Type':'application/json'},body:shareBody});
+ assert.equal(shared.status,200);const sharedUrl=(await shared.json()).url;
+ const sharePage=await mf.dispatchFetch(sharedUrl);assert.equal(sharePage.status,200);const shareHtml=await sharePage.text();
+ const thumbnailUrl=shareHtml.match(/property="og:image" content="([^"]+)"/)[1];
+ for(const method of ['GET','HEAD']) {
+  const thumbnail=await mf.dispatchFetch(thumbnailUrl,{method});assert.equal(thumbnail.status,200);assert.equal(thumbnail.headers.get('Content-Type'),'image/webp');
+  assert.equal((await thumbnail.arrayBuffer()).byteLength,method==='GET'?bytes.length:0);
+ }
+ assert.equal((await mf.dispatchFetch(thumbnailUrl.replace('/thumbnail.webp','/full.avif'))).status,404);
+ assert.equal((await mf.dispatchFetch('https://photos.example.com/private-photos/assets/'+sharePhoto.thumbnail.key)).status,401);
+ console.log('Runtime signed share HTML, thumbnail GET/HEAD and unchanged private access checks passed.');
  const resumed=await mf.dispatchFetch('https://photos.example.com/private-photos/auth/session',{method:'POST',headers:{Origin:'https://photos.example.com',Cookie:cookie,'Content-Type':'application/json'},body:JSON.stringify({origin:'https://gravelcycles.github.io',challenge})});
  assert.equal(resumed.status,200);assert.ok((await resumed.json()).code);
  const videoKey=`video/v1/${'b'.repeat(64)}.mp4`,videoBytes=new Uint8Array([0,1,2,3,4,5,6,7,8,9]);
