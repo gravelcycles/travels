@@ -2,7 +2,8 @@
   'use strict';
   const config = window.JOURNEY_ATLAS_PHOTO_SERVICE || {};
   const local = ['127.0.0.1', 'localhost'].includes(location.hostname) && new URLSearchParams(location.search).get('photoSource') === 'local';
-  const protectedPath = /^\/private-photos\/assets\/v1\/[a-f0-9]{64}\.webp$/;
+  const protectedPath = /^\/private-photos\/assets\/v1\/[a-f0-9]{64}\.(?:webp|avif)$/;
+  const avifPath = /^\/private-photos\/assets\/v1\/[a-f0-9]{64}\.avif$/;
   let service = '';
   try { const url = new URL(config.origin); if (url.origin === config.origin && (url.protocol === 'https:' || (['127.0.0.1','localhost'].includes(location.hostname) && ['127.0.0.1','localhost'].includes(url.hostname)))) service = url.origin; } catch { /* Unconfigured always stays locked. */ }
   let token = '', expiresAt = 0, generation = 0, expiryTimer, lastFocus, restoreAfterExpiry=false;
@@ -13,13 +14,29 @@
   const REQUEST_TIMEOUT = 15000, MAX_TRANSFER_TIME = 120000, MAX_DOWNLOADS = 4;
   const MAX_PREFETCH = 80, MAX_PHOTO_BYTES = 16 * 1024 * 1024;
   const preloadTargets = new Set(), preloadCompleted = new Set(), preloadFailures = new Set(), freshSources = new Set();
+  const preloadFallbacks = new Map(), avifFailures = new Set();
+  let avifSupported = false;
+  // Probe a tiny local image once, without blocking existing WebP startup or
+  // fetching a second full photo when capability detection finishes late.
+  if (typeof Image === 'function') {
+    const probe = new Image();
+    probe.onload = () => { avifSupported = probe.naturalWidth === 1 && probe.naturalHeight === 1; };
+    probe.onerror = () => {};
+    probe.src = 'data:image/avif;base64,AAAAHGZ0eXBhdmlmAAAAAG1pZjFhdmlmbWlhZgAAANZtZXRhAAAAAAAAACFoZGxyAAAAAAAAAABwaWN0AAAAAAAAAAAAAAAAAAAAACJpbG9jAAAAAERAAAEAAQAAAAAA+gABAAAAAAAAACUAAAAjaWluZgAAAAAAAQAAABVpbmZlAgAAAAABAABhdjAxAAAAAA5waXRtAAAAAAABAAAAVmlwcnAAAAA4aXBjbwAAAAxhdjFDgSACAAAAABRpc3BlAAAAAAAAAAEAAAABAAAAEHBpeGkAAAAAAwgICAAAABZpcG1hAAAAAAAAAAEAAQOBAgMAAAAtbWRhdBIACgc4AAaQENBpMhgZQmMEw88880EgAJBAyRxhSgsKzS3/bqA=';
+  }
   let pumping = false, navigationPending = false;
   const downloadQueue = [], activeDownloads = new Set();
   let lastCheck = 0, checkPending = null;
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const placeholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="24"%3E%3Cpath fill="%23d4ded8" d="M0 0h32v24H0z"/%3E%3C/svg%3E';
   const isProtected = photo => Boolean(photo?.protected || protectedPath.test(photo?.src || ''));
-  const selected = (photo, width=1280) => { const variants=[...(photo.srcset || [])].sort((a,b)=>a.width-b.width);return (variants.find(v=>v.width>=width)||variants.at(-1))?.src||photo.src; };
+  const selection = (photo, width=1280) => {
+    const variants=[...(photo.srcset || [])].sort((a,b)=>a.width-b.width);
+    const fallback=(variants.find(v=>v.width>=width)||variants.at(-1))?.src||photo.src, avif=photo.fullAvif;
+    if (width===Infinity && avifSupported && avifPath.test(avif?.src||'') && (local||avif.assetStatus!=='local') && !avifFailures.has(avif.src) && !cache.has(fallback)) return {src:avif.src,fallback};
+    return {src:fallback};
+  };
+  const selected = (photo, width) => selection(photo,width).src;
   const channel = 'BroadcastChannel' in window ? new BroadcastChannel('atlas-photo-lock') : null;
   const dialog = document.createElement('dialog'); dialog.className='photo-unlock-dialog';dialog.setAttribute('aria-labelledby','photo-unlock-title');
   dialog.innerHTML='<h2 id="photo-unlock-title">Private photographs</h2><p>The journey is here to explore. Unlock the photos with a shared password.</p><button type="button" data-unlock>Unlock photos</button><p class="photo-unlock-hint">You’ll visit a secure login page, then return here. Access is remembered for 30 days.</p><p data-auth-message role="status" aria-live="polite"></p><button type="button" class="photo-auth-secondary" data-dismiss>Continue without photos</button>';
@@ -57,7 +74,7 @@
   }
   function lock(broadcast=true) {
     token='';expiresAt=0;generation++;lastCheck=0;checkPending=null;restoreAfterExpiry=false;navigationPending=false;clearTimeout(expiryTimer);
-    preloadTargets.clear();preloadCompleted.clear();preloadFailures.clear();
+    preloadTargets.clear();preloadCompleted.clear();preloadFailures.clear();preloadFallbacks.clear();
     try{sessionStorage.removeItem(ACCESS_KEY);}catch{}
     if(broadcast)rememberGuest();
     for(const [img,item] of images){item.cleanup?.();img.removeAttribute('srcset');img.src=item.blur;img.classList.remove('is-loaded');item.entry=null;item.loading=false;imageState(img,'locked');}
@@ -113,17 +130,24 @@
       && ![...activeDownloads].some(entry => entry.priority < 2);
   }
   function setPreloadSources(sources) {
-    const next = new Set([...new Set(sources.filter(src => protectedPath.test(src)))].slice(0, MAX_PREFETCH));
+    const choices = new Map(sources.filter(({src}) => protectedPath.test(src)).map(({src,fallback}) => [src,fallback]));
+    const next = new Set([...choices.keys()].slice(0, MAX_PREFETCH));
     for (const src of preloadFailures) if (!next.has(src)) preloadFailures.delete(src);
     for (const src of preloadCompleted) if (!next.has(src)) preloadCompleted.delete(src);
     for (const src of next) if (cache.get(src)?.url) preloadCompleted.add(src);
-    preloadTargets.clear();for (const src of next) preloadTargets.add(src);
+    preloadTargets.clear();preloadFallbacks.clear();for (const src of next) {preloadTargets.add(src);if(choices.get(src))preloadFallbacks.set(src,choices.get(src));}
     const first = [...next].find(src => !cache.get(src)?.url && !preloadCompleted.has(src) && !preloadFailures.has(src));
     for (const [src, entry] of cache) if (!entry.url && entry.priority === 2 && src !== first) abortEntry(src, entry);
     pumpDownloads();
   }
   function setPreloads(requests = []) {
-    setPreloadSources(requests.filter(request => isProtected(request.photo)).map(({photo, width}) => selected(photo, width)));
+    setPreloadSources(requests.filter(request => isProtected(request.photo)).map(({photo, width}) => selection(photo, width)));
+  }
+  function rejectAvif(src, replan=true) {
+    avifFailures.delete(src);avifFailures.add(src);
+    while(avifFailures.size>MAX_CACHE+MAX_PREFETCH)avifFailures.delete(avifFailures.values().next().value);
+    const fallback=preloadFallbacks.get(src);
+    if(fallback&&replan)setPreloadSources([...preloadTargets].map(key=>key===src?{src:fallback}:{src:key,fallback:preloadFallbacks.get(key)}));
   }
   function pumpDownloads() {
     if (pumping || (!local && !token)) return;
@@ -144,7 +168,8 @@
       if (speculative && !activeDownloads.size && !downloadQueue.length) {
         const src = [...preloadTargets].find(src => !cache.has(src) && !preloadCompleted.has(src) && !preloadFailures.has(src));
         if (src) {
-          fetchPhoto(src, 2).then(prune, prune);
+          const epoch=generation;
+          fetchPhoto(src, 2).then(prune, error => {if(!error.photoCancelled&&epoch===generation&&(local||token)&&preloadTargets.has(src)&&preloadFallbacks.has(src))rejectAvif(src);prune();});
           const next = downloadQueue.shift();
           if (next) { activeDownloads.add(next);next.run(); }
         }
@@ -171,7 +196,8 @@
         entry.headersMs = Date.now() - started;
         if (response.status === 401) { if (epoch === generation) expireAccess();throw new Error('Photos locked'); }
         if (!response.ok) { const error = new Error('Photo could not load');error.photoFailure = `HTTP ${response.status}`;error.permanent = response.status < 500 && ![408,429].includes(response.status);throw error; }
-        if (response.headers.get('Content-Type')?.split(';')[0] !== 'image/webp') { const error = new Error('Invalid photo response');error.permanent = true;throw error; }
+        const contentType=avifPath.test(src)?'image/avif':'image/webp';
+        if (response.headers.get('Content-Type')?.split(';')[0].trim().toLowerCase() !== contentType) { const error = new Error('Invalid photo response');error.permanent = true;throw error; }
         progress();
         let blob;
         if (response.body?.getReader) {
@@ -185,8 +211,9 @@
             if (bytes > MAX_PHOTO_BYTES) { const error = new Error('Photo too large');error.permanent = true;throw error; }
             chunks.push(value);
           }
-          blob = new Blob(chunks, {type:'image/webp'});
+          blob = new Blob(chunks, {type:contentType});
         } else blob = await response.blob();
+        if(blob.size>MAX_PHOTO_BYTES){const error=new Error('Photo too large');error.permanent=true;throw error;}
         if (epoch !== generation || entry.controller.signal.aborted || controller.signal.aborted) throw new Error('Photo request cancelled');
         entry.bytes = blob.size;entry.bodyMs = Date.now() - started - entry.headersMs;entry.attempts = attempt + 1;
         entry.downloadMs = Date.now() - overallStarted;entry.edgeCache = response.headers.get('X-Photo-Cache') || 'UNKNOWN';
@@ -224,6 +251,7 @@
       };
     }).catch(error => {
       if (cache.get(src) === entry) cache.delete(src);
+      if(controller.signal.aborted)error.photoCancelled=true;
       if (entry.priority === 2 && !controller.signal.aborted && epoch === generation) preloadFailures.add(src);
       throw error;
     });
@@ -231,6 +259,20 @@
   }
   function imageState(img,state) {
     img.dataset.photoState=state;img.dispatchEvent(new Event('atlas-photo-state'));pumpDownloads();
+  }
+  function useFallback(img,item) {
+    if(!item.fallback||!avifPath.test(item.src)||images.get(img)!==item||(!local&&!token))return false;
+    const failed=item.src;
+    item.cleanup?.();
+    if(item.fullOnly){item.entry?.refs.delete(img);item.entry=null;}
+    item.src=item.fallback;item.fallback=null;item.preview=item.fullOnly?item.src:item.preview;item.loading=false;
+    img.dataset.privateSrc=item.src;
+    if(!item.entry){img.src=item.blur;img.classList.remove('is-loaded');}
+    delete img.dataset.photoError;delete img.dataset.photoFailure;
+    if(!item.entry)imageState(img,'loading');rejectAvif(failed,!item.cachedOnly);
+    if(item.cachedOnly){const entry=cache.get(item.src);if(entry?.url)display(img,item,entry);}
+    else hydrate(img);
+    return true;
   }
   function display(img,item,entry) {
     item.cleanup?.();
@@ -243,11 +285,12 @@
     const cleanup=()=>{settled=true;img.removeEventListener('load',loaded);img.removeEventListener('error',failed);};
     const failed=()=>{
       if(!current())return;
-      cleanup();entry.decoded=false;freshSources.add(entry.src);
+      cleanup();entry.decoded=false;if(!avifPath.test(entry.src))freshSources.add(entry.src);
       if(cache.get(entry.src)===entry)cache.delete(entry.src);
-      for(const consumer of entry.refs){
+      for(const consumer of [...entry.refs]){
         const owner=images.get(consumer);if(owner?.entry!==entry)continue;
-        owner.cleanup?.();owner.entry=null;consumer.src=owner.blur;consumer.classList.remove('is-loaded');consumer.dataset.photoFailure='decode';imageState(consumer,'error');
+        owner.cleanup?.();owner.entry=null;consumer.src=owner.blur;consumer.classList.remove('is-loaded');
+        if(!useFallback(consumer,owner)){consumer.dataset.photoFailure='decode';imageState(consumer,'error');}
       }
       entry.refs.clear();URL.revokeObjectURL(entry.url);prune();
     };
@@ -266,16 +309,17 @@
     img.src=entry.url;delete img.dataset.photoError;delete img.dataset.photoFailure;
     // A previously displayed blob can be reused without flashing the loading UI.
     if(entry.decoded)ready();
-    else if(img.decode)img.decode().then(ready,loaded);
+    else if(img.decode)img.decode().then(ready,()=>{loaded();if(current()&&avifPath.test(entry.src)&&img.complete&&!img.naturalWidth)failed();});
     else loaded();
   }
   async function hydrate(img) {
     const src=img.dataset.privateSrc;if(!src||(!local&&!token))return;
     let item=images.get(img);
     if(!item||item.src!==src){release(img);item={src,blur:img.dataset.privateBlur||placeholder,entry:null,priority:1};images.set(img,item);}
+    if(item.cachedOnly)return;
     if(item.loading||(item.entry&&item.entry===cache.get(src)))return;
     item.loading=true;const epoch=generation;
-    const current=()=>epoch===generation&&images.get(img)===item&&img.isConnected;
+    const current=()=>epoch===generation&&images.get(img)===item&&item.src===src&&img.isConnected;
     const pending=cache.get(src);if(pending)pending.priority=Math.min(pending.priority,item.priority??1);
     if(!item.entry)imageState(img,'loading');
     try {
@@ -286,22 +330,22 @@
       const entry=await fetchPhoto(src,item.priority??1);
       if(!current())return;display(img,item,entry);
     } catch(error) {
-      if(current()&&(local||token)&&!item.entry){img.dataset.photoError='true';img.dataset.photoFailure=error.photoFailure||'network';imageState(img,'error');img.dispatchEvent(new Event('error'));}
-    } finally {item.loading=false;prune();}
+      if(current()&&(local||token)&&!useFallback(img,item)&&!item.entry){img.dataset.photoError='true';img.dataset.photoFailure=error.photoFailure||'network';imageState(img,'error');img.dispatchEvent(new Event('error'));}
+    } finally {if(item.src===src)item.loading=false;prune();}
   }
   // Swipe neighbors never start or promote network work. The speculative queue
   // owns warming; only selecting a photograph gives it foreground priority.
   function setCachedImage(img, photo) {
     if (token && expiresAt <= Date.now()/1000) expireAccess();
-    const src = selected(photo, Infinity), entry = (local || token) && cache.get(src);
+    const {src,fallback} = selection(photo, Infinity), entry = (local || token) && (cache.get(src)||cache.get(fallback));
     clearImage(img);
     if (!entry?.url) return false;
-    const item = {src, fullOnly:true, blur:photo.blur||placeholder, entry:null, priority:2};
+    const item = {src, fallback, fullOnly:true, cachedOnly:true, blur:photo.blur||placeholder, entry:null, priority:2};
     images.set(img, item); img.dataset.privateSrc = src;
     display(img, item, entry); return true;
   }
   function setImage(img,photo,width=1280,{fullOnly=false}={}) {
-    const src=selected(photo,fullOnly?Infinity:width),preview=fullOnly?src:selected(photo,1280),thumbnail=fullOnly?src:selected(photo,480);
+    const {src,fallback}=selection(photo,fullOnly?Infinity:width),preview=fullOnly?src:selected(photo,1280),thumbnail=fullOnly?src:selected(photo,480);
     if(token&&expiresAt<=Date.now()/1000)expireAccess();
     const pending=cache.get(src);if(pending)pending.priority=0;
     const previous=images.get(img);
@@ -310,7 +354,7 @@
     if(ready&&images.get(img)?.entry===ready&&images.get(img)?.src===src&&img.src===ready.url&&img.dataset.photoState==='ready'){img.classList.add('is-loaded');imageState(img,'ready');hydrate(img);return;}
     release(img);img.removeAttribute('srcset');delete img.dataset.src;delete img.dataset.srcset;delete img.dataset.photoError;
     img.dataset.privateSrc=src;img.dataset.privateBlur=fullOnly?placeholder:photo.blur||placeholder;
-    const item={src,preview,fullOnly,blur:img.dataset.privateBlur,entry:null,priority:0};images.set(img,item);
+    const item={src,fallback,preview,fullOnly,blur:img.dataset.privateBlur,entry:null,priority:0};images.set(img,item);
     img.dataset.photoReveal=ready?.decoded?'instant':'soft';
     if(ready){display(img,item,ready);prune();}
     else {img.src=item.blur;img.classList.remove('is-loaded');imageState(img,(local||token)?'loading':'locked');}
@@ -431,7 +475,7 @@
     let released=false;
     return {url:entry.url,release(){if(released)return;released=true;entry.refs.delete(lease);prune();}};
   }
-  window.JOURNEY_ATLAS_AUTH={communityRequest,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets,selected(photo,width)].slice(-MAX_PREFETCH));},lock,showPrompt,raisePrompt,get unlocked(){return local||Boolean(token);}};
+  window.JOURNEY_ATLAS_AUTH={communityRequest,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets].map(src=>({src,fallback:preloadFallbacks.get(src)})).concat(selection(photo,width)).slice(-MAX_PREFETCH));},lock,showPrompt,raisePrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
 })();

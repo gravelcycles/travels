@@ -7,20 +7,25 @@ class Element extends EventTarget {
  querySelectorAll(){return [];}
  append(){}setAttribute(){}removeAttribute(name){if(name==='srcset')this.srcset='';}focus(){}showModal(){this.open=true;}close(){this.open=false;}
 }
-function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/webp'}}),{startup=false,tabStorage=new Map(),clock=Date,hash=''}={}){
- const elements=[],header=new Element(),events=new Map(),calls=[],revoked=[],timers=new Map();let loginFlow,timerId=0;
+function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/webp'}}),{startup=false,tabStorage=new Map(),clock=Date,hash='',avifSupport}={}){
+ const elements=[],header=new Element(),events=new Map(),calls=[],revoked=[],timers=new Map(),blobs=new Map(),probes=[];let loginFlow,timerId=0,blobId=0;
  const document={body:new Element(),hidden:false,activeElement:new Element(),createElement(){const e=new Element();elements.push(e);return e;},querySelector(){return header;},querySelectorAll(){return [elements[0].querySelector('[data-unlock]'),elements[1].querySelector('[data-unlock]')];},addEventListener(n,fn){events.set(n,fn);}};
  const window={JOURNEY_ATLAS_PHOTO_SERVICE:{origin:'https://photos.example.com'},addEventListener(n,fn){events.set(n,fn);},dispatchEvent(event){events.get(event.type)?.(event);},open(){throw new Error('Login should not require a popup');}};
- const Url=class extends URL{};Url.createObjectURL=()=>`blob:fixture-${calls.length}`;Url.revokeObjectURL=u=>revoked.push(u);
+ const Url=class extends URL{};Url.createObjectURL=blob=>{const url=`blob:fixture-${++blobId}`;blobs.set(url,blob);return url;};Url.revokeObjectURL=u=>revoked.push(u);
+ class Probe {
+  constructor(){probes.push(this);}
+  set src(value){this.source=value;if(avifSupport!=='pending')queueMicrotask(()=>this.finish(avifSupport));}
+  finish(supported){this.naturalWidth=supported?1:0;this.naturalHeight=supported?1:0;if(supported)this.onload?.();else this.onerror?.();}
+ }
  document.body.dataset.journeyScope=startup?'real':'demo';
  const navigations=[],historyUrls=[];const location=new URL('https://gravelcycles.github.io/travels/');location.hash=hash;location.assign=url=>navigations.push(url);
  const storage={getItem:k=>k==='atlas-photo-login'?JSON.stringify(loginFlow):tabStorage.get(k)||null,removeItem:k=>tabStorage.delete(k),setItem(k,v){if(k==='atlas-photo-login')loginFlow=JSON.parse(v);else tabStorage.set(k,v);}};
- const context=vm.createContext({window,document,location,history:{replaceState(_state,_title,url){historyUrls.push(url);}},sessionStorage:storage,URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,Blob,btoa,Date:clock,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json({token:'fixture-access-token',expiresAt:Math.floor(clock.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
+ const context=vm.createContext({window,document,location,...(avifSupport!==undefined?{Image:Probe}:{}),history:{replaceState(_state,_title,url){historyUrls.push(url);}},sessionStorage:storage,URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,Blob,btoa,Date:clock,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json({token:'fixture-access-token',expiresAt:Math.floor(clock.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
  vm.runInContext(source.replace('completeReturn();}', 'window.__startup=completeReturn();}').replace(/\}\)\(\);\s*$/, 'window.__completeReturn=completeReturn;})();'),context);
  async function unlock(spoof=false){loginFlow={state:'fixture-state',verifier:'v'.repeat(43),created:Date.now(),hash:''};location.hash=new URLSearchParams({photoAuthCode:'c'.repeat(43),state:spoof?'wrong-state':'fixture-state'}).toString();await window.__completeReturn();}
 
  async function returnFrom(kind){location.hash=new URLSearchParams({[kind]:kind==='photoAuthCode'?'c'.repeat(43):'1',state:loginFlow.state}).toString();await window.__completeReturn();}
- return {window,events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,historyUrls,header:elements[1]};
+ return {window,events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,blobs,probes,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,historyUrls,header:elements[1]};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 async function waitForNavigation(f) {
@@ -488,4 +493,131 @@ test('fresh shared photo views survive remembered-access and locked login return
   assert.ok(!f.historyUrls.at(-1).includes('photoAuthCode'));
   assert.ok(!f.historyUrls.at(-1).includes('fixture-access-token'));
  }
+});
+
+const avifPhoto={...photo,fullAvif:{src:`/private-photos/assets/v1/${'d'.repeat(64)}.avif`,width:4032,height:3024,bytes:287}};
+const avifBytes=Buffer.from(source.match(/data:image\/avif;base64,([^']+)/)[1],'base64');
+const mediaResponse=url=>new Response(url.endsWith('.avif')?avifBytes:new Uint8Array([1,2]),{headers:{'Content-Type':url.endsWith('.avif')?'image/avif':'image/webp'}});
+
+test('supported fullscreen AVIF keeps its MIME and uses one authenticated request while previews stay WebP',async()=>{
+ const f=fixture(mediaResponse,{avifSupport:true});await f.unlock();
+ assert.equal(f.probes.length,1);assert.match(f.probes[0].source,/^data:image\/avif;base64,/);
+ const img=new Element();img.decode=()=>Promise.resolve();
+ f.auth.setImage(img,avifPhoto,1280,{fullOnly:true});await settle();
+ assert.equal(img.dataset.privateSrc,avifPhoto.fullAvif.src);assert.equal(img.dataset.photoState,'ready');
+ assert.equal(f.calls.length,1);assert.equal(f.calls[0][1].headers.Authorization,'Bearer fixture-access-token');
+ assert.equal(f.blobs.get(img.src).type,'image/avif');assert.deepEqual(Buffer.from(await f.blobs.get(img.src).arrayBuffer()),avifBytes);
+ assert.equal(f.calls[0][1].credentials,'omit');assert.equal(f.calls[0][1].cache,'no-cache');
+ const count=f.calls.length;f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();assert.equal(f.calls.length,count);
+ assert.ok(f.auth.markup(avifPhoto,{targetWidth:1280}).includes(photo.srcset[0].src));
+ const preview=new Element();preview.decode=()=>Promise.resolve();f.auth.setImage(preview,avifPhoto,1280);await settle();
+ assert.equal(preview.dataset.privateSrc,photo.srcset[0].src);assert.equal(f.blobs.get(preview.src).type,'image/webp');
+ f.auth.lock();assert.equal(img.dataset.photoState,'locked');assert.ok(f.revoked.length>=2);
+});
+
+test('unsupported AVIF, older manifests and unpublished alternatives retain full WebP',async()=>{
+ for(const [support,value] of [[false,avifPhoto],[true,photo],[true,{...avifPhoto,fullAvif:{...avifPhoto.fullAvif,assetStatus:'local'}}]]){
+  const f=fixture(mediaResponse,{avifSupport:support});await f.unlock();const img=new Element();img.decode=()=>Promise.resolve();
+  f.auth.setImage(img,value,Infinity,{fullOnly:true});await settle();
+  assert.equal(f.calls.length,1);assert.ok(f.calls[0][0].endsWith(photo.src));assert.equal(img.dataset.photoState,'ready');
+ }
+});
+
+test('a delayed capability probe never blocks or replaces an in-flight or cached full WebP',async()=>{
+ let finish;const f=fixture(()=>new Promise(resolve=>{finish=resolve;}),{avifSupport:'pending'});await f.unlock();
+ const img=new Element();img.decode=()=>Promise.resolve();f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();
+ assert.equal(f.calls.length,1);assert.ok(f.calls[0][0].endsWith(photo.src));
+ f.probes[0].finish(true);f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();
+ assert.equal(f.calls.length,1);assert.equal(f.calls[0][1].signal.aborted,false);
+ finish(mediaResponse(photo.src));await settle();assert.equal(img.dataset.photoState,'ready');
+ f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();assert.equal(f.calls.length,1);
+ const neighbor=new Element();assert.equal(f.auth.setCachedImage(neighbor,avifPhoto),true);assert.equal(f.calls.length,1);
+});
+
+test('missing, unavailable, wrong-MIME and failed AVIF transfers automatically use the full WebP',async()=>{
+ for(const failure of ['missing','server','mime','network']){
+  const f=fixture(url=>{
+   if(!url.endsWith('.avif'))return mediaResponse(url);
+   if(failure==='network')throw new Error('Connection interrupted');
+   if(failure==='mime')return new Response(avifBytes,{headers:{'Content-Type':'image/webp'}});
+   return new Response('',{status:failure==='missing'?404:503});
+  },{avifSupport:true});await f.unlock();const img=new Element();img.decode=()=>Promise.resolve();const states=[];
+  img.addEventListener('atlas-photo-state',()=>states.push(img.dataset.photoState));
+  f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();
+  assert.equal(img.dataset.photoState,'ready',failure);assert.equal(img.dataset.privateSrc,photo.src);
+  assert.equal(f.blobs.get(img.src).type,'image/webp');assert.equal(states.includes('error'),false);
+  assert.equal(f.calls.filter(([url])=>url.endsWith(photo.src)).length,1);
+  assert.equal(f.calls.filter(([url])=>url.endsWith(photo.srcset[0].src)).length,0,'Fallback must remain full size');
+  assert.equal(f.calls.filter(([url])=>url.endsWith('.avif')).length,['server','network'].includes(failure)?2:1);
+  const count=f.calls.length;f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();assert.equal(f.calls.length,count);
+ }
+});
+
+test('AVIF decode and image-error failures evict corrupt bytes and fall back for every current consumer',async()=>{
+ for(const kind of ['decode','error']){
+  const f=fixture(mediaResponse,{avifSupport:true});await f.unlock();const images=[new Element(),new Element()];
+  for(const img of images){
+   img.decode=()=>{
+    if(f.blobs.get(img.src)?.type!=='image/avif')return Promise.resolve();
+    if(kind==='error'){queueMicrotask(()=>img.dispatchEvent(new Event('error')));return new Promise(()=>{});}
+    img.complete=true;img.naturalWidth=0;return Promise.reject(new Error('Invalid AVIF'));
+   };
+   f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});
+  }
+  await settle();await settle();
+  assert.ok(images.every(img=>img.dataset.photoState==='ready'));assert.ok(images.every(img=>img.dataset.privateSrc===photo.src));
+  assert.equal(f.calls.length,2,'Consumers share both the AVIF and fallback request');assert.equal(f.revoked.length,1);
+  assert.equal(f.blobs.get(images[0].src).type,'image/webp');
+ }
+});
+
+test('an interrupted AVIF decode can still complete through its normal image load event',async()=>{
+ const f=fixture(mediaResponse,{avifSupport:true});await f.unlock();const img=new Element();img.decode=()=>Promise.reject(new Error('Decode interrupted'));
+ f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();assert.equal(img.dataset.photoState,'loading');
+ img.complete=true;img.naturalWidth=4032;img.currentSrc=img.src;img.dispatchEvent(new Event('load'));
+ assert.equal(img.dataset.photoState,'ready');assert.equal(f.calls.length,1);
+});
+
+test('AVIF 401 expires access and never tries a WebP fallback or bypasses the locked state',async()=>{
+ const f=fixture(()=>new Response('',{status:401}),{avifSupport:true});await f.unlock();const img=new Element();img.decode=()=>Promise.resolve();
+ f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();
+ assert.equal(f.calls.length,1);assert.ok(f.calls[0][0].endsWith('.avif'));assert.equal(f.auth.unlocked,false);
+ assert.equal(img.dataset.photoState,'locked');assert.ok(!img.src.startsWith('blob:'));assert.equal(f.blobs.size,0);await waitForNavigation(f);
+});
+
+test('rapid switching and locking ignore late AVIF downloads without launching stale fallbacks',async()=>{
+ const pending=[];const f=fixture((url,options)=>new Promise(resolve=>pending.push({url,options,resolve})),{avifSupport:true});await f.unlock();
+ const img=new Element();img.decode=()=>Promise.resolve();const next={...albumPhoto(7),fullAvif:{...avifPhoto.fullAvif,src:`/private-photos/assets/v1/${'e'.repeat(64)}.avif`}};
+ f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();f.auth.setImage(img,next,Infinity,{fullOnly:true});await settle();
+ assert.equal(pending[0].options.signal.aborted,true);pending[0].resolve(new Response('',{status:404}));pending[1].resolve(mediaResponse(next.fullAvif.src));await settle();
+ assert.equal(img.dataset.privateSrc,next.fullAvif.src);assert.equal(img.dataset.photoState,'ready');assert.equal(f.calls.length,2);
+ f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();f.auth.lock();pending[2].resolve(mediaResponse(avifPhoto.fullAvif.src));await settle();
+ assert.equal(img.dataset.photoState,'locked');assert.ok(!img.src.startsWith('blob:'));assert.equal(f.calls.length,3);
+});
+
+test('AVIF preloads remain speculative and cached-only neighbors never promote or start work',async()=>{
+ const f=fixture(mediaResponse,{avifSupport:true});await f.unlock();const neighbor=new Element();neighbor.decode=()=>Promise.resolve();
+ assert.equal(f.auth.setCachedImage(neighbor,avifPhoto),false);assert.equal(f.calls.length,0);
+ f.auth.preload(avifPhoto,Infinity);await settle();assert.equal(f.calls.length,1);assert.equal(f.calls[0][1].priority,'low');
+ assert.equal(f.auth.setCachedImage(neighbor,avifPhoto),true);await settle();assert.equal(f.blobs.get(neighbor.src).type,'image/avif');assert.equal(f.calls.length,1);
+ const img=new Element();img.decode=()=>Promise.resolve();f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();assert.equal(f.calls.length,1);
+ f.auth.lock();assert.equal(neighbor.dataset.photoState,'locked');assert.equal(f.auth.setCachedImage(neighbor,avifPhoto),false);
+});
+
+test('failed AVIF preloads warm only their full WebP fallback at speculative priority',async()=>{
+ const f=fixture(url=>url.endsWith('.avif')?new Response('',{status:404}):mediaResponse(url),{avifSupport:true});await f.unlock();
+ f.auth.setPreloads([{photo:avifPhoto,width:Infinity}]);await settle();await settle();
+ assert.equal(f.calls.length,2);assert.ok(f.calls[0][0].endsWith(avifPhoto.fullAvif.src));assert.ok(f.calls[1][0].endsWith(photo.src));
+ assert.ok(f.calls.every(([,options])=>options.priority==='low'));
+ const img=new Element();img.decode=()=>Promise.resolve();f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();
+ assert.equal(img.dataset.photoState,'ready');assert.equal(f.calls.length,2);
+});
+
+test('a cached-only AVIF decode failure starts no fallback transfer until foreground selection',async()=>{
+ const f=fixture(mediaResponse,{avifSupport:true});await f.unlock();f.auth.preload(avifPhoto,Infinity);await settle();
+ const neighbor=new Element();neighbor.decode=()=>{neighbor.complete=true;neighbor.naturalWidth=0;return Promise.reject(new Error('Invalid AVIF'));};
+ assert.equal(f.auth.setCachedImage(neighbor,avifPhoto),true);await settle();assert.equal(f.calls.length,1);assert.ok(!neighbor.src.startsWith('blob:'));
+ await f.auth.hydrate(neighbor);assert.equal(f.calls.length,1,'Lazy hydration cannot promote a cached-only slot');
+ const img=new Element();img.decode=()=>Promise.resolve();f.auth.setImage(img,avifPhoto,Infinity,{fullOnly:true});await settle();
+ assert.equal(f.calls.length,2);assert.ok(f.calls[1][0].endsWith(photo.src));assert.equal(img.dataset.photoState,'ready');
 });
