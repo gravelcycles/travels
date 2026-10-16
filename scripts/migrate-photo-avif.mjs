@@ -49,7 +49,7 @@ export async function migratePhotoAvif(root, { journeyId, sourceRoot = path.join
   if (!/^[a-z0-9-]+$/.test(journeyId || '')) throw new Error('Select a journey');
   if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 4) throw new Error('Concurrency must be 1–4');
   const journey = readJson(path.join(root, 'content/journeys', `${journeyId}.json`));
-  if (!journey.published) throw new Error('AVIF migration only upgrades published journeys');
+  if (!journey?.published) throw new Error('AVIF migration only upgrades published journeys');
   const overrides = readJson(path.join(root, 'content/photo-overrides.json'), {});
   const files = ['', '-uploads'].map(suffix => path.join(root, `content/photo-manifests/${journeyId}${suffix}.json`)).filter(file => fs.existsSync(file));
   const selected = files.flatMap(file => readJson(file).map(photo => ({ file, photo }))).filter(({ photo }) => photo.protected && photo.assetStatus === 'published' && !overrides[photo.id]?.trashed);

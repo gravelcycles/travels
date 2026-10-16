@@ -141,7 +141,8 @@ no-store caching.
 
 ## Full-resolution photo delivery — 16 October 2026
 
-`photo-decode.mjs` decodes untouched HEIC/DNG sources through macOS ImageIO;
+`photo-decode.mjs` decodes untouched HEIC sources through macOS ImageIO and DNG
+through Quick Look with verified native dimensions/orientation to retain RAW rendering;
 `photo-variants.mjs` owns the shared WebP and native-resolution AVIF encoders.
 `migrate-photo-avif.mjs` adds only optional derivatives to existing published
 photos with original-match and concurrent-edit guards. Source `fullAvif` status

@@ -242,7 +242,8 @@ its manifest published. It also verifies the exact serving MIME type. It skips
 trash, refuses draft publication, and
 never uploads originals, overwrites mismatched objects, commits or pushes.
 Retries reuse matching objects. Use `--all` for a complete reviewed migration;
-the default selects pending local photos. Both bulk imports and Studio share
+the default selects pending local photos and pending AVIF upgrades on published
+photos. `--avif-only` restricts the selection to those upgrades. Both bulk imports and Studio share
 this publisher and derivative pipeline. Credentials never enter the atlas page.
 Photo status and optional AVIF status are independent; a published WebP stays
 visible while its AVIF upgrade is local. Publication rereads the source before
@@ -400,8 +401,10 @@ successful replacements keep a local backup. Review results, then run
 `npm run build` to generate the public bundle. Original HEIC decoding uses macOS ImageIO at source resolution; JPEG/PNG
 imports use Sharp directly.
 
-Bulk intake also accepts DNG stills through macOS ImageIO, preserving the
-untouched RAW originals privately. Capture labels retain the actual ISO date
+Bulk intake also accepts DNG stills through macOS Quick Look at the original
+resolution, preserving its established RAW rendering and the untouched originals
+privately. The decoder checks the native dimensions and EXIF orientation and
+rejects a smaller or incorrectly oriented preview. Capture labels retain the actual ISO date
 and local time, including within multi-day city albums. Undated TBD stops are
 skipped during date matching, so a planned onward itinerary does not block
 imports into its dated portion. On transfer dates, review camera GPS and move
