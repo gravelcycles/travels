@@ -102,7 +102,12 @@ live comment writes. The comment correction is complete.
 
 The location-group card is a separate design-review request. The
 [selected-photo tray proposal](docs/PHOTO_SELECTION_PROPOSAL.md) reduces duplicate
-information and actions. The interactive review was checked at 320/390px and
+information and actions. Later owner feedback asks how it works on desktop and
+mobile: the first isolated phone card did not explain its placement or return
+path. The proposal now maps both flows explicitly and has a comparison of the
+existing desktop sidebar and phone bottom card, including fullscreen/Back and
+grid return. This clarification does not approve implementation. The original
+interactive review was checked at 320/390px and
 desktop with selection, image opening, event grid and dismissal. It remains a
 proposal, not a production change;
 preserve O03's map selection boundary and continuous journey browsing. Do not

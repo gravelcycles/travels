@@ -1,5 +1,13 @@
 # Changelog
 
+## 16 October 2026 — clarify the photo-selection proposal on both devices
+
+- Show the proposed phone tray within the existing bottom event card and the
+  desktop selection within its existing right sidebar. Explain large-photo
+  fullscreen entry and return to the presenting selection/grid. Record the
+  owner's confusion with the isolated first mockup; this remains a review
+  proposal, with no production layout change.
+
 ## 16 October 2026 — whole-header sheet dismissal
 
 - Make the full Comments and Photo location headers draggable, including their
