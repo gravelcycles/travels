@@ -107,6 +107,21 @@ complete. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
+**Alignment follow-up — verified locally; deployment pending.** The owner
+clarified that the next-city and Comments buttons must be right-aligned. Keep
+Share immediately left of Comments, replacing the mistaken left-aligned action
+group. Give city/day navigation its own full-width row in portrait and landscape;
+reserve Close’s space only in the top row. Current rules live in O08/O18 and the
+photo workflow. All **740 tests**, the build and **16 rendered browser cases**
+pass across reference, Heading East, Alpine demo and an independently populated
+city draft at 320/390 px, short landscape and desktop. Geometry checks verify
+the city buttons’ opposite safe edges, centered label, Close clearance and
+Comments-right/Share adjacency, alongside solid styling, hiding and focal zoom.
+Phone and landscape screenshots were inspected. Independent review found no
+cascade issue; an extra browser case passes hidden event-nav/Comments layouts.
+No physical-device claim. Next: integrate main, deploy and check fresh public
+output.
+
 **Button-style follow-up — deployed and verified.** The
 owner rejected the translucent buttons as a regression after the release below.
 Restore the original solid mobile header/footer and opaque Close/Share/Comments
@@ -123,8 +138,8 @@ tested build. A fresh public Alpine photo at 390 × 844 confirms opaque surfaces
 no backdrop blur, the full-viewport stage and tap-to-hide/restore. Delivery is
 complete; the primary checkout remains untouched.
 
-**Completed and deployed.** The owner requested mobile fullscreen
-Share beside Comments on the left, top-right Close, one tap to hide all buttons
+**Initial release completed; later alignment is corrected above.** The owner requested mobile fullscreen
+Share beside Comments, top-right Close, one tap to hide all buttons
 for just the photo, and zoom that uses fullscreen. The follow-up adds pinch
 focus that follows the fingers on mobile and desktop. Current requirements and
 supersessions live in

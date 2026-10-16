@@ -1,5 +1,15 @@
 # Changelog
 
+## 16 October 2026 — align fullscreen city and comment controls
+
+- Keep next-city/day at the right safe edge and previous-city/day at the left,
+  in their own full-width row. Reserve the Close button’s space in the top row.
+- Align Comments right with Share immediately to its left, correcting the
+  earlier left-aligned group. Preserve solid styling, tap hiding and focal zoom.
+- Update current owner, photo, journey and framework guidance. All 740 tests,
+  the build, 16 browser cases and hidden-control geometry checks pass. Delivery
+  is tracked in [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+
 ## 16 October 2026 — retire the depth experiment
 
 - Archive the rejected demo locally and remove its source, public assets, build
