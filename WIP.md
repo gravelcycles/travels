@@ -52,10 +52,10 @@ later swipes slightly smoother; after Show map, allow direct Places-sheet
 dragging across a large part of its top bar. Current requirements are in
 [O04/O08](docs/OWNER_DECISIONS.md#mobile-swipe-continuity--16-october-2026)
 and the [Places correction](docs/OWNER_DECISIONS.md#mobile-places-visibility--12-october-2026).
-Implementation is isolated in `/private/tmp/travels-mobile-swipe-places` on
-`codex/mobile-swipe-places`, based on main `d3a7af1`; the primary checkout's
-unrelated work remains intact. Shared gestures and cache-ready neighbors are
-implemented; integrated main through `34b72b2`. All **723 tests** and the
+Implemented in `codex/mobile-swipe-places`, integrating concurrent overview and
+fullscreen-controls/focal-zoom changes through `34b72b2` and the map release
+receipt `b6df1ec`. The primary checkout's unrelated work remains intact.
+All **723 tests** and the
 production build pass, including Places stylesheet cache invalidation. Rendered
 checks pass **16 Places and 14 fullscreen cases** across reference, Heading East,
 Alpine demo and an independently populated fresh draft at 320/390px, landscape
@@ -67,8 +67,18 @@ recentering and retains its exact camera. QA scripts/results are in
 `/private/tmp/mobile-swipe-places-browser-qa/` and adjacent task `.mjs` files.
 The combined fullscreen-controls/focal-zoom release also passes first/cached
 swipes, hidden-chrome swipes and restoration, full-viewport geometry, grid Back
-and Places dragging/map panning on Heading East and Alpine. Next: deploy and
-verify fresh public assets. Physical-device Safari was not used.
+and Places dragging/map panning on Heading East and Alpine.
+
+Released as `1b5ab7e` through successful
+[Pages run 38937337942](https://github.com/gravelcycles/travels/actions/runs/38937337942).
+Fresh public catalog/reference/Heading East/Florence/demo HTML and nine shared
+assets match the tested build byte-for-byte. A fresh public Alpine phone check
+at 390 × 844 passes with live map tiles and public sample photos: first and
+cached/hidden-chrome swipes, control restoration, grid Back, Show map, broad
+header dragging and exposed-map panning. No page errors or private-media
+requests occurred. Screenshots and results are in
+`/private/tmp/mobile-swipe-places-public-qa/`. Implementation and delivery are
+complete. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
