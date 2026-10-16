@@ -26,6 +26,29 @@ Explicit Places collections keep their scope, and About place still requires
 an owner-saved link. Preserve arrival controls, Places, blank/authored copy,
 photo access and same-event map camera return.
 
+## Desktop and phone behavior — review clarification
+
+The owner's later 16 October response was that the demo did not explain how
+this works on desktop and mobile. The first mockup isolated a phone card and
+omitted the surrounding map, desktop sidebar and return path. The revised
+walkthrough must show where selection lives before asking for a design choice.
+
+| Action | Desktop | Phone |
+| --- | --- | --- |
+| Select a map photo bubble | Update the existing right sidebar; days and map remain visible. | Replace the contents of the existing bottom event card with the photo tray, keeping the map visible. |
+| Select a small thumbnail | Change the selected sidebar photo. | Change the selected tray photo. |
+| Activate the large photo | Open the existing fullscreen viewer. | Open the existing fullscreen viewer. |
+| Back from direct fullscreen entry | Return to the same sidebar selection and map context. | Return to the same bottom tray and map camera. |
+| Enter fullscreen from a photo grid | Back returns to that presenting grid first. | Back returns to that presenting grid first. |
+| Clear map-photo selection | Restore the existing day's sidebar lead/context. | Restore the resting event card with its Photos action. |
+
+This is a proposal clarification, not approval to implement the tray. Desktop
+keeps its three-column structure and large stable uncropped frame; the main
+phone simplification is removing the second stacked card. The selection →
+fullscreen boundary remains. A responsive comparison uses existing public demo
+photos and simplified screen regions to demonstrate selection/open/Back and
+grid return; it does not claim to be a functioning geographic map.
+
 The conversation's interactive review compares Photo tray and Current card
 using existing Alpine demo content. It demonstrates selection, ordinary arrows,
 event grid, fullscreen/Back and clearing selection. It is a design mockup, not

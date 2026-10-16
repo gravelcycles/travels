@@ -13,6 +13,14 @@
   verification, staged rollout and rollback in current guidance. The release
   receipt is tracked in WIP.
 
+## 16 October 2026 — clarify the photo-selection proposal on both devices
+
+- Show the proposed phone tray within the existing bottom event card and the
+  desktop selection within its existing right sidebar. Explain large-photo
+  fullscreen entry and return to the presenting selection/grid. Record the
+  owner's confusion with the isolated first mockup; this remains a review
+  proposal, with no production layout change.
+
 ## 16 October 2026 — measured interaction and loading performance
 
 - Scope public journey data to one real trip or the demo selector; load a compact
@@ -30,7 +38,10 @@
 - Record numeric before/after results and their limits in
   [the measured pass](docs/PERFORMANCE_PASS_2026-10-16.md). Frame gaps did not improve;
   layout/CPU and page payloads did. AVIF and any justified preload scheduling are
-  a separate follow-up. Verification/deployment receipt is tracked in WIP.
+  a separate follow-up. Release `6fefc36` passed Pages run `38945230961`; five fresh
+  pages and 43 script/style assets match the tested build. Live demo/Heading East
+  photo, Location and Comments checks pass with no console errors or comment posts.
+  The complete deployment receipt is tracked in WIP.
 
 ## 16 October 2026 — let zoom fill the screen behind visible controls
 
