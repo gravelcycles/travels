@@ -112,8 +112,10 @@ errors. Landscape has an identical pre-existing partially clipped thumbnail
 scroll adjustment (20→8 px before entry) on baseline and candidate; recorded in
 TODO. Physical phone performance and the baseline long-frame outliers remain
 explicit limits. [Methods and results](docs/PERFORMANCE_FOLLOWUP_2026-10-16.md).
-Next: finish merged browser verification, publish and verify. No follow-up code
-is deployed at this checkpoint.
+Merged browser verification also passes: eight final interruptions have 0 px
+jumps and the updated 101-photo Heading East gallery passes 14/14 checks. The
+later docs-only publication receipt `0854113` is integrated. Next: publish and
+verify. No follow-up code is deployed at this checkpoint.
 
 Status checkpoint reconciled: **11 October 2026**. Start with
 [AGENTS.md](AGENTS.md) and [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md), then
