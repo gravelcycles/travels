@@ -64,7 +64,8 @@ That is bandwidth arithmetic, not a measured page-load improvement.
 Heading East retains its own large route geometry and sees a smaller reduction.
 
 Catalog sizing uses the actual crop box, image aspect ratio and DPR. The two
-matched covers select 480 px instead of 1280 px at desktop 1× and phone 2×,
+matched covers select 480 px instead of 1280 px in fixed fixture crop boxes:
+desktop 176×104 at DPR 1 and phone 112×168 at DPR 2,
 reducing existing WebP file bytes by 86.2%. At phone 3× the landscape cover keeps
 1280 px when its crop requires 672 px. These are local file sizes, not observed
 network bytes or AVIF savings. Fullscreen still requests the full derivative.
@@ -128,3 +129,9 @@ by this batch. Other profile-first ideas (large blur layers, hidden map redraws)
 remain unclaimed. Physical iPhone/Safari performance is not certified by Chrome
 viewport emulation. The pre-existing long-notes/short-landscape map-height issue
 remains tracked separately in TODO.
+
+## Validation and release
+
+Merged [PR #1](https://github.com/gravelcycles/travels/pull/1) as `6fefc36` and deployed successfully through [Pages run 38945230961](https://github.com/gravelcycles/travels/actions/runs/38945230961). All 781 tests pass; the production build reproduces checked-in output. Five fresh public HTML pages and 43 unique script/style assets match the tested release byte-for-byte, including their content hashes.
+
+Fresh live browser checks at phone 390×844, landscape 844×390 and desktop 1360×900 verified demo Location and Comments flows, navigation and fitted desktop reopen after 2.5× zoom. Heading East additionally verified existing signed-in full-size photo access, live empty-thread loading, mobile Location, next-photo navigation and grid selection retention. No console errors were captured and no live comments were posted. The 50-row reuse figures remain controlled local-fixture results. The known long-notes/short-landscape map-height issue remains tracked separately. Canonical owner, framework, photo and conversation guidance was updated with the implementation. AVIF comparison remains an active follow-up.
