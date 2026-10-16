@@ -78,6 +78,14 @@ skips the retained grid or resets its scroll/selection. This supersedes the old
 controls-stay-visible-on-tap and omitted-photo-Close guidance. Grid navigation
 and native video controls keep their existing behavior.
 
+Later on 16 October, the owner rejected the translucent buttons introduced by
+this change as a regression: “I don’t love that the buttons are translucent now.”
+Keep the mobile fullscreen header/footer and floating Close, Share and Comments
+surfaces solid and readable over any photograph. Restore the opaque toolbar
+treatment; the fullscreen layout and zoom request did not authorize a glass/blur
+restyle. Check bright and dark photos with controls shown and restored after a
+tap; the photograph must not show through the button or toolbar surfaces.
+
 The owner also asked for photo zoom to take up fullscreen and clarified:
 “zoom should also focus on where you pinch … same with desktop.” Use the whole
 photo viewport for zoomed images instead of clipping them to a smaller inset

@@ -88,6 +88,18 @@ complete. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
+**Button-style follow-up — verified locally; deployment pending.** The
+owner rejected the translucent buttons as a regression after the release below.
+Restore the original solid mobile header/footer and opaque Close/Share/Comments
+surfaces, retaining layout, tap-to-hide and focal zoom. Direction is recorded
+in O03/O08/O18 and the photo workflow. All **740 tests** and the production build
+pass. All **16 browser fixture combinations** (reference, Heading East, Alpine
+demo and an independently populated draft at 320/390 px, landscape and desktop)
+pass solid-surface/no-blur assertions, tap recovery, full-viewport geometry and
+focal zoom; phone and landscape screenshots were inspected. Independent review
+found no cascade or scope issues. Physical-device testing is not claimed.
+Next: integrate current main, deploy and verify fresh public output.
+
 **Completed and deployed.** The owner requested mobile fullscreen
 Share beside Comments on the left, top-right Close, one tap to hide all buttons
 for just the photo, and zoom that uses fullscreen. The follow-up adds pinch

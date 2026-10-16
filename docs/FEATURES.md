@@ -21,9 +21,9 @@ The [16 October fullscreen photo correction](OWNER_DECISIONS.md#fullscreen-photo
 is implemented in shared code: mobile Share beside Comments on the left,
 top-right Close, single-tap hiding/restoring of photo chrome and full-viewport
 mobile zoom. Phone and desktop zoom follow the pinch or pointer focus; desktop
-retains its context sidebar. Deployed and publicly verified; see
-[WIP](../WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026) for
-verification and deployment status.
+retains its context sidebar. The later button-style correction restores solid
+mobile bars and controls; verification and deployment status are in
+[WIP](../WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
 
 Shared [Arrival → city](ARRIVAL_CITY_DEMO.md) playback traces the incoming
 route with a plain orange tracking circle at display cadence after one direct
