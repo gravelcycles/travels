@@ -171,8 +171,8 @@ test('Fit route bounds use routes and journey places, excluding distant photo pi
 });
 
 test('selecting another viewer photo preserves thumbnail elements and updates selection only', () => {
-  let builds=0,prepares=0,buttons=[];
-  const strip={dataset:{},querySelectorAll:()=>buttons,set innerHTML(html){builds++;buttons=[...html.matchAll(/data-viewer-index="(\d+)"/g)].map(m=>({dataset:{viewerIndex:m[1]},selected:false,classList:{toggle(name,value){this.active=value;}},setAttribute(name,value){this[name]=value;},scrollIntoView(){}}));}};
+  let builds=0,prepares=0,writes=0,buttons=[];
+  const strip={dataset:{},querySelectorAll:()=>buttons,set innerHTML(html){builds++;buttons=[...html.matchAll(/data-viewer-index="(\d+)"/g)].map(m=>({dataset:{viewerIndex:m[1]},selected:false,classList:{toggle(name,value){this.active=value;}},setAttribute(name,value){writes++;this[name]=value;},scrollIntoView(){}}));}};
   const context=vm.createContext({window:{},viewerCollection:null,viewerDay:()=>({}),eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),viewerPhotoIndex:0,mediaUtils:globalThis.JOURNEY_ATLAS_MEDIA,escapeHtml:value=>value,photoImageMarkup:()=>'<img>',prepareProgressiveImages(){prepares++;},$:selector=>selector==='#viewer-filmstrip'?strip:buttons.find(b=>b.classList.active)});
   vm.runInContext(functionSource('renderViewerFilmstrip'),context);
   const photos=[{id:'one'},{id:'two'},{id:'three'}];context.photos=photos;
@@ -180,8 +180,12 @@ test('selecting another viewer photo preserves thumbnail elements and updates se
   context.viewerPhotoIndex=2;vm.runInContext('renderViewerFilmstrip(photos)',context);
   assert.equal(builds,1);assert.equal(prepares,1);assert.deepEqual(buttons,original);
   assert.equal(buttons[0]['aria-pressed'],'false');assert.equal(buttons[2]['aria-pressed'],'true');
+  assert.equal(writes,5,'Only old/new selection changes after the initial three buttons');
+  vm.runInContext('renderViewerFilmstrip(photos)',context);assert.equal(writes,5,'An unchanged refresh does not rewrite controls');
+  context.photos=photos.map(photo=>photo.id==='two'?{...photo,src:'updated.avif'}:photo);
+  vm.runInContext('renderViewerFilmstrip(photos)',context);assert.equal(builds,2,'A replaced media record refreshes its image even with the same ID');
   context.photos=[{id:'different-day'}];vm.runInContext('renderViewerFilmstrip(photos)',context);
-  assert.equal(builds,2);assert.equal(prepares,2);assert.equal(buttons.length,1);
+  assert.equal(builds,3);assert.equal(prepares,3);assert.equal(buttons.length,1);
 });
 
 test('same-day viewer navigation does not rebuild background photos or redraw the main map', () => {

@@ -59,7 +59,7 @@ test("build keeps drafts and draft edits out of all public data; repeat builds a
   writeJson(path.join(root, "build/studio-draft-overrides.json"), { days: { [j.days[0].id]: { title: "Private draft title" } }, routes: {}, photos: {} });
   const result = buildSite(root);
   assert.equal(result.drafts, 1);
-  assert.match(fs.readFileSync(path.join(root, "dist/demo.html"), "utf8"), /assets\/trip-photos\.js/);
+  assert.match(fs.readFileSync(path.join(root, "dist/demo.html"), "utf8"), /assets\/journey-data\/demos\.js/);
   assert.equal(generated(root, "trip-photos", "JOURNEY_ATLAS_PHOTOS")["alpine-crossing"].length, 7);
   const names = [...fs.readdirSync(path.join(root, "dist/assets")).filter(f => f.endsWith(".js")).map(f => `assets/${f}`), ...result.pages, "index.html", "demo.html"];
   const first = names.map(f => fs.readFileSync(path.join(root, "dist", f), "utf8"));

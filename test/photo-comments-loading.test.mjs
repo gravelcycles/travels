@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { commentChildren } from './photo-comments-dom-harness.mjs';
 
 function fixture({ photos, collection, selectedId } = {}) {
   const nodes=new Map(),calls=[],pending=[];let visitor=null,rows=[],loaded=false;
@@ -14,9 +15,9 @@ function fixture({ photos, collection, selectedId } = {}) {
       querySelector:s=>node(s),querySelectorAll:()=>[],getClientRects:()=>[{}],contains:()=>false,
       addEventListener(k,fn){listeners.set(k,fn);},fire(k,e={}){return listeners.get(k)?.(e);},
       showModal(){this.open=true;},close(){this.open=false;this.fire('close');},focus(){document.activeElement=this;},replaceChildren(){this.innerHTML='';}
-    };nodes.set(selector,n);return n;
+    };commentChildren(n);nodes.set(selector,n);return n;
   }
-  const document={querySelector:node,querySelectorAll:()=>[],body:node('body'),documentElement:node('html'),activeElement:node('opener'),addEventListener(){}};
+  const document={createElement:tag=>node(`${tag}-${nodes.size}`),querySelector:node,querySelectorAll:()=>[],body:node('body'),documentElement:node('html'),activeElement:node('opener'),addEventListener(){}};
   const store={identity:{get:()=>visitor,allowed:()=>Boolean(visitor?.name),lock(){},async save(name){visitor={...visitor,name};return {visitor,persistent:true};}},
     profile(){calls.push('profile');return new Promise((resolve,reject)=>pending.push({resolve(value){visitor=value;resolve(value);},reject}));},
     refresh(){calls.push('comments');return new Promise((resolve,reject)=>pending.push({resolve(value){rows=value;loaded=true;resolve();},reject}));},

@@ -25,7 +25,7 @@ function fixture() {
   });
   const source = fs.readFileSync(new URL('../dist/assets/app.js', import.meta.url), 'utf8');
   const start = source.indexOf('  function initViewerMap(');
-  const context = vm.createContext({ viewerFeedback:null,retryViewerMap(){},viewerMap: null, viewerTransition: null, viewerMapReady: false,
+  const context = vm.createContext({ viewerFeedback:null,retryViewerMap(){},viewerMap: null, viewerTransition: null, viewerMapReady: false,viewerMapSize:'',viewerCameraMoving:false,$:()=>({clientWidth:300,clientHeight:260}),
     window: { JOURNEY_ATLAS_MAP_FEEDBACK:{create:()=>({watch(){}})},maplibregl: {}, JOURNEY_ATLAS_UTILS: { photoMapTransition: () => controller } },
     createMap: () => map, mapIsReady: () => false });
   vm.runInContext(source.slice(start, source.indexOf('\n  function ', start + 1)) + '\ninitViewerMap();', context);

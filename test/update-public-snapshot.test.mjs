@@ -45,6 +45,55 @@ function fixture({ catalogAllAssets = false } = {}) {
 
 const capture = (input, site = SITE) => fetchPublicSnapshot(site, { fetchImpl: input.fetchImpl, now: () => NOW });
 
+function scopedFixture() {
+  const f=fixture();
+  f.data.journeys[1].days=[{id:'d1'}];f.data.journeys[1].segments=[];
+  f.files['journeys.js']=assignment('JOURNEY_ATLAS_DATA',f.data);
+  const metadata=Object.fromEntries([['journeys','journeys.js'],['photos','trip-photos.js'],['overrides','content-overrides.js']].map(([key,file])=>[key,`./assets/${file}?v=${hash(f.files[file]).slice(0,12)}`]));
+  f.catalog={defaultJourneyId:'first-trip',journeys:[{id:'first-trip',slug:'first-trip.html',kind:'real',published:true}],metadata};
+  f.scoped={JOURNEY_ATLAS_DATA:{...f.data,journeys:[f.data.journeys[1]]},JOURNEY_ATLAS_ROUTE_GEOMETRY:{},JOURNEY_ATLAS_PHOTOS:f.photos,JOURNEY_ATLAS_CONTENT_OVERRIDES:f.overrides};
+  f.rebuild=()=>{
+    f.files['catalog-data.js']=assignment('JOURNEY_ATLAS_CATALOG',f.catalog);
+    f.files['trip-first-trip.js']=Object.entries(f.scoped).map(([key,value])=>assignment(key,value)).join('');
+    f.pages['/travels/']=`<html><body><script src="./assets/catalog-data.js?v=${hash(f.files['catalog-data.js']).slice(0,12)}"></script></body></html>`;
+    f.pages['/travels/first-trip.html']=`<html><body data-journey-id="first-trip"><script src="./assets/journey-data/trip-first-trip.js?v=${hash(f.files['trip-first-trip.js']).slice(0,12)}"></script></body></html>`;
+  };
+  f.rebuild();return f;
+}
+
+test('captures coherent scoped pages via catalog receipt URLs without fetching protected media',async()=>{
+  const f=scopedFixture(),result=await capture(f);
+  assert.deepEqual(result.data,f.data);assert.deepEqual(result.photos,f.photos);assert.deepEqual(result.overrides,f.overrides);
+  assert.equal(result.source.catalogData.sha256,hash(f.files['catalog-data.js']));
+  assert.equal(result.source.journeyData.sha256,hash(f.files['trip-first-trip.js']));
+  assert.equal(f.calls.length,14);
+  for(const call of f.calls)assert.ok(new URL(call.url).pathname.startsWith('/travels/'));
+});
+
+test('scoped snapshot rejects foreign receipt URLs, executable bundles and mixed deployments',async()=>{
+  for(const mutate of [
+    f=>{f.catalog.metadata.photos='https://private.invalid/photo.webp?v=123456789abc';},
+    f=>{f.scoped.JOURNEY_ATLAS_PHOTOS={'first-trip':[]};},
+    f=>{f.scoped.JOURNEY_ATLAS_CONTENT_OVERRIDES={...f.overrides,days:{d1:{title:'stale'}}};},
+    f=>{f.catalog.defaultJourneyId='stale';}
+  ]){
+    const f=scopedFixture();mutate(f);f.rebuild();await assert.rejects(capture(f),/Public snapshot:/);
+    assert.ok(!f.calls.some(call=>new URL(call.url).origin!=='https://atlas.example'));
+  }
+  const f=scopedFixture();f.files['trip-first-trip.js']+='globalThis.attack=true;';
+  f.pages['/travels/first-trip.html']=f.pages['/travels/first-trip.html'].replace(/v=[a-f0-9]{12}/,`v=${hash(f.files['trip-first-trip.js']).slice(0,12)}`);
+  await assert.rejects(capture(f),/only a generated JSON assignment|four generated JSON assignments/);
+  assert.equal(globalThis.attack,undefined);
+});
+
+test('scoped snapshot rechecks both new bundles and fails if their bytes change mid-capture',async()=>{
+  for(const asset of ['catalog-data.js','trip-first-trip.js']){
+    const f=scopedFixture();
+    f.onRequest=(url,count)=>{if(url.pathname.endsWith('/'+asset)&&count===2)f.files[asset]+=' ';};
+    await assert.rejects(capture(f),/content hash mismatch|changed during capture/);
+  }
+});
+
 test('captures only coherent public metadata and records content-hash receipts', async () => {
   const f = fixture();
   const result = await capture(f, `${SITE}index.html`);

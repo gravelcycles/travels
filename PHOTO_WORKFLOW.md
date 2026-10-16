@@ -16,6 +16,30 @@ pin, without reordering the album. Groups fully outside the view or without room
 remain available in the album. Preserve the original metadata during
 transfer, then publish a separate web-sized copy.
 
+## Reader performance
+
+The reader performance pass retains the reviewed full-photo reveal timings.
+Ordering/lookups are cached by immutable journey projection; changing group or
+planning filters rebuilds the index. The retained grid compares media references
+and indices, updates only changed selection controls, and keeps decoded image
+nodes. Catalog covers select an existing derivative from the rendered crop box
+and DPR; fullscreen continues to request the full derivative. Numeric performance
+comparisons must separate these runtime/load changes from the concurrent AVIF
+migration and preserve authorization and WebP fallback.
+
+Phone Location changes the fitted stage at animation endpoints and moves the
+full photo/blur/video frame and sheet with transforms during the existing 220 ms
+transition. Pointer moves coalesce into one frame; interruption resumes from the
+visible position. Map setup waits until the sheet can paint and is canceled if
+it closes first. Unchanged reopening retains the explored camera and avoids a
+canvas resize; an interrupted automatic move remains eligible to finish. Check
+rapid reversal, canceled drags, orientation changes, zoom and reduced motion.
+
+Desktop Close releases its zoom transform, so reopening the same photo restores
+the fitted image (verified at 2.5× → 1×). Compare ownership with the transform
+stored by the browser after CSSOM normalization, while preserving a later mobile
+transform. This fixes reset correctness; it is not an animation-speed result.
+
 ## Upload and delete in Studio
 
 Open **Photos → Upload photos**, leave **Automatically match capture dates**

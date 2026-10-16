@@ -1,5 +1,30 @@
 # Current workstreams
 
+## Measured performance pass — 16 October 2026
+
+Owner authorized executing the phone/desktop interaction and loading priorities,
+with numeric before/after evaluation for every fix. Work is isolated on
+`codex/performance-pass`; the frozen comparison is `9dc7827`. Implemented scoped
+page data and catalog covers, complete asset hashing, comment row/draft reuse,
+cached reader media ordering/filmstrip identity, and compositor movement for the
+phone Location sheet. [Matched measurements and limitations](docs/PERFORMANCE_PASS_2026-10-16.md)
+show phone Location open layouts 16→3, same-photo map calls 2→0, Comments
+warm-open handler 42.0→27.9 ms at 4× CPU, family data 542,573→72,136 gzip bytes
+and catalog data 250,805→2,176 bytes. Frame gaps are unchanged; phone style
+recalculation increased despite lower total task work. Preserve those limits.
+
+Integrated current main `78334da`, including visible-control zoom, in `7b44e29`.
+All **781 tests pass** after the final browser-discovered desktop correction:
+CSSOM-normalized transform ownership restores fitted same-photo reopen (2.5×→1×).
+The build passes; phone 390×844, landscape 844×390 and desktop 1360×900 browser
+checks pass with no page exceptions, including Location reversal/cancel, zoom
+controls, close/reopen and grid return. Pages/public verification remains the
+delivery step; this paragraph is not yet a deployment receipt. AVIF is still
+uploading/verifying assets in its own workstream. The existing follow-up will
+measure its image bytes, fallback, decode and neighbor readiness after deployment
+before any justified bounded preload-scheduling change. Preserve its WebP fallback
+and originals; do not count its savings as this performance batch.
+
 Status checkpoint reconciled: **11 October 2026**. Start with
 [AGENTS.md](AGENTS.md) and [OWNER_DECISIONS.md](docs/OWNER_DECISIONS.md), then
 read the relevant workstream here before resuming it.

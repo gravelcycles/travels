@@ -6,7 +6,7 @@ import '../dist/assets/photo-zoom.js';
 const {focalZoom, panLimit, maxScale, clampTransform} = globalThis.JourneyPhotoZoom;
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-7, `${a} should equal ${b}`);
 
-function fixture({mobile = false, reducedMotion = false} = {}) {
+function fixture({mobile = false, reducedMotion = false, normalizeTransform = false} = {}) {
   const events = new Map(), frames = new Map(), queries = new Map();
   let now = 0, nextFrame = 0, resize;
   function node() { return {dataset: {}, style: {}, hidden: false, handlers: new Map(),
@@ -14,6 +14,13 @@ function fixture({mobile = false, reducedMotion = false} = {}) {
     closest() { return null; }, setPointerCapture() {},
     getAttribute(name) { return this[name]; }}; }
   const frame = node(), image = node(), dialog = node(), viewer = node();
+  if (normalizeTransform) {
+    let transform = '';
+    Object.defineProperty(image.style, 'transform', {
+      get: () => transform,
+      set: value => { transform = value.replace(/, 0\) scale\(/g, ', 0px) scale('); }
+    });
+  }
   Object.assign(frame, {clientWidth: 1000, clientHeight: 800, getBoundingClientRect: () => ({left: 100, top: 50, width: frame.clientWidth, height: frame.clientHeight})});
   Object.assign(image, {width: 1250, height: 1000}); dialog.open = true; viewer.dataset.mediaType = 'photo';
   const root = {matchMedia(query) { const result = {matches: query.includes('901') ? !mobile : reducedMotion, addEventListener(_type, fn) { this.changed = fn; }}; queries.set(query, result); return result; },
@@ -155,6 +162,18 @@ test('unchanged selection preserves zoom and a desktop-to-mobile change releases
   f.image.style.transform = 'mobile-owned'; f.controller.setPhoto({id: 'c'}); f.resize();
   assert.equal(f.image.style.transform, 'mobile-owned');
   assert.equal(f.send('wheel', {ctrlKey: true, deltaY: -80}).prevented, undefined);
+});
+
+test('close releases a browser-normalized desktop transform and same-photo reopen stays fitted', () => {
+  const f = fixture({normalizeTransform: true});
+  f.send('dblclick'); f.tick();
+  near(f.controller.state().scale, 2.5);
+  assert.match(f.image.style.transform, /, 0px\) scale\(2\.5\)/);
+  f.dialog.open = false; f.send('close', {}, f.dialog);
+  f.dialog.open = true; f.controller.setPhoto({id: 'a'});
+  near(f.controller.state().scale, 1);
+  assert.equal(f.image.style.transform, '');
+  assert.equal(f.viewer.dataset.desktopZoomed, undefined);
 });
 
 
