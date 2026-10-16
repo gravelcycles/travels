@@ -830,7 +830,7 @@
     }
     clearDayPreview();
     clearDecorations(mainMap, mainDecorations);
-    const selectedSegments = new Set(activeDay().segmentIds);
+    const selectedSegments = new Set(mapScope === "day" ? activeDay().segmentIds : []);
     [...journey.segments]
       .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id)))
       .forEach((segment) => {
@@ -851,7 +851,7 @@
     if (inspectedSegmentId) setInspectedFeatureState(inspectedSegmentId, true);
     renderDayNavigator();
     locationLabels?.update(
-      window.JOURNEY_ATLAS_LOCATION_LABELS.groupsForJourney(journey, { destinationForDay, segmentsForDay, segmentCoordinates, includeGroupPlaces: !activeGroupId }, activeDayId, 'journey'),
+      window.JOURNEY_ATLAS_LOCATION_LABELS.groupsForJourney(journey, { destinationForDay, segmentsForDay, segmentCoordinates, includeGroupPlaces: !activeGroupId }, mapScope === 'day' ? activeDayId : null, 'journey'),
       journey.segments.map(segment => ({ dayIds: journey.days.filter(day => day.segmentIds.includes(segment.id)).map(day => day.id), coordinates: segmentCoordinates(segment), padding: (modeStyles[segment.mode]?.width || 4.7) / 2 + 6 })),
       stops.filter(stop => stop.endpoint).map(stop => stop.coordinate)
     );
@@ -874,7 +874,7 @@
   }
 
   function moveActiveDay(delta) {
-    const currentIndex = journey.days.findIndex((day) => day.id === activeDayId);
+    const currentIndex = mapScope === "day" ? journey.days.findIndex((day) => day.id === activeDayId) : -1;
     const next = journey.days[currentIndex + delta];
     if (next) setActiveDay(next.id, true);
   }
@@ -911,6 +911,8 @@
   function fitRoute() {
     cancelArrival();
     mapScope = "journey";
+    photoBubbles?.close();
+    renderDays(); renderStory();
     drawMainMap(false);
     fitJourneyBounds();
     window.JOURNEY_ATLAS_SHARING_UI?.changed();
@@ -924,6 +926,7 @@
   function openJourneyMap() {
     cancelArrival();
     mapScope = 'journey';
+    renderDays(); renderStory();
     setMobileTab('map');
     // This entry resizes and fits synchronously below, so the ordinary tab
     // resize is redundant. Later browser resizes preserve the running trace.
@@ -950,7 +953,9 @@
   }
 
   function focusDay(day, duration = 650, linear = false, eventData) {
+    const scopeChanged = mapScope !== "day";
     mapScope = "day";
+    if (scopeChanged) { renderDays(); renderStory(); }
     renderLegend();
     if (!mainMapReady) { pendingMapAction="focus"; return; }
     drawMainMap(false);
@@ -1016,7 +1021,9 @@
   }
 
   function showCity(day, duration = 900) {
+    const scopeChanged = mapScope !== 'day';
     mapScope = 'day';
+    if (scopeChanged) { renderDays(); renderStory(); drawMainMap(false); }
     if (!mainMapReady) { pendingMapAction = 'city'; return; }
     mainMap.resize();
     const padding = mapPadding(112), camera = cityCamera(mainMap,day,padding);
@@ -1181,8 +1188,9 @@
       const modes = modesForDay(day);
       const photos = photosForDay(day.id);
       const pattern = modes[0] || "stay";
+      const selected = mapScope === "day" && day.id === activeDayId;
       return `
-        <button class="day-row ${day.id === activeDayId ? "active" : ""}" data-day-id="${escapeHtml(day.id)}" type="button" ${day.id === activeDayId ? 'aria-current="true"' : ""}>
+        <button class="day-row ${selected ? "active" : ""}" data-day-id="${escapeHtml(day.id)}" type="button" ${selected ? 'aria-current="true"' : ""}>
           <span class="day-index">${String(day.number).padStart(2, "0")}</span>
           <span class="day-copy">
             <small>${escapeHtml([day.date, modeLabel(day)].filter(Boolean).join(' · '))}</small>
@@ -1204,7 +1212,21 @@
   }
 
   function renderStory() {
+    if (mapScope === 'journey') {
+      $('#sidebar-day-summary').textContent = 'Journey details';
+      $('#focus-day').disabled = true;
+      storyMedia.innerHTML = `<div class="story-empty"><span>The whole journey</span><strong>${escapeHtml(journey.title)}</strong><small>${escapeHtml(journey.dates)}</small></div>`;
+      detailPanel.innerHTML = `<p class="day-story">Choose a ${eventWord()} to explore its route and photos.</p>`;
+      photoStrip.innerHTML = '';
+      $('.photo-section').hidden = true;
+      $('#story-view-photos').hidden = true;
+      $('#share-lead-photo').hidden = true;
+      window.JOURNEY_ATLAS_MOBILE_UI?.renderDay();
+      window.JOURNEY_ATLAS_SHARING_UI?.changed();
+      return;
+    }
     const day = activeDay();
+    $("#sidebar-day-summary").textContent = `${eventWord("title")} details · ${day.title}`;
     $("#focus-day").disabled = !dayCoordinates(day).length;
     const photos = photosForDay(day.id);
     const firstPhoto = photos[0];
@@ -1409,7 +1431,7 @@
     clearTimeout(mobileMapTimer); mobileMapTimer = null; pendingMapAction = null;
     const scopeChanged = mapScope !== view.scope;
     mapScope = view.scope;
-    if (scopeChanged) { drawMainMap(false); renderArrivalChapter(); }
+    if (scopeChanged) { renderDays(); renderStory(); drawMainMap(false); renderArrivalChapter(); }
     mainMap.stop(); mainMap.resize(); mainMap.jumpTo(view.camera);
   }
 
@@ -2503,7 +2525,7 @@
 
   $('#focused-day-label').addEventListener('click',()=>$('#mobile-day-picker').click());
   placesUI = window.JOURNEY_ATLAS_PLACES.create({
-    journey: () => sourceJourney, dayId: () => activeDayId, map: () => mainMap,
+    journey: () => sourceJourney, dayId: () => mapScope === 'day' ? activeDayId : null, map: () => mainMap,
     resolvedDay: dayById, visibleDayIds: () => journey.days.map(day => day.id),
     photoCollection: () => photoDialog.open ? {photos:viewerPhotos(),label:viewerCollection?.label || journey.title} : photoBubbles?.collection() || {photos:photosForDay(activeDayId),label:activeDay().title},
     photos: () => orderedPhotos().filter(photo => !mediaUtils.isVideo(photo)), openPhoto, photoUrl:preferredPhotoUrl,
