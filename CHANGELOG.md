@@ -1,5 +1,15 @@
 # Changelog
 
+## 16 October 2026 — restore solid fullscreen photo controls
+
+- Restore opaque phone header/footer bars and Close/Share/Comments surfaces
+  after the owner flagged the translucent styling as a regression. Remove the
+  floating action blur while retaining the new layout, tap-to-hide and focal zoom.
+- Record the correction in O03/O08/O18, the photo workflow and feature inventory.
+  All 740 tests, the build and 16 rendered browser cases pass; screenshots
+  confirm solid surfaces. Delivery is tracked in
+  [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+
 ## 16 October 2026 — direct notification conversations
 
 - Open notification targets as fullscreen photographs with comments immediately
