@@ -314,6 +314,10 @@ graph reconstructs historical routes and is not turn-by-turn navigation.
 
 ## Remaining continuity work
 
+Short-landscape Photo location has an existing layout gap: a long note can
+consume the map's grid track. Preserve authored copy and reserve usable map space
+in the follow-up tracked in [TODO](../TODO.md) and [WIP](../WIP.md#photo-intermediate-screens--16-october-2026).
+
 The documentation audit closes the missing reading order, decision/supersession
 record and new-atlas acceptance gaps. It does not provide automated visual or
 end-to-end proof of every decision. Existing helper/controller and template

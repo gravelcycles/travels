@@ -51,9 +51,23 @@ outbound-update ledger and history; no message was sent or marked shared.
 Later owner clarification: make the **whole header** on Comments and Photo
 location easy to drag closed, including title, blank space and the Close control;
 preserve ordinary taps, native scrolling/map input and photo/draft/history.
-The follow-up extends O17/O08 and is being implemented in the same isolated
-checkout. Next: finish focused and browser gesture checks, full tests/build,
-integrate current main, deploy and verify fresh public interactions.
+The follow-up extends O17/O08 and is implemented in the same isolated checkout,
+including second-finger cancellation outside the header. All **750 tests** and
+the reproducible build pass. Header checks pass for all four models at 320/390px,
+landscape and desktop. Seven final integration cases and an ordinary-motion
+phone case pass native Close taps, every header region, sideways starts,
+short/cancelled pulls, second-finger body cancellation, independent content
+scrolling/map panning and photo/draft/history retention, without browser errors.
+Current main's saved photo metadata, solid controls, right-aligned actions and
+experiment retirement are preserved. Evidence is in ignored
+`build/header-drag-qa/`; these are Chrome viewport checks, not physical-device
+certification. Next: deploy and verify fresh public interactions.
+
+Separate existing layout gap found during verification: long photo notes can
+consume the entire location panel at 844 × 390, leaving its map zero-height.
+Reproduced with the prior `27a88eb` stylesheet. Header dismissal and note scrolling
+work; landscape map-pan verification uses a short note. Track the layout repair
+in TODO; it is not part of the whole-header gesture correction.
 
 Authorized correction: notification rows open the fullscreen photograph with
 comments above it, simplify repeated photo information in that sheet, and allow

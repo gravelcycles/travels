@@ -27,6 +27,11 @@ activation work.
 
 ## Independent project workstreams
 
+- [ ] **Photo location with long notes in short landscape.** Reserve usable map
+      space without losing scroll access to authored copy. The 844 × 390 layout
+      can collapse the map to zero height; reproduced with release `27a88eb`
+      while verifying header dragging. See the photo-intermediate workstream in WIP.
+
 - [x] **Fullscreen photo controls and focal zoom — 16 October.** Shared mobile
       controls/chrome, full-viewport mobile zoom and focal phone/desktop zoom
       deployed in `34b72b2`. All 707 tests, build, 16 browser fixtures, successful
