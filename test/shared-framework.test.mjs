@@ -67,6 +67,23 @@ test('notification photo entry opens fullscreen directly across reference, city,
   }
 });
 
+test('whole location-header dismissal inherits reference, demo and a populated fresh city draft',t=>{
+  const root=fixture(t),draft=createJourney(root,{...input,eventMode:'city'}),{data}=loadContent(root);
+  draft.photos=[{id:`${draft.id}-located`,dayId:draft.days[0].id,caption:'',lng:139.7,lat:35.7,src:'https://images.example.test/location.jpg'}];
+  for (const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'&&j.photos.length),draft]) {
+    const f=viewerFixture({journey});f.api.openDay(journey.photos[0].dayId);f.click('#mobile-photo-location');
+    const header='.photo-location-heading',start={target:f.node('#mobile-location-close'),clientX:120,clientY:350};
+    f.dispatch(header,'pointerdown',start);
+    f.dispatch(header,'pointermove',{...start,clientX:138,clientY:352});
+    f.dispatch(header,'pointermove',{...start,clientX:160,clientY:420});
+    f.dispatch(header,'pointerup',{...start,clientX:160,clientY:420});
+    assert.equal(f.controller.locationVisible(),false,journey.id);
+    assert.equal(f.node('#photo-dialog').open,true);
+    assert.equal(f.index,0);
+    assert.equal(f.history.state.mobileAtlas.layer,'photo');
+  }
+});
+
 test('three-second opening trace inherits resolved routes for reference, city atlas, demo and independent fresh draft', t => {
   const root = fixture(t), draft = createJourney(root, {...input,slug:'opening-route-fixture'});
   const {data, routes} = loadContent(root), overrides = readOverrides(root);

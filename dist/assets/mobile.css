@@ -85,7 +85,8 @@
  .photo-context { display:contents; border:0; }
  .photo-location-panel { position:absolute; display:grid; grid-template-rows:auto minmax(0,1fr) auto; height:var(--location-height,320px); bottom:calc(var(--photo-foot) - var(--location-height,320px) + var(--reveal)); left:0; right:0; background:var(--panel); color:var(--ink); border-radius:18px 18px 0 0; overflow:hidden; visibility:hidden; }
  .photo-viewer[data-location-visible="true"] .photo-location-panel { visibility:visible; }
- .photo-location-heading { display:flex; align-items:center; justify-content:space-between; padding:14px 18px 8px; position:relative; touch-action:none; }
+ .photo-location-heading { display:flex; align-items:center; justify-content:space-between; min-height:72px; box-sizing:border-box; padding:14px 18px 8px; position:relative; touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; cursor:grab; }
+ .photo-location-heading:active { cursor:grabbing; }
  .photo-location-heading::before { content:""; position:absolute; width:32px; height:4px; background:#bec9c4; border-radius:4px; top:5px; left:calc(50% - 16px); }
  .photo-location-heading strong,.photo-location-heading small { display:block; }
  .photo-location-heading strong { font:700 20px Georgia,serif; }

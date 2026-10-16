@@ -279,8 +279,11 @@ visibility. Trip scope is independent of the selected event or route group.
 No journey-specific template or backend instance is introduced.
 Notification selection opens the shared fullscreen viewer before the conversation;
 the comment component derives its compact presentation from that open viewer.
-Header dragging uses the existing history-aware overlay dismissal, preserving
-the underlying photo and draft. It introduces no separate notification viewer.
+Whole-header dragging, including a drag starting on Close, uses the existing
+history-aware overlay dismissal, preserving the underlying photo and draft.
+`mobile-ux.js` owns the analogous Photo location header within the viewer;
+it collapses that panel without dismissing the photo. Both retain normal control
+taps and suppress the click after a drag. No separate notification viewer is introduced.
 
 The Worker serves 500-row compact metadata pages and a separate newest-first
 30-comment feed. Both use the partial trip-order D1 index and filter eligible

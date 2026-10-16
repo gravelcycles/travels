@@ -94,7 +94,9 @@ Comment notifications extend photo conversations with red unread-number badges
 on photo Comments buttons and plain total counts once read. The top-right bell
 shows **Most recent comments** across the trip and opens the selected photo
 fullscreen with a compact conversation sheet above it. The fullscreen sheet
-omits repeated photo details and supports downward header dragging to close;
+omits repeated photo details and supports dragging anywhere across its header,
+including Close, to dismiss; Photo location uses the same whole-header affordance.
+Normal button taps, thread scrolling and map interaction remain independent.
 Close/Back retains the photograph and draft. Local read IDs, indexed compact metadata pages, a bounded recent
 feed and shared request caches keep counts exact without per-photo requests.
 See the [notification contract](PLACES_AND_COMMENTS.md#comment-notifications).

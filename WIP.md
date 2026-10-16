@@ -18,6 +18,13 @@ must read current files and reconcile any later corrections before continuing.
 
 ## Photo intermediate screens — 16 October 2026
 
+Later owner clarification: make the **whole header** on Comments and Photo
+location easy to drag closed, including title, blank space and the Close control;
+preserve ordinary taps, native scrolling/map input and photo/draft/history.
+The follow-up extends O17/O08 and is being implemented in the same isolated
+checkout. Next: finish focused and browser gesture checks, full tests/build,
+integrate current main, deploy and verify fresh public interactions.
+
 Authorized correction: notification rows open the fullscreen photograph with
 comments above it, simplify repeated photo information in that sheet, and allow
 dragging it closed. [O17](docs/OWNER_DECISIONS.md#comment-notifications--11-october-2026)

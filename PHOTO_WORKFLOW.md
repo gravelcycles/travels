@@ -178,8 +178,13 @@ cameras. Use the actual app callbacks, including synchronous media refresh.
 The [16 October fullscreen contract](#fullscreen-controls-and-focal-zoom)
 requires single-tap chrome toggling and full-viewport focal zoom; it supersedes
 the earlier rule that controls stay visible on photo taps. Double-tap or pinch
-to zoom, and drag upward or tap Photo location to reveal its map. Hide location collapses it without leaving the
-photo. Pull an unzoomed still photo downward to dismiss fullscreen: the photo
+to zoom, and drag upward or tap Photo location to reveal its map. Hide location
+or a downward drag from anywhere in its header collapses it without leaving the
+photo (owner clarification, 16 October). The title, subtitle, blank space and
+Close control are all drag origins; a normal Close tap still works. Allow a
+natural diagonal start, keep text from selecting and suppress the drag's click.
+Short/cancelled or multi-finger header pulls restore the panel; its map and copy
+retain independent interaction. Pull an unzoomed still photo downward to dismiss fullscreen: the photo
 follows the finger, shrinks slightly and fades the backdrop. A deliberate
 pull or quick downward flick returns to the preceding screen through history;
 a short, reversed or cancelled pull snaps back without changing the photo.
@@ -679,7 +684,8 @@ scoped to the trip; the top-right bell opens its most recent conversations.
 Preserve the presenting collection and unfinished text when opening a comment.
 Notification entry opens the target fullscreen photograph with its compact
 comment sheet immediately above it. The sheet omits repeated photo details and
-supports a downward header drag to close back to the same photograph; scrolling
+supports a downward drag across the entire header, including title, blank space
+and Close, to close back to the same photograph; ordinary taps still work, scrolling
 and typing remain independent. See the 16 October correction in O17.
 See [the complete contract](docs/PLACES_AND_COMMENTS.md#comment-notifications)
 and [owner decision O17](docs/OWNER_DECISIONS.md#comment-notifications--11-october-2026).
