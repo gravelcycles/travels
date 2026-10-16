@@ -74,7 +74,7 @@ test('thumbnail reveal scrolls only a visible grid and never the fullscreen shel
   const shell={scrollTop:0,scrollLeft:0};
   const thumb={dataset:{viewerIndex:'0'},classList:{toggle(){}},setAttribute(){},getBoundingClientRect:()=>thumbRect,
     scrollIntoView(){shell.scrollTop=276;assert.fail('Thumbnail reveal must not scroll ancestor surfaces');}};
-  const strip={dataset:{album:JSON.stringify([{photo,index:0}])},clientWidth:390,clientHeight:790,scrollTop:300,scrollLeft:0,querySelectorAll:()=>[thumb],
+  const strip={dataset:{},atlasAlbumEntries:[{photo,index:0}],clientWidth:390,clientHeight:790,scrollTop:300,scrollLeft:0,querySelectorAll:()=>[thumb],
     getBoundingClientRect:()=>({top:54,bottom:844,left:0,right:390})};
   const context=vm.createContext({viewerPhotoIndex:0,viewerCollection:null,viewerDay:()=>({id:'one'}),
     window:{JOURNEY_ATLAS_MOBILE_UI:{enabled:()=>true,gridVisible:()=>grid}},$:selector=>selector==='#viewer-filmstrip'?strip:thumb});

@@ -67,6 +67,7 @@ test('the entire location header accepts downward drags after a sideways start, 
     f.dispatch(header,'pointerdown',start);
     f.dispatch(header,'pointermove',{...start,clientX:118,clientY:352});
     f.dispatch(header,'pointermove',{...start,clientX:155,clientY:420});
+    f.frame();
     assert.equal(parseFloat(f.node('.photo-viewer').style['--reveal']),initialReveal-70,'The panel follows the finger');
     f.dispatch(header,'pointerup',{...start,clientX:155,clientY:420});
     assert.equal(f.controller.locationVisible(),false,selector);
@@ -192,8 +193,10 @@ test('double taps cancel the pending chrome toggle and animate zoom',()=>{
   assert.equal(f.node('.photo-viewer').dataset.chrome,'true');
   f.click('.photo-stage');
   assert.match(f.node('#modal-photo').style.transform,/scale\(1\)/,'zoom starts at the existing size');
+  assert.equal(f.node('.photo-viewer').dataset.zoomed,'false','Resting chrome follows the rendered scale');
   f.flush(150);
   const midway=f.node('#modal-photo').style.transform;
+  assert.equal(f.node('.photo-viewer').dataset.zoomed,'true','Bars clear as soon as the photo starts enlarging');
   const coverScale=706/(390/(1200/800));
   assert.ok(Number(midway.match(/scale\(([^)]+)\)/)[1]) > 1);
   assert.ok(Number(midway.match(/scale\(([^)]+)\)/)[1]) < coverScale);

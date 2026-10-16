@@ -17,12 +17,22 @@ capture new corrections during the task and reconcile current docs before
 delivery; use the [live update procedure](OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task).
 Accepted work still pending belongs in WIP, not among delivered capabilities.
 
+The 16 October performance pass adds scoped real-trip/demo data and a compact
+catalog, crop/DPR-sized catalog covers, complete local template asset hashes,
+cached reader media order/lookups and retained filmstrip selection, plus unchanged
+comment-row/draft reuse. Numeric before/after comparisons are required by the
+owner; validation and publication status are tracked in WIP. AVIF migration
+results and any subsequent preload-priority change are evaluated separately.
+Phone Location uses transform motion with frame-paced dragging and deferred map
+setup; settled same-photo reopen retains the map camera and decoded photo state.
+
 The [16 October fullscreen photo correction](OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
 is implemented in shared code: mobile right-aligned Comments with Share immediately to its left,
 top-right Close, single-tap hiding/restoring of photo chrome and full-viewport
 mobile zoom. Phone and desktop zoom follow the pinch or pointer focus; desktop
-retains its context sidebar. The later button-style correction restores solid
-mobile bars and controls; verification and deployment status are in
+retains its context sidebar. Mobile controls stay solid; during zoom the continuous
+bar backgrounds disappear so the image fills the screen behind them. Fitted photos
+retain resting bars. Verification and deployment status are in
 [WIP](../WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
 
 Shared [Arrival → city](ARRIVAL_CITY_DEMO.md) playback traces the incoming

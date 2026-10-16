@@ -101,7 +101,7 @@ password system.
 | `studio/place-editor.js` | Owner Places, credited images, curated reviews and ordered trip-photo links through the existing plan/save/recovery flow |
 | `dist/assets/view-sharing.js`, `view-sharing.css` | Shared view URL parsing/serialization, coalesced URL replacement and native share/copy fallback; surface controllers retain history ownership; no saved resume storage |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction; dormant full-trip Replay UI |
-| `dist/assets/photo-zoom.js` | Shared focal-zoom math and pan bounds used by mobile; desktop photo-stage controller for Ctrl+wheel/trackpad pinch, Safari gesture events, two-pointer pinch, double-click zoom and pan, with selection/resize/access reset |
+| `dist/assets/photo-zoom.js` | Shared focal-zoom math and pan bounds used by mobile; desktop photo-stage controller for Ctrl+wheel/trackpad pinch, Safari gesture events, two-pointer pinch, double-click zoom and pan, with selection/close/resize/access reset. Owned transforms use the browser's CSSOM-normalized stored value so close/reopen restores fitted size without erasing a later mobile transform; this is a correctness fix, not a speed claim. |
 | `dist/assets/opening-route.js` | Shared three-second initial overview trace; reuses arrival geometry/clock/canvas, owns temporary route visibility and cleanup, survives automatic map resize/refitting and resynchronizes rebuilt native layers without restarting, preserves separate legs and disabled Replay |
 | `dist/assets/location-labels.js` | Shared destination grouping, screen-space clusters, upright signposts, compact previews and accessible day selection |
 | `dist/assets/map-feedback.js`, `map-feedback.css` | Shared map loading, recovery, Retry and no-location feedback; used in Studio too |
@@ -109,7 +109,7 @@ password system.
 | `dist/assets/map-style.js` | Shared basemap palette, restrained settlement typography, and route/label stacking for every viewer map and Studio |
 | `dist/assets/atlas-utils.js` | Shared photo resolution, cover choice, camera helpers, preloading, desktop image reveals and other helpers |
 | `dist/assets/group-travel.js`, `group-travel.css`, `scripts/journey-extras.mjs` | Shared group projection, roster/day route details, group/media presentation and optional data validation |
-| `dist/assets/media-utils.js` | Mixed gallery items, opening-frame thumbnail extraction/cache, native video playback and cleanup inside the shared photo viewer |
+| `dist/assets/media-utils.js` | Mixed gallery items, cached reader media index by immutable journey projection/source-array identity, opening-frame thumbnail extraction/cache, native video playback and cleanup inside the shared photo viewer |
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |
 | `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching |
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |
@@ -121,7 +121,7 @@ password system.
 | `studio/plan-extras.js`, `scripts/studio-plan-sources.mjs` | Studio roster/group/overnight/meetup and hosted-video forms; source-preserving persistence of photo group assignments |
 | `studio/ready-to-share.js`, `scripts/studio-readiness.mjs` | Shared read-only draft/source readiness assessment, revision-bound editorial choices and agent publishing handoff; never infer a verified public version from local or Git state |
 | `scripts/journey-content.mjs`, `journey-planner.mjs`, `create-journey.mjs` | Loading, validation, planner rules, fresh-trip creation |
-| `scripts/build-site.mjs` | Public builds and local preview page/data generation |
+| `scripts/build-site.mjs`, `scripts/page-data.mjs` | Public builds, per-trip/demo data and compact catalog generation; local previews retain the existing four data endpoints |
 | `content/branding/`, `content/site.json`, `scripts/build-branding.mjs` | Shared globe-pin identity, reviewed icon/share rasters, public site URL and brand asset generation; see [BRANDING.md](BRANDING.md) |
 | `content/journeys/<id>.json` | Reviewed trip identity, calendar, places, legs, cover and Replay choices |
 | `content/route-geometry/`, `route-sources/`, `photo-manifests/` | Journey-specific reviewed assets and provenance |
@@ -130,9 +130,10 @@ password system.
 
 **Source/output exception:** hand-authored JS/CSS currently lives under `dist`.
 Do not delete that directory or treat all its files as generated. Generated
-files are public HTML, `generated-pages.json`, and these data bundles:
+files are public HTML, `generated-pages.json`, `generated-data.json`, and these data bundles:
 `journeys.js`, `route-geometry.js`, `trip-photos.js`, `content-overrides.js`, and
-`photo-service.js`. `dist/assets/brand/` is also generated: exact copies of the
+`photo-service.js`, plus `catalog-data.js` and `journey-data/*.js`.
+`dist/assets/brand/` is also generated: exact copies of the
 reviewed assets in `content/branding/`. Edit their `content/` sources and rebuild. The build assigns
 content hashes to public asset URLs; template authors do not maintain version
 strings. This includes the Places sheet stylesheet; a gesture/style release must
@@ -147,7 +148,10 @@ and the [photo workflow](../PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom
 The shared implementation extends the existing journey template and styles:
 mobile Comments aligns right with Share immediately to its left; city/day
 buttons span their own full-width row, Close sits top-right, and a
-single tap toggles chrome over the full-viewport photo stage. `photo-zoom.js`
+single tap toggles chrome over the full-viewport photo stage. The mobile transform
+updates `data-zoomed`; zoomed chrome uses opaque individual controls and labels
+instead of full-width bar backgrounds, with image input passing through gaps.
+`photo-zoom.js`
 owns `focalZoom` and image-aware pan bounds; `mobile-ux.js` uses this math for
 moving-midpoint pinch and double-tap. Its desktop controller supports
 Ctrl+wheel/trackpad pinch, Safari gesture events, two-pointer pinch, double-click
@@ -301,11 +305,23 @@ checks and deployment.
 
 HTML map pins do not participate in basemap glyph collision. Small footprints and short vertical stems reduce coverage; signpost feet/dots intentionally mark route locations. Numbered boards always stay upright above their points, using a dot fallback in tight space. Hard checks protect map controls and other pin hit targets. Dense views cluster nearby places, with edge/control culling and complete day navigation retained (T05, `docs/LOCATION_LABELS.md`).
 
-Per-journey public bundle splitting and larger collection performance remain
-future scale decisions. Today all published journey data is loaded together;
-that is separate from whether feature code is shared. Existing documents on
-performance/auth are historical evidence or focused operational references;
-this file and the feature inventory define the present framework contract.
+Public real-trip pages load one bundle containing only that trip's existing
+journey, route, photo and override assignments. The demo selector loads all
+demos together; the catalog loads summary fields and complete resolved cover
+records. Whole photo records preserve format/fallback metadata. Legacy global
+bundles remain generated for Studio/export and verified publication snapshots,
+but public readers do not request them. Catalog metadata contains their hashed
+receipt URLs for snapshot tooling. `update-public-snapshot.mjs` verifies both
+legacy releases and scoped releases and rejects mixed deployment versions.
+`generated-data.json` owns removal of obsolete scoped bundles only.
+
+The reader caches ordering/lookups for each immutable journey projection and
+its photo/video/day arrays. Group/planning changes or replaced arrays rebuild
+the index; public controllers must not mutate those records in place. A legacy
+helper fallback keeps cached-HTML deployment transitions usable. Filmstrip
+membership uses media references/indices and changes only affected selection
+attributes, retaining decoded grid images. Larger collection and hidden-surface
+work remains subject to measured profiling, not speculative rewrites.
 
 Routing-data intake remains agent-operated: empty journeys show an actionable
 setup state until their own mode network has been prepared. A guided retrieval

@@ -40,6 +40,19 @@ O03/O04/O08 acceptance checks; it does not introduce visitor reload auto-resume.
 checks, automated coverage and intentional resets. The current photo and
 Places contracts own implementation guidance.
 
+## Measured interaction and loading performance — 16 October 2026
+
+The owner reported lag while flipping photos and opening/closing Location and
+Comments, requested a full phone/desktop and network-loading pass, then authorized
+implementation of the priorities. The follow-up requires numeric before/after
+evaluation for each fix. Record the same fixture, viewport, CPU/network settings
+and cache state on both sides; distinguish deterministic work/byte reductions,
+controller benchmarks and browser-visible latency. Do not claim an FPS or
+end-to-end speedup from fewer operations alone. Preserve the reviewed reveals,
+private access, draft recovery, view state and focal zoom. Integrate concurrent
+changes and re-evaluate the WebP-to-AVIF migration separately so its savings are
+not attributed to unrelated runtime work. See WIP for delivery status.
+
 ## Standing decisions and acceptance checks
 
 | ID | Current decision | Check when touching this area |
@@ -80,11 +93,16 @@ and native video controls keep their existing behavior.
 
 Later on 16 October, the owner rejected the translucent buttons introduced by
 this change as a regression: “I don’t love that the buttons are translucent now.”
-Keep the mobile fullscreen header/footer and floating Close, Share and Comments
-surfaces solid and readable over any photograph. Restore the opaque toolbar
-treatment; the fullscreen layout and zoom request did not authorize a glass/blur
-restyle. Check bright and dark photos with controls shown and restored after a
-tap; the photograph must not show through the button or toolbar surfaces.
+Keep individual mobile fullscreen controls solid and readable over any photograph;
+do not reintroduce glass/blur buttons. A later same-day clarification asks that
+“when the controls are shown … the zoom … take over the black background.”
+At fitted size retain the solid bars; while zoomed remove their continuous
+backgrounds so the photograph reaches the screen edges behind visible controls.
+Keep buttons opaque (including disabled buttons) and labels on compact solid
+backgrounds. Exposed photo between controls accepts pan/pinch/tap, while buttons
+keep their own actions. Zooming out restores the resting bars. This supersedes
+the intermediate interpretation that full-width bars must stay opaque during
+zoom. Check bright/dark photos, shown/hidden/restored controls and photo changes.
 
 A further 16 October correction clarified alignment: “right city button isn’t
 right justified. same with the comments button.” Keep previous/next city/day

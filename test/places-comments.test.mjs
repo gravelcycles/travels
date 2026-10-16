@@ -175,3 +175,20 @@ test('failed edits, deletes and draft writes leave persisted text intact', () =>
   assert.equal(store.comments('p')[0].body,'Keep me');
   assert.equal(store.draft('photo:p').body,'Keep draft');
 });
+
+
+test('draft no-ops avoid storage writes and mutation events while changed writes remain retryable', () => {
+  const values = new Map(); let writes = 0, mutations = 0, fail = false;
+  const storage = {getItem: key => values.get(key), setItem(key, value) { writes++; if (fail) throw new Error('blocked'); values.set(key, value); }};
+  const store = createDemoStore(storage, 'trip'); store.subscribe(() => mutations++);
+  store.draft('missing', null); assert.equal(writes, 0);
+  store.draft('review', {body: 'Remember', rating: 4});
+  store.draft('review', {body: 'Remember', rating: 4});
+  assert.equal(writes, 1); assert.equal(mutations, 1);
+  fail = true; assert.throws(() => store.draft('review', {body: 'Changed', rating: 4}), /could not save/);
+  assert.equal(store.draft('review').body, 'Remember');
+  fail = false; store.draft('review', {body: 'Changed', rating: 4});
+  assert.equal(store.draft('review').body, 'Changed');
+  store.draft('review', null); const total = writes; store.draft('review', null);
+  assert.equal(writes, total); assert.equal(mutations, 3);
+});
