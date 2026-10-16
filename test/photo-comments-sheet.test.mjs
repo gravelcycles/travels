@@ -23,7 +23,7 @@ function dragFixture() {
   const surface = element(), heading = element(); let closes = 0;
   bindDismissGesture(surface, heading, () => { closes++; surface.close(); });
   const point = (type, x, y, extra = {}) => {
-    const event = { pointerId: 1, isPrimary: true, button: 0, clientX: x, clientY: y, target: heading, preventDefault() { this.prevented = true; }, ...extra };
+    const event = { pointerId: 1, isPrimary: true, button: 0, clientX: x, clientY: y, target: heading, preventDefault() { this.prevented = true; }, stopImmediatePropagation() { this.stopped = true; }, ...extra };
     heading.emit(type, event); return event;
   };
   return { surface, heading, point, closes: () => closes };
@@ -52,12 +52,52 @@ test('short drags, reversing a drag and pointer cancellation restore the sheet w
     assert.equal(f.surface.dataset.dragging, undefined, mode);
   }
 });
-test('horizontal/upward starts, close-button clicks and secondary pointers do not become dismissals', () => {
-  for (const [x, y] of [[160, 110], [100, 60]]) {
-    const f = dragFixture(); f.point('pointerdown', 100, 100); f.point('pointermove', x, y); f.point('pointermove', 100, 300); f.point('pointerup', 100, 300);
-    assert.equal(f.closes(), 0);
+test('the whole header tolerates sideways or upward thumb wobble before a downward touch drag', () => {
+  for (const [x, y] of [[160, 105], [100, 60]]) {
+    const f = dragFixture(); f.point('pointerdown', 100, 100, { pointerType: 'touch' });
+    f.point('pointermove', x, y); f.point('pointermove', 120, 170);
+    assert.equal(f.surface.dataset.dragging, 'true');
+    f.point('pointerup', 125, 182);
+    assert.equal(f.closes(), 1, 'Release position completes an easy deliberate pull');
   }
-  for (const extra of [{ target: { closest: () => ({}) } }, { isPrimary: false }, { button: 2 }]) {
+  for (const [x, y] of [[160, 105], [100, 60]]) {
+    const f = dragFixture(); f.point('pointerdown', 100, 100); f.point('pointermove', x, y); f.point('pointerup', x, y);
+    assert.equal(f.closes(), 0, 'Horizontal or upward travel alone cannot dismiss');
+  }
+});
+test('Close-origin drags work, moved drags suppress their click, and ordinary taps and keyboard actions remain available', () => {
+  const button = element(); button.closest = () => button;
+  for (const distance of [30, 90]) {
+    const f = dragFixture();
+    f.point('pointerdown', 100, 100, { target: button, pointerType: 'touch' });
+    assert.equal(f.heading.hasPointerCapture(1), false, 'A resting tap must still target the button');
+    f.point('pointermove', 110, 100 + distance);
+    assert.equal(button.hasPointerCapture(1), true, 'Button capture keeps drag tracking beyond the header');
+    f.point('pointerup', 110, 100 + distance);
+    assert.equal(f.closes(), distance >= 80 ? 1 : 0);
+    const generated = f.point('click', 110, 100 + distance, { detail: 1, target: button });
+    assert.equal(generated.prevented, true);
+    assert.equal(generated.stopped, true);
+  }
+  const f = dragFixture();
+  f.point('pointerdown', 100, 100, { target: button }); f.point('pointermove', 100, 130); f.point('pointerup', 100, 130);
+  assert.equal(f.point('click', 100, 130, { detail: 0, target: button }).prevented, undefined, 'Keyboard Close is never suppressed');
+  f.point('pointerdown', 100, 100, { target: button }); f.point('pointerup', 100, 100);
+  assert.equal(f.point('click', 100, 100, { detail: 1, target: button }).prevented, undefined, 'Next ordinary tap remains available');
+});
+test('horizontal, upward and cancelled button drags never become accidental Close taps', () => {
+  for (const [x, y, end] of [[150, 100, 'pointerup'], [100, 50, 'pointerup'], [150, 100, 'pointercancel']]) {
+    const f = dragFixture(), button = element(); button.closest = () => button;
+    f.point('pointerdown', 100, 100, { target: button }); f.point('pointermove', x, y); f.point(end, x, y);
+    assert.equal(f.closes(), 0);
+    assert.equal(f.surface.style.getPropertyValue('--comments-drag-y'), '');
+    const click = f.point('click', x, y, { target: button, detail: 1 });
+    assert.equal(click.prevented, true);
+    assert.equal(click.stopped, true);
+  }
+});
+test('secondary pointers and nonprimary buttons cannot initiate a header dismissal', () => {
+  for (const extra of [{ isPrimary: false }, { button: 2 }]) {
     const f = dragFixture(); f.point('pointerdown', 100, 100, extra); f.point('pointermove', 100, 300); f.point('pointerup', 100, 300);
     assert.equal(f.closes(), 0);
   }
@@ -67,6 +107,20 @@ test('another pointer or a history close cancels the active gesture without an e
     const f = dragFixture(); f.point('pointerdown', 100, 100); f.point('pointermove', 100, 250); interrupt(f); f.point('pointerup', 100, 250);
     assert.equal(f.closes(), 0);
     assert.equal(f.surface.style.getPropertyValue('--comments-drag-y'), '');
+  }
+});
+test('a second finger in the thread or composer cancels the header drag without taking over that touch', () => {
+  for (const id of ['comments-thread', 'comment-body']) {
+    const f = dragFixture();
+    f.point('pointerdown', 100, 100); f.point('pointermove', 100, 250);
+    const touch = { pointerId: 2, isPrimary: false, target: { id }, preventDefault() { throw new Error('Body touch must remain native'); }, stopPropagation() { throw new Error('Body touch must remain native'); } };
+    f.surface.emit('pointerdown', touch);
+    assert.equal(f.surface.style.getPropertyValue('--comments-drag-y'), '');
+    assert.equal(f.heading.hasPointerCapture(1), false);
+    f.point('pointermove', 100, 300); f.point('pointerup', 100, 300);
+    assert.equal(f.closes(), 0, id);
+    assert.equal(f.surface.open, true);
+    f.surface.emit('pointerdown', touch); // No active header drag: leave it alone.
   }
 });
 

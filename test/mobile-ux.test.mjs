@@ -59,6 +59,84 @@ test('swiping, opening location and returning from it keep the same selected pho
   assert.equal(f.node('#photo-location-panel').inert,true);
 });
 
+test('the entire location header accepts downward drags after a sideways start, including Close',()=>{
+  for (const selector of ['.photo-location-heading','#photo-location-title','#photo-location-subtitle','#mobile-location-close']) {
+    const f=viewerFixture();f.api.openDay();f.api.selectPhoto(1);f.click('#mobile-photo-location');
+    const header='.photo-location-heading', target=f.node(selector), start={target,clientX:100,clientY:350};
+    const initialReveal=parseFloat(f.node('.photo-viewer').style['--reveal']);
+    f.dispatch(header,'pointerdown',start);
+    f.dispatch(header,'pointermove',{...start,clientX:118,clientY:352});
+    f.dispatch(header,'pointermove',{...start,clientX:155,clientY:420});
+    assert.equal(parseFloat(f.node('.photo-viewer').style['--reveal']),initialReveal-70,'The panel follows the finger');
+    f.dispatch(header,'pointerup',{...start,clientX:155,clientY:420});
+    assert.equal(f.controller.locationVisible(),false,selector);
+    assert.equal(f.node('#photo-dialog').open,true);
+    assert.equal(f.index,1);
+    assert.equal(f.history.state.mobileAtlas.layer,'photo');
+    assert.equal(f.click(selector,header,{synthetic:true}).prevented,true,'No click leaks from the drag');
+  }
+});
+
+test('location Close retains native pointer capture through taps and drags',()=>{
+  const f=viewerFixture();f.api.openDay();f.click('#mobile-photo-location');
+  const header='.photo-location-heading',start={target:f.node('#mobile-location-close'),clientX:200,clientY:350};
+  let captures=0,buttonCaptures=0;f.node(header).setPointerCapture=()=>captures++;
+  f.node('#mobile-location-close').setPointerCapture=()=>buttonCaptures++;
+  f.dispatch(header,'pointerdown',start);f.dispatch(header,'pointerup',start);
+  assert.equal(captures,0,'A tap must not be retargeted to the header');
+  assert.equal(buttonCaptures,1);
+  f.dispatch(header,'pointerdown',start);f.dispatch(header,'pointermove',{...start,clientY:380});
+  assert.equal(captures,0,'Transferring capture would cancel a touch drag via lostpointercapture');
+  assert.equal(buttonCaptures,2);
+});
+
+test('short, horizontal and cancelled location-header drags do not activate Close',()=>{
+  for (const [dx,dy,end] of [[0,18,'pointerup'],[70,3,'pointerup'],[8,100,'pointercancel'],[8,100,'lostpointercapture']]) {
+    const f=viewerFixture();f.api.openDay();f.click('#mobile-photo-location');
+    const header='.photo-location-heading', start={target:f.node('#mobile-location-close'),clientX:200,clientY:350};
+    f.dispatch(header,'pointerdown',start);
+    f.dispatch(header,'pointermove',{...start,clientX:200+dx,clientY:350+dy});
+    f.dispatch(header,end,{...start,clientX:200+dx,clientY:350+dy});
+    assert.equal(f.controller.locationVisible(),true);
+    assert.equal(f.node('.photo-viewer').style['--reveal'],f.node('.photo-viewer').style['--location-height']);
+    assert.equal(f.click('#mobile-location-close',header,{synthetic:true}).prevented,true);
+    assert.equal(f.controller.locationVisible(),true);
+    assert.equal(f.click('#mobile-location-close',header).prevented,undefined,'A fresh tap still works');
+    assert.equal(f.controller.locationVisible(),false);
+  }
+});
+
+test('a second finger cancels a location-header drag without zooming or closing the photo',()=>{
+  const f=viewerFixture();f.api.openDay();f.click('#mobile-photo-location');
+  const header='.photo-location-heading';
+  f.dispatch(header,'pointerdown',{clientX:120,clientY:350});
+  f.dispatch(header,'pointermove',{clientX:125,clientY:410});
+  f.dispatch(header,'pointerdown',{pointerId:2,clientX:240,clientY:400});
+  f.dispatch(header,'pointermove',{pointerId:2,clientX:300,clientY:470});
+  f.dispatch(header,'pointerup',{pointerId:2});f.dispatch(header,'pointerup');
+  assert.equal(f.controller.locationVisible(),true);
+  assert.equal(f.node('.photo-viewer').style['--reveal'],f.node('.photo-viewer').style['--location-height']);
+  assert.notEqual(f.node('.photo-viewer').dataset.zoomed,'true');
+  assert.equal(f.node('#photo-dialog').open,true);
+});
+
+test('a second finger on the map or native video cancels the header pull without intercepting content',()=>{
+  for(const nativeVideo of [false,true]) {
+  const f=viewerFixture();f.api.openDay();f.click('#mobile-photo-location');
+  const header='.photo-location-heading';
+  f.dispatch(header,'pointerdown',{clientX:120,clientY:350});
+  f.dispatch(header,'pointermove',{clientX:125,clientY:410});
+  const target=nativeVideo?{closest:query=>query==='.photo-stage'?f.node('.photo-stage'):query==='button,#viewer-video'?f.node('#viewer-video'):null}:f.node('#photo-map');
+  const second=f.dispatch('#photo-dialog','pointerdown',{target,pointerId:2,clientX:240,clientY:500});
+  assert.equal(second.prevented,undefined);assert.equal(second.stopped,undefined);
+  f.dispatch(header,'pointermove',{clientX:125,clientY:490});
+  f.dispatch(header,'pointerup',{clientX:125,clientY:490});
+  assert.equal(f.controller.locationVisible(),true);
+  assert.equal(f.node('.photo-viewer').style['--reveal'],f.node('.photo-viewer').style['--location-height']);
+  assert.equal(f.node('#photo-dialog').open,true);
+  }
+});
+
 test('cancelled and ambiguous drags settle without navigating or opening location',()=>{
   const f=viewerFixture();f.api.openDay();
   f.drag('.photo-stage',-150,4,500,'pointercancel');f.flush();assert.equal(f.index,0);

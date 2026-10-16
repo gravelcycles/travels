@@ -27,26 +27,38 @@
     return Array.isArray(value) ? { photos: value, label: '' } : value && Array.isArray(value.photos) ? { photos: value.photos, label: value.label || '' } : { photos: fallback, label: '' };
   }
   function bindDismissGesture(surface, heading, close) {
-    let drag = null;
+    let drag = null, suppressClick = false;
     function reset() {
       if (!drag && !surface.dataset.dragging) return;
       const previous = drag; drag = null;
+      suppressClick ||= Boolean(previous?.moved);
       delete surface.dataset.dragging;
       surface.style.removeProperty('--comments-drag-y');
-      if (previous && heading.hasPointerCapture?.(previous.id)) heading.releasePointerCapture(previous.id);
+      if (previous?.capture.hasPointerCapture?.(previous.id)) previous.capture.releasePointerCapture(previous.id);
     }
+    surface.addEventListener('pointerdown', event => {
+      // A second finger may land in the conversation or composer, outside the
+      // heading listener. Cancel only the active drag; leave that touch native.
+      if (drag && event.pointerId !== drag.id) reset();
+    }, true);
     heading.addEventListener('pointerdown', event => {
       if (drag && drag.id !== event.pointerId) { reset(); return; }
-      if (!surface.open || event.isPrimary === false || event.button !== 0 || event.target.closest('button,a,input,textarea,select,summary,[contenteditable]')) return;
-      drag = { id: event.pointerId, x: event.clientX, y: event.clientY, distance: 0, active: false };
-      heading.setPointerCapture?.(event.pointerId);
+      if (!surface.open || event.isPrimary === false || event.button !== 0) return;
+      suppressClick = false;
+      // Button capture preserves its native tap target while drag events still
+      // bubble to the header, even if an initial sideways wobble leaves it.
+      const capture = event.target.closest('button,a') || heading;
+      drag = { id: event.pointerId, x: event.clientX, y: event.clientY, distance: 0, active: false, moved: false, capture };
+      capture.setPointerCapture?.(event.pointerId);
     });
     heading.addEventListener('pointermove', event => {
       if (!drag || event.pointerId !== drag.id) return;
-      const x = event.clientX - drag.x, y = event.clientY - drag.y;
+      const y = event.clientY - drag.y;
+      drag.moved ||= Math.hypot(event.clientX - drag.x, y) >= 8;
       if (!drag.active) {
-        if (Math.max(Math.abs(x), Math.abs(y)) < 8) return;
-        if (y <= 0 || y < Math.abs(x) * 1.2) { reset(); return; }
+        // Sideways thumb wobble is harmless on a header; it must not lock out
+        // the downward drag the traveler makes next.
+        if (y < 8) return;
         drag.active = true; surface.dataset.dragging = 'true';
       }
       event.preventDefault();
@@ -55,14 +67,20 @@
     });
     heading.addEventListener('pointerup', event => {
       if (!drag || event.pointerId !== drag.id) return;
-      const threshold = Math.min(120, Math.max(72, surface.getBoundingClientRect().height * .2));
-      const shouldClose = drag.active && drag.distance >= threshold;
+      const threshold = Math.min(96, Math.max(64, surface.getBoundingClientRect().height * .16));
+      const shouldClose = drag.active && Math.max(0, event.clientY - drag.y) >= threshold;
+      suppressClick = drag.moved || Math.hypot(event.clientX - drag.x, event.clientY - drag.y) >= 8;
       // Keep a committed drag in place until history dismisses the surface.
       // Small or cancelled gestures return to their resting position via CSS.
       if (shouldClose) { drag = null; close(); } else reset();
     });
     heading.addEventListener('pointercancel', reset);
     heading.addEventListener('lostpointercapture', () => { if (drag) reset(); });
+    heading.addEventListener('click', event => {
+      if (!suppressClick || event.detail === 0) return;
+      suppressClick = false;
+      event.preventDefault(); event.stopImmediatePropagation();
+    }, true);
     surface.addEventListener('close', reset);
     return { reset };
   }

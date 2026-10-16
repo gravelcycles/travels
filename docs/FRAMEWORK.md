@@ -261,8 +261,11 @@ visibility. Trip scope is independent of the selected event or route group.
 No journey-specific template or backend instance is introduced.
 Notification selection opens the shared fullscreen viewer before the conversation;
 the comment component derives its compact presentation from that open viewer.
-Header dragging uses the existing history-aware overlay dismissal, preserving
-the underlying photo and draft. It introduces no separate notification viewer.
+Whole-header dragging, including a drag starting on Close, uses the existing
+history-aware overlay dismissal, preserving the underlying photo and draft.
+`mobile-ux.js` owns the analogous Photo location header within the viewer;
+it collapses that panel without dismissing the photo. Both retain normal control
+taps and suppress the click after a drag. No separate notification viewer is introduced.
 
 The Worker serves 500-row compact metadata pages and a separate newest-first
 30-comment feed. Both use the partial trip-order D1 index and filter eligible
@@ -310,6 +313,10 @@ flow with access/direction-aware routing is future work (W06); the present local
 graph reconstructs historical routes and is not turn-by-turn navigation.
 
 ## Remaining continuity work
+
+Short-landscape Photo location has an existing layout gap: a long note can
+consume the map's grid track. Preserve authored copy and reserve usable map space
+in the follow-up tracked in [TODO](../TODO.md) and [WIP](../WIP.md#photo-intermediate-screens--16-october-2026).
 
 The documentation audit closes the missing reading order, decision/supersession
 record and new-atlas acceptance gaps. It does not provide automated visual or

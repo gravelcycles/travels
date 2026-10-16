@@ -1,5 +1,14 @@
 # Changelog
 
+## 16 October 2026 — whole-header sheet dismissal
+
+- Make the full Comments and Photo location headers draggable, including their
+  text, blank space and Close controls, while preserving normal button taps.
+- Tolerate sideways starts, prevent header text selection and suppress stray
+  clicks after moved/cancelled drags. Keep thread scrolling, map input, drafts,
+  photo selection and one-level history intact. Record the clarification in
+  O17/O08 and the photo/conversation workflows; verification is tracked in WIP.
+
 ## 16 October 2026 — align fullscreen city and comment controls
 
 - Keep next-city/day at the right safe edge and previous-city/day at the left,

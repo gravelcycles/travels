@@ -229,8 +229,12 @@ when it falls beyond the oldest conversation page. Close/Back preserves the
 underlying photo/map flow and unfinished drafts. Over fullscreen, the conversation
 uses a compact Comments/count heading, thread and composer without repeating the
 thumbnail, photo title, position or photo navigation. Contextual sidebar comments
-retain their photo context. A deliberate downward drag from the sheet header
-dismisses just the conversation through the same history path as Close; short,
+retain their photo context. A deliberate downward drag from anywhere in the
+sheet header (handle, title, blank space or Close control) dismisses just the
+conversation through the same history path as Close. The owner's later
+16 October clarification requires the whole header: tolerate initial sideways
+wobble, prevent text selection and retain ordinary button taps/keyboard actions.
+Suppress the click after any moved header drag, including one starting on Close; short,
 horizontal or cancelled drags leave it open. Scrolling the thread and editing
 text do not drag the sheet. Keep Close, Escape, Back and reduced-motion behavior.
 Load more belongs inside the thread scroller; short screens use a compact inline
