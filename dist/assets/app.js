@@ -68,6 +68,8 @@
   let replayMapReady = false;
   let mainDecorations = { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [] };
   let viewerCameraPhoto = null;
+  let viewerMapSize = '', viewerMapFrame = null;
+  let viewerCameraMoving = false;
   let viewerRouteKey = null, viewerPhotoMarkers = [];
   let preloadSelection = null, preloadDirection = 1;
   let viewerTransition = null;
@@ -140,6 +142,7 @@
   }
 
   function photoById(id) {
+    if (mediaUtils.index) return mediaUtils.index(journey).byId.get(id);
     return mediaUtils.items(journey).find((photo) => photo.id === id);
   }
 
@@ -156,6 +159,9 @@
   }
 
   function photosForDay(dayId) {
+    if (mediaUtils.index) return mediaUtils.index(journey).byDay.get(dayId) || [];
+    // Cached HTML can briefly mix an older media helper with this runtime.
+    // Keep its working reader path until navigation fetches the new asset hash.
     const photos = mediaUtils.items(journey).filter((photo) => photo.dayId === dayId);
     const order = dayById(dayId)?.photoOrder || [];
     const positions = new Map(order.map((id, index) => [id, index]));
@@ -167,6 +173,7 @@
   }
 
   function orderedPhotos() {
+    if (mediaUtils.index) return mediaUtils.index(journey).ordered;
     return journey.days.flatMap((day) => photosForDay(day.id));
   }
 
@@ -1493,17 +1500,25 @@
 
   function initViewerMap() {
     if (viewerMap) {
-      if (viewerMap) {
+      const container = $('#photo-map');
+      const size = `${container.clientWidth}:${container.clientHeight}`;
+      const resized = size !== viewerMapSize;
+      if (resized) {
+        viewerMapSize = size;
         viewerMap.resize();
-        syncViewerMap();
       }
+      // A sheet round trip preserves the explored camera, marker and layers.
+      // A new photo or changed map dimensions still refreshes its context.
+      if (resized || !viewerMapReady || viewerCameraPhoto !== viewerPhotos()[viewerPhotoIndex]) syncViewerMap();
       return;
     }
     try { viewerMap = createMap("photo-map"); }
     catch (_error) { viewerFeedback?.destroy(); viewerFeedback=window.JOURNEY_ATLAS_MAP_FEEDBACK.create('photo-map',retryViewerMap);viewerFeedback.fail();return; }
+    const container = $('#photo-map');
+    viewerMapSize = `${container.clientWidth}:${container.clientHeight}`;
     viewerFeedback=window.JOURNEY_ATLAS_MAP_FEEDBACK.create('photo-map',retryViewerMap);viewerFeedback.watch(viewerMap);
     viewerTransition = window.JOURNEY_ATLAS_UTILS.photoMapTransition(viewerMap);
-    const stopPhotoTransition = event => { if (event.originalEvent) viewerTransition.cancel({ stopMap: false }); };
+    const stopPhotoTransition = event => { if (event.originalEvent) { viewerCameraMoving = false; viewerTransition.cancel({ stopMap: false }); } };
     viewerMap.on("movestart", stopPhotoTransition);
     viewerMap.on("zoomstart", stopPhotoTransition);
     const finishViewerMapSetup = () => {
@@ -1514,6 +1529,30 @@
     };
     viewerMap.on("styledata", finishViewerMapSetup);
     viewerMap.on("load", finishViewerMapSetup);
+  }
+
+  function pauseViewerLocation() {
+    window.cancelAnimationFrame(viewerMapFrame); viewerMapFrame = null;
+    // An unfinished automatic trip must resume on reopening. A settled or
+    // user-interrupted camera remains exactly where the traveler left it.
+    if (viewerCameraMoving) viewerCameraPhoto = null;
+    viewerTransition?.cancel();
+  }
+
+  function showViewerLocation() {
+    window.cancelAnimationFrame(viewerMapFrame);
+    if (!window.JOURNEY_ATLAS_MOBILE_UI?.enabled()) { initViewerMap(); return; }
+    // Let the sheet paint before constructing a WebGL map. Closing, changing
+    // layers or leaving the viewer makes either queued frame harmless.
+    const visible = () => photoDialog.open && window.JOURNEY_ATLAS_MOBILE_UI.locationVisible() && !window.JOURNEY_ATLAS_MOBILE_UI.gridVisible();
+    viewerMapFrame = window.requestAnimationFrame(() => {
+      viewerMapFrame = null;
+      if (!visible()) return;
+      viewerMapFrame = window.requestAnimationFrame(() => {
+        viewerMapFrame = null;
+        if (visible()) initViewerMap();
+      });
+    });
   }
 
   function renderViewerFilmstrip(photos) {
@@ -1531,9 +1570,10 @@
     }
     const entries = photos.map((photo, index) => ({photo, index})).filter(({photo}) =>
       collection || photo.dayId === dayId);
-    const album = JSON.stringify(entries);
-    if (strip.dataset.album !== album) {
-      strip.dataset.album = album;
+    const previous = strip.atlasAlbumEntries;
+    if (!previous || previous.length !== entries.length || entries.some((entry, i) =>
+      entry.photo !== previous[i].photo || entry.index !== previous[i].index)) {
+      strip.atlasAlbumEntries = entries;
       strip.innerHTML = entries.length
       ? entries.map(({photo, index}, albumIndex) => `
           <button type="button" data-viewer-index="${index}" class="${index === selectedIndex ? "active" : ""}" aria-pressed="${index === selectedIndex}" aria-label="Show ${mediaUtils.isVideo(photo) ? 'video' : 'photo'} ${albumIndex + 1} of ${entries.length}: ${escapeHtml(photo.caption || photo.alt || '')}">
@@ -1546,8 +1586,11 @@
     }
     for (const button of strip.querySelectorAll('[data-viewer-index]')) {
       const selected = Number(button.dataset.viewerIndex) === selectedIndex;
-      button.classList.toggle('active', selected);
-      button.setAttribute('aria-pressed', String(selected));
+      if (button.atlasSelected !== selected) {
+        button.atlasSelected = selected;
+        button.classList.toggle('active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      }
     }
     const activeThumb = $("#viewer-filmstrip .active");
     if (origin || !activeThumb || !strip.clientWidth || !strip.clientHeight || window.JOURNEY_ATLAS_MOBILE_UI?.enabled() && !window.JOURNEY_ATLAS_MOBILE_UI.gridVisible()) return;
@@ -1738,12 +1781,15 @@
         }
         const canvas = viewerMap.getCanvas();
         const padding = Math.max(16, Math.min(40, canvas.clientWidth / 5, canvas.clientHeight / 5));
-        viewerTransition.move(previous, photo, { reducedMotion: prefersReducedMotion(), padding, onFinish: () => previousMarker?.remove() });
+        viewerCameraMoving = true;
+        viewerTransition.move(previous, photo, { reducedMotion: prefersReducedMotion(), padding, onFinish: () => { viewerCameraMoving = false; previousMarker?.remove(); } });
       }
     } else {
       viewerTransition?.cancel();
       if (routeChanged || !previous || window.JOURNEY_ATLAS_UTILS.locatedPhoto(previous)) {
         const camera = cityCamera(viewerMap,day);
+        viewerCameraMoving = Boolean(camera) && !prefersReducedMotion();
+        if (viewerCameraMoving) viewerMap.once?.('moveend', () => { viewerCameraMoving = false; });
         if (camera) viewerMap.easeTo({...camera,duration:prefersReducedMotion()?0:650});
         else viewerMap.easeTo({center:[0,20],zoom:1.5,duration:0});
       }
@@ -2515,8 +2561,8 @@
     layoutChanged:photoId=>{viewerPhotoIndex=Math.max(0,viewerPhotos().findIndex(photo=>photo.id===photoId));updateViewer();},
     overview:fitRoute, album:openAlbum, replay:openReplay,
     restoreOverlay:id=>{if(id==='album-dialog')openAlbum();else if(id==='replay-dialog')openReplay();else if(['comments-dialog','experience-unlock','trip-notifications-dialog'].includes(id))placesUI?.restoreOverlay(id);else window.JOURNEY_ATLAS_MOBILE_UI.presentOverlay(id);},
-    location:()=>{viewerCameraPhoto=null;initViewerMap();},
-    pauseLocation:()=>viewerTransition?.cancel(),
+    location:showViewerLocation,
+    pauseLocation:pauseViewerLocation,
     replayMap:()=>{if(replayMapReady && replayDialog.open){replayMap.resize();drawReplayMomentMap(currentReplayMoment(),replayProgress,true);}},
     pauseMedia:()=>videoPlayer.pause(),
     resumePhoto:updateViewer,

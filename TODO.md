@@ -27,6 +27,15 @@ activation work.
 
 ## Independent project workstreams
 
+- [ ] **Post-AVIF loading comparison.** After the concurrent migration deploys,
+      compare the same full photographs/dimensions under cold, revalidated and
+      same-page cache states. Measure queue/header/body/decode and next-photo
+      readiness; if thumbnails still starve the immediate neighbor, evaluate a
+      bounded scheduling change with numeric before/after evidence. Keep current
+      photo priority, cancellation, private authorization and fallback. The
+      current performance pass handles scoped data, catalog sizing and redundant
+      interaction work separately; physical iPhone/Safari remains a device check.
+
 - [ ] **Photo location with long notes in short landscape.** Reserve usable map
       space without losing scroll access to authored copy. The 844 × 390 layout
       can collapse the map to zero height; reproduced with release `27a88eb`

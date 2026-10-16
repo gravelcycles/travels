@@ -40,6 +40,19 @@ O03/O04/O08 acceptance checks; it does not introduce visitor reload auto-resume.
 checks, automated coverage and intentional resets. The current photo and
 Places contracts own implementation guidance.
 
+## Measured interaction and loading performance — 16 October 2026
+
+The owner reported lag while flipping photos and opening/closing Location and
+Comments, requested a full phone/desktop and network-loading pass, then authorized
+implementation of the priorities. The follow-up requires numeric before/after
+evaluation for each fix. Record the same fixture, viewport, CPU/network settings
+and cache state on both sides; distinguish deterministic work/byte reductions,
+controller benchmarks and browser-visible latency. Do not claim an FPS or
+end-to-end speedup from fewer operations alone. Preserve the reviewed reveals,
+private access, draft recovery, view state and focal zoom. Integrate concurrent
+changes and re-evaluate the WebP-to-AVIF migration separately so its savings are
+not attributed to unrelated runtime work. See WIP for delivery status.
+
 ## Standing decisions and acceptance checks
 
 | ID | Current decision | Check when touching this area |

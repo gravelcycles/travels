@@ -38,8 +38,9 @@
       const scale = clamp(next.scale, 1, maxScale(width, height, rect.width, rect.height));
       state = clampTransform({...next, scale}, width, height, rect.width, rect.height);
       if (state.scale <= 1.001) state = {scale: 1, x: 0, y: 0};
-      ownedTransform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale})`;
-      image.style.transform = ownedTransform;
+      image.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale})`;
+      // CSSOM may normalize units; compare against the value the browser stores.
+      ownedTransform = image.style.transform;
       viewer.dataset.desktopZoomed = String(state.scale > 1);
     }
     function stopAnimation() {

@@ -30,9 +30,11 @@
     const dialog = $('#photo-dialog'), viewer = $('.photo-viewer'), stage = $('.photo-stage'), img = $('#modal-photo');
     const panel = $('#photo-location-panel'), locationHeading = $('.photo-location-heading'), strip = $('#viewer-filmstrip');
     let current = { photos: [], index: 0, day: null }, locationOpen = false, grid = false, chrome = true, gridOrigin = null;
-    let reveal = 0, locationHeight = 300, scale = 1, panX = 0, panY = 0;
+    let reveal = 0, paintedReveal = 0, locationHeight = 300, scale = 1, panX = 0, panY = 0;
     let gesture = null, pointers = new Map(), pinch = null, suppressClick = false;
-    let locationTimer, swipeTimer, swipeFrame, dragFrame, zoomFrame, dismissTimer, tapTimer;
+    let locationTimer, locationFrame, revealFrame, settleLocation = false, swipeTimer, swipeFrame, dragFrame, zoomFrame, dismissTimer, tapTimer;
+    let locationFoot = 84, viewerHeight = 0, locationWidth = 0, locationStageHeight = 0;
+    let locationAnimating = false, revealDragging = false, locationVisualHeight = null;
     let dragOffset = 0, dragWidth = 0;
     let replayState = null;
     let overlay = null, overlayDepth = 0, afterDismiss = null;
@@ -237,8 +239,14 @@
       if (!enabled()) return;
       stopZoom();
       locationHeight = Math.min(360, Math.max(150, (viewer.clientHeight - 138) * .52));
+      viewerHeight = viewer.clientHeight;
+      locationWidth = viewer.clientWidth;
+      locationFoot = $('.mobile-photo-footer').offsetHeight;
       viewer.style.setProperty('--location-height', `${locationHeight}px`);
       reveal = locationOpen ? locationHeight : 0;
+      stopLocation();
+      locationStageHeight = viewerHeight - locationInset(reveal);
+      stage.style.setProperty('--location-inset', `${locationInset(reveal)}px`);
       revealTo(reveal);
       zoom(scale);
       $('.map-panel').style.setProperty('--day-summary-height', `${$('.mobile-day-summary').offsetHeight}px`);
@@ -248,8 +256,30 @@
       viewer.classList.remove('is-swipe-settling');
     }
     function animateLocation() {
-      viewer.classList.add('is-location-settling'); clearTimeout(locationTimer);
-      locationTimer = setTimeout(() => viewer.classList.remove('is-location-settling'), reduced.matches ? 0 : 220);
+      stopLocation(true); settleLocation = true;
+    }
+    function stopLocation(preserveVisual = false) {
+      let visible = preserveVisual && locationVisualHeight !== null ? {reveal, height:locationVisualHeight} : null;
+      if (preserveVisual && locationAnimating && enabled()) {
+        const frame = $('#viewer-photo-frame').getBoundingClientRect();
+        const sheet = panel.getBoundingClientRect(), bounds = viewer.getBoundingClientRect();
+        // Reverse from the rendered position, including between the first
+        // paint and the next frame, rather than snapping to the old target.
+        if (Number.isFinite(sheet.bottom)) visible = {
+          reveal:clamp(viewerHeight - locationFoot + locationHeight - (sheet.bottom - bounds.top), 0, locationHeight),
+          height:2 * (frame.top - stage.getBoundingClientRect().top + frame.height / 2)
+        };
+      }
+      clearTimeout(locationTimer); cancelAnimationFrame(locationFrame); cancelAnimationFrame(revealFrame);
+      locationFrame = revealFrame = null; settleLocation = locationAnimating = revealDragging = false;
+      viewer.classList.remove('is-location-settling');
+      viewer.classList.remove('is-location-dragging');
+      locationVisualHeight = visible?.height ?? null;
+      if (visible) {
+        reveal = paintedReveal = visible.reveal; viewer.style.setProperty('--reveal', `${reveal}px`);
+        fitLocationPhoto(visible.height);
+        revealDragging = true; viewer.classList.add('is-location-dragging');
+      } else stage.style.setProperty('--location-photo-transform', 'none');
     }
     function settleSwipe(offset) {
       stopSwipe();
@@ -293,16 +323,59 @@
       dragDismiss(commit ? action.dx : 0, commit ? Math.max(distance, stage.clientHeight * .7) : 0, commit);
       dismissTimer = setTimeout(finish, 180);
     }
+    function locationInset(value) {
+      return (locationFoot + locationHeight) * value / Math.max(1, locationHeight);
+    }
+    function fitLocationPhoto(height, baseHeight = locationStageHeight) {
+      const photo = current.photos[current.index];
+      const video = $('#journey-video');
+      const ratio = (photo?.width / photo?.height) || (photo?.mediaType === 'video' ? video.videoWidth / video.videoHeight : 0) || img.naturalWidth / img.naturalHeight || 1;
+      const width = locationWidth;
+      const fit = Math.min(width, height * ratio) / Math.max(1, Math.min(width, baseHeight * ratio));
+      stage.style.setProperty('--location-photo-transform', `translate3d(0,${(height - baseHeight) / 2}px,0) scale(${fit})`);
+    }
     function revealTo(value) {
-      reveal = clamp(value, 0, locationHeight); viewer.style.setProperty('--reveal', `${reveal}px`);
+      const previousHeight = locationVisualHeight ?? viewerHeight - locationInset(paintedReveal);
+      locationVisualHeight = null;
+      reveal = clamp(value, 0, locationHeight);
+      const nextHeight = viewerHeight - locationInset(reveal);
+      cancelAnimationFrame(revealFrame); revealFrame = null;
+      if (settleLocation) {
+        settleLocation = false;
+        revealDragging = false; viewer.classList.remove('is-location-dragging');
+        // Lay out only the endpoint. The full image, its blur and native video
+        // then travel together between their fitted sizes on the compositor.
+        locationStageHeight = nextHeight;
+        stage.style.setProperty('--location-inset', `${locationInset(reveal)}px`);
+        fitLocationPhoto(reduced.matches ? nextHeight : previousHeight);
+        if (!reduced.matches) {
+          $('#viewer-photo-frame').getBoundingClientRect();
+          viewer.classList.add('is-location-settling');
+          locationAnimating = true;
+          locationFrame = requestAnimationFrame(() => {
+            locationFrame = null; fitLocationPhoto(nextHeight);
+            locationTimer = setTimeout(() => { locationAnimating = false; viewer.classList.remove('is-location-settling'); }, 220);
+          });
+        }
+      } else fitLocationPhoto(nextHeight);
+      viewer.style.setProperty('--reveal', `${reveal}px`);
+      paintedReveal = reveal;
       viewer.dataset.locationVisible = String(reveal > 0);
+    }
+    function queueReveal(value) {
+      // Pointer events can outnumber display frames; keep only the latest pull.
+      reveal = clamp(value, 0, locationHeight);
+      revealDragging = true;
+      viewer.classList.add('is-location-dragging');
+      if (revealFrame) return;
+      revealFrame = requestAnimationFrame(() => { revealFrame = null; revealTo(reveal); });
     }
     function setLocation(value, record = true) {
       cancelTap();
       if (value && !current.photos.length) return;
       const changed = value !== locationOpen;
       const target = value ? locationHeight : 0;
-      if (!changed && reveal === target) return;
+      if (!changed && reveal === target && !revealFrame && !revealDragging) return;
       resetDismiss(); locationOpen = value; stopZoom(); setChrome(true); zoom(1); animateLocation(); revealTo(target);
       panel.inert = !value; panel.setAttribute('aria-hidden', String(!value));
       $('#mobile-photo-location').setAttribute('aria-expanded', String(value));
@@ -323,7 +396,7 @@
       cancelTap();
       const changed = grid !== value;
       if (!changed) return;
-      stopSwipe(); pointers.clear(); gesture = pinch = null;
+      stopSwipe(); stopLocation(); pointers.clear(); gesture = pinch = null;
       const origin = !value && record ? {dayId:current.day.id, collection:api.collection?.() || null, index:current.index,
         title:$('#mobile-grid-title').textContent, scroll:{top:strip.scrollTop || 0,left:strip.scrollLeft || 0}} : null;
       if (record && !restoring && dialog.open && enabled()) {
@@ -333,7 +406,7 @@
         history.pushState({...history.state}, '', location.href);
         viewerDepth++;
       }
-      if (value) api.pauseMedia?.();
+      if (value) { api.pauseMedia?.(); api.pauseLocation?.(); }
       resetDismiss(); grid = value; viewer.dataset.grid = String(value);
       if (value || record) gridOrigin = origin;
       viewer.dataset.gridOrigin = String(Boolean(gridOrigin));
@@ -416,6 +489,7 @@
     function closed() {
       scale = 1; panX = panY = 0; viewer.dataset.zoomed = 'false';
       cancelTap();
+      stopLocation(); api.pauseLocation?.();
       resetDismiss();
       gridOrigin = null; viewer.dataset.gridOrigin = 'false';
       clearNeighbors();
@@ -482,7 +556,7 @@
       suppressClick = false;
       const locationHeader = event.currentTarget === locationHeading;
       if ((!locationHeader && event.target.closest('button:not(#mobile-photo-location)')) || event.target.closest('#viewer-video')) return;
-      resetDismiss(); stopSwipe(); stopZoom(); clearTimeout(locationTimer); viewer.classList.remove('is-location-settling');
+      resetDismiss(); stopSwipe(); stopZoom(); stopLocation(true);
       refreshNeighbors();
       pointers.set(event.pointerId, {x:event.clientX,y:event.clientY});
       // Keep button-origin capture on that button: native taps still reach it,
@@ -543,7 +617,7 @@
         const edge = gesture.dx > 0 ? current.index === 0 : current.index === current.photos.length-1;
         queueSwipe(gesture.dx * (edge ? .2 : 1), gesture.width);
       } else if (gesture.axis === 'y' && current.photos.length) {
-        setChrome(true); revealTo(gesture.startReveal - gesture.dy);
+        setChrome(true); queueReveal(gesture.startReveal - gesture.dy);
       }
     }
     function pointerEnd(event) {
@@ -563,6 +637,9 @@
       }
       const action = gesture; gesture = null;
       if (!action) return;
+      if (!action.axis && locationVisualHeight !== null) {
+        animateLocation(); revealTo(locationOpen ? locationHeight : 0); return;
+      }
       if (scale > 1 && !action.handle) return;
       if (action.dismiss) { settleDismiss(action, cancelled); return; }
       if (action.axis === 'x' && !action.handle) {

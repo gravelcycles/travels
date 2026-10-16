@@ -105,10 +105,14 @@
         const data = read();
         if (typeof id !== 'string' || !id || ['__proto__','constructor','prototype'].includes(id)) throw new Error('Invalid draft.');
         if (value === undefined) return Object.hasOwn(data.drafts, id) ? data.drafts[id] : null;
-        if (value === null) delete data.drafts[id];
+        if (value === null) {
+          if (!Object.hasOwn(data.drafts, id)) return null;
+          delete data.drafts[id];
+        }
         else {
           const serialized = JSON.stringify(value);
           if (!serialized || serialized.length > 32768) throw new Error('This draft is too long to save.');
+          if (Object.hasOwn(data.drafts, id) && JSON.stringify(data.drafts[id]) === serialized) return value;
           if (!Object.hasOwn(data.drafts, id) && Object.keys(data.drafts).length >= 300) throw new Error('This preview has too many unfinished drafts.');
           data.drafts[id] = JSON.parse(serialized);
         }

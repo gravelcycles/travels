@@ -40,7 +40,8 @@ function fixture(t) {
 }
 const read = (root, file) => fs.readFileSync(path.join(root, file), 'utf8');
 const ids = html => [...html.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]).sort();
-const assets = html => [...html.matchAll(/(?:src|href)="[^" ]*\/(?:assets|preview-assets)\/([a-z-]+\.(?:js|css))[^" ]*"/g)].map(match => match[1]);
+// Runtime parity is independent of public scoped bundles vs live Studio data.
+const assets = html => [...html.matchAll(/(?:src|href)="[^" ]*\/(?:assets|preview-assets)\/([a-z-]+\.(?:js|css))[^" ]*"/g)].map(match => match[1]).filter(name => !['journeys.js','route-geometry.js','trip-photos.js','content-overrides.js'].includes(name));
 function bundle(source, key) {
   const context = { window: {} };
   vm.runInNewContext(source, context);

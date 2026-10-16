@@ -3,6 +3,7 @@ import vm from 'node:vm';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/location-labels.js';
 import '../dist/assets/view-sharing.js';
+import '../dist/assets/media-utils.js';
 
 const app = fs.readFileSync(new URL('../dist/assets/app.js', import.meta.url), 'utf8');
 const mobile = fs.readFileSync(new URL('../dist/assets/mobile-ux.js', import.meta.url), 'utf8');
@@ -57,7 +58,7 @@ export function mapEntryHarness(journey, {mobile: isMobile = false, ready = true
     ResizeObserver:class{observe(){}},requestAnimationFrame(){},cancelAnimationFrame(){},performance:{now:()=>0},
     setTimeout:schedule,clearTimeout:id=>timers.delete(id),
     eventWord:form=>globalThis.JOURNEY_ATLAS_UTILS.eventWord(journey,form),
-    mediaUtils:{items:()=>journey.photos || [],isVideo:photo=>photo.mediaType==='video',label:photos=>`${photos.length} photos`},
+    mediaUtils:{...globalThis.JOURNEY_ATLAS_MEDIA,label:photos=>`${photos.length} photos`},
     photoById:id=>(journey.photos || []).find(photo=>photo.id===id),
     segmentCoordinates:segment=>segment.geometry || segment.coordinates || [],
     modesForDay:day=>[...new Set(day.segmentIds.map(id=>journey.segments.find(segment=>segment.id===id)?.mode).filter(Boolean))],

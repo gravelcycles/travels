@@ -251,6 +251,15 @@ current-page state. Names, bodies and credentials are not stored with read IDs.
 Deleted/moderated/ineligible comments do not count; restoring an already-read ID
 does not make it unread again.
 
+Conversation rendering retains unchanged rows by comment ID and rendered state;
+cached reopen, count refresh and loading updates do not rebuild the thread.
+Changed/reordered/deleted comments still reconcile, ownership controls refresh,
+and a live editor retains text/selection. Locking access clears retained rows.
+Draft persistence skips only confirmed unchanged saves; empty composers remove
+existing drafts instead of creating empty records. Failed writes/clears remain
+retryable and current-page text survives. Preserve the explicit visibility
+refresh on reopen so row reuse does not suppress unread tracking.
+
 The shared model uses one paginated trip metadata summary (`id`, `photoId`,
 `createdAt`, 500 rows/page), deriving exact per-photo and trip totals against
 local read IDs. Summary pages replace the prior snapshot atomically. The recent

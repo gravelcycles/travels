@@ -13,6 +13,25 @@
   verification, staged rollout and rollback in current guidance. The release
   receipt is tracked in WIP.
 
+## 16 October 2026 — measured interaction and loading performance
+
+- Scope public journey data to one real trip or the demo selector; load a compact
+  catalog while preserving Studio and old/new publication verification. Hash all
+  local template assets and select catalog covers by crop dimensions and DPR.
+- Cache media ordering/lookups and retain unchanged filmstrip controls and comment
+  rows. Skip confirmed unchanged/empty draft writes while preserving failed-save
+  retry, text, editors, unread tracking, privacy and history.
+- Move the phone Location sheet/photo with transforms at the reviewed duration,
+  coalesce dragging, defer map setup, preserve settled cameras and resume canceled
+  automatic movement. Preserve rapid reversal and the concurrent zoom correction.
+- Correct preexisting desktop transform ownership after CSSOM normalization so
+  closing/reopening the same photo returns to fitted size. All 781 tests and the
+  phone/landscape/desktop combined browser checks pass.
+- Record numeric before/after results and their limits in
+  [the measured pass](docs/PERFORMANCE_PASS_2026-10-16.md). Frame gaps did not improve;
+  layout/CPU and page payloads did. AVIF and any justified preload scheduling are
+  a separate follow-up. Verification/deployment receipt is tracked in WIP.
+
 ## 16 October 2026 — let zoom fill the screen behind visible controls
 
 - Remove continuous mobile header/footer backgrounds while zoomed, retaining
