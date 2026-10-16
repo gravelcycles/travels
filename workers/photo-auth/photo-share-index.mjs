@@ -1098,24 +1098,6 @@ export default {
             "height": 360
           }
         },
-        "backpacking-europe-heading-east-img-3442": {
-          "dayId": "backpacking-europe-heading-east-koln-stay",
-          "title": "Köln",
-          "thumbnail": {
-            "key": "v1/b0c91836ec8da00018c7cf7bd8a4b8fe076b55d528440bca9ff837c191ce0ad1.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-img-3444": {
-          "dayId": "backpacking-europe-heading-east-koln-stay",
-          "title": "Köln",
-          "thumbnail": {
-            "key": "v1/82df983aaee7907f89c1e49d6203909cebf10e88995c348d5edb7ecd87f96200.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
         "backpacking-europe-heading-east-snapseed-camera-capture-20260930-144641-400": {
           "dayId": "backpacking-europe-heading-east-koln-stay",
           "title": "Köln",
@@ -1242,24 +1224,6 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-img-3502": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/c3e9eb8c69af49b8fe6356a41329d8252d61880dca9317cf23b98da599e66b47.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-img-3504": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/9f049ea15f783123dd64f9a6f11b424ff4d2bc55aaa3f73d1e61b55c80a5b062.webp",
-            "width": 480,
-            "height": 506
-          }
-        },
         "backpacking-europe-heading-east-img-3505": {
           "dayId": "backpacking-europe-heading-east-prague-stay",
           "title": "Prague",
@@ -1296,15 +1260,6 @@ export default {
             "height": 360
           }
         },
-        "backpacking-europe-heading-east-img-3520": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/a50481334b8dec07430d710644ccfc77f5ed7460d145513b2d29f8052f1661e0.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
         "backpacking-europe-heading-east-img-3528": {
           "dayId": "backpacking-europe-heading-east-prague-stay",
           "title": "Prague",
@@ -1312,15 +1267,6 @@ export default {
             "key": "v1/7be05c512ed093315f47ebaed0cd9835da96bda1c07c7dc71f2a3ce4e8d5dbe7.webp",
             "width": 480,
             "height": 646
-          }
-        },
-        "backpacking-europe-heading-east-img-3532": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/624577df75537546dc281434a33f15648b8ed3cd7e9cbfe80b7c403cc66266d4.webp",
-            "width": 480,
-            "height": 640
           }
         },
         "backpacking-europe-heading-east-img-3535": {
@@ -1728,15 +1674,6 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-6ef4f40ebee07e386979": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/ba3e8b4a3bbfbae2d2a570e8d4a033f9d95239822ae144a85c77df48f88a4866.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
         "backpacking-europe-heading-east-upload-74d4a535adb64b0f5a9e": {
           "dayId": "backpacking-europe-heading-east-prague-stay",
           "title": "Prague",
@@ -1755,29 +1692,11 @@ export default {
             "height": 617
           }
         },
-        "backpacking-europe-heading-east-upload-063e6cbbb7fe4d1371a3": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/63dde57ecda876ffb2f020697e17faa70e8bec1519469a453dbed60b80b753da.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
         "backpacking-europe-heading-east-upload-f47a88409ddac4a0c2ab": {
           "dayId": "backpacking-europe-heading-east-prague-stay",
           "title": "Prague",
           "thumbnail": {
             "key": "v1/d890166bae518b4e319c842fbbfb05a0adba8591a3af752eee5464dbae02de95.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-417cf5674986dd58cfff": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/af8ac17f7eeb8610938aa0cbac7af811b7e4cadc6142847345ac45989953a58b.webp",
             "width": 480,
             "height": 640
           }
@@ -1827,15 +1746,6 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-0551f1a46aa18fcb2016": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/3d264e1225bed39d5c46743176c7b3f6fbda8d54b124ca277436072188a01d28.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
         "backpacking-europe-heading-east-upload-1a03138481fcd53b8ab4": {
           "dayId": "backpacking-europe-heading-east-prague-stay",
           "title": "Prague",
@@ -1843,15 +1753,6 @@ export default {
             "key": "v1/e9bd291f073ee7bb4f0aedd2d09064e5bc9194ee363e9232a99898d8e010bcea.webp",
             "width": 480,
             "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-86d4743441a90233c419": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/64d05a98c4083611996d95c888aa90805ed1633a9b3d50a6cec2639e18f2412f.webp",
-            "width": 480,
-            "height": 360
           }
         },
         "backpacking-europe-heading-east-upload-5343397c368402809d2a": {
@@ -1863,56 +1764,11 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-f0d82fef0369cbc84d0f": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/ad771eefe7df8bea338aed139ea27f4f61b915b13138f66af374ec726538950e.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
         "backpacking-europe-heading-east-upload-947a2f80c83b67206389": {
           "dayId": "backpacking-europe-heading-east-prague-stay",
           "title": "Prague",
           "thumbnail": {
             "key": "v1/9198b7e713510d3277c5a4918b265b48fb66d59f8d762fe15fc19ca649b9b9b7.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-31ce5d3b4d168273dfc9": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/eb6588bf0b5cf8cb5e374684996baf8b1f7e268da7fd0e30d34a3ddad3ae3372.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "backpacking-europe-heading-east-upload-b0163f478bb000ae5b1a": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/2f7f7abadcb2874dad1c019b563fdb77aa46a05adfa337797721ffb2d4f22503.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-9c627896e6668676374b": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/ce4eecba830fd2a361d469eeadf37eecbe80a3ab33304ea9e3fc0d076bcdbb32.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-44a6acd6868ad45977e9": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/5b6e2729f4fd939f3445da9911abbb3ff0be7432b55c7f67a07daf22f4332bee.webp",
             "width": 480,
             "height": 640
           }
@@ -1935,29 +1791,11 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-902541c590ad25c12aa4": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/42decf5d5f272a6ea64e6f75fe5d7617a8fa8ae38a4704e49ae0dc5cd036e380.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
         "backpacking-europe-heading-east-upload-7adee45845c1d871ccad": {
           "dayId": "backpacking-europe-heading-east-prague-stay",
           "title": "Prague",
           "thumbnail": {
             "key": "v1/2a1f46dcfcc086b69bd4f98e4e9a9d91fdb08a0e1cad160f85670b7828338fc5.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-9275ed6a35a6ef263039": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/d0f22a11b5f2518c03fd72e429b0319e3bf83c847c908293a22fcefc0bd56d62.webp",
             "width": 480,
             "height": 640
           }
@@ -1978,15 +1816,6 @@ export default {
             "key": "v1/7e9ff82e02bbddb55489cac2557ba7a5c998f25d3069be49ec541fe126431990.webp",
             "width": 480,
             "height": 360
-          }
-        },
-        "backpacking-europe-heading-east-upload-4bd1855b7f117fbb0697": {
-          "dayId": "backpacking-europe-heading-east-prague-stay",
-          "title": "Prague",
-          "thumbnail": {
-            "key": "v1/bd808d4d4d54927f629adc5e122be4f634446cd39cdb69fbc6131dd60a89814a.webp",
-            "width": 480,
-            "height": 640
           }
         },
         "backpacking-europe-heading-east-upload-d0dde9ac9b1fc05fbafe": {

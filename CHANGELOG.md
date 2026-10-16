@@ -1,5 +1,12 @@
 # Changelog
 
+## 16 October 2026 — publish later Heading East Studio review
+
+- Preserve the owner's 19 new recoverable Trash choices and two Prague photo
+  notes exactly as saved. Retain photo records, original media, pins and order.
+- Regenerate public content and discussion/share eligibility for the 101 visible
+  Heading East photos. Record the scoped selection in the trip intake guidance.
+
 ## 16 October 2026 — photo thumbnails in shared links
 
 - Give explicit photo shares metadata for the selected low-resolution thumbnail

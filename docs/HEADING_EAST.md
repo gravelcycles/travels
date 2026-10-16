@@ -5,6 +5,26 @@ Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 
 Each city is one event. Taglines remain blank; the owner added the first seven
 city stories in Studio on 11 October. The photo intake is recorded below.
 
+## Later Studio photo selections and notes — 16 October 2026
+
+The owner saved another Studio review and requested “pls publish my updates”.
+The saved photo overrides add 19 recoverable Trash selections (two in Köln and
+17 in Prague) and two traveler-written Prague notes. These supersede the prior
+visible membership only; preserve source records, originals, album order, pins,
+frames, capture dates and all other copy. The visible total is now 101 photos:
+Luzern 9, Freiburg 17, Hamburg 16, Köln 8, Düsseldorf 1, Berlin 24 and Prague 26.
+The earlier 120-photo count below describes that earlier publication.
+
+Publish these saved overrides on current main and regenerate the public data,
+comment eligibility and thumbnail-share index. Deploy the matching Worker before
+Pages so removed photos are unavailable through both discussions and share
+previews. No new media upload is needed. Verification must compare all saved
+overrides and the visible membership with fresh public output; retain the two
+notes exactly as entered. All 837 tests, the production build and real Worker
+runtime checks pass. Exact-source and generated-data checks confirm the saved
+selection, notes and unchanged remaining photo/route/day data. Deployment
+verification is pending in WIP.
+
 ## Saved photo and metadata publication — 16 October 2026
 
 The owner requested publication of the local photo data/metadata. Preserve the

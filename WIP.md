@@ -1,5 +1,23 @@
 # Current workstreams
 
+## Later saved Heading East Studio edits — 16 October 2026
+
+Owner requested publication after another saved Studio review. The isolated
+`codex/studio-edits-20261016` checkout starts from main `38b31a1`, preserving
+concurrent viewer and photo-share improvements. Scope: 19 new recoverable Trash
+choices and two exact traveler notes in `content/photo-overrides.json`; no route,
+day order, media upload or other journey change. The source snapshot is retained
+outside Git. [Heading East](docs/HEADING_EAST.md#later-studio-photo-selections-and-notes--16-october-2026)
+records the new 101-photo membership and preservation requirements.
+All **837 tests** and the production build pass. The actual Worker runtime
+passes authentication, WebP/AVIF, signed thumbnail sharing, video and D1 checks.
+Exact-source comparison verifies all 19 exclusions and both notes; surviving
+photo records/AVIF fallbacks, journey, routes and album order are unchanged.
+The generated comment and share indexes match all 101 visible IDs. Rollback
+Worker: `2187bc98-1bdb-48a8-9991-9473158ed84a`.
+Next: deploy regenerated comment/share eligibility before Pages, then verify the
+deployment and fresh public metadata. Publication is pending.
+
 ## Photo share thumbnails — 16 October 2026
 
 Owner requested low-resolution thumbnails of the actual shared photo in message
