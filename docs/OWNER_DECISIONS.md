@@ -138,18 +138,31 @@ checkpoint and an agent-operated message generator for manual sharing. It
 supersedes the earlier proposal-only scope for that bounded work; it does not
 authorize an outbound provider, recipient import or sending messages.
 
+Later on 16 October the owner clarified: “we'll break it up by trip usually
+(different ppl to notifiy for each trip)” and “ask for an update for each trip.”
+Prepare and acknowledge each trip independently in the shared ledger. This
+supersedes the initial single-audience assumption: sharing one trip's update
+must leave every other trip pending. Combining trips is an explicit option.
+Preserve the existing starting baseline and history; this correction requires
+neither a reset nor a new ledger for each trip. Separate audiences within the
+same trip still need separate histories.
+
 Track the current live site as the starting baseline, then count stable new
 trip/photo IDs by authored city/stop. Count additions rather than net album
 growth; edits, reordering, album moves and restoration of already acknowledged
 photos are not new. Drafts/local-only/trashed media do not enter a public update.
 Preparing or copying a message must not advance acknowledgment. Only an explicit
-owner statement that a prepared update was shared acknowledges its frozen
-contents; later additions remain pending. Preserve recoverable local history.
+owner statement that a prepared update was shared acknowledges its frozen,
+selected-trip contents; other trips and later additions remain pending. Preserve
+recoverable local history.
 
 Acceptance: an unchanged live site yields no update; old capture dates added
 later count; additions plus deletions count correctly; repeated places group;
 new trips are distinct; failed/interrupted reads cannot replace the baseline;
 repeated prepare/mark-shared cannot duplicate or consume later additions.
+With multiple published trips, require a trip choice or deliberate combined
+update; verify that preparing/sharing A leaves B pending, including after reload.
+Existing history remains readable and the original baseline stays intact.
 [Update workflow](UPDATE_ANNOUNCEMENTS.md) owns the command/state contract.
 O18 remains current-view sharing and O17 remains in-site comment notifications.
 The uncommitted 14 October exploration temporarily used O18 for announcements;

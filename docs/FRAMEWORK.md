@@ -260,6 +260,10 @@ membership, authored destination grouping, diffs and plain text;
 `update-announcements.mjs` owns a private ignored local ledger, retained backups
 and frozen drafts. This is shared tooling for every real trip, separate from
 viewer comment notifications and Studio's unverified-public review state.
+The ledger's known IDs are already keyed by trip. Selecting `--trip` filters the
+inventory before freezing a draft, so acknowledging it cannot consume another
+trip's additions. Multiple published trips require a selection or explicit
+`--all`; the original baseline and schema 1 history need no reset or migration.
 It does not modify source content, fetch protected media or send notifications.
 The [workflow](UPDATE_ANNOUNCEMENTS.md) defines initialization, prepare/copy versus
 acknowledgment, recovery and public-metadata verification limits. Studio UI and
