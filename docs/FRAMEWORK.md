@@ -260,6 +260,10 @@ membership, authored destination grouping, diffs and plain text;
 `update-announcements.mjs` owns a private ignored local ledger, retained backups
 and frozen drafts. This is shared tooling for every real trip, separate from
 viewer comment notifications and Studio's unverified-public review state.
+The ledger's known IDs are already keyed by trip. Selecting `--trip` filters the
+inventory before freezing a draft, so acknowledging it cannot consume another
+trip's additions. Multiple published trips require a selection or explicit
+`--all`; the original baseline and schema 1 history need no reset or migration.
 It does not modify source content, fetch protected media or send notifications.
 The [workflow](UPDATE_ANNOUNCEMENTS.md) defines initialization, prepare/copy versus
 acknowledgment, recovery and public-metadata verification limits. Studio UI and
@@ -273,6 +277,10 @@ reads. `comment-notifications.js` owns local read membership and count helpers;
 The coordinator connects the same model to photo/sidebar badges and conversation
 visibility. Trip scope is independent of the selected event or route group.
 No journey-specific template or backend instance is introduced.
+Notification selection opens the shared fullscreen viewer before the conversation;
+the comment component derives its compact presentation from that open viewer.
+Header dragging uses the existing history-aware overlay dismissal, preserving
+the underlying photo and draft. It introduces no separate notification viewer.
 
 The Worker serves 500-row compact metadata pages and a separate newest-first
 30-comment feed. Both use the partial trip-order D1 index and filter eligible

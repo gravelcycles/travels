@@ -26,6 +26,46 @@
   function photoCollection(value, fallback = []) {
     return Array.isArray(value) ? { photos: value, label: '' } : value && Array.isArray(value.photos) ? { photos: value.photos, label: value.label || '' } : { photos: fallback, label: '' };
   }
+  function bindDismissGesture(surface, heading, close) {
+    let drag = null;
+    function reset() {
+      if (!drag && !surface.dataset.dragging) return;
+      const previous = drag; drag = null;
+      delete surface.dataset.dragging;
+      surface.style.removeProperty('--comments-drag-y');
+      if (previous && heading.hasPointerCapture?.(previous.id)) heading.releasePointerCapture(previous.id);
+    }
+    heading.addEventListener('pointerdown', event => {
+      if (drag && drag.id !== event.pointerId) { reset(); return; }
+      if (!surface.open || event.isPrimary === false || event.button !== 0 || event.target.closest('button,a,input,textarea,select,summary,[contenteditable]')) return;
+      drag = { id: event.pointerId, x: event.clientX, y: event.clientY, distance: 0, active: false };
+      heading.setPointerCapture?.(event.pointerId);
+    });
+    heading.addEventListener('pointermove', event => {
+      if (!drag || event.pointerId !== drag.id) return;
+      const x = event.clientX - drag.x, y = event.clientY - drag.y;
+      if (!drag.active) {
+        if (Math.max(Math.abs(x), Math.abs(y)) < 8) return;
+        if (y <= 0 || y < Math.abs(x) * 1.2) { reset(); return; }
+        drag.active = true; surface.dataset.dragging = 'true';
+      }
+      event.preventDefault();
+      drag.distance = Math.max(0, y);
+      surface.style.setProperty('--comments-drag-y', `${drag.distance}px`);
+    });
+    heading.addEventListener('pointerup', event => {
+      if (!drag || event.pointerId !== drag.id) return;
+      const threshold = Math.min(120, Math.max(72, surface.getBoundingClientRect().height * .2));
+      const shouldClose = drag.active && drag.distance >= threshold;
+      // Keep a committed drag in place until history dismisses the surface.
+      // Small or cancelled gestures return to their resting position via CSS.
+      if (shouldClose) { drag = null; close(); } else reset();
+    });
+    heading.addEventListener('pointercancel', reset);
+    heading.addEventListener('lostpointercapture', () => { if (drag) reset(); });
+    surface.addEventListener('close', reset);
+    return { reset };
+  }
   // The visitor's stable local identity survives a session; demo access does not.
   // Neither record is a private-photo credential or changes the real auth service.
   function createIdentityStore(storage, session, makeId = uuid) {
@@ -107,7 +147,7 @@
     function mount() {
       bar.className = 'experience-bar';
       bar.innerHTML = `<span class="experience-preview-label">UX preview</span><div class="experience-switch" role="group" aria-label="Preview feature"><button id="experience-places" type="button">${icon('pin')}<span>Places</span></button><button id="experience-comments" type="button">${icon('comment')}<span>Comments</span></button></div><details class="experience-menu"><summary aria-label="Preview options">${icon('more')}</summary><div><p>Changes stay in this browser.</p><button id="experience-reset" type="button">Reset preview edits…</button><a id="experience-exit">Exit preview</a></div></details><span id="experience-status" role="status"></span>`;
-      dialog.innerHTML = `<header class="comments-heading"><div><h2 id="comments-title">Photo comments</h2></div><button id="close-comments" class="comments-icon-button" type="button" aria-label="Close comments">${icon('close')}</button></header><section class="comments-photo-context" aria-label="Current photograph"><button id="comments-view-photo" class="comments-photo-preview" type="button" aria-label="Return to photograph"><img id="comments-photo-image" alt=""/><span>${icon('comment')}</span></button><div><p id="comments-photo-title"></p><span id="comments-photo-position"></span></div><div class="comments-photo-navigation"><button id="comments-previous-photo" class="comments-icon-button" type="button" aria-label="Previous photograph">${icon('back')}</button><button id="comments-next-photo" class="comments-icon-button" type="button" aria-label="Next photograph">${icon('next')}</button></div></section><div class="comments-meta"><span id="comments-count"></span><span>${live ? 'Shared with people who have photo access' : 'Saved in this browser'}</span></div><div id="comments-list" class="comments-list" tabindex="-1" aria-busy="false"></div><div class="comments-load-status" role="status"><span id="comments-loading"></span><button id="comments-retry" type="button" hidden>Try again</button></div><button id="comments-load-more" class="comments-load-more" type="button" hidden>Load more comments</button><div id="comment-undo" class="comment-undo" hidden><span>Comment deleted.</span><button id="comment-undo-button" type="button">Undo</button><button id="comment-undo-dismiss" class="comments-icon-button" type="button" aria-label="Dismiss undo">${icon('close')}</button></div><form id="comment-form" class="comment-form"><div class="comment-byline"><span id="comment-self-avatar" class="comment-avatar" aria-hidden="true"></span><span>Commenting as <strong id="comment-author"></strong></span><button id="comment-change-name" type="button">Change name</button></div><label for="comment-body" class="comments-sr-only">Your comment</label><div class="comment-compose"><textarea id="comment-body" maxlength="1000" rows="2" placeholder="Add a comment…" aria-describedby="comment-status comment-character-count"></textarea><div class="comment-compose-footer"><span id="comment-draft-state"></span><span id="comment-character-count" hidden></span><button id="comment-submit" class="experience-primary" type="submit" disabled><span>Post</span>${icon('arrow')}</button></div></div><p id="comment-status" role="status"></p></form>`;
+      dialog.innerHTML = `<header class="comments-heading"><span class="comments-drag-handle" aria-hidden="true"></span><div class="comments-heading-label"><h2 id="comments-title">Photo comments</h2><span id="comments-heading-count" hidden></span></div><button id="close-comments" class="comments-icon-button" type="button" aria-label="Close comments">${icon('close')}</button></header><section class="comments-photo-context" aria-label="Current photograph"><button id="comments-view-photo" class="comments-photo-preview" type="button" aria-label="Return to photograph"><img id="comments-photo-image" alt=""/><span>${icon('comment')}</span></button><div><p id="comments-photo-title"></p><span id="comments-photo-position"></span></div><div class="comments-photo-navigation"><button id="comments-previous-photo" class="comments-icon-button" type="button" aria-label="Previous photograph">${icon('back')}</button><button id="comments-next-photo" class="comments-icon-button" type="button" aria-label="Next photograph">${icon('next')}</button></div></section><div class="comments-meta"><span id="comments-count"></span><span>${live ? 'Shared with people who have photo access' : 'Saved in this browser'}</span></div><div id="comments-thread" class="comments-thread" tabindex="-1"><div id="comments-list" class="comments-list" tabindex="-1" aria-busy="false"></div><div class="comments-load-status" role="status"><span id="comments-loading"></span><button id="comments-retry" type="button" hidden>Try again</button></div><button id="comments-load-more" class="comments-load-more" type="button" hidden>Load more comments</button></div><div id="comment-undo" class="comment-undo" hidden><span>Comment deleted.</span><button id="comment-undo-button" type="button">Undo</button><button id="comment-undo-dismiss" class="comments-icon-button" type="button" aria-label="Dismiss undo">${icon('close')}</button></div><form id="comment-form" class="comment-form"><div class="comment-byline"><span id="comment-self-avatar" class="comment-avatar" aria-hidden="true"></span><span>Commenting as <strong id="comment-author"></strong></span><button id="comment-change-name" type="button">Change name</button></div><label for="comment-body" class="comments-sr-only">Your comment</label><div class="comment-compose"><textarea id="comment-body" maxlength="1000" rows="2" placeholder="Add a comment…" aria-describedby="comment-status comment-character-count"></textarea><div class="comment-compose-footer"><span id="comment-draft-state"></span><span id="comment-character-count" hidden></span><button id="comment-submit" class="experience-primary" type="submit" disabled><span>Post</span>${icon('arrow')}</button></div></div><p id="comment-status" role="status"></p></form>`;
       const trigger = $('#open-photo-comments');
       trigger.innerHTML = `${icon('comment')}<span>Comments</span><span id="photo-comments-count" data-comment-count aria-hidden="true" hidden></span>`;
       trigger.setAttribute('aria-expanded', 'false');
@@ -148,12 +188,17 @@
       ui?.updatePhotoBadge($('#open-photo-comments'), summary, currentPhoto?.id);
       const sidebar = $('#map-photo-card');
       ui?.updatePhotoBadge($('[data-bubble-comments]'), summary, sidebar?.dataset.photoId || currentPhoto?.id);
-      $('#comments-count').textContent = summary?.loaded || !live || store?.hasLoaded(currentPhoto?.id) ? `${count}${!summary?.loaded && live && store?.hasMore(currentPhoto?.id) ? '+' : ''} ${count === 1 ? 'comment' : 'comments'}` : 'Comments';
+      const known = summary?.loaded || !live || store?.hasLoaded(currentPhoto?.id);
+      const total = `${count}${!summary?.loaded && live && store?.hasMore(currentPhoto?.id) ? '+' : ''}`;
+      $('#comments-count').textContent = known ? `${total} ${count === 1 ? 'comment' : 'comments'}` : 'Comments';
+      $('#comments-heading-count').textContent = known ? total : '';
+      $('#comments-heading-count').setAttribute('aria-label', known ? `${total} ${count === 1 ? 'comment' : 'comments'}` : '');
+      $('#comments-heading-count').hidden = dialog.dataset.presentation !== 'photo' || !known;
     }
     const collection = () => photoCollection(options.photoCollection?.(), options.photos());
     function syncThumbnail() {
       const image = $('#comments-photo-image'), photo = currentPhoto;
-      if (!photo) return;
+      if (!photo || dialog.dataset.presentation === 'photo') return;
       const key = `${photo.id}:${Boolean(options.unlocked())}`;
       if (thumbnailKey === key) return;
       thumbnailKey = key;
@@ -168,6 +213,17 @@
       if (src) { image.src = src; image.hidden = false; } else { image.removeAttribute('src'); image.hidden = true; }
     }
     function renderPhotoContext() {
+      const fullscreen = Boolean($('#photo-dialog')?.open);
+      dialog.dataset.presentation = fullscreen ? 'photo' : 'context';
+      $('#comments-title').textContent = fullscreen ? 'Comments' : 'Photo comments';
+      dialog.querySelector('.comments-photo-context').hidden = fullscreen;
+      dialog.querySelector('.comments-meta').hidden = fullscreen;
+      if (fullscreen) {
+        thumbnailKey = '';
+        root.JOURNEY_ATLAS_AUTH?.clearImage($('#comments-photo-image'));
+        $('#comments-photo-image').removeAttribute('src');
+        return;
+      }
       $('#comments-photo-title').textContent = photoTitle(currentPhoto, options.resolvedDay?.(currentPhoto?.dayId));
       const presenting = collection(), navigation = photoNavigation(presenting.photos, currentPhoto?.id);
       const kind = presenting.photos.some(photo => photo.mimeType || photo.mediaType === 'video') ? 'Item' : 'Photo';
@@ -182,7 +238,7 @@
       return `<time${readable ? ` datetime="${date.toISOString()}" title="${escape(date.toLocaleString())}"` : ''}>${escape(readable)}${comment.editedAt ? ' · edited' : ''}</time>`;
     }
     function renderComments({ revealId } = {}) {
-      updateIdentity(); refreshCounts(); renderPhotoContext();
+      updateIdentity(); renderPhotoContext(); refreshCounts();
       const visitor = identity.get(), comments = currentPhoto && store ? store.comments(currentPhoto.id) : [];
       $('#comments-list').setAttribute('aria-busy', String(loadState === 'loading'));
       $('#comments-list').innerHTML = comments.length ? comments.map(comment => {
@@ -200,6 +256,7 @@
       if (editingId) updateEditForm();
     }
     function beginUnlock(mode = 'unlock', after) {
+      dismissGesture.reset();
       unlockMode = mode; afterUnlock = after || null;
       const visitor = identity.get(), rename = mode === 'name', reset = mode === 'reset';
       unlock.innerHTML = `<button id="experience-unlock-cancel" class="comments-icon-button unlock-close" type="button" aria-label="${reset ? 'Cancel reset' : 'Close'}">${icon('close')}</button><div class="unlock-mark" aria-hidden="true">${icon(rename ? 'comment' : reset ? 'back' : 'lock')}</div><h2 id="experience-unlock-title">${rename ? 'What should we call you?' : reset ? 'A fresh start?' : 'Come on in.'}</h2><p class="unlock-intro">${rename ? 'Choose the name beside your next comments.' : reset ? 'Remove your comments, reviews and drafts for this journey. The original sample stays as it is.' : 'Photos to look back on.<br/>A place to leave a little memory.'}</p>${reset ? '<div class="unlock-actions"><button id="experience-confirm-reset" class="experience-primary" type="button">Reset preview edits</button><button id="experience-keep-edits" class="experience-secondary" type="button">Keep my edits</button></div><p id="experience-unlock-error" role="alert"></p>' : `<form id="experience-unlock-form" novalidate><label for="experience-display-name">Your display name</label><input id="experience-display-name" maxlength="40" placeholder="Your name" value="${escape(visitor?.name || '')}" autocomplete="nickname" enterkeyhint="${rename ? 'done' : 'next'}" aria-describedby="experience-name-hint"/><small id="experience-name-hint">${rename ? 'Your earlier comments keep their original name.' : 'No account needed. Just a name for your comments.'}</small>${rename ? '' : `<label for="experience-password">Shared password</label><div class="experience-password-field"><input id="experience-password" type="password" autocomplete="off" enterkeyhint="go" aria-describedby="experience-password-hint"/><button id="experience-show-password" type="button" aria-label="Show password" aria-pressed="false">${icon('eye')}</button></div><small id="experience-password-hint">Try it with <button id="experience-use-demo" type="button">demo</button>. Private photos keep their own password.</small>`}<p id="experience-unlock-error" role="alert"></p><button class="experience-primary" type="submit">${rename ? 'Save name' : 'Unlock & join in'}${icon(rename ? 'check' : 'next')}</button><button id="experience-maybe-later" class="experience-secondary" type="button">${rename ? 'Cancel' : 'Maybe later'}</button></form>`}`;
@@ -211,6 +268,7 @@
       if (options.protected(currentPhoto) && !options.unlocked()) { options.unlock(); return; }
       if (live && !options.unlocked()) { options.unlock(); return; }
       if (!live && !identity.allowed()) { beginUnlock('unlock', openComments); return; }
+      dismissGesture.reset();
       if (comment?.photoId === currentPhoto.id) { store.includeComment?.(comment); revealCommentId = comment.id; }
       loadState = live && !store.hasLoaded(currentPhoto.id) ? 'loading' : 'idle';
       if (!dialog.open) {
@@ -272,6 +330,7 @@
     }
     function finishEditing(discard = false) { const id = editingId; if (discard) saveDraft(`comment-edit:${id}`, null); editingId = ''; editsByPhoto.delete(currentPhoto.id); renderComments({ revealId: id }); }
     function updateViewport() {
+      dismissGesture.reset();
       const viewport = root.visualViewport;
       document.documentElement.style.setProperty('--comments-viewport-height', `${viewport?.height || innerHeight}px`);
       document.documentElement.style.setProperty('--comments-keyboard-inset', `${Math.max(0, innerHeight - (viewport?.height || innerHeight) - (viewport?.offsetTop || 0))}px`);
@@ -279,7 +338,8 @@
       if (dialog.open && dialog.dataset.keyboard === 'true' && dialog.contains(document.activeElement)) requestAnimationFrame(() => document.activeElement?.scrollIntoView({ block: 'nearest', behavior: 'instant' }));
     }
     mount();
-    visibility = root.JOURNEY_ATLAS_TRIP_NOTIFICATIONS?.observeVisible({ container: $('#comments-list'), active: () => dialog.open && !unlock.open && (!live || options.unlocked()), read: ids => store?.markRead?.(ids) });
+    const dismissGesture = bindDismissGesture(dialog, dialog.querySelector('.comments-heading'), closeComments);
+    visibility = root.JOURNEY_ATLAS_TRIP_NOTIFICATIONS?.observeVisible({ container: $('#comments-thread'), active: () => dialog.open && !unlock.open && (!live || options.unlocked()), read: ids => store?.markRead?.(ids) });
     $('#open-photo-comments').addEventListener('click', openComments);
     $('#close-comments').addEventListener('click', closeComments);
     $('#comments-view-photo').addEventListener('click', closeComments);
@@ -430,16 +490,18 @@
       photoChanged(photo) {
         const next = photo && !photo.mimeType ? photo : null;
         if (lastPhotoId !== next?.id) {
+          dismissGesture.reset();
           revealCommentId = '';
           if (currentPhoto) persistComposer();
           currentPhoto = next; lastPhotoId = next?.id || ''; editingId = editsByPhoto.get(lastPhotoId) || '';
           $('#comment-body').value = next ? readDraft(draftKey()) : ''; status(); $('#comment-undo').hidden = !deleted || deleted.photoId !== next?.id;
-          if (dialog.open && next) { loadState = live && !store.hasLoaded(next.id) ? 'loading' : 'idle'; if (live) refreshComments(); renderComments(); updateComposer(); persistComposer(); $('#comments-list').scrollTop = 0; }
+          if (dialog.open && next) { loadState = live && !store.hasLoaded(next.id) ? 'loading' : 'idle'; if (live) refreshComments(); renderComments(); updateComposer(); persistComposer(); $('#comments-thread').scrollTop = 0; }
           else if (dialog.open && !next) dismiss('comments-dialog');
         } else { currentPhoto = next; if (dialog.open && next) renderPhotoContext(); }
         $('#open-photo-comments').hidden = !enabled || !currentPhoto; refreshCounts();
       },
       restore(id) {
+        dismissGesture.reset();
         if (id === 'comments-dialog') { if (!currentPhoto || !identity.allowed()) return; renderComments(); if (live) refreshComments(); document.body.classList.add('comments-open'); present(id); $('#open-photo-comments').setAttribute('aria-expanded', 'true'); updateComposer(); }
         else if (id === 'experience-unlock') { if (unlockMode === 'unlock') afterUnlock = openComments; else if (unlockMode === 'name') afterUnlock = () => { updateIdentity(); updateComposer(); }; present(id); }
         updateToolbar();
@@ -447,5 +509,5 @@
       start() { update(); if (!preview) return; bar.hidden = false; updateViewport(); if (new URLSearchParams(location.search).get('experience') === 'comments') startComments(); }
     };
   }
-  root.JOURNEY_ATLAS_PHOTO_COMMENTS = { displayName, initials, commentState, photoNavigation, photoTitle, photoCollection, createIdentityStore, create };
+  root.JOURNEY_ATLAS_PHOTO_COMMENTS = { displayName, initials, commentState, photoNavigation, photoTitle, photoCollection, bindDismissGesture, createIdentityStore, create };
 })(typeof window === 'undefined' ? globalThis : window);

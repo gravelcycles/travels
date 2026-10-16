@@ -10,10 +10,10 @@ The 15 October correction authorizes seven existing website photographs in this
 demo, with their depth derivatives kept behind normal existing photo access.
 
 Review URL: <https://gravelcycles.github.io/travels/experiments/depth/>.
-The gentle revision is live with the two public examples. All seven protected
-depth maps were published and verified in private R2 on 16 October. The updated
-Pages manifest and live nine-photo checks remain pending, so the additions are
-not yet offered on the remote page.
+The gentle revision is live with all nine samples: two public examples and seven
+existing website photographs. Their private depth maps and the Pages release
+were published and verified on 16 October; normal atlas photo access unlocks the
+seven protected samples.
 Open a sample, then turn on **Depth motion**. **Drag** is the
 default: mouse/one-finger drags move the viewpoint in two axes, release holds it,
 and **Reset view** centers it. Hover alone does not move the photo in Drag mode.
@@ -146,7 +146,9 @@ stale private loads and absence of protected pixels in public output. Current
 release evidence remains in WIP. The 16 October private publisher separately
 verified all seven remote depth objects, the existing photos/thumbnails and
 anonymous 401/no-store rejection; its receipt is in the asset record. Local
-all-nine browser fixtures passed again that day. Pages delivery is still pending.
+all-nine browser fixtures passed again that day. Pages release `3fb52f2` succeeded;
+fresh public-file checks, anonymous locked/unlock behavior and all seven private
+photos' live depth playback with remembered access passed. WIP owns the receipt.
 
 Before any subsequent delivery, run the full suite/build and check desktop, phone/landscape,
 initial off state, lazy depth loading, on/off, all nine photos, comparison,

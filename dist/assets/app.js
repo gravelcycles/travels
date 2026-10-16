@@ -1784,7 +1784,9 @@
     // A hidden planning category alone must not clear the chosen route group.
     if (!photoById(photoId) && activeGroupId) selectRouteGroup('');
     if (!photoById(photoId)) return false;
-    openCommentPhoto(photoId);
+    // A notification is a direct conversation destination: its photograph is
+    // already fullscreen beneath the sheet, including entry from the map.
+    openPhoto(photoId);
     return true;
   }
 

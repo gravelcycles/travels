@@ -255,3 +255,54 @@
 .comments-load-status:has(#comments-loading:not(:empty)) { padding-block:10px; }
 .comments-load-status button { flex:none;min-height:44px;padding:8px 12px;border:0;border-radius:10px;background:var(--conversation-tint); }
 .comments-meta>span:last-child { max-width:200px;text-align:right;line-height:1.4; }
+.comments-thread { display:flex; flex-direction:column; flex:1; min-height:0; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; scroll-padding-block:20px; }
+.comments-thread #comments-list { flex:1 0 auto; overflow:visible; max-height:none; }
+.comments-thread .comments-load-more { flex:none; }
+
+/* The photograph already supplies context beneath its conversation. */
+.comments-heading { position:relative; padding-top:28px; touch-action:none; user-select:none; cursor:grab; }
+.comments-drag-handle { position:absolute; top:9px; left:50%; width:34px; height:4px; margin-left:-17px; border-radius:3px; background:#9ba4ad88; }
+.comments-heading-label { display:flex; align-items:baseline; gap:9px; min-width:0; }
+#comments-heading-count { color:var(--conversation-muted); font-size:14px; font-variant-numeric:tabular-nums; }
+dialog.comments-dialog { translate:0 var(--comments-drag-y,0px); transition:translate .2s ease-out; }
+dialog.comments-dialog[data-dragging=true] { transition:none; }
+.comments-dialog[data-dragging=true] .comments-heading { cursor:grabbing; }
+.comments-dialog[data-presentation=photo] .comments-heading { border-bottom:1px solid var(--conversation-line); padding-bottom:13px; }
+.comments-dialog[data-presentation=photo] .comments-heading h2 { margin:0; font-size:20px; }
+@media(min-width:901px) {
+  dialog.comments-dialog[data-presentation=photo] { inset:80px 28px auto auto; height:560px; max-height:calc(100dvh - 108px); }
+}
+@media(max-width:900px) {
+  dialog.comments-dialog[data-presentation=photo] { height:min(64dvh,600px); }
+  .comments-heading { padding-top:24px; }
+  .comments-dialog[data-presentation=photo] .comments-heading { padding-bottom:9px; }
+  .comments-dialog[data-keyboard=true] .comments-heading { padding-top:19px; }
+}
+@media(max-height:600px) and (max-width:900px) and (orientation:landscape) {
+  dialog.comments-dialog[data-presentation=photo] { height:calc(var(--comments-viewport-height,100dvh) - 24px); }
+  .comments-heading { padding-top:18px; }
+  .comments-drag-handle { top:6px; }
+}
+@media(max-height:650px) and (max-width:900px) {
+  .comments-dialog[data-presentation=photo] .comment-compose { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; }
+  .comments-dialog[data-presentation=photo] .comment-compose textarea { grid-area:1 / 1; min-height:48px; max-height:74px; padding:12px 8px 9px 12px; }
+  .comments-dialog[data-presentation=photo] .comment-compose-footer { display:contents; }
+  .comments-dialog[data-presentation=photo] .comment-compose-footer .experience-primary { grid-area:1 / 2; min-width:64px; margin:6px; padding:7px 8px; }
+  .comments-dialog[data-presentation=photo] #comment-draft-state:not(:empty) { grid-area:2 / 1; padding:0 0 7px 12px; }
+  .comments-dialog[data-presentation=photo] #comment-character-count { grid-area:2 / 2; padding:0 8px 7px 0; text-align:right; }
+}
+@media(max-height:650px) and (max-width:900px) and (orientation:portrait) {
+  dialog.comments-dialog[data-presentation=photo] { height:80dvh; }
+}
+@media(max-width:900px) and (orientation:portrait) {
+  /* Reveal the existing photo above the sheet without resizing, reloading or
+     changing the viewer's saved zoom/pan transform. Dismissal restores it. */
+  body:has(#comments-dialog[open][data-presentation=photo]) #modal-photo { object-position:center top; }
+  body:has(#comments-dialog[open][data-presentation=photo]) .viewer-photo-frame::before {
+    background-position:center top;
+    clip-path:inset(0 calc((100% - var(--photo-backdrop-width,0px)) / 2) calc(100% - var(--photo-backdrop-height,0px)));
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  dialog.comments-dialog { transition:none; }
+}
