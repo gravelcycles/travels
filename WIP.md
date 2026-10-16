@@ -28,8 +28,8 @@ Location/Comments, photo navigation and fitted reopen after 2.5× zoom; Heading 
 also verifies existing signed-in full-size image access, empty-thread loading,
 mobile Location and retained grid selection. No console errors or live comment
 writes. The known long-notes/short-landscape map-height issue remains in TODO.
-This implementation batch is delivered. AVIF is still uploading/verifying assets
-in its own workstream. The existing follow-up will
+This implementation batch is delivered. The AVIF assets are uploaded and verified;
+its rollout is recorded in the migration workstream below. The existing follow-up will
 measure its image bytes, fallback, decode and neighbor readiness after deployment
 before any justified bounded preload-scheduling change. Preserve its WebP fallback
 and originals; do not count its savings as this performance batch.
@@ -56,35 +56,38 @@ Authorized: migrate photo quality with no downtime or regressions, retaining ful
 WebP fallbacks and all source/editorial data. See
 [owner direction](docs/OWNER_DECISIONS.md#photo-quality-migration--16-october-2026).
 Implementation is isolated on `codex/photo-avif-20261016` in this chat's
-`work/travels-avif` checkout; current main `78334da` (including the visible-control
-zoom correction) is integrated. The shared checkout's ongoing edits are intact.
-Native decoding preserves the established RAW appearance through verified
-full-resolution Quick Look; HEIC uses ImageIO. All existing WebP paths remain.
+`work/travels-avif` checkout. Current main `1c2ced4`, including the performance
+release and visible-control zoom correction, is integrated. The shared checkout's
+ongoing edits are intact. Native decoding preserves the established RAW appearance
+through verified full-resolution Quick Look; HEIC uses ImageIO.
 
-Completed checks: 795 integrated tests, 34 focused decoder/import tests after the
-RAW correction, repeatable production builds, actual Cloudflare runtime tests,
-69 loader tests, 16 rendered model/viewport combinations and four first-swipe/grid
-retention checks. Real Chromium exercises successful AVIF, unsupported browsers,
-404, wrong MIME and corrupt-image fallback. Fixture browser coverage includes
-family, Heading East city mode, a demo and an independently populated draft.
+All **825 integrated tests pass**. Two final builds are identical across 72
+outputs. The scoped public bundles retain all 223 AVIF descriptors and exclude
+unpublished upgrades without changing fallback metadata. Original hashes, native
+sizes, stripped metadata, derivative hashes and all 254 source rows' existing
+fields/order pass the final audit. Earlier focused checks include 34 decoder/import
+tests, 69 loader tests and actual Cloudflare runtime tests.
 
 Compatible Worker `33b135c6-21d7-4c6a-b366-2e217e6ab7b3` is deployed; pre/post
-live WebP checks and uploaded AVIF checks pass authenticated GET/HEAD, anonymous
-401, SHA-256/MIME and 304 revalidation. Prior Worker
+live WebP and uploaded AVIF checks pass authenticated GET/HEAD, anonymous 401,
+SHA-256/MIME and 304 revalidation. Prior Worker
 `680b93ec-0a1c-4116-a54e-5f37dbd766d3` is retained as the rollback target.
-All 223 visible protected photos are generated (103 family, 120 Heading East),
-with zero failures: 234,970,250 AVIF bytes versus 225,321,190 full WebP bytes
-(+4.28%) for 57.60% more pixels. All 254 source rows retain their existing fields
-and order. All 223 objects are uploaded and downloaded for exact SHA-256, size and MIME
-verification. The final audit also rechecked original hashes, native dimensions,
-metadata stripping and preserved fields/order. All 795 tests pass, and two final
-builds are identical across 66 outputs. The Pages release is pending. Actual Cloudflare photos also passed mobile
-swipe, portrait/landscape and desktop/mobile zoom, access-lock clearing, and a
-forced AVIF 404 recovering the real WebP. Keep generation and publication
-sequential for each journey. Complete final original-hash/schema/publication
-checks, deploy Pages and verify fresh public assets plus both real-photo galleries.
-Retain all WebP objects; the local Studio sync has a guarded patch/backup plan
-validated with 668 tests and ten conflict/preservation rehearsals.
+All 223 visible protected photos (103 family, 120 Heading East) are uploaded and
+downloaded for exact SHA-256, size and MIME verification, with zero failures:
+234,970,250 AVIF bytes versus 225,321,190 full WebP bytes (+4.28%) for 57.60%
+more pixels. The additive rollout retains every WebP object and URL.
+
+After the performance integration, all 16 rendered model/viewport combinations
+and four first-swipe/grid retention checks pass across family, Heading East city
+mode, a demo and an independently populated draft using scoped page data. Both
+real authenticated candidate galleries pass native AVIF decoding, portrait/landscape,
+mobile swipe, desktop/mobile focal zoom, lock clearing and forced AVIF 404 recovery
+to real WebP, with zero page errors; Heading East includes two RAW derivatives.
+Earlier browser checks also cover unsupported AVIF, wrong MIME and corrupt images.
+Deploy Pages and verify fresh public assets plus both real-photo galleries.
+Physical iPhone/Safari behavior is not certified by Chrome viewport emulation.
+The local Studio sync has a guarded patch/backup plan validated with 668 tests
+and ten conflict/preservation rehearsals; apply after live verification and retest.
 
 ## Saved Heading East photo data — 16 October 2026
 
