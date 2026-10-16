@@ -145,7 +145,7 @@ complete. Physical-device Safari was not used.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
-**Visible-control zoom follow-up — verified locally; deployment pending.** The
+**Visible-control zoom follow-up — deployed and verified.** The
 owner wants zoom to fill the black background even with controls shown. Mobile
 zoom now removes continuous header/footer backgrounds, keeps every button and
 label opaque, and lets image input pass through gaps. Fitted photos retain solid
@@ -159,7 +159,12 @@ styles confirm opaque buttons, including disabled controls. Native input checks
 cover gap panning, focal pinch, hiding/restoration, zoom-out and active-pinch
 access reset. Bright/dark screenshots were inspected; close/resize/breakpoint
 reset regressions pass. Independent review passes; no physical-device claim.
-Next: integrate main, deploy and verify fresh public output.
+Released as `fa27585` through successful
+[Pages run 38941740860](https://github.com/gravelcycles/travels/actions/runs/38941740860).
+All four fresh public journey/demo pages and both changed shared assets match
+the tested build. A fresh public demo at 390px and short landscape confirms
+full-screen photo coverage behind opaque controls, tap hiding/restoration and
+solid bars returning on zoom-out, with no browser errors. Delivery is complete.
 
 **Alignment follow-up — deployed and verified.** The owner
 clarified that the next-city and Comments buttons must be right-aligned. Keep
