@@ -16,6 +16,8 @@
   in [WIP](WIP.md#mobile-photo-swipes-and-places-dragging--16-october-2026).
   Integrated current main; all 723 tests, the build and 30 rendered browser cases
   pass. Manual map input immediately after Show map cancels its delayed recenter.
+  Deployed as `1b5ab7e`; successful Pages, all 14 fresh public HTML/assets and
+  live phone photo/Places gestures verified.
 
 ## 16 October 2026 — fullscreen photo controls and focal zoom
 
