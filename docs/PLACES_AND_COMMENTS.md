@@ -373,6 +373,9 @@ A return from Comments/fullscreen retains the selected photo, including across
 cities. Geographic map groups remain independent of browsing membership (O03).
 
 Places initially uses the selected day/stop (all places from a whole-trip view).
+The whole-trip overview supplies no selected event: its phone Places count and
+entry cover the whole journey, and the event-only filter is disabled until an
+event is selected. This follows [O06’s unselected opening](OWNER_DECISIONS.md#unselected-map-opening--16-october-2026).
 Deliberate search, category and scope changes persist while browsing and reopening;
 an empty local result offers All places. Overview and Photos remain actual tabs;
 populated group reviews float from an explicit Group reviews action. Empty saved

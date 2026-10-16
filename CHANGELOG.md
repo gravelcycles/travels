@@ -1,5 +1,32 @@
 # Changelog
 
+## 16 October 2026 — fullscreen photo controls and focal zoom
+
+- Place mobile Share beside Comments on the left and Close at the top-right,
+  retaining Back, one-screen grid return and the mounted source grid.
+- Let a single tap hide/restore photo chrome over the full-viewport mobile
+  stage. Share focal-zoom math across mobile pinch/double-tap and desktop
+  Ctrl+wheel/trackpad, Safari gesture events, two-pointer pinch and double-click;
+  retain desktop context and bounded pan.
+- Reconcile current owner/workflow/feature/framework guidance and supersede the
+  old visible-on-tap and omitted-Close rules.
+- Validation: 707 integrated tests, the production build and 16 synthetic-fixture browser
+  combinations pass; 320 px/landscape screenshots were visually checked. Physical
+  iPhone/Safari device testing is not claimed. Public delivery remains in
+  [WIP](WIP.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+
+## 16 October 2026 — open the map without a selected stop
+
+- Keep the whole-trip overview neutral on desktop and phone: no first-event
+  row, signpost or route emphasis, and journey context in the existing sidebar.
+- Show All days/stops in the phone picker. Next starts at the first event;
+  explicit selection and deep links still open their intended event, and a
+  return to overview clears selection.
+- Carry the correction into O06, the feature inventory and opening workflow;
+  verify shared behavior across the reference, city atlas, demo and fresh draft.
+  All 682 integrated tests, the production build and desktop/phone browser
+  checks pass, including whole-trip Places scope and selected-card cleanup.
+
 ## 16 October 2026 — publish seven protected depth samples
 
 - Publish and checksum-verify the seven prepared depth WebPs (183,664 bytes)

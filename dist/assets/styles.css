@@ -650,3 +650,16 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 }
 
 .viewer-day-nav[hidden] { display:none; }
+
+/* Desktop photo zoom fills the image stage while retaining its context sidebar. */
+@media (min-width: 901px) {
+  .photo-stage { grid-template-columns: minmax(0, 1fr); }
+  .photo-stage > figure, .photo-stage > .photo-nav { grid-area: 1 / 1; }
+  .photo-stage > .photo-nav { width: 58px; align-self: stretch; z-index: 2; }
+  .photo-stage > .photo-prev { justify-self: start; }
+  .photo-stage > .photo-next { justify-self: end; }
+  .photo-viewer[data-media-type="photo"] #viewer-photo-frame { touch-action: none; }
+  .photo-viewer[data-media-type="photo"] #modal-photo { cursor: zoom-in; user-select: none; -webkit-user-drag: none; transform-origin: center; }
+  .photo-viewer[data-desktop-zoomed="true"] #modal-photo { cursor: grab; }
+  .photo-viewer[data-desktop-panning="true"] #modal-photo { cursor: grabbing; }
+}

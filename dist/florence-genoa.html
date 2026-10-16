@@ -41,9 +41,9 @@
       rel="stylesheet"
       href="./assets/vendor/maplibre-5.24.0/maplibre-gl.css"
     />
-    <link rel="stylesheet" href="./assets/styles.css?v=8340f5ea8ce4" />
-    <link rel="stylesheet" href="./assets/view-sharing.css?v=224d07bcf9ec" />
-    <link rel="stylesheet" href="./assets/mobile.css?v=2879cbb33155" />
+    <link rel="stylesheet" href="./assets/styles.css?v=5f01a202b2d3" />
+    <link rel="stylesheet" href="./assets/view-sharing.css?v=8939a9a2ec22" />
+    <link rel="stylesheet" href="./assets/mobile.css?v=1623ca0af02a" />
     <link rel="stylesheet" href="./assets/group-travel.css?v=832960325138" />
     <link rel="stylesheet" href="./assets/map-feedback.css?v=31eb86c9e975" />
     <link rel="stylesheet" href="./assets/places-comments.css?v=4722d9f0f6fa" />
@@ -255,7 +255,6 @@
         <header class="mobile-photo-header">
           <button id="mobile-photo-back" type="button"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Back</span></button>
           <span id="mobile-photo-count" aria-live="polite"></span>
-          <button id="mobile-share-photo" type="button" data-share-view="photo" aria-label="Share photo" title="Share photo"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m-4 4 4-4 4 4M7 10H5v11h14V10h-2"/></svg></button>
           <button id="mobile-photo-grid" type="button" data-event-aria="Show this day's photos and videos" aria-label="Show this day's photos and videos"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6" height="6" rx="1.3"/><rect x="14" y="4" width="6" height="6" rx="1.3"/><rect x="4" y="14" width="6" height="6" rx="1.3"/><rect x="14" y="14" width="6" height="6" rx="1.3"/></svg></button>
           <nav class="mobile-photo-event-nav" aria-label="Browse photo days">
             <button id="mobile-photo-previous-event" type="button" aria-label="Previous photo day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span class="button-label">Day</span></button>
@@ -266,7 +265,10 @@
 
         <button class="photo-close" aria-label="Close photo and video viewer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
         <span class="share-status viewer-share-status" data-share-status role="status"></span>
-        <button id="open-photo-comments" class="open-photo-comments" type="button" aria-haspopup="dialog" aria-controls="comments-dialog" hidden>Comments · <span id="photo-comments-count">0</span></button>
+        <div class="mobile-photo-actions">
+          <button id="mobile-share-photo" type="button" data-share-view="photo" aria-label="Share photo" title="Share photo"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m-4 4 4-4 4 4M7 10H5v11h14V10h-2"/></svg></button>
+          <button id="open-photo-comments" class="open-photo-comments" type="button" aria-haspopup="dialog" aria-controls="comments-dialog" hidden>Comments · <span id="photo-comments-count">0</span></button>
+        </div>
         <section class="photo-stage" aria-live="polite">
           <button class="photo-nav photo-prev" type="button" aria-label="Previous photo or video">‹</button>
           <figure>
@@ -386,7 +388,8 @@
     <script src="./assets/atlas-utils.js?v=9f94be8e1f28"></script>
     <script src="./assets/map-style.js?v=e5948bb6f50c"></script>
     <script src="./assets/map-feedback.js?v=326752babbcc"></script>
-    <script src="./assets/mobile-ux.js?v=ba51d46c61c5"></script>
+    <script src="./assets/photo-zoom.js?v=89e6415a2b67"></script>
+    <script src="./assets/mobile-ux.js?v=eaa2ed7378e1"></script>
     <script src="./assets/group-travel.js?v=55518f719e29"></script>
     <script src="./assets/media-utils.js?v=2970f736e03b"></script>
     <script src="./assets/location-labels.js?v=5b45660a6ea4"></script>
@@ -399,6 +402,6 @@
     <script src="./assets/photo-comments.js?v=523cebb02fcc"></script>
     <script src="./assets/trip-notifications.js?v=1"></script>
     <script src="./assets/view-sharing.js?v=372350c19423"></script>
-    <script src="./assets/app.js?v=2b0c6782eddf"></script>
+    <script src="./assets/app.js?v=9aafd6a24073"></script>
   </body>
 </html>

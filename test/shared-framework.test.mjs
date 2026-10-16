@@ -173,6 +173,29 @@ test('stationary photo bubbles stay attached for reference, demo and freshly gen
   }
 });
 
+test('mobile fullscreen chrome and zoom inherit reference, demo and independently populated fresh draft',t=>{
+  const root=fixture(t),created=createJourney(root,{...input,slug:'fullscreen-gestures-fixture',eventMode:'city'}),{data}=loadContent(root,{includeDrafts:true});
+  const draft=data.journeys.find(journey=>journey.id===created.id);
+  draft.photos=[{id:'independent-fullscreen-photo',dayId:draft.days[0].id,src:'https://images.example.test/fullscreen-portrait.jpg',width:800,height:1200}];
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'&&j.photos.length),draft]) {
+    const html=renderJourneyPage(root,journey,{preview:true});
+    assert.equal(ids(html).filter(id=>id==='mobile-share-photo').length,1,journey.id);
+    assert.equal(ids(html).filter(id=>id==='open-photo-comments').length,1,journey.id);
+    assert.match(html,/class="mobile-photo-actions"[^]*?id="mobile-share-photo"[^]*?id="open-photo-comments"/,journey.id);
+    assert.match(html,/class="photo-close"[^]*?aria-label="Close photo and video viewer"/,journey.id);
+    const f=viewerFixture({journey,reducedMotion:true});f.api.openDay(journey.photos[0].dayId);
+    f.click('.photo-stage');f.flush(300);
+    assert.equal(f.node('.photo-viewer').dataset.chrome,'false',journey.id);
+    assert.equal(f.node('.mobile-photo-actions').inert,true,journey.id);
+    assert.equal(f.node('.photo-close').inert,true,journey.id);
+    f.click('.photo-stage');f.click('.photo-stage');
+    assert.ok(Number(f.node('#modal-photo').style.transform.match(/scale\(([^)]+)\)/)[1])>1,journey.id);
+    assert.equal(f.node('.photo-viewer').dataset.chrome,'false',journey.id);
+    f.click('.photo-stage');f.flush(300);
+    assert.equal(f.node('.photo-viewer').dataset.chrome,'true',journey.id);
+  }
+});
+
 test('reference, demo and fresh-draft photo cards keep visible copy separate from accessibility text', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const { data } = loadContent(root, { includeDrafts: true });
@@ -1395,7 +1418,7 @@ test('real, demo and independently populated draft albums retain their tiles thr
       eventWord:form=>globalThis.JOURNEY_ATLAS_UTILS.eventWord(journey,form),escapeHtml:s=>s||'',
       photoImageMarkup:p=>`<img src="${p.src||''}">`,mediaUtils:{label:items=>`${items.length} photos`},prepareProgressiveImages(){},window:{JOURNEY_ATLAS_MOBILE_UI:f.controller}});
     vm.runInContext(appFunction('openAlbum'),context);f.api.restoreOverlay=id=>id==='album-dialog'?context.openAlbum():f.controller.presentOverlay(id);
-    context.openAlbum();album.scrollTop=410;album.captures.get('scroll')({});
+    context.openAlbum();album.scrollTop=410;f.dispatch('#album-dialog','scroll');
     f.controller.openGrid(journey.days[0].id);f.history.back();
     assert.equal(builds,1,journey.id);assert.equal(album.scrollTop,410,journey.id);
     assert.equal((html.match(/data-album-day=/g)||[]).length,journey.days.length,journey.id);
@@ -1430,5 +1453,88 @@ test('current-view sharing is inherited by reference, city atlas, demo and a pop
       assert.equal(sharing.read(url).view,fullscreen?'photo':'map');
       assert.ok(!url.includes(photo.src),'Share references the page, never the media object');
     }
+  }
+});
+
+// Selection is visible only after choosing an event, including when its ID is
+// already the internal first-event fallback used by albums and history.
+import {mapEntryHarness} from './map-entry-harness.mjs';
+function mapEntryJourneys(t) {
+  const root=fixture(t), draft=createJourney(root,{...input,slug:'neutral-map-entry',eventMode:'city'}), {data}=loadContent(root);
+  const populated={...draft,places:[{id:'qa-north',name:'North shore',lng:139.7,lat:35.6},{id:'qa-south',name:'South shore',lng:139.9,lat:35.4}],
+    segments:[{id:'qa-outward',mode:'train',from:'qa-north',to:'qa-south',geometry:[[139.7,35.6],[139.8,35.5],[139.9,35.4]]},
+      {id:'qa-return',mode:'boat',from:'qa-south',to:'qa-north',geometry:[[139.9,35.4],[139.85,35.6],[139.7,35.6]]}],
+    days:draft.days.map((day,index)=>({...day,title:index?'North shore':'South shore',placeId:index?'qa-north':'qa-south',segmentIds:[index?'qa-return':'qa-outward']}))};
+  return [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo'),populated]
+    .map(journey=>({...journey,photos:[{id:`${journey.id}-entry-photo`,dayId:journey.days.at(-1).id,caption:'',src:'https://images.example.test/map-entry.jpg'}]}));
+}
+function assertNeutralMap(f,journey) {
+  assert.equal(f.context.mapScope,'journey',journey.id);
+  assert.doesNotMatch(f.node('#day-list').innerHTML,/class="day-row active|aria-current="true"/,`${journey.id}: overview rows are not selected`);
+  assert.ok(f.routes.every(({options})=>!options.selected),`${journey.id}: overview routes have no selected event`);
+  assert.ok(f.groups.every(group=>!group.selected),`${journey.id}: overview signposts have no selected event`);
+  assert.match(f.node('#mobile-day-picker .button-label').textContent,/All|Choose/);
+  assert.doesNotMatch(f.node('#mobile-day-picker')['aria-label'],/current|(?:Day|Stop) \d/);
+  assert.equal(f.node('#mobile-day-title').textContent,journey.title);
+  assert.equal(f.node('#sidebar-day-summary').textContent,'Journey details','Overview details do not retain a previously selected city');
+  assert.doesNotMatch(f.node('#story-detail').innerHTML,/class="detail-eyebrow">(?:DAY|STOP) 0?1/,'Desktop overview cannot present the first event as selected');
+}
+function assertChosenMap(f,journey,day) {
+  assert.equal(f.context.mapScope,'day');assert.equal(f.context.activeDayId,day.id);
+  const row=f.node('#day-list').innerHTML.match(/<button class="day-row active"[^>]*>/g) || [];
+  assert.equal(row.length,1,`${journey.id}: one chosen row`);assert.ok(row[0].includes(`data-day-id="${day.id}"`));assert.match(row[0],/aria-current="true"/);
+  assert.deepEqual(f.routes.filter(({options})=>options.selected).map(({segment})=>segment.id).sort(),[...day.segmentIds].sort());
+  const selectedGroups=f.groups.filter(group=>group.selected);
+  if(f.context.destinationForDay(day))assert.ok(selectedGroups.some(group=>group.days.some(item=>item.id===day.id)));
+  assert.match(f.node('#mobile-day-picker .button-label').textContent,new RegExp(`${f.context.eventWord('title')} ${day.number}\\b`));
+  assert.equal(f.node('#mobile-day-title').textContent,day.title);
+  assert.equal(f.node('#sidebar-day-summary').textContent,`${f.context.eventWord('title')} details · ${day.title}`);
+}
+
+test('first map entry has no selected event on desktop and phone across reference, city, demo and fresh draft',t=>{
+  for(const journey of mapEntryJourneys(t))for(const mobile of [false,true]){
+    const f=mapEntryHarness(journey,{mobile});f.open();
+    assert.equal(f.node('#trip-intro').hidden,true);assert.equal(f.node('.atlas-shell').inert,false);
+    assert.ok(f.calls.includes('opening-trace'),'The existing entry trace remains intact');
+    assertNeutralMap(f,journey);
+    if(mobile){f.node('#mobile-day-picker').onclick();assert.equal(f.node('.atlas-shell').dataset.mobileTab,'route');assertNeutralMap(f,journey);}
+    f.choose(journey.days[0].id);assertChosenMap(f,journey,journey.days[0]);
+    const photo={...journey.photos[0],dayId:journey.days[0].id};
+    const bubbles=photoBubbleFixture({journey,initialPhotos:[photo]});bubbles.resize(mobile);
+    f.context.photoBubbles=bubbles.controller;bubbles.controller.open([photo],photo.id);
+    assert.equal(bubbles.node('map-photo-card').hidden,false,'Fixture presents an actual selected photo card');
+    f.context.fitRoute();assertNeutralMap(f,journey);
+    assert.equal(bubbles.controller.isOpen(),false,'Returning to overview clears selected photo state');
+    assert.equal(bubbles.node('map-photo-card').hidden,true,'Returning to overview removes the old event card');
+    assert.equal(f.node('#mobile-previous-day').disabled,true);
+    f.node('#mobile-next-day').onclick();assertChosenMap(f,journey,journey.days[0]);
+  }
+});
+
+test('explicit day and photo links select their event while shared overview links remain neutral',t=>{
+  for(const journey of mapEntryJourneys(t))for(const mobile of [false,true]){
+    const f=mapEntryHarness(journey,{mobile}),day=journey.days.at(-1),photo=journey.photos[0];
+    f.link(`https://example.test/trip?day=${encodeURIComponent(day.id)}&view=map`);assertChosenMap(f,journey,day);
+    assert.equal(f.node('#trip-intro').hidden,true);assert.ok(!f.calls.includes('opening-trace'));
+    f.link(`https://example.test/trip#photo=${encodeURIComponent(photo.id)}`);assertChosenMap(f,journey,day);assert.equal(f.context.openedPhoto,photo.id);
+    f.link(`https://example.test/trip#day=${encodeURIComponent(day.id)}&view=map&scope=journey`);assertNeutralMap(f,journey);
+  }
+});
+
+test('restoring an overview camera clears event selection and early entry remains neutral before map readiness',t=>{
+  const journeys=mapEntryJourneys(t), draft=journeys.at(-1), onlyDay=draft.days[0];
+  journeys.push({...draft,id:`${draft.id}-single`,days:[onlyDay],segments:draft.segments.filter(segment=>onlyDay.segmentIds.includes(segment.id)),photos:draft.photos.map(photo=>({...photo,dayId:onlyDay.id}))});
+  for(const journey of journeys){
+    const f=mapEntryHarness(journey,{mobile:true,ready:false});f.open();
+    assert.equal(f.context.openingRoutePending,true);assertNeutralMap(f,journey);
+    f.context.mainMapReady=true;f.context.drawMainMap(false);f.context.playOpeningRoute();assertNeutralMap(f,journey);
+    assert.equal(f.node('#mobile-next-day').disabled,false,'Even a one-event overview can begin with Next');
+    f.node('#mobile-next-day').onclick();assertChosenMap(f,journey,journey.days[0]);
+    assert.equal(f.node('#mobile-next-day').disabled,journey.days.length===1,'The selected last event has a bounded Next control');
+    f.context.fitRoute();assertNeutralMap(f,journey);
+    const day=journey.days[0];f.choose(day.id);assertChosenMap(f,journey,day);
+    const camera={center:[139.8,35.5],zoom:7,bearing:0,pitch:0,padding:{top:0,right:0,bottom:0,left:0}};
+    f.context.restoreMapView({dayId:day.id,scope:'journey',camera});assertNeutralMap(f,journey);
+    assert.deepEqual(f.calls.at(-1),{camera},'Selection cleanup preserves the exact returning map camera');
   }
 });

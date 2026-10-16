@@ -88,7 +88,7 @@ test('opening entry waits for map readiness, consumes its request once, and can 
       clearTimeout:id=>{assert.equal(id,80);calls.push('cancel-tab-resize');},
       document:{hidden:false,body:{classList:{contains:()=>false}}},
       mainMap:{stop(){},resize(){}},segmentCoordinates:s=>s.geometry,prefersReducedMotion:()=>false,
-      modeStyles:{},palette:{},drawMainMap(){},setMobileTab:tab=>calls.push(tab),fitJourneyBounds:duration=>calls.push(duration),
+      modeStyles:{},palette:{},renderDays(){},renderStory(){},drawMainMap(){},setMobileTab:tab=>calls.push(tab),fitJourneyBounds:duration=>calls.push(duration),
       window:{JOURNEY_ATLAS_OPENING_ROUTE:{start:()=>{calls.push('trace');return {cancel:()=>calls.push('cancel')};}}}
     });
     vm.runInContext(['cancelOpeningRoute','openJourneyMap','playOpeningRoute'].map(fn).join('\n')+'\nfunction cancelArrival(){cancelOpeningRoute();}',context);

@@ -16,6 +16,69 @@ is unfinished, record the exact next action, source/branch state and missing
 checks here. A completed audit does not end this duty. New or resumed tasks
 must read current files and reconcile any later corrections before continuing.
 
+## Fullscreen photo controls and focal zoom — 16 October 2026
+
+**Implemented; public delivery pending.** The owner requested mobile fullscreen
+Share beside Comments on the left, top-right Close, one tap to hide all buttons
+for just the photo, and zoom that uses fullscreen. The follow-up adds pinch
+focus that follows the fingers on mobile and desktop. Current requirements and
+supersessions live in
+[O03/O08/O18](docs/OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
+and the [photo workflow](PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom).
+Back/pull/grid continuity, location gestures, sharing semantics, photo loading,
+private access and the separate depth-demo boundary are retained.
+
+Work is isolated in `/Users/dg/.codex/worktrees/photo-fullscreen-gestures/travels`
+on `codex/photo-fullscreen-gestures`. The shared template/mobile layout now
+places Share beside Comments and Close top-right, overlays controls on the
+full-viewport stage and toggles chrome on single tap. `photo-zoom.js` provides
+shared focal math and the desktop Ctrl+wheel/trackpad, Safari gesture-event,
+two-pointer pinch, double-click and pan controller. Mobile uses the same focal
+math; desktop zoom keeps its existing stage and context sidebar.
+
+Integrated remote main through `8d5a117`, preserving the concurrent map-overview,
+manual-update and protected-depth-demo releases. **All 707 tests and the production
+build pass**, with reproducible public output. Synthetic-fixture browser checks
+pass all **16 combinations** of Switzerland–Italy, Heading East, Alpine demo and
+an independently populated city draft at **320 × 568, 390 × 844, 844 × 390 and
+1360 × 900**. These include full-viewport geometry, native moving-pinch input,
+portrait/landscape zoom, city controls, Share/Comments adjacency and top-right
+Close. Screenshots were visually inspected. The post-integration Alpine phone
+check also verifies keyboard restoration after hiding controls. Regressions
+cover cancelled taps, remaining-finger pinch release, grid return and private
+access lifecycle. Physical iPhone or Safari-device testing is not claimed.
+
+Next: push the validated release, verify successful Pages and fresh public
+HTML/asset hashes, then record the delivery receipt and complete TODO. The
+primary checkout's unrelated edits remain untouched.
+
+## Unselected map opening — 16 October 2026
+
+Owner correction: first map opening must not show Stop 1 already selected,
+on phone or desktop. [O06](docs/OWNER_DECISIONS.md) and the
+[opening workflow](JOURNEY_WORKFLOW.md#opening-route-trace) own the shared rule.
+The isolated `codex/map-entry-overview` checkout gates row/route/signpost and
+journal selection on map scope, uses neutral phone overview labels, and starts
+next-event navigation at the first event. Explicit day/photo links retain entry.
+Implemented and locally verified: shared navigation/trace/history regressions,
+production build, and eight headless Chrome cases at 1440 × 1000 and 390 × 844
+across Switzerland–Italy, Heading East, Alpine demo and an independently created
+populated draft. Checks cover neutral opening, first/second-event selection,
+All days/stops, direct entry and zero JavaScript errors. Public demo photo-card
+selection clears on overview on both sizes. Heading East's phone Places count
+and list follow overview 20 → Stop 1's 2 → overview 20; no event filter is
+selected in overview. These are Chrome viewport checks, not physical-device QA.
+Integrated remote main through `3fb52f2`; all **682 tests** and the production
+build pass with reproducible checked-in output. Released as `8d5a117` through
+successful [Pages run 38936565821](https://github.com/gravelcycles/travels/actions/runs/38936565821).
+Fresh public reference/Heading East/Florence/demo HTML and both changed runtime
+assets match the tested release byte-for-byte. A fresh 390 × 844 guest Chrome
+load of Heading East shows zero selected rows/markers, All stops, the whole
+journey card and Places · 20, with no JavaScript errors or protected-media
+requests. Implementation and delivery are complete. The subsequent fullscreen
+release has integrated this correction; its verification belongs to that
+workstream above. The primary checkout's unrelated pending changes remain untouched.
+
 ## Outbound trip update checkpoints — 16 October 2026
 
 Authorized: start checkpointing and calculate useful messages, likely for manual
@@ -56,8 +119,9 @@ interaction, plus seven existing website photographs. This supersedes the
 and [demo contract](docs/DEPTH_FULLSCREEN_DEMO.md).
 
 Work is isolated in `/Users/dg/code/travels/build/depth-gentle-review`, branch
-`codex/depth-gentle-photos-20261015`, originally from `a609987` and now integrated
-through remote main `12398b3`; the primary checkout and its
+`codex/depth-gentle-photos-20261015`, originally from `a609987`; the release
+integrated remote main `12398b3`, and the receipt preserves later main through
+`b6df1ec`. The primary checkout and its
 unrelated changes remain untouched. The required revision retains relative
 mouse/touch drag, held viewpoint/reset and keyboard control, adds Mouse move
 beside Slow drift, and replaces 0–3× presets with 0–100% Movement at the original
@@ -93,6 +157,8 @@ Release `3fb52f2` passed
 [Pages run 38936435746](https://github.com/gravelcycles/travels/actions/runs/38936435746).
 Fresh public HTML/JS/CSS/renderer/manifest, both public image/depth pairs and the
 unchanged catalog/reference pages match the tested build (11 verified files).
+A later concurrent shared-viewer deployment changed the reference page; a
+second check still matched all nine demo files and passed the guest flow.
 A fresh 390 × 844 Chrome session shows nine samples, seven locked, the normal
 remembered-access check/unlock prompt, no private pixel requests, gentle public
 drag → Mouse move → off, and no runtime errors. The owner's existing browser
@@ -200,8 +266,9 @@ trace through a phone viewport resize. No implementation or delivery work remain
 
 Fullscreen-desktop follow-up: Share now belongs in the right sidebar beside
 the photo count, below the day controls (O18). Shared markup/styles updated in
-`codex/photo-sharing-20261012` after integrating main `07d1896`; phone retains its
-header control. All **637 tests** and the production build pass. Browser checks
+`codex/photo-sharing-20261012` after integrating main `07d1896`; the phone
+header placement from this release is superseded by the
+[16 October correction](#fullscreen-photo-controls-and-focal-zoom--16-october-2026). All **637 tests** and the production build pass. Browser checks
 cover sidebar containment and share/copy at 1360/1024/901px, plus existing phone,
 link and Back/Forward flows on the reference, Heading East, Alpine demo and an
 independently populated draft. Deployed as `2797e75` through successful
