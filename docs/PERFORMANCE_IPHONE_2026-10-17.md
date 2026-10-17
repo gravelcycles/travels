@@ -75,9 +75,25 @@ fallback. Shared template inheritance covers reference, demo and populated
 fresh draft. Browser checks cover rotation, native zoom, Location, grid/history,
 Comments and same-event camera return. Results and release receipt live in WIP.
 
-Desktop tests establish correctness, not an iPhone speedup. The next decisive
-check is the same physical iPhone photo sequence on ordinary and prepared URLs,
-including moving more than three photos forward and returning rightward beyond
-the recently retained photos. No further broad trace is needed first. If the
-prepared path improves that comparison, collect a short screenshot-free trace
-on the candidate to quantify the remaining paints before making it default.
+The later 17 October owner retest confirms a substantial perceived improvement:
+“much better,” with good browsing apart from a jump on the first swipe of the
+first photo. This is physical-device feedback, not a numeric frame-time result;
+the original 191.8 ms measurements describe the previous image renderer.
+
+First-entry continuity is still unresolved. Distinguish a swipe immediately
+after opening from one after waiting for preparation. Inspect first selected/
+neighbor surface readiness and the native opening-reveal-to-canvas handoff.
+The current serial preparation visits the selected slot before its neighbors;
+selected canvas visibility also waits for instant reveal or animation completion.
+Those are code observations and hypotheses to test, not proof of the remaining
+phone cause. Keep the successful steady browsing and native full-image zoom.
+A short candidate trace can quantify remaining paints before promotion to the
+default; another broad recording is not needed to restate the known bottleneck.
+
+The engineering principle is to keep expensive preparation outside direct
+manipulation, retain a bounded working set and animate transforms. See the
+[animation performance guide](https://web.dev/articles/animations-guide) and
+[worker/OffscreenCanvas guidance](https://web.dev/articles/offscreen-canvas).
+The specific worker/canvas path is justified here by the measured paint stalls
+and owner comparison; its memory, lifecycle and fallback costs remain part of
+the acceptance check, rather than a universal requirement for every gallery.

@@ -30,10 +30,11 @@ activation work.
 - [ ] **Physical iPhone loaded-photo presentation.** The owner's iPhone 12 Pro
       traces confirm 115–192 ms incoming-image paints, including without
       screenshots; the previous handoff correction did not fix the reported
-      jump. Compare ordinary and `?swipeRenderer=prepared` URLs on the phone,
-      moving beyond three photos and reversing beyond recent images. Quantify
-      the candidate before making it default, then remove or graduate the
-      temporary comparison path. Do not lower full-photo quality or resume the
+      jump. The prepared renderer's owner retest is much better, with a remaining
+      jump on the first swipe of the first photo. Isolate startup surface readiness
+      and opening-reveal handoff, distinguishing immediate/delayed first gestures.
+      Preserve the confirmed browsing improvement; quantify the candidate before
+      making it default, then remove or graduate the temporary comparison path. Do not lower full-photo quality or resume the
       paused AVIF automation. [Evidence](docs/PERFORMANCE_IPHONE_2026-10-17.md).
 
 - [x] **Post-AVIF loading comparison and mobile swipes.** Published in `a940395`

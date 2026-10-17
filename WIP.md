@@ -28,9 +28,16 @@ surfaces, native full-source ownership and the selected accessibility label,
 with no captured script errors. A fresh ordinary sample URL allocates zero
 canvases and retains its native image/reveal. Current owner decisions, photo
 workflow, framework/features, TODO and incident evidence are updated.
-Required next: owner compares
-ordinary/prepared links on the same iPhone sequence beyond recent photos;
-do not claim the issue resolved before that physical result.
+**Later 17 October owner retest:** prepared browsing is “much better”; apart
+from a jump on the first swipe of the first photo it looks good. Physical-phone
+benefit is now qualitatively confirmed. No after-change timing trace exists;
+first-entry continuity remains unresolved, and the renderer stays opt-in.
+Next: distinguish an immediate first swipe from one after preparation settles,
+then inspect first-entry surface/reveal handoff and worker queue readiness.
+Current code serially prepares the selected image before neighbors and gates
+its initial canvas visibility on reveal completion; these are investigation
+points, not a confirmed explanation of the remaining jump. Preserve the working
+steady browsing, quantify the candidate, then graduate/remove the comparison.
 
 ## Loaded-next-photo jump correction — 16 October 2026
 

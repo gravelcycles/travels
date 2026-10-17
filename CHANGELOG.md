@@ -1,5 +1,14 @@
 # Changelog
 
+## 17 October 2026 — prepared-renderer phone feedback
+
+- Record the owner's positive physical-iPhone comparison: browsing is much
+  better, with a remaining jump on the first swipe of the first photo.
+- Keep startup continuity open and distinguish perceived improvement from
+  numeric after-change measurements. Preserve the working opt-in renderer;
+  record initial preparation/reveal handoff as investigation points, not a
+  confirmed diagnosis of the residual jump.
+
 ## 17 October 2026 — physical-iPhone paint investigation
 
 - Record both owner traces, including the screenshot-free 191.8 ms incoming

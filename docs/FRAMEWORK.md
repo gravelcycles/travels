@@ -371,7 +371,9 @@ full Blob and prepares physical-resolution fitted surfaces in one serial worker.
 Native images retain zoom, media and access ownership. Normal links allocate no
 rendering resources. [The incident record](PERFORMANCE_IPHONE_2026-10-17.md)
 owns fallback, lifecycle, memory limits and physical-device acceptance; removal
-or graduation after that check is tracked in TODO. This is not a general plugin
+or graduation after that check is tracked in TODO. The owner now confirms much
+better phone browsing with one remaining first-photo/first-swipe jump; startup
+continuity and numeric after-change measurements remain open. This is not a general plugin
 or flag framework.
 
 ## Remaining continuity work

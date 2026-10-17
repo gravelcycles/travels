@@ -268,8 +268,10 @@ The incident-specific `?swipeRenderer=prepared` comparison uses three bounded
 physical-resolution canvases prepared serially in a worker from authorized full
 bytes; native originals retain zoom/access ownership. Normal URLs retain the
 image renderer. Preserve the reveal and clear surfaces on lock/close/grid/resize;
-unsupported/failed preparation falls back. Do not claim improved iPhone behavior
-before the owner tests moving beyond the recent photos and reversing. See
+unsupported/failed preparation falls back. The later owner retest confirms
+substantially improved phone browsing, with a remaining jump on the first swipe
+of the first photo. Preserve that benefit and investigate startup preparation/
+reveal handoff separately; first-swipe resolution and numeric gains are unverified. See
 [the evidence, memory limits and acceptance checks](docs/PERFORMANCE_IPHONE_2026-10-17.md).
 
 Suspend main-map label/bubble layout while the photo dialog covers the map,

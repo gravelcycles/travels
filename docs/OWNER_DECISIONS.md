@@ -81,6 +81,12 @@ Keep encoded-cache readiness separate from retained native display surfaces;
 use the supplied trace before requesting more broad captures. Any prepared
 renderer remains a controlled opt-in until a physical comparison establishes
 its benefit. [Evidence and next check](PERFORMANCE_IPHONE_2026-10-17.md).
+The later 17 October physical retest of `?swipeRenderer=prepared` is positive:
+the owner reports “much better” and otherwise good browsing, with a remaining
+jump on the first swipe of the first photo. This establishes qualitative benefit
+on the owner's phone, not a measured frame-time gain or complete resolution.
+Preserve the improvement and isolate first-entry preparation/presentation before
+graduating the comparison. The first-swipe cause is not yet confirmed.
 See WIP for delivery status.
 
 ## Standing decisions and acceptance checks
