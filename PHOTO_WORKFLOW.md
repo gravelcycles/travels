@@ -269,9 +269,17 @@ physical-resolution canvases prepared serially in a worker from authorized full
 bytes; native originals retain zoom/access ownership. Normal URLs retain the
 image renderer. Preserve the reveal and clear surfaces on lock/close/grid/resize;
 unsupported/failed preparation falls back. The later owner retest confirms
-substantially improved phone browsing, with a remaining jump on the first swipe
-of the first photo. Preserve that benefit and investigate startup preparation/
-reveal handoff separately; first-swipe resolution and numeric gains are unverified. See
+substantially improved phone browsing; the remaining first-photo jump occurs
+only with an immediate swipe and disappears after a three-second wait. Keep the
+first photo's load/reveal independent of worker and neighbor readiness. During
+startup, a pending neighbor retains its embedded preview until its prepared
+full surface is ready; missing previews or preparation failure retain native
+fallback. Preserve its transform/aspect fit and original full source on promotion.
+Prepare neighbors ahead of duplicate selected-photo work during its opening
+reveal, and avoid a first native-to-prepared swap during horizontal motion.
+Clear preview backgrounds on source changes/lock/close with the bitmap storage.
+The first photo must acquire no added wait. First-swipe resolution and numeric
+phone gains remain unverified. See
 [the evidence, memory limits and acceptance checks](docs/PERFORMANCE_IPHONE_2026-10-17.md).
 
 Suspend main-map label/bubble layout while the photo dialog covers the map,

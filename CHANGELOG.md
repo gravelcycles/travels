@@ -1,5 +1,17 @@
 # Changelog
 
+## 17 October 2026 — immediate first-swipe preparation
+
+- Keep a pending loaded neighbor on its embedded preview until its prepared
+  full surface is ready, retaining full-photo fit, transforms and native source.
+- Keep first-photo loading/reveal independent of worker readiness; prioritize
+  neighboring preparation over duplicate opening-photo work and avoid the first
+  native-to-prepared handoff during horizontal motion. Preserve normal opening
+  duration, full-image zoom, failure fallback and private-pixel cleanup.
+- Record the owner clarification (immediate swipe only; three seconds avoids it)
+  and explicit initial-display-speed requirement. Add failing-before startup
+  regressions and delayed-worker checks; physical-iPhone retest remains pending.
+
 ## 17 October 2026 — prepared-renderer phone feedback
 
 - Record the owner's positive physical-iPhone comparison: browsing is much

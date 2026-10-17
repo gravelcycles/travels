@@ -85,6 +85,7 @@
  .photo-stage .mobile-photo-neighbor:not([hidden]) { position:absolute; inset:0; display:block; pointer-events:none; object-fit:contain; will-change:transform; }
  .photo-stage .mobile-photo-neighbor:not(.is-loaded) { filter:blur(24px); }
  .photo-stage .mobile-photo-raster:not([hidden]) { position:absolute; inset:0; display:block; width:100%; height:100%; pointer-events:none; will-change:transform; }
+ .photo-stage .mobile-photo-raster[data-photo-raster-preview="true"] { background-position:center; background-repeat:no-repeat; background-size:contain; filter:blur(24px); }
  .photo-stage img[data-photo-raster-visible="true"] { visibility:hidden; }
  .photo-context { display:contents; border:0; }
  .photo-location-panel { position:absolute; display:grid; grid-template-rows:auto minmax(0,1fr) auto; height:var(--location-height,320px); bottom:calc(var(--photo-foot) - var(--location-height,320px)); transform:translate3d(0,calc(-1 * var(--reveal)),0); left:0; right:0; background:var(--panel); color:var(--ink); border-radius:18px 18px 0 0; overflow:hidden; visibility:hidden; }

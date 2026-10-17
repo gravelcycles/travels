@@ -80,15 +80,60 @@ The later 17 October owner retest confirms a substantial perceived improvement:
 first photo. This is physical-device feedback, not a numeric frame-time result;
 the original 191.8 ms measurements describe the previous image renderer.
 
-First-entry continuity is still unresolved. Distinguish a swipe immediately
-after opening from one after waiting for preparation. Inspect first selected/
-neighbor surface readiness and the native opening-reveal-to-canvas handoff.
-The current serial preparation visits the selected slot before its neighbors;
-selected canvas visibility also waits for instant reveal or animation completion.
-Those are code observations and hypotheses to test, not proof of the remaining
-phone cause. Keep the successful steady browsing and native full-image zoom.
-A short candidate trace can quantify remaining paints before promotion to the
-default; another broad recording is not needed to restate the known bottleneck.
+The owner then confirms that only an immediate first swipe jumps; waiting about
+three seconds avoids it. Explicit constraint: do not slow the initial-photo
+display pathway. No preparation gate or extra opening delay is acceptable.
+
+### Immediate-swipe startup correction
+
+The first candidate had two observable gaps: a loaded neighbor still painted
+its native full source until worker completion, and a late first selected
+surface could replace native pixels during the initial drag. Waiting naturally
+hides both gaps. This identifies application paths consistent with the report;
+the exact physical-iPhone contribution of each still needs owner confirmation.
+
+For the opt-in renderer, a loaded neighbor now retains its embedded lightweight
+preview on the same canvas while its full display surface is pending. Preview
+fit uses the full photo's aspect ratio and inherits the exact transform; full
+bitmap completion clears only the preview, retaining geometry and original
+source. A promoted pending neighbor keeps that preview until ready. Missing
+previews and worker/decode/transfer failures retain native fallback. Lock, source
+changes and close clear background pixels as well as bitmap storage.
+
+The first selected photo remains native through its normal opening reveal;
+its duplicate worker preparation waits until reveal completion or direct
+manipulation. Adjacent slots precede the selected slot in batch preparation.
+This never waits on a worker before showing the first photo. A first selected
+surface cannot replace native pixels mid-swipe; it becomes eligible after
+settling. Already presented surfaces keep the successful steady swipe behavior.
+Completed reveal state survives canvas resize; reduced motion does not wait for
+an animationend event. Full images remain attached for zoom.
+
+Four startup regressions fail against the published first candidate and pass
+with the correction: pending neighbor presentation, immediate native handoff,
+placeholder failure cleanup and reduced-motion entry. A fifth worker-start/
+message failure check prevents a permanent preview when preparation is blocked.
+A three-second preparation deadline restores native display and terminates a
+stalled worker for the current view, without an automatic retry loop. This is
+a fallback deadline for pending surfaces, never a hold on first-photo display.
+The existing reveal test now also verifies zero worker work for the first
+selected photo during opening and preserved reveal completion across resize.
+
+A matched loopback fixture uses the actual first Heading East photo (including
+saved album order), local full derivatives, 390×844 viewport/DPR1, normal loader
+and a controlled delay of worker results. With results delayed 1,500 ms, the
+original first photo enters its normal reveal while zero surfaces are ready;
+the pending-neighbor full-image exposure changes from present to absent. The
+new path passes all five startup checks, retaining the incoming full source,
+node, transform and fitted bounds through preparation completion. A 50 ms delay
+also checks completion during the immediate drag (before 3/5 checks, after 5/5;
+at 1,500 ms, before 4/5 and after 5/5). Individual open-to-ready
+samples are browser measurements with normal variation, not a phone latency
+claim or a statistical speed comparison. WIP records the final checks/release.
+
+The startup correction remains within the opt-in comparison. The previously
+confirmed steady browsing benefit must be preserved; first-swipe smoothness on
+the actual iPhone and numeric after-change paint durations remain unverified.
 
 The engineering principle is to keep expensive preparation outside direct
 manipulation, retain a bounded working set and animate transforms. See the

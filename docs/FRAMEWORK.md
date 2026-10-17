@@ -373,8 +373,11 @@ rendering resources. [The incident record](PERFORMANCE_IPHONE_2026-10-17.md)
 owns fallback, lifecycle, memory limits and physical-device acceptance; removal
 or graduation after that check is tracked in TODO. The owner now confirms much
 better phone browsing with one remaining first-photo/first-swipe jump; startup
-continuity and numeric after-change measurements remain open. This is not a general plugin
-or flag framework.
+continuity and numeric after-change measurements remain open. Pending neighbors
+keep embedded previews until prepared, while the first selected photo retains
+its ordinary native reveal without any worker-readiness gate. Preview fit and
+source cleanup share the three slot identities; first native handoff waits for
+horizontal motion to settle. This is not a general plugin or flag framework.
 
 ## Remaining continuity work
 

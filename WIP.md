@@ -32,12 +32,25 @@ workflow, framework/features, TODO and incident evidence are updated.
 from a jump on the first swipe of the first photo it looks good. Physical-phone
 benefit is now qualitatively confirmed. No after-change timing trace exists;
 first-entry continuity remains unresolved, and the renderer stays opt-in.
-Next: distinguish an immediate first swipe from one after preparation settles,
-then inspect first-entry surface/reveal handoff and worker queue readiness.
-Current code serially prepares the selected image before neighbors and gates
-its initial canvas visibility on reveal completion; these are investigation
-points, not a confirmed explanation of the remaining jump. Preserve the working
-steady browsing, quantify the candidate, then graduate/remove the comparison.
+Owner clarification: only an immediate first swipe jumps; waiting three seconds
+avoids it. Explicit requirement: preserve first-photo display speed. The startup
+correction leaves the native opening reveal independent of worker readiness,
+prepares adjacent slots before duplicate selected work, keeps pending neighbors
+on embedded previews with full-photo fit, and prevents a first native handoff
+during horizontal motion. Lock/source/close clear both preview and bitmap;
+worker failures fall back. Four new regressions fail before and pass after;
+worker-start failure, bounded stall fallback and resize/reduced-motion handling
+are also covered.
+The delayed-worker browser fixture passes all five startup checks at 1,500 ms
+and 50 ms result delays, with first native display before any bitmap is ready.
+All 887 tests pass, including 14 renderer checks. Repeated builds preserve all
+79 public files byte-for-byte. Shared browser checks pass reference 21/21,
+Alpine sample 20/20 and independent populated fresh draft 20/20 with no captured
+script errors. The previous candidate fails the pending-neighbor check at
+1,500 ms (4/5) and also switches native surfaces during drag at 50 ms (3/5);
+the correction passes 5/5 in both cases. Deployment verification is in progress.
+Required next: physical-iPhone immediate-swipe retest, preserving the confirmed
+steady browsing improvement; quantify the candidate before graduation/removal.
 
 ## Loaded-next-photo jump correction — 16 October 2026
 
