@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const source = fs.readFileSync(new URL('../dist/assets/photo-swipe-raster.js', import.meta.url), 'utf8');
-function fixture({query='?swipeRenderer=prepared', supported=true, moving=()=>false, reducedMotion=false}={}) {
+function fixture({query='', supported=true, moving=()=>false, reducedMotion=false}={}) {
   const workers=[],canvases=[],events=new Map(),revoked=[],timers=new Map();let timer=0;
   const stage={dataset:{}},frame={children:[],append(node){this.children.push(node);},addEventListener(name,fn){events.set(name,fn);}};
   let authorized=true;
@@ -28,10 +28,15 @@ function fixture({query='?swipeRenderer=prepared', supported=true, moving=()=>fa
   return {api,env,stage,frame,images,workers,canvases,events,revoked,timers,complete,deny(){authorized=false;}};
 }
 
-test('normal links and unavailable APIs allocate no rendering resources',()=>{
-  for(const options of [{query:''},{supported:false}]){
-    const f=fixture(options);assert.equal(f.api,null);assert.equal(f.workers.length,0);assert.equal(f.canvases.length,0);
+test('normal and former comparison links use the same prepared renderer without changing photo sources',()=>{
+  for(const query of ['', '?swipeRenderer=prepared']){
+    const f=fixture({query});assert.ok(f.api);f.images.forEach(f.api.register);f.api.resize(390,666);
+    assert.equal(f.canvases.length,3);assert.equal(f.workers.length,1);assert.equal(f.workers[0].jobs.length,3);
+    assert.deepEqual(f.images.map(image=>image.src),[0,1,2].map(i=>`blob:https://example.test/p${i}`));
   }
+});
+test('unavailable APIs retain native images and allocate no rendering resources',()=>{
+  const f=fixture({supported:false});assert.equal(f.api,null);assert.equal(f.workers.length,0);assert.equal(f.canvases.length,0);
 });
 test('three physical-resolution surfaces reuse full authorized bytes and preserve native sources',()=>{
   const f=fixture();f.images.forEach(f.api.register);f.api.register({...f.images[0]});assert.equal(f.canvases.length,3);

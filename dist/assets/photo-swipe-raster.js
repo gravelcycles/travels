@@ -1,8 +1,7 @@
 (function (root) {
   'use strict';
-  // Temporary, opt-in physical-iPhone comparison. Normal URLs keep the existing
-  // renderer until device evidence establishes a benefit. Full sources, access
-  // and zoom remain owned by the existing image elements and loader.
+  // Prepared fitted surfaces for the shared mobile viewer. Full sources,
+  // access and zoom remain owned by the existing image elements and loader.
   function rasterWorker() {
     let pending = [], working = false;
     self.onmessage = event => {
@@ -50,7 +49,6 @@
   }
 
   function create({stage, frame, enabled, preview = () => '', moving = () => false}, env = root) {
-    if (new URLSearchParams(env.location.search).get('swipeRenderer') !== 'prepared') return null;
     if (!env.Worker || !env.OffscreenCanvas || !env.createImageBitmap) {
       stage.dataset.swipeRenderer = 'unsupported'; return null;
     }

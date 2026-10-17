@@ -1,5 +1,17 @@
 # Changelog
 
+## 17 October 2026 — prepared mobile photos by default
+
+- Enable the corrected prepared-surface renderer on ordinary mobile journey
+  URLs, following the owner's positive iPhone comparison and rollout request.
+  Real journeys, demos and fresh drafts share the same default.
+- Initialize mobile resources only at the phone breakpoint, including a later
+  desktop-to-phone resize; retain native desktop rendering and capability/error
+  fallback. Preserve the immediate first-photo pathway, full-source zoom,
+  private cleanup and bounded three-surface working set.
+- Remove the comparison query gate; old comparison links still work. Record
+  the default contract and distinguish rollout approval from new phone timings.
+
 ## 17 October 2026 — Dark All photos chooser
 
 - Match the day/stop chooser to the day photo roll with a near-black canvas,

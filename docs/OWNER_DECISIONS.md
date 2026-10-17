@@ -78,9 +78,7 @@ The subsequent owner recordings (with and without screenshots) reproduce long
 incoming-image paints on an iPhone 12 Pro; Safari and Brave are also affected.
 The owner observes smoother returns within roughly two recently viewed photos.
 Keep encoded-cache readiness separate from retained native display surfaces;
-use the supplied trace before requesting more broad captures. Any prepared
-renderer remains a controlled opt-in until a physical comparison establishes
-its benefit. [Evidence and next check](PERFORMANCE_IPHONE_2026-10-17.md).
+use the supplied trace before requesting more broad captures. The prepared renderer initially remained opt-in for the physical comparison. [Evidence and next check](PERFORMANCE_IPHONE_2026-10-17.md).
 The later 17 October physical retest of `?swipeRenderer=prepared` is positive:
 the owner reports “much better” and otherwise good browsing, with a remaining
 jump on the first swipe of the first photo. This establishes qualitative benefit
@@ -91,6 +89,13 @@ about three seconds avoids it. Preserve the first photo's immediate display path
 no worker/neighbor readiness gate, added opening delay or artificial hold.
 Treat pending next-photo display and native-to-prepared handoff separately from
 loading the current photo.
+Later on 17 October the owner explicitly requests rollout as the default. This
+supersedes the comparison-only gate and the prior promotion condition. Apply
+the prepared path to supported mobile viewers across all journeys, demos and
+fresh drafts without a URL parameter. Preserve immediate first-photo display,
+full-source zoom, private cleanup, bounded memory and native fallback; desktop
+startup retains native rendering with no mobile canvas/worker allocation.
+The rollout request does not itself provide new numeric phone measurements.
 See WIP for delivery status.
 
 ## Standing decisions and acceptance checks

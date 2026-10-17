@@ -39,13 +39,16 @@ can require new native display work when rebound even if its bytes are cached.
 That lifecycle is consistent with the owner's recent-photo observation; the
 recording does not establish the browser's internal surface eviction policy.
 
-## Controlled candidate
+## Default mobile renderer
 
-`?swipeRenderer=prepared` temporarily opts into `photo-swipe-raster.js` through
-the shared template. Ordinary links retain the image renderer and allocate no
-worker/canvas. This is one incident-specific comparison, not a new product
-preference or general feature-flag system. Remove or graduate it after the
-physical-device result, rather than accumulating renderer choices.
+The owner explicitly requested default rollout on 17 October after the positive
+iPhone comparison and the immediate-swipe correction. Supported mobile viewers
+now use `photo-swipe-raster.js` through the shared template without a query
+parameter. Former `?swipeRenderer=prepared` comparison URLs continue to work;
+the obsolete parameter is ignored, with no renderer preference/flag system.
+Desktop startup creates no mobile canvases/workers. The controller initializes
+the three slots once at phone width, including a desktop-to-phone resize of an
+open viewer. Unsupported APIs and preparation failures retain native display.
 
 A single worker serially decodes the already authorized full-photo Blob,
 contains it within a physical-pixel viewport surface, and transfers the bitmap
@@ -92,7 +95,7 @@ surface could replace native pixels during the initial drag. Waiting naturally
 hides both gaps. This identifies application paths consistent with the report;
 the exact physical-iPhone contribution of each still needs owner confirmation.
 
-For the opt-in renderer, a loaded neighbor now retains its embedded lightweight
+A loaded neighbor now retains its embedded lightweight
 preview on the same canvas while its full display surface is pending. Preview
 fit uses the full photo's aspect ratio and inherits the exact transform; full
 bitmap completion clears only the preview, retaining geometry and original
@@ -131,9 +134,11 @@ at 1,500 ms, before 4/5 and after 5/5). Individual open-to-ready
 samples are browser measurements with normal variation, not a phone latency
 claim or a statistical speed comparison. WIP records the final checks/release.
 
-The startup correction remains within the opt-in comparison. The previously
-confirmed steady browsing benefit must be preserved; first-swipe smoothness on
-the actual iPhone and numeric after-change paint durations remain unverified.
+The owner's later explicit request promotes this corrected renderer to the
+mobile default. The previously confirmed steady browsing benefit and immediate
+first-photo pathway must be preserved. The rollout request does not add a new
+physical-device trace: immediate first-swipe smoothness after the startup fix
+and numeric after-change paint durations remain unverified.
 
 The engineering principle is to keep expensive preparation outside direct
 manipulation, retain a bounded working set and animate transforms. See the

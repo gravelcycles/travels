@@ -46,16 +46,16 @@ ready image's opening reveal; idle entry keeps the normal 350 ms animation. Nume
 results and physical-device limits are recorded in
 [the readiness measurements](PERFORMANCE_READINESS_2026-10-16.md).
 
-The remaining iPhone loaded-photo jump has physical trace evidence and a
-controlled `?swipeRenderer=prepared` comparison using worker-prepared fitted
-surfaces. Ordinary viewer behavior stays the default. Full sources remain
-attached for zoom; prepared pixels obey existing access cleanup. See
-[the incident record](PERFORMANCE_IPHONE_2026-10-17.md) and WIP for verification
-and the positive physical-phone retest. The immediate first-swipe correction
-keeps the first native photo/reveal independent of preparation, retains embedded
-neighbor previews until their display surfaces are ready, and avoids the first
-native-to-prepared handoff during horizontal motion. Phone confirmation of this
-startup correction is pending.
+The owner approved default mobile rollout on 17 October after a much smoother
+physical-iPhone comparison. Supported phone viewers use worker-prepared fitted
+surfaces on ordinary URLs across real journeys, demos and fresh drafts. Full
+sources remain attached for zoom and retain existing access cleanup; desktop
+startup stays native with zero mobile canvas/worker allocation. Unsupported or
+failed preparation uses native fallback. The first native photo/reveal remains
+independent of preparation, pending neighbors retain embedded previews, and the
+first native handoff avoids horizontal motion. [The incident record](PERFORMANCE_IPHONE_2026-10-17.md)
+and WIP retain evidence and the pending physical startup retest; rollout approval
+does not imply a numeric frame-time gain or new startup certification.
 
 The [16 October fullscreen photo correction](OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
 is implemented in shared code: mobile right-aligned Comments with Share immediately to its left,

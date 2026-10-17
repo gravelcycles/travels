@@ -49,14 +49,30 @@ function bundle(source, key) {
 }
 const app = read(repo, 'dist/assets/app.js');
 
-test('the opt-in iPhone swipe comparison is inherited by reference, demo and populated fresh drafts',t=>{
+test('prepared photo surfaces default to mobile across reference, demo and populated fresh drafts',t=>{
   const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root);
   draft.photos=[{id:'prepared-surface-fixture',dayId:draft.days[0].id,caption:'',src:'https://images.example.test/photo.jpg'}];
   for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'&&j.photos.length),draft]){
     const html=renderJourneyPage(root,journey,{preview:true}),scripts=assets(html);
     assert.ok(scripts.includes('photo-swipe-raster.js'));
     assert.ok(scripts.indexOf('photo-swipe-raster.js')<scripts.indexOf('mobile-ux.js'));
-    assert.doesNotMatch(html,/swipeRenderer=prepared/,'Ordinary journey links do not enable the diagnostic');
+    assert.doesNotMatch(html,/swipeRenderer=prepared/,'Ordinary journey links need no renderer parameter');
+    for(const mobile of [false,true]){
+      const created=[],registered=[];let clears=0;
+      const f=viewerFixture({journey,mobile,rasterFactory:options=>{
+        created.push(options);
+        return {register:image=>registered.push(image),resize(){},prepareAll(){},sync(){},active(){},clear(){clears++;}};
+      }});
+      assert.equal(created.length,mobile?1:0,'Desktop startup never creates mobile rendering resources');
+      f.api.openDay(journey.photos[0].dayId);
+      assert.equal(created.length,mobile?1:0);
+      if(!mobile)f.resize(true);
+      assert.equal(created.length,1);assert.equal(new Set(registered).size,3);
+      assert.equal(created[0].enabled(),true);
+      f.resize(false);assert.equal(created[0].enabled(),false);assert.ok(clears>0);
+      f.resize(true);assert.equal(created.length,1,'Breakpoint changes reuse the same three slots');
+      assert.equal(registered.length,3);assert.equal(created[0].enabled(),true);
+    }
   }
 });
 

@@ -46,11 +46,17 @@
       $('#viewer-photo-frame').append(node); return {node, delta};
     });
     const enabled = () => media.matches;
-    const swipeRaster = root.JourneyPhotoSwipeRaster?.create({stage, frame:$('#viewer-photo-frame'),
-      enabled:()=>enabled() && dialog.open && !grid,
-      preview:node=>neighbors.find(neighbor=>neighbor.node === node)?.photo?.blur || '',
-      moving:()=>Boolean(gesture?.axis === 'x' || swipeOffset || viewer.classList.contains('is-swipe-settling'))});
-    if (swipeRaster) [img, ...neighbors.map(neighbor => neighbor.node)].forEach(node => swipeRaster.register(node));
+    let swipeRaster = null, rasterInitialized = false;
+    function initSwipeRaster() {
+      if (rasterInitialized || !enabled()) return;
+      rasterInitialized = true;
+      swipeRaster = root.JourneyPhotoSwipeRaster?.create({stage, frame:$('#viewer-photo-frame'),
+        enabled:()=>enabled() && dialog.open && !grid,
+        preview:node=>neighbors.find(neighbor=>neighbor.node === node)?.photo?.blur || '',
+        moving:()=>Boolean(gesture?.axis === 'x' || swipeOffset || viewer.classList.contains('is-swipe-settling'))});
+      if (swipeRaster) [img, ...neighbors.map(neighbor => neighbor.node)].forEach(node => swipeRaster.register(node));
+    }
+    initSwipeRaster();
     function snapshot() {
       return {overlay, overlayDepth, overlayScroll:overlay ? {top:$(`#${overlay}`).scrollTop || 0,left:$(`#${overlay}`).scrollLeft || 0} : null, dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
         viewerDay: current.day?.id, collection: dialog.open ? api.collection?.() || null : null, index: current.index, scope:api.scope(), mapView:api.captureMapView?.() || null, depth:dialog.open?viewerDepth:0, fromAlbum, gridOrigin:dialog.open ? gridOrigin : null, gridScroll:grid ? {top:strip.scrollTop || 0,left:strip.scrollLeft || 0} : null, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
@@ -276,6 +282,7 @@
     }
     function measure() {
       if (!enabled()) return;
+      initSwipeRaster();
       stopZoom();
       locationHeight = Math.min(360, Math.max(150, (viewer.clientHeight - 138) * .52));
       viewerHeight = viewer.clientHeight;

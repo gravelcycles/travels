@@ -276,10 +276,13 @@ during selection, not only animation state after the handler returns; desktop
 browser checks alone cannot certify the physical-iPhone outcome.
 The 17 October physical-iPhone traces still show 115–192 ms incoming-image
 paints after that handoff correction, including without screenshot capture.
-The incident-specific `?swipeRenderer=prepared` comparison uses three bounded
-physical-resolution canvases prepared serially in a worker from authorized full
-bytes; native originals retain zoom/access ownership. Normal URLs retain the
-image renderer. Preserve the reveal and clear surfaces on lock/close/grid/resize;
+The owner explicitly requested default rollout on 17 October after the positive
+iPhone comparison. Supported mobile viewers now use three bounded physical-
+resolution canvases prepared serially in a worker from authorized full bytes;
+native originals retain zoom/access ownership. Ordinary links need no parameter,
+and former comparison URLs still work. Desktop startup allocates no mobile
+canvases/workers; resizing an open viewer to phone width initializes the same
+shared renderer once. Preserve the reveal and clear surfaces on lock/close/grid/resize;
 unsupported/failed preparation falls back. The later owner retest confirms
 substantially improved phone browsing; the remaining first-photo jump occurs
 only with an immediate swipe and disappears after a three-second wait. Keep the

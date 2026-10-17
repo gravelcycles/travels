@@ -1,5 +1,28 @@
 # Current workstreams
 
+## Prepared mobile photos by default — 17 October 2026
+
+The owner explicitly requests default rollout, superseding the opt-in gate and
+prior graduation condition. Integrated remote main `cf1c5a6`, including the dark
+All photos chooser. Ordinary mobile URLs now use the corrected renderer on
+supported browsers; former comparison URLs remain usable. Desktop startup
+creates no mobile canvases/workers, and resizing an open desktop viewer to phone
+width initializes the same three slots once. Preserve immediate first-photo
+display, full-source zoom/access, bounded memory, preview/stall recovery and
+native fallback. No renderer preference or per-trip flag is added.
+
+All 888 tests pass, including normal/legacy URLs, native capability fallback and
+reference/demo/populated fresh-draft mobile/desktop breakpoint initialization.
+Repeated builds preserve all 79 public files byte-for-byte. Ordinary-URL browser
+checks pass reference 22/22, Alpine sample 21/21 and independent populated draft
+21/21, without captured script errors. The actual first Heading East photo
+passes all five startup checks with worker results held for 1,500 ms: its native
+reveal starts while zero surfaces are ready. Deployment verification is in
+progress. This rollout authorization
+does not itself confirm the latest startup fix on a physical iPhone; retain that
+measurement/retest follow-up without claiming a numeric speedup. Current owner,
+workflow, framework/features, incident and TODO guidance are updated.
+
 ## Dark All photos chooser — 17 October 2026
 
 Authorized: match the day/stop chooser to the day photo roll's black styling.
@@ -38,10 +61,10 @@ callbacks stay <=0.69 ms. [The incident record](docs/PERFORMANCE_IPHONE_2026-10-
 distinguishes encoded bytes, three retained image elements and native display
 work. Raw recordings/private pixels remain outside Git.
 
-Candidate on `codex/iphone-swipe-surfaces`: `?swipeRenderer=prepared` prepares
+Initial comparison on `codex/iphone-swipe-surfaces`: `?swipeRenderer=prepared` prepares
 three physical-resolution display canvases serially from current authorized
-full-photo Blobs. Native sources retain zoom/access; normal URLs allocate no
-worker/canvas. Preserve cold reveal, reject stale work, clear on lock/close/grid/
+full-photo Blobs. At that comparison checkpoint native sources retained
+zoom/access and normal URLs allocated no worker/canvas. Preserve cold reveal, reject stale work, clear on lock/close/grid/
 resize, and fall back for unavailable APIs, errors or oversized surfaces.
 All 881 tests pass, plus the final eight renderer checks; repeated builds preserve
 all 79 public files byte-for-byte. Browser affected-flow checks pass reference
@@ -59,7 +82,8 @@ workflow, framework/features, TODO and incident evidence are updated.
 **Later 17 October owner retest:** prepared browsing is “much better”; apart
 from a jump on the first swipe of the first photo it looks good. Physical-phone
 benefit is now qualitatively confirmed. No after-change timing trace exists;
-first-entry continuity remains unresolved, and the renderer stays opt-in.
+first-entry continuity remained unresolved, so the renderer stayed opt-in at
+that checkpoint; the later default-rollout request is tracked above.
 Owner clarification: only an immediate first swipe jumps; waiting three seconds
 avoids it. Explicit requirement: preserve first-photo display speed. The startup
 correction leaves the native opening reveal independent of worker readiness,
@@ -85,7 +109,8 @@ URL retains its native reveal and allocates zero canvases. Current owner,
 workflow, framework/features, TODO and incident guidance include the immediate-
 swipe clarification and the no-added-initial-display-wait constraint.
 Required next: physical-iPhone immediate-swipe retest, preserving the confirmed
-steady browsing improvement; quantify the candidate before graduation/removal.
+steady browsing improvement. The later owner request authorizes default rollout
+above; physical startup measurements remain a separate follow-up.
 
 ## Loaded-next-photo jump correction — 16 October 2026
 

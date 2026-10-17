@@ -114,6 +114,7 @@ password system.
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |
 | `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching; optional native-resolution AVIF for full loads with WebP fallback and unchanged authentication |
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |
+| `dist/assets/photo-swipe-raster.js` | Default mobile fitted-photo surfaces, serial worker preparation from authorized full bytes, three bounded physical-resolution canvases, native zoom/fallback and protected-pixel cleanup |
 | `dist/assets/mobile-ux.js`, `dist/assets/mobile.css` | Shared mobile day navigation, full-viewport photo stage with overlay controls and single-tap chrome toggling, focal zoom through photo-zoom.js, continuous journey photo gestures with cache-ready neighbors and frame-paced swipe transforms, including downward still-photo dismissal with cancellation/pinch arbitration, separate event jumps, event grids retained beneath fullscreen photos with one-level grid/photo history and scroll restoration, location panel, exact map-camera restoration on same-event Back/close and retained cross-event sidebar selection when dismissing Comments |
 | `dist/assets/community-client.js`, `photo-comments.js` / `.css`, `places-comments.css`, `places-panel.js` | Shared floating photo conversations and place reviews; immediate presentation, authorized memory caches and retry behavior; Places owns direct phone sheet resizing from its handle and list/detail header |
 | `dist/assets/comment-notifications.js`, `trip-notifications.js` / `.css` | Shared journey-scoped local read IDs, exact photo/trip counts, cached trip metadata and recent-feed presentation; no per-photo count requests or public comment text |
@@ -364,20 +365,23 @@ setup state until their own mode network has been prepared. A guided retrieval
 flow with access/direction-aware routing is future work (W06); the present local
 graph reconstructs historical routes and is not turn-by-turn navigation.
 
-The unresolved physical-iPhone paint investigation has one temporary opt-in
-renderer, `photo-swipe-raster.js`, enabled only by `?swipeRenderer=prepared`.
-It shares three slot identities with mobile-ux, reuses the loader's authorized
-full Blob and prepares physical-resolution fitted surfaces in one serial worker.
-Native images retain zoom, media and access ownership. Normal links allocate no
-rendering resources. [The incident record](PERFORMANCE_IPHONE_2026-10-17.md)
-owns fallback, lifecycle, memory limits and physical-device acceptance; removal
-or graduation after that check is tracked in TODO. The owner now confirms much
-better phone browsing with one remaining first-photo/first-swipe jump; startup
-continuity and numeric after-change measurements remain open. Pending neighbors
-keep embedded previews until prepared, while the first selected photo retains
-its ordinary native reveal without any worker-readiness gate. Preview fit and
-source cleanup share the three slot identities; first native handoff waits for
-horizontal motion to settle. This is not a general plugin or flag framework.
+Mobile photo display uses `photo-swipe-raster.js` by default on capable browsers,
+following the owner's explicit 17 October rollout request and positive iPhone
+comparison. The shared mobile controller initializes it only at the mobile
+breakpoint; a desktop-open viewer can initialize it when resized to phone width.
+No query parameter or per-trip flag is required. Former comparison URLs remain
+usable because their obsolete parameter is ignored.
+
+The renderer shares three slot identities with mobile-ux, reuses the loader's
+authorized full Blob and prepares physical-resolution fitted surfaces in one
+serial worker. Native images retain zoom, media and access ownership. Desktop
+startup allocates no mobile canvases/workers; unsupported APIs, oversized
+surfaces, preparation failure and a bounded stall retain native fallback.
+Pending neighbors keep embedded previews until prepared, while the first
+selected photo retains its ordinary native reveal without any worker-readiness
+gate. Preview fit and source cleanup share the three slots; first native handoff
+waits for horizontal motion to settle. [The incident record](PERFORMANCE_IPHONE_2026-10-17.md)
+owns evidence, memory/lifecycle limits and the remaining physical startup retest.
 
 ## Remaining continuity work
 
