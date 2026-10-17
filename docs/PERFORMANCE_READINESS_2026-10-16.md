@@ -36,6 +36,13 @@ All 870 automated tests pass. Physical-iPhone presentation remains unverified;
 this removes a demonstrated transient animation/layout change, rather than
 establishing that every previously recorded native-render stall is resolved.
 
+Published as `4c37c55` on 17 October through successful
+[Pages run 39015083364](https://github.com/gravelcycles/travels/actions/runs/39015083364).
+Five fresh public pages and 43 referenced scripts/styles match the tested
+build byte-for-byte. Live sample swipes advance and reverse with the selected
+image ready, instant-reveal and absolutely positioned at 390×844. This is a
+desktop-browser live check; physical-iPhone confirmation remains outstanding.
+
 ## Earlier readiness investigation
 
 The owner still observed a first-swipe pause and laggy movement after `a940395`.

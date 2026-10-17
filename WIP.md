@@ -13,9 +13,13 @@ The new ordering regression fails before the fix and passes afterward; all
 checks. The matched four-handoff browser comparison observes unintended reveal
 creation 2→0 and position-model changes 4→0, retaining the incoming node/source
 4/4. Reference/demo affected flows pass 16/16 each and the freshly generated
-independently populated draft passes 15/15. Build passes; publication and fresh
-public verification are pending. Physical-iPhone smoothness remains unverified;
-do not equate removal
+independently populated draft passes 15/15. Two builds preserve all 78 public
+files byte-for-byte. Published as `4c37c55` on 17 October through successful
+[Pages run 39015083364](https://github.com/gravelcycles/travels/actions/runs/39015083364).
+All five fresh public pages and 43 referenced scripts/styles match the tested
+build exactly. Live mobile sample forward/reverse swipes preserve the ready,
+instant-reveal image and absolute positioning. Current owner/workflow guidance
+is updated. Physical-iPhone smoothness remains unverified; do not equate removal
 of this observed transient animation with eliminating every device frame stall.
 
 ## First fullscreen photo readiness follow-up — 16 October 2026
