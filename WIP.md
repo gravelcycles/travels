@@ -20,7 +20,15 @@ all 79 public files byte-for-byte. Browser affected-flow checks pass reference
 21/21, Alpine sample 20/20 and independently populated fresh draft 20/20, with
 no captured script errors. Heading East retains incoming/outgoing images in all
 four forward/reverse handoffs, with three prepared surfaces ready afterward.
-Deployment is in progress. Required next: owner compares
+Published as `02b6cab` through successful
+[Pages run 39020730614](https://github.com/gravelcycles/travels/actions/runs/39020730614).
+All five fresh public pages and 44 referenced scripts/styles match the tested
+build byte-for-byte. Live sample rightward/leftward gestures retain three ready
+surfaces, native full-source ownership and the selected accessibility label,
+with no captured script errors. A fresh ordinary sample URL allocates zero
+canvases and retains its native image/reveal. Current owner decisions, photo
+workflow, framework/features, TODO and incident evidence are updated.
+Required next: owner compares
 ordinary/prepared links on the same iPhone sequence beyond recent photos;
 do not claim the issue resolved before that physical result.
 
