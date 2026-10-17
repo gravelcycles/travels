@@ -49,6 +49,17 @@ function bundle(source, key) {
 }
 const app = read(repo, 'dist/assets/app.js');
 
+test('the opt-in iPhone swipe comparison is inherited by reference, demo and populated fresh drafts',t=>{
+  const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root);
+  draft.photos=[{id:'prepared-surface-fixture',dayId:draft.days[0].id,caption:'',src:'https://images.example.test/photo.jpg'}];
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'&&j.photos.length),draft]){
+    const html=renderJourneyPage(root,journey,{preview:true}),scripts=assets(html);
+    assert.ok(scripts.includes('photo-swipe-raster.js'));
+    assert.ok(scripts.indexOf('photo-swipe-raster.js')<scripts.indexOf('mobile-ux.js'));
+    assert.doesNotMatch(html,/swipeRenderer=prepared/,'Ordinary journey links do not enable the diagnostic');
+  }
+});
+
 test('notification photo entry opens fullscreen directly across reference, city, demo and populated fresh draft', t => {
   const root = fixture(t), draft = createJourney(root, { ...input, eventMode: 'city' });
   draft.photos = [1, 2].map(n => ({ id: `${draft.id}-notice-${n}`, dayId: draft.days[0].id, caption: '', src: `https://images.example.test/notice-${n}.jpg` }));

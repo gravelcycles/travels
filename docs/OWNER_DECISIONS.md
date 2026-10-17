@@ -70,6 +70,17 @@ as a loaded-image presentation problem. A prepared photo must not restart the
 cold reveal or change its positioning model when it becomes selected. Verify
 the style/layout handoff as well as source continuity, and distinguish browser
 regression evidence from physical-iPhone confirmation.
+On 17 October the owner reports that `4c37c55` still did not fix the jump and
+asks how to collect iPhone developer evidence. Treat the user-visible issue as
+unresolved despite passing browser/tests. Prefer a physical-device trace of
+the loaded-photo case before attributing the remaining stall to another cause.
+The subsequent owner recordings (with and without screenshots) reproduce long
+incoming-image paints on an iPhone 12 Pro; Safari and Brave are also affected.
+The owner observes smoother returns within roughly two recently viewed photos.
+Keep encoded-cache readiness separate from retained native display surfaces;
+use the supplied trace before requesting more broad captures. Any prepared
+renderer remains a controlled opt-in until a physical comparison establishes
+its benefit. [Evidence and next check](PERFORMANCE_IPHONE_2026-10-17.md).
 See WIP for delivery status.
 
 ## Standing decisions and acceptance checks

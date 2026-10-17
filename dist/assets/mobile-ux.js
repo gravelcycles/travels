@@ -46,6 +46,8 @@
       $('#viewer-photo-frame').append(node); return {node, delta};
     });
     const enabled = () => media.matches;
+    const swipeRaster = root.JourneyPhotoSwipeRaster?.create({stage, frame:$('#viewer-photo-frame'), enabled:()=>enabled() && dialog.open && !grid});
+    if (swipeRaster) [img, ...neighbors.map(neighbor => neighbor.node)].forEach(node => swipeRaster.register(node));
     function snapshot() {
       return {overlay, overlayDepth, overlayScroll:overlay ? {top:$(`#${overlay}`).scrollTop || 0,left:$(`#${overlay}`).scrollLeft || 0} : null, dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
         viewerDay: current.day?.id, collection: dialog.open ? api.collection?.() || null : null, index: current.index, scope:api.scope(), mapView:api.captureMapView?.() || null, depth:dialog.open?viewerDepth:0, fromAlbum, gridOrigin:dialog.open ? gridOrigin : null, gridScroll:grid ? {top:strip.scrollTop || 0,left:strip.scrollLeft || 0} : null, layer: grid ? 'grid' : locationOpen ? 'location' : 'photo'};
@@ -161,6 +163,7 @@
       img.style.transform = `translate3d(${dx + panX}px,${panY}px,0) scale(${scale})`;
       stage.style.setProperty('--photo-swipe-x', `${dx}px`);
       neighbors.forEach(({node,delta}) => { node.style.transform = `translate3d(${dx + delta * (width + 16)}px,0,0)`; });
+      swipeRaster?.active(scale === 1 && !grid);
     }
     function queueSwipe(dx, width) {
       dragOffset = dx; dragWidth = width;
@@ -187,6 +190,7 @@
         node.hidden = !photo || photo.mediaType === 'video';
         if (!node.hidden && !neighbor.bound) neighbor.bound = Boolean(api.loadImage(node, photo));
       });
+      swipeRaster?.prepareAll();
     }
     function preparePhoto(photo) {
       const previous = current.photos[current.index];
@@ -279,6 +283,7 @@
       stopLocation();
       locationStageHeight = viewerHeight - locationInset(reveal);
       stage.style.setProperty('--location-inset', `${locationInset(reveal)}px`);
+      swipeRaster?.resize(locationWidth, locationStageHeight);
       revealTo(reveal);
       zoom(scale);
       $('.map-panel').style.setProperty('--day-summary-height', `${$('.mobile-day-summary').offsetHeight}px`);
@@ -390,6 +395,7 @@
         // then travel together between their fitted sizes on the compositor.
         locationStageHeight = nextHeight;
         stage.style.setProperty('--location-inset', `${locationInset(reveal)}px`);
+        swipeRaster?.resize(locationWidth, locationStageHeight);
         fitLocationPhoto(reduced.matches ? nextHeight : previousHeight);
         if (!reduced.matches) {
           $('#viewer-photo-frame').getBoundingClientRect();
@@ -461,6 +467,7 @@
       if (value) { $('#mobile-grid-back').focus({preventScroll:true}); }
       else if (enabled()) $('#mobile-photo-grid').focus({preventScroll:true});
       if (value) { api.suspendPhotos?.(); clearNeighbors(); api.refreshGrid?.(); }
+      if (value) swipeRaster?.clear();
       else api.resumePhoto?.();
       if (record && changed) save();
     }
@@ -530,6 +537,7 @@
       }
     }
     function closed() {
+      swipeRaster?.clear();
       scale = 1; panX = panY = 0; viewer.dataset.zoomed = 'false';
       cancelTap();
       stopLocation(); api.pauseLocation?.();
@@ -806,6 +814,7 @@
       else if(action==='about')presentOverlay('notes-dialog');
     };
     media.addEventListener('change',()=>{
+      swipeRaster?.clear();
       cancelTap();
       resetDismiss(); stopSwipe(); pointers.clear(); gesture = pinch = null; stopZoom();
       if (dialog.open) api.layoutChanged?.(current.photos[current.index]?.id);
@@ -820,7 +829,7 @@
       if(replayState)replayControlsChanged(replayState);
       renderDay();save();
     });
-    window.addEventListener('resize',()=>{cancelTap(); resetDismiss(); stopSwipe(); pointers.clear(); gesture = pinch = null; measure();measureReplay();});
+    window.addEventListener('resize',()=>{swipeRaster?.clear();cancelTap(); resetDismiss(); stopSwipe(); pointers.clear(); gesture = pinch = null; measure();measureReplay();});
     new ResizeObserver(()=>{ $('.map-panel').style.setProperty('--day-summary-height',`${$('.mobile-day-summary').offsetHeight}px`); }).observe($('.mobile-day-summary'));
     save();
     return {enabled,presentOverlay,dismissOverlay,renderDay,tabChanged,update,preparePhoto,prepareOpen,open,closed,openGrid,replayControlsChanged,locationVisible:()=>locationOpen,gridVisible:()=>enabled()&&grid,gridOrigin:()=>enabled()?gridOrigin:null,

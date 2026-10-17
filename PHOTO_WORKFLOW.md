@@ -262,6 +262,16 @@ The owner's later 16 October report isolates this loaded-next-photo case and
 notes possible iPhone-only reproduction. Check for transient animation creation
 during selection, not only animation state after the handler returns; desktop
 browser checks alone cannot certify the physical-iPhone outcome.
+The 17 October physical-iPhone traces still show 115–192 ms incoming-image
+paints after that handoff correction, including without screenshot capture.
+The incident-specific `?swipeRenderer=prepared` comparison uses three bounded
+physical-resolution canvases prepared serially in a worker from authorized full
+bytes; native originals retain zoom/access ownership. Normal URLs retain the
+image renderer. Preserve the reveal and clear surfaces on lock/close/grid/resize;
+unsupported/failed preparation falls back. Do not claim improved iPhone behavior
+before the owner tests moving beyond the recent photos and reversing. See
+[the evidence, memory limits and acceptance checks](docs/PERFORMANCE_IPHONE_2026-10-17.md).
+
 Suspend main-map label/bubble layout while the photo dialog covers the map,
 including work queued before entry. Keep current selection and model updates,
 clear protected pixels on lock, and coalesce pending layout after final close.

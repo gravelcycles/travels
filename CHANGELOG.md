@@ -1,5 +1,16 @@
 # Changelog
 
+## 17 October 2026 — physical-iPhone paint investigation
+
+- Record both owner traces, including the screenshot-free 191.8 ms incoming
+  photo paint. Keep the reported jump unresolved after the earlier handoff fix.
+- Add one opt-in prepared-surface comparison from full authorized photo bytes,
+  with three bounded physical-resolution canvases, serial worker preparation,
+  original-image zoom and lifecycle/error fallback. Normal URLs keep the image
+  renderer. Physical-iPhone benefit remains to be tested.
+- Carry device evidence, recent-photo observations and the next comparison into
+  the current owner decisions, framework, photo workflow and TODO.
+
 ## 16 October 2026 — steady loaded-photo swipe handoff
 
 - Set a ready neighbor's instant reveal policy before it becomes the selected

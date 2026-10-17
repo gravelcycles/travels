@@ -46,6 +46,13 @@ ready image's opening reveal; idle entry keeps the normal 350 ms animation. Nume
 results and physical-device limits are recorded in
 [the readiness measurements](PERFORMANCE_READINESS_2026-10-16.md).
 
+The remaining iPhone loaded-photo jump has physical trace evidence and a
+controlled `?swipeRenderer=prepared` comparison using worker-prepared fitted
+surfaces. Ordinary viewer behavior stays the default. Full sources remain
+attached for zoom; prepared pixels obey existing access cleanup. See
+[the incident record](PERFORMANCE_IPHONE_2026-10-17.md) and WIP for verification
+and the pending physical-phone result.
+
 The [16 October fullscreen photo correction](OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
 is implemented in shared code: mobile right-aligned Comments with Share immediately to its left,
 top-right Close, single-tap hiding/restoring of photo chrome and full-viewport

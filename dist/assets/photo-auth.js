@@ -227,7 +227,7 @@
         entry.bytes = blob.size;entry.bodyMs = Date.now() - started - entry.headersMs;entry.attempts = attempt + 1;
         entry.downloadMs = Date.now() - overallStarted;entry.edgeCache = response.headers.get('X-Photo-Cache') || 'UNKNOWN';
         entry.revalidated = response.headers.get('X-Photo-Revalidated') === '1';entry.serverTiming = response.headers.get('Server-Timing') || '';
-        entry.url = URL.createObjectURL(blob);freshSources.delete(src);
+        entry.blob = blob;entry.url = URL.createObjectURL(blob);freshSources.delete(src);
         // Memory eviction must not turn a completed background plan into a fetch loop.
         if (preloadTargets.has(src)) preloadCompleted.add(src);
         window.dispatchEvent(new Event('atlas-photo-cache-ready'));
@@ -361,6 +361,11 @@
     const item = {src, fallback, fullOnly:true, cachedOnly:true, blur:photo.blur||placeholder, entry:null, priority:2};
     images.set(img, item); img.dataset.privateSrc = src;
     display(img, item, entry); return true;
+  }
+  function imageBlob(img) {
+    if (token && expiresAt <= Date.now()/1000) expireAccess();
+    const item = images.get(img);
+    return (local || token) && item?.fullOnly && item.entry && img.src === item.entry.url ? item.entry.blob || null : null;
   }
   function setImage(img,photo,width=1280,{fullOnly=false}={}) {
     const {src,fallback}=selection(photo,fullOnly?Infinity:width),preview=fullOnly?src:selected(photo,1280),thumbnail=fullOnly?src:selected(photo,480);
@@ -521,7 +526,7 @@
     let released=false;
     return {url:entry.url,release(){if(released)return;released=true;entry.refs.delete(lease);prune();}};
   }
-  window.JOURNEY_ATLAS_AUTH={communityRequest,photoShareLink,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets].map(src=>({src,fallback:preloadFallbacks.get(src),immediate:src===immediatePreload})).concat(selection(photo,width)).slice(-MAX_PREFETCH));},lock,showPrompt,raisePrompt,get unlocked(){return local||Boolean(token);}};
+  window.JOURNEY_ATLAS_AUTH={communityRequest,photoShareLink,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,imageBlob,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets].map(src=>({src,fallback:preloadFallbacks.get(src),immediate:src===immediatePreload})).concat(selection(photo,width)).slice(-MAX_PREFETCH));},lock,showPrompt,raisePrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
 })();

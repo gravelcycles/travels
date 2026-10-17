@@ -1,6 +1,36 @@
 # Current workstreams
 
+## Physical iPhone incoming-image paint — 17 October 2026
+
+Owner supplied two traces, the second without screenshots, after the previous
+release still jumped. iPhone 12 Pro, Safari/Brave also affected; returning within
+roughly two recent photos feels smoother. The screenshot-free trace contains
+8/12 swipes with a >50 ms paint during drag (max 191.8 ms), while pointermove
+callbacks stay <=0.69 ms. [The incident record](docs/PERFORMANCE_IPHONE_2026-10-17.md)
+distinguishes encoded bytes, three retained image elements and native display
+work. Raw recordings/private pixels remain outside Git.
+
+Candidate on `codex/iphone-swipe-surfaces`: `?swipeRenderer=prepared` prepares
+three physical-resolution display canvases serially from current authorized
+full-photo Blobs. Native sources retain zoom/access; normal URLs allocate no
+worker/canvas. Preserve cold reveal, reject stale work, clear on lock/close/grid/
+resize, and fall back for unavailable APIs, errors or oversized surfaces.
+All 881 tests pass, plus the final eight renderer checks; repeated builds preserve
+all 79 public files byte-for-byte. Browser affected-flow checks pass reference
+21/21, Alpine sample 20/20 and independently populated fresh draft 20/20, with
+no captured script errors. Heading East retains incoming/outgoing images in all
+four forward/reverse handoffs, with three prepared surfaces ready afterward.
+Deployment is in progress. Required next: owner compares
+ordinary/prepared links on the same iPhone sequence beyond recent photos;
+do not claim the issue resolved before that physical result.
+
 ## Loaded-next-photo jump correction — 16 October 2026
+
+**17 October owner retest: the jump still occurs after this release.** The
+deployed ordering/positioning correction is verified, but it did not resolve
+the reported iPhone behavior. Root-cause investigation remains open. The owner
+has since supplied the physical-device traces; the incoming-image paint
+investigation and controlled candidate are tracked above.
 
 Owner clarified that the next full image is already loaded and sharp when the
 jump occurs, and reproduction may require an iPhone. The isolated checkout

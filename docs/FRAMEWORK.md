@@ -364,6 +364,16 @@ setup state until their own mode network has been prepared. A guided retrieval
 flow with access/direction-aware routing is future work (W06); the present local
 graph reconstructs historical routes and is not turn-by-turn navigation.
 
+The unresolved physical-iPhone paint investigation has one temporary opt-in
+renderer, `photo-swipe-raster.js`, enabled only by `?swipeRenderer=prepared`.
+It shares three slot identities with mobile-ux, reuses the loader's authorized
+full Blob and prepares physical-resolution fitted surfaces in one serial worker.
+Native images retain zoom, media and access ownership. Normal links allocate no
+rendering resources. [The incident record](PERFORMANCE_IPHONE_2026-10-17.md)
+owns fallback, lifecycle, memory limits and physical-device acceptance; removal
+or graduation after that check is tracked in TODO. This is not a general plugin
+or flag framework.
+
 ## Remaining continuity work
 
 Short-landscape Photo location has an existing layout gap: a long note can

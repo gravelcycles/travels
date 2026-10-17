@@ -28,6 +28,23 @@ function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:
  return {window,events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,blobs,probes,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,historyUrls,header:elements[1]};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
+test('a rendering surface can reuse only the current authorized full-image Blob without another request',async()=>{
+ const f=fixture(),img=new Element();assert.equal(f.auth.imageBlob(img),null);
+ await f.unlock();f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();
+ const count=f.calls.length,blob=f.auth.imageBlob(img);
+ assert.equal(blob,f.blobs.get(img.src));assert.deepEqual([...new Uint8Array(await blob.arrayBuffer())],[1,2]);
+ assert.equal(f.auth.imageBlob(img),blob);assert.equal(f.calls.length,count);
+ f.auth.clearImage(img);assert.equal(f.auth.imageBlob(img),null);
+ f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();f.auth.lock();
+ assert.equal(f.auth.imageBlob(img),null);assert.equal(img.dataset.photoState,'locked');
+});
+test('surface byte access respects expiry and excludes preview and unrelated image bindings',async()=>{
+ let now=Date.now();const f=fixture(undefined,{clock:{now:()=>now}}),img=new Element();await f.unlock();
+ f.auth.setImage(img,photo,1280);await settle();assert.equal(f.auth.imageBlob(img),null);
+ f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();assert.ok(f.auth.imageBlob(img));
+ const original=img.src;img.src='blob:unrelated';assert.equal(f.auth.imageBlob(img),null);img.src=original;
+ now+=3601000;assert.equal(f.auth.imageBlob(img),null);assert.equal(f.auth.unlocked,false);
+});
 test('photo sharing grants only the selected thumbnail after unlock and never forwards access in its link',async()=>{
  const target={journeyId:'trip',photoId:'photo',view:'photo',scope:'day',group:''};
  const url=`https://photos.example.com/share/trip/photo/${'s'.repeat(43)}?view=photo`;

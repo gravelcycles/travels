@@ -27,14 +27,14 @@ activation work.
 
 ## Independent project workstreams
 
-- [ ] **Physical mobile Chrome first-photo presentation.** The later readiness
-      pass removes prepared-image rebinding, covered label/bubble layout and
-      reveal/gesture competition, but controlled desktop Chromium still records
-      183–232 ms first-swipe gaps. Capture the owner's phone OS/model and a
-      physical-device trace before claiming all stutter is resolved. Separate
-      initial decode/raster/reveal from warm movement; do not reduce full-photo
-      quality or restart the paused AVIF automation. See
-      [the readiness measurements](docs/PERFORMANCE_READINESS_2026-10-16.md).
+- [ ] **Physical iPhone loaded-photo presentation.** The owner's iPhone 12 Pro
+      traces confirm 115–192 ms incoming-image paints, including without
+      screenshots; the previous handoff correction did not fix the reported
+      jump. Compare ordinary and `?swipeRenderer=prepared` URLs on the phone,
+      moving beyond three photos and reversing beyond recent images. Quantify
+      the candidate before making it default, then remove or graduate the
+      temporary comparison path. Do not lower full-photo quality or resume the
+      paused AVIF automation. [Evidence](docs/PERFORMANCE_IPHONE_2026-10-17.md).
 
 - [x] **Post-AVIF loading comparison and mobile swipes.** Published in `a940395`
       after 848 passing tests, reproducible builds, successful Pages and fresh
