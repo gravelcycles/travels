@@ -1,5 +1,12 @@
 # Changelog
 
+## 17 October 2026 — Dark All photos chooser
+
+- Match the day/stop chooser to the day photo roll with a near-black canvas,
+  compact sans-serif typography, square covers and restrained metadata.
+- Keep Close visible in a sticky heading; use a full-viewport two-column grid
+  on phones, retaining the existing album navigation and protected loading.
+
 ## 17 October 2026 — prepared-renderer phone feedback
 
 - Record the owner's positive physical-iPhone comparison: browsing is much

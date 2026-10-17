@@ -16,6 +16,18 @@ pin, without reordering the album. Groups fully outside the view or without room
 remain available in the album. Preserve the original metadata during
 transfer, then publish separate optimized derivatives.
 
+## Album appearance
+
+The **All photos** day/stop chooser shares the day photo roll's near-black
+canvas, compact sans-serif heading, white titles and muted metadata. Use square
+photo covers directly on that canvas, with a sticky heading and solid Close
+control; phones use the full viewport and two columns. Preserve dates, counts,
+album order, empty-event story entry, protected loading and existing history.
+This is the owner's 17 October 2026 styling correction; it applies to every atlas.
+Verify real private photos in Codex's internal browser using the existing
+remembered session, as explicitly authorized by the owner; do not use the
+owner's personal browser for these checks.
+
 ## Reader performance
 
 The reader performance pass retains the reviewed full-photo reveal timings.

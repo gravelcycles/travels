@@ -1,5 +1,23 @@
 # Current workstreams
 
+## Dark All photos chooser — 17 October 2026
+
+Authorized: match the day/stop chooser to the day photo roll's black styling.
+Shared CSS now uses the same near-black canvas, square covers, compact type,
+sticky heading and solid Close control; phones use a full-viewport two-column
+grid. Existing selection/history/loading code is unchanged. Work is isolated in
+`codex/dark-photo-day-picker` from main `25a28bd`, preserving the primary
+checkout's unrelated edits. Current owner guidance, photo workflow and feature
+inventory are updated. All **881 tests** and the production build pass. Browser
+checks cover the Alpine demo and an independently created populated city draft:
+desktop, 390/320 px phones, long titles, no horizontal overflow, sticky Close,
+day-grid entry/Back and empty-stop story entry. Reference inheritance passes in
+the shared-framework suite. The owner explicitly requested internal-browser
+private-photo access after the initial automatic review rejection. The existing
+remembered internal session now loads all seven real Heading East album covers
+at 480 px. No personal-browser access or auth changes were needed. Publication
+and final checks of the new style on protected photos are pending.
+
 ## Physical iPhone incoming-image paint — 17 October 2026
 
 Owner supplied two traces, the second without screenshots, after the previous

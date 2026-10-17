@@ -115,6 +115,22 @@ large useful imagery, restrained copy, continuous geographic context, responsive
 interruptible motion, obvious navigation and reliable recovery. It does not mean
 adding decorative animation, labels, another panel or another confirmation step.
 
+## Photo album appearance — 17 October 2026
+
+The owner likes the black, stylish day photo roll and asked that the day/stop
+chooser opened by **All photos** use the same visual style. This extends O03/O08:
+use the roll's near-black canvas, compact sans-serif typography, restrained
+metadata and image-led grid rather than light cards and serif headings. Keep
+the chooser's existing day/stop selection, counts, dates, empty-event entry,
+access protection and Back/Close behavior. Apply this across real trips, demos
+and new drafts on desktop and phone. Check narrow-phone wrapping, scrolling,
+sticky controls, keyboard focus and opening/returning from an event album.
+[Photo workflow](../PHOTO_WORKFLOW.md#album-appearance) owns the visual contract.
+For browser verification, the owner explicitly requested Codex's internal
+browser and authorized private-photo access through the existing remembered
+session. Do not operate the owner's personal browser; check the real protected
+photos as well as samples when the internal session is available.
+
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
 This extends O03/O08/O18 across every atlas. The owner asked for mobile
