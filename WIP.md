@@ -17,8 +17,14 @@ Repeated builds preserve all 79 public files byte-for-byte. Ordinary-URL browser
 checks pass reference 22/22, Alpine sample 21/21 and independent populated draft
 21/21, without captured script errors. The actual first Heading East photo
 passes all five startup checks with worker results held for 1,500 ms: its native
-reveal starts while zero surfaces are ready. Deployment verification is in
-progress. This rollout authorization
+reveal starts while zero surfaces are ready. Published as `cab8223` through
+successful [Pages run 39024399185](https://github.com/gravelcycles/travels/actions/runs/39024399185).
+All five fresh public pages and 44 referenced scripts/styles match the tested
+build byte-for-byte. Live ordinary-URL checks verify zero canvases at desktop
+startup, three ready surfaces on a fresh phone load, forward/reverse swipes,
+and desktop/phone transitions that release pixels and reuse the same three
+slots. No captured script errors. Implementation, guidance and default rollout
+are complete. This rollout authorization
 does not itself confirm the latest startup fix on a physical iPhone; retain that
 measurement/retest follow-up without claiming a numeric speedup. Current owner,
 workflow, framework/features, incident and TODO guidance are updated.

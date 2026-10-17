@@ -35,8 +35,7 @@ activation work.
       The startup correction retains pending-neighbor previews and avoids the
       initial native handoff during motion, while leaving first-photo display
       independent of worker readiness. Verify this correction on the phone.
-      The owner has explicitly authorized default rollout; the query gate is
-      removed. Keep physical startup retest/measurement as follow-up rather than
+      The owner-requested mobile default is deployed; the query gate is removed. Keep physical startup retest/measurement as follow-up rather than
       an approval prerequisite. Preserve the confirmed browsing improvement,
       full-photo quality and paused AVIF automation. [Evidence](docs/PERFORMANCE_IPHONE_2026-10-17.md).
 
