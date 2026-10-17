@@ -49,31 +49,52 @@
     }
   }
 
-  function create({stage, frame, enabled}, env = root) {
+  function create({stage, frame, enabled, preview = () => '', moving = () => false}, env = root) {
     if (new URLSearchParams(env.location.search).get('swipeRenderer') !== 'prepared') return null;
     if (!env.Worker || !env.OffscreenCanvas || !env.createImageBitmap) {
       stage.dataset.swipeRenderer = 'unsupported'; return null;
     }
     const slots = new Map();
-    let worker = null, workerURL = '', serial = 0, width = 0, height = 0, active = false;
+    const reduced = env.matchMedia?.('(prefers-reduced-motion: reduce)') || {matches:false};
+    let worker = null, workerURL = '', serial = 0, width = 0, height = 0, active = false, blocked = false;
     stage.dataset.swipeRenderer = 'prepared';
     function discard(slot) {
+      env.clearTimeout(slot.timer); slot.timer = null;
       slot.id = ++serial; slot.key = ''; slot.src = ''; slot.ready = false;
       slot.canvas.width = slot.canvas.height = 0;
       slot.canvas.hidden = true;
+      slot.canvas.style.backgroundImage = '';
+      slot.canvas.style.backgroundSize = '';
+      delete slot.canvas.dataset.photoRasterPreview;
       delete slot.image.dataset.photoRasterVisible;
     }
     function sync() {
       let ready = 0;
       for (const slot of slots.values()) {
         const {image, canvas} = slot;
-        const revealDone = image.id !== 'modal-photo' || image.dataset.photoReveal === 'instant' || slot.revealDone;
-        const visible = active && enabled() && revealDone && slot.ready && slot.src === image.src && !image.hidden && image.dataset.photoState === 'ready';
+        const revealDone = reduced.matches || image.id !== 'modal-photo' || image.dataset.photoReveal === 'instant' || slot.revealedSrc === image.src;
+        const pendingPreview = Boolean(!slot.ready && !slot.failed && slot.neighbor && slot.preview);
+        // The first selected photo stays native and visible while work proceeds.
+        // A newly ready surface must not replace it halfway through a swipe.
+        const canPresent = !slot.initial || slot.presented || !moving();
+        const visible = active && enabled() && canPresent && slot.src === image.src && !image.hidden &&
+          image.dataset.photoState === 'ready' && (slot.ready && revealDone || pendingPreview);
         ready += Number(slot.ready);
         if (canvas.style.transform !== image.style.transform) canvas.style.transform = image.style.transform;
         const layer = image.id === 'modal-photo' ? '1' : '0';
         if (canvas.style.zIndex !== layer) canvas.style.zIndex = layer;
         if (canvas.hidden === visible) canvas.hidden = !visible;
+        if (visible && pendingPreview) {
+          if (!canvas.dataset.photoRasterPreview) {
+            canvas.style.backgroundImage = `url(${JSON.stringify(slot.preview)})`;
+            canvas.style.backgroundSize = slot.previewSize;
+            canvas.dataset.photoRasterPreview = 'true';
+          }
+        } else if (canvas.dataset.photoRasterPreview) {
+          canvas.style.backgroundImage = canvas.style.backgroundSize = '';
+          delete canvas.dataset.photoRasterPreview;
+        }
+        if (visible && slot.ready) slot.presented = true;
         const accessible = visible && layer === '1';
         const label = image.alt || 'Photograph';
         if (canvas.getAttribute('aria-hidden') !== String(!accessible)) canvas.setAttribute('aria-hidden', String(!accessible));
@@ -96,12 +117,13 @@
         worker.onmessage = ({data}) => {
           const slot = [...slots.values()].find(item => item.slot === data.slot);
           if (!slot || data.id !== slot.id || !enabled()) { data.bitmap?.close(); return; }
-          if (data.error) { stage.dataset.swipeRasterError = data.error; slot.ready = false; sync(); return; }
+          env.clearTimeout(slot.timer); slot.timer = null;
+          if (data.error) { stage.dataset.swipeRasterError = data.error; slot.failed = true; slot.ready = false; sync(); return; }
           try {
             slot.canvas.width = width; slot.canvas.height = height;
             slot.context.transferFromImageBitmap(data.bitmap);
             slot.ready = true;
-          } catch { data.bitmap?.close(); slot.ready = false; }
+          } catch { data.bitmap?.close(); slot.failed = true; slot.ready = false; }
           sync();
         };
         worker.onerror = () => { stopWorker(); for (const slot of slots.values()) discard(slot); sync(); };
@@ -123,7 +145,7 @@
       const slot = slots.get(image);
       if (!slot) return;
       const src = image.src;
-      if (!enabled() || !width || !height || image.hidden || image.dataset.photoState !== 'ready' ||
+      if (blocked || !enabled() || !width || !height || image.hidden || image.dataset.photoState !== 'ready' ||
           !image.complete || !image.naturalWidth || !src || src.startsWith('data:') ||
           image.currentSrc && image.currentSrc !== src) {
         if (slot.key) discard(slot);
@@ -132,19 +154,43 @@
       const key = `${src}:${width}x${height}`;
       if (slot.key === key) return;
       discard(slot);
+      // The opening reveal already uses native pixels. Let adjacent preparation
+      // run first; this never gates the original photo's load or presentation.
+      if (!reduced.matches && image.id === 'modal-photo' && image.dataset.photoReveal !== 'instant' && slot.revealedSrc !== src) return;
       // Do not grant a new origin access to private pixels. Blob and same-origin
       // public assets use the ordinary loader's already-authorized sources.
       if (new env.URL(src, env.location.href).origin !== env.location.origin) return;
       slot.key = key; slot.src = src;
-      slot.revealDone = false;
+      slot.initial = image.id === 'modal-photo'; slot.neighbor = !slot.initial;
+      slot.presented = false; slot.failed = false;
+      const blur = image.dataset.privateBlur || preview(image);
+      slot.preview = /^data:image\//.test(blur) ? blur : '';
+      const fit = Math.min(width / image.naturalWidth, height / image.naturalHeight);
+      slot.previewSize = `${image.naturalWidth * fit / width * 100}% ${image.naturalHeight * fit / height * 100}%`;
       const blob = env.JOURNEY_ATLAS_AUTH?.imageBlob?.(image);
       // Protected sources are reused from their live authorized binding. No
       // Worker token, HTTP credential, cache lease or extra private fetch exists.
       if (image.dataset.privateSrc && !blob) { discard(slot); return; }
       const target = ensureWorker();
-      if (target) target.postMessage({slot:slot.slot, id:slot.id, src:blob ? undefined : src, blob, width, height});
+      try {
+        if (!target) throw Error('Preparation unavailable');
+        target.postMessage({slot:slot.slot, id:slot.id, src:blob ? undefined : src, blob, width, height});
+        const id = slot.id;
+        slot.timer = env.setTimeout(() => {
+          if (id !== slot.id) return;
+          // A stalled decoder must never leave a permanent preview. Recover
+          // native display for this viewing session rather than retrying a loop.
+          blocked = true; stopWorker();
+          for (const item of slots.values()) discard(item);
+          sync();
+        }, 3000);
+      } catch { slot.failed = true; }
     }
-    function prepareAll() { for (const image of slots.keys()) prepare(image); sync(); }
+    function prepareAll() {
+      const images = [...slots.keys()];
+      for (const image of [...images.filter(image => image.id !== 'modal-photo'), ...images.filter(image => image.id === 'modal-photo')]) prepare(image);
+      sync();
+    }
     function resize(cssWidth, cssHeight) {
       const ratio = env.devicePixelRatio || 1;
       let nextWidth = Math.ceil(cssWidth * ratio), nextHeight = Math.ceil(cssHeight * ratio);
@@ -158,14 +204,14 @@
       prepareAll();
     }
     function clear() {
-      active = false; stopWorker();
-      for (const slot of slots.values()) discard(slot);
+      active = false; blocked = false; stopWorker();
+      for (const slot of slots.values()) { discard(slot); slot.revealedSrc = ''; }
       sync();
     }
     frame.addEventListener('atlas-photo-state', event => { prepare(event.target); sync(); }, true);
     frame.addEventListener('animationend', event => {
       const slot = slots.get(event.target);
-      if (slot && event.animationName === 'photo-resolve') { slot.revealDone = true; sync(); }
+      if (slot && event.animationName === 'photo-resolve') { slot.revealedSrc = event.target.src; prepareAll(); }
     });
     env.addEventListener('atlas-photos-locked', clear);
     return {register, prepareAll, resize, sync, clear, active(value) { active = value; sync(); }};

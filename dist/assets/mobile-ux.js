@@ -46,7 +46,10 @@
       $('#viewer-photo-frame').append(node); return {node, delta};
     });
     const enabled = () => media.matches;
-    const swipeRaster = root.JourneyPhotoSwipeRaster?.create({stage, frame:$('#viewer-photo-frame'), enabled:()=>enabled() && dialog.open && !grid});
+    const swipeRaster = root.JourneyPhotoSwipeRaster?.create({stage, frame:$('#viewer-photo-frame'),
+      enabled:()=>enabled() && dialog.open && !grid,
+      preview:node=>neighbors.find(neighbor=>neighbor.node === node)?.photo?.blur || '',
+      moving:()=>Boolean(gesture?.axis === 'x' || swipeOffset || viewer.classList.contains('is-swipe-settling'))});
     if (swipeRaster) [img, ...neighbors.map(neighbor => neighbor.node)].forEach(node => swipeRaster.register(node));
     function snapshot() {
       return {overlay, overlayDepth, overlayScroll:overlay ? {top:$(`#${overlay}`).scrollTop || 0,left:$(`#${overlay}`).scrollLeft || 0} : null, dayId: api.day().id, tab: $('.atlas-shell').dataset.mobileTab || 'map', viewer: dialog.open,
@@ -338,7 +341,7 @@
       swipeFrame = requestAnimationFrame(() => {
         swipeFrame = null;
         viewer.classList.add('is-swipe-settling'); transform();
-        swipeTimer = setTimeout(() => viewer.classList.remove('is-swipe-settling'), 220);
+        swipeTimer = setTimeout(() => { viewer.classList.remove('is-swipe-settling'); swipeRaster?.sync(); }, 220);
       });
     }
     function resetDismiss() {
@@ -607,6 +610,7 @@
       // Direct manipulation takes over from the idle reveal. Source selection
       // still chooses its own reveal policy for the next photograph.
       img.dataset.photoReveal = 'instant';
+      swipeRaster?.prepareAll();
     }
     function pointerDown(event) {
       if (!enabled() || grid || event.button > 0) return;

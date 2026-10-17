@@ -31,8 +31,10 @@ activation work.
       traces confirm 115–192 ms incoming-image paints, including without
       screenshots; the previous handoff correction did not fix the reported
       jump. The prepared renderer's owner retest is much better, with a remaining
-      jump on the first swipe of the first photo. Isolate startup surface readiness
-      and opening-reveal handoff, distinguishing immediate/delayed first gestures.
+      jump only with an immediate first swipe (three seconds' waiting avoids it).
+      The startup correction retains pending-neighbor previews and avoids the
+      initial native handoff during motion, while leaving first-photo display
+      independent of worker readiness. Verify this correction on the phone.
       Preserve the confirmed browsing improvement; quantify the candidate before
       making it default, then remove or graduate the temporary comparison path. Do not lower full-photo quality or resume the
       paused AVIF automation. [Evidence](docs/PERFORMANCE_IPHONE_2026-10-17.md).

@@ -86,7 +86,11 @@ the owner reports “much better” and otherwise good browsing, with a remainin
 jump on the first swipe of the first photo. This establishes qualitative benefit
 on the owner's phone, not a measured frame-time gain or complete resolution.
 Preserve the improvement and isolate first-entry preparation/presentation before
-graduating the comparison. The first-swipe cause is not yet confirmed.
+graduating the comparison. The follow-up clarifies that it happens only when swiping immediately; waiting
+about three seconds avoids it. Preserve the first photo's immediate display path:
+no worker/neighbor readiness gate, added opening delay or artificial hold.
+Treat pending next-photo display and native-to-prepared handoff separately from
+loading the current photo.
 See WIP for delivery status.
 
 ## Standing decisions and acceptance checks

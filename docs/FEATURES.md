@@ -51,7 +51,11 @@ controlled `?swipeRenderer=prepared` comparison using worker-prepared fitted
 surfaces. Ordinary viewer behavior stays the default. Full sources remain
 attached for zoom; prepared pixels obey existing access cleanup. See
 [the incident record](PERFORMANCE_IPHONE_2026-10-17.md) and WIP for verification
-and the positive physical-phone retest; the first swipe of the first photo still jumps.
+and the positive physical-phone retest. The immediate first-swipe correction
+keeps the first native photo/reveal independent of preparation, retains embedded
+neighbor previews until their display surfaces are ready, and avoids the first
+native-to-prepared handoff during horizontal motion. Phone confirmation of this
+startup correction is pending.
 
 The [16 October fullscreen photo correction](OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
 is implemented in shared code: mobile right-aligned Comments with Share immediately to its left,

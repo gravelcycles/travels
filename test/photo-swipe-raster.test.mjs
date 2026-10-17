@@ -4,8 +4,8 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const source = fs.readFileSync(new URL('../dist/assets/photo-swipe-raster.js', import.meta.url), 'utf8');
-function fixture({query='?swipeRenderer=prepared', supported=true}={}) {
-  const workers=[],canvases=[],events=new Map(),revoked=[];
+function fixture({query='?swipeRenderer=prepared', supported=true, moving=()=>false, reducedMotion=false}={}) {
+  const workers=[],canvases=[],events=new Map(),revoked=[],timers=new Map();let timer=0;
   const stage={dataset:{}},frame={children:[],append(node){this.children.push(node);},addEventListener(name,fn){events.set(name,fn);}};
   let authorized=true;
   class Worker {
@@ -15,15 +15,17 @@ function fixture({query='?swipeRenderer=prepared', supported=true}={}) {
   }
   class SourceURL extends URL {static createObjectURL(){return 'blob:https://example.test/worker';}static revokeObjectURL(url){revoked.push(url);}}
   const env={location:{origin:'https://example.test',href:'https://example.test/trip',search:query},devicePixelRatio:3,URL:SourceURL,Blob,Worker:supported?Worker:null,OffscreenCanvas:class{},createImageBitmap(){},
-    document:{createElement(){const attrs={};const canvas={hidden:true,width:0,height:0,style:{},setAttribute(k,v){attrs[k]=v;},getAttribute(k){return attrs[k]??null;},getContext(){return{transferFromImageBitmap(bitmap){canvas.bitmap=bitmap;}};}};canvases.push(canvas);return canvas;}},
+    matchMedia:()=>({matches:reducedMotion}),
+    setTimeout(fn,ms){timers.set(++timer,{fn,ms});return timer;},clearTimeout(id){timers.delete(id);},
+    document:{createElement(){const attrs={};const canvas={hidden:true,width:0,height:0,dataset:{},style:{},setAttribute(k,v){attrs[k]=v;},getAttribute(k){return attrs[k]??null;},getContext(){return{transferFromImageBitmap(bitmap){canvas.bitmap=bitmap;}};}};canvases.push(canvas);return canvas;}},
     addEventListener:(name,fn)=>events.set(name,fn),JOURNEY_ATLAS_AUTH:{imageBlob:()=>authorized?{encoded:'full authorized AVIF'}:null}};
   vm.runInNewContext(source,{window:env,URLSearchParams});
-  const api=env.JourneyPhotoSwipeRaster.create({stage,frame,enabled:()=>true});
-  const images=[0,1,2].map(i=>({id:i===0?'modal-photo':'',alt:i===0?'Selected photo':'',src:`blob:https://example.test/p${i}`,currentSrc:'',hidden:false,complete:true,naturalWidth:4032,dataset:{photoState:'ready',photoReveal:'instant',privateSrc:'protected'},style:{transform:`translate3d(${i*406}px,0,0)`}}));
+  const api=env.JourneyPhotoSwipeRaster.create({stage,frame,enabled:()=>true,moving});
+  const images=[0,1,2].map(i=>({id:i===0?'modal-photo':'',alt:i===0?'Selected photo':'',src:`blob:https://example.test/p${i}`,currentSrc:'',hidden:false,complete:true,naturalWidth:4032,naturalHeight:3024,dataset:{photoState:'ready',photoReveal:'instant',privateSrc:'protected'},style:{transform:`translate3d(${i*406}px,0,0)`}}));
   function complete(worker=workers.at(-1),job=worker.jobs.at(-1)){
     const bitmap={close(){this.closed=true;}};worker.onmessage({data:{slot:job.slot,id:job.id,bitmap}});return bitmap;
   }
-  return {api,env,stage,frame,images,workers,canvases,events,revoked,complete,deny(){authorized=false;}};
+  return {api,env,stage,frame,images,workers,canvases,events,revoked,timers,complete,deny(){authorized=false;}};
 }
 
 test('normal links and unavailable APIs allocate no rendering resources',()=>{
@@ -34,7 +36,7 @@ test('normal links and unavailable APIs allocate no rendering resources',()=>{
 test('three physical-resolution surfaces reuse full authorized bytes and preserve native sources',()=>{
   const f=fixture();f.images.forEach(f.api.register);f.api.register({...f.images[0]});assert.equal(f.canvases.length,3);
   f.api.resize(390,666);assert.equal(f.workers.length,1);assert.equal(f.workers[0].jobs.length,3);
-  const job=f.workers[0].jobs[0];assert.equal(job.width,1170);assert.equal(job.height,1998);
+  const job=f.workers[0].jobs.find(job=>job.slot===0);assert.equal(job.width,1170);assert.equal(job.height,1998);
   assert.equal(job.blob.encoded,'full authorized AVIF');assert.equal(job.src,undefined,'No protected network request is delegated');
   f.api.active(true);assert.ok(f.canvases.every(c=>c.hidden));
   f.complete(f.workers[0],job);
@@ -48,7 +50,7 @@ test('three physical-resolution surfaces reuse full authorized bytes and preserv
 });
 test('replaced sources reject late worker pixels and follow the current slot transform',()=>{
   const f=fixture();f.images.forEach(f.api.register);f.api.resize(390,666);f.api.active(true);
-  const worker=f.workers[0],old=worker.jobs[0];f.images[0].src='blob:https://example.test/new';f.api.prepareAll();
+  const worker=f.workers[0],old=worker.jobs.find(job=>job.slot===0);f.images[0].src='blob:https://example.test/new';f.api.prepareAll();
   const stale=f.complete(worker,old);assert.equal(stale.closed,true);assert.equal(f.canvases[0].hidden,true);
   f.complete(worker,worker.jobs.at(-1));assert.equal(f.canvases[0].hidden,false);
   f.images[0].style.transform='translate3d(-123px,0,0)';f.api.sync();assert.equal(f.canvases[0].style.transform,f.images[0].style.transform);
@@ -56,14 +58,15 @@ test('replaced sources reject late worker pixels and follow the current slot tra
 });
 test('a prepared selected surface preserves the opening reveal until completion or direct manipulation',()=>{
   const f=fixture();f.images[0].dataset.photoReveal='soft';f.api.register(f.images[0]);f.api.resize(390,666);f.api.active(true);
-  f.complete();assert.equal(f.canvases[0].hidden,true);
-  f.events.get('animationend')({target:f.images[0],animationName:'photo-resolve'});assert.equal(f.canvases[0].hidden,false);
-  f.images[0].src='blob:https://example.test/another';f.api.prepareAll();f.complete();assert.equal(f.canvases[0].hidden,true);
-  f.images[0].dataset.photoReveal='instant';f.api.sync();assert.equal(f.canvases[0].hidden,false);
+  assert.equal(f.workers.length,0,'Opening native photo is not gated on duplicate worker decoding');assert.equal(f.canvases[0].hidden,true);
+  f.events.get('animationend')({target:f.images[0],animationName:'photo-resolve'});f.complete();assert.equal(f.canvases[0].hidden,false);
+  f.api.resize(390,640);f.complete();assert.equal(f.canvases[0].hidden,false,'Resizing does not lose completed reveal state');
+  f.images[0].src='blob:https://example.test/another';f.api.prepareAll();assert.equal(f.canvases[0].hidden,true);
+  f.images[0].dataset.photoReveal='instant';f.api.prepareAll();f.complete();assert.equal(f.canvases[0].hidden,false);
 });
 test('lock, unavailable authorization and failed preparation fall back without retaining protected surfaces',()=>{
   const f=fixture();f.images.forEach(f.api.register);f.api.resize(390,666);f.api.active(true);const worker=f.workers[0];
-  f.complete(worker,worker.jobs[0]);f.events.get('atlas-photos-locked')();
+  f.complete(worker,worker.jobs.find(job=>job.slot===0));f.events.get('atlas-photos-locked')();
   assert.equal(worker.terminated,true);assert.ok(f.canvases.every(c=>c.hidden&&c.width===0&&c.height===0));
   assert.ok(f.images.every(i=>!i.dataset.photoRasterVisible));assert.equal(f.complete(worker,worker.jobs[1]).closed,true);
   f.deny();f.api.prepareAll();assert.equal(f.workers.length,1,'Expired access must not start another worker or private request');
@@ -96,4 +99,63 @@ test('failed preparation restores the original and never reports a ready surface
   const worker=f.workers[0],job=worker.jobs[0];worker.onmessage({data:{slot:job.slot,id:job.id,error:'decode'}});
   assert.equal(f.stage.dataset.swipeRasterError,'decode');assert.equal(f.stage.dataset.swipeRasterReady,'0');
   assert.equal(f.images[0].dataset.photoRasterVisible,undefined);assert.equal(f.canvases[0].hidden,true);
+});
+
+test('immediate startup keeps the first photo visible while a loaded neighbor retains its preview',()=>{
+  const f=fixture();f.images[0].dataset.photoReveal='soft';
+  f.images.forEach((image,i)=>{image.dataset.privateBlur=`data:image/svg+xml,preview-${i}`;f.api.register(image);});
+  const sources=f.images.map(image=>image.src);f.api.resize(390,666);f.api.active(true);
+  assert.deepEqual(f.workers[0].jobs.map(job=>job.slot),[1,2],'Already visible first photo does not occupy the neighbor preparation queue');
+  assert.equal(f.images[0].dataset.photoRasterVisible,undefined,'Original first photo remains visible with the worker still pending');
+  assert.equal(f.images[0].dataset.photoState,'ready');assert.equal(f.canvases[0].hidden,true);
+  assert.equal(f.images[1].dataset.photoRasterVisible,'true','Native full neighbor cannot trigger expensive first paint during preparation');
+  assert.equal(f.canvases[1].dataset.photoRasterPreview,'true');assert.equal(f.canvases[1].width,0,'No full bitmap allocated for the embedded preview');
+  assert.equal(parseFloat(f.canvases[1].style.backgroundSize),100);
+  assert.ok(Math.abs(parseFloat(f.canvases[1].style.backgroundSize.split(' ')[1])-43.91891891891892)<1e-9);
+  const transform=f.canvases[1].style.transform;
+  f.images[0].id='';f.images[1].id='modal-photo';f.api.sync();
+  assert.equal(f.canvases[1].hidden,false,'An immediate selection preserves the pending preview on its same element');
+  f.complete(f.workers[0],f.workers[0].jobs[0]);
+  assert.equal(f.canvases[1].dataset.photoRasterPreview,undefined);assert.equal(f.canvases[1].style.backgroundImage,'');
+  assert.equal(f.canvases[1].style.transform,transform);assert.deepEqual(f.images.map(image=>image.src),sources);
+});
+test('native first photo does not change display surfaces halfway through an immediate swipe',()=>{
+  let moving=true;const f=fixture({moving:()=>moving});f.api.register(f.images[0]);f.api.resize(390,666);f.api.active(true);
+  f.complete();assert.equal(f.canvases[0].hidden,true);assert.equal(f.images[0].dataset.photoRasterVisible,undefined);
+  moving=false;f.api.sync();assert.equal(f.canvases[0].hidden,false);
+  moving=true;f.api.sync();assert.equal(f.canvases[0].hidden,false,'Later swipes retain their already-presented surface');
+});
+test('preview failure and lock release placeholder pixels and retain native fallback',()=>{
+  const f=fixture();f.images[1].dataset.privateBlur='data:image/svg+xml,preview';f.api.register(f.images[1]);f.api.resize(390,666);f.api.active(true);
+  assert.equal(f.canvases[0].dataset.photoRasterPreview,'true');const worker=f.workers[0],job=worker.jobs[0];
+  worker.onmessage({data:{slot:job.slot,id:job.id,error:'decode'}});
+  assert.equal(f.canvases[0].hidden,true);assert.equal(f.canvases[0].style.backgroundImage,'');assert.equal(f.images[1].dataset.photoRasterVisible,undefined);
+  f.images[1].src='blob:https://example.test/new';f.api.prepareAll();assert.equal(f.canvases[0].hidden,false);
+  f.events.get('atlas-photos-locked')();assert.equal(f.canvases[0].style.backgroundImage,'');assert.equal(f.canvases[0].hidden,true);
+});
+test('reduced-motion startup prepares without waiting for an animationend event',()=>{
+  const f=fixture({reducedMotion:true});f.images[0].dataset.photoReveal='soft';f.api.register(f.images[0]);f.api.resize(390,666);f.api.active(true);
+  f.complete();assert.equal(f.canvases[0].hidden,false);
+});
+test('unavailable worker creation or message cloning never strands a preview over the full photo',()=>{
+  for(const failure of ['constructor','postMessage']){
+    const f=fixture(),NativeWorker=f.env.Worker;
+    f.env.Worker=class extends NativeWorker{
+      constructor(...args){super(...args);if(failure==='constructor')throw Error('Unavailable');}
+      postMessage(){throw Error('Cannot clone');}
+    };
+    f.images[1].dataset.privateBlur='data:image/svg+xml,preview';f.api.register(f.images[1]);f.api.resize(390,666);f.api.active(true);
+    assert.equal(f.canvases[0].hidden,true,failure);assert.equal(f.images[1].dataset.photoRasterVisible,undefined);
+    assert.equal(f.images[1].dataset.photoState,'ready');
+  }
+});
+test('a stalled preparation recovers native display without delaying the first photo or retrying a loop',()=>{
+  const f=fixture();f.images[0].dataset.photoReveal='soft';f.images[1].dataset.privateBlur='data:image/svg+xml,preview';
+  f.images.forEach(f.api.register);f.api.resize(390,666);f.api.active(true);
+  assert.equal(f.images[0].dataset.photoRasterVisible,undefined);assert.equal(f.canvases[1].hidden,false);
+  const worker=f.workers[0],deadline=[...f.timers.values()][0];assert.equal(deadline.ms,3000);deadline.fn();
+  assert.equal(worker.terminated,true);assert.equal(f.timers.size,0);assert.ok(f.canvases.every(c=>c.hidden&&c.width===0&&c.style.backgroundImage===''));
+  assert.ok(f.images.every(image=>!image.dataset.photoRasterVisible));
+  f.images[1].src='blob:https://example.test/another';f.api.prepareAll();assert.equal(f.workers.length,1);
+  assert.equal(f.complete(worker,worker.jobs[0]).closed,true);
 });
