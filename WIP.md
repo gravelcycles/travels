@@ -16,8 +16,17 @@ day-grid entry/Back and empty-stop story entry. Reference inheritance passes in
 the shared-framework suite. The owner explicitly requested internal-browser
 private-photo access after the initial automatic review rejection. The existing
 remembered internal session now loads all seven real Heading East album covers
-at 480 px. No personal-browser access or auth changes were needed. Publication
-and final checks of the new style on protected photos are pending.
+at 480 px. No personal-browser access or auth changes were needed.
+
+Published as `9ce525e` through successful
+[Pages run 39023159023](https://github.com/gravelcycles/travels/actions/runs/39023159023).
+All five fresh public pages and the shared stylesheet match the tested build
+byte-for-byte. Live internal-browser checks verify the near-black chooser on
+Heading East (101 photos, all seven protected covers loaded) at desktop and
+390 px, Berlin's 24-photo grid entry and Back, and the reference's 14-day chooser
+(103 photos). No horizontal overflow; the background exactly matches the day
+roll (`#091113`). Phone/desktop screenshots are saved in the task's outputs.
+Implementation, guidance and publication are complete.
 
 ## Physical iPhone incoming-image paint — 17 October 2026
 
