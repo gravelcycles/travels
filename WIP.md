@@ -48,7 +48,14 @@ All 887 tests pass, including 14 renderer checks. Repeated builds preserve all
 Alpine sample 20/20 and independent populated fresh draft 20/20 with no captured
 script errors. The previous candidate fails the pending-neighbor check at
 1,500 ms (4/5) and also switches native surfaces during drag at 50 ms (3/5);
-the correction passes 5/5 in both cases. Deployment verification is in progress.
+the correction passes 5/5 in both cases. Published as `a8dcbac` through successful
+[Pages run 39022045255](https://github.com/gravelcycles/travels/actions/runs/39022045255).
+All five fresh public pages and 44 referenced scripts/styles match the tested
+build byte-for-byte. Live sample forward/reverse gestures retain three ready
+surfaces with no pending previews or script errors afterward; a fresh ordinary
+URL retains its native reveal and allocates zero canvases. Current owner,
+workflow, framework/features, TODO and incident guidance include the immediate-
+swipe clarification and the no-added-initial-display-wait constraint.
 Required next: physical-iPhone immediate-swipe retest, preserving the confirmed
 steady browsing improvement; quantify the candidate before graduation/removal.
 
