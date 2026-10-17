@@ -8,7 +8,8 @@ sticky heading and solid Close control; phones use a full-viewport two-column
 grid. Existing selection/history/loading code is unchanged. Work is isolated in
 `codex/dark-photo-day-picker` from main `25a28bd`, preserving the primary
 checkout's unrelated edits. Current owner guidance, photo workflow and feature
-inventory are updated. All **881 tests** and the production build pass. Browser
+inventory are updated. After integrating concurrent main `a1edad5`, all
+**887 tests** and the production build pass with reproducible public output. Browser
 checks cover the Alpine demo and an independently created populated city draft:
 desktop, 390/320 px phones, long titles, no horizontal overflow, sticky Close,
 day-grid entry/Back and empty-stop story entry. Reference inheritance passes in
