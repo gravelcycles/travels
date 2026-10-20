@@ -64,6 +64,13 @@ first native handoff avoids horizontal motion. [The incident record](PERFORMANCE
 and WIP retain evidence and the pending physical startup retest; rollout approval
 does not imply a numeric frame-time gain or new startup certification.
 
+The 20 October follow-up removes empty letterbox storage from the three
+physical-resolution canvases, defers completed bitmap adoption through horizontal
+drag/settling, and batches native pinch/pan updates once per animation frame.
+Release flushes the final sample; reset/close cancels pending input work. Original
+source quality, focal zoom and immediate opening remain unchanged. Matched
+work reductions and physical-device limits are recorded in the incident record.
+
 The [16 October fullscreen photo correction](OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
 is implemented in shared code: mobile right-aligned Comments with Share immediately to its left,
 top-right Close, single-tap hiding/restoring of photo chrome and full-viewport
@@ -150,6 +157,11 @@ feed and shared request caches keep counts exact without per-photo requests.
 See the [notification contract](PLACES_AND_COMMENTS.md#comment-notifications).
 
 ## Features versus editorial content
+
+Heading East’s [20 October route adjustment](HEADING_EAST.md#route-adjustment--20-october-2026)
+uses the existing city/TBD and multimodal contracts: twelve dated stays through
+Forni and nineteen undated stays, with Bratislava after Poland and Slovenia after
+Zagreb. Route order, dates and network provenance remain trip content.
 
 Heading East's second camera batch uses the existing incremental photo importer
 and private publisher. Its per-file location review list is in

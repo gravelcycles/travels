@@ -36,6 +36,54 @@ test('zoom panning stays inside the photograph and does not move letterboxed axe
 
 import {viewerFixture} from './mobile-viewer-harness.mjs';
 
+test('mobile pinch batches pointer samples into one visual update and preserves the final focal transform',()=>{
+  const frames=[];
+  for(const paced of [false,true]){
+    const f=viewerFixture();f.api.openDay();const image=f.node('#modal-photo');
+    let writes=0,value=image.style.transform;
+    Object.defineProperty(image.style,'transform',{get:()=>value,set:next=>{value=next;writes++;}});
+    f.dispatch('.photo-stage','pointerdown',{clientX:140,clientY:350});
+    f.dispatch('.photo-stage','pointerdown',{pointerId:2,clientX:240,clientY:350});
+    const before=writes;
+    for(let i=1;i<=6;i++){
+      f.dispatch('.photo-stage','pointermove',{clientX:140-i*10,clientY:350+i});
+      f.dispatch('.photo-stage','pointermove',{pointerId:2,clientX:240+i*10,clientY:350+i});
+      if(paced)f.frame();
+    }
+    if(!paced){assert.equal(writes,before,'Pointer callbacks only record the latest positions');f.frame();assert.equal(writes-before,1);}
+    frames.push(image.style.transform);
+    f.dispatch('.photo-stage','pointerup',{pointerId:2});f.dispatch('.photo-stage','pointerup');
+    assert.equal(f.index,0);
+  }
+  assert.equal(frames[0],frames[1],'Coalescing preserves scale, moving midpoint and pan bounds');
+});
+
+test('zoomed pan flushes its last position on release before the next frame',()=>{
+  const f=viewerFixture({reducedMotion:true});f.api.openDay();f.click('.photo-stage');f.click('.photo-stage');
+  const image=f.node('#modal-photo'),before=image.style.transform;
+  f.dispatch('.photo-stage','pointerdown',{clientX:190,clientY:350});
+  for(let i=1;i<=12;i++)f.dispatch('.photo-stage','pointermove',{clientX:190+i*5,clientY:350});
+  assert.equal(image.style.transform,before);
+  f.dispatch('.photo-stage','pointerup',{clientX:250,clientY:350});
+  const released=image.style.transform;assert.notEqual(released,before);
+  f.frame();assert.equal(image.style.transform,released,'No stale frame repeats the gesture after release');
+  assert.equal(f.index,0,'Panning cannot browse photos');
+});
+
+test('closing or replacing a photo cancels a queued pinch frame',()=>{
+  for(const action of ['close','photo','lock','resize']){
+    const f=viewerFixture();f.api.openDay();
+    f.dispatch('.photo-stage','pointerdown',{clientX:140,clientY:350});
+    f.dispatch('.photo-stage','pointerdown',{pointerId:2,clientX:240,clientY:350});
+    f.dispatch('.photo-stage','pointermove',{pointerId:2,clientX:340,clientY:350});
+    if(action==='close')f.node('#photo-dialog').close();
+    else if(action==='photo')f.api.selectPhoto(1);
+    else if(action==='lock')f.dispatch('atlas-photos-locked');
+    else f.resizeViewport();
+    f.frame();assert.equal(f.node('.photo-viewer').dataset.zoomed,'false',action);
+  }
+});
+
 test('video scrubbing stays native, video taps cannot zoom, and opening the media grid pauses playback', () => {
   const f = viewerFixture({videoIndex:1}); f.api.openDay(); f.api.selectPhoto(1);
   const stage = f.node('.photo-stage'), target = {closest:query => query === '#viewer-video' ? target : null};
