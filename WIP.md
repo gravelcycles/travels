@@ -1,5 +1,29 @@
 # Current workstreams
 
+## Residual fullscreen rendering lag — 20 October 2026
+
+The owner still notices lag versus native Photos in drag, release, rapid browsing
+and zoom, especially mid-swipe. Implemented fitted physical-pixel canvas storage,
+bitmap adoption outside horizontal motion, and frame-paced pinch/pan with final
+sample flushing and queued-input cleanup. Preserve immediate first native display,
+full-source zoom, focal bounds, existing surfaces/history and private fallback.
+No new phone trace exists; this reduces demonstrated work without claiming the
+remaining physical issue resolved or native parity.
+
+Matched Heading East loopback checks at 390×844/DPR1 reduce retained bitmap pixels
+987,480 → 609,960 (38.2%), controlled mid-drag bitmap adoptions 3 → 0, pinch
+transforms 144 → 12 and pan transforms 109 → 10, with identical final transforms.
+All six new regressions fail on the previous runtime. All 894 tests pass and
+repeated builds preserve all 79 public files byte-for-byte. Browser checks pass
+reference 22/22, Alpine demo 21/21 and independent populated draft 21/21, including
+fitted geometry after Location, native zoom, grids/history, map return and pixel
+cleanup. The actual first Heading East photo passes 5/5 startup checks at both
+50 ms and 1,500 ms worker-result delays, displaying native pixels before any
+prepared surface is ready. No captured script errors. Current owner decisions,
+photo workflow, framework/features, TODO and incident evidence are updated.
+Next: deploy, verify fresh public bytes, and retain the physical comparison as
+follow-up; no new phone frame-time measurement is claimed.
+
 ## Prepared mobile photos by default — 17 October 2026
 
 The owner explicitly requests default rollout, superseding the opt-in gate and
