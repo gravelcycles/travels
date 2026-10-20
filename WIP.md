@@ -16,9 +16,13 @@ populated draft, delayed status/redemption, guest, failure, catalog and signed
 share entry. Frame observations record zero early chrome/unlock frames; the
 first visible destination has both access and view resolved. A 10-second status
 check shows only neutral progress. Fixture images are synthetic; these are
-browser viewport checks, not physical-iPhone certification. Remote integration
-and live deployment remain in progress. No private-media access or remembered
-credential policy changes.
+browser viewport checks, not physical-iPhone certification. Integrated the current
+route and rendering releases from `4d14bd4`; all **901 integrated tests** and the
+regenerated build pass, and phone/reference plus desktop/catalog entry were
+rechecked with zero early frames or script errors. The owner explicitly approved
+live site and existing Worker deployment on 20 October after automatic review
+required production approval. Publication is in progress. No private-media access
+or remembered credential policy changes.
 
 ## Heading East route adjustment — 20 October 2026
 
