@@ -8,6 +8,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import http from "node:http";
 import { importStudioPhoto, MAX_PHOTO_BYTES } from "./studio-photo-service.mjs";
+import {preparePhotoAdjustment,adjustmentSource} from './studio-photo-adjustments.mjs';
 import { importStudioVideo, MAX_VIDEO_BYTES } from './studio-video-service.mjs';
 import { byteRange } from '../workers/photo-auth/video-service.mjs';
 import path from "node:path";
@@ -123,6 +124,7 @@ function serveFile(response, filename) {
 }
 
 function staticFileFor(pathname) {
+  if (pathname === '/photo-adjustments-ui.js') return path.join(repoRoot,'studio/photo-adjustments-ui.js');
   if (pathname === "/" || pathname === "/studio" || pathname === "/studio/") return path.join(repoRoot, "studio/index.html");
   if (pathname === "/studio/story-review.html") return path.join(repoRoot, "studio/story-review.html");
   if (["/studio.css", "/studio.js", "/plan-extras.js", "/place-editor.js", "/studio-recovery.js", "/draft-review.js", "/photo-batch.js", "/photo-batch-ui.js", "/photo-editing.js", "/photo-batch.css", "/ready-to-share.js", "/video-import.js"].includes(pathname)) return path.join(repoRoot, "studio", pathname.slice(1));
@@ -390,6 +392,26 @@ const server = http.createServer((request, response) => {
     const origin = process.env.ATLAS_PHOTO_SERVICE_ORIGIN;
     if (!/^http:\/\/127\.0\.0\.1:\d+$/.test(origin)) return send(response, 500, "Invalid local photo service");
     return send(response, 200, `window.JOURNEY_ATLAS_PHOTO_SERVICE = ${JSON.stringify({ origin })};`, "application/javascript");
+  }
+  if (request.method === 'GET' && url.pathname === '/api/photo-adjustments/source') {
+    try {
+      const journey=loadContent(repoRoot,{includeDrafts:true}).data.journeys.find(j=>j.id===url.searchParams.get('journeyId'));
+      const photo=journey?.photos.find(p=>p.id===url.searchParams.get('photoId'));
+      if (!photo) throw new Error('Choose a photo.');
+      return serveFile(response,adjustmentSource(repoRoot,photo));
+    } catch (error) { return send(response,404,error.message); }
+  }
+  if (request.method === 'POST' && url.pathname === '/api/photo-adjustments') {
+    let body='';
+    request.setEncoding('utf8');
+    request.on('data',chunk=>{body+=chunk;if(body.length>50000)request.destroy();});
+    request.on('end',async()=>{
+      try {
+        const imageEdit=await preparePhotoAdjustment(repoRoot,JSON.parse(body));
+        send(response,200,JSON.stringify({ok:true,imageEdit}),'application/json; charset=utf-8');
+      } catch (error) { send(response,400,JSON.stringify({ok:false,error:error.message}),'application/json; charset=utf-8'); }
+    });
+    return;
   }
   if (request.method !== "GET") return send(response, 405, "Method not allowed");
   let pathname;

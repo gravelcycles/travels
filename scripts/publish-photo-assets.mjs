@@ -45,6 +45,15 @@ export async function publishPhotoAssets(root,journeyId,{publish=false,all=false
   if(avifOnly?!pendingAvif:!(all||photo.assetStatus==='local'||pendingAvif))continue;
   selected.push({file,photo,webp:!avifOnly&&(all||photo.assetStatus==='local'),avif:!!photo.fullAvif&&(all||photo.fullAvif.assetStatus==='local')});
  }
+ // Edited derivatives are overrides, so a new crop never replaces its source
+ // manifest, photo ID or original pixels. Publish them with the same verifier.
+ const sourcePhotos=()=>[...(journey.photos||[]),...files.flatMap(file=>readJson(file))];
+ if (!avifOnly) for (const photo of sourcePhotos()) {
+  const edit=overrides.photos[photo.id]?.imageEdit;
+  if (overrides.photos[photo.id]?.trashed || !edit || (!all && edit.assets?.assetStatus!=='local')) continue;
+  if (!globalThis.JOURNEY_ATLAS_PHOTO_ADJUSTMENTS.validEdit(edit,photo)) throw new Error('Finish applying the crop before publishing.');
+  selected.push({edit,baseDescriptor:fallbackDescriptor(photo),photo:{...photo,...edit.assets,fullAvif:undefined},webp:true,avif:false});
+ }
  const assets=new Map();
  for(const selection of selected) {
   const {photo,webp,avif}=selection;
@@ -59,7 +68,7 @@ export async function publishPhotoAssets(root,journeyId,{publish=false,all=false
    assets.set(asset.key,asset);
   }
  }
- const result={journeyId,photos:selected.length,assets:assets.size,bytes:[...assets.values()].reduce((n,a)=>n+a.size,0),published:false};
+ const result={journeyId,photos:new Set(selected.map(s=>s.photo.id)).size,assets:assets.size,bytes:[...assets.values()].reduce((n,a)=>n+a.size,0),published:false};
  if(!publish||!selected.length)return result;
  const api=remote||await cloudflareClient(),bucket='/r2/buckets/travels-private-photos';
  if(!remote)for(const endpoint of ['/domains/managed','/domains/custom']) {
@@ -102,8 +111,13 @@ export async function publishPhotoAssets(root,journeyId,{publish=false,all=false
  // Preserve editorial edits made while network requests were in flight. A
  // replaced or removed derivative cannot inherit another asset's verified state.
  const currentOverrides=readOverrides(root),updates=new Map();
- for(const file of new Set(selected.map(selection=>selection.file)))updates.set(file,readJson(file,[]));
- for(const {file,photo,webp,avif} of selected) {
+ for(const file of new Set(selected.filter(s=>!s.edit).map(selection=>selection.file)))updates.set(file,readJson(file,[]));
+ for(const {file,photo,webp,avif,edit,baseDescriptor} of selected) {
+  if (edit) {
+   const base=sourcePhotos().find(p=>p.id===photo.id);
+   if(!base || currentOverrides.photos[photo.id]?.trashed || fallbackDescriptor(base)!==baseDescriptor || base.src!==edit.sourceSrc || JSON.stringify(currentOverrides.photos[photo.id]?.imageEdit)!==JSON.stringify(edit)) throw new Error('Photo crop changed during publication. Verified assets are retained; review and rerun.');
+   continue;
+  }
   const current=updates.get(file).find(item=>item.id===photo.id);
   if(!current||currentOverrides.photos[photo.id]?.trashed||fallbackDescriptor(current)!==fallbackDescriptor(photo)||
     (!webp&&current.assetStatus!=='published')||(avif&&descriptor(current.fullAvif)!==descriptor(photo.fullAvif))) {
@@ -116,6 +130,15 @@ export async function publishPhotoAssets(root,journeyId,{publish=false,all=false
    const selection=verified.get(photo.id);if(!selection)return photo;
    return {...photo,...(selection.webp?{assetStatus:'published'}:{}),...(selection.avif?{fullAvif:{...photo.fullAvif,assetStatus:'published'}}:{})};
   }));
+ }
+ if (selected.some(s=>s.edit)) {
+  const file=path.join(root,'content/photo-overrides.json');
+  const latest=readJson(file,{});
+  for(const {photo,edit} of selected.filter(s=>s.edit)) {
+   const {publishedAssets,...current}=edit;
+   latest[photo.id]={...latest[photo.id],imageEdit:{...current,assets:{...current.assets,assetStatus:'published'}}};
+  }
+  atomicJson(file,latest);
  }
  buildSite(root);
  return {...result,published:true};

@@ -62,8 +62,9 @@ export function studioAsset(root, name) {
 }
 export function buildSite(root) {
   const { data, routes } = loadContent(root, { includeDrafts: true });
-  const overrides = readOverrides(root);
-  validateOverrides(overrides, data);
+  const sourceOverrides = readOverrides(root);
+  validateOverrides(sourceOverrides, data);
+  const overrides = {...sourceOverrides,photos:Object.fromEntries(Object.entries(sourceOverrides.photos).map(([id,photo])=>[id,globalThis.JOURNEY_ATLAS_PHOTO_ADJUSTMENTS.publicOverride(photo)]))};
   const published = data.journeys.filter(j => j.published);
   if (!published.some(j => j.id === data.defaultJourneyId)) throw new Error("Default journey must be published");
   const routeIds = new Set(published.flatMap(j => j.segments.map(s => s.id)));

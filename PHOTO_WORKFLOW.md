@@ -52,6 +52,44 @@ the fitted image (verified at 2.5× → 1×). Compare ownership with the transfo
 stored by the browser after CSSOM normalization, while preserving a later mobile
 transform. This fixes reset correctness; it is not an animation-speed result.
 
+## Crop and rotation in Studio
+
+Owner request, 20 October 2026: build basic crop and degree-based rotation into
+the photo editor. Choose **Media → Photos → Crop & rotate**. Drag the frame or
+its corners, choose Freeform, 1:1, 4:3, 3:2, 16:9, 4:5, 2:3 or 9:16, and enter
+an exact angle (−180° to 180°, including decimals). The slider and 90° buttons
+use the same angle. Rotation trims empty corners; quarter turns retain the
+whole image. Arrow keys move the focused crop; **Precise crop** provides percent
+position/size fields. **Reset crop & angle** starts over in the editor;
+**Restore original** removes the adjustment. **Apply to photo**, then **Save
+locally**, uses the ordinary revision/conflict/save flow. Publishing is separate.
+
+Every input updates the existing recoverable draft. Closing retains unfinished
+work; Save reopens an unfinished adjustment rather than silently dropping it.
+Failed processing keeps the recipe and offers retry. The image adjustment is
+one conflict unit, so concurrent crop/rotation/assets cannot silently combine.
+Captions, pins, album order, photo IDs, intake manifests and originals stay intact.
+
+`imageEdit` overrides store rotation, a normalized crop within the safe rotated
+frame, the unedited source URL, and matching private WebP/blur descriptors. The
+server reads only managed local derivatives or the bundled sample photographs;
+it never accepts arbitrary paths or fetch URLs. It uses the original AVIF when
+available, otherwise the unedited full WebP, and regenerates thumbnail/preview/
+full WebP sizes without upscaling or retaining camera metadata. Reopening always
+starts from that same unedited source. A missing local source is a visible error.
+Edited photos currently use WebP at the normal maximum 3200-pixel long edge;
+the unedited AVIF is retained but never overlaid on a cropped/rotated photo.
+
+`photos:publish` includes pending adjusted derivatives with its existing private
+checksum/MIME verifier. Until verification, public output retains the previous
+published crop (or the original for a first edit); draft recipes/local asset URLs
+never enter a public bundle. Publication rereads sources/edits before marking
+assets published and preserves independently changed copy. Old immutable assets
+remain for recovery. **Restore original** deliberately returns to the source on
+the next deployment. Check exact-angle pixels, presets, pointer/keyboard editing,
+reload, local Save, publication failure/races and original reset on reference,
+sample and independently populated draft photos.
+
 ## Upload and delete in Studio
 
 Open **Photos → Upload photos**, leave **Automatically match capture dates**

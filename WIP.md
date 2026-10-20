@@ -1,5 +1,22 @@
 # Current workstreams
 
+## Photo crop and rotation — 20 October 2026
+
+Authorized basic crop and arbitrary-degree rotation in the shared Studio photo
+editor, extending O11/O14. Implementation is isolated on `codex/photo-crop-rotation`
+in `/Users/dg/Documents/Codex/2026-10-20/what/work/travels`, based on main
+`48f73fe`; primary-checkout ongoing work is preserved. Includes recoverable
+unfinished recipes, matching private derivatives, atomic conflict handling,
+original reset and verified publication with the last published crop retained.
+See [the current contract](PHOTO_WORKFLOW.md#crop-and-rotation-in-studio).
+
+Five focused image/publishing/recovery tests pass. Browser checking is in
+progress at `http://127.0.0.1:4194/studio/`. Remaining: finish reference/sample/
+fresh-draft UI checks, full tests/build, integrate current main, deploy/verify
+Pages, then apply the scoped patch to the user's local Studio without losing
+its pending edits or refreshing existing tabs blindly.
+
+
 ## Prepared mobile photos by default — 17 October 2026
 
 The owner explicitly requests default rollout, superseding the opt-in gate and

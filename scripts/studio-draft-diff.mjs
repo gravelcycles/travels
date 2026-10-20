@@ -18,7 +18,7 @@ const labels = {
 };
 const label = key => labels[key] || String(key).replace(/([a-z])([A-Z])/g,'$1 $2').replace(/[-_]/g,' ').replace(/^./,c=>c.toUpperCase());
 const textFields = new Set(['tagline','text','description','caption','alt','locationLabel','subtitle']);
-const atomic = new Set(['location','geometry','controlPoints','mapFrame','center','routing','source']);
+const atomic = new Set(['location','geometry','controlPoints','mapFrame','center','routing','source','imageEdit']);
 const references = new Set(['dayId','leadPhotoId','photoId','placeId','destinationId','from','to']);
 const collections = {days:'Day',photos:'Photo',segments:'Route',places:'Place',pointsOfInterest:'Place',replayMoments:'Replay chapter',travelers:'Traveler',routeGroups:'Travel group',videos:'Video'};
 
@@ -45,6 +45,7 @@ export function studioDraftDiff(data, saved, draft, routes = {}) {
       thumbnail:kind==='photos'?(item.srcset?.[0]?.src || item.src || ''):''};
   }
   function display(value, key, journey, editorial=saved) {
+    if (key==='imageEdit') return {text:value ? `${value.rotationInput ?? value.rotation}° rotation · crop${value.pending ? ' · unfinished' : ''}` : 'Original photo',details:value ? JSON.stringify({rotation:value.rotation,crop:value.crop},null,2) : undefined};
     if (key==='trashed') return {text:value?'In Trash':'In atlas'};
     if (value===null || value===undefined || value==='') return {text:key==='mapFrame'?'Automatic frame':key==='leadPhotoId'?'Automatic lead photo':key==='location'?'No location':'Empty',empty:true};
     if (key==='location' && object(value)) return {text:`${value.lat}° latitude, ${value.lng}° longitude`};

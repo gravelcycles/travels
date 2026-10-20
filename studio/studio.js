@@ -458,6 +458,18 @@
   }
 
   function preparePhotoSave() {
+    const pending=Object.entries(state.photos).find(([,value])=>value.imageEdit?.pending);
+    if (pending) {
+      const owner=data.journeys.find(item=>(photosByJourney[item.id]||item.photos||[]).some(photo=>photo.id===pending[0]));
+      if (owner) {
+        if(owner.id!==journey.id)setJourney(owner.id);
+        $('#photo-search').value='';$('#photo-day-filter').value='all';
+        if ($('#photo-batch-toggle').getAttribute('aria-pressed')==='true') $('#photo-batch-toggle').click();
+        setMode('photos');selectPhoto(pending[0],false);photoAdjuster?.open();
+      }
+      setStatus('Apply your crop & rotation, or Restore original, before saving. Your draft is kept.','error');
+      return false;
+    }
     for (const [id, fields] of Object.entries(photoFieldDrafts)) {
       const invalid = window.JOURNEY_ATLAS_PHOTO_EDITING.coordinates(fields);
       if (!invalid.error) continue;
@@ -1127,7 +1139,7 @@
       const result={...saved};
       for (const key of new Set([...Object.keys(before || {}),...Object.keys(current)])) {
         if (!Object.hasOwn(current,key)) delete result[key];
-        else result[key]=retainNewerEdits(before?.[key],current[key],saved?.[key]);
+        else result[key]=key==='imageEdit' && JSON.stringify(before?.[key])!==JSON.stringify(current[key]) ? current[key] : retainNewerEdits(before?.[key],current[key],saved?.[key]);
       }
       return result;
     }
@@ -1532,6 +1544,14 @@
     resizeMap: () => { if (mapReady) map.resize(); }
   });
 
+  const photoAdjuster=window.JOURNEY_ATLAS_PHOTO_ADJUSTMENTS_UI?.create({
+    getContext:()=>({journey,photo:basePhotos.find(photo=>photo.id===selectedPhotoId),state}),
+    setEdit(id,imageEdit) {
+      state.photos[id]={...state.photos[id],imageEdit};
+      markDirty('Photo crop & rotation changed · Save locally to keep');
+    },
+    refresh:()=>selectPhoto(selectedPhotoId,false)
+  });
   let draftRecovery = null;
   const readiness = window.JOURNEY_ATLAS_READINESS?.create({ document, fetch, clipboard: window.navigator?.clipboard,
     getInput: () => {
