@@ -21,8 +21,16 @@ route and rendering releases from `4d14bd4`; all **901 integrated tests** and th
 regenerated build pass, and phone/reference plus desktop/catalog entry were
 rechecked with zero early frames or script errors. The owner explicitly approved
 live site and existing Worker deployment on 20 October after automatic review
-required production approval. Publication is in progress. No private-media access
-or remembered credential policy changes.
+required production approval. Published as `fcb8d9d` through successful
+[Pages run 39388305607](https://github.com/gravelcycles/travels/actions/runs/39388305607),
+with Worker version `03da29ac-a2b7-47c0-badf-4756f4f16101`. All five fresh public
+pages and 45 referenced scripts/styles match the tested release byte-for-byte.
+Live public-sample share navigation opens the exact photo on desktop and 390 px
+phone viewports, with no unlock prompt or captured script errors. Live Worker
+checks confirm hidden share/restore content, matching background, nonce-protected
+styles and unchanged anonymous 401/no-store protection. Implementation and
+publication are complete. No private-media access or remembered credential policy
+changes.
 
 ## First zoom into each photo — 20 October 2026
 
