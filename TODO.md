@@ -37,7 +37,11 @@ activation work.
       independent of worker readiness. Verify this correction on the phone.
       The owner-requested mobile default is deployed; the query gate is removed. Keep physical startup retest/measurement as follow-up rather than
       an approval prerequisite. Preserve the confirmed browsing improvement,
-      full-photo quality and paused AVIF automation. [Evidence](docs/PERFORMANCE_IPHONE_2026-10-17.md).
+      full-photo quality and paused AVIF automation. On 20 October the owner still
+      notices mid-swipe, release, rapid-browse and zoom lag versus native Photos.
+      Fitted-pixel storage, deferred bitmap adoption and frame-paced pinch/pan
+      reduce measured browser work; obtain a new phone comparison/trace before
+      claiming the residual issue resolved. [Evidence](docs/PERFORMANCE_IPHONE_2026-10-17.md).
 
 - [x] **Post-AVIF loading comparison and mobile swipes.** Published in `a940395`
       after 848 passing tests, reproducible builds, successful Pages and fresh

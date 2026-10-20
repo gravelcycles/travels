@@ -33,7 +33,7 @@
     let current = { photos: [], index: 0, day: null }, locationOpen = false, grid = false, chrome = true, gridOrigin = null;
     let reveal = 0, paintedReveal = 0, locationHeight = 300, scale = 1, panX = 0, panY = 0;
     let gesture = null, pointers = new Map(), pinch = null, suppressClick = false;
-    let locationTimer, locationFrame, revealFrame, settleLocation = false, swipeTimer, swipeFrame, dragFrame, zoomFrame, dismissTimer, tapTimer;
+    let locationTimer, locationFrame, revealFrame, settleLocation = false, swipeTimer, swipeFrame, dragFrame, zoomFrame, zoomInputFrame, dismissTimer, tapTimer;
     let locationFoot = 84, viewerHeight = 0, locationWidth = 0, locationStageHeight = 0;
     let locationAnimating = false, revealDragging = false, locationVisualHeight = null;
     let dragOffset = 0, dragWidth = 0, swipeOffset = 0;
@@ -168,7 +168,8 @@
     }
     function transform(dx = 0, width = stage.clientWidth) {
       swipeOffset = dx;
-      viewer.dataset.zoomed = String(scale > 1);
+      const zoomed = String(scale > 1);
+      if (viewer.dataset.zoomed !== zoomed) viewer.dataset.zoomed = zoomed;
       img.style.transform = `translate3d(${dx + panX}px,${panY}px,0) scale(${scale})`;
       stage.style.setProperty('--photo-swipe-x', `${dx}px`);
       neighbors.forEach(({node,delta}) => { node.style.transform = `translate3d(${dx + delta * (width + 16)}px,0,0)`; });
@@ -241,14 +242,43 @@
       // twice during each selection update.
       if (next <= 1) { scale = 1; panX = panY = 0; transform(); return; }
       const ratio = img.naturalWidth / img.naturalHeight || 1;
-      const width = Math.min(stage.clientWidth, stage.clientHeight * ratio), height = width / ratio;
-      const cover = Math.max(stage.clientWidth / Math.max(1, width), stage.clientHeight / Math.max(1, height));
+      const viewportWidth = stage.clientWidth, viewportHeight = stage.clientHeight;
+      const width = Math.min(viewportWidth, viewportHeight * ratio), height = width / ratio;
+      const cover = Math.max(viewportWidth / Math.max(1, width), viewportHeight / Math.max(1, height));
       scale = clamp(next, 1, Math.max(4, cover)); if (scale === 1) panX = panY = 0;
-      panX = clamp(panX, -panLimit(width,scale,stage.clientWidth), panLimit(width,scale,stage.clientWidth));
-      panY = clamp(panY, -panLimit(height,scale,stage.clientHeight), panLimit(height,scale,stage.clientHeight));
-      transform();
+      panX = clamp(panX, -panLimit(width,scale,viewportWidth), panLimit(width,scale,viewportWidth));
+      panY = clamp(panY, -panLimit(height,scale,viewportHeight), panLimit(height,scale,viewportHeight));
+      transform(0, viewportWidth);
     }
-    function stopZoom() { cancelAnimationFrame(zoomFrame); zoomFrame = null; }
+    function renderZoomGesture() {
+      if (pinch && pointers.size === 2) {
+        const [a,b] = [...pointers.values()];
+        const next = pinch.scale * Math.hypot(a.x-b.x,a.y-b.y) / Math.max(1,pinch.distance);
+        // zoom() owns the same bounds used by buttons and double-tap. Clamp the
+        // target before focal calculation so a scale limit cannot move focus.
+        const ratio = img.naturalWidth / img.naturalHeight || 1;
+        const width = stage.clientWidth, height = stage.clientHeight;
+        const fittedWidth = Math.min(width, height * ratio), fittedHeight = fittedWidth / ratio;
+        const targetScale = clamp(next, 1, Math.max(4, width / Math.max(1,fittedWidth), height / Math.max(1,fittedHeight)));
+        const target = root.JourneyPhotoZoom.focalZoom(pinch, targetScale, pinch.center, photoPoint((a.x+b.x)/2,(a.y+b.y)/2));
+        panX = target.x; panY = target.y; zoom(targetScale);
+      } else if (gesture && scale > 1 && !gesture.handle) {
+        panX = gesture.panX + gesture.dx; panY = gesture.panY + gesture.dy; zoom(scale);
+      }
+    }
+    function queueZoomGesture() {
+      if (zoomInputFrame) return;
+      zoomInputFrame = requestAnimationFrame(() => { zoomInputFrame = null; renderZoomGesture(); });
+    }
+    function flushZoomGesture() {
+      if (!zoomInputFrame) return;
+      cancelAnimationFrame(zoomInputFrame); zoomInputFrame = null;
+      renderZoomGesture();
+    }
+    function stopZoom() {
+      cancelAnimationFrame(zoomFrame); zoomFrame = null;
+      cancelAnimationFrame(zoomInputFrame); zoomInputFrame = null;
+    }
     function toggleZoom(event) {
       stopZoom();
       const ratio = img.naturalWidth / img.naturalHeight || 1;
@@ -628,6 +658,7 @@
       if ((!locationHeader && event.target.closest('button:not(#mobile-photo-location)')) || event.target.closest('#viewer-video')) return;
       resetDismiss();
       const offset = stopSwipe(event.currentTarget === stage && scale === 1);
+      flushZoomGesture();
       stopZoom(); stopLocation(true);
       refreshNeighbors();
       pointers.set(event.pointerId, {x:event.clientX,y:event.clientY});
@@ -658,15 +689,7 @@
       if (!pointers.has(event.pointerId)) return;
       pointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
       if (pinch) {
-        if (pointers.size === 2) {
-          const [a,b] = [...pointers.values()];
-          const ratio = img.naturalWidth / img.naturalHeight || 1;
-          const width = Math.min(stage.clientWidth, stage.clientHeight * ratio), height = width / ratio;
-          const next = clamp(pinch.scale * Math.hypot(a.x-b.x,a.y-b.y) / Math.max(1,pinch.distance), 1,
-            Math.max(4, stage.clientWidth / Math.max(1,width), stage.clientHeight / Math.max(1,height)));
-          const target = root.JourneyPhotoZoom.focalZoom(pinch, next, pinch.center, photoPoint((a.x+b.x)/2,(a.y+b.y)/2));
-          panX = target.x; panY = target.y; zoom(next);
-        }
+        queueZoomGesture();
         return;
       }
       if (!gesture) return;
@@ -690,7 +713,7 @@
       }
       cancelTap();
       suppressClick = true;
-      if (scale > 1 && !gesture.handle) {panX=gesture.panX+gesture.dx;panY=gesture.panY+gesture.dy;zoom(scale);return;}
+      if (scale > 1 && !gesture.handle) { queueZoomGesture(); return; }
       if (gesture.dismiss) { dragDismiss(gesture.dx, gesture.dy); return; }
       if (gesture.axis === 'x' && !gesture.handle) {
         finishPhotoReveal();
@@ -702,6 +725,9 @@
     }
     function pointerEnd(event) {
       if (!pointers.has(event.pointerId)) return;
+      // Commit the last sampled position before a finger disappears, even if
+      // release precedes the next animation frame. Close/reset cancels instead.
+      flushZoomGesture();
       pointers.delete(event.pointerId);
       const cancelled = event.type !== 'pointerup';
       if (cancelled) cancelTap();

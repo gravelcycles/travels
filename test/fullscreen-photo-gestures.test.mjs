@@ -65,13 +65,13 @@ test('pinch follows the moving midpoint while preserving the image point under i
   const f=viewerFixture();f.api.openDay();f.node('#modal-photo').naturalWidth=1200;f.node('#modal-photo').naturalHeight=1200;
   f.click('.photo-stage');
   touch(f,'pointerdown',1,180,353);touch(f,'pointerdown',2,280,353);
-  touch(f,'pointermove',1,150,363);touch(f,'pointermove',2,350,363);
+  touch(f,'pointermove',1,150,363);touch(f,'pointermove',2,350,363);f.frame();
   const result=imageTransform(f);
   assertClose(result.scale,2,'Finger distance controls scale');
   assertClose(result.x,-15,'The initial midpoint image coordinate stays under the moving fingers');
   assertClose(result.y,10,'Moving both fingers vertically pans the image');
   touch(f,'pointerup',1,150,363);
-  touch(f,'pointermove',2,365,373);
+  touch(f,'pointermove',2,365,373);f.frame();
   const continued=imageTransform(f);
   assertClose(continued.scale,2,'Lifting one finger keeps the zoom scale');
   assertClose(continued.x,0,'The remaining finger continues panning without a jump');
@@ -85,7 +85,7 @@ test('pinch follows the moving midpoint while preserving the image point under i
 test('a narrow panoramic photo can zoom far enough to cover the full phone viewport',()=>{
   const f=viewerFixture();f.api.openDay();const img=f.node('#modal-photo');img.naturalWidth=4000;img.naturalHeight=500;
   touch(f,'pointerdown',1,170,353);touch(f,'pointerdown',2,220,353);
-  touch(f,'pointermove',1,-305,353);touch(f,'pointermove',2,695,353);
+  touch(f,'pointermove',1,-305,353);touch(f,'pointermove',2,695,353);f.frame();
   const {scale}=imageTransform(f), fittedHeight=390/(4000/500);
   assert.ok(fittedHeight*scale>=706-.001,'The four-times default limit must not leave a panoramic photo trapped in a strip');
   touch(f,'pointerup',1,-305,353);touch(f,'pointerup',2,695,353);

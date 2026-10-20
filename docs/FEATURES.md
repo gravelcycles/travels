@@ -57,6 +57,13 @@ first native handoff avoids horizontal motion. [The incident record](PERFORMANCE
 and WIP retain evidence and the pending physical startup retest; rollout approval
 does not imply a numeric frame-time gain or new startup certification.
 
+The 20 October follow-up removes empty letterbox storage from the three
+physical-resolution canvases, defers completed bitmap adoption through horizontal
+drag/settling, and batches native pinch/pan updates once per animation frame.
+Release flushes the final sample; reset/close cancels pending input work. Original
+source quality, focal zoom and immediate opening remain unchanged. Matched
+work reductions and physical-device limits are recorded in the incident record.
+
 The [16 October fullscreen photo correction](OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
 is implemented in shared code: mobile right-aligned Comments with Share immediately to its left,
 top-right Close, single-tap hiding/restoring of photo chrome and full-viewport
