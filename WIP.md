@@ -23,8 +23,14 @@ production publication on 20 October after automatic review requested approval.
 The scoped implementation/current guidance is installed in the primary checkout;
 all **37 focused checks** also pass there. Its photo data and unrelated pending
 work are intact. A new server at `http://127.0.0.1:4195/studio/` serves the updated
-editor without refreshing existing tabs. Remaining: final remote integration,
-commit/push, Pages success and fresh public-asset verification. Studio stays local.
+editor without refreshing existing tabs. Published as `e9b75e7` through successful
+[Pages run 39388574944](https://github.com/gravelcycles/travels/actions/runs/39388574944).
+Five fresh public pages plus both crop-related shared assets match the tested
+release byte-for-byte. Crop & rotate is open in the new local Studio tab with
+its real source loaded; existing tabs and unfinished drafts remain untouched.
+Current owner/workflow/framework/feature guidance is updated. Implementation and
+publication are complete. Studio stays local; future photo edits still use
+Apply → Save locally → verified asset/Worker/Pages publication.
 
 ## Initial URL flashes — 20 October 2026
 
