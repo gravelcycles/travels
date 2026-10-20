@@ -12,12 +12,9 @@
     />
     <title>{{title}} · Journey Atlas</title>
     {{siteHead}}
+    <style>html{background:#ecefeb}</style>
+    <script src="./assets/page-entry.js"></script>
     <script src="./assets/input-mode.js"></script>
-    <script>
-      // Keep the atlas out of the first paint until the entry view is chosen.
-      document.documentElement.classList.add('journey-starting');
-      window.addEventListener('load', () => document.documentElement.classList.remove('journey-starting'), { once: true });
-    </script>
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
     <link
       rel="stylesheet"
@@ -36,6 +33,7 @@
     <link rel="stylesheet" href="./assets/arrival-chapter.css" />
   </head>
   <body data-journey-id="{{id}}">
+    <section id="page-entry" role="status" aria-live="polite" hidden><p>Opening Journey Atlas…</p><button type="button" hidden>Try again</button></section>
     <header class="site-header">
       <a class="brand" href="./" aria-label="Back to Journey Atlas catalog">
         <img class="brand-mark" src="./assets/brand/icon.svg" width="34" height="34" alt="" />

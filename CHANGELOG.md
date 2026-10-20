@@ -10,6 +10,16 @@
   verifier, and retain the prior public composition until verification.
   Cropped photos never load the incompatible original AVIF.
 
+## 20 October 2026 — quiet initial presentation on every URL
+
+- Coordinate the requested view and confirmed photo access before revealing
+  catalog/journey chrome, including shared-photo dialogs and login returns.
+- Keep share redirects quiet, align automatic login progress/background, and
+  provide bounded startup recovery without flashing unresolved password/error
+  states. Preserve progressive images, private access and shared destinations.
+- Extend O04 and the UX principles to all initial and intermediate URLs, with
+  cold/cached, slow/failing, guest/remembered and desktop/phone acceptance checks.
+
 ## 20 October 2026 — first-zoom assessment
 
 - Record the owner's positive retest of the rendering release and the separate

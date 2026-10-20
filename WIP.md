@@ -5,7 +5,7 @@
 Authorized basic crop and arbitrary-degree rotation in the shared Studio photo
 editor, extending O11/O14. Implemented on `codex/photo-crop-rotation` in
 `/Users/dg/Documents/Codex/2026-10-20/what/work/travels`; integrated remote main
-through `15d7b4f`, preserving concurrent route/rendering work. Includes recovered
+through `fcb8d9d`, preserving concurrent route/rendering and initial-entry work. Includes recovered
 unfinished recipes, matching private derivatives, atomic conflict handling,
 original reset and verified publication with the last published crop retained.
 Share thumbnails resolve the same published composition. See
@@ -24,6 +24,30 @@ all **37 focused checks** also pass there. Its photo data and unrelated pending
 work are intact. A new server at `http://127.0.0.1:4195/studio/` serves the updated
 editor without refreshing existing tabs. Remaining: final remote integration,
 commit/push, Pages success and fresh public-asset verification. Studio stays local.
+
+## Initial URL flashes — 20 October 2026
+
+Owner requested no flashes on every initial page, explicitly including shared
+and intermediate URLs, plus durable UX policy. O04 and PRINCIPLES now carry the
+sitewide rule. Isolated `codex/no-entry-flashes` starts from `48f73fe` and leaves
+the primary checkout's unrelated changes intact.
+
+Implemented: head-level view/access coordination for catalog and all generated
+journeys; quiet share redirects; common neutral background/progress for automatic
+login checks; bounded startup recovery and cached-document Back handling.
+All **895 tests**, production build and Worker runtime checks pass. Desktop and
+390 px browser fixtures cover reference-photo, city-grid, demo, independently
+populated draft, delayed status/redemption, guest, failure, catalog and signed
+share entry. Frame observations record zero early chrome/unlock frames; the
+first visible destination has both access and view resolved. A 10-second status
+check shows only neutral progress. Fixture images are synthetic; these are
+browser viewport checks, not physical-iPhone certification. Integrated the current
+route and rendering releases from `4d14bd4`; all **901 integrated tests** and the
+regenerated build pass, and phone/reference plus desktop/catalog entry were
+rechecked with zero early frames or script errors. The owner explicitly approved
+live site and existing Worker deployment on 20 October after automatic review
+required production approval. Publication is in progress. No private-media access
+or remembered credential policy changes.
 
 ## First zoom into each photo — 20 October 2026
 

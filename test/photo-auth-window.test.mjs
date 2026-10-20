@@ -36,7 +36,7 @@ test('slow session checks reveal neutral progress and time out with retry, never
   let signal;const f=await runWindow('restore',200,(_url,options)=>{signal=options.signal;return phase==='headers'?new Promise(()=>{}):Promise.resolve({ok:true,json:()=>new Promise(()=>{})});});
   assert.equal(f.nodes.get('main').hidden,true);assert.equal(f.nodes.get('#done').hidden,false);
   [...f.timers.values()].find(timer=>timer.delay===500).fn();
-  assert.equal(f.nodes.get('main').hidden,false);assert.equal(f.nodes.get('#heading').textContent,'Checking photo access');assert.match(f.nodes.get('#message').textContent,/Restoring/);
+  assert.equal(f.nodes.get('main').hidden,false);assert.equal(f.nodes.get('#heading').textContent,'Opening Journey Atlas…');assert.equal(f.nodes.get('#message').textContent,'');
   [...f.timers.values()].find(timer=>timer.delay===15000).fn();await new Promise(resolve=>setImmediate(resolve));
   assert.equal(signal.aborted,true);assert.match(f.nodes.get('#message').textContent,/taking too long/);assert.equal(f.nodes.get('#retry-session').hidden,false);assert.equal(f.redirects.length,0);
   assert.equal(f.nodes.get('#login').hidden,true);assert.equal(f.nodes.get('#intro').hidden,true);

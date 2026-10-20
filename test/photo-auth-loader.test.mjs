@@ -10,7 +10,8 @@ class Element extends EventTarget {
 function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/webp'}}),{startup=false,tabStorage=new Map(),clock=Date,hash='',avifSupport}={}){
  const elements=[],header=new Element(),events=new Map(),calls=[],revoked=[],timers=new Map(),blobs=new Map(),probes=[];let loginFlow,timerId=0,blobId=0;
  const document={body:new Element(),hidden:false,activeElement:new Element(),createElement(){const e=new Element();elements.push(e);return e;},querySelector(){return header;},querySelectorAll(){return [elements[0].querySelector('[data-unlock]'),elements[1].querySelector('[data-unlock]')];},addEventListener(n,fn){events.set(n,fn);}};
- const window={JOURNEY_ATLAS_PHOTO_SERVICE:{origin:'https://photos.example.com'},addEventListener(n,fn){events.set(n,fn);},dispatchEvent(event){events.get(event.type)?.(event);},open(){throw new Error('Login should not require a popup');}};
+ const entryStates=[];
+ const window={JOURNEY_ATLAS_ENTRY:{ready:part=>entryStates.push({part,unlocked:window.JOURNEY_ATLAS_AUTH?.unlocked})},JOURNEY_ATLAS_PHOTO_SERVICE:{origin:'https://photos.example.com'},addEventListener(n,fn){events.set(n,fn);},dispatchEvent(event){events.get(event.type)?.(event);},open(){throw new Error('Login should not require a popup');}};
  const Url=class extends URL{};Url.createObjectURL=blob=>{const url=`blob:fixture-${++blobId}`;blobs.set(url,blob);return url;};Url.revokeObjectURL=u=>revoked.push(u);
  class Probe {
   constructor(){probes.push(this);}
@@ -25,7 +26,7 @@ function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:
  async function unlock(spoof=false){loginFlow={state:'fixture-state',verifier:'v'.repeat(43),created:Date.now(),hash:''};location.hash=new URLSearchParams({photoAuthCode:'c'.repeat(43),state:spoof?'wrong-state':'fixture-state'}).toString();await window.__completeReturn();}
 
  async function returnFrom(kind){location.hash=new URLSearchParams({[kind]:kind==='photoAuthCode'?'c'.repeat(43):'1',state:loginFlow.state}).toString();await window.__completeReturn();}
- return {window,events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,blobs,probes,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,historyUrls,header:elements[1]};
+ return {window,events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,blobs,probes,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,historyUrls,header:elements[1],entryStates};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 test('a rendering surface can reuse only the current authorized full-image Blob without another request',async()=>{
@@ -268,8 +269,21 @@ test('pending tab validation keeps the unlock control and password prompt hidden
  const tabStorage=new Map([['atlas-photo-access',JSON.stringify({token:'fixture-token',expiresAt})]]);
  const f=fixture(()=>new Promise(resolve=>complete=resolve),{startup:true,tabStorage});await settle();
  assert.equal(f.header.querySelector('[data-unlock]').hidden,true);assert.equal(f.dialog.open,false);
+ assert.deepEqual(f.entryStates,[],'A shared viewer must not paint locked UI while validation is pending');
  complete(Response.json({unlocked:true,expiresAt}));await f.ready;
  assert.equal(f.header.querySelector('[data-unlock]').hidden,true);assert.equal(f.dialog.open,false);assert.equal(f.auth.unlocked,true);
+ assert.deepEqual(f.entryStates,[{part:'access',unlocked:true}]);
+});
+test('automatic redirect keeps the initial page hidden until a definitive return',async()=>{
+ for(const result of ['photoAuthCode','photoAuthMissing','photoAuthCancel','photoAuthLogout']){
+  const f=fixture(undefined,{startup:true,hash:'#day=shared-day&photo=shared-photo&view=photo'});await f.ready;
+  assert.deepEqual(f.entryStates,[],'Preparing the cookie-check navigation is not access readiness');
+  await f.returnFrom(result);assert.deepEqual(f.entryStates,[{part:'access',unlocked:result==='photoAuthCode'}]);
+ }
+});
+test('Back to a pending initial document settles as guest without another redirect',async()=>{
+ const f=fixture(undefined,{startup:true});await f.ready;f.events.get('pageshow')({persisted:true});
+ assert.deepEqual(f.entryStates,[{part:'access',unlocked:false}]);assert.equal(f.navigations.length,1);assert.equal(f.tabStorage.get('atlas-photo-guest'),'1');
 });
 test('revoked or invalid cached access cannot display private photos',async()=>{
  for(const expiresAt of [Math.floor(Date.now()/1000)+3600,Math.floor(Date.now()/1000)-1,Math.floor(Date.now()/1000)+30*86400]){

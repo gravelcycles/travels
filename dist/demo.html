@@ -30,18 +30,15 @@
     <meta name="twitter:description" content="Three routes. Nine friends. One dinner by the lake." />
     <meta name="twitter:image" content="https://gravelcycles.github.io/travels/assets/brand/share.png?v=0003476fd5f9" />
     <meta name="twitter:image:alt" content="A white globe inside an orange-tipped map pin on a blue square." />
+    <style>html{background:#ecefeb}</style>
+    <script src="./assets/page-entry.js?v=6fe7a8bf4c2f"></script>
     <script src="./assets/input-mode.js?v=a29da7d71afc"></script>
-    <script>
-      // Keep the atlas out of the first paint until the entry view is chosen.
-      document.documentElement.classList.add('journey-starting');
-      window.addEventListener('load', () => document.documentElement.classList.remove('journey-starting'), { once: true });
-    </script>
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
     <link
       rel="stylesheet"
       href="./assets/vendor/maplibre-5.24.0/maplibre-gl.css?v=ab1e70d59ec4"
     />
-    <link rel="stylesheet" href="./assets/styles.css?v=ccb6114bc603" />
+    <link rel="stylesheet" href="./assets/styles.css?v=6202aa7906d0" />
     <link rel="stylesheet" href="./assets/view-sharing.css?v=f3f38d4806c3" />
     <link rel="stylesheet" href="./assets/mobile.css?v=f8a600c6916b" />
     <link rel="stylesheet" href="./assets/group-travel.css?v=832960325138" />
@@ -54,6 +51,7 @@
     <link rel="stylesheet" href="./assets/arrival-chapter.css?v=003102af2bb0" />
   </head>
   <body data-journey-scope="demo" data-journey-id="nine-to-como">
+    <section id="page-entry" role="status" aria-live="polite" hidden><p>Opening Journey Atlas…</p><button type="button" hidden>Try again</button></section>
     <header class="site-header">
       <a class="brand" href="./" aria-label="Back to Journey Atlas catalog">
         <img class="brand-mark" src="./assets/brand/icon.svg?v=96c74b5d7fc2" width="34" height="34" alt="" />
@@ -382,7 +380,7 @@
     <script src="./assets/arrival-chapter.js?v=3c4b764862f2"></script>
     <script src="./assets/opening-route.js?v=681ef64e7e80"></script>
     <script src="./assets/photo-service.js?v=7cf17f81b44e"></script>
-    <script src="./assets/photo-auth.js?v=8200ecbad51d"></script>
+    <script src="./assets/photo-auth.js?v=4024ca794a7a"></script>
     <script src="./assets/atlas-utils.js?v=77a4ad5f33f2"></script>
     <script src="./assets/map-style.js?v=e5948bb6f50c"></script>
     <script src="./assets/map-feedback.js?v=326752babbcc"></script>
@@ -401,6 +399,6 @@
     <script src="./assets/photo-comments.js?v=5ee8460db467"></script>
     <script src="./assets/trip-notifications.js?v=b98f2655dc95"></script>
     <script src="./assets/view-sharing.js?v=4f3545b0c136"></script>
-    <script src="./assets/app.js?v=4f6cfceef1a7"></script>
+    <script src="./assets/app.js?v=c406c34af6ab"></script>
   </body>
 </html>
