@@ -20,7 +20,7 @@ test('the requested undated extension keeps the photo itinerary and transport ge
  assert.equal(utils.eventForDate(j,'2026-11-01'),undefined);
  const manifest=JSON.parse(fs.readFileSync(new URL('../content/route-sources/backpacking-europe-heading-east.json',import.meta.url)));
  const legs=pending.flatMap(d=>d.segmentIds.map(id=>j.segments.find(s=>s.id===id)));
- assert.equal(legs.filter(s=>s.mode==='train').length,13);assert.equal(legs.filter(s=>s.mode==='bus').length,15);
+ assert.equal(legs.filter(s=>s.mode==='train').length,13);assert.equal(legs.filter(s=>s.mode==='bus').length,17);
  for(const s of legs){
   const coords=routes[s.id],p=manifest.segments[s.id].provenance;
   assert.equal(manifest.segments[s.id].strategy,'preserve');assert.ok(coords.length>20);
@@ -41,6 +41,17 @@ test('the requested undated extension keeps the photo itinerary and transport ge
  assert.deepEqual(forni.segmentIds.map(id=>j.segments.find(s=>s.id===id).mode),['train','bus','bus']);
  const placeName=id=>j.places.find(p=>p.id===id).name;
  assert.deepEqual(forni.segmentIds.map(id=>placeName(j.segments.find(s=>s.id===id).to)),['Udine','Tolmezzo','Forni di Sopra']);
+ const vienna=j.days[12],viennaLegs=vienna.segmentIds.map(id=>j.segments.find(s=>s.id===id));
+ assert.deepEqual(viennaLegs.map(s=>s.mode),['bus','bus','bus','bus','train']);
+ assert.deepEqual(viennaLegs.map(s=>placeName(s.to)),['Tolmezzo','Carnia station','Tarvisio autostazione','Tarvisio Boscoverde','Vienna']);
+ assert.ok(!viennaLegs.some(s=>placeName(s.from)==='Udine'||placeName(s.to)==='Udine'));
+ assert.ok(viennaLegs[1].distanceKm<15);
+ assert.ok(viennaLegs[2].distanceKm<60,'Line 200 follows the valley instead of motorway-tunnel detours');
+ assert.ok(viennaLegs.at(-1).distanceKm<410);
+ const reference=manifest.segments[viennaLegs.at(-1).id].provenance.ownerSuppliedReference;
+ assert.equal(reference.timetableDate,'2026-10-20');
+ assert.equal(reference.routeAlsoAvailableOn,'2026-10-29');
+ assert.equal(reference.october29TimesVerified,false);
  for(let i=1;i<j.days.length;i++){
   const day=j.days[i],incoming=day.segmentIds.map(id=>j.segments.find(s=>s.id===id));
   assert.equal(incoming[0].from,j.days[i-1].destinationId);

@@ -28,12 +28,47 @@ passes through Mestre; no specific train departure has been selected here.
 | Changed incoming stay | Reconstructed candidate corridor |
 | --- | --- |
 | Forni di Sopra | Train Venice–Mestre–Treviso–Pordenone–Udine; buses Udine–Tolmezzo and Tolmezzo–Ampezzo–Forni |
-| Vienna | Proposed buses back through Tolmezzo to Udine, then rail via Tarvisio, Villach, Klagenfurt, the Koralmbahn, Graz, Bruck and Semmering |
+| Vienna | Buses 110 Forni/Cella–Tolmezzo, 150 Tolmezzo–Carnia station, 200 Carnia–Tarvisio autostazione, 203 Tarvisio–Boscoverde; then rail to Vienna via Villach, Klagenfurt, the Koralmbahn, Graz, Bruck and Semmering |
 | Bratislava | Split the retained Kraków–Budapest railway at Bratislava hlavná stanica, retaining the Katowice–Bohumín–Břeclav corridor |
 | Budapest | Remaining retained Bratislava–Štúrovo–Vác railway |
 | Ljubljana | Rail from Zagreb via Dobova and Zidani Most |
 | Lake Bled | Retain Ljubljana–Kranj–Lesce-Bled rail plus local bus |
 | Split | Retain Bled–Lesce local bus; reverse reviewed rail through Ljubljana to Zagreb, then retain Zagreb–Split rail |
+
+### Vienna access correction — 20 October follow-up
+
+The owner supplied a route through Carnia and Tarvisio Boscoverde, replacing
+our proposed backtrack via Udine. They clarified the pasted times are for
+**20 October**, while the same route is available on **29 October**. Preserve
+that distinction: do not present today's timetable as independently verified
+for the 29th or turn Vienna's undated stay into a confirmed booking.
+
+Reference supplied by the owner: leave Forni at 12:25, walk about 700 m/9 min
+to Cella; bus 110 12:34–13:49 to Tolmezzo; bus 150 14:30–14:47 to Carnia station;
+bus 200 15:20–16:29 to Tarvisio autostazione; bus 203 17:13–17:18 to Boscoverde;
+allow about 6 min to reach the train; RJX 17:57–22:07 to Wien Hbf.
+“Gemona” and “Valico di Fusine” are destination signs, not extra transfers or
+stays. Stay aboard only until Carnia station and Boscoverde respectively.
+The reference is 9h42 overall, with 41/33/44-minute bus connections and 39 minutes
+from the last bus arrival to train departure (about 33 after the quoted walk).
+These are useful buffers, not a transfer guarantee.
+
+The lodging's exact starting point is not supplied; retain its walk duration
+in the source note without drawing a fabricated path from the city anchor.
+Cella is the actual outbound boarding stop in the reference; its exact stop
+pin is not resolved in the map data. The retained Forni city anchor illustrates
+the broad bus corridor, not the lodging or exact boarding point. Station access
+is likewise separate from the rail line. Existing inbound Venice–Udine–Forni travel, all
+stay IDs/dates, Poland/Slovenia order, photos and saved copy remain unchanged.
+
+[TPL FVG's current regional timetables](https://tplfvg.it/it/servizi/nuoviservizi/area_udinese_revisione_orari_sett26/)
+support the 110/150/200/203 corridors. The
+[Trenitalia Pontebba notice](https://www.trenitalia.com/it/informazioni/lavori-programmati/20260928-linee-wien-hbf-tarvisio-bv-udine-trieste-cle-venezia-sl.html)
+covers 28 September–9 November and warns of changed ÖBB train times on some
+dates. This confirms relevant works, not the exact cause or effect of the
+Google warning on the owner's particular train. Recheck the 29 October
+connection in the operator planner before travel. Geometry/publication checks
+for this follow-up are recorded in WIP.
 
 The return through Zagreb is a transfer within Split's incoming travel, not a
 second city stay. Onward modes/corridors are proposals; no tickets, departure
@@ -48,16 +83,26 @@ supports the Vienna/Graz–Venice Koralmbahn corridor.
 supports the Zagreb–Dobova–Ljubljana connection. Check travel dates for works,
 including the Ljubljana–Lesce corridor; exact services remain unsettled.
 
-The map contains 45 reconstructed legs (27 rail, 18 bus), 31 stays and about
-10,661 km including TBD travel. Seven new legs use full network responses from
+The corrected map contains 47 reconstructed legs (27 rail, 20 bus), 31 stays and
+about 10,578 km including TBD travel. Changed legs use full network responses from
 OpenRailRouting (OSM data 20 October, `all_tracks_1435`) and OSRM (`driving`).
 Bratislava's two legs and Lesce–Zagreb reuse reviewed coordinates by splitting
 or reversing them, without smoothing. Unchanged geometry is byte-for-byte
 identical as coordinate arrays. Remove the superseded Venice–Ljubljana,
 Lesce–Vienna and unsplit Kraków–Budapest legs from source/manifest/geometry.
+The later Vienna correction also removes Tolmezzo–Udine and Udine–Vienna.
 
 Raw responses and the adjustment scripts are ignored under
 `build/route-inputs/backpacking-europe-heading-east/adjustment-20261020/`.
+The later Carnia/Tarvisio inputs are in the adjacent `tarvisio-20261020/` folder.
+The three new bus legs follow reviewed road anchors, with Tolmezzo–Carnia about
+12.2 km, Carnia–Tarvisio about 51.7 km and the station shuttle about 2.8 km.
+Avoid snapping Camporosso to the parallel motorway tunnel: use its mapped road
+bus stop. Boscoverde–Vienna clips the already reviewed railway at the projection
+of the station node onto its rail segment (11 m offset), retaining all following
+vertices and measuring about 404.8 km. No station/lodging walk is fabricated.
+Failed Overpass exports were discarded; public Photon/OSM stop nodes supply
+Carnia and the Tarvisio endpoints, with provenance retained in the manifest.
 The committed manifest retains exact request URLs/coordinates, response hashes,
 source date, derived-source identities, measured distances and uncertainty.
 New endpoints are within 96 m of source anchors; rail-section joins are zero.

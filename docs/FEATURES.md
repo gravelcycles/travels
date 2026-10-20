@@ -154,7 +154,9 @@ See the [notification contract](PLACES_AND_COMMENTS.md#comment-notifications).
 Heading East’s [20 October route adjustment](HEADING_EAST.md#route-adjustment--20-october-2026)
 uses the existing city/TBD and multimodal contracts: twelve dated stays through
 Forni and nineteen undated stays, with Bratislava after Poland and Slovenia after
-Zagreb. Route order, dates and network provenance remain trip content.
+Zagreb. Route order, dates and network provenance remain trip content. The Vienna
+access correction uses buses via Carnia and Tarvisio Boscoverde, with source-date
+timetable provenance separate from confirmed stay dates.
 
 Heading East's second camera batch uses the existing incremental photo importer
 and private publisher. Its per-file location review list is in

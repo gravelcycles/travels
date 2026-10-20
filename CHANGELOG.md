@@ -1,5 +1,16 @@
 # Changelog
 
+## 20 October 2026 — Vienna via Carnia and Tarvisio
+
+- Replace the Forni–Vienna Udine backtrack with buses through Tolmezzo, Carnia
+  station and Tarvisio autostazione to Boscoverde, then rail to Vienna.
+- Reconstruct the local bus corridors and retain the reviewed Austrian railway
+  from Boscoverde. Preserve all stays, dates, photos and other route sections.
+- Record the owner's clarification: pasted times are for 20 October, while the
+  same route is reported available on 29 October. Keep that timetable provisional
+  for the 29th and retain the train's maintenance warning in the trip evidence.
+
+
 ## 20 October 2026 — first-zoom assessment
 
 - Record the owner's positive retest of the rendering release and the separate

@@ -1572,166 +1572,67 @@
         ],
         "largestRawGapKm": 0.376,
         "maxSectionJoinMeters": 0,
-        "notes": "Network reconstruction, not an exact booked service or operator GPS trace. Forni dates and inbound train/bus modes are owner-confirmed; onward dates and connections are TBD. Transit anchors do not assert passenger calls or exact terminal entrances. See docs/HEADING_EAST.md."
-      }
-    },
-    "backpacking-europe-heading-east-tolmezzo-udine": {
-      "strategy": "preserve",
-      "provenance": {
-        "provider": "OSRM / OpenStreetMap",
-        "retrievedAt": "2026-10-20",
-        "profile": "driving",
-        "requestUrls": [
-          "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.0194,46.4006;13.105,46.367;13.197,46.153;13.2422,46.0569?overview=full&geometries=geojson&steps=false"
-        ],
-        "requestCoordinates": [
-          [
-            13.0194,
-            46.4006
+        "notes": "Network reconstruction, not an exact booked service or operator GPS trace. Forni dates and inbound train/bus modes are owner-confirmed; onward dates and connections are TBD. Transit anchors do not assert passenger calls or exact terminal entrances. See docs/HEADING_EAST.md. Outbound boarding is Cella (83202), as supplied by the owner. The retained Forni city anchor illustrates the corridor rather than the exact bus boarding/lodging; the unknown lodging-to-Cella walk is not fabricated.",
+        "service": "110",
+        "ownerSuppliedReference": {
+          "source": "Owner-pasted Google route, clarified in chat on 20 October 2026",
+          "timetableDate": "2026-10-20",
+          "routeAlsoAvailableOn": "2026-10-29",
+          "availabilitySource": "owner",
+          "october29TimesVerified": false,
+          "walkToCella": "about 700 m / 9 min; exact lodging origin not supplied, not drawn",
+          "legs": [
+            {
+              "mode": "bus",
+              "service": "110",
+              "from": "Forni/Cella",
+              "to": "Tolmezzo",
+              "depart": "12:34",
+              "arrive": "13:49"
+            },
+            {
+              "mode": "bus",
+              "service": "150",
+              "from": "Tolmezzo",
+              "to": "Carnia station",
+              "depart": "14:30",
+              "arrive": "14:47",
+              "headsign": "Gemona"
+            },
+            {
+              "mode": "bus",
+              "service": "200",
+              "from": "Carnia station",
+              "to": "Tarvisio autostazione",
+              "depart": "15:20",
+              "arrive": "16:29"
+            },
+            {
+              "mode": "bus",
+              "service": "203",
+              "from": "Tarvisio autostazione",
+              "to": "Tarvisio Boscoverde",
+              "depart": "17:13",
+              "arrive": "17:18",
+              "headsign": "Valico di Fusine"
+            },
+            {
+              "mode": "walk",
+              "description": "about 6 min station access; exact platform path unverified, not drawn"
+            },
+            {
+              "mode": "train",
+              "service": "RJX",
+              "from": "Tarvisio Boscoverde",
+              "to": "Wien Hbf",
+              "depart": "17:57",
+              "arrive": "22:07",
+              "warning": "Maintenance: service modified"
+            }
           ],
-          [
-            13.105,
-            46.367
-          ],
-          [
-            13.197,
-            46.153
-          ],
-          [
-            13.2422,
-            46.0569
-          ]
-        ],
-        "rawSha256": [
-          {
-            "file": "adjustment-20261020/tolmezzo-udine-1.json",
-            "sha256": "e9f3b12bce988029466ff68190082d6fdc9b52725f02f975c1580867b4ec39d5"
-          }
-        ],
-        "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
-        "rawPointCount": 1840,
-        "outputPointCount": 435,
-        "rawDistanceKm": 61.706,
-        "distanceKm": 61.626,
-        "endpointOffsetsMeters": [
-          10,
-          96
-        ],
-        "waypointOffsetsMeters": [
-          10,
-          70,
-          287,
-          9
-        ],
-        "largestRawGapKm": 1.266,
-        "maxSectionJoinMeters": 0,
-        "notes": "Network reconstruction, not an exact booked service or operator GPS trace. Forni dates and inbound train/bus modes are owner-confirmed; onward dates and connections are TBD. Transit anchors do not assert passenger calls or exact terminal entrances. See docs/HEADING_EAST.md."
-      }
-    },
-    "backpacking-europe-heading-east-udine-vienna": {
-      "strategy": "preserve",
-      "provenance": {
-        "provider": "OpenRailRouting / OpenStreetMap",
-        "retrievedAt": "2026-10-20",
-        "profile": "all_tracks_1435",
-        "dataDate": "2026-10-20T04:00:00Z",
-        "requestUrls": [
-          "https://routing.openrailrouting.org/route?point=46.0569%2C13.2422&point=46.505%2C13.605&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=46.505%2C13.605&point=46.6228%2C13.8485&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=46.6228%2C13.8485&point=46.6157%2C14.3136&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=46.6157%2C14.3136&point=47.07279%2C15.41669&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=47.07279%2C15.41669&point=47.41396%2C15.27958&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=47.41396%2C15.27958&point=47.63871%2C15.83068&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=47.63871%2C15.83068&point=48.1851%2C16.378&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
-        ],
-        "requestCoordinates": [
-          [
-            13.2422,
-            46.0569
-          ],
-          [
-            13.605,
-            46.505
-          ],
-          [
-            13.8485,
-            46.6228
-          ],
-          [
-            14.3136,
-            46.6157
-          ],
-          [
-            15.41669,
-            47.07279
-          ],
-          [
-            15.27958,
-            47.41396
-          ],
-          [
-            15.83068,
-            47.63871
-          ],
-          [
-            16.378,
-            48.1851
-          ]
-        ],
-        "rawSha256": [
-          {
-            "file": "adjustment-20261020/udine-vienna-1.json",
-            "sha256": "8423920d2d69b878b68433e8d1fd515f1224480cf422f6139e45d33c93bba44b"
-          },
-          {
-            "file": "adjustment-20261020/udine-vienna-2.json",
-            "sha256": "9b8fd8b7c6428816b10c864ef7c289f37335cd0082ba22bc82c690b343e12a53"
-          },
-          {
-            "file": "adjustment-20261020/udine-vienna-3.json",
-            "sha256": "c14101f7fb39f375bb8814a9effa48b57f6b6ba1d68ff581acd925aa4ca41b05"
-          },
-          {
-            "file": "adjustment-20261020/udine-vienna-4.json",
-            "sha256": "6c219471188e2e15d97a4c629c9890143a6ee41b8a4d25980f4e45794e981a41"
-          },
-          {
-            "file": "adjustment-20261020/udine-vienna-5.json",
-            "sha256": "6e2bcd0bab967e457e68659939d3355c910d4f768e01e364c441e40db8720b0b"
-          },
-          {
-            "file": "adjustment-20261020/udine-vienna-6.json",
-            "sha256": "8fc2e1683f76c1a566238bc87a04e003413718b8050342b2d00829b1a9d43ae2"
-          },
-          {
-            "file": "adjustment-20261020/udine-vienna-7.json",
-            "sha256": "e0ff73c064f5d2106a4def290bdd9303bebabd56c28322b1f8d99e043bf4ca90"
-          }
-        ],
-        "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
-        "rawPointCount": 5774,
-        "outputPointCount": 1825,
-        "rawDistanceKm": 493.638,
-        "distanceKm": 493.532,
-        "endpointOffsetsMeters": [
-          0,
-          0
-        ],
-        "waypointOffsetsMeters": [
-          105,
-          3,
-          329,
-          4,
-          0,
-          0,
-          0,
-          0
-        ],
-        "largestRawGapKm": 4.98,
-        "maxSectionJoinMeters": 0,
-        "notes": "Network reconstruction, not an exact booked service or operator GPS trace. Forni dates and inbound train/bus modes are owner-confirmed; onward dates and connections are TBD. Transit anchors do not assert passenger calls or exact terminal entrances. See docs/HEADING_EAST.md."
+          "overall": "12:25–22:07 including initial walk; 9h42",
+          "note": "Reference for 20 October, not a verified 29 October timetable or booking."
+        }
       }
     },
     "backpacking-europe-heading-east-zagreb-ljubljana": {
@@ -1981,6 +1882,314 @@
         ],
         "maxSectionJoinMeters": 0,
         "notes": "Reuses the reviewed network geometry by splitting/reversing retained sections, without smoothing or an endpoint connector. Raw counts and distance here describe those source coordinates. Dates and services remain TBD. See docs/HEADING_EAST.md."
+      }
+    },
+    "backpacking-europe-heading-east-tolmezzo-carnia": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-20",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.0194,46.4006;13.1332735,46.3736896?overview=full&geometries=geojson&steps=false"
+        ],
+        "requestCoordinates": [
+          [
+            13.0194,
+            46.4006
+          ],
+          [
+            13.1332735,
+            46.3736896
+          ]
+        ],
+        "rawSha256": [
+          {
+            "file": "tarvisio-20261020/tolmezzo-carnia.json",
+            "sha256": "d966d73fab9fff3ab3c2da439e67432dfb8beab4e0c5b7e9191bdc7cdeefa816"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 305,
+        "outputPointCount": 88,
+        "rawDistanceKm": 12.25,
+        "distanceKm": 12.239,
+        "endpointOffsetsMeters": [
+          10,
+          21
+        ],
+        "maxSectionJoinMeters": 0,
+        "service": "150",
+        "notes": "Owner-selected valley bus corridor via Carnia and Tarvisio, replacing the Udine backtrack. Road reconstruction is not an operator GPS trace; local terminal streets remain representative. Accurate village-road anchors avoid motorway-tunnel snapping. Timetable remains date-dependent. See docs/HEADING_EAST.md.",
+        "endpointSources": [
+          {
+            "provider": "Photon / OpenStreetMap",
+            "queryFiles": [
+              "tarvisio-20261020/carnia-stop.json",
+              "tarvisio-20261020/tarvisio-geocode.json",
+              "tarvisio-20261020/boscoverde-stop.json"
+            ],
+            "osmBusStopNodeIds": [
+              4080502170,
+              6169553329,
+              4068417299
+            ]
+          }
+        ]
+      }
+    },
+    "backpacking-europe-heading-east-carnia-tarvisio": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-20",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.1332735,46.3736896;13.2211296,46.393493;13.3107057,46.4084579;13.30986,46.507835;13.4730912,46.5106859;13.5442996,46.5076868;13.5775826,46.5045077?overview=full&geometries=geojson&steps=false"
+        ],
+        "requestCoordinates": [
+          [
+            13.1332735,
+            46.3736896
+          ],
+          [
+            13.2211296,
+            46.393493
+          ],
+          [
+            13.3107057,
+            46.4084579
+          ],
+          [
+            13.30986,
+            46.507835
+          ],
+          [
+            13.4730912,
+            46.5106859
+          ],
+          [
+            13.5442996,
+            46.5076868
+          ],
+          [
+            13.5775826,
+            46.5045077
+          ]
+        ],
+        "rawSha256": [
+          {
+            "file": "tarvisio-20261020/carnia-tarvisio.json",
+            "sha256": "dcdc5fa9ceb1fb565bfaa96c2f312e403ec7858501ac2fa7a7956bae5efb64fc"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 1483,
+        "outputPointCount": 373,
+        "rawDistanceKm": 51.779,
+        "distanceKm": 51.744,
+        "endpointOffsetsMeters": [
+          21,
+          2
+        ],
+        "maxSectionJoinMeters": 0,
+        "service": "200",
+        "notes": "Owner-selected valley bus corridor via Carnia and Tarvisio, replacing the Udine backtrack. Road reconstruction is not an operator GPS trace; local terminal streets remain representative. Accurate village-road anchors avoid motorway-tunnel snapping. Timetable remains date-dependent. See docs/HEADING_EAST.md.",
+        "endpointSources": [
+          {
+            "provider": "Photon / OpenStreetMap",
+            "queryFiles": [
+              "tarvisio-20261020/carnia-stop.json",
+              "tarvisio-20261020/tarvisio-geocode.json",
+              "tarvisio-20261020/boscoverde-stop.json"
+            ],
+            "osmBusStopNodeIds": [
+              4080502170,
+              6169553329,
+              4068417299
+            ]
+          }
+        ]
+      }
+    },
+    "backpacking-europe-heading-east-tarvisio-boscoverde": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap",
+        "retrievedAt": "2026-10-20",
+        "profile": "driving",
+        "requestUrls": [
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.5775826,46.5045077;13.6077165,46.505959?overview=full&geometries=geojson&steps=false"
+        ],
+        "requestCoordinates": [
+          [
+            13.5775826,
+            46.5045077
+          ],
+          [
+            13.6077165,
+            46.505959
+          ]
+        ],
+        "rawSha256": [
+          {
+            "file": "tarvisio-20261020/tarvisio-boscoverde.json",
+            "sha256": "767cc6e48005ed353f08b1f5b0006ade3b7e3b76154eca70351add2a955f8339"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 152,
+        "outputPointCount": 39,
+        "rawDistanceKm": 2.786,
+        "distanceKm": 2.779,
+        "endpointOffsetsMeters": [
+          2,
+          73
+        ],
+        "maxSectionJoinMeters": 0,
+        "service": "203",
+        "notes": "Owner-selected valley bus corridor via Carnia and Tarvisio, replacing the Udine backtrack. Road reconstruction is not an operator GPS trace; local terminal streets remain representative. Accurate village-road anchors avoid motorway-tunnel snapping. Timetable remains date-dependent. See docs/HEADING_EAST.md.",
+        "endpointSources": [
+          {
+            "provider": "Photon / OpenStreetMap",
+            "queryFiles": [
+              "tarvisio-20261020/carnia-stop.json",
+              "tarvisio-20261020/tarvisio-geocode.json",
+              "tarvisio-20261020/boscoverde-stop.json"
+            ],
+            "osmBusStopNodeIds": [
+              4080502170,
+              6169553329,
+              4068417299
+            ]
+          }
+        ]
+      }
+    },
+    "backpacking-europe-heading-east-boscoverde-vienna": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "Reviewed OpenRailRouting / OpenStreetMap geometry",
+        "retrievedAt": "2026-10-20",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-20T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=46.505%2C13.605&point=46.6228%2C13.8485&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=46.6228%2C13.8485&point=46.6157%2C14.3136&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=46.6157%2C14.3136&point=47.07279%2C15.41669&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.07279%2C15.41669&point=47.41396%2C15.27958&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.41396%2C15.27958&point=47.63871%2C15.83068&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=47.63871%2C15.83068&point=48.1851%2C16.378&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "derivedFrom": {
+          "segmentId": "backpacking-europe-heading-east-udine-vienna",
+          "sourceCoordinatesSha256": "654e64a30d74d609217845c6c3fb19de8a4e6ed6ebe6d72c08ce48cfd0d18d03",
+          "rawSha256": [
+            {
+              "file": "adjustment-20261020/udine-vienna-1.json",
+              "sha256": "8423920d2d69b878b68433e8d1fd515f1224480cf422f6139e45d33c93bba44b"
+            },
+            {
+              "file": "adjustment-20261020/udine-vienna-2.json",
+              "sha256": "9b8fd8b7c6428816b10c864ef7c289f37335cd0082ba22bc82c690b343e12a53"
+            },
+            {
+              "file": "adjustment-20261020/udine-vienna-3.json",
+              "sha256": "c14101f7fb39f375bb8814a9effa48b57f6b6ba1d68ff581acd925aa4ca41b05"
+            },
+            {
+              "file": "adjustment-20261020/udine-vienna-4.json",
+              "sha256": "6c219471188e2e15d97a4c629c9890143a6ee41b8a4d25980f4e45794e981a41"
+            },
+            {
+              "file": "adjustment-20261020/udine-vienna-5.json",
+              "sha256": "6e2bcd0bab967e457e68659939d3355c910d4f768e01e364c441e40db8720b0b"
+            },
+            {
+              "file": "adjustment-20261020/udine-vienna-6.json",
+              "sha256": "8fc2e1683f76c1a566238bc87a04e003413718b8050342b2d00829b1a9d43ae2"
+            },
+            {
+              "file": "adjustment-20261020/udine-vienna-7.json",
+              "sha256": "e0ff73c064f5d2106a4def290bdd9303bebabd56c28322b1f8d99e043bf4ca90"
+            }
+          ]
+        },
+        "simplifyTolerance": 0,
+        "rawPointCount": 1602,
+        "outputPointCount": 1602,
+        "rawDistanceKm": 404.775,
+        "distanceKm": 404.775,
+        "endpointOffsetsMeters": [
+          0,
+          0
+        ],
+        "maxSectionJoinMeters": 0,
+        "notes": "Split the reviewed line at the perpendicular projection of the mapped Boscoverde station onto its adjacent rail segment (about 11 m from the station node), then retain the following source vertices. Remove the Udine–Tarvisio approach; do not shift the rest of the railway. Raw counts/distances describe the retained source coordinates. The bus endpoint and station track are separate (unverified six-minute access walk is not drawn). The owner reports a maintenance warning; the 29 October service/timing must be checked.",
+        "ownerSuppliedReference": {
+          "source": "Owner-pasted Google route, clarified in chat on 20 October 2026",
+          "timetableDate": "2026-10-20",
+          "routeAlsoAvailableOn": "2026-10-29",
+          "availabilitySource": "owner",
+          "october29TimesVerified": false,
+          "walkToCella": "about 700 m / 9 min; exact lodging origin not supplied, not drawn",
+          "legs": [
+            {
+              "mode": "bus",
+              "service": "110",
+              "from": "Forni/Cella",
+              "to": "Tolmezzo",
+              "depart": "12:34",
+              "arrive": "13:49"
+            },
+            {
+              "mode": "bus",
+              "service": "150",
+              "from": "Tolmezzo",
+              "to": "Carnia station",
+              "depart": "14:30",
+              "arrive": "14:47",
+              "headsign": "Gemona"
+            },
+            {
+              "mode": "bus",
+              "service": "200",
+              "from": "Carnia station",
+              "to": "Tarvisio autostazione",
+              "depart": "15:20",
+              "arrive": "16:29"
+            },
+            {
+              "mode": "bus",
+              "service": "203",
+              "from": "Tarvisio autostazione",
+              "to": "Tarvisio Boscoverde",
+              "depart": "17:13",
+              "arrive": "17:18",
+              "headsign": "Valico di Fusine"
+            },
+            {
+              "mode": "walk",
+              "description": "about 6 min station access; exact platform path unverified, not drawn"
+            },
+            {
+              "mode": "train",
+              "service": "RJX",
+              "from": "Tarvisio Boscoverde",
+              "to": "Wien Hbf",
+              "depart": "17:57",
+              "arrive": "22:07",
+              "warning": "Maintenance: service modified"
+            }
+          ],
+          "overall": "12:25–22:07 including initial walk; 9h42",
+          "note": "Reference for 20 October, not a verified 29 October timetable or booking."
+        },
+        "serviceNotice": "https://www.trenitalia.com/it/informazioni/lavori-programmati/20260928-linee-wien-hbf-tarvisio-bv-udine-trieste-cle-venezia-sl.html"
       }
     }
   }
