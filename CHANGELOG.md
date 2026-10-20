@@ -10,6 +10,14 @@
   verifier, and retain the prior public composition until verification.
   Cropped photos never load the incompatible original AVIF.
 
+## 20 October 2026 — first-zoom assessment
+
+- Record the owner's positive retest of the rendering release and the separate
+  first-zoom hitch once per photo. Confirm the prepared-to-native zoom boundary
+  in code, distinguish the rendering hypothesis from trace evidence, and retain
+  a bounded selected-photo preparation/memory experiment as follow-up. No zoom
+  runtime change is included in this assessment.
+
 ## 20 October 2026 — Heading East route adjustment
 
 - Confirm Forni di Sopra for 23–29 October, arriving by train via Udine and

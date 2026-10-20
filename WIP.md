@@ -5,7 +5,7 @@
 Authorized basic crop and arbitrary-degree rotation in the shared Studio photo
 editor, extending O11/O14. Implemented on `codex/photo-crop-rotation` in
 `/Users/dg/Documents/Codex/2026-10-20/what/work/travels`; integrated remote main
-through `97a87ad`, preserving concurrent route/rendering work. Includes recovered
+through `15d7b4f`, preserving concurrent route/rendering work. Includes recovered
 unfinished recipes, matching private derivatives, atomic conflict handling,
 original reset and verified publication with the last published crop retained.
 Share thumbnails resolve the same published composition. See
@@ -25,6 +25,24 @@ work are intact. A new server at `http://127.0.0.1:4195/studio/` serves the upda
 editor without refreshing existing tabs. Remaining: final remote integration,
 commit/push, Pages success and fresh public-asset verification. Studio stays local.
 
+## First zoom into each photo — 20 October 2026
+
+Owner retest after `8c16376`: the viewer “looks great,” with a lag on the first
+zoom into each photo and smooth subsequent zooms of that photo. Asked for cause
+and cost/benefit assessment. Code inspection confirms the fitted prepared canvas
+is replaced by the original native image when scale exceeds one; the loader
+already uses decode readiness. Cold first native paint/resampling/GPU preparation
+is consistent with the per-photo pattern, but no new phone trace identifies the
+browser-internal stage. Assessment only: no zoom runtime change is delivered.
+
+Recommended next experiment: prepare only the selected photo after motion
+settles, compare first and repeat zoom on the physical iPhone, and retain only
+a measured benefit without extra opening/swipe latency, quality loss or excessive
+memory. Hidden-image prepainting may be skipped by the browser; decode readiness
+alone is insufficient proof. Avoid prewarming every full-resolution neighbor.
+Preserve the deployed browsing improvement, access cleanup and native fallback.
+Current owner decisions, incident evidence and TODO carry this follow-up.
+
 ## Heading East route adjustment — 20 October 2026
 
 Current source and acceptance: [trip record](docs/HEADING_EAST.md#route-adjustment--20-october-2026).
@@ -40,8 +58,14 @@ Strict route build preserves all 45 legs with zero warnings. Calendar/photo
 assignment, the exact stop order, chained travel and visibility regressions are
 updated. All 894 integrated tests pass. Desktop and 390 px browser checks verify Forni’s
 dates/three legs, Bratislava after Kraków, Ljubljana after Zagreb, and twelve
-retained stays when TBD is hidden. Public deployment verification is pending;
-commit/push and verify Pages plus fresh public assets before closing.
+retained stays when TBD is hidden. Published as `20ff638` through successful
+[Pages run 39387171368](https://github.com/gravelcycles/travels/actions/runs/39387171368).
+Eleven fresh public files match the tested release byte-for-byte: catalog/trip
+HTML, scoped/legacy journey data, geometry, photo/override data and the integrated
+mobile runtime. A live browser load was automatically blocked when it attempted
+to load the private-photo Worker; no access was bypassed. Public bytes and the
+local desktop/phone viewer were verified independently. Implementation and public
+publication are complete; no private-photo observation is needed for this change.
 No protected-media upload or Worker deployment is needed: eligibility is unchanged.
 
 ## Residual fullscreen rendering lag — 20 October 2026
