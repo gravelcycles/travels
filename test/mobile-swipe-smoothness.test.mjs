@@ -167,7 +167,7 @@ test('promoted images remain the target of pinch, grid and close cleanup in port
     const selected=f.node('#modal-photo');
     f.dispatch('.photo-stage','pointerdown',{pointerId:1,clientX:100,clientY:200});
     f.dispatch('.photo-stage','pointerdown',{pointerId:2,clientX:200,clientY:200});
-    f.dispatch('.photo-stage','pointermove',{pointerId:2,clientX:300,clientY:200});
+    f.dispatch('.photo-stage','pointermove',{pointerId:2,clientX:300,clientY:200}); f.frame();
     assert.match(selected.style.transform,/scale\(2\)/);
     f.dispatch('.photo-stage','pointercancel',{pointerId:2});
     f.click('#mobile-photo-grid');
@@ -209,7 +209,7 @@ test('photo pinch takeover finishes the reveal without altering focal zoom',()=>
   assert.equal(image.dataset.photoReveal,'soft');
   f.dispatch('.photo-stage','pointerdown',{pointerId:2,clientX:200,clientY:300});
   assert.equal(image.dataset.photoReveal,'instant');
-  f.dispatch('.photo-stage','pointermove',{pointerId:2,clientX:300,clientY:300});
+  f.dispatch('.photo-stage','pointermove',{pointerId:2,clientX:300,clientY:300}); f.frame();
   assert.match(image.style.transform,/scale\(2\)/);
 });
 
@@ -279,7 +279,7 @@ test('touch before the first settle frame preserves the release position, and pi
   f.frame(); assert.match(image.style.transform,/^translate3d\(256px/,'The canceled settle frame cannot snap to zero');
   f.dispatch('.photo-stage','pointerdown',{pointerId:2,clientX:200,clientY:300});
   assert.match(image.style.transform,/^translate3d\(256px/,'Pinch takes ownership without a pointer-down jump');
-  f.dispatch('.photo-stage','pointermove',{pointerId:2,clientX:300,clientY:300});
+  f.dispatch('.photo-stage','pointermove',{pointerId:2,clientX:300,clientY:300}); f.frame();
   assert.match(image.style.transform,/scale\(2\)/);
   f.dispatch('.photo-stage','pointercancel',{pointerId:2}); f.flush();
   assert.equal(f.node('#mobile-photo-count').textContent,'2 of 4');
@@ -335,7 +335,7 @@ test('pinch takes over a queued swipe, and late neighbor readiness preserves foc
   const touch = (type, pointerId, clientX, clientY) => f.dispatch('.photo-stage',type,{pointerId,clientX,clientY,pointerType:'touch'});
   touch('pointerdown',1,180,353); touch('pointermove',1,150,353);
   touch('pointerdown',2,250,353);
-  touch('pointermove',1,120,363); touch('pointermove',2,320,363);
+  touch('pointermove',1,120,363); touch('pointermove',2,320,363); f.frame();
   const zoom = f.node('#modal-photo').style.transform;
   assert.match(zoom,/scale\(2\)/);
   f.cached.add('p1'); f.dispatch('atlas-photo-cache-ready'); f.frame();

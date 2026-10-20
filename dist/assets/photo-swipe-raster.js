@@ -29,10 +29,8 @@
           const context = surface.getContext('2d');
           if (!context) throw Error('Raster context unavailable');
           context.imageSmoothingEnabled = true; context.imageSmoothingQuality = 'high';
-          const fit = Math.min(job.width / source.width, job.height / source.height);
-          const width = source.width * fit, height = source.height * fit;
           step = 'draw';
-          context.drawImage(source, (job.width - width) / 2, (job.height - height) / 2, width, height);
+          context.drawImage(source, 0, 0, job.width, job.height);
           source.close(); source = null;
           step = 'transfer';
           const bitmap = surface.transferToImageBitmap();
@@ -58,6 +56,7 @@
     stage.dataset.swipeRenderer = 'prepared';
     function discard(slot) {
       env.clearTimeout(slot.timer); slot.timer = null;
+      slot.bitmap?.close(); slot.bitmap = null;
       slot.id = ++serial; slot.key = ''; slot.src = ''; slot.ready = false;
       slot.canvas.width = slot.canvas.height = 0;
       slot.canvas.hidden = true;
@@ -66,10 +65,23 @@
       delete slot.canvas.dataset.photoRasterPreview;
       delete slot.image.dataset.photoRasterVisible;
     }
+    function present(slot) {
+      const bitmap = slot.bitmap;
+      slot.bitmap = null;
+      try {
+        slot.canvas.width = slot.width; slot.canvas.height = slot.height;
+        slot.context.transferFromImageBitmap(bitmap);
+        slot.ready = true;
+      } catch { bitmap.close(); slot.failed = true; slot.ready = false; }
+    }
     function sync() {
       let ready = 0;
+      const canUpdate = active && enabled() && !moving();
       for (const slot of slots.values()) {
         const {image, canvas} = slot;
+        // Keep bitmap adoption and its first paint out of horizontal motion.
+        // The existing pixels/embedded preview remain until settling finishes.
+        if (slot.bitmap && canUpdate) present(slot);
         const revealDone = reduced.matches || image.id !== 'modal-photo' || image.dataset.photoReveal === 'instant' || slot.revealedSrc === image.src;
         const pendingPreview = Boolean(!slot.ready && !slot.failed && slot.neighbor && slot.preview);
         // The first selected photo stays native and visible while work proceeds.
@@ -117,11 +129,7 @@
           if (!slot || data.id !== slot.id || !enabled()) { data.bitmap?.close(); return; }
           env.clearTimeout(slot.timer); slot.timer = null;
           if (data.error) { stage.dataset.swipeRasterError = data.error; slot.failed = true; slot.ready = false; sync(); return; }
-          try {
-            slot.canvas.width = width; slot.canvas.height = height;
-            slot.context.transferFromImageBitmap(data.bitmap);
-            slot.ready = true;
-          } catch { data.bitmap?.close(); slot.failed = true; slot.ready = false; }
+          slot.bitmap?.close(); slot.bitmap = data.bitmap;
           sync();
         };
         worker.onerror = () => { stopWorker(); for (const slot of slots.values()) discard(slot); sync(); };
@@ -164,7 +172,13 @@
       const blur = image.dataset.privateBlur || preview(image);
       slot.preview = /^data:image\//.test(blur) ? blur : '';
       const fit = Math.min(width / image.naturalWidth, height / image.naturalHeight);
-      slot.previewSize = `${image.naturalWidth * fit / width * 100}% ${image.naturalHeight * fit / height * 100}%`;
+      // Allocate only the photo's fitted pixels. Letterboxing belongs to the
+      // frame, not to three mostly transparent, full-viewport GPU surfaces.
+      const fittedWidth = image.naturalWidth * fit, fittedHeight = image.naturalHeight * fit;
+      slot.width = Math.ceil(fittedWidth); slot.height = Math.ceil(fittedHeight);
+      slot.canvas.style.width = `${fittedWidth / (env.devicePixelRatio || 1)}px`;
+      slot.canvas.style.height = `${fittedHeight / (env.devicePixelRatio || 1)}px`;
+      slot.previewSize = '100% 100%';
       const blob = env.JOURNEY_ATLAS_AUTH?.imageBlob?.(image);
       // Protected sources are reused from their live authorized binding. No
       // Worker token, HTTP credential, cache lease or extra private fetch exists.
@@ -172,7 +186,7 @@
       const target = ensureWorker();
       try {
         if (!target) throw Error('Preparation unavailable');
-        target.postMessage({slot:slot.slot, id:slot.id, src:blob ? undefined : src, blob, width, height});
+        target.postMessage({slot:slot.slot, id:slot.id, src:blob ? undefined : src, blob, width:slot.width, height:slot.height});
         const id = slot.id;
         slot.timer = env.setTimeout(() => {
           if (id !== slot.id) return;

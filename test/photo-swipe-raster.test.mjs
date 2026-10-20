@@ -41,14 +41,14 @@ test('unavailable APIs retain native images and allocate no rendering resources'
 test('three physical-resolution surfaces reuse full authorized bytes and preserve native sources',()=>{
   const f=fixture();f.images.forEach(f.api.register);f.api.register({...f.images[0]});assert.equal(f.canvases.length,3);
   f.api.resize(390,666);assert.equal(f.workers.length,1);assert.equal(f.workers[0].jobs.length,3);
-  const job=f.workers[0].jobs.find(job=>job.slot===0);assert.equal(job.width,1170);assert.equal(job.height,1998);
+  const job=f.workers[0].jobs.find(job=>job.slot===0);assert.equal(job.width,1170);assert.equal(job.height,878);
   assert.equal(job.blob.encoded,'full authorized AVIF');assert.equal(job.src,undefined,'No protected network request is delegated');
   f.api.active(true);assert.ok(f.canvases.every(c=>c.hidden));
   f.complete(f.workers[0],job);
   assert.equal(f.images[0].dataset.photoRasterVisible,'true');assert.equal(f.canvases[0].hidden,false);
   assert.equal(f.canvases[0].getAttribute('aria-label'),'Selected photo');assert.equal(f.canvases[0].getAttribute('aria-hidden'),'false');
   assert.equal(f.canvases[1].getAttribute('aria-hidden'),'true');
-  assert.equal(f.canvases[0].width,1170);assert.equal(f.canvases[0].height,1998);
+  assert.equal(f.canvases[0].width,1170);assert.equal(f.canvases[0].height,878);
   f.api.active(false);assert.equal(f.images[0].dataset.photoRasterVisible,undefined);assert.equal(f.canvases[0].getAttribute('aria-hidden'),'true');
   f.api.active(true);f.api.prepareAll();assert.equal(f.workers[0].jobs.length,3);
   assert.equal(f.images[0].src,'blob:https://example.test/p0','Full original stays attached for zoom and ordinary loader ownership');
@@ -80,10 +80,10 @@ test('lock, unavailable authorization and failed preparation fall back without r
 test('orientation changes discard old-sized pixels; large viewports retain native detail',()=>{
   const f=fixture();f.images.forEach(f.api.register);f.api.resize(390,666);const old=f.workers[0];
   f.api.resize(844,390);assert.equal(old.terminated,true);assert.equal(f.complete(old,old.jobs[0]).closed,true);
-  assert.equal(f.workers[1].jobs[0].width,2532);assert.equal(f.workers[1].jobs[0].height,1170);
+  assert.equal(f.workers[1].jobs[0].width,1560);assert.equal(f.workers[1].jobs[0].height,1170);
   f.api.resize(900,1600);assert.ok(f.canvases.every(c=>c.hidden&&c.width===0));assert.equal(f.workers.length,2,'No downscaled substitute is created for an oversized physical surface');
 });
-test('worker preparation uses contain fitting and releases the full decode after drawing',async()=>{
+test('worker preparation draws only fitted physical pixels and releases the full decode',async()=>{
   let script='';const f=fixture();f.env.Blob=class{constructor(parts){script=parts.join('');}};
   f.api.register(f.images[0]);f.api.resize(390,666);
   const posted=[],drawn=[],sources=[],surfaces=[],self={postMessage(value,transfers){posted.push({value,transfers});}};
@@ -96,8 +96,8 @@ test('worker preparation uses contain fitting and releases the full decode after
     async createImageBitmap(blob){assert.equal(blob.encoded,'full authorized AVIF');const image={width:4032,height:3024,close(){this.closed=true;}};sources.push(image);return image;}});
   self.onmessage({data:f.workers[0].jobs[0]});await new Promise(resolve=>setImmediate(resolve));
   assert.equal(posted.length,1);assert.equal(sources[0].closed,true);assert.equal(surfaces[0].width,0);
-  assert.equal(drawn[0][1],0);assert.equal(drawn[0][3],1170);assert.ok(Math.abs(drawn[0][4]-877.5)<1e-9);
-  assert.ok(Math.abs(drawn[0][2]-(1998-877.5)/2)<1e-9);assert.equal(posted[0].value.bitmap.width,1170);assert.equal(posted[0].value.bitmap.height,1998);
+  assert.equal(drawn[0][1],0);assert.equal(drawn[0][3],1170);assert.equal(drawn[0][4],878);
+  assert.equal(drawn[0][2],0);assert.equal(posted[0].value.bitmap.width,1170);assert.equal(posted[0].value.bitmap.height,878);
 });
 test('failed preparation restores the original and never reports a ready surface',()=>{
   const f=fixture();f.api.register(f.images[0]);f.api.resize(390,666);f.api.active(true);
@@ -116,7 +116,8 @@ test('immediate startup keeps the first photo visible while a loaded neighbor re
   assert.equal(f.images[1].dataset.photoRasterVisible,'true','Native full neighbor cannot trigger expensive first paint during preparation');
   assert.equal(f.canvases[1].dataset.photoRasterPreview,'true');assert.equal(f.canvases[1].width,0,'No full bitmap allocated for the embedded preview');
   assert.equal(parseFloat(f.canvases[1].style.backgroundSize),100);
-  assert.ok(Math.abs(parseFloat(f.canvases[1].style.backgroundSize.split(' ')[1])-43.91891891891892)<1e-9);
+  assert.equal(f.canvases[1].style.backgroundSize,'100% 100%');
+  assert.equal(f.canvases[1].style.width,'390px');assert.ok(Math.abs(parseFloat(f.canvases[1].style.height)-292.5)<1e-9);
   const transform=f.canvases[1].style.transform;
   f.images[0].id='';f.images[1].id='modal-photo';f.api.sync();
   assert.equal(f.canvases[1].hidden,false,'An immediate selection preserves the pending preview on its same element');
@@ -163,4 +164,46 @@ test('a stalled preparation recovers native display without delaying the first p
   assert.ok(f.images.every(image=>!image.dataset.photoRasterVisible));
   f.images[1].src='blob:https://example.test/another';f.api.prepareAll();assert.equal(f.workers.length,1);
   assert.equal(f.complete(worker,worker.jobs[0]).closed,true);
+});
+
+test('landscape and portrait surfaces retain physical display detail without letterbox storage',()=>{
+  const f=fixture();f.images[1].naturalWidth=3024;f.images[1].naturalHeight=4032;
+  f.images.forEach(f.api.register);f.api.resize(390,666);f.api.active(true);
+  for(const job of f.workers[0].jobs)f.complete(f.workers[0],job);
+  for(let i=0;i<3;i++){
+    const image=f.images[i],canvas=f.canvases[i];
+    const fit=Math.min(390/image.naturalWidth,666/image.naturalHeight);
+    assert.ok(Math.abs(parseFloat(canvas.style.width)-image.naturalWidth*fit)<1e-9);
+    assert.ok(Math.abs(parseFloat(canvas.style.height)-image.naturalHeight*fit)<1e-9);
+    assert.ok(canvas.width>=image.naturalWidth*fit*3-1e-9 && canvas.width<image.naturalWidth*fit*3+1);
+    assert.ok(canvas.height>=image.naturalHeight*fit*3-1e-9 && canvas.height<image.naturalHeight*fit*3+1);
+    assert.ok(canvas.width*canvas.height<1170*1998,'No empty viewport pixels are stored');
+  }
+});
+
+test('completed neighbor bitmaps wait through drag and settling, then replace previews on the same surface',()=>{
+  let moving=true;const f=fixture({moving:()=>moving});
+  f.images[1].dataset.privateBlur='data:image/svg+xml,preview';
+  f.api.register(f.images[1]);f.api.resize(390,666);f.api.active(true);
+  const canvas=f.canvases[0],bitmap=f.complete();
+  assert.equal(f.timers.size,0,'Decode completed; waiting for motion is not a worker stall');
+  assert.equal(canvas.bitmap,undefined);assert.equal(canvas.width,0);
+  assert.equal(canvas.dataset.photoRasterPreview,'true');assert.equal(bitmap.closed,undefined);
+  f.api.sync();assert.equal(canvas.width,0,'Repeated drag/settling updates cannot upload new pixels');
+  moving=false;f.api.sync();
+  assert.equal(canvas.bitmap,bitmap);assert.equal(canvas.width,1170);
+  assert.equal(canvas.dataset.photoRasterPreview,undefined);assert.equal(canvas.hidden,false);
+});
+
+test('lock, source replacement and resize close unpresented bitmaps before they can expose stale pixels',()=>{
+  for(const action of ['lock','source','resize']){
+    let moving=true;const f=fixture({moving:()=>moving});
+    f.api.register(f.images[1]);f.api.resize(390,666);f.api.active(true);
+    const bitmap=f.complete();
+    if(action==='lock')f.events.get('atlas-photos-locked')();
+    else if(action==='source'){f.images[1].src='blob:https://example.test/new';f.api.prepareAll();}
+    else f.api.resize(844,390);
+    assert.equal(bitmap.closed,true,action);
+    moving=false;f.api.sync();assert.equal(f.canvases[0].bitmap,undefined,action);
+  }
 });

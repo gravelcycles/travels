@@ -16,6 +16,55 @@ fresh-draft UI checks, full tests/build, integrate current main, deploy/verify
 Pages, then apply the scoped patch to the user's local Studio without losing
 its pending edits or refreshing existing tabs blindly.
 
+## Heading East route adjustment — 20 October 2026
+
+Current source and acceptance: [trip record](docs/HEADING_EAST.md#route-adjustment--20-october-2026).
+Forni is locked in for 23–29 October via Udine/Tolmezzo; Slovenia now follows
+Zagreb; Bratislava follows Kraków. The owner's follow-up keeps the existing
+Wrocław → Warsaw → Kraków order. All later dates remain TBD. Work is isolated
+from the original checkout's ongoing photo changes; remote `8c16376` is now
+integrated, retaining its current rendering improvements and guidance.
+
+Source, network geometry, provenance and generated public output are updated.
+Seven new network legs and three derived legs preserve the unaffected arrays.
+Strict route build preserves all 45 legs with zero warnings. Calendar/photo
+assignment, the exact stop order, chained travel and visibility regressions are
+updated. All 894 integrated tests pass. Desktop and 390 px browser checks verify Forni’s
+dates/three legs, Bratislava after Kraków, Ljubljana after Zagreb, and twelve
+retained stays when TBD is hidden. Public deployment verification is pending;
+commit/push and verify Pages plus fresh public assets before closing.
+No protected-media upload or Worker deployment is needed: eligibility is unchanged.
+
+## Residual fullscreen rendering lag — 20 October 2026
+
+The owner still notices lag versus native Photos in drag, release, rapid browsing
+and zoom, especially mid-swipe. Implemented fitted physical-pixel canvas storage,
+bitmap adoption outside horizontal motion, and frame-paced pinch/pan with final
+sample flushing and queued-input cleanup. Preserve immediate first native display,
+full-source zoom, focal bounds, existing surfaces/history and private fallback.
+No new phone trace exists; this reduces demonstrated work without claiming the
+remaining physical issue resolved or native parity.
+
+Matched Heading East loopback checks at 390×844/DPR1 reduce retained bitmap pixels
+987,480 → 609,960 (38.2%), controlled mid-drag bitmap adoptions 3 → 0, pinch
+transforms 144 → 12 and pan transforms 109 → 10, with identical final transforms.
+All six new regressions fail on the previous runtime. All 894 tests pass and
+repeated builds preserve all 79 public files byte-for-byte. Browser checks pass
+reference 22/22, Alpine demo 21/21 and independent populated draft 21/21, including
+fitted geometry after Location, native zoom, grids/history, map return and pixel
+cleanup. The actual first Heading East photo passes 5/5 startup checks at both
+50 ms and 1,500 ms worker-result delays, displaying native pixels before any
+prepared surface is ready. No captured script errors. Current owner decisions,
+photo workflow, framework/features, TODO and incident evidence are updated.
+Published as `8c16376` through successful
+[Pages run 39386812996](https://github.com/gravelcycles/travels/actions/runs/39386812996).
+All five fresh public pages and 44 referenced scripts/styles match the tested
+build byte-for-byte. Live ordinary-URL sample checks confirm fitted 390×292.5 px
+geometry, three ready surfaces, forward/reverse browsing, full native zoom,
+desktop pixel release, mobile reuse of three slots and final close cleanup,
+with no captured script errors. Implementation and publication are complete.
+Retain a fresh physical-phone comparison/trace as follow-up; no new phone
+frame-time measurement or complete residual-lag resolution is claimed.
 
 ## Prepared mobile photos by default — 17 October 2026
 

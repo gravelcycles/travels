@@ -51,7 +51,7 @@ the three slots once at phone width, including a desktop-to-phone resize of an
 open viewer. Unsupported APIs and preparation failures retain native display.
 
 A single worker serially decodes the already authorized full-photo Blob,
-contains it within a physical-pixel viewport surface, and transfers the bitmap
+fits it at physical-pixel resolution, and transfers the bitmap
 to one of three canvases that follow the same image elements through rotation.
 Pending work coalesces per slot. Full sources, network priorities and the
 three-image lifecycle stay owned by the normal loader. Original images remain
@@ -60,7 +60,9 @@ Public sample sources are restricted to the same origin. Protected preparation
 requires the current authorized full-image binding; the worker gets its existing
 Blob, never a token, new lease or private network fetch.
 
-Each surface is viewport size × devicePixelRatio, capped at four million pixels;
+Since the 20 October follow-up each surface stores only the fitted photograph's
+physical pixels; CSS centers it within the original frame. The viewport ×
+devicePixelRatio guard remains capped at four million pixels;
 larger viewports retain native images instead of reducing physical display
 detail. Three RGBA surfaces use at most 48 MB of pixel storage, **excluding**
 browser/GPU copies, the native image elements and one full worker decode. This
@@ -147,3 +149,69 @@ manipulation, retain a bounded working set and animate transforms. See the
 The specific worker/canvas path is justified here by the measured paint stalls
 and owner comparison; its memory, lifecycle and fallback costs remain part of
 the acceptance check, rather than a universal requirement for every gallery.
+
+## Remaining lag — 20 October 2026
+
+The owner still notices lag versus the native photo library, including movement
+under the finger, release, rapid browsing and pinch/zoom. This is new qualitative
+evidence that the default rollout did not completely resolve the issue. There
+is no new physical-device timing trace. Do not reuse the pre-renderer trace to
+claim the remaining stalls have the same cause.
+
+Three bounded changes reduce avoidable work:
+
+- Allocate the fitted photo's physical pixels rather than transparent viewport
+  letterboxing. CSS retains exactly the same fitted bounds and center. Full
+  native sources remain attached for zoom; there is no lower-resolution fetch
+  or derivative change.
+- Hold completed bitmaps until horizontal dragging and settling end, avoiding
+  canvas resize/adoption during motion. Existing pixels or embedded previews
+  remain. Each slot owns at most one displayed or unpresented surface; lock,
+  source replacement, resize, grid and close release unpresented bitmaps too.
+- Coalesce pinch and zoomed pan to one render per animation frame. Pointer
+  callbacks record current positions; release flushes the last sample before
+  removing a finger. Reset cancels queued work. Reuse geometry reads inside a
+  zoom update and avoid redundant `data-zoomed` writes.
+
+Matched loopback comparison: deployed `48f73fe` runtime versus these changes,
+Heading East Berlin photo `img-3456`, identical local full derivatives and
+normal loaders, 390×844/DPR1, no CPU/network throttle, no-store fixture responses.
+Worker results are deliberately delayed 400 ms to exercise arrival during a
+75-frame horizontal drag. Pinch then sends 144 samples in 12 frame batches;
+zoomed pan sends 144 samples in 12 batches (its direction threshold excludes
+the initial samples). This stresses coalescing; it is not an iPhone event-rate
+measurement. Both runs report no script errors.
+
+| Deterministic browser work | Before | After |
+| --- | ---: | ---: |
+| Total retained bitmap pixels, three portrait photos | 987,480 | 609,960 |
+| Bitmap adoptions during the controlled drag | 3 | 0 |
+| Pinch transform updates | 144 | 12 |
+| Zoomed-pan transform updates | 109 | 10 |
+| Final pinch transform | translate(3.6, 25.2), scale(1.72) | identical |
+| Final pan transform | translate(39.6, 25.2), scale(1.72) | identical |
+
+This is 38.2% less pixel storage for this fixture, excluding native decodes,
+browser/GPU copies and worker source decoding. It is not a measured FPS or
+touch-to-display improvement. Landscape savings vary with aspect ratio. At
+DPR3 the unit fixture preserves at least every physical fitted pixel for both
+orientations without allocating empty viewport pixels. First native display
+remains independent of worker readiness; individual open-to-ready samples vary
+and are not a statistical latency comparison.
+
+All six new regressions fail against the previous runtime and pass after the
+changes. Existing focal/gesture tests now observe the animation-frame boundary.
+WIP records full-suite, shared-flow, startup and publication verification.
+
+Native and web share the display's refresh ceiling, but reaching it consistently
+depends on input scheduling, image preparation and rendering work. At 60 Hz a
+frame spans about 16.7 ms; this is not an acceptable continuous-gesture latency
+target by itself. Google's [rendering guide](https://web.dev/articles/rendering-performance)
+explains the frame budget and compositor path. Apple's
+[image preparation guidance](https://developer.apple.com/documentation/uikit/uiimage/preparingfordisplay())
+also addresses decode-induced hitches, with serial preparation away from the
+main thread. Chrome's [current iOS web layer](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/ios/web/README.md)
+uses WebKit/WKWebView rather than desktop Chrome's Blink. These sources do not
+establish a universal native-versus-web percentage or certify native Photos
+parity for this viewer. A fresh phone comparison/trace remains the next evidence
+needed if lag persists after this release.

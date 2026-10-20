@@ -98,6 +98,18 @@ startup retains native rendering with no mobile canvas/worker allocation.
 The rollout request does not itself provide new numeric phone measurements.
 See WIP for delivery status.
 
+On 20 October the owner reports remaining lag versus the native photo library,
+including movement under the finger, release, rapid browsing and pinch/zoom.
+Keep optimizing the default viewer without slowing the first photo or reducing
+photo detail. Allocate fitted physical photo pixels rather than empty letterbox
+storage, keep completed bitmap adoption outside horizontal drag/settling, and
+coalesce pinch/pan rendering at display cadence while flushing the last sample
+on release. Preserve focal position, interruption, cleanup and native fallback.
+Report matched work/storage reductions separately from phone frame times;
+native-versus-web guidance supplies no universal percentage speed difference.
+The owner's earlier improvement remains confirmed, but residual smoothness is
+not resolved merely by passing browser checks. [Evidence](PERFORMANCE_IPHONE_2026-10-17.md#remaining-lag--20-october-2026).
+
 ## Standing decisions and acceptance checks
 
 | ID | Current decision | Check when touching this area |

@@ -10,14 +10,14 @@
   "title": "Backpacking Europe: Heading East",
   "subtitle": "After a summer in Switzerland, we are heading north and east and then south through a lot of not-Western Europe. After leaving our bags at Kawan's (in Düsseldorf) and bikes at Qen & Jonas's (in Luzern), we are down to 2 backpacks and 2 rail passes.",
   "kicker": "BACKPACKING EUROPE · AUTUMN 2026",
-  "dates": "1 Sep – 23 Oct 2026 · onward dates TBD",
+  "dates": "1 Sep – 29 Oct 2026 · onward dates TBD",
   "startDate": "2026-09-01",
-  "endDate": "2026-10-23",
+  "endDate": "2026-10-29",
   "timeZone": "Europe/Berlin",
   "photoImport": {
     "sourceDirectory": "photos/euro-eastbound"
   },
-  "note": "City stops span arrival to departure, with the itinerary supplied through Venice on 23 October. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed. The onward itinerary from Ljubljana to Athens is planned, not confirmed; dates, bookings and transfers remain TBD. Dotted routes mark these proposed legs. Rail is preferred where available; bus lines follow reconstructed road corridors, not operator GPS tracks. Lake Bled uses Lesce-Bled and a local bus; the onward railway via Ljubljana and Maribor avoids the autumn Jesenice closure. Recheck travel dates for replacement buses. Skopje, Tirana, Novi Pazar and Sarandë are transfer points, not extra stays.",
+  "note": "City stops span arrival to departure, with confirmed dates through Forni di Sopra on 29 October. Venice → Udine is by train via Mestre, followed by buses via Tolmezzo to Forni. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed. The onward itinerary from Vienna to Athens is planned, not confirmed; dates, bookings and transfers remain TBD. Dotted routes mark these proposed legs. Rail is preferred where available; bus lines follow reconstructed road corridors, not operator GPS tracks. Poland remains Wrocław → Warsaw → Kraków, followed by Bratislava. Slovenia follows Zagreb: Ljubljana → Lake Bled, then Split and Dubrovnik. Lake Bled uses Lesce-Bled and a local bus; the return rail corridor toward Split runs via Ljubljana and Zagreb. Recheck travel dates for replacement buses. Udine, Tolmezzo, Lesce-Bled, Skopje, Tirana, Novi Pazar and Sarandë are transfer points, not extra stays.",
   "cover": "",
   "places": [
     {
@@ -313,6 +313,34 @@
       "lat": 37.989,
       "country": "Greece",
       "cityBoundary": {"type":"Polygon","coordinates":[[[23.6870046,37.9784388],[23.6910948,37.9778319],[23.6963029,37.97572],[23.7043429,37.97529],[23.7042598,37.9741872],[23.7037746,37.9737878],[23.7056803,37.9721976],[23.702276,37.9699523],[23.699466,37.9688561],[23.7081152,37.9634457],[23.7146495,37.9639398],[23.7156773,37.9636642],[23.716887,37.9627463],[23.7179593,37.9613108],[23.7202631,37.9594807],[23.714865,37.9552878],[23.7229404,37.9488434],[23.7246534,37.9500217],[23.7265596,37.9526362],[23.7275068,37.9525375],[23.7292651,37.95408],[23.7304991,37.9542222],[23.7335298,37.9557918],[23.7340053,37.9553343],[23.7358961,37.9557018],[23.7357522,37.9560305],[23.7398461,37.9563677],[23.7401185,37.9557158],[23.7436995,37.9564205],[23.7453181,37.9558702],[23.7457205,37.957018],[23.7469257,37.9567016],[23.7477155,37.9574213],[23.7445658,37.9609276],[23.7510135,37.9647444],[23.7511249,37.964368],[23.7529411,37.9642628],[23.7557821,37.9658613],[23.7500133,37.9721965],[23.7502421,37.9735671],[23.7514629,37.9734688],[23.7523511,37.9724924],[23.7534965,37.9729729],[23.7541359,37.9723028],[23.7598475,37.9715907],[23.7631797,37.9700414],[23.7645538,37.9687671],[23.766833,37.9718751],[23.76376,37.9734165],[23.7631976,37.9729196],[23.7620907,37.9734476],[23.7625251,37.9740358],[23.7614964,37.9745374],[23.759851,37.9750836],[23.7596168,37.9746481],[23.7579968,37.9751223],[23.7582631,37.9756776],[23.7575665,37.9759226],[23.7589254,37.9772918],[23.7576127,37.9778825],[23.7566796,37.9792881],[23.7587316,37.9801723],[23.7613402,37.9801893],[23.7708488,37.9846896],[23.7715298,37.9841444],[23.7764748,37.9838769],[23.7773384,37.9828917],[23.7782011,37.9829094],[23.7800797,37.9821157],[23.7829416,37.983898],[23.7820862,37.9850896],[23.7865474,37.9871112],[23.7858845,37.9877499],[23.7851286,37.9894775],[23.7855821,37.9904753],[23.7877271,37.9910715],[23.7904386,37.9913093],[23.7902517,37.9926518],[23.7837779,37.9986111],[23.7872491,38.0009259],[23.7823471,38.0033934],[23.7783832,37.9982223],[23.7749106,38.0006714],[23.7714221,37.9999607],[23.7692828,37.998108],[23.7625031,38.0037685],[23.7613543,38.0044237],[23.7547242,38.0059312],[23.7533028,38.0076997],[23.7528811,38.0075375],[23.7529329,38.0078453],[23.7518154,38.0087316],[23.7515912,38.0092972],[23.7505683,38.0088126],[23.7502971,38.0091682],[23.7497621,38.0088285],[23.7495329,38.0091359],[23.7466377,38.0079648],[23.7432157,38.0081947],[23.7434124,38.0131165],[23.7450232,38.0148854],[23.7454529,38.0176216],[23.7458081,38.0181327],[23.7454654,38.0185199],[23.7463332,38.0187369],[23.7528235,38.0279411],[23.7455058,38.0311218],[23.743926,38.0314634],[23.7441384,38.0319332],[23.7402617,38.03276],[23.738077,38.0307575],[23.7371517,38.0294894],[23.7363386,38.0274942],[23.7336653,38.0271099],[23.7302464,38.0254027],[23.7289655,38.0242837],[23.7283791,38.023052],[23.7268948,38.022186],[23.7255071,38.0203185],[23.7239891,38.0199915],[23.7229012,38.0187476],[23.719891,38.0164081],[23.7186882,38.0144679],[23.7179759,38.0108814],[23.7171448,38.0097608],[23.7149453,38.0084409],[23.7118659,38.0056725],[23.7090142,38.0044302],[23.7052231,38.0016021],[23.6965499,37.9978498],[23.6928288,37.994835],[23.6952962,37.9934302],[23.6975826,37.9929715],[23.6961951,37.9912386],[23.6930841,37.9850532],[23.689552,37.9813152],[23.6897888,37.9811712],[23.6895402,37.98086],[23.6870046,37.9784388]]],"sourceUrl":"https://www.openstreetmap.org/relation/1370736","retrievedAt":"2026-10-10"}
+    },
+    {
+      "id": "backpacking-europe-heading-east-udine",
+      "name": "Udine",
+      "lng": 13.24266,
+      "lat": 46.05601,
+      "country": "Italy"
+    },
+    {
+      "id": "backpacking-europe-heading-east-tolmezzo",
+      "name": "Tolmezzo",
+      "lng": 13.0194,
+      "lat": 46.4006,
+      "country": "Italy"
+    },
+    {
+      "id": "backpacking-europe-heading-east-forni",
+      "name": "Forni di Sopra",
+      "lng": 12.5793,
+      "lat": 46.4241,
+      "country": "Italy"
+    },
+    {
+      "id": "backpacking-europe-heading-east-bratislava",
+      "name": "Bratislava",
+      "lng": 17.10675,
+      "lat": 48.15867,
+      "country": "Slovakia"
     }
   ],
   "segments": [
@@ -680,102 +708,124 @@
       "distanceKm": 265.5
     },
     {
-      "id": "backpacking-europe-heading-east-venice-ljubljana",
+      "id": "backpacking-europe-heading-east-venice-udine",
       "mode": "train",
       "from": "backpacking-europe-heading-east-venice",
-      "to": "backpacking-europe-heading-east-ljubljana",
+      "to": "backpacking-europe-heading-east-udine",
       "via": [
         {
-          "name": "Trieste Centrale",
-          "lng": 13.77125,
-          "lat": 45.65824
+          "name": "Venezia Mestre",
+          "lng": 12.23158,
+          "lat": 45.48167
         },
         {
-          "name": "Villa Opicina",
-          "lng": 13.79818,
-          "lat": 45.69742
+          "name": "Treviso Centrale",
+          "lng": 12.24522,
+          "lat": 45.65983
         },
         {
-          "name": "Sežana",
-          "lng": 13.86895,
-          "lat": 45.7041
-        },
-        {
-          "name": "Divača",
-          "lng": 13.96953,
-          "lat": 45.68058
-        },
-        {
-          "name": "Postojna",
-          "lng": 14.22153,
-          "lat": 45.77298
+          "name": "Pordenone",
+          "lng": 12.65569,
+          "lat": 45.9547
         }
       ],
       "geometryStatus": "reconstructed",
-      "distanceKm": 306.6
+      "distanceKm": 135.9
     },
     {
-      "id": "backpacking-europe-heading-east-ljubljana-lesce",
-      "mode": "train",
-      "from": "backpacking-europe-heading-east-ljubljana",
-      "to": "backpacking-europe-heading-east-lesce",
+      "id": "backpacking-europe-heading-east-udine-tolmezzo",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-udine",
+      "to": "backpacking-europe-heading-east-tolmezzo",
       "via": [
         {
-          "name": "Kranj",
-          "lng": 14.35223,
-          "lat": 46.23334
+          "name": "A23 corridor",
+          "lng": 13.20029,
+          "lat": 46.15178
+        },
+        {
+          "name": "Amaro",
+          "lng": 13.10508,
+          "lat": 46.36763
         }
       ],
       "geometryStatus": "reconstructed",
-      "distanceKm": 52.7
+      "distanceKm": 69.7
     },
     {
-      "id": "backpacking-europe-heading-east-lesce-bled",
+      "id": "backpacking-europe-heading-east-tolmezzo-forni",
       "mode": "bus",
-      "from": "backpacking-europe-heading-east-lesce",
-      "to": "backpacking-europe-heading-east-bled",
-      "via": [],
+      "from": "backpacking-europe-heading-east-tolmezzo",
+      "to": "backpacking-europe-heading-east-forni",
+      "via": [
+        {
+          "name": "Ampezzo",
+          "lng": 12.79938,
+          "lat": 46.41436
+        }
+      ],
       "geometryStatus": "reconstructed",
-      "distanceKm": 4.4
+      "distanceKm": 43.2
     },
     {
-      "id": "backpacking-europe-heading-east-bled-lesce",
+      "id": "backpacking-europe-heading-east-forni-tolmezzo",
       "mode": "bus",
-      "from": "backpacking-europe-heading-east-bled",
-      "to": "backpacking-europe-heading-east-lesce",
-      "via": [],
+      "from": "backpacking-europe-heading-east-forni",
+      "to": "backpacking-europe-heading-east-tolmezzo",
+      "via": [
+        {
+          "name": "Ampezzo",
+          "lng": 12.79938,
+          "lat": 46.41436
+        }
+      ],
       "geometryStatus": "reconstructed",
-      "distanceKm": 4.4
+      "distanceKm": 42.6
     },
     {
-      "id": "backpacking-europe-heading-east-lesce-vienna",
+      "id": "backpacking-europe-heading-east-tolmezzo-udine",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-tolmezzo",
+      "to": "backpacking-europe-heading-east-udine",
+      "via": [
+        {
+          "name": "Amaro",
+          "lng": 13.10508,
+          "lat": 46.36763
+        },
+        {
+          "name": "A23 corridor",
+          "lng": 13.20029,
+          "lat": 46.15178
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 61.6
+    },
+    {
+      "id": "backpacking-europe-heading-east-udine-vienna",
       "mode": "train",
-      "from": "backpacking-europe-heading-east-lesce",
+      "from": "backpacking-europe-heading-east-udine",
       "to": "backpacking-europe-heading-east-vienna",
       "via": [
         {
-          "name": "Ljubljana",
-          "lng": 14.51325,
-          "lat": 46.05828
+          "name": "Tarvisio Boscoverde",
+          "lng": 13.60497,
+          "lat": 46.50502
         },
         {
-          "name": "Zidani Most",
-          "lng": 15.17475,
-          "lat": 46.0853
+          "name": "Villach Hbf",
+          "lng": 13.84896,
+          "lat": 46.61986
         },
         {
-          "name": "Celje",
-          "lng": 15.26806,
-          "lat": 46.22732
-        },
-        {
-          "name": "Maribor",
-          "lng": 15.65724,
-          "lat": 46.56077
+          "name": "Klagenfurt Hbf",
+          "lng": 14.3136,
+          "lat": 46.61574
         },
         {
           "name": "Graz Hbf",
-          "lng": 15.41669,
+          "lng": 15.41668,
           "lat": 47.07279
         },
         {
@@ -787,15 +837,10 @@
           "name": "Semmering",
           "lng": 15.83068,
           "lat": 47.63871
-        },
-        {
-          "name": "Wiener Neustadt Hbf",
-          "lng": 16.23387,
-          "lat": 47.81162
         }
       ],
       "geometryStatus": "reconstructed",
-      "distanceKm": 485
+      "distanceKm": 493.5
     },
     {
       "id": "backpacking-europe-heading-east-vienna-wroclaw",
@@ -878,10 +923,10 @@
       "distanceKm": 293.7
     },
     {
-      "id": "backpacking-europe-heading-east-krakow-budapest",
+      "id": "backpacking-europe-heading-east-krakow-bratislava",
       "mode": "train",
       "from": "backpacking-europe-heading-east-krakow",
-      "to": "backpacking-europe-heading-east-budapest",
+      "to": "backpacking-europe-heading-east-bratislava",
       "via": [
         {
           "name": "Katowice",
@@ -897,12 +942,17 @@
           "name": "Břeclav",
           "lng": 16.89353,
           "lat": 48.75455
-        },
-        {
-          "name": "Bratislava hlavná stanica",
-          "lng": 17.10666,
-          "lat": 48.15871
-        },
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 431
+    },
+    {
+      "id": "backpacking-europe-heading-east-bratislava-budapest",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-bratislava",
+      "to": "backpacking-europe-heading-east-budapest",
+      "via": [
         {
           "name": "Štúrovo",
           "lng": 18.68347,
@@ -915,7 +965,7 @@
         }
       ],
       "geometryStatus": "reconstructed",
-      "distanceKm": 643.9
+      "distanceKm": 213
     },
     {
       "id": "backpacking-europe-heading-east-budapest-oradea",
@@ -1031,6 +1081,89 @@
       ],
       "geometryStatus": "reconstructed",
       "distanceKm": 389.4
+    },
+    {
+      "id": "backpacking-europe-heading-east-zagreb-ljubljana",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-zagreb",
+      "to": "backpacking-europe-heading-east-ljubljana",
+      "via": [
+        {
+          "name": "Dobova",
+          "lng": 15.66614,
+          "lat": 45.895
+        },
+        {
+          "name": "Zidani Most",
+          "lng": 15.17475,
+          "lat": 46.0853
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 142.7
+    },
+    {
+      "id": "backpacking-europe-heading-east-ljubljana-lesce",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-ljubljana",
+      "to": "backpacking-europe-heading-east-lesce",
+      "via": [
+        {
+          "name": "Kranj",
+          "lng": 14.35223,
+          "lat": 46.23334
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 52.7
+    },
+    {
+      "id": "backpacking-europe-heading-east-lesce-bled",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-lesce",
+      "to": "backpacking-europe-heading-east-bled",
+      "via": [],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 4.4
+    },
+    {
+      "id": "backpacking-europe-heading-east-bled-lesce",
+      "mode": "bus",
+      "from": "backpacking-europe-heading-east-bled",
+      "to": "backpacking-europe-heading-east-lesce",
+      "via": [],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 4.4
+    },
+    {
+      "id": "backpacking-europe-heading-east-lesce-zagreb",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-lesce",
+      "to": "backpacking-europe-heading-east-zagreb",
+      "via": [
+        {
+          "name": "Kranj",
+          "lng": 14.35223,
+          "lat": 46.23334
+        },
+        {
+          "name": "Ljubljana",
+          "lng": 14.513,
+          "lat": 46.0581
+        },
+        {
+          "name": "Zidani Most",
+          "lng": 15.17475,
+          "lat": 46.0853
+        },
+        {
+          "name": "Dobova",
+          "lng": 15.6623,
+          "lat": 45.889
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 195.4
     },
     {
       "id": "backpacking-europe-heading-east-zagreb-split",
@@ -1455,35 +1588,24 @@
       ]
     },
     {
-      "id": "backpacking-europe-heading-east-ljubljana-stay",
+      "id": "backpacking-europe-heading-east-forni-stay",
       "number": 12,
-      "planningStatus": "tbd",
-      "date": "TBD",
-      "title": "Ljubljana",
+      "calendarDate": "2026-10-23",
+      "calendarEndDate": "2026-10-29",
+      "date": "23 Oct – 29 Oct",
+      "title": "Forni di Sopra",
       "text": "",
-      "placeId": "backpacking-europe-heading-east-ljubljana",
-      "destinationId": "backpacking-europe-heading-east-ljubljana",
+      "placeId": "backpacking-europe-heading-east-forni",
+      "destinationId": "backpacking-europe-heading-east-forni",
       "segmentIds": [
-        "backpacking-europe-heading-east-venice-ljubljana"
-      ]
-    },
-    {
-      "id": "backpacking-europe-heading-east-bled-stay",
-      "number": 13,
-      "planningStatus": "tbd",
-      "date": "TBD",
-      "title": "Lake Bled",
-      "text": "",
-      "placeId": "backpacking-europe-heading-east-bled",
-      "destinationId": "backpacking-europe-heading-east-bled",
-      "segmentIds": [
-        "backpacking-europe-heading-east-ljubljana-lesce",
-        "backpacking-europe-heading-east-lesce-bled"
+        "backpacking-europe-heading-east-venice-udine",
+        "backpacking-europe-heading-east-udine-tolmezzo",
+        "backpacking-europe-heading-east-tolmezzo-forni"
       ]
     },
     {
       "id": "backpacking-europe-heading-east-vienna-stay",
-      "number": 14,
+      "number": 13,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Vienna",
@@ -1491,13 +1613,14 @@
       "placeId": "backpacking-europe-heading-east-vienna",
       "destinationId": "backpacking-europe-heading-east-vienna",
       "segmentIds": [
-        "backpacking-europe-heading-east-bled-lesce",
-        "backpacking-europe-heading-east-lesce-vienna"
+        "backpacking-europe-heading-east-forni-tolmezzo",
+        "backpacking-europe-heading-east-tolmezzo-udine",
+        "backpacking-europe-heading-east-udine-vienna"
       ]
     },
     {
       "id": "backpacking-europe-heading-east-wroclaw-stay",
-      "number": 15,
+      "number": 14,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Wrocław",
@@ -1510,7 +1633,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-warsaw-stay",
-      "number": 16,
+      "number": 15,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Warsaw",
@@ -1523,7 +1646,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-krakow-stay",
-      "number": 17,
+      "number": 16,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Kraków",
@@ -1532,6 +1655,19 @@
       "destinationId": "backpacking-europe-heading-east-krakow",
       "segmentIds": [
         "backpacking-europe-heading-east-warsaw-krakow"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-bratislava-stay",
+      "number": 17,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Bratislava",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-bratislava",
+      "destinationId": "backpacking-europe-heading-east-bratislava",
+      "segmentIds": [
+        "backpacking-europe-heading-east-krakow-bratislava"
       ]
     },
     {
@@ -1544,7 +1680,7 @@
       "placeId": "backpacking-europe-heading-east-budapest",
       "destinationId": "backpacking-europe-heading-east-budapest",
       "segmentIds": [
-        "backpacking-europe-heading-east-krakow-budapest"
+        "backpacking-europe-heading-east-bratislava-budapest"
       ]
     },
     {
@@ -1613,8 +1749,35 @@
       ]
     },
     {
-      "id": "backpacking-europe-heading-east-split-stay",
+      "id": "backpacking-europe-heading-east-ljubljana-stay",
       "number": 24,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Ljubljana",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-ljubljana",
+      "destinationId": "backpacking-europe-heading-east-ljubljana",
+      "segmentIds": [
+        "backpacking-europe-heading-east-zagreb-ljubljana"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-bled-stay",
+      "number": 25,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Lake Bled",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-bled",
+      "destinationId": "backpacking-europe-heading-east-bled",
+      "segmentIds": [
+        "backpacking-europe-heading-east-ljubljana-lesce",
+        "backpacking-europe-heading-east-lesce-bled"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-split-stay",
+      "number": 26,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Split",
@@ -1622,12 +1785,14 @@
       "placeId": "backpacking-europe-heading-east-split",
       "destinationId": "backpacking-europe-heading-east-split",
       "segmentIds": [
+        "backpacking-europe-heading-east-bled-lesce",
+        "backpacking-europe-heading-east-lesce-zagreb",
         "backpacking-europe-heading-east-zagreb-split"
       ]
     },
     {
       "id": "backpacking-europe-heading-east-dubrovnik-stay",
-      "number": 25,
+      "number": 27,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Dubrovnik",
@@ -1640,7 +1805,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-sarajevo-stay",
-      "number": 26,
+      "number": 28,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Sarajevo",
@@ -1653,7 +1818,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-ohrid-stay",
-      "number": 27,
+      "number": 29,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Ohrid",
@@ -1668,7 +1833,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-qeparo-stay",
-      "number": 28,
+      "number": 30,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Qeparo",
@@ -1682,7 +1847,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-athens-stay",
-      "number": 29,
+      "number": 31,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Athens",

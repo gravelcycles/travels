@@ -331,6 +331,14 @@ fallback. Preserve its transform/aspect fit and original full source on promotio
 Prepare neighbors ahead of duplicate selected-photo work during its opening
 reveal, and avoid a first native-to-prepared swap during horizontal motion.
 Clear preview backgrounds on source changes/lock/close with the bitmap storage.
+The 20 October residual-lag follow-up stores only the fitted photo's physical
+pixels, centering the canvas within the existing frame rather than retaining
+transparent letterboxing. Defer completed bitmap adoption until horizontal
+drag/settling ends; discard/close any unpresented bitmap on source or access
+changes. Pinch and zoomed pan consume the latest pointer positions once per
+animation frame. Release flushes the final sample before a finger disappears;
+close, selection, access reset and resize cancel queued input work. Preserve
+moving focal points, scale/pan limits, one-finger continuation and full sources.
 The first photo must acquire no added wait. First-swipe resolution and numeric
 phone gains remain unverified. See
 [the evidence, memory limits and acceptance checks](docs/PERFORMANCE_IPHONE_2026-10-17.md).

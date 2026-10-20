@@ -10,6 +10,28 @@
   verifier, and retain the prior public composition until verification.
   Cropped photos never load the incompatible original AVIF.
 
+## 20 October 2026 — Heading East route adjustment
+
+- Confirm Forni di Sopra for 23–29 October, arriving by train via Udine and
+  buses through Tolmezzo; extend the known calendar and photo assignment.
+- Move Ljubljana/Lake Bled between Zagreb and Split, add Bratislava between
+  Kraków and Budapest, and preserve Wrocław → Warsaw → Kraków as clarified.
+- Reconstruct changed rail/road legs, retain/split reviewed geometry and stable
+  IDs, and record the revised route/evidence in the trip provenance. All dates
+  after Forni remain TBD; existing photos and saved editorial choices persist.
+
+## 20 October 2026 — less fullscreen rendering work
+
+- Store fitted physical photo pixels without transparent viewport letterboxing;
+  preserve the same on-screen fit and full native source for zoom.
+- Keep completed bitmap adoption outside horizontal drag/settling. Release
+  unpresented bitmaps on replacement, resize, lock, grid and close.
+- Coalesce pinch and zoomed pan into one render per animation frame, flush the
+  final sample on release and cancel queued input on reset. Retain moving focal
+  points, gesture interruption and the immediate first-photo display pathway.
+- Record matched storage/work reductions separately from physical iPhone
+  performance; remaining lag versus native Photos still needs a phone retest.
+
 ## 17 October 2026 — prepared mobile photos by default
 
 - Enable the corrected prepared-surface renderer on ordinary mobile journey
