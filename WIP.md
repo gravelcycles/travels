@@ -1,5 +1,25 @@
 # Current workstreams
 
+## Initial URL flashes — 20 October 2026
+
+Owner requested no flashes on every initial page, explicitly including shared
+and intermediate URLs, plus durable UX policy. O04 and PRINCIPLES now carry the
+sitewide rule. Isolated `codex/no-entry-flashes` starts from `48f73fe` and leaves
+the primary checkout's unrelated changes intact.
+
+Implemented: head-level view/access coordination for catalog and all generated
+journeys; quiet share redirects; common neutral background/progress for automatic
+login checks; bounded startup recovery and cached-document Back handling.
+All **895 tests**, production build and Worker runtime checks pass. Desktop and
+390 px browser fixtures cover reference-photo, city-grid, demo, independently
+populated draft, delayed status/redemption, guest, failure, catalog and signed
+share entry. Frame observations record zero early chrome/unlock frames; the
+first visible destination has both access and view resolved. A 10-second status
+check shows only neutral progress. Fixture images are synthetic; these are
+browser viewport checks, not physical-iPhone certification. Remote integration
+and live deployment remain in progress. No private-media access or remembered
+credential policy changes.
+
 ## Prepared mobile photos by default — 17 October 2026
 
 The owner explicitly requests default rollout, superseding the opt-in gate and

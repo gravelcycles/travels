@@ -2697,5 +2697,5 @@
   renderIntroduction();
   window.JOURNEY_ATLAS_SHARING_UI.start();
   placesUI.start();
-  document.documentElement.classList.remove('journey-starting');
+  window.JOURNEY_ATLAS_ENTRY?.ready('view');
 })();

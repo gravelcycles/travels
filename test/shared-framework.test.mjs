@@ -49,6 +49,20 @@ function bundle(source, key) {
 }
 const app = read(repo, 'dist/assets/app.js');
 
+test('every initial page inherits view/access readiness before any page chrome is shown',t=>{
+  const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root);
+  draft.photos=[{id:'entry-fixture-photo',dayId:draft.days[0].id,caption:'',src:'https://images.example.test/entry.jpg'}];
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'&&j.photos.length),draft]){
+    const html=renderJourneyPage(root,journey,{preview:true});
+    assert.match(html,/<head>[\s\S]*page-entry\.js[\s\S]*<\/head>/);
+    assert.match(html,/<section id="page-entry"[^>]+hidden>/);
+    assert.doesNotMatch(html,/journey-starting|addEventListener\('load'/,'A load event must not bypass asynchronous access checks');
+  }
+  buildSite(root);
+  assert.match(read(root,'dist/index.html'),/assets\/page-entry\.js\?v=[a-f0-9]{12}/);
+  assert.match(app,/JOURNEY_ATLAS_ENTRY\?\.ready\('view'\)/);
+});
+
 test('prepared photo surfaces default to mobile across reference, demo and populated fresh drafts',t=>{
   const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root);
   draft.photos=[{id:'prepared-surface-fixture',dayId:draft.days[0].id,caption:'',src:'https://images.example.test/photo.jpg'}];

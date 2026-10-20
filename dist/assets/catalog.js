@@ -23,6 +23,7 @@
 
   if (!realJourneys.length) {
     catalog.innerHTML = '<div class="catalog-empty">The next mapped journey will appear here.</div>';
+    window.JOURNEY_ATLAS_ENTRY?.ready('view');
     return;
   }
 
@@ -73,4 +74,5 @@
     cards.forEach(card => observer.observe(card));
   } else window.addEventListener('resize', renderCovers);
   window.JOURNEY_ATLAS_UTILS.prepareImageReveals(catalog);
+  window.JOURNEY_ATLAS_ENTRY?.ready('view');
 })();

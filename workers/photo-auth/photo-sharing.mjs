@@ -64,7 +64,7 @@ function shareHtml(source, url, journey, photoId, photo, state, nonce) {
 ${meta('og:type', 'website')}${meta('og:site_name', source.siteName)}${meta('og:title', photo.title)}${meta('og:description', journey.title)}${meta('og:url', url.href)}${meta('og:image', image)}
 ${photo.thumbnail.key ? meta('og:image:type', 'image/webp') : ''}${photo.thumbnail.width ? meta('og:image:width', photo.thumbnail.width) : ''}${photo.thumbnail.height ? meta('og:image:height', photo.thumbnail.height) : ''}${meta('og:image:alt', photo.alt || 'Shared photograph')}
 ${meta('twitter:card', 'summary_large_image', 'name')}${meta('twitter:title', photo.title, 'name')}${meta('twitter:image', image, 'name')}
-<link rel="apple-touch-icon" href="${escape(source.icon)}"><link rel="icon" href="${escape(source.icon)}"><meta name="robots" content="noindex, nofollow, noarchive"></head><body><p><a href="${escape(canonical)}">Open photograph in ${escape(journey.title)}</a></p><script nonce="${nonce}">location.replace(${scriptValue(canonical)});</script></body></html>`;
+<link rel="apple-touch-icon" href="${escape(source.icon)}"><link rel="icon" href="${escape(source.icon)}"><meta name="robots" content="noindex, nofollow, noarchive"><style nonce="${nonce}">:root{background:#ecefeb;color:#153238;font:16px/1.6 system-ui,sans-serif}body{margin:0;min-height:100svh;display:grid;place-items:center}main{padding:32px;text-align:center}a{color:#235c56}[hidden]{display:none!important}</style></head><body><main hidden><p role="status">Opening Journey Atlas…</p><a href="${escape(canonical)}">Open photograph in ${escape(journey.title)}</a></main><noscript><a href="${escape(canonical)}">Open photograph in ${escape(journey.title)}</a></noscript><script nonce="${nonce}">setTimeout(()=>{document.querySelector('main').hidden=false;},1500);location.replace(${scriptValue(canonical)});</script></body></html>`;
   return html;
 }
 
@@ -108,5 +108,5 @@ export async function photoSharingRequest(request, env, origin, boundedJson, sou
   const state = shareState(Object.fromEntries(url.searchParams), journey);
   if (!state) return reply(404, { error: 'Shared photograph not found' });
   const nonce = random(), html = shareHtml(source, url, journey, match[2], photo, state, nonce);
-  return new Response(request.method === 'HEAD' ? null : html, { headers: { ...baseHeaders, 'Content-Type': 'text/html; charset=utf-8', 'Content-Security-Policy': `default-src 'none'; script-src 'nonce-${nonce}'; base-uri 'none'; frame-ancestors 'none'`, 'X-Frame-Options': 'DENY' } });
+  return new Response(request.method === 'HEAD' ? null : html, { headers: { ...baseHeaders, 'Content-Type': 'text/html; charset=utf-8', 'Content-Security-Policy': `default-src 'none'; script-src 'nonce-${nonce}'; style-src 'nonce-${nonce}'; base-uri 'none'; frame-ancestors 'none'`, 'X-Frame-Options': 'DENY' } });
 }

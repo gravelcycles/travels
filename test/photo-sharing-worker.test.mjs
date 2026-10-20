@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
+import vm from 'node:vm';
 import { photoSharingRequest } from '../workers/photo-auth/photo-sharing.mjs';
 import worker from '../workers/photo-auth/worker.mjs';
 import publicIndex from '../workers/photo-auth/photo-share-index.mjs';
@@ -28,6 +29,18 @@ function fixture() {
   return { source, env, reads, run, mint, token: async (...args) => (await issueToken(env, 'family', origin, ...args)).token };
 }
 const imageFrom = html => html.match(/property="og:image" content="([^"]+)"/)[1];
+
+test('share redirects start quiet and reveal a usable fallback only if navigation stalls',async()=>{
+  const f=fixture(),{url}=await(await f.mint(await f.token())).json();
+  const response=await f.run(url,{},null),html=await response.text();
+  assert.match(html,/<main hidden>/);assert.match(html,/<noscript><a href=/);
+  const nonce=html.match(/<script nonce="([^"]+)">/)[1];
+  assert.ok(response.headers.get('Content-Security-Policy').includes(`style-src 'nonce-${nonce}'`));
+  const main={hidden:true},timers=[],redirects=[];
+  vm.runInNewContext(html.match(/<script nonce="[^"]+">([\s\S]*?)<\/script>/)[1],{document:{querySelector:()=>main},setTimeout:(fn,delay)=>timers.push({fn,delay}),location:{replace:href=>redirects.push(href)}});
+  assert.equal(main.hidden,true);assert.equal(redirects.length,1);assert.equal(timers[0].delay,1500);
+  timers[0].fn();assert.equal(main.hidden,false);
+});
 
 test('private photo share capabilities require a valid photo session and allowed origin, without fetching images', async () => {
   const f = fixture(), good = await f.token();

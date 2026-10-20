@@ -17,6 +17,13 @@ capture new corrections during the task and reconcile current docs before
 delivery; use the [live update procedure](OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task).
 Accepted work still pending belongs in WIP, not among delivered capabilities.
 
+All catalog/journey entries coordinate view restoration and photo access before
+revealing chrome, including shared photo dialogs and authentication returns.
+Slow initial checks use neutral progress with bounded recovery; intermediate
+share/login pages remain quiet during fast redirects. Image/map loading retains
+its existing progressive behavior. See [the entry contract](FRAMEWORK.md#initial-page-presentation)
+and [O04's acceptance checks](OWNER_DECISIONS.md#initial-page-presentation--20-october-2026).
+
 The 16 October performance pass adds scoped real-trip/demo data and a compact
 catalog, crop/DPR-sized catalog covers, complete local template asset hashes,
 cached reader media order/lookups and retained filmstrip selection, plus unchanged

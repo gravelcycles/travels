@@ -1,5 +1,15 @@
 # Changelog
 
+## 20 October 2026 — quiet initial presentation on every URL
+
+- Coordinate the requested view and confirmed photo access before revealing
+  catalog/journey chrome, including shared-photo dialogs and login returns.
+- Keep share redirects quiet, align automatic login progress/background, and
+  provide bounded startup recovery without flashing unresolved password/error
+  states. Preserve progressive images, private access and shared destinations.
+- Extend O04 and the UX principles to all initial and intermediate URLs, with
+  cold/cached, slow/failing, guest/remembered and desktop/phone acceptance checks.
+
 ## 17 October 2026 — prepared mobile photos by default
 
 - Enable the corrected prepared-surface renderer on ordinary mobile journey
