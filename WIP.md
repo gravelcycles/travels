@@ -6,13 +6,14 @@ Current source and acceptance: [trip record](docs/HEADING_EAST.md#route-adjustme
 Forni is locked in for 23–29 October via Udine/Tolmezzo; Slovenia now follows
 Zagreb; Bratislava follows Kraków. The owner's follow-up keeps the existing
 Wrocław → Warsaw → Kraków order. All later dates remain TBD. Work is isolated
-from the original checkout's ongoing photo changes, based on remote `48f73fe`.
+from the original checkout's ongoing photo changes; remote `8c16376` is now
+integrated, retaining its current rendering improvements and guidance.
 
 Source, network geometry, provenance and generated public output are updated.
 Seven new network legs and three derived legs preserve the unaffected arrays.
 Strict route build preserves all 45 legs with zero warnings. Calendar/photo
 assignment, the exact stop order, chained travel and visibility regressions are
-updated. All 888 tests pass. Desktop and 390 px browser checks verify Forni’s
+updated. All 894 integrated tests pass. Desktop and 390 px browser checks verify Forni’s
 dates/three legs, Bratislava after Kraków, Ljubljana after Zagreb, and twelve
 retained stays when TBD is hidden. Public deployment verification is pending;
 commit/push and verify Pages plus fresh public assets before closing.

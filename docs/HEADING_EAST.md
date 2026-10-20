@@ -68,7 +68,9 @@ a reconstructed corridor, not a bus operator's GPS trace or exact terminal map.
 Acceptance: Forni is available in the locked-in calendar and photo assignment
 through 29 October; hiding TBD leaves twelve stays. The exact onward order,
 continuous incoming leg references and detailed geometry must pass validation.
-Publication verification is recorded in WIP.
+All 894 integrated tests and the production build pass; a repeated build is
+reproducible. Desktop and 390 px checks verify the new stops, dates, travel
+rows and confirmed-only filter. Publication verification is recorded in WIP.
 
 ## Later Studio photo selections and notes — 16 October 2026
 
