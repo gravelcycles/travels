@@ -40,8 +40,15 @@ cleanup. The actual first Heading East photo passes 5/5 startup checks at both
 50 ms and 1,500 ms worker-result delays, displaying native pixels before any
 prepared surface is ready. No captured script errors. Current owner decisions,
 photo workflow, framework/features, TODO and incident evidence are updated.
-Next: deploy, verify fresh public bytes, and retain the physical comparison as
-follow-up; no new phone frame-time measurement is claimed.
+Published as `8c16376` through successful
+[Pages run 39386812996](https://github.com/gravelcycles/travels/actions/runs/39386812996).
+All five fresh public pages and 44 referenced scripts/styles match the tested
+build byte-for-byte. Live ordinary-URL sample checks confirm fitted 390×292.5 px
+geometry, three ready surfaces, forward/reverse browsing, full native zoom,
+desktop pixel release, mobile reuse of three slots and final close cleanup,
+with no captured script errors. Implementation and publication are complete.
+Retain a fresh physical-phone comparison/trace as follow-up; no new phone
+frame-time measurement or complete residual-lag resolution is claimed.
 
 ## Prepared mobile photos by default — 17 October 2026
 
