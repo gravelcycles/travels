@@ -110,6 +110,18 @@ native-versus-web guidance supplies no universal percentage speed difference.
 The owner's earlier improvement remains confirmed, but residual smoothness is
 not resolved merely by passing browser checks. [Evidence](PERFORMANCE_IPHONE_2026-10-17.md#remaining-lag--20-october-2026).
 
+The later 20 October owner retest says the released viewer “looks great,” but
+the first zoom into **each photo** lags while later zooms of that photo are fine.
+This qualitatively confirms the latest browsing improvement, without measuring
+phone frame times or resolving the separate first-zoom issue. The owner asks
+for its cause and whether a fix is worthwhile. Current code switches from the
+fitted prepared canvas to the full native image at zoom; cold native rendering
+is a hypothesis, not a new trace finding. The assessment recommends a bounded
+selected-photo preparation experiment after motion settles, retaining immediate
+opening, swipe responsiveness, original detail and cleanup. Measure memory as
+well as first-versus-repeat zoom; another decode call does not guarantee a
+ready GPU surface. See the incident record.
+
 ## Standing decisions and acceptance checks
 
 | ID | Current decision | Check when touching this area |

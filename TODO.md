@@ -42,6 +42,10 @@ activation work.
       Fitted-pixel storage, deferred bitmap adoption and frame-paced pinch/pan
       reduce measured browser work; obtain a new phone comparison/trace before
       claiming the residual issue resolved. [Evidence](docs/PERFORMANCE_IPHONE_2026-10-17.md).
+      The later retest says the released viewer looks great, with a distinct
+      first-zoom hitch once per photo. Assess selected-photo preparation after
+      motion settles, measuring first/repeat zoom and memory on the iPhone;
+      preserve opening speed, browsing smoothness and full image detail.
 
 - [x] **Post-AVIF loading comparison and mobile swipes.** Published in `a940395`
       after 848 passing tests, reproducible builds, successful Pages and fresh

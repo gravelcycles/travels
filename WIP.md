@@ -1,5 +1,23 @@
 # Current workstreams
 
+## First zoom into each photo — 20 October 2026
+
+Owner retest after `8c16376`: the viewer “looks great,” with a lag on the first
+zoom into each photo and smooth subsequent zooms of that photo. Asked for cause
+and cost/benefit assessment. Code inspection confirms the fitted prepared canvas
+is replaced by the original native image when scale exceeds one; the loader
+already uses decode readiness. Cold first native paint/resampling/GPU preparation
+is consistent with the per-photo pattern, but no new phone trace identifies the
+browser-internal stage. Assessment only: no zoom runtime change is delivered.
+
+Recommended next experiment: prepare only the selected photo after motion
+settles, compare first and repeat zoom on the physical iPhone, and retain only
+a measured benefit without extra opening/swipe latency, quality loss or excessive
+memory. Hidden-image prepainting may be skipped by the browser; decode readiness
+alone is insufficient proof. Avoid prewarming every full-resolution neighbor.
+Preserve the deployed browsing improvement, access cleanup and native fallback.
+Current owner decisions, incident evidence and TODO carry this follow-up.
+
 ## Heading East route adjustment — 20 October 2026
 
 Current source and acceptance: [trip record](docs/HEADING_EAST.md#route-adjustment--20-october-2026).

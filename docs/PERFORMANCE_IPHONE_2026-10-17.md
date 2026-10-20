@@ -215,3 +215,30 @@ uses WebKit/WKWebView rather than desktop Chrome's Blink. These sources do not
 establish a universal native-versus-web percentage or certify native Photos
 parity for this viewer. A fresh phone comparison/trace remains the next evidence
 needed if lag persists after this release.
+
+### First zoom into each photo
+
+The later 20 October owner retest says the released viewer “looks great.” The
+remaining report is a lag on the first zoom into each photo; subsequent zooms
+of the same photo are smooth. This is qualitative confirmation of the latest
+browsing improvement, not a numeric after-change trace or proof of complete
+native parity.
+
+Code inspection confirms the relevant boundary: `mobile-ux.js` activates prepared
+surfaces only at scale one; `photo-swipe-raster.js` then hides the original image
+through `data-photo-raster-visible`. Zoom deactivates the canvases and exposes
+the full native image. The ordinary loader already tracks decoded readiness;
+this is not evidence of a new download on the first zoom. First native painting,
+resampling or GPU preparation is consistent with the per-photo warm-repeat
+pattern. Without a fresh device trace, the exact internal stage remains unknown.
+
+The assessment recommends a limited selected-photo preparation experiment once
+motion settles, followed by first/repeat zoom and memory measurements on the
+iPhone. A browser may skip rendering a hidden or fully covered image; neither
+hidden prepainting nor another decode call establishes a reliable GPU warmup.
+The [HTML decode contract](https://html.spec.whatwg.org/multipage/embedded-content.html#dom-img-decode)
+addresses decoded data availability, not a durable GPU texture cache. Warming
+all full-resolution neighbors could increase memory and compete with swiping.
+Keep immediate opening, the confirmed browsing improvement, full image detail,
+source/lock/close cleanup and native fallback. No zoom-path change or measured
+first-zoom improvement is delivered at this assessment checkpoint.
