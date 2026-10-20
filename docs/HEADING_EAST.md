@@ -67,8 +67,12 @@ support the 110/150/200/203 corridors. The
 covers 28 September–9 November and warns of changed ÖBB train times on some
 dates. This confirms relevant works, not the exact cause or effect of the
 Google warning on the owner's particular train. Recheck the 29 October
-connection in the operator planner before travel. Geometry/publication checks
-for this follow-up are recorded in WIP.
+connection in the operator planner before travel. All 907 integrated tests,
+strict preservation of 47 legs and reproducible build pass. Desktop/390 px
+checks show the five Vienna travel rows. Release `7ace011` passed
+[Pages deployment](https://github.com/gravelcycles/travels/actions/runs/39389821508);
+eleven fresh public files match the tested release exactly. WIP retains the
+verification receipt. The 29 October timetable remains a separate travel check.
 
 The return through Zagreb is a transfer within Split's incoming travel, not a
 second city stay. Onward modes/corridors are proposals; no tickets, departure

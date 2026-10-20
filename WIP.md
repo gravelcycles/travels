@@ -16,7 +16,13 @@ from the retained city/rail anchors. Strict routing preserves 47 legs with no
 warnings; all 907 tests pass after integrating current published `8305a2f`,
 with a reproducible production build. Desktop/390 px checks
 show the correct five travel rows and TBD dates, with no captured script errors.
-Next: publish and verify fresh public files under the standing authorization.
+Published as `7ace011` through successful
+[Pages run 39389821508](https://github.com/gravelcycles/travels/actions/runs/39389821508).
+Eleven fresh public files match the tested release byte-for-byte, including the
+scoped trip, legacy geometry/data, catalog and integrated runtime. Implementation,
+current trip notes and publication are complete. This verifies the published
+route, not an independently confirmed 29 October timetable. No media upload,
+Worker change or private-photo access was needed.
 
 ## Photo crop and rotation — 20 October 2026
 
