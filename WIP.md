@@ -13,7 +13,8 @@ railway at Boscoverde, preserving subsequent track vertices. The map has 47
 legs and 31 stays; Vienna has four bus legs then one train leg, about 514 km.
 Cella boarding and the unknown lodging/station walks are documented separately
 from the retained city/rail anchors. Strict routing preserves 47 legs with no
-warnings; all 894 tests and the production build pass. Desktop/390 px checks
+warnings; all 907 tests pass after integrating current published `8305a2f`,
+with a reproducible production build. Desktop/390 px checks
 show the correct five travel rows and TBD dates, with no captured script errors.
 Next: publish and verify fresh public files under the standing authorization.
 
