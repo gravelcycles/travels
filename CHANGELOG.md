@@ -1,5 +1,16 @@
 # Changelog
 
+## 20 October 2026 — Heading East route adjustment
+
+- Confirm Forni di Sopra for 23–29 October, arriving by train via Udine and
+  buses through Tolmezzo; extend the known calendar and photo assignment.
+- Move Ljubljana/Lake Bled between Zagreb and Split, add Bratislava between
+  Kraków and Budapest, and preserve Wrocław → Warsaw → Kraków as clarified.
+- Reconstruct changed rail/road legs, retain/split reviewed geometry and stable
+  IDs, and record the revised route/evidence in the trip provenance. All dates
+  after Forni remain TBD; existing photos and saved editorial choices persist.
+
+
 ## 17 October 2026 — prepared mobile photos by default
 
 - Enable the corrected prepared-surface renderer on ordinary mobile journey

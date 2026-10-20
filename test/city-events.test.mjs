@@ -36,7 +36,7 @@ test('Heading East preserves corrected city order and the researched train–bus
  assert.deepEqual(j.days.slice(0,11).map(d=>d.title),['Luzern','Freiburg','Hamburg','Köln','Düsseldorf','Berlin','Prague','Salzburg','Innsbruck','Bolzano','Venice']);
  assert.deepEqual(j.days.slice(3,6).map(d=>[d.calendarDate,d.calendarEndDate]),[['2026-09-29','2026-09-30'],['2026-09-30','2026-10-01'],['2026-10-01','2026-10-05']]);
  assert.deepEqual(j.days.slice(7,11).map(d=>[d.calendarDate,d.calendarEndDate]),[['2026-10-11','2026-10-15'],['2026-10-15','2026-10-18'],['2026-10-18','2026-10-19'],['2026-10-19','2026-10-23']]);
- assert.equal(j.endDate,'2026-10-23');
+ assert.equal(j.endDate,'2026-10-29');
  assert.equal(j.days.slice(0,11).flatMap(d=>d.segmentIds).length,14);
  const prague=j.days.find(d=>d.title==='Prague');
  const legs=prague.segmentIds.map(id=>j.segments.find(s=>s.id===id));

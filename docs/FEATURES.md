@@ -144,6 +144,11 @@ See the [notification contract](PLACES_AND_COMMENTS.md#comment-notifications).
 
 ## Features versus editorial content
 
+Heading East’s [20 October route adjustment](HEADING_EAST.md#route-adjustment--20-october-2026)
+uses the existing city/TBD and multimodal contracts: twelve dated stays through
+Forni and nineteen undated stays, with Bratislava after Poland and Slovenia after
+Zagreb. Route order, dates and network provenance remain trip content.
+
 Heading East's second camera batch uses the existing incremental photo importer
 and private publisher. Its per-file location review list is in
 [the second-batch report](HEADING_EAST_PHOTO_LOCATIONS_BATCH_2.md); original

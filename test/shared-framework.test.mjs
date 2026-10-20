@@ -304,9 +304,10 @@ test('photo intake skips undated TBD entries for the reference, demo and a fresh
   }
   const city = data.journeys.find(j => j.id === 'backpacking-europe-heading-east');
   const config = photoImportConfig(root, data, { journey: city.id });
-  assert.equal(config.daysByDate.size, 53);
+  assert.equal(config.daysByDate.size, 59);
   assert.equal(config.daysByDate.get('2026-09-30').title, 'Düsseldorf');
-  assert.equal(config.daysByDate.has('2026-10-24'), false);
+  assert.equal(config.daysByDate.get('2026-10-24').title, 'Forni di Sopra');
+  assert.equal(config.daysByDate.has('2026-10-30'), false);
 });
 
 test('full-trip Replay stays inaccessible while arrival works for reference, demo and populated city draft', t => {
@@ -1419,12 +1420,12 @@ test('day visibility uses trip-local dates, including today, ongoing stays and d
 test('Heading East groups the real city stays without inventing onward dates or changing confirmation', () => {
   const journey = loadContent(repo).data.journeys.find(j => j.id === 'backpacking-europe-heading-east');
   const utils = globalThis.JOURNEY_ATLAS_UTILS, now = new Date('2026-10-11T12:00:00Z');
-  assert.deepEqual(utils.planningCounts(journey, now), {past:8,locked:3,tbd:18});
+  assert.deepEqual(utils.planningCounts(journey, now), {past:8,locked:4,tbd:19});
   const snapshot = JSON.stringify(journey);
   const locked = utils.projectPlanning(journey, {past:false,locked:true,tbd:false}, now);
-  assert.deepEqual(locked.days.map(day => day.title), ['Innsbruck','Bolzano','Venice']);
-  assert.deepEqual(locked.days.map(day => day.number), [9,10,11]);
-  assert.equal(locked.segments.length, 3);
+  assert.deepEqual(locked.days.map(day => day.title), ['Innsbruck','Bolzano','Venice','Forni di Sopra']);
+  assert.deepEqual(locked.days.map(day => day.number), [9,10,11,12]);
+  assert.equal(locked.segments.length, 6);
   assert.ok(!locked.places.some(place => /Athens|Prague/.test(place.name)));
   assert.equal(JSON.stringify(journey), snapshot);
 });

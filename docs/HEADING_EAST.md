@@ -5,6 +5,71 @@ Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 
 Each city is one event. Taglines remain blank; the owner added the first seven
 city stories in Studio on 11 October. The photo intake is recorded below.
 
+## Route adjustment — 20 October 2026
+
+Owner direction in “Update Europe trip route”: stay in Forni di Sopra from
+23–29 October, reach it by train to Udine followed by buses, move Slovenia
+between Zagreb and the remaining Croatia stops, and add Bratislava immediately
+after Poland. The owner then clarified “keep that section as is” for
+Vienna → Wrocław → Warsaw → Kraków. Do not move Wrocław after Warsaw or add a
+second Wrocław stay. This supersedes the 8 October onward order below.
+
+Current itinerary after Venice:
+Forni di Sopra (23–29 October) → Vienna → Wrocław → Warsaw → Kraków → Bratislava
+→ Budapest → Oradea → Sibiu → Timișoara → Belgrade → Zagreb → Ljubljana → Lake Bled
+→ Split → Dubrovnik → Sarajevo → Ohrid → Qeparo → Athens.
+
+Forni is a confirmed city stay with no TBD flag. `endDate` is 29 October;
+all nineteen subsequent stays remain undated/TBD. Retain the original eleven
+city IDs/dates, existing photo albums, saved stories/notes, pins and ordering.
+Udine and Tolmezzo are transfers, not overnight stays. The Venice rail corridor
+passes through Mestre; no specific train departure has been selected here.
+
+| Changed incoming stay | Reconstructed candidate corridor |
+| --- | --- |
+| Forni di Sopra | Train Venice–Mestre–Treviso–Pordenone–Udine; buses Udine–Tolmezzo and Tolmezzo–Ampezzo–Forni |
+| Vienna | Proposed buses back through Tolmezzo to Udine, then rail via Tarvisio, Villach, Klagenfurt, the Koralmbahn, Graz, Bruck and Semmering |
+| Bratislava | Split the retained Kraków–Budapest railway at Bratislava hlavná stanica, retaining the Katowice–Bohumín–Břeclav corridor |
+| Budapest | Remaining retained Bratislava–Štúrovo–Vác railway |
+| Ljubljana | Rail from Zagreb via Dobova and Zidani Most |
+| Lake Bled | Retain Ljubljana–Kranj–Lesce-Bled rail plus local bus |
+| Split | Retain Bled–Lesce local bus; reverse reviewed rail through Ljubljana to Zagreb, then retain Zagreb–Split rail |
+
+The return through Zagreb is a transfer within Split's incoming travel, not a
+second city stay. Onward modes/corridors are proposals; no tickets, departure
+times, transfer guarantees or additional dates are asserted.
+
+Evidence checked on 20 October:
+[TPL FVG's September service update](https://tplfvg.it/it/servizi/nuoviservizi/area_udinese_revisione_orari_sett26/)
+lists bus 100 (Tolmezzo–Udine via motorway) and 110 (Pieve di Cadore–Forni–Ampezzo–Tolmezzo).
+[ÖBB's Venice service page](https://www.oebb.at/de/reiseplanung-services/oebb-zugverbindungen/zugverbindungen-europa/venedig)
+supports the Vienna/Graz–Venice Koralmbahn corridor.
+[SŽ's Zagreb page](https://potniski.sz.si/en/international-travel/croatia-hr/zagreb/)
+supports the Zagreb–Dobova–Ljubljana connection. Check travel dates for works,
+including the Ljubljana–Lesce corridor; exact services remain unsettled.
+
+The map contains 45 reconstructed legs (27 rail, 18 bus), 31 stays and about
+10,661 km including TBD travel. Seven new legs use full network responses from
+OpenRailRouting (OSM data 20 October, `all_tracks_1435`) and OSRM (`driving`).
+Bratislava's two legs and Lesce–Zagreb reuse reviewed coordinates by splitting
+or reversing them, without smoothing. Unchanged geometry is byte-for-byte
+identical as coordinate arrays. Remove the superseded Venice–Ljubljana,
+Lesce–Vienna and unsplit Kraków–Budapest legs from source/manifest/geometry.
+
+Raw responses and the adjustment scripts are ignored under
+`build/route-inputs/backpacking-europe-heading-east/adjustment-20261020/`.
+The committed manifest retains exact request URLs/coordinates, response hashes,
+source date, derived-source identities, measured distances and uncertainty.
+New endpoints are within 96 m of source anchors; rail-section joins are zero.
+Udine's source anchor is the railway platform; the nearby bus road endpoint is
+kept separate. Rail tunnel sections retain provider geometry. Road routing is
+a reconstructed corridor, not a bus operator's GPS trace or exact terminal map.
+
+Acceptance: Forni is available in the locked-in calendar and photo assignment
+through 29 October; hiding TBD leaves twelve stays. The exact onward order,
+continuous incoming leg references and detailed geometry must pass validation.
+Publication verification is recorded in WIP.
+
 ## Later Studio photo selections and notes — 16 October 2026
 
 The owner saved another Studio review and requested “pls publish my updates”.
@@ -333,7 +398,8 @@ GPS location controls and blank locations for the five owner-review items.
 | Venice | 19–23 October | Bolzano → Trento → Rovereto → Verona Porta Nuova → Vicenza → Padova → Venezia Mestre → Venezia Santa Lucia |
 
 The owner extended the itinerary on 8 October through Venice on 19–23 October.
-The machine range ends on the last supplied date, 23 October, and can be extended.
+The 20 October adjustment extends the machine range through Forni on 29 October;
+see [the current route](#route-adjustment--20-october-2026).
 Dresden, Basel, Ústí and Linz are transit places, not additional city stays.
 Incoming legs belong to the arriving city;
 passing through Düsseldorf en route to Köln does not create an earlier stay.
@@ -434,7 +500,11 @@ vertices. All three new routes retain ordered station anchors and less than 1%
 simplification loss. The 390 px phone view exposes all eleven stops, the correct
 Venice date range and its incoming line. Replay reaches Venice at moment 15/15.
 
-## TBD extension — 8 October 2026
+## Original TBD extension — 8 October 2026 (superseded order)
+
+Historical intake and geometry receipt: the current route order, date range and
+leg counts are superseded by [20 October](#route-adjustment--20-october-2026).
+The evidence for retained corridors below remains relevant.
 
 The owner added eighteen **planned, unconfirmed** stays, without dates:
 Ljubljana → Lake Bled → Vienna → Wrocław → Warsaw → Kraków → Budapest →
