@@ -85,8 +85,10 @@ checksum/MIME verifier. Until verification, public output retains the previous
 published crop (or the original for a first edit); draft recipes/local asset URLs
 never enter a public bundle. Publication rereads sources/edits before marking
 assets published and preserves independently changed copy. Old immutable assets
-remain for recovery. **Restore original** deliberately returns to the source on
-the next deployment. Check exact-angle pixels, presets, pointer/keyboard editing,
+remain for recovery. Deploy a changed generated photo-share index through the
+existing Worker workflow before Pages, so signed previews use the same verified
+crop; access policy is unchanged. **Restore original** deliberately returns to
+the source on the next deployment. Check exact-angle pixels, presets, pointer/keyboard editing,
 reload, local Save, publication failure/races and original reset on reference,
 sample and independently populated draft photos.
 

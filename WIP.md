@@ -11,13 +11,14 @@ original reset and verified publication with the last published crop retained.
 Share thumbnails resolve the same published composition. See
 [the current contract](PHOTO_WORKFLOW.md#crop-and-rotation-in-studio).
 
-All **900 integrated tests** and the production build pass. Browser checks cover
+All **907 integrated tests** and the production build pass. Browser checks cover
 an actual reference-photo crop → Apply → Save locally → reload; sample draft
 recovery and Save blocking/reopening unfinished work; an independently populated
 city draft with exact 12.3° rotation and 4:5 crop; and the real editor at 390 px
 with scrollable controls and reachable Apply. Original bytes, metadata stripping,
 publication failure/races, independent copy and reset are covered by the focused
-image/publisher/recovery tests. No real photo changes were committed or uploaded.
+image/publisher/recovery tests. No real photo changes were committed or uploaded. The owner explicitly approved
+production publication on 20 October after automatic review requested approval.
 
 The scoped implementation/current guidance is installed in the primary checkout;
 all **37 focused checks** also pass there. Its photo data and unrelated pending
