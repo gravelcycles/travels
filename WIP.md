@@ -15,8 +15,14 @@ Strict route build preserves all 45 legs with zero warnings. Calendar/photo
 assignment, the exact stop order, chained travel and visibility regressions are
 updated. All 894 integrated tests pass. Desktop and 390 px browser checks verify Forni’s
 dates/three legs, Bratislava after Kraków, Ljubljana after Zagreb, and twelve
-retained stays when TBD is hidden. Public deployment verification is pending;
-commit/push and verify Pages plus fresh public assets before closing.
+retained stays when TBD is hidden. Published as `20ff638` through successful
+[Pages run 39387171368](https://github.com/gravelcycles/travels/actions/runs/39387171368).
+Eleven fresh public files match the tested release byte-for-byte: catalog/trip
+HTML, scoped/legacy journey data, geometry, photo/override data and the integrated
+mobile runtime. A live browser load was automatically blocked when it attempted
+to load the private-photo Worker; no access was bypassed. Public bytes and the
+local desktop/phone viewer were verified independently. Implementation and public
+publication are complete; no private-photo observation is needed for this change.
 No protected-media upload or Worker deployment is needed: eligibility is unchanged.
 
 ## Residual fullscreen rendering lag — 20 October 2026

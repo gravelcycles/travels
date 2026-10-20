@@ -70,7 +70,10 @@ through 29 October; hiding TBD leaves twelve stays. The exact onward order,
 continuous incoming leg references and detailed geometry must pass validation.
 All 894 integrated tests and the production build pass; a repeated build is
 reproducible. Desktop and 390 px checks verify the new stops, dates, travel
-rows and confirmed-only filter. Publication verification is recorded in WIP.
+rows and confirmed-only filter. Release `20ff638` passed
+[Pages deployment](https://github.com/gravelcycles/travels/actions/runs/39387171368);
+eleven fresh public files match the tested release byte-for-byte. WIP records
+the browser access limitation and the independent public-file verification.
 
 ## Later Studio photo selections and notes — 16 October 2026
 
