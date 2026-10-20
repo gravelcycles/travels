@@ -65,6 +65,29 @@ player code remain. `replay-utils.js` still supplies route interpolation to the
 separate arrival/city view, which remains available with its reviewed timing.
 No per-trip switch or new data field is introduced.
 
+## Initial page presentation
+
+[O04's sitewide entry rule](OWNER_DECISIONS.md#initial-page-presentation--20-october-2026)
+applies to every initial URL. Both catalog and journey templates load
+`page-entry.js` synchronously in the head. It preserves measurable layout while
+hiding all page content and dialog backdrops until two milestones finish:
+`view` after the catalog/intro/shared destination is restored, and `access`
+after the existing photo-auth controller definitively settles. Cookie-check
+navigation leaves access pending on the departing page. Returning from the check
+settles only after code redemption or a confirmed guest/cancel/error result.
+Back to a pending cached document settles guest browsing without redirecting
+again. Demo and local access settle immediately.
+
+Only slow startup shows neutral progress (500 ms). Missing scripts offer Retry
+after 20 seconds without exposing uninitialized chrome; auth requests retain
+their existing 15-second deadlines. Neither timers nor `load` bypass milestones.
+No photo download, map tile, worker or neighbor-preparation readiness gates the
+resolved page. Worker share redirects start with hidden fallback content and
+matching background, then offer a link only if navigation stalls; login restore
+retains neutral progress and shows a password form only after explicit login
+confirms no remembered session. Keep server-readable preview metadata and
+thumbnail-only capabilities unchanged.
+
 ## The model
 
 ```text
@@ -98,6 +121,7 @@ password system.
 | `content/templates/journey.html` | All journey DOM, dialogs, control IDs, scripts and styles; real, demo, preview |
 | `content/templates/catalog.html` | Public catalog shell |
 | `dist/assets/photo-places.js`, `photo-bubbles.js`, `photo-bubbles.css` | Shared Photos + Places associations, stable geographic map groups separate from desktop journey browsing, protected thumbnails and selection through the existing desktop sidebar/phone compact card; map bubbles and right-hand reel thumbnails select, the large selected/lead image opens fullscreen (ordinary desktop/phone entry uses the journey roll under O03/O08; explicit Places collections retain scope); close old map popups before day changes and keep location thumbnails independent of album browsing |
+| `dist/assets/photo-adjustments.js`, `studio/photo-adjustments-ui.js`, `scripts/studio-photo-adjustments.mjs` | Shared crop/rotation geometry, recoverable modal, and managed-source derivative generation. Atomic `imageEdit` overrides carry all matching WebP/blur sizes; public builds retain original/prior verified assets until the private publisher confirms the new files. `resolvePhoto` applies the complete set and clears the incompatible original AVIF; [contract](../PHOTO_WORKFLOW.md#crop-and-rotation-in-studio) |
 | `studio/place-editor.js` | Owner Places, credited images, curated reviews and ordered trip-photo links through the existing plan/save/recovery flow |
 | `dist/assets/view-sharing.js`, `view-sharing.css` | Shared view URL parsing/serialization, coalesced URL replacement, explicit thumbnail-link preparation and native share/copy fallback; surface controllers retain history ownership; no saved resume storage |
 | `workers/photo-auth/photo-sharing.mjs`, `scripts/build-photo-share-index.mjs` | Published still-photo share index, authenticated thumbnail-only link signing, server-rendered preview metadata and strictly indexed small-thumbnail delivery; public sample shares reuse public thumbnails; full-photo access is unchanged |

@@ -136,6 +136,7 @@
       <aside class="editor-panel">
         <form id="photo-form" data-panel="photos">
           <div class="selected-photo" id="selected-photo"></div>
+          <button class="secondary photo-adjust-open" id="photo-adjust-open" type="button">Crop &amp; rotate</button>
           <div class="photo-navigation" aria-label="Browse photos">
             <button id="photo-previous" type="button" aria-label="Previous photo" aria-keyshortcuts="ArrowLeft">←</button>
             <span id="photo-navigation-position"></span>
@@ -317,6 +318,24 @@
       </form>
     </dialog>
 
+    <dialog id="photo-adjust-dialog" aria-labelledby="photo-adjust-title">
+      <header class="adjust-heading"><div><span class="eyebrow">PHOTO EDITOR</span><h2 id="photo-adjust-title">Crop &amp; rotate</h2></div><button type="button" data-adjust-close>Keep draft &amp; close</button></header>
+      <p class="adjust-help">Drag the frame to move it. Drag a corner to resize. Your original is kept.</p>
+      <div class="adjust-stage" hidden><canvas aria-label="Photo crop preview"></canvas><div class="adjust-crop" tabindex="0" role="group" aria-label="Crop frame"><i class="adjust-thirds" aria-hidden="true"></i><i data-handle="nw" aria-hidden="true"></i><i data-handle="ne" aria-hidden="true"></i><i data-handle="sw" aria-hidden="true"></i><i data-handle="se" aria-hidden="true"></i></div></div>
+      <fieldset>
+        <div class="adjust-controls">
+          <label for="adjust-ratio">Aspect ratio<select id="adjust-ratio"><option value="0">Freeform</option><option value="1">Square · 1:1</option><option value="1.3333333333333333">Landscape · 4:3</option><option value="1.5">Landscape · 3:2</option><option value="1.7777777777777777">Wide · 16:9</option><option value="0.8">Portrait · 4:5</option><option value="0.6666666666666666">Portrait · 2:3</option><option value="0.5625">Story · 9:16</option></select></label>
+          <label for="adjust-degrees">Rotation (degrees)<input id="adjust-degrees" type="number" min="-180" max="180" step="0.1" value="0" /></label>
+          <div class="adjust-turns"><button type="button" data-turn="-90" aria-label="Rotate left 90 degrees">↶ 90°</button><button type="button" data-turn="90" aria-label="Rotate right 90 degrees">↷ 90°</button></div>
+        </div>
+        <input id="adjust-angle" aria-label="Rotation angle" type="range" min="-180" max="180" step="0.1" value="0" />
+        <div class="adjust-scale"><span>−180°</span><span>0°</span><span>180°</span></div>
+        <details class="adjust-precise"><summary>Precise crop</summary><div><label>Left (%)<input data-crop-field="x" type="number" min="0" max="97" step="0.1" /></label><label>Top (%)<input data-crop-field="y" type="number" min="0" max="97" step="0.1" /></label><label>Width (%)<input data-crop-field="width" type="number" min="3" max="100" step="0.1" /></label><label>Height (%)<input data-crop-field="height" type="number" min="3" max="100" step="0.1" /></label></div></details>
+        <div class="adjust-footer"><div><button type="button" class="secondary" data-adjust-reset>Reset crop &amp; angle</button><button type="button" class="secondary" data-adjust-original>Restore original</button></div><span data-adjust-size></span><button type="button" data-adjust-apply>Apply to photo</button></div>
+      </fieldset>
+      <p data-adjust-status role="status" aria-live="polite"></p>
+      <p class="adjust-note">Rotation trims empty corners. Apply, then Save locally to keep your changes.</p>
+    </dialog>
     <script src="/dist/assets/vendor/maplibre-5.24.0/maplibre-gl.js"></script>
     <script src="/api/preview-assets/journeys.js"></script>
     <script src="/api/preview-assets/route-geometry.js"></script>
@@ -334,6 +353,8 @@
     <script src="/photo-batch.js"></script>
     <script src="/photo-batch-ui.js"></script>
     <script src="/photo-editing.js"></script>
+    <script src="/dist/assets/photo-adjustments.js"></script>
+    <script src="/photo-adjustments-ui.js"></script>
     <script src="/ready-to-share.js"></script>
     <script src="/video-import.js"></script>
     <script src="/studio.js?v=20260909-optional-day-copy"></script>

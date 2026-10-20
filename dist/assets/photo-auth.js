@@ -422,6 +422,11 @@
     location.assign(`${service}/private-photos/auth/window?${new URLSearchParams({origin:location.origin,state,challenge,returnTo,action})}`);
   }
   async function completeReturn() {
+    try { await restoreInitialAccess(); }
+    catch { navigationPending=false;showPrompt('Could not restore photo access. Please unlock again.'); }
+    finally { if(!navigationPending)window.JOURNEY_ATLAS_ENTRY?.ready('access'); }
+  }
+  async function restoreInitialAccess() {
     const params=new URLSearchParams(location.hash.slice(1));
     if(!params.has('photoAuthCode')&&!params.has('photoAuthLogout')&&!params.has('photoAuthCancel')&&!params.has('photoAuthMissing')){
       // A known guest must not take another login round trip on every page load.
@@ -430,6 +435,7 @@
       if(guest){updateControls();return;}
       if(!await restoreTabAccess())await begin('restore');return;
     }
+    navigationPending=false;
     let flow;try{flow=JSON.parse(sessionStorage.getItem(FLOW_KEY));sessionStorage.removeItem(FLOW_KEY);}catch{}
     // Remove the short-lived one-use code before loading anything else from this page.
     history.replaceState(null,'',location.pathname+location.search+(flow?.hash||''));
@@ -481,6 +487,11 @@
   }
   channel?.addEventListener('message',event=>{if(event.data==='lock'){rememberGuest();lock(false);}});
   document.addEventListener('visibilitychange',()=>{pumpDownloads();if(!document.hidden)check();});window.navigator?.connection?.addEventListener('change',pumpDownloads);window.addEventListener('focus',check);setInterval(check,STATUS_INTERVAL);
+  window.addEventListener('pageshow',event=>{
+    // Back from the first-party check can restore the still-pending document.
+    // Treat that deliberate return as guest browsing rather than redirect again.
+    if(event.persisted&&navigationPending){navigationPending=false;rememberGuest();updateControls();window.JOURNEY_ATLAS_ENTRY?.ready('access');}
+  });
   for(const button of document.querySelectorAll('[data-unlock]'))button.addEventListener('click',()=>begin());
   dialog.querySelector('[data-dismiss]').addEventListener('click',closePrompt);
   dialog.addEventListener('close',()=>{if(dialog.open)return;if(!token)rememberGuest();lastFocus?.focus?.();});
@@ -529,4 +540,5 @@
   window.JOURNEY_ATLAS_AUTH={communityRequest,photoShareLink,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,imageBlob,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets].map(src=>({src,fallback:preloadFallbacks.get(src),immediate:src===immediatePreload})).concat(selection(photo,width)).slice(-MAX_PREFETCH));},lock,showPrompt,raisePrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
   if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
+  else window.JOURNEY_ATLAS_ENTRY?.ready('access');
 })();

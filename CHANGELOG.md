@@ -10,6 +10,25 @@
   same route is reported available on 29 October. Keep that timetable provisional
   for the 29th and retain the train's maintenance warning in the trip evidence.
 
+## 20 October 2026 — Studio crop and rotation
+
+- Add a draggable crop with ratio presets and precise percent fields, an exact
+  degree input/slider, 90° turns and original reset in the shared photo editor.
+- Keep unfinished image adjustments in normal draft recovery; use the existing
+  Save/conflict flow and preserve source media, identity, text, pins and order.
+- Generate matching stripped private WebPs/blur, publish them with the existing
+  verifier, and retain the prior public composition until verification.
+  Cropped photos never load the incompatible original AVIF.
+
+## 20 October 2026 — quiet initial presentation on every URL
+
+- Coordinate the requested view and confirmed photo access before revealing
+  catalog/journey chrome, including shared-photo dialogs and login returns.
+- Keep share redirects quiet, align automatic login progress/background, and
+  provide bounded startup recovery without flashing unresolved password/error
+  states. Preserve progressive images, private access and shared destinations.
+- Extend O04 and the UX principles to all initial and intermediate URLs, with
+  cold/cached, slow/failing, guest/remembered and desktop/phone acceptance checks.
 
 ## 20 October 2026 — first-zoom assessment
 

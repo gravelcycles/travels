@@ -27,6 +27,34 @@ permission to erase it. An agent suggestion, passing test or prototype is not an
 owner decision. Resolve apparent conflicts from dated evidence and record which
 choice supersedes which; ask only if a consequential ambiguity remains.
 
+## Initial page presentation — 20 October 2026
+
+Owner correction: “make sure all initial loaded pages don't have flashes,”
+including shared and intermediate URLs that briefly request a password before
+recognizing remembered access. This extends O04 sitewide and supersedes treating
+the homepage or synchronous introduction selection as sufficient coverage.
+
+Choose both the requested view and the actual access state before revealing
+page chrome, including top-layer dialogs, unlock controls and photo feedback.
+Apply this to catalog, bare journey, day/story/grid/photo links, share-preview
+redirects, and automatic restore/login/logout returns across real journeys,
+demos and fresh drafts. Do not briefly show a default map, introduction, password
+request, locked/error state or redirect link that an automatic check replaces.
+Fast intermediate navigation stays quiet on the same page background; slow
+checks show neutral progress and genuine failures offer bounded retry. Confirmed
+guests still receive the appropriate unlock choice. Keep private media gated,
+the selected shared destination intact and normal image previews/reveals prompt.
+Do not wait for full photos, map tiles or speculative preparation to finish.
+
+Acceptance: inspect first-paint sequences on desktop and phone with cold and
+cached loads, remembered/anonymous/expired access, delayed status and code
+redemption, missing/failed services, login cancellation, Back and direct/shared
+URLs. Check the reference, a demo and an independently populated fresh draft.
+A `load` event or elapsed delay cannot declare unresolved auth/view state ready.
+The [framework contract](FRAMEWORK.md#initial-page-presentation) owns coordination;
+[private access guidance](../PHOTO_AUTH_HANDOFF.md#quiet-restoration--10-september-2026)
+owns remembered-session behavior. Verification status stays in WIP.
+
 ## Persistence audit — 12 October 2026
 
 Owner follow-up after the fullscreen grid correction: verify that other features
@@ -129,7 +157,7 @@ ready GPU surface. See the incident record.
 | O01 · Photo copy | Captions, notes and place labels start blank and contain only traveler-supplied words. Do not generate photo names, scene descriptions or city/GPS labels. Filenames and accessibility alt text are not visible-caption fallbacks. Actual capture dates/times may identify an unlabeled photo. | Check bulk import **and** Studio upload, then card/fullscreen/phone renderers with blank fields and a separate authored example. Preserve existing copy, order, pins and frames on incremental intake. [Photo workflow](../PHOTO_WORKFLOW.md). |
 | O02 · Photo/place meaning | Only explicit owner-saved `point.photoIds` associate a photo with a venue. Nearby coordinates do not justify “Near …”, an About-place button, a visit or a review. Venue imagery and trip photos remain distinct. | An unlinked photo beside a venue has no venue association; a saved link works and preserves its order. Missing GPS remains unset. [Places contract](PLACES_AND_COMMENTS.md#photos--places--current-contract). |
 | O03 · Desktop photos | Keep days left, map center, and the existing journal/photo sidebar right. Clicking or keyboard-activating a map circle bubble (single or clustered) or a thumbnail in the right-hand reel selects the photo in that existing sidebar; it does not open fullscreen. The large top-right selected/lead photo opens fullscreen in one activation. Ordinary desktop sidebar/fullscreen arrows browse the visible trip in event/album order; a clicked map cluster must never restrict access to the rest of the city or trip (owner follow-up, 11 October 2026). Keep the current city/day reel and fullscreen event jumps; only explicit Places collections retain their own scope. Its uncropped frame stays a stable height with compact controls and expandable details. Hovering the large sidebar photo keeps the blue background steady, without a white flash. Do not insert a second photo panel. Existing album/grid and linked Places viewer entry remain available. Fullscreen zoom follows the pointer or pinch focus under the [16 October photo correction](#fullscreen-photo-controls-and-focal-zoom--16-october-2026). | Check map bubble → sidebar selection, reel thumbnail → sidebar selection, then large selected/lead image → fullscreen, including keyboard activation and portrait/landscape images. From a multi-photo cluster, use arrows/keyboard to reach another city photo and the next city, then return through fullscreen/Comments/Back without losing the selected image; explicit Places order stays bounded. Check pointer entry/exit on the large photo: its blue frame must not turn white. Controls must not jump; unrelated bubbles keep their own images. Choosing a day directly clears the old selection and popups; continuous photo browsing updates the selection to the new day and clears its old map markers/popups. Stationary refreshes must not remove bubbles or restart image loads. Phone bubbles select the compact card; its large image opens fullscreen, retaining the existing grid/swipe flow. |
-| O04 · Loading and conversations | Preserve the same-size blurred preview until the full image is ready; no black/sizing/loading/auth flash. Fullscreen gets the full derivative, not a sharp thumbnail substitute. Keep the reviewed 350 ms fullscreen reveal and desktop cached-image reveals without refetching. Comments/reviews float with a soft shadow and visible sidebar context; open immediately, with inline loading/retry and preserved text. Comments keep the presenting collection, order and index. Empty saved-place reviews do not open an empty modal. | Test a cold load, cached revisit, rapid selection, slow/failing request and remembered/anonymous access. Reuse bounded caches/preloads; never solve speed by exposing private media. Respect reduced motion. [Photo workflow](../PHOTO_WORKFLOW.md), [conversation UX](PLACES_AND_COMMENTS.md). |
+| O04 · Loading and conversations | Every initial URL follows the [resolved entry rule](#initial-page-presentation--20-october-2026), including shared and intermediate pages. Preserve the same-size blurred preview until the full image is ready; no black/sizing/loading/auth flash. Fullscreen gets the full derivative, not a sharp thumbnail substitute. Keep the reviewed 350 ms fullscreen reveal and desktop cached-image reveals without refetching. Comments/reviews float with a soft shadow and visible sidebar context; open immediately, with inline loading/retry and preserved text. Comments keep the presenting collection, order and index. Empty saved-place reviews do not open an empty modal. | Test a cold load, cached revisit, rapid selection, slow/failing request and remembered/anonymous access. Reuse bounded caches/preloads; never solve speed by exposing private media. Respect reduced motion. [Photo workflow](../PHOTO_WORKFLOW.md), [conversation UX](PLACES_AND_COMMENTS.md). |
 | O05 · Photo camera | Keep the exact pin separate from its saved map frame. Do not move the photo map when successive pins already fit. Nearby moves are direct; longer moves preserve geographic context. Studio keeps the same-day working frame until deliberately changed. | Browse nearby/distant/unlocated photos; pan manually; check a saved off-center frame on desktop and phone. Unknown locations use event/city context, not a fabricated viewpoint. |
 | O06 · Map hierarchy | The map is the main experience. The opening has one “Explore the journey” action that enters the whole-trip map, with no separate Whole trip map button (owner, 11 October 2026); an unmapped draft retains one day/stop-list fallback. The whole-trip map has no selected day/stop; see the [16 October correction](#unselected-map-opening--16-october-2026). On the first map reveal, trace the full visible route from start to end over three seconds on desktop and phone (owner, 12 October 2026: “do a 3 second animation where you trace through the full roout from start to end”). Keep the whole route framed; direct day/photo links retain direct entry, input interrupts the trace, and reduced motion shows the completed overview. This replaces the old opening camera drift and does not re-enable full-trip Replay. The opening action stays visible from first load at every description length: scroll the full content above a separate bottom action row (owner-approved follow-up, 11 October 2026). Keep terrain legible but routes dominant; preserve transport colors/patterns during selection and match the key. Settlement labels stay readable above routes; road labels/shields stay below. Credits start collapsed but remain accessible. | Check the single opening action on desktop/phone for the reference, demo and populated fresh draft: it reveals a three-second itinerary-order trace, then the complete whole-trip map without a selected event or day arrival; direct day/photo links still bypass the opening and select their target. Choose the first and another event, then return to All days/stops: clear selection again. From overview the next arrow selects the first event, including a single-event trip. The owner reported later on 12 October that mobile “starts and then flashes to show the full map”; automatic browser/map resizing and delayed source redraws must preserve the same three-second trace, while deliberate input still interrupts. Check those events during playback, slow map readiness, interruption, reduced motion, no-route drafts and separate group legs without invented connecting lines. Check long copy, 320/390px, short landscape and enlarged text: the button stays within the viewport while all copy remains reachable by touch and keyboard. Inspect intersections, overview and close zoom; desktop travel-row hover/focus highlights only that leg without a click action, popup or camera jump. Phone route taps select without desktop tooltips. [Journey workflow](../JOURNEY_WORKFLOW.md#map-location-labels). |
 | O07 · Map markers | Use the reviewed upright signposts, quiet grouped/repeat dots and compact linked hover/focus previews. Before switching the displayed day/stop, close its map popups and hover previews and cancel pending opens; an old popup must not remain over the next map. No sideways/upside-down balloons or large leader-line clutter. Intermediate rail dots are small; each train leg's endpoints are larger. Overview shows endpoints, not intermediate stations. Signpost stems meet the orange endpoint ring's top. | Open a map popup, switch day/stop through the day list, previous/next and photo navigation, and check that it closes before the new map appears. Rapid transitions must not reopen stale previews. Check route/label/control collisions; dots appear after their route lines and stale pending markers cannot leak into another view. [Location labels](LOCATION_LABELS.md). |
@@ -596,6 +624,19 @@ Show a labeled per-photo saved/unsaved/saving/failure indicator. Only an
 acknowledged source save earns “Saved locally”; recovery autosave and public
 publication remain separate. Check edits, switching, reload recovery, failed saves
 and edits made during a save. See [photo workflow](../PHOTO_WORKFLOW.md#editing-reliability--12-september-2026).
+
+## Studio crop and rotation — 20 October 2026
+
+The owner requested “basic crop/adjust rotation by N degree tools” and “let's
+build it out”. This extends O11/O14 to the shared local photo editor: basic
+crop plus arbitrary-degree rotation, with preserved originals and the existing
+recovery/save/publication boundaries. Reference, sample and new-draft photos
+inherit it. Editing must preserve photo identity, copy, pins and album order;
+reopening must not compound image degradation. Failed processing or saving
+retains the draft. Publishing must not expose missing local derivatives or
+replace a crop with the original AVIF. The [photo workflow](../PHOTO_WORKFLOW.md#crop-and-rotation-in-studio)
+owns controls, storage and acceptance checks. This adds image composition to the
+existing editor without changing viewer navigation or access policy.
 
 ## Keep trip facts scoped
 

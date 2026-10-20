@@ -34,7 +34,7 @@ export function reconcile(base, draft, saved, { choices = {}, prefix = [] } = {}
     if (equal(mine, disk)) return copy(disk);
     if (base !== undefined && equal(mine, before)) return copy(disk);
     if (base !== undefined && equal(disk, before)) return copy(mine);
-    if (object(mine) && object(disk) && (before === undefined || object(before))) {
+    if (keys.at(-1) !== 'imageEdit' && object(mine) && object(disk) && (before === undefined || object(before))) {
       const result = {};
       for (const key of new Set([...Object.keys(before || {}), ...Object.keys(mine), ...Object.keys(disk)])) {
         const value = merge(before?.[key], mine[key], disk[key], [...keys, key]);

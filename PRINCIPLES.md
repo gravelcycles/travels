@@ -76,6 +76,11 @@ care, while retaining the atlas's personal character. This means:
   short interruptible transitions. Respect reduced motion and keyboard use.
 - Design incomplete, empty, loading and failed states as carefully as success.
   Report saving honestly and retain the text when a write fails.
+- Every initial URL must reveal its resolved destination and access state in
+  one presentation: catalog, journey, shared/deep links and intermediate login
+  or redirect pages. Never flash a password request, default view or error that
+  an automatic check will immediately replace. Slow checks use neutral progress
+  and bounded recovery. See [O04's entry checks](docs/OWNER_DECISIONS.md#initial-page-presentation--20-october-2026).
 - Keep a self-chosen display name separate from ownership. A name change is
   a small edit, not a new account or another password ceremony.
 

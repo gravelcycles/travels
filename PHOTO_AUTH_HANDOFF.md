@@ -23,6 +23,15 @@ exercise real D1 persistence as well as existing photo auth/cache behavior.
 
 ## Quiet restoration — 10 September 2026
 
+**20 October extension:** [O04](docs/OWNER_DECISIONS.md#initial-page-presentation--20-october-2026)
+requires quiet initial presentation on every URL. The atlas holds its complete
+chrome, including shared-photo dialogs/locked feedback, until the view and
+remembered-access decision both settle. Status checks and code redemption cannot
+flash an unlock request. Redirecting pages stay pending; confirmed guest/error
+results release the appropriate usable page. Share landing pages also hide
+their fallback link during fast navigation and use the same neutral background.
+See [the coordinator contract](docs/FRAMEWORK.md#initial-page-presentation).
+
 The first-party restoration page starts with its main panel hidden in HTML.
 Successful and missing sessions return without revealing it. Checks taking
 longer than 500 ms show neutral, cancellable progress; failures reveal retry

@@ -3,6 +3,7 @@ import { validateJourneyExtras } from "./journey-extras.mjs";
 import { MAX_PHOTO_ASSET_BYTES } from "./photo-variants.mjs";
 import path from "node:path";
 import "../dist/assets/atlas-utils.js";
+import "../dist/assets/photo-adjustments.js";
 
 export const readJson = (filename, fallback) => fs.existsSync(filename) ? JSON.parse(fs.readFileSync(filename, "utf8")) : fallback;
 export const writeJson = (filename, value) => {
@@ -209,7 +210,9 @@ export function validateOverrides(state, data) {
       if (!owner) throw new Error(`Unknown ${kind} override ID: ${id}`);
       if (!value || Array.isArray(value) || typeof value !== "object") throw new Error(`Invalid override: ${id}`);
       const allowed = kind === "days" ? ["date", "title", "tagline", "text", "leadPhotoId", "photoOrder"] : kind === "routes" ? ["controlPoints", "geometry", "smoothed", "smoothing", "routing", "source", "updatedAt"] : ["caption", "description", "alt", "locationLabel", "dayId", "location", "zoom", "mapFrame", "hidden", "trashed", "reviewed", "locationStatus", "privacyStatus"];
+      if (kind === 'photos') allowed.push('imageEdit');
       for (const key of Object.keys(value)) if (!allowed.includes(key)) throw new Error(`${id}: unsupported override field ${key}`);
+      if (kind === 'photos' && Object.hasOwn(value,'imageEdit') && !globalThis.JOURNEY_ATLAS_PHOTO_ADJUSTMENTS.validEdit(value.imageEdit,owner.photos.find(photo=>photo.id===id))) throw new Error(`${id}: finish applying the photo crop and rotation before saving`);
       if (kind === "photos" && value.dayId && !owner.days.some(d => d.id === value.dayId)) throw new Error(`${id}: photo day belongs to another journey or does not exist`);
       if (kind === "routes") for (const key of ["geometry", "controlPoints"]) if (!Array.isArray(value[key]) || value[key].length < 2 || !value[key].every(validCoordinate)) throw new Error(`${id}: invalid ${key}`);
       for (const key of ["date", "title", "tagline", "text", "leadPhotoId", "caption", "description", "alt", "locationLabel", "dayId", "locationStatus", "privacyStatus"]) if (value[key] != null && typeof value[key] !== "string") throw new Error(`${id}: invalid ${key}`);

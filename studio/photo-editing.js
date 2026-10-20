@@ -5,7 +5,7 @@
     return JSON.stringify([
       value.dayId, value.caption || '', value.description || '', value.locationLabel || '',
       value.lat ?? null, value.lng ?? null, value.zoom || 16,
-      value.mapFrame || null, Boolean(value.trashed),
+      value.mapFrame || null, Boolean(value.trashed), value.imageEdit || null,
       state.days[value.dayId]?.photoOrder || null
     ]);
   }
