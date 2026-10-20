@@ -23,15 +23,15 @@ export function photoShareIndex({ journeys, photos, overrides, site }) {
       if (photo.trashed || raw.assetStatus === 'local' || photo.mediaType === 'video') continue;
       const day = journey.days.find(item => item.id === photo.dayId);
       if (!day || !validId(photo.id) || !validId(photo.dayId)) continue;
-      const candidates = (raw.srcset || []).filter(item => positive(item.width) && item.width <= 480).sort((a, b) => b.width - a.width);
+      const candidates = (photo.srcset || []).filter(item => positive(item.width) && item.width <= 480).sort((a, b) => b.width - a.width);
       let thumbnail;
-      if (raw.protected || raw.src?.startsWith('/private-photos/')) {
+      if (photo.protected || photo.src?.startsWith('/private-photos/')) {
         const candidate = candidates.find(item => privateThumbnail.test(item.src));
         if (!candidate) continue; // Never substitute a private preview/full image.
-        const height = candidate.height || (positive(raw.width) && positive(raw.height) ? Math.round(candidate.width * raw.height / raw.width) : undefined);
+        const height = candidate.height || (positive(photo.width) && positive(photo.height) ? Math.round(candidate.width * photo.height / photo.width) : undefined);
         thumbnail = { key: privateThumbnail.exec(candidate.src)[1], width: candidate.width, ...(positive(height) ? { height } : {}) };
       } else {
-        const candidate = candidates[0] || (positive(raw.width) && raw.width <= 480 ? { src: raw.src, width: raw.width, height: raw.height } : null);
+        const candidate = candidates[0] || (positive(photo.width) && photo.width <= 480 ? { src: photo.src, width: photo.width, height: photo.height } : null);
         if (!candidate) continue; // Public samples use an explicit small derivative too.
         if (typeof candidate.src !== 'string' || !candidate.src) continue;
         let image; try { image = new URL(candidate.src, base); } catch { continue; }

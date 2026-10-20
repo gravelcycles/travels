@@ -22,6 +22,12 @@
     }
     // Legacy Hide flags never exclude photos; Trash is the removal mechanism.
     delete result.hidden;
+    if (override.imageEdit?.assets) {
+      // A replacement has a complete matching set of sizes and blur pixels.
+      // Never reuse the original AVIF over a cropped/rotated WebP fallback.
+      delete result.fullAvif;
+      Object.assign(result, override.imageEdit.assets);
+    }
     return result;
   }
   function visiblePhotos(journey, manifests, overrides) {

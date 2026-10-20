@@ -625,6 +625,19 @@ acknowledged source save earns “Saved locally”; recovery autosave and public
 publication remain separate. Check edits, switching, reload recovery, failed saves
 and edits made during a save. See [photo workflow](../PHOTO_WORKFLOW.md#editing-reliability--12-september-2026).
 
+## Studio crop and rotation — 20 October 2026
+
+The owner requested “basic crop/adjust rotation by N degree tools” and “let's
+build it out”. This extends O11/O14 to the shared local photo editor: basic
+crop plus arbitrary-degree rotation, with preserved originals and the existing
+recovery/save/publication boundaries. Reference, sample and new-draft photos
+inherit it. Editing must preserve photo identity, copy, pins and album order;
+reopening must not compound image degradation. Failed processing or saving
+retains the draft. Publishing must not expose missing local derivatives or
+replace a crop with the original AVIF. The [photo workflow](../PHOTO_WORKFLOW.md#crop-and-rotation-in-studio)
+owns controls, storage and acceptance checks. This adds image composition to the
+existing editor without changing viewer navigation or access policy.
+
 ## Keep trip facts scoped
 
 - Switzerland–Italy's title, overview bounds showing Switzerland, corrected

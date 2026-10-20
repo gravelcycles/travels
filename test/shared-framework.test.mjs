@@ -49,6 +49,25 @@ function bundle(source, key) {
 }
 const app = read(repo, 'dist/assets/app.js');
 
+test('crop overrides resolve consistently for reference, demo and an independently populated city draft', t => {
+  const root=fixture(t),draft=createJourney(root,{...input,eventMode:'city'}),{data}=loadContent(root);
+  draft.photos=[{id:`${draft.id}-crop`,dayId:draft.days[0].id,src:'./assets/photos/bike-pass.webp',caption:'',lat:35,lng:139}];
+  const journeys=[data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'&&j.photos.length),draft];
+  const src=`/private-photos/assets/v1/${'a'.repeat(64)}.webp`;
+  const assets={src,srcset:[{src,width:300,height:400,bytes:100}],width:300,height:400,blur:'data:image/webp;base64,YQ==',protected:true,assetStatus:'published'};
+  for(const journey of journeys) {
+    const photo=journey.photos[0],imageEdit={rotation:90,crop:{x:0,y:0,width:1,height:1},sourceSrc:photo.src,assets};
+    const override={imageEdit},resolved=globalThis.JOURNEY_ATLAS_UTILS.resolvePhoto(photo,override);
+    assert.equal(globalThis.JOURNEY_ATLAS_PHOTO_ADJUSTMENTS.validEdit(imageEdit,photo),true);
+    assert.equal(resolved.id,photo.id);assert.equal(resolved.dayId,photo.dayId);assert.equal(resolved.caption,photo.caption);
+    assert.equal(resolved.src,src);assert.equal(resolved.width,300);assert.equal(resolved.fullAvif,undefined);
+    const state={photos:{[photo.id]:override},routes:{},days:{}};
+    assert.equal(globalThis.JOURNEY_ATLAS_UTILS.visiblePhotos(journey,{[journey.id]:journey.photos},state)[0].src,src);
+    assert.equal(globalThis.JOURNEY_ATLAS_UTILS.resolvePhoto(photo,{imageEdit:null}).src,photo.src);
+    assert.equal(globalThis.JOURNEY_ATLAS_PHOTO_ADJUSTMENTS.validEdit({...imageEdit,pending:true},photo),false);
+  }
+});
+
 test('every initial page inherits view/access readiness before any page chrome is shown',t=>{
   const root=fixture(t),draft=createJourney(root,input),{data}=loadContent(root);
   draft.photos=[{id:'entry-fixture-photo',dayId:draft.days[0].id,caption:'',src:'https://images.example.test/entry.jpg'}];

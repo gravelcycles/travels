@@ -1,5 +1,31 @@
 # Current workstreams
 
+## Photo crop and rotation — 20 October 2026
+
+Authorized basic crop and arbitrary-degree rotation in the shared Studio photo
+editor, extending O11/O14. Implemented on `codex/photo-crop-rotation` in
+`/Users/dg/Documents/Codex/2026-10-20/what/work/travels`; integrated remote main
+through `fcb8d9d`, preserving concurrent route/rendering and initial-entry work. Includes recovered
+unfinished recipes, matching private derivatives, atomic conflict handling,
+original reset and verified publication with the last published crop retained.
+Share thumbnails resolve the same published composition. See
+[the current contract](PHOTO_WORKFLOW.md#crop-and-rotation-in-studio).
+
+All **907 integrated tests** and the production build pass. Browser checks cover
+an actual reference-photo crop → Apply → Save locally → reload; sample draft
+recovery and Save blocking/reopening unfinished work; an independently populated
+city draft with exact 12.3° rotation and 4:5 crop; and the real editor at 390 px
+with scrollable controls and reachable Apply. Original bytes, metadata stripping,
+publication failure/races, independent copy and reset are covered by the focused
+image/publisher/recovery tests. No real photo changes were committed or uploaded. The owner explicitly approved
+production publication on 20 October after automatic review requested approval.
+
+The scoped implementation/current guidance is installed in the primary checkout;
+all **37 focused checks** also pass there. Its photo data and unrelated pending
+work are intact. A new server at `http://127.0.0.1:4195/studio/` serves the updated
+editor without refreshing existing tabs. Remaining: final remote integration,
+commit/push, Pages success and fresh public-asset verification. Studio stays local.
+
 ## Initial URL flashes — 20 October 2026
 
 Owner requested no flashes on every initial page, explicitly including shared
