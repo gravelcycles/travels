@@ -7,7 +7,7 @@ Authorized: incrementally add and privately upload all 41 new HEIC files from
 in the photo-intake chat's `work/travels-local` from current remote main `5ca9355`.
 The primary checkout's unrelated pending work remains intact. The [trip intake
 record](docs/HEADING_EAST.md#salzburgvenice-photo-batch--22-october-2026) records
-album counts, departure-day corrections and the single unlocated photo.
+album counts, departure-day corrections and the owner-assigned formerly missing pin.
 
 All 164 private WebP/AVIF objects (89,536,726 bytes) are uploaded and downloaded
 for exact checksum/MIME verification. All 907 tests and the production build
@@ -20,8 +20,9 @@ Applicable O01/O02/O03/O05/O08/O10/O11/O14/O15 checks pass on the actual populat
 city trip: blank optional copy, exact camera timestamps, reviewed pins and no
 inferred venue links; desktop full-image rendering and Linz map context; 390 px
 phone city navigation, six-photo Innsbruck and sixteen-photo Venice grids,
-last-photo bounds and Back to the same selected grid. The unlocated image shows
-"No exact photo location · showing Innsbruck". Shared runtime is unchanged;
+last-photo bounds and Back to the same selected grid. Before the owner
+assigned its pin below, the unlocated image showed "No exact photo location ·
+showing Innsbruck". Shared runtime is unchanged;
 physical-device behavior is not newly certified. Current trip guidance is updated.
 
 Published as `95175ba` through successful
@@ -34,15 +35,20 @@ byte-for-byte. All 41 new IDs are live, with 142 visible photos; anonymous WebP,
 AVIF, photo-comment and trip-comment-summary reads still return 401.
 
 The primary Studio checkout now contains all 41 published intake records,
-40 reviewed pins, the deliberately unset pin, four chronological album orders,
+40 reviewed camera-GPS pins plus the owner-assigned pin, four chronological album orders,
 164 verified derivatives and untouched private originals/metadata. Its local
 build succeeds. Fourteen intended source/generated/doc files changed while all
 285 other tracked or non-ignored working files stayed byte-identical; original
 branch/HEAD and pending edits remain intact. Backups and verification receipts
 stay in the intake chat's work directory. Implementation, current trip notes,
 asset upload, site publication and local Studio synchronization are complete.
-The remaining owner location choice for `IMG_3652.HEIC` is recorded in the trip
-notes. No outbound update was sent or acknowledged.
+On 22 October the owner requested the GPS from the immediately preceding
+Innsbruck album photo for `IMG_3652.HEIC`. Copied `IMG_3638.HEIC`'s saved pin
+exactly (47.276266666666665, 11.394122222222222), with `reviewed-exact` status.
+All 41 additions now have saved pins; the missing embedded GPS remains intake
+provenance. Only this location/status changes, with no image upload or Worker
+index change needed. Follow-up site verification is pending. No outbound update
+was sent or acknowledged.
 
 ## Forni–Vienna via Carnia/Tarvisio — 20 October 2026
 

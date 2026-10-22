@@ -23,8 +23,13 @@ incoming journey. Capture dates, itinerary dates and exact GPS are retained.
 
 Forty photos contain camera GPS, reviewed against the transfer/city/corridor
 context before saving pins. No photo–venue links or location labels are inferred.
-`IMG_3652.HEIC`, **17 October 2026 at 14:36**, has no GPS: it belongs in
-Innsbruck, with its pin deliberately unset until the owner places it in Studio.
+`IMG_3652.HEIC`, **17 October 2026 at 14:36**, has no embedded GPS and belongs
+in Innsbruck. The owner subsequently requested the same GPS as the preceding
+photo in its saved chronological album, `IMG_3638.HEIC` (16 October, 17:14).
+Its saved pin is therefore **47.276266666666665, 11.394122222222222**, copied
+exactly from that photograph. This is an explicit owner assignment, superseding
+the initially unset pin; it is not camera GPS for `IMG_3652.HEIC`. Preserve the
+original capture metadata, blank copy, album order and all other photo edits.
 New captions, notes and place labels stay blank. Untouched originals remain
 private; publish metadata-stripped WebP sizes and full-resolution AVIF through
 the existing private Cloudflare pipeline. The current release has 101 visible existing photos and 25 recoverable Trash

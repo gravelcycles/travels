@@ -3603,9 +3603,12 @@
   },
   "backpacking-europe-heading-east-upload-93ddf23db4677e71acc7": {
     "reviewed": true,
-    "locationStatus": "unlocated-no-gps",
+    "locationStatus": "reviewed-exact",
     "locationLabel": "",
-    "location": null
+    "location": {
+      "lat": 47.276266666666665,
+      "lng": 11.394122222222222
+    }
   },
   "backpacking-europe-heading-east-upload-ef797655367862be2580": {
     "reviewed": true,

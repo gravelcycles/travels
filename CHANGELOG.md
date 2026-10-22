@@ -2,6 +2,10 @@
 
 ## 22 October 2026 — Salzburg–Venice photos
 
+- Owner follow-up: assigned `IMG_3652.HEIC` the exact saved GPS pin from preceding
+  Innsbruck album photo `IMG_3638.HEIC`; retained original capture metadata and
+  all other photo edits/order. All 41 new photographs now have saved locations.
+
 - Added the 41-photo camera batch incrementally to Heading East: Salzburg 15,
   Innsbruck 6, Bolzano 4 and Venice 16, in chronological city-album order.
 - Preserved source timestamps, saved trip content and existing editorial choices;
