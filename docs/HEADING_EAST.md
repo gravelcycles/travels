@@ -5,6 +5,35 @@ Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 
 Each city is one event. Taglines remain blank; the owner added the first seven
 city stories in Studio on 11 October. The photo intake is recorded below.
 
+## Salzburg–Venice photo batch — 22 October 2026
+
+Owner request: add and upload the new folder `photos/salzburg-venice/` to the
+existing Heading East trip. All 41 supplied HEIC files have distinct original
+SHA-256 hashes, with no matches in either existing intake manifest. Import
+incrementally; retain every existing source record, saved edit, cover, story,
+route, Trash selection and Berlin's explicitly saved ordering.
+
+New albums: Salzburg 15, Innsbruck 6, Bolzano 4 and Venice 16, all in actual
+capture-time order. Salzburg includes four 11 October photos from the Linz
+transfer, assigned to the incoming Salzburg event without adding a city stay.
+`IMG_3664.HEIC` (18 October, 11:03) remains in Innsbruck and `IMG_3687.HEIC`
+(19 October, 11:11) remains in Bolzano because their camera GPS is still in the
+departing city. The 18 October Brenner-corridor photo stays with Bolzano's
+incoming journey. Capture dates, itinerary dates and exact GPS are retained.
+
+Forty photos contain camera GPS, reviewed against the transfer/city/corridor
+context before saving pins. No photo–venue links or location labels are inferred.
+`IMG_3652.HEIC`, **17 October 2026 at 14:36**, has no GPS: it belongs in
+Innsbruck, with its pin deliberately unset until the owner places it in Studio.
+New captions, notes and place labels stay blank. Untouched originals remain
+private; publish metadata-stripped WebP sizes and full-resolution AVIF through
+the existing private Cloudflare pipeline. The current release has 101 visible existing photos and 25 recoverable Trash
+records. Preserve those choices; the expected visible trip total is 142 photos. All 164 protected WebP/AVIF objects (89,536,726 bytes) passed remote checksum/MIME
+verification; all 907 tests, the production build and actual Worker runtime
+checks pass. Desktop and 390 px phone previews verify the new city albums,
+blank copy, exact timestamps, grid return and unlocated city context. Deployment
+and primary-Studio synchronization receipts are recorded in WIP.
+
 ## Route adjustment — 20 October 2026
 
 Owner direction in “Update Europe trip route”: stay in Forni di Sopra from

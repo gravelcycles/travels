@@ -1,5 +1,34 @@
 # Current workstreams
 
+## Salzburg–Venice photo batch — 22 October 2026
+
+Authorized: incrementally add and privately upload all 41 new HEIC files from
+`photos/salzburg-venice/` to Heading East, then publish the trip. Work is isolated
+in the photo-intake chat's `work/travels-local` from current remote main `5ca9355`.
+The primary checkout's unrelated pending work remains intact. The [trip intake
+record](docs/HEADING_EAST.md#salzburgvenice-photo-batch--22-october-2026) records
+album counts, departure-day corrections and the single unlocated photo.
+
+All 164 private WebP/AVIF objects (89,536,726 bytes) are uploaded and downloaded
+for exact checksum/MIME verification. All 907 tests and the production build
+pass; the actual Worker runtime passes protected WebP/AVIF, signed-thumbnail,
+remembered-auth and D1 comment/notification checks. The source audit preserves
+all 126 old intake records, existing overrides/album order and the full journey;
+142 photos are visible, with all 25 prior Trash choices retained.
+
+Applicable O01/O02/O03/O05/O08/O10/O11/O14/O15 checks pass on the actual populated
+city trip: blank optional copy, exact camera timestamps, reviewed pins and no
+inferred venue links; desktop full-image rendering and Linz map context; 390 px
+phone city navigation, six-photo Innsbruck and sixteen-photo Venice grids,
+last-photo bounds and Back to the same selected grid. The unlocated image shows
+"No exact photo location · showing Innsbruck". Shared runtime is unchanged;
+physical-device behavior is not newly certified. Current trip guidance is updated.
+
+Next: deploy the updated eligibility/share indexes before Pages, verify fresh
+public content, and synchronize the new intake data/derivatives to the primary
+Studio checkout without including unrelated work. No outbound update is sent
+or acknowledged by this task.
+
 ## Forni–Vienna via Carnia/Tarvisio — 20 October 2026
 
 Owner follow-up replaces the proposed Udine backtrack with buses 110/150/200/203

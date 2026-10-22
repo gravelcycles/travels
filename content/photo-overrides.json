@@ -3438,5 +3438,371 @@
       "lng": 13.40507
     },
     "zoom": 12.66
+  },
+  "backpacking-europe-heading-east-upload-503698a88f2531806274": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 48.30697222222222,
+      "lng": 14.285480555555555
+    }
+  },
+  "backpacking-europe-heading-east-upload-c8ff6427d139f535c72a": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 48.300174999999996,
+      "lng": 14.28615
+    }
+  },
+  "backpacking-europe-heading-east-upload-8fa098a2d7aa10a1d47d": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 48.300425,
+      "lng": 14.286797222222223
+    }
+  },
+  "backpacking-europe-heading-east-upload-93fa0ecaf838579e2506": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 48.30045277777778,
+      "lng": 14.287080555555555
+    }
+  },
+  "backpacking-europe-heading-east-upload-78b7447cbbbc08bdb598": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.805175,
+      "lng": 13.046536111111111
+    }
+  },
+  "backpacking-europe-heading-east-upload-1c06abd26d922b089e96": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.80845,
+      "lng": 13.04753611111111
+    }
+  },
+  "backpacking-europe-heading-east-upload-27b1a755b8bc480372d6": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.76773055555555,
+      "lng": 13.367688888888889
+    }
+  },
+  "backpacking-europe-heading-east-upload-1f52ee86342e2a47a451": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.804874999999996,
+      "lng": 13.0372
+    }
+  },
+  "backpacking-europe-heading-east-upload-a2dd8ce54365c80da7b1": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.79974444444444,
+      "lng": 13.039805555555555
+    }
+  },
+  "backpacking-europe-heading-east-upload-ee2bcf68e2171b35ada5": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.799213888888886,
+      "lng": 13.040788888888889
+    }
+  },
+  "backpacking-europe-heading-east-upload-441f051cbca15f2359bd": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.797574999999995,
+      "lng": 13.041788888888888
+    }
+  },
+  "backpacking-europe-heading-east-upload-4841501f93f6e306afb6": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.797530555555554,
+      "lng": 13.041827777777778
+    }
+  },
+  "backpacking-europe-heading-east-upload-9176be04e849ee0785e5": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.79595833333333,
+      "lng": 13.046527777777778
+    }
+  },
+  "backpacking-europe-heading-east-upload-5499856ea55112c3494c": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.797149999999995,
+      "lng": 13.046830555555555
+    }
+  },
+  "backpacking-europe-heading-east-upload-1b085cccc8a759077094": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.797419444444444,
+      "lng": 13.046655555555555
+    }
+  },
+  "backpacking-europe-heading-east-upload-1417fbf4a9d48e76d0a8": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.26216111111111,
+      "lng": 11.394972222222222
+    }
+  },
+  "backpacking-europe-heading-east-upload-47394fb35f9e1c602c49": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.267966666666666,
+      "lng": 11.393427777777777
+    }
+  },
+  "backpacking-europe-heading-east-upload-4d2f2c47fec6cc699748": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.276266666666665,
+      "lng": 11.394122222222222
+    }
+  },
+  "backpacking-europe-heading-east-upload-93ddf23db4677e71acc7": {
+    "reviewed": true,
+    "locationStatus": "unlocated-no-gps",
+    "locationLabel": "",
+    "location": null
+  },
+  "backpacking-europe-heading-east-upload-ef797655367862be2580": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.19039444444444,
+      "lng": 11.385702777777777
+    }
+  },
+  "backpacking-europe-heading-east-upload-c574997a300645f901f7": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.26340833333333,
+      "lng": 11.394816666666665
+    }
+  },
+  "backpacking-europe-heading-east-upload-77e022f6352d3b0684db": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 47.00287222222222,
+      "lng": 11.505233333333333
+    }
+  },
+  "backpacking-europe-heading-east-upload-833e786e4db00d874ef7": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.49832222222222,
+      "lng": 11.355016666666666
+    }
+  },
+  "backpacking-europe-heading-east-upload-979be8f68639698de878": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.49655833333333,
+      "lng": 11.357436111111111
+    }
+  },
+  "backpacking-europe-heading-east-upload-88644e678778a96dae4b": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 46.499808333333334,
+      "lng": 11.353075
+    }
+  },
+  "backpacking-europe-heading-east-upload-0598de533039f5d125cb": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.43917222222222,
+      "lng": 12.330266666666667
+    }
+  },
+  "backpacking-europe-heading-east-upload-1b461bfa0cf5e2c5b8c5": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.431686111111105,
+      "lng": 12.329022222222221
+    }
+  },
+  "backpacking-europe-heading-east-upload-fe4d32c21bd103b35643": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.43187777777778,
+      "lng": 12.3205
+    }
+  },
+  "backpacking-europe-heading-east-upload-86a189343922e37cc013": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.436188888888886,
+      "lng": 12.323933333333333
+    }
+  },
+  "backpacking-europe-heading-east-upload-38836b44e48256c59adb": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.44573888888888,
+      "lng": 12.327555555555556
+    }
+  },
+  "backpacking-europe-heading-east-upload-c953f541fdd7fe72e523": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.44568888888889,
+      "lng": 12.32751388888889
+    }
+  },
+  "backpacking-europe-heading-east-upload-250dc53ea1de92093370": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.42836388888889,
+      "lng": 12.35713611111111
+    }
+  },
+  "backpacking-europe-heading-east-upload-57220d82613e8b0f81d1": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.430125,
+      "lng": 12.358580555555555
+    }
+  },
+  "backpacking-europe-heading-east-upload-e9006a9ebd3a8b92223a": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.43458611111111,
+      "lng": 12.3469
+    }
+  },
+  "backpacking-europe-heading-east-upload-782f5d3970f59b0553fe": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.43366111111111,
+      "lng": 12.340944444444444
+    }
+  },
+  "backpacking-europe-heading-east-upload-b3a5353de5848ee8bac6": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.434625,
+      "lng": 12.339011111111112
+    }
+  },
+  "backpacking-europe-heading-east-upload-185208a9f3769e4bda0d": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.43307222222222,
+      "lng": 12.348511111111112
+    }
+  },
+  "backpacking-europe-heading-east-upload-93d5db2800f0b1e3f7c8": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.433030555555554,
+      "lng": 12.348466666666667
+    }
+  },
+  "backpacking-europe-heading-east-upload-ffc29f819876df57ba62": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.43803888888888,
+      "lng": 12.335861111111111
+    }
+  },
+  "backpacking-europe-heading-east-upload-ce9af396767cb8c7adc0": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.43756944444444,
+      "lng": 12.334877777777779
+    }
+  },
+  "backpacking-europe-heading-east-upload-c2a4bf92faf7b27706ab": {
+    "reviewed": true,
+    "locationStatus": "reviewed-exact",
+    "locationLabel": "",
+    "location": {
+      "lat": 45.43686666666666,
+      "lng": 12.329080555555555
+    }
   }
 }

@@ -1,5 +1,14 @@
 # Changelog
 
+## 22 October 2026 — Salzburg–Venice photos
+
+- Added the 41-photo camera batch incrementally to Heading East: Salzburg 15,
+  Innsbruck 6, Bolzano 4 and Venice 16, in chronological city-album order.
+- Preserved source timestamps, saved trip content and existing editorial choices;
+  reviewed 40 camera-GPS pins and left `IMG_3652.HEIC` unlocated for owner review.
+- Prepared private WebP/AVIF delivery and refreshed photo/comment/share indexes;
+  deployment verification is recorded in WIP and the trip intake notes.
+
 ## 20 October 2026 — Vienna via Carnia and Tarvisio
 
 - Replace the Forni–Vienna Udine backtrack with buses through Tolmezzo, Carnia

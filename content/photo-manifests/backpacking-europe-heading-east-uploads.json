@@ -3071,5 +3071,1563 @@
       "bytes": 954903,
       "assetStatus": "published"
     }
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-503698a88f2531806274",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/cd1f3f9dae4f4539ae1b0d185c4e1e3413b39449e5c9a33fcaf856a774324542.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/7ce8f40433907da094238fe9182f258881ee4ea7848ae9646b840e935f9eb406.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/9ea5fc70f25e4ce65402d427e9fc23287c9b5f7616f31b8a59332d1221eef6ee.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/cd1f3f9dae4f4539ae1b0d185c4e1e3413b39449e5c9a33fcaf856a774324542.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d985a3110d2ce31db2c4018b6e897ed2f9da901c08c0726cd436372cb9119360.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 595669,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrgAAABXRUJQVlA4IKwAAABwBgCdASogACsAPwVqqlCrpiOitVv8AXAgiWwAnTL//SCDAZDlcM4778jw2cdk63/yxU5oHOqtT3qOqdAA/tT+WbgO2l7cnIcB9vJnZOetB63w2pka6zsoDBbG/TU3tsSS9wXm6R77c4IFC2FCIFBwff1mad7W3MNlNL6t7F3uodsWgvaGdGahnoA6yuXR3DQFaCXp2N4t9k52NsPEnTWpcv7emytKnPzHGxgA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "IMG_3544.HEIC",
+    "takenAt": "2026-10-11 · 15:02",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "503698a88f25318062743e3837a72ab10a1141465e3b9e4a2d440fd1426919dc"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-c8ff6427d139f535c72a",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/a29530d3b105948a603a8f15eea43be3951008f0fd2c05d0233211a86751e39e.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/dbd789023aeb8fef065626c078f484cbba4518adbf2d54921518c2e3c6c31347.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/3bfc975a90cc4f73cbd77f4b39bb529eab91e39521937868de068cb601a672ec.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/a29530d3b105948a603a8f15eea43be3951008f0fd2c05d0233211a86751e39e.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/fbe8e1656cf3bcac237df6dfd17cc9fc0a588cb8e7f3c767534fa8c292aea22f.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 844821,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqoAAABXRUJQVlA4IJ4AAABQBgCdASogACsAPxlwsVGspiSisBVdUZAjCWMAyTEKBBoX0d8rfH5lMSbJf3KrEsyD8fZTmjr+qcGGAAD+8NNXVGUiKwdJdL4oSYFoP/pOU/TYJC+wss5J3xyvf2xS9RRDm2+q7sL4gB90riOtgwoF7xGkD+R310QFL59bUPaVorghc/fjOBlHvnxS+b6YA98iHdJOmgMdjl/VCIAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "IMG_3551.HEIC",
+    "takenAt": "2026-10-11 · 15:23",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "c8ff6427d139f535c72a9f209292831469db3a5ec5a79e39e3226a8b9ce30e63"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-8fa098a2d7aa10a1d47d",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/dca82fbc467239c6e903b1b0892794e04eda42b009192037ccf38eb6d4c1b9fc.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/cc8813f1c5ed868a69408652260dba0b51dce34b070a2d460573e40a6c17d745.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/c45d093e99b22dad406aea3841090a53377ea052e2b0d149915d299fbbb5a518.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/dca82fbc467239c6e903b1b0892794e04eda42b009192037ccf38eb6d4c1b9fc.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/2b4c585a07bb41074e7e0bd587022462704a8cec87f8777a8b215a0039c86f0a.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 730380,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAQBQCdASogABgAPxF0rlCsJyQisAwBgCIJZQC7ACFb5H7Xuif+oTakplk0Uo1WUWrIAPx/ff3+5n5y6zL7RJBZvV0jcVg1qzuOhgvQJSmBwgGnNUp3HQCmhQEEAwfo0shUAcKMH0d6GIAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "snapseed_camera_capture_20261011_153622_657.heic",
+    "takenAt": "2026-10-11 · 15:36",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "8fa098a2d7aa10a1d47d01c89f5e5b71bf5157126ddf3caf3891084fde617335"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-78b7447cbbbc08bdb598",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/9dfe8f7332de80e121999f9e38399075857e36a3ab27a816393d1a98a06d67a4.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/1dddb62ce9b3cf25ead729ef10fb1faf8f3b7d0bf927828f1225e50ddb26a779.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/45cfde33b84261e91b13396af70fd335d69331e9793a01da0230d1e8d2639f7b.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/9dfe8f7332de80e121999f9e38399075857e36a3ab27a816393d1a98a06d67a4.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/7015b5cf9fab143f4efa672cc8c2ea916ff98e7c1120adf99f19fb210ee45711.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1167213,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAAAwBQCdASogABgAPxmAslIsqKSisBgIAZAjCWoAnQAxtrHQJj7CaMug3bENm4KN6FcLAAD+jRE9/hjZFRuZtJ/QZxswQ/JDSj1wgQOLG0CNTvF1LkDn/xzvy3i4sg6Nv85qVSlEPwtwvGEgRcb8phPJdfXEM92B8LKVFvbZxIuczcP0kF0s3gmA0TpEAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "IMG_3564.HEIC",
+    "takenAt": "2026-10-12 · 10:23",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "78b7447cbbbc08bdb598f5bb2243f685fa544b83938e3d6da266fce28c44e384"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-93fa0ecaf838579e2506",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/53b7a310202427e9ba8467669c61075a515dacc34f08858c27fd23af48669d79.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/313bdb4d5f70a3480d0c47b2b63444cec9366c568fb1245e94fcda7c95f3c956.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/459c8636144cd302371ba7b5668e447b32c90d2dd38a4a33a39e13fa20b0e58a.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/53b7a310202427e9ba8467669c61075a515dacc34f08858c27fd23af48669d79.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/8633c8f99bbdd2d17f4126de55e3e4f40dd5b2b5868d03f79dd7e5a9851bd773.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 557969,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpAAAABXRUJQVlA4IIQAAACwBQCdASogABgAPxF0slCsJySisBgMAYAiCWUAygBTIPYkyyXv387KObju547l+KqDFpevzIAA/udAgVbwtE9Ygzek7BgCh4xbaWYkW8M7wnDVeL9KLr3WHJ9eiFlDU42KS8FaWqqboVgSRuwM6cSlIWbdsFT1Mr/vLX8sWXmV0Uj2EAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "snapseed_camera_capture_20261011_153701_952.heic",
+    "takenAt": "2026-10-11 · 15:36",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "93fa0ecaf838579e250696e517bafdbc79c105efb538f8bbb668c7b5f87c7898"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-1c06abd26d922b089e96",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/48107a757178bc8ce413971c5a5daf5d33653e703725e82dfeea468dd156a6a4.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/443875301192e6b12806f7a8389beb0d762278b0145dfff66e366af2079b7edd.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/68517b76617586ade3607707d84b58ac280d423f0f88b27fe46d237bbc0ed712.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/48107a757178bc8ce413971c5a5daf5d33653e703725e82dfeea468dd156a6a4.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d9b37804b43cc5f9b532d125d7f2380be08b252cc7544e1777cadebe3b8fae0c.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 441989,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAACwBgCdASogACsAPxVwslCspiSitVQMAZAiiWMAuwAJrwHENmfiOOyC7CkJt+A1KerkXp8jC4Y0bX4VF9IqAAD+jR773uMj4kTAJBNI4KgsW+xyPQfD4BuUaP+SlYcet4SOGl04lOX8ZMmCD3BJhxUzfZDA12XJU1IuE5an2uA02tB4/sRHp0zcp4N7EXF8J3+kk7QlJF29dECA2W79xQAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "IMG_3577.HEIC",
+    "takenAt": "2026-10-12 · 23:14",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "1c06abd26d922b089e9610f7afe6c26ee8f78c4e9bb56b2308ad69c152329532"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-1f52ee86342e2a47a451",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/c8e1f610790ff7587ac5e05c63e2af86281ec7b39952a4c3011a41d8cab0aa1e.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/b8e10ba214349c9d1365fcacaf5bcf23253028e6a0839d76e2f67e900c096f18.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/5cd57f36701ea9e609532efe8bb4f514845e9f343690efc5fca5129db89d28a9.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/c8e1f610790ff7587ac5e05c63e2af86281ec7b39952a4c3011a41d8cab0aa1e.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/cd3c58290d338c48d3af3b688da33daa16ec163210426c6669ae174c3e815add.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 914664,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAAAQBQCdASogABgAPxFwr1CsJiQit/VYAYAiCUAYUAId8F9z57vIRcSGyHCm0zZWFKHgAP5R3c95jPJilKmIVDmsLPn5lmGY0SesYbZemHdGRKiMk1wPjlBMzzrJh6Y3eg7l4AtRv6sIb4FltmtJ/nES/ZUMdDTZfm+PAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "IMG_3594.HEIC",
+    "takenAt": "2026-10-14 · 16:07",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "1f52ee86342e2a47a451affd0f0f2c00543927f2a087531e19e17324746332d3"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-27b1a755b8bc480372d6",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/c9a395376ce3cab7d93dae0b5bf7dfad90486dc5a6daed9aefd5d052cadd4cff.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/a763962ac725a396b9391b83a640730423c3f8ee3afd369a0ba71a50f291f72c.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/75989a22a8c3a698c90f753778f13018b9708854a81d4289f7933862f83f8631.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/c9a395376ce3cab7d93dae0b5bf7dfad90486dc5a6daed9aefd5d052cadd4cff.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/5b2126d9fe2358dcee29e26acae1b2c8cf958b60b477b5cf014afb3333bddc47.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1390044,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRtIAAABXRUJQVlA4IMYAAAAwBgCdASogACsAPxV2tFCsp6UisBVdUZAiiWYApxuvsDiNzLsMPe9keda2QzXrQ+8aS3qAo6+kqC3UAPcV3Sk9+oeSncrjf1rlR+fG6qOn71+3jHRbfNhk5c/WxzH32tbkLkyfQ9chN9hYqIwaqr7SJVW2BO9c4U/4Idhm/hDiNZkf7j+fxmCjaE2McAkIbKlSB0S+LbCTqNOdLbsltR1NMBhjbRlS9N0Ae4N8waBL9BAJoSTZ91yYv2IKppOvaF8geHsQAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "IMG_3582.HEIC",
+    "takenAt": "2026-10-13 · 11:50",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "27b1a755b8bc480372d693db0d523941f8c771a8be3b32f00c684b804d903d91"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-ee2bcf68e2171b35ada5",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/37c4b41d9e3d1d82baa15655b81e38aef21536b294cf0ee98e0d904667848bf5.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/bb726af917b3f8de6e7fc0f13974decd385beb7b0654fd7f74214f8c0d83dd1d.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/3bc46f4a7c088739727cc8b1bd55d0526919149ab7fd690870e735cf0adc1f7c.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/37c4b41d9e3d1d82baa15655b81e38aef21536b294cf0ee98e0d904667848bf5.webp",
+        "width": 2395
+      }
+    ],
+    "width": 2395,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/5c21d079ad17c650375ef93cfda17f3ecffda208ac4e48b73b435d15349cf7e8.avif",
+      "width": 2612,
+      "height": 3490,
+      "bytes": 655445,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRroAAABXRUJQVlA4IK4AAADQBgCdASogACsAPwFsqlCrJiQiurmYAWAgCWcAxsBgA23QeIxKcjQyOZ+1o8rKiOIzd3Tfl3kVtq+R0nHFRwAAy0TAZrN5k3M5rr3aiJcHOor/3lz+PY2DaXXYsfGtet4l3lwuhX3FyeCbCfp0xTNgh97y0zdenGH9622o76JsO2Fy/M2vIQVWFWP+zOzjptQVWAywCmLqqVIwh+pgoOOirFprlVT9sE/QFfDUAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "IMG_3600.heic",
+    "takenAt": "2026-10-14 · 16:40",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "ee2bcf68e2171b35ada5c90b8cea140d96f8b65441f60609dae94f662457b956"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-a2dd8ce54365c80da7b1",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/010e5fd45d258b671ec03a63ae2582f20b9eeff1c8029ba4aa070d9c5adb1791.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/595ea7d5654a4bd92ccb0618c2c99c8c79eb939156c8f2595faf5fc50b59a5c6.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/df47bb6d7932954c24496061fdbba88d1aae170f089dd9c30c26bc5daff5524e.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/010e5fd45d258b671ec03a63ae2582f20b9eeff1c8029ba4aa070d9c5adb1791.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/f3838071faa486e646aa63e83ee86837dfe35ece692981cc13bffe1bcfe4d76b.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1432551,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsIAAABXRUJQVlA4ILYAAACQBgCdASogACsAPxmAtFOsqCSiqqoBkCMJZQDIIGjPPp93JkFO5xnLi8sT9LdUF3Ogxf9AMnCMEvHRDyIAAP7ts904HcJDmlGZRzcCyFLxOrNa8PakWxTNWwGSTuiT+ePy/SdSpBXgKEYVMPIPeE+XWR6BhWqAJV+ztQfPRuoNBtLGpH6Z6E20P/QVu5H3aZvuyyuAvdMHio6P0FXDCaYwwvY4g62QpQYTqBAEZuObl9qTCAAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "IMG_3598.HEIC",
+    "takenAt": "2026-10-14 · 16:38",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "a2dd8ce54365c80da7b197c120b04be8f352001acde37b595f9ea9e815434943"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-441f051cbca15f2359bd",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/9b9dbd67b86292221f020f3d03ca4a1b83bf3f6eaa11102e937b37dc5cff802e.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/309f59ee5d77055dbfa7cdd747fee6fea99d33818592457e2881127762682cc3.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/46aa08ba3a7b916a760b98e24b8252e1088d3d4a474cb5fe79096957eb3a08ed.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/9b9dbd67b86292221f020f3d03ca4a1b83bf3f6eaa11102e937b37dc5cff802e.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/dc088214efab14ee0355c4502c7dd9c5b147d8b5491f65e4908486969a1a3072.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 763093,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAABQBQCdASogABgAPxmAt1QsqCUjKAqpkCMJYwC3uDDeAH2MMRcvK7N7Yncep+WrL/bkOAAA/mO+xmJh9mFSezCUYz0CJDk66KeF89cwFISXBe2W7kRCvQZYgiInR/PnRld8TKkKTan2+JNEa8ZZoavaAswD5gD88Yx+IiFL/gA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "snapseed_camera_capture_20261014_165115_897.heic",
+    "takenAt": "2026-10-14 · 16:51",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "441f051cbca15f2359bdebb00b8874c452255fe466b280cc98f8507e4349089f"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-4841501f93f6e306afb6",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/1dde3533abc551db34bc98899c9008470b7d6056d15811f7ae657ae267dfc562.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/c41cd905d9d8725e75b84c0653fda08edb25b3993f90184d986a841a641be6aa.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/a9de1e8dbce46ef794c08a708f1eae462362963d3badd0f939e7da594d0e373e.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/1dde3533abc551db34bc98899c9008470b7d6056d15811f7ae657ae267dfc562.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/36a10c49aa0663d3084e60d40f3552d2d94ad6e0ad81ec01bc114b9e15cdce1e.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1255140,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAAAwBQCdASogABgAPxl+tFSsp6SjKAqpkCMJQBOgAjEBWcQ1znSGJvkq2R951yLL3jsuAAD6enZ2tz4M6YBLD6D829FcsjdDeWQ3+EBhQ8mR7WCBf4UmJGHeWslRMso2Z3lzA6d9qha5JQqlF2+7lzLmATAsw2ZQZzJSFIsVZZkVFPzIRDsuCSt2aW8OyU4vylLCOOfBqXKaIwAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "IMG_3609.HEIC",
+    "takenAt": "2026-10-14 · 16:51",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "4841501f93f6e306afb69ffa0f54ca9b50c181835b5c442dfbda0d1dd109051b"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-5499856ea55112c3494c",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/08359dd004b05bf7bd1378209dbb7706fed9be6f9bb7cab27b45165cd852f620.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/fd8e5e36b714e8351b193a4ce064a85f55a50e08c78019c83d99c12ae8ce2a02.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/0c828c04d6229b32630c2c16b7c2a93cdc66720d4db30e748bad298a13089376.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/08359dd004b05bf7bd1378209dbb7706fed9be6f9bb7cab27b45165cd852f620.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d99e728165726e7a6c6c2b6cfff1573424d034122007455f6636ba62a9ac2a61.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 941444,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAADQBQCdASogACsAPxV2slCsp6Siqq35kCKJZQC+SEcKF3e8vO2kVwo/XwFZkcNUvB3fZ3xujfuAAP7D/c3A4uMt5+aoayrzNgP6DMQIIgIBJ6rT4oJzIkCmCZAzQ0xpnD/94ZsdfOcs9/VYc4njHSV7eIidk0BcEzXC+dx0sxlt+iohPYfNgpv0/6NA5OBrjyAL4ZsSP7byAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "snapseed_camera_capture_20261014_172504_159.heic",
+    "takenAt": "2026-10-14 · 17:25",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "5499856ea55112c3494c4770f1d9120e7a990dae49daa37242e878c94a6af15b"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-9176be04e849ee0785e5",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/5201eae75a0022f2f2c265cdde44288331c48e1b88b5e6480e7d8b53f6e6e48f.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/e97ce732667a751e9ed9d6ec5b2c7317df6e3dd1ba2a94d03c3c5d12896334a5.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/c06c8398c787df86ffc31723d4352c83a71a594348083a5821b689edda995452.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/5201eae75a0022f2f2c265cdde44288331c48e1b88b5e6480e7d8b53f6e6e48f.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/e2ab3c0f371393bf3a86e30868b8aa8f6674c8d20c1524398df02ffcf1b74142.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 938889,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABwBACdASogABgAPxmAtFUsqCSjKAqpkCMJQBYdgBd+X92HdmZ5ZoXspJ9bQADZyotWnf/p0q8xa/GBKq5RBHFu6OC2jCR5PagPg49a+h2x1A+On+odJGZEwsdeTW6AcroG5APkUhXl3hrQUgeAmlhUYZAlpRqriOmBgAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "IMG_3610.HEIC",
+    "takenAt": "2026-10-14 · 17:06",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "9176be04e849ee0785e581948d162195d10129e978daabb54950697524f3743c"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-1b085cccc8a759077094",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/67db99e335a1f2cbfa6dca5337f0a05250ba294a142bafa740e4b56497ba7aa9.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/6cd97dc0f1dc94cfdddf3304d8651e62aee84e4f2c4f23777e4fdb4328884bf2.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/4c159f8a9def3e8908b99c07d2fe3e2415633e9ab4f7cb542d37c868a00b474f.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/67db99e335a1f2cbfa6dca5337f0a05250ba294a142bafa740e4b56497ba7aa9.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/752bfc43f46dfff0aba7ed7ad4dbef7694467e5d66ac950472aed028dfc44fab.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 826673,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAADQBgCdASogACsAPw1yr1CsJyQitVv4AYAhiWUAAUCTjRpMRclsWmv64w+X8X9NfEX+s4ocr8r8HKOhK+7t3kAA/vHT4T64txgqL8X9Eh+LAQst9iWM5q7iLnTfkOb0TSMj9vm/rTQiDGXQsrjx010C7kkFvU3oyRWt4tFSsqm3TpBbeT2JXI1gLgSXpaoeRIqcOycHgxvZ1i1NG5dxYNCkyzGyUWwAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 8",
+    "sourceFilename": "snapseed_camera_capture_20261014_172608_684.heic",
+    "takenAt": "2026-10-14 · 17:26",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "1b085cccc8a7590770943331db14f217be7bd0050007ea5afc8a6274cdd3c733"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-1417fbf4a9d48e76d0a8",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/0aec0191e6d68103da27d6fb67f11ae4d112704948e5833ce76fa275b68f5715.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/2c1442097de325bf8bb4e5d5222294ee9e558f6d3a93fa263e054a4d01464e69.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/2ab0775f3e531e51c00e335775be1265698f4d563b4522cb17008af15d728b20.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/0aec0191e6d68103da27d6fb67f11ae4d112704948e5833ce76fa275b68f5715.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/1af1f3b6ad76ed00e781ec11b7b7b7ec8f3563180a77a12cd3c5574fc4003e1c.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 705170,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAAAQBQCdASogABgAPxl2sFCspySisAgBkCMJZgCxG9SBo6AZLLnIkGtp5EVnstinCLdAAP6Ap/l1BmAVVki67Rm3/M3A8/ZoEakqvriv8ighiPkQDPHy4G19b9ynP1+00Emz9rvyXkatYiFoA+SCj3p5EsfeiEiQM0KcCldHmOPe/zx6ufTVbV4t7zvT2sXiAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 9",
+    "sourceFilename": "IMG_3626.HEIC",
+    "takenAt": "2026-10-15 · 13:42",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "1417fbf4a9d48e76d0a893f0448723be971bde62a60f1d61ac9678680dfeae2c"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-47394fb35f9e1c602c49",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/fcb8bf5da9bc012a6093766855ad6f62d06c26b2bda28065f1d05c015c9472b4.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/38b680db550f2e25017cb6605ab8197c0729e16a18cd6c517e8d10497d47d58a.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/00d3319dcdc7ef417e223691886cfba3a5f3f19efa380124a33c8bd12ad0e1f5.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/fcb8bf5da9bc012a6093766855ad6f62d06c26b2bda28065f1d05c015c9472b4.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6076e36861aa8e18d76ecf93aae7f114060c3066fe10e689a3ab88003940246b.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1042496,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAAAwBQCdASogABgAPxmAslKsqKQisBgIAZAjCWQAtsgv9bQyIT5FGo41b55irfhro2VNgAD7X+ZMaKqnZslRNvLzEWvUeLIAU9E4MbMhN3CPyodl9IwRfhjWgvuDTA/j57yQffv1SkyyFVLIwUmXZOmCQWgIbR4GV76QgCxN5viS0AAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 9",
+    "sourceFilename": "IMG_3632.HEIC",
+    "takenAt": "2026-10-16 · 16:39",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "47394fb35f9e1c602c4984f2c59137dee894115166a7b154bb6513381432aaf4"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-4d2f2c47fec6cc699748",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/a5bda73e35d1eaf1a8adddf233415af7bdce19e3fd4f6d04a9d597fa9436b918.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/af4f1ff78350d6150fa7d514c8a1195c0b504b5294e307ee3fa0f2b3801aea0d.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/675c79ce7ae5b8735b8a6d27acd1ee7df0110a5e16448e7f803c9081c357a244.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/a5bda73e35d1eaf1a8adddf233415af7bdce19e3fd4f6d04a9d597fa9436b918.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c5640991e951fa29c71f04eee71d3997568773eb2b223ed6e1f409a527281ba2.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 618719,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAAAQBgCdASogACsAPwVuqlCrpqOitUgBcCCJQBecA7F+9tqr+P/6F4QeQlyU1qvZ4PULyxyGqwwoPAAA/rkETpZ/NcDbzsYurJdcYNE/qh+frYWgCCBhFPhkOzevQAH5qHdoHRvaCOPBQluYW2P9coyLNl15H58Y296RI/5jMLveZ61psLARkDYDRZaaxVQnhwi7e9gMzrwvzCHpJ2Tvo2J44UBO+KAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 9",
+    "sourceFilename": "IMG_3638.HEIC",
+    "takenAt": "2026-10-16 · 17:14",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "4d2f2c47fec6cc699748235cbe86a4ae1b29cd36abeb5df0c04827893cc0e09a"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-93ddf23db4677e71acc7",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/c151a81f21b1de8575f7f9358aef0dafd3c643306f7edf098b74aec3c815f541.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/57fc9dd7c5bae4716148cf103fff28a1b9931db985b1e5fd283198034b7eb0b4.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/f4aff60d4b4faabf745f36b7c5bec712d5aaf261f46d132b5bf0c26000372847.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/c151a81f21b1de8575f7f9358aef0dafd3c643306f7edf098b74aec3c815f541.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b2b5894fc2fabf8911fe060caf0cf1c7385a5df18f70bc824ab9d83b081c133f.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1168019,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAADQBACdASogABgAPw1ysFCsJySisAwBgCGJZACxHuI1OAlXNqNmFACFNfjVN7bgAAD9HA58XuBLXQ1nttfn9tuh3aoOU4NXuucpD2CwSPsyrCOnhCSrbnc2Wmcnn9Gm483LwtAbKhrUfayHgmexMq9OTmKFm+25IzPzLAU8cAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 9",
+    "sourceFilename": "IMG_3652.HEIC",
+    "takenAt": "2026-10-17 · 14:36",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "93ddf23db4677e71acc7c85afb0727fb0af60c4138e5b35957f60d0183ba7064"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-ef797655367862be2580",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/f96cf5ede803935e64567d0654993d328cb347561d397eb8be75f5a16568a8d6.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/1789c79eba855d27b89630c89426fb0c0694d972bfa89bdec69aae2f46025638.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/f01a019eba81ac7ffee731658fbe99ad29e5985e6c632023180470b153fc5b6b.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/f96cf5ede803935e64567d0654993d328cb347561d397eb8be75f5a16568a8d6.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/5ad626b2227320df755a22894f187d17772acb1b4a755562ebdb244a11339541.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1437494,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAADwBACdASogABgAPxl4s1OspqSisBgIAZAjCWgApeW/gWKWTM+9MbYeYkxkjrI5KQgA+lthsJ+1IgsHjR+Ytl39aJlqb9650uprj+oRnDE8IJfgTqsjV5/eX9YGLRlIlsfJo7scOabjru2TpNste5M7lPcKm/9DQAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 9",
+    "sourceFilename": "IMG_3655.HEIC",
+    "takenAt": "2026-10-17 · 14:44",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "ef797655367862be258072bb0426b39221189087241653bc90aca00eaf128461"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-c574997a300645f901f7",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/b8e10f9b5f9585594b1cf2ff96a6c50072a8599866fdc61cdb4ada5e33501d80.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/598dabfeb40352d85f814d0eb78669ff4ec9350b64fc1205481554c299fb0baf.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/dd807c9398fb57400221934c8f2f329b85866a161d69404235142e0ffd069cc1.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/b8e10f9b5f9585594b1cf2ff96a6c50072a8599866fdc61cdb4ada5e33501d80.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/1d79efba43a69952728da76967e505b7e22f5ad490c8431189210b2220c1807a.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 959058,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAABwBQCdASogACsAPwlyrlCrpyQitVgMAXAhCUAZmghgKumRKWM4lFCBLw5VX16GfZE+pmAAAPxahDnGN1wzdUM/NH8GlbI+/mGcyZShlm4ZbD/I4xViNK12bF4sPWhNXVUiPUcr1plI3zT5qGC1ZStkJNGzOyL3xI/W+RztOFwWoKaSN4qBf61u/SB2RVY/zHyBU8dxi7i8AAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 9",
+    "sourceFilename": "IMG_3664.HEIC",
+    "takenAt": "2026-10-18 · 11:03",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "c574997a300645f901f7017329348f8dc41ccc6f558ba71058877ecbbdad02bb"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-833e786e4db00d874ef7",
+    "dayId": "backpacking-europe-heading-east-bolzano-stay",
+    "src": "/private-photos/assets/v1/718e754ba9f19264a2d035ffb51a683d6ce27e597ad01a02f7a2f8e10fb3283e.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/1f795faa180d68c26f41264f187d221a08d1be60978b2564382eb3155f44e1f2.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/35c5ba0352dac356ebcae1e141fba2a4f36ca2839917c8a05d01a15f3c1745f6.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/718e754ba9f19264a2d035ffb51a683d6ce27e597ad01a02f7a2f8e10fb3283e.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d3aa8c1a15ba32619244797ee21acb4438edfaf789297cef20aa756d00f495a2.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 543990,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqQAAABXRUJQVlA4IJgAAACQBgCdASogACsAPxl2tFIspyUisBVaqZAjCWMAvOAhS539U3MT8LxB+SbTZhJE3kKAczUpRVCR53SRvqLAAOrDu4JkbOa7znY5vz429ywkuHOC0pr/uip82oGNC97/0PqnmCyWh9jHp7EJuwCUJ2JdJslfk7ex02QrbA1YtJdp/RfJvwAO5d993GSI7d88/TLGDS/8gEAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 10",
+    "sourceFilename": "IMG_3677.HEIC",
+    "takenAt": "2026-10-18 · 17:18",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "833e786e4db00d874ef70d8fd80469aa41415ca9a9659f72851087bd6d0674b0"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-77e022f6352d3b0684db",
+    "dayId": "backpacking-europe-heading-east-bolzano-stay",
+    "src": "/private-photos/assets/v1/a7d6eba88233cf559c32fda7bfafcf7f3d0aa07412ffdbad8b8562dc1b1239a8.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/da1deb105df86a46957d0afad9a8d67386e6adc60b6d13819e696b06e6bafe5e.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/40b5c2d877101a80ea4d9cb0813f20f4fcb8bd6e033248594855bebf2700e0a3.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/a7d6eba88233cf559c32fda7bfafcf7f3d0aa07412ffdbad8b8562dc1b1239a8.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6c229eede697424eb36fa2dfdf65116f24af9bc0f5c0865695bed1480b62d2c7.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1274565,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsIAAABXRUJQVlA4ILYAAABQBwCdASogACsAPxVyrFCspqQisBqtUZAiiUAXq/YyLNt+ATEd8ZBKhWQusRkBfV8CU5A3vlO+cO3P6zHDE1MhTW/AAP7ZUwFpWFuhhU3NKz9qgwC3Zw/lPbudt5Mk1nl7of/cT2GlFdc/xH/vWQMFCQ49NN/CiS2reA1Ix5eaoyEtd9wdIuTNwgqhOTjHtrzulv0vdI3c9rzrsevXR9XUxXNZ0uqkjYYEljq9SSuH+DQga/AAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 10",
+    "sourceFilename": "IMG_3665.HEIC",
+    "takenAt": "2026-10-18 · 12:28",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "77e022f6352d3b0684db1a7b8f54c478b5cc079ea1c3623007f86ce497db4cf4"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-979be8f68639698de878",
+    "dayId": "backpacking-europe-heading-east-bolzano-stay",
+    "src": "/private-photos/assets/v1/b1684eb3f7d84926a943dbedbf2e877d2bfa6b3374034c0216907e473e671f85.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/2b7f8bf9c656389786ab7db2a68800a8a80a2a33cf183a34a798e0326e4fad1c.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/80896595d581bea6fdec3083f0afd5716f11769855659eb2ac9e9acb5605a4ca.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/b1684eb3f7d84926a943dbedbf2e877d2bfa6b3374034c0216907e473e671f85.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/fa70d423677fd9383282cab7e9d52e6769ebffacf20de945cda86a5a8ffb7e70.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 996074,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRgwBAABXRUJQVlA4IAABAACwBwCdASogACsAPxmEuFUsqKUjKqgBkCMJbACdMscBXfVOPGEESf5aSjvHYGLU13IR2PoU4dr2tLnIMUH78UVr0oUNc4ZgAP6lUOcF9rxJAMU4uhjJWKzOqmIBy2deS7qmxNX//mxAJrxXgDlD07Ng0njUlqxztbhP2gAKt5499SrrS8F/zVMZ44FuAYybq94cD38IOKJHbSKQOrUvInIyFnUp1YynoZfZZ8ftChS7nLIRiGdFoCmyMn5F+7NJbiv9Ru8m/WoBTuOSg6a3bb/dJuXIUixzB/8HCnGKmMO4ntA7OYjkBipYHHZm46EdM48LY4ZYZCfjUd1F84pnHsgA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 10",
+    "sourceFilename": "IMG_3681.HEIC",
+    "takenAt": "2026-10-18 · 18:00",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "979be8f68639698de878da12db412526233bd83447ef9c31834f75107f6d078f"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-0598de533039f5d125cb",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/0af1fbb9f6a2270dd5fc938cf839df0ae46d33e19a3dfb167b355e78df268960.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/0c3322bbceb93cbbdeffecbeb8ff39a4bdee38260312a848b8f094e108b272a6.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/9f95d071dbae29df224e5dcef9ff64fe6ed0aee2fa5993bb29d2ac4b4d5275bc.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/0af1fbb9f6a2270dd5fc938cf839df0ae46d33e19a3dfb167b355e78df268960.webp",
+        "width": 2042
+      }
+    ],
+    "width": 2042,
+    "height": 3201,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/3bf8a5e018e32431e229ed185d7fc95f7afa2d8b6233945157bd9414a50ea33e.avif",
+      "width": 2379,
+      "height": 3729,
+      "bytes": 615052,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRuQAAABXRUJQVlA4INgAAABQCACdASogADIAPw1srlCsJaQisBv9+YAhiWMAytVGiD/mtLD0EcdNrSRK8Vpxl+izOo2rw/vnyvOflx8zSzY9nStI5TKRD/zyXwAA4nW9i3Qg2KaWJj0ZfSp/mPQyATkxVcFtWi48zTyfyVq//qnShmNrm7MdSik/QHpESaKcxuVkcUPuD9ZqX8VApRUaZDmbBuxGg161bZ5mdWpyOIGh4b2A8FkBOR3sxqGs1OCtB3ZZs//WKzqfOI576WFYfeEFw95sC6PGO7HRwrcg2VcVjAtPcy8AAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3693.heic",
+    "takenAt": "2026-10-20 · 11:47",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "0598de533039f5d125cbcbd3d7ad3276339383375fbaf551ed5d57955ac70242"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-88644e678778a96dae4b",
+    "dayId": "backpacking-europe-heading-east-bolzano-stay",
+    "src": "/private-photos/assets/v1/fc13606a8c5f738258acca51282df15c12193509afef7cc11915349cf98098a6.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/280c8243782c71f8b46ffcbd1d2c1f268bb2330e0b7f0f3b902866fb5267cec5.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/2edfc86dc6a8c822c5e78a6f553d6810173e15f6867255788eff2fb925e99dc2.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/fc13606a8c5f738258acca51282df15c12193509afef7cc11915349cf98098a6.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/850cbf9f4e6ecfb9f382bf745771c3054a156205f4c56eae165bed8b824d98bc.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1837019,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAACQBgCdASogACsAPwVsqVCrpiOitVv8AXAgiWMAx+RmNRstRz55JxCASil5U0Ln+WteL3VVld/10x+gR7V8APUM1T6Dm0Vqw+YRgLmokRigl4MO5HmYdyflAzqVh+gAE8HostG6lEH5L4eFSU6shA1YMF2fPTCJc7wHhbrPzWlyujbxUooCJOJHYyVc6rDAlCtJ1C9yH7pcsAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 10",
+    "sourceFilename": "IMG_3687.HEIC",
+    "takenAt": "2026-10-19 · 11:11",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "88644e678778a96dae4bf764c5f652628ee9ebb346760f33f8756607ba47878a"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-1b461bfa0cf5e2c5b8c5",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/02d0d993a3401a25ac332b8e6f072fc341414d38a6c529817c55a6e906736aab.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/4b750187b28ccd3f9e76810f9be2a457bcbfe0e56bb0dee38fb29596fbee334a.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/8b5d8cbcda6d69e4e78062014d56054df2fea50c4a7c79876bd2f5da23a310bd.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/02d0d993a3401a25ac332b8e6f072fc341414d38a6c529817c55a6e906736aab.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/4ca60c2e8538d81a280ded5ecc333f5d99aba4930dbdb319d8e35fbe6cdfed41.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 758212,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRtYAAABXRUJQVlA4IMoAAADwBQCdASogACsAPxl6s1EsqCSisAgBkCMJZACnG7BAqWsy9realkDsdZaFW/r64OVORs0Ws1x2AADY41SKiY9ysUhJubWn21XTXdCdyKlWgnJ11Qi2YIG9MoCTjnd955GSfzciAWvtNyvjDABER3wxpzm0j7bXPi8nP6IKJLyPtqapK1hJ1mUfAReJzhUU8riAILdkXUnUNiI3jFb+F5C6s/Wt9iB9zQwgccVLoxX4VVHUZkU3+y6ut4kb5a6N2SfIs0dljmIvgAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3696.HEIC",
+    "takenAt": "2026-10-20 · 13:15",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "1b461bfa0cf5e2c5b8c5c6027bafe8d4317d9a89cc8e42a6f5143f87cdcbb900"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-fe4d32c21bd103b35643",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/e8929e4429aeb53b15706da3bc0943294886e683b4c126ff6e5d78e2839e910c.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/8393a7d1d4b6a32822f2cf7ebd352875b488aba96d651041722f00dee30ce0a4.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/eab98567f21a8b6171ffad8931981b6dd5534827a455e071743d3db9eca9c703.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/e8929e4429aeb53b15706da3bc0943294886e683b4c126ff6e5d78e2839e910c.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/4cd0477d5dfc5bb3bc6329426b8e0b2ea3de84bf72a103049181c72748ff116a.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 963731,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAAAQBQCdASogABgAPxl+tVUsp6SjKAqpkCMJbACdMoAAlB0+SWb7r/qpAbX7+ygnfPLgAN9T+1WWeMYTO+4++GLEiPy1mR2bGOlZphN1rjGiLzh712L+J4jmQdzg1rFCt256DVok9vhhzOBUu6g6HhBKNqptD6iWMs5xGji8dXqlXjG+vVTdHvEctcvdXKVTzRGAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3700.HEIC",
+    "takenAt": "2026-10-20 · 13:35",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "fe4d32c21bd103b356430b16109cda90e4e2e796a76470a680869ad02b812f28"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-86a189343922e37cc013",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/6052a11582652e2a259ff75df4f53e81d6223be26f2ed51959446b4fa0eca07e.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/806364e037528d7ca044c6616ca508f52bce16635586140f75d7293d1cc45a85.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/4bc5adbf2c59c3a459173b1d56590ef1bec08efbb47b07a4063dcd6d21313a02.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/6052a11582652e2a259ff75df4f53e81d6223be26f2ed51959446b4fa0eca07e.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/f688d06774da4d3b8c49688193d953a05467f67d2c762fe92c9d8f899c4c26fa.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1233996,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRtAAAABXRUJQVlA4IMQAAACQBgCdASogACsAPwlur1CrpqSitVgMAXAhCWgAthRBk3M2pmUjeV8d7R/F3CSm0uhJol0n+jdUX9N/b14AAP2jiaft9GIxr//Gj8n+nctgegjnjRLnsceGbia7xEm3+WNsuT9ofVZdNgKGRIxGL+gGgEXe4Uz/LHtTQYRX8hy2SWALQHvOKzMcRdLsrBio2I5tKGcJvOm/b3Wi68oO9PKQ4OPB5xU0Hk7EeF8a/Tm0Kpa/Vax637dVpkQti06dvAILqgAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3702.HEIC",
+    "takenAt": "2026-10-20 · 14:32",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "86a189343922e37cc01367494260cfefb755a6190565808f88d088d0e7418824"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-c953f541fdd7fe72e523",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/4f2246f12ef9b21b25e4183481d353b297a5bf501daad66990f54c6591613b8b.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/2d4d797f9783acd9b6991ac3c1c9ac43e45569ba68ea516af3fea372fbdd0f13.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/0de525dce311f7e2ad5b453e3fccef3df38471f8a057996fbf9dec0baa05dd58.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/4f2246f12ef9b21b25e4183481d353b297a5bf501daad66990f54c6591613b8b.webp",
+        "width": 2515
+      }
+    ],
+    "width": 2515,
+    "height": 2302,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d0f0c9a0f31ae705014cbdf12ad0738874e2b1730620c230468bc610a1446857.avif",
+      "width": 2515,
+      "height": 2302,
+      "bytes": 356890,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqIAAABXRUJQVlA4IJYAAACwBQCdASogAB0APxlusVCspiSit/VYAZAjCUAVgA9svR07OaKkHheoqx5um9ZL1y9W048yiAAA/u1DTfhA/JQZ95yFJElCI0uNEc+2BFqASIV6MA5QnHVnBIRy4rLWkwLTusb4634atv9PIFMz3VY6qAi8gQmjZnaZu67Aakx9aKHFJ+Veo11hVKA+/wv2V2blAZItAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "snapseed_camera_capture_20261021_103935_786.heic",
+    "takenAt": "2026-10-21 · 10:39",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "c953f541fdd7fe72e523b277dffa8343cfddd71b4eb0c75f8c76bbcca731ff44"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-38836b44e48256c59adb",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/fabcc4858045f39f555312ada936fc2fd8d3a7b3a6a48336c0edc677c6f50f72.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/0fea71de4e6292806e7ecfecd70190f24b7feceb7c8594562e8312d25ba5cede.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/40ddf281c20aeacce6412bcc2f4710b0b6667ef8717962c7ee3969c70ae70ef0.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/fabcc4858045f39f555312ada936fc2fd8d3a7b3a6a48336c0edc677c6f50f72.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/e371527e09b815472363c88a9af59c9f284c18d1ce77ae749e5a78b942ecdf90.avif",
+      "width": 3716,
+      "height": 2787,
+      "bytes": 571358,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAABQBQCdASogABgAPxl8tFMsp6SisBgIAZAjCWMApIAxE681A1y46YVC71qZt/kbb4N584gA9zFC2bI7FBNrvWuB0eh5dAeJ2UVNXQadVRivo6m6NWfJTe1OAgy6ZzAhJ3v54OtvE+HsMHF5qMzY4pzDIdidxOsrdmqKNirQ0bWOSe9od9prIDQdzxSIzrZk/Kg5eUKGYfzyAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "snapseed_camera_capture_20261021_103909_826.heic",
+    "takenAt": "2026-10-21 · 10:39",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "38836b44e48256c59adb74375cd0798423105468561e2a30a6e254fe64a565e6"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-250dc53ea1de92093370",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/fbfe6204bc86c382eec7b21b5702a41fda0ca2ea6ffe553247f9cb00a6fe29cf.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/4b2d96cb4b3cac9c007486acd384d4630d958fcce3534e9e621c3832cf5ac445.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/d7852fc86bff159fdfe5f87f5ba148ee3fef6f10bd3847cbd7f49de3925a63cf.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/fbfe6204bc86c382eec7b21b5702a41fda0ca2ea6ffe553247f9cb00a6fe29cf.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c0ac55a25930a75796a1e9b52cce8bd4af30b657749083fc7f14d3975825fb75.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1533306,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsIAAABXRUJQVlA4ILYAAABQBgCdASogACsAPxV6r1CsqCQisBqqqZAiiWMAvz+vsqAIE2IiNQThUo5tBNhGu/q/SigOHnYhuhlKgAD+CsRvOUQWMgR4VYmP9nAhwd5P0Nw3wSqQgWI+KrKBxSuonUgtG4W0OdPRfJyydybyul2m8uc9JhVq5esw+jlPD5/mKx7q4ED5K7xLCf3/EWlWBtlvAIWCIl/BxOoPcs/mIm+Dif4hNmA0kNHMpMlN6WgGuQyseKAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3720.HEIC",
+    "takenAt": "2026-10-21 · 13:58",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "250dc53ea1de92093370baa1dccc371f2f3ea7a9099702f0cd89318454fcbe92"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-57220d82613e8b0f81d1",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/b9867cb9dcbcdfb846a5cf9fa13b5b1b55d634ad679d7584daa85f70e516f3f0.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/0cf54ac20a28fac89c4afc3c62991f7e87519604aebee299fa2abd977b1a6975.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/8b7d619c1f64c3af1a285a7b08d97377314464e0a1ae2cdf71ee4316ab89e877.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/b9867cb9dcbcdfb846a5cf9fa13b5b1b55d634ad679d7584daa85f70e516f3f0.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/78ef93ca097edb3c1c69f7572e8df97ac2a62970a66ec6911309194d109ed1b3.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1300809,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAAAwBgCdASogACsAPxFusFCsJiSitVv4AYAiCUAWdnJwOfzYedXmSd4LKPWyf9XWWgI1xucLZeZPsgSAAProO7QprOlpNe20HllYNZSrMVBSmAWGYc3M+Aic3VyLpkIpQ3TnC0pl8V8/e2M/FbcE3XsChx3aV3yhSmHgThSixmysJUMoznWUXzaOkeEBqmhpmvUc63DbFRy3gnahKba/cSVHw9pjAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3721.HEIC",
+    "takenAt": "2026-10-21 · 15:09",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "57220d82613e8b0f81d197ac8bdbeada95f1067b8282358be97ec10f82d60bf8"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-e9006a9ebd3a8b92223a",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/7e94ea882387e4097846f156964603081f34291326b3084a327679bd090e5e78.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/be84933db14c855389fd059a860a3f679cdfa1c8eb50051dbfab352293784fd2.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/88cd889b20c47b71da071fd6712e4d9b319035a67d9d769755e484f2c191c708.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/7e94ea882387e4097846f156964603081f34291326b3084a327679bd090e5e78.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/49ce9f121abbb0698af1e3df68e7dfae56585dacda524fac7c9c6486d880cf56.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1550583,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRtIAAABXRUJQVlA4IMYAAADQBQCdASogACsAPxl2s1EspySiqrgN+ZAjCWQAsQEHQB5bPOm2rAo5qJIWoN5b7Sj43siNE60AAPbznc/hvT1B7WbJgSKfPUkkfdv3ac/J2WK+eHXUwlNTURxqWibeQOGEYFpTYi/tHb8NzkylTZufH6HfzUlS5cLu+XAsw/4Z4APCDx8Ig12+1wwhfQaz/h1spHczYzZEyi+GyFmDkrcMgHT8k3MuuRUR8bnD7MGXsnS5WXwAAsIuDQeL7N8aKQ4ZvZH2AAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3723.HEIC",
+    "takenAt": "2026-10-21 · 17:20",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "e9006a9ebd3a8b92223aa92e9b6536cb8e73b2a82ab04b166b80b368a35f8dd3"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-782f5d3970f59b0553fe",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/f55fcdd2997fecdf3d7faf1c26ab0db97dbdfe778142ef953e2f8904a8a26229.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/f19a54feaa84790d349f4c62c34eef8ccb701b48bb712ce84de1235a061a0d97.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/b98df702d2745c32ec675ac2bb5cedde629d6cb3e0752aecf0ddf96a49ae3d1b.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/f55fcdd2997fecdf3d7faf1c26ab0db97dbdfe778142ef953e2f8904a8a26229.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/8fe8a875c2a7496a5d9b63222d163b3d41d74a0241100de16550f3799430bf91.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 692452,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAADQBACdASogABgAPxmCtlSsqKSjKA1RkCMJQBZwAr8SO1uwn7erIfSEXwRxSJ/F4AD+30qP+NJ1VGlx9o+r6EtPkiYNbmfesCwZz764yHy8nkwWcJObqZmLL5rPClerJ4RAc67M9wcAZ4ZIL54+SBFYIFbiQAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3724.HEIC",
+    "takenAt": "2026-10-21 · 18:10",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "782f5d3970f59b0553fe913f25609c0bddac60eacc874dc7243ffc9f1cdf245c"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-b3a5353de5848ee8bac6",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/d5a7eda0412b91aa4f73aed90b2694916a7f2aa336e18a34c691f931e8eaa48b.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/0475cb4d278d3e8736199466f99d454acf30f09ac69b73fe61a437e8c60aea72.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/da68557fa30e9297cc7517386fd7fa2e0a12531576d2008b83dc52c6a2fcb37c.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/d5a7eda0412b91aa4f73aed90b2694916a7f2aa336e18a34c691f931e8eaa48b.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/cdc7233007e20453e4ba6f5be36407c1ecf26c0847ea31d4c303b306ae6b51ac.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 934534,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqIAAABXRUJQVlA4IJYAAAAwBgCdASogACsAPxl+tlMsqCUiqqoBkCMJYwC3uFWopF3c/KqyGbuw78XjJZz4cDv/42AxRo5g8ko2AKjvZNrjNP+QH+7NYL6H1wtlPTVTru0JguLKpGmZDEQc89fTTw+/C15YaF1T3m8aMNohIIAyCtrq/C5PWIUwewnm+sEkUsCjdmR+AyosteIFppuFx7HibHIAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3728.HEIC",
+    "takenAt": "2026-10-21 · 18:18",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "b3a5353de5848ee8bac6875835f00bec6d5970548fe700f04e9064b2eeef5f4b"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-185208a9f3769e4bda0d",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/157a8677dc768a6c92aedd1c46d1cb6d18ac83b5664165e07b10be97c30603c8.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/7a0971ab1f19d3cfe38b28e4508a1fb4155d121c1fd1102fa05b165e7e89760b.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/a3480f38856f5e1e3866426df6f7383a6dfe1d410d227601f1d5637d2dfa281d.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/157a8677dc768a6c92aedd1c46d1cb6d18ac83b5664165e07b10be97c30603c8.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/f427d9d719f571799ce68c80afe055feebc3717b4eb8ecfe03bf5ff22cceb4e7.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 675958,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABwBQCdASogABgAPxl6slCsqCSisBgMAZAjCWIAtRuAgapV7ia+y5if8Uez+tuz1cZAdKfgAP3OZK3z371/RjEQwnoqDp2X/ACN1b+JknBc8J5g7uqXUJIDKBR7JGoQLjhgI/VE5s0977B3KXAAWJTXrwlJudiE7R0AAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3744.HEIC",
+    "takenAt": "2026-10-22 · 18:03",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "185208a9f3769e4bda0d4d3ddbf3ce1ab28d03c08fff7ad1bbb58557ebe1f62d"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-93d5db2800f0b1e3f7c8",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/95e22b43651ae36d125d3fdcc233c72c4a3c5166147f4e67abb3ad6a4f37251b.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/cac5b34145ce8036f1f753d11a8b9eaddcb7da3d0fa193443321c2e8da2a0d32.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/a418e4519b727101a8e011d496e43ac529e0a964eef0b859e2ca6982a18b99be.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/95e22b43651ae36d125d3fdcc233c72c4a3c5166147f4e67abb3ad6a4f37251b.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b209cd4b4c3394574e73c33e10465e1c45805395dda262f344f7b911929d9d6b.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 442388,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAABwBACdASogABgAPxl8slMsp6QiqA1RkCMJZACdMoM6AAr2OMqhIL95nvIs4ADWhaAKkh8acfPtt/6PzbZVGeQY/kBzsK2985O8X9Y6aDK5342vhMxGGCDfdYQRXqJ3BLN8NE1IqdyEwfH4NzC0GMXranAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3750.HEIC",
+    "takenAt": "2026-10-22 · 18:06",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "93d5db2800f0b1e3f7c862d03bea40c4f3d439d14d4f0e5608deb7dc91809af2"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-ffc29f819876df57ba62",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/a1e16c803be29ebea78459008bbdedbc2794b58a8efb08aeb42650a022b84084.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/874581131ceea790c3b4216b8097c96d6ca3cc75f54830987ebd9e0953c7c279.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/08b17639cafad46295a622914892559dc3001003faaa2e0af2ab50c9e7bfccd2.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/a1e16c803be29ebea78459008bbdedbc2794b58a8efb08aeb42650a022b84084.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/3a0aade76ca8501d1c09f3e77ffeb0f06e550546c7e33572bf9b30728d552beb.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1165931,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqIAAABXRUJQVlA4IJYAAACwBQCdASogACsAPvlkqFCqpaQiurzIAVAfCWIArk+wAt2rNuPRhkig6ZzU4IrcxtFSrdaHRwAA/nDbEFQTpaZWs0WisvVoWRRwt80ZXGAsLpgXaozl4mZcJCKg4d4b/9bVKqEC0niyqyUJyWwHVy+UhYZWjgiZOo8wA98flXmFF7HTo7SFolCHB/s6nxvxgfU6K2GAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3754.HEIC",
+    "takenAt": "2026-10-22 · 18:48",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "ffc29f819876df57ba628331a1c9ba52bd7bd2d0bba341eadd15617dd7445088"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-ce9af396767cb8c7adc0",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/b014e273383e19bcb4e85083daff2a1eda6ece0d4732456c0ab29e023494d648.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/32e378ed69f4317e97f2c2d17499b4eb8ef54ec13575273a7ec70e4a24724c23.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/2d93e47e97eed26adc35549a3019b48a919b64266e06f68971b4df420be35c26.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/b014e273383e19bcb4e85083daff2a1eda6ece0d4732456c0ab29e023494d648.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/0a953f97281b9edd99e1951883cd86288d8dc3b653b7bd42c5915772c342773c.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1195705,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRtAAAABXRUJQVlA4IMQAAACQBgCdASogACsAPxl4tlIspyUisBVaqZAjCWQAsR/thvg5bWG8lkfRvtnj1CJC+SopUR0zAuq84Fdx8GMAAP7uc4Yccjvrvk8JfeSBQjr1WvVbjIazpOv0jtvmFn55LkO0OJYhkBIGfDkCFFo1xUONPZv7LbTFPYHG+ryoBqN3aYmsMRQS5Q1cj/i7NLJx9TK10UBdAn2DvIxyufUUWZfGwDEu1izENCziQui4CyhFoh4K6PQsIWLuPUvKCwQLO5qoS8AA",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3758.HEIC",
+    "takenAt": "2026-10-22 · 18:51",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "ce9af396767cb8c7adc0516e61bfa4cc28c7dad3d0bd41d9ab895f5837d325ff"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-c2a4bf92faf7b27706ab",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/200f2408161a7ac76475d4025bd4c208906bd3b553f0ce1963394b4519a10e07.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/dadc076994c870bd264e8faea494637b7e4ace8890dba1247f593bd81ec9ba65.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/f01b3ae2a83e8a3b0e954e4133f7226430b527165e5ea5f4978a0c671b911613.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/200f2408161a7ac76475d4025bd4c208906bd3b553f0ce1963394b4519a10e07.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b877e5ccb56a93ef445d16f3177a18620979deec85e94879d7fdf59b0ca08cf6.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 531853,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsYAAABXRUJQVlA4ILoAAADwBgCdASogACsAPxl0slGspqSitVQIAZAjCWoAuzMchlA/aU1zBRK3iC9HQUk44Du2hr3fhSt9RKaOPkWqFkbAAP7qL91JdUI9cQC4agEmIbYarE0T4wvH8FJVGx46chzk747eJ/CbsWJCqfOl4IJrAj5MonXcY1YoF3tEyg6+gXbJRvamWPNdmtdFcE7z7aqfwwwe7JR9D375yDuMWnbBeYz25HyJr9B6H9rilK9+ffvkASfiqcktwAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "user",
+    "alt": "Photo from Day 11",
+    "sourceFilename": "IMG_3760.HEIC",
+    "takenAt": "2026-10-22 · 19:01",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "c2a4bf92faf7b27706ab43622bdb7310fd95ad297dc8b81cc65d426edbed0371"
   }
 ]

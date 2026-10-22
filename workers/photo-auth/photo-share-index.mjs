@@ -1853,6 +1853,375 @@ export default {
             "width": 480,
             "height": 640
           }
+        },
+        "backpacking-europe-heading-east-upload-503698a88f2531806274": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/7ce8f40433907da094238fe9182f258881ee4ea7848ae9646b840e935f9eb406.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-c8ff6427d139f535c72a": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/dbd789023aeb8fef065626c078f484cbba4518adbf2d54921518c2e3c6c31347.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-8fa098a2d7aa10a1d47d": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/cc8813f1c5ed868a69408652260dba0b51dce34b070a2d460573e40a6c17d745.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-78b7447cbbbc08bdb598": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/1dddb62ce9b3cf25ead729ef10fb1faf8f3b7d0bf927828f1225e50ddb26a779.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-93fa0ecaf838579e2506": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/313bdb4d5f70a3480d0c47b2b63444cec9366c568fb1245e94fcda7c95f3c956.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-1c06abd26d922b089e96": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/443875301192e6b12806f7a8389beb0d762278b0145dfff66e366af2079b7edd.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-1f52ee86342e2a47a451": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/b8e10ba214349c9d1365fcacaf5bcf23253028e6a0839d76e2f67e900c096f18.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-27b1a755b8bc480372d6": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/a763962ac725a396b9391b83a640730423c3f8ee3afd369a0ba71a50f291f72c.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-ee2bcf68e2171b35ada5": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/bb726af917b3f8de6e7fc0f13974decd385beb7b0654fd7f74214f8c0d83dd1d.webp",
+            "width": 480,
+            "height": 641
+          }
+        },
+        "backpacking-europe-heading-east-upload-a2dd8ce54365c80da7b1": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/595ea7d5654a4bd92ccb0618c2c99c8c79eb939156c8f2595faf5fc50b59a5c6.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-441f051cbca15f2359bd": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/309f59ee5d77055dbfa7cdd747fee6fea99d33818592457e2881127762682cc3.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-4841501f93f6e306afb6": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/c41cd905d9d8725e75b84c0653fda08edb25b3993f90184d986a841a641be6aa.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-5499856ea55112c3494c": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/fd8e5e36b714e8351b193a4ce064a85f55a50e08c78019c83d99c12ae8ce2a02.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-9176be04e849ee0785e5": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/e97ce732667a751e9ed9d6ec5b2c7317df6e3dd1ba2a94d03c3c5d12896334a5.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-1b085cccc8a759077094": {
+          "dayId": "backpacking-europe-heading-east-salzburg-stay",
+          "title": "Salzburg",
+          "thumbnail": {
+            "key": "v1/6cd97dc0f1dc94cfdddf3304d8651e62aee84e4f2c4f23777e4fdb4328884bf2.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-1417fbf4a9d48e76d0a8": {
+          "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+          "title": "Innsbruck",
+          "thumbnail": {
+            "key": "v1/2c1442097de325bf8bb4e5d5222294ee9e558f6d3a93fa263e054a4d01464e69.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-47394fb35f9e1c602c49": {
+          "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+          "title": "Innsbruck",
+          "thumbnail": {
+            "key": "v1/38b680db550f2e25017cb6605ab8197c0729e16a18cd6c517e8d10497d47d58a.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-4d2f2c47fec6cc699748": {
+          "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+          "title": "Innsbruck",
+          "thumbnail": {
+            "key": "v1/af4f1ff78350d6150fa7d514c8a1195c0b504b5294e307ee3fa0f2b3801aea0d.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-93ddf23db4677e71acc7": {
+          "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+          "title": "Innsbruck",
+          "thumbnail": {
+            "key": "v1/57fc9dd7c5bae4716148cf103fff28a1b9931db985b1e5fd283198034b7eb0b4.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-ef797655367862be2580": {
+          "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+          "title": "Innsbruck",
+          "thumbnail": {
+            "key": "v1/1789c79eba855d27b89630c89426fb0c0694d972bfa89bdec69aae2f46025638.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-c574997a300645f901f7": {
+          "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+          "title": "Innsbruck",
+          "thumbnail": {
+            "key": "v1/598dabfeb40352d85f814d0eb78669ff4ec9350b64fc1205481554c299fb0baf.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-833e786e4db00d874ef7": {
+          "dayId": "backpacking-europe-heading-east-bolzano-stay",
+          "title": "Bolzano",
+          "thumbnail": {
+            "key": "v1/1f795faa180d68c26f41264f187d221a08d1be60978b2564382eb3155f44e1f2.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-77e022f6352d3b0684db": {
+          "dayId": "backpacking-europe-heading-east-bolzano-stay",
+          "title": "Bolzano",
+          "thumbnail": {
+            "key": "v1/da1deb105df86a46957d0afad9a8d67386e6adc60b6d13819e696b06e6bafe5e.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-979be8f68639698de878": {
+          "dayId": "backpacking-europe-heading-east-bolzano-stay",
+          "title": "Bolzano",
+          "thumbnail": {
+            "key": "v1/2b7f8bf9c656389786ab7db2a68800a8a80a2a33cf183a34a798e0326e4fad1c.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-0598de533039f5d125cb": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/0c3322bbceb93cbbdeffecbeb8ff39a4bdee38260312a848b8f094e108b272a6.webp",
+            "width": 480,
+            "height": 752
+          }
+        },
+        "backpacking-europe-heading-east-upload-88644e678778a96dae4b": {
+          "dayId": "backpacking-europe-heading-east-bolzano-stay",
+          "title": "Bolzano",
+          "thumbnail": {
+            "key": "v1/280c8243782c71f8b46ffcbd1d2c1f268bb2330e0b7f0f3b902866fb5267cec5.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-1b461bfa0cf5e2c5b8c5": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/4b750187b28ccd3f9e76810f9be2a457bcbfe0e56bb0dee38fb29596fbee334a.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-fe4d32c21bd103b35643": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/8393a7d1d4b6a32822f2cf7ebd352875b488aba96d651041722f00dee30ce0a4.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-86a189343922e37cc013": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/806364e037528d7ca044c6616ca508f52bce16635586140f75d7293d1cc45a85.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-c953f541fdd7fe72e523": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/2d4d797f9783acd9b6991ac3c1c9ac43e45569ba68ea516af3fea372fbdd0f13.webp",
+            "width": 480,
+            "height": 439
+          }
+        },
+        "backpacking-europe-heading-east-upload-38836b44e48256c59adb": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/0fea71de4e6292806e7ecfecd70190f24b7feceb7c8594562e8312d25ba5cede.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-250dc53ea1de92093370": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/4b2d96cb4b3cac9c007486acd384d4630d958fcce3534e9e621c3832cf5ac445.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-57220d82613e8b0f81d1": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/0cf54ac20a28fac89c4afc3c62991f7e87519604aebee299fa2abd977b1a6975.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-e9006a9ebd3a8b92223a": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/be84933db14c855389fd059a860a3f679cdfa1c8eb50051dbfab352293784fd2.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-782f5d3970f59b0553fe": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/f19a54feaa84790d349f4c62c34eef8ccb701b48bb712ce84de1235a061a0d97.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-b3a5353de5848ee8bac6": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/0475cb4d278d3e8736199466f99d454acf30f09ac69b73fe61a437e8c60aea72.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-185208a9f3769e4bda0d": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/7a0971ab1f19d3cfe38b28e4508a1fb4155d121c1fd1102fa05b165e7e89760b.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-93d5db2800f0b1e3f7c8": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/cac5b34145ce8036f1f753d11a8b9eaddcb7da3d0fa193443321c2e8da2a0d32.webp",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "backpacking-europe-heading-east-upload-ffc29f819876df57ba62": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/874581131ceea790c3b4216b8097c96d6ca3cc75f54830987ebd9e0953c7c279.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-ce9af396767cb8c7adc0": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/32e378ed69f4317e97f2c2d17499b4eb8ef54ec13575273a7ec70e4a24724c23.webp",
+            "width": 480,
+            "height": 640
+          }
+        },
+        "backpacking-europe-heading-east-upload-c2a4bf92faf7b27706ab": {
+          "dayId": "backpacking-europe-heading-east-venice-stay",
+          "title": "Venice",
+          "thumbnail": {
+            "key": "v1/dadc076994c870bd264e8faea494637b7e4ace8890dba1247f593bd81ec9ba65.webp",
+            "width": 480,
+            "height": 640
+          }
         }
       }
     },
