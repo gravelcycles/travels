@@ -32,7 +32,12 @@ records. Preserve those choices; the expected visible trip total is 142 photos. 
 verification; all 907 tests, the production build and actual Worker runtime
 checks pass. Desktop and 390 px phone previews verify the new city albums,
 blank copy, exact timestamps, grid return and unlocated city context. Deployment
-and primary-Studio synchronization receipts are recorded in WIP.
+and primary-Studio synchronization receipts are recorded in WIP. Release
+`95175ba` passed [Pages deployment](https://github.com/gravelcycles/travels/actions/runs/39849720539).
+Fresh public HTML/data matches the release and includes all 41 additions with
+142 visible photos; private media/comments still reject anonymous reads.
+The primary Studio checkout contains the same new data and verified assets,
+with its unrelated pending work preserved.
 
 ## Route adjustment — 20 October 2026
 

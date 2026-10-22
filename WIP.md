@@ -24,10 +24,25 @@ last-photo bounds and Back to the same selected grid. The unlocated image shows
 "No exact photo location · showing Innsbruck". Shared runtime is unchanged;
 physical-device behavior is not newly certified. Current trip guidance is updated.
 
-Next: deploy the updated eligibility/share indexes before Pages, verify fresh
-public content, and synchronize the new intake data/derivatives to the primary
-Studio checkout without including unrelated work. No outbound update is sent
-or acknowledged by this task.
+Published as `95175ba` through successful
+[Pages run 39849720539](https://github.com/gravelcycles/travels/actions/runs/39849720539).
+Worker version `3843b54d-a2be-4f67-8aa4-7dfd25a088b1` activated the matching
+eligibility/share indexes before Pages; prior version
+`03da29ac-a2b7-47c0-badf-4756f4f16101` remains the rollback reference. Fresh
+public Heading East/catalog HTML and four data bundles match the tested release
+byte-for-byte. All 41 new IDs are live, with 142 visible photos; anonymous WebP,
+AVIF, photo-comment and trip-comment-summary reads still return 401.
+
+The primary Studio checkout now contains all 41 published intake records,
+40 reviewed pins, the deliberately unset pin, four chronological album orders,
+164 verified derivatives and untouched private originals/metadata. Its local
+build succeeds. Fourteen intended source/generated/doc files changed while all
+285 other tracked or non-ignored working files stayed byte-identical; original
+branch/HEAD and pending edits remain intact. Backups and verification receipts
+stay in the intake chat's work directory. Implementation, current trip notes,
+asset upload, site publication and local Studio synchronization are complete.
+The remaining owner location choice for `IMG_3652.HEIC` is recorded in the trip
+notes. No outbound update was sent or acknowledged.
 
 ## Forni–Vienna via Carnia/Tarvisio — 20 October 2026
 
