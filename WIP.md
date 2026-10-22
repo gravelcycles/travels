@@ -47,8 +47,14 @@ Innsbruck album photo for `IMG_3652.HEIC`. Copied `IMG_3638.HEIC`'s saved pin
 exactly (47.276266666666665, 11.394122222222222), with `reviewed-exact` status.
 All 41 additions now have saved pins; the missing embedded GPS remains intake
 provenance. Only this location/status changes, with no image upload or Worker
-index change needed. Follow-up site verification is pending. No outbound update
-was sent or acknowledged.
+index change needed. Released as `49933ca` through successful
+[Pages run 39850896347](https://github.com/gravelcycles/travels/actions/runs/39850896347)
+after all 907 tests and the production build passed. Fresh public HTML/catalog
+and data bundles (five files) match the release byte-for-byte; the live target
+pin equals its predecessor exactly, with 142 photos and all other overrides
+retained. The primary Studio pin and trip notes match; its build passes and all
+other saved photo edits are unchanged. This follow-up is complete. No outbound
+update was sent or acknowledged.
 
 ## Forni–Vienna via Carnia/Tarvisio — 20 October 2026
 

@@ -43,6 +43,10 @@ Fresh public HTML/data matches the release and includes all 41 additions with
 142 visible photos; private media/comments still reject anonymous reads.
 The primary Studio checkout contains the same new data and verified assets,
 with its unrelated pending work preserved.
+The owner-assigned missing-pin correction is live in `49933ca` via successful
+[Pages run 39850896347](https://github.com/gravelcycles/travels/actions/runs/39850896347).
+All 907 tests/build pass; five fresh public files match the tested release and
+confirm the two saved pins are identical. Local Studio carries the same edit.
 
 ## Route adjustment — 20 October 2026
 
