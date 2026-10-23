@@ -712,7 +712,8 @@
       paint: {
         "line-color": palette.casing,
         "line-width": ["case", ["any", ["boolean", ["feature-state", "inspected"], false], ["boolean", ["feature-state", "previewed"], false]], modeStyle.width + (options.selected ? 8.2 : 6.8), modeStyle.width + (options.selected ? 5.2 : 3.8)],
-        "line-opacity": ["case", ["boolean", ["feature-state", "previewed"], false], 0.96, ["boolean", ["feature-state", "previewMuted"], false], 0.2, options.opacity * (options.selected ? 0.96 : 0.82)]
+        // A continuous casing would erase solid routes through the TBD gaps.
+        "line-opacity": segment.planningStatus === "tbd" ? 0 : ["case", ["boolean", ["feature-state", "previewed"], false], 0.96, ["boolean", ["feature-state", "previewMuted"], false], 0.2, options.opacity * (options.selected ? 0.96 : 0.82)]
       }
     }, beforeLabelId);
     const baseColor = options.color || modeStyle.color;
@@ -854,7 +855,9 @@
     clearDecorations(mainMap, mainDecorations);
     const selectedSegments = new Set(mapScope === "day" ? activeDay().segmentIds : []);
     [...journey.segments]
-      .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id)))
+      .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id))
+        // Confirmed routes stay continuous on shared corridors in the overview.
+        || Number(b.planningStatus === "tbd") - Number(a.planningStatus === "tbd"))
       .forEach((segment) => {
         const selected = selectedSegments.has(segment.id);
         addSegmentLayer(mainMap, mainDecorations, segment, {
@@ -968,7 +971,7 @@
       fit: () => fitJourneyBounds(0),
       styleForSegment: segment => {
         const style = modeStyles[segment.mode] || {color:palette.route,width:4.7};
-        return {color:style.color,width:style.width,casing:palette.casing,casingWidth:style.width+3.8,
+        return {color:style.color,width:style.width,casing:segment.planningStatus==='tbd'?null:palette.casing,casingWidth:style.width+3.8,
           dash:segment.planningStatus==='tbd'?[1,1.4]:style.dash};
       }
     });
@@ -1055,7 +1058,7 @@
       if (mainMap.getLayer(id)) {
         mainMap.setPaintProperty(id, 'line-opacity', ['case',['boolean',['feature-state','previewed'],false],1,0.3]);
         mainMap.setPaintProperty(id, 'line-width', ['case',['boolean',['feature-state','previewed'],false],6,3]);
-        mainMap.setPaintProperty(`main-casing-${segment.id}`, 'line-opacity', 0.25);
+        mainMap.setPaintProperty(`main-casing-${segment.id}`, 'line-opacity', segment.planningStatus === 'tbd' ? 0 : 0.25);
       }
     }
     // cameraForBounds already includes the screen offset for its padding.
@@ -1122,7 +1125,7 @@
     if (arrivalPlan.legs.length && !prefersReducedMotion()) {
       arrivalDrawing = window.JOURNEY_ATLAS_ARRIVAL.createDrawing({ map: mainMap, plan: arrivalPlan, styleForSegment: segment => {
         const style = modeStyles[segment.mode] || {color:palette.route,width:4.7};
-        return {color:style.color,width:style.width+1.4,casing:palette.casing,casingWidth:style.width+5.2,dash:segment.planningStatus==='tbd'?[1,1.4]:style.dash};
+        return {color:style.color,width:style.width+1.4,casing:segment.planningStatus==='tbd'?null:palette.casing,casingWidth:style.width+5.2,dash:segment.planningStatus==='tbd'?[1,1.4]:style.dash};
       }});
       syncArrivalLayers();
     }
@@ -1757,7 +1760,9 @@
       clearDecorations(viewerMap, viewerDecorations);
       const selectedSegments = new Set(day.segmentIds);
       [...journey.segments]
-        .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id)))
+        .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id))
+          // Confirmed context stays continuous on shared corridors.
+          || Number(b.planningStatus === "tbd") - Number(a.planningStatus === "tbd"))
         .forEach((segment) => {
         addSegmentLayer(viewerMap, viewerDecorations, segment, {
           prefix: "viewer",

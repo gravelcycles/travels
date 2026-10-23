@@ -209,7 +209,7 @@ function drawingHarness(p){
   const canvas={getContext:()=>context,setAttribute(){},remove(){removed=true;}};
   const base={clientWidth:800,clientHeight:600,after(node){assert.equal(node,canvas);inserted=true;}};
   const map={getCanvas:()=>base,project:([lng,lat])=>{projects++;return{x:lng*10,y:lat*10};},on:(name,callback)=>events.set(name,callback),off:name=>events.delete(name)};
-  const drawing=createDrawing({map,plan:p,document:{createElement:()=>canvas},Path,pixelRatio:()=>2,styleForSegment:s=>({color:s.id,casing:'#fff',width:6,casingWidth:10,dash:s.id==='bus'?[2,2]:null})});
+  const drawing=createDrawing({map,plan:p,document:{createElement:()=>canvas},Path,pixelRatio:()=>2,styleForSegment:s=>({color:s.id,casing:s.planningStatus==='tbd'?null:'#fff',width:6,casingWidth:10,dash:s.id==='bus'?[2,2]:null})});
   return {drawing,events,strokes,circles,icons,canvas,base,get clears(){return clears;},get projects(){return projects;},get removed(){return removed;},get inserted(){return inserted;}};
 }
 
@@ -237,4 +237,14 @@ test('canvas reprojection handles resize and cleanup removes all animation drawi
   const stale=h.events.get('move');h.drawing.destroy();
   assert.equal(h.removed,true);assert.equal(h.events.size,0);
   stale();h.drawing.draw(frame(p,.9,{drawLines:false}));assert.equal(h.clears,2);
+});
+
+
+test('TBD animation trails leave their gaps clear of continuous casing',()=>{
+  const pending={id:'bus',planningStatus:'tbd',geometry:legs[0].geometry.toReversed()};
+  const p=plan([legs[0],pending],routes),h=drawingHarness(p);
+  h.drawing.draw(frame(p,1,{drawLines:false}));
+  assert.equal(h.strokes.filter(stroke=>stroke.color==='#fff').length,1,'Only the confirmed route has continuous casing');
+  assert.equal(h.strokes.at(-1).color,'bus');
+  assert.deepEqual(h.strokes.at(-1).dash,[12,12]);
 });

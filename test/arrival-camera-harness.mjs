@@ -14,7 +14,7 @@ export function arrivalCameraHarness(legs,{width=600,height=540,phone=false}={})
     easeTo:(camera,event)=>{calls.push({type:'ease',camera});moving=true;eventData=event;},
     flyTo:()=>{throw Error('Arrival should not use a flight arc');},
     stop(){moving=false;},isMoving:()=>moving,
-    on:(name,listener)=>listeners.set(name,listener),off:name=>listeners.delete(name),getLayer:()=>false
+    on:(name,listener)=>listeners.set(name,listener),off:name=>listeners.delete(name),getLayer:()=>true, setPaintProperty:(id,property,value)=>calls.push({type:'paint',id,property,value})
   };
   class Marker {constructor(options){markers.push(options);} setLngLat(){return this;} addTo(){return this;} remove(){} }
   const day={id:'day',title:'Destination'},context=vm.createContext({

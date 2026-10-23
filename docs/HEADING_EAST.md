@@ -5,6 +5,46 @@ Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 
 Each city is one event. Taglines remain blank; the owner added the first seven
 city stories in Studio on 11 October. The photo intake is recorded below.
 
+## Saved places extension — 23 October 2026
+
+Owner request: import Best of Europe places near the newly added Salzburg–Venice
+locations. Reopened [the shared list](https://maps.app.goo.gl/T9fLzATAEPPBb7k78),
+now **49 entries**, and matched seven additions to the existing city stays:
+
+| Assigned city | New saved places |
+| --- | --- |
+| Salzburg | Casa Napoli; Die Weisse |
+| Venice | El Fradeo Quebrado; Hostaria alla Bandiera dal 2015; Mister Pizza Venezia Mestre; Caffè Cannaregio; Arcicchetti Bakaro |
+
+The trip now has **27** curated places. Exact saved branch pins, addresses and
+individual Maps CIDs were checked against the list. Positions remain
+`approximate`, not surveyed entrances. Six pins are 0.47–2.23 km from their
+city's station anchor; Mister Pizza is in Mestre, within Venice municipality,
+9.30 km from Santa Lucia. Include that mainland branch under Venice rather
+than creating a stay. No new matches were found in Innsbruck or Bolzano.
+The eighth new list entry, Mosborough Miners Welfare in England, is outside
+this trip. Earlier Trento/Verona and other detours remain excluded; proximity
+to an incoming railway alone does not make a new city stay.
+
+All seven are `saved` with explicit city `dayIds`, short factual descriptions
+and list/individual source links. Die Weisse, Hostaria, Mister Pizza and Caffè
+Cannaregio also retain checked operator sources. Casa Napoli's linked site
+currently resolves to a reservation system, so its basic facts use the saved
+Maps listing. No list-author reminders, Google reviews/ratings, presumed visits,
+photo associations or new image references were imported. Existing 20 places,
+56 venue images, albums, stories, cover, route geometry and owner edits remain
+unchanged. This extends the original 10 October intake below; its original
+41-entry/20-match counts describe that earlier snapshot.
+
+The shared solid/TBD rendering correction follows O06: confirmed routes remain
+continuous in overview, TBD gaps have no continuous casing, and selected days
+and leg previews retain foreground priority. Stored network geometry and
+itinerary confidence are unchanged. Tests cover both source orders and
+reference/demo/independently populated city-draft inheritance. All 910 tests,
+the production build and diff checks pass. Browser review covers the actual
+142-photo journey on desktop and 390 × 844 phone: 27-place overview, the Venice
+five-place filter, exact branch details, empty reviews and map-pin coexistence.
+
 ## Salzburg–Venice photo batch — 22 October 2026
 
 Owner request: add and upload the new folder `photos/salzburg-venice/` to the

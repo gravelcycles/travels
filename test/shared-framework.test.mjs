@@ -17,6 +17,7 @@ import {openingRouteHarness} from './opening-route-harness.mjs';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/map-style.js';
 import { mapStyleHarness } from './map-style-harness.mjs';
+import {routeOverlapHarness} from './route-overlap-harness.mjs';
 import { viewerFixture } from './mobile-viewer-harness.mjs';
 import { photoEntryFixture, viewerFunction } from './viewer-flow-harness.mjs';
 import { photoBubbleFixture } from './photo-bubble-harness.mjs';
@@ -1723,4 +1724,32 @@ test('public build rejects malformed or external AVIF descriptors before replaci
   }
   photos[0].fullAvif = asset; photos[0].protected = false; writeJson(filename, photos);
   assert.throws(() => buildSite(root), /invalid protected AVIF derivative/);
+});
+
+
+test('overlapping solid/TBD routes preserve overview and selected-leg priority across every event model', t => {
+  const root=fixture(t), draft=createJourney(root,{...input,eventMode:'city'}),{data,routes}=loadContent(root);
+  draft.places=[{id:'north',name:'North',lng:139,lat:35},{id:'south',name:'South',lng:139.1,lat:35.1}];
+  draft.segments=[{id:'fresh-solid',from:'north',to:'south',mode:'train',geometry:[[139,35],[139.1,35.1]]}];
+  draft.days[0].segmentIds=['fresh-solid'];
+  const journeys=[data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),
+    data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo'),draft];
+  for (const source of journeys) {
+    const journey=structuredClone(source),solid=journey.segments.find(s=>s.mode==='train'&&s.planningStatus!=='tbd');
+    const pending={...solid,id:`${solid.id}-overlap-test`,planningStatus:'tbd',geometry:solid.geometry||routes[solid.id]||[[1,1],[2,2]]};
+    solid.geometry=pending.geometry;
+    journey.days.push({id:'overlap-test-day',segmentIds:[pending.id],planningStatus:'tbd'});
+    journey.segments.push(pending);
+    for(const reversed of [false,true]) {
+      if(reversed)journey.segments.reverse();
+      const h=routeOverlapHarness(journey,routes), layerIds=h.layers().map(l=>l.id);
+      assert.ok(layerIds.indexOf(`main-line-${solid.id}`)>layerIds.indexOf(`main-line-${pending.id}`),source.id);
+      assert.equal(h.map.getLayer(`main-casing-${pending.id}`).paint['line-opacity'],0,'TBD gaps never erase underlying routes');
+      assert.deepEqual(Array.from(h.map.getLayer(`main-line-${pending.id}`).paint['line-dasharray']),[1,1.4]);
+      assert.equal(h.map.getLayer(`main-line-${solid.id}`).paint['line-dasharray'],undefined);
+      assert.deepEqual(JSON.parse(JSON.stringify(h.sources.get(`main-source-${solid.id}`).data.geometry.coordinates)),pending.geometry);
+      const selected=routeOverlapHarness(journey,routes,'overlap-test-day');
+      assert.equal(selected.layers().filter(l=>l.id.startsWith('main-line-')).at(-1).id,`main-line-${pending.id}`,'Selected TBD remains in front of confirmed context');
+    }
+  }
 });

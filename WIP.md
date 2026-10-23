@@ -1,5 +1,27 @@
 # Current workstreams
 
+## Best of Europe additions and route overlap — 23 October 2026
+
+Authorized: import saved-list venues near the newly photographed Salzburg–Venice
+stays and fix solid routes being disrupted by overlapping dotted TBD routes.
+Work is isolated in `/private/tmp/travels-places-route-overlap` on
+`codex/places-route-overlap`, based on remote main `cabd7bb`; pending primary
+Studio changes remain intact. The current public list has 49 entries, including
+two new Salzburg and five Venice/Mestre matches. Innsbruck/Bolzano have no new
+matches. Keep saved status, exact branch pins, sourced facts and no inferred
+visits, ratings, photo links or image permissions. Prior detours remain excluded.
+O06 records solid/TBD overlap acceptance. Intake and shared map/canvas fixes are
+implemented. All 910 tests and the production build pass, including canvas trails and
+city-framing casing regression coverage. Desktop Places review confirms all 27 entries and the new exact
+branch details. The owner explicitly authorized browser access to the existing
+private photos after the initial automatic origin-access rejection; normal local
+photo mode now uses the untouched private derivatives. No access policy or photo
+source was changed. Desktop and 390 × 844 phone checks confirm the actual 142-photo trip, all 27
+Places, Venice’s five-place city filter, exact Casa Napoli address/source and
+empty reviews, working map pins and the existing private-photo sidebar. Source
+audit confirms that only the seven Places records changed in the journey. Next:
+integrate latest main, publish and verify Pages plus fresh public content.
+
 ## Salzburg–Venice photo batch — 22 October 2026
 
 Authorized: incrementally add and privately upload all 41 new HEIC files from

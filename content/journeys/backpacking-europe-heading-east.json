@@ -2980,6 +2980,225 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "id": "eastbound-casa-napoli-salzburg",
+      "name": "Casa Napoli",
+      "category": "food",
+      "coordinates": [
+        13.0449926,
+        47.8037154
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-salzburg-stay"
+      ],
+      "summary": "Italian restaurant on Bergstraße in Salzburg.",
+      "address": "Bergstraße 21A, 5020 Salzburg, Austria",
+      "mapsUrl": "https://www.google.com/maps?cid=10684650002655778185",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=10684650002655778185"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-die-weisse-salzburg",
+      "name": "Die Weisse",
+      "category": "food",
+      "coordinates": [
+        13.051725,
+        47.806898
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-salzburg-stay"
+      ],
+      "summary": "Salzburg brewpub serving wheat beer and classic Austrian dishes.",
+      "address": "Rupertgasse 10, 5020 Salzburg, Austria",
+      "mapsUrl": "https://www.google.com/maps?cid=18382828587446838763",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=18382828587446838763"
+        },
+        {
+          "label": "Place information",
+          "url": "https://www.dieweisse-wirtshaus.at/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-el-fradeo-quebrado-venice",
+      "name": "El Fradeo Quebrado",
+      "category": "food",
+      "coordinates": [
+        12.3273042,
+        45.4403792
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-venice-stay"
+      ],
+      "summary": "Bar on Calle del Tentor in Venice’s Santa Croce district.",
+      "address": "Calle del Tentor 1464, 30135 Venezia VE, Italy",
+      "mapsUrl": "https://www.google.com/maps?cid=15964142619790005513",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=15964142619790005513"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-hostaria-alla-bandiera-venice",
+      "name": "Hostaria alla Bandiera dal 2015",
+      "category": "food",
+      "coordinates": [
+        12.3469361,
+        45.4345409
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-venice-stay"
+      ],
+      "summary": "Venetian restaurant in Castello serving seafood and Italian dishes.",
+      "address": "Campo Bandiera e Moro 3811, 30122 Venezia VE, Italy",
+      "mapsUrl": "https://www.google.com/maps?cid=14027789478237612263",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=14027789478237612263"
+        },
+        {
+          "label": "Place information",
+          "url": "https://hostariaallabandieradal2015.it/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-mister-pizza-mestre",
+      "name": "Mister Pizza Venezia Mestre",
+      "category": "food",
+      "coordinates": [
+        12.2343077,
+        45.4996538
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-venice-stay"
+      ],
+      "summary": "Pizzeria in Mestre, on Venice’s mainland.",
+      "address": "Piazzale San Lorenzo Giustiniani 16, 30174 Mestre, Venezia VE, Italy",
+      "mapsUrl": "https://www.google.com/maps?cid=15726564710899135611",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=15726564710899135611"
+        },
+        {
+          "label": "Place information",
+          "url": "https://misterpizza.it/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-caffe-cannaregio-venice",
+      "name": "Caffè Cannaregio",
+      "category": "food",
+      "coordinates": [
+        12.327885,
+        45.4457284
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-venice-stay"
+      ],
+      "summary": "Coffee shop on Fondamenta dei Ormesini in Cannaregio.",
+      "address": "Fondamenta dei Ormesini 2804, 30121 Venezia VE, Italy",
+      "mapsUrl": "https://www.google.com/maps?cid=9921990925613895748",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=9921990925613895748"
+        },
+        {
+          "label": "Place information",
+          "url": "https://caffecannaregio.com/"
+        }
+      ],
+      "images": [],
+      "reviews": []
+    },
+    {
+      "id": "eastbound-arcicchetti-bakaro-venice",
+      "name": "Arcicchetti Bakaro",
+      "category": "food",
+      "coordinates": [
+        12.3213659,
+        45.4375198
+      ],
+      "locationAccuracy": "approximate",
+      "status": "saved",
+      "dayIds": [
+        "backpacking-europe-heading-east-venice-stay"
+      ],
+      "summary": "Bar in Campo dei Tolentini, near Venice’s Santa Lucia station.",
+      "address": "Campo dei Tolentini 183/A, 30135 Venezia VE, Italy",
+      "mapsUrl": "https://www.google.com/maps?cid=8868453876493755507",
+      "sources": [
+        {
+          "label": "The Best of Europe · shared Maps list",
+          "url": "https://maps.app.goo.gl/T9fLzATAEPPBb7k78"
+        },
+        {
+          "label": "Google Maps · saved location",
+          "url": "https://www.google.com/maps?cid=8868453876493755507"
+        }
+      ],
+      "images": [],
+      "reviews": []
     }
   ]
 }

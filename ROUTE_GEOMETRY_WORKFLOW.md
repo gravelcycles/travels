@@ -118,6 +118,16 @@ router and require no external API requests in the viewer.
 
 ## Review the published representation
 
+For overlapping confirmed and TBD corridors, preserve the stored coordinates
+and transport colors. The shared viewer paints TBD context first, confirmed
+context above it, and selected-day routes last. TBD line casings are transparent
+so their gaps cannot erase an underlying solid line; explicit leg previews still
+rise above context. This implements the owner's 23 October overlap correction
+in O06. Check overview, selected confirmed/TBD days and hover/keyboard preview
+in both source orders, at close zoom and on phone. Shared replay/photo maps use
+the same segment painter; do not fix a rendering collision by moving route data.
+
+
 1. Check precedence: saved route override, inline segment geometry, generated
    geometry, then the provisional fallback. Review the layer actually shown.
 2. Build and open the shared journey page locally with `?photoSource=local`.

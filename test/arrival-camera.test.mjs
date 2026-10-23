@@ -41,3 +41,11 @@ test('north–south endpoint labels sit outside the travelled line, keeping the 
     assert.ok(padding.top>=64);assert.ok(padding.bottom>=64);
   }
 });
+
+
+test('city framing keeps TBD casings transparent after arrival settles',()=>{
+  const h=arrivalCameraHarness([{...legs[0],planningStatus:'tbd'}, {id:'confirmed',geometry:legs[0].geometry}]);
+  h.city();
+  const casings=h.calls.filter(c=>c.type==='paint'&&c.id.includes('-casing-'));
+  assert.deepEqual(casings.map(c=>c.value),[0,0.25]);
+});

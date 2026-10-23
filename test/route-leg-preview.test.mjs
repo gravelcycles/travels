@@ -56,6 +56,10 @@ test('TBD lines use a distinct dash while keeping mode colors and full geometry'
   const layer = h.context.mainMap.getLayer('main-line-out');
   assert.deepEqual(Array.from(layer.paint['line-dasharray']), [1, 1.4]);
   assert.equal(h.paint('out', 'line-color'), '#0072b2');
+  assert.equal(h.context.mainMap.getLayer('main-casing-out').paint['line-opacity'], 0);
+  h.fire('mouseover', h.cards[0]);
+  assert.equal(h.context.mainMap.getLayer('main-casing-out').paint['line-opacity'], 0, 'Preview must not restore the masking casing');
+  assert.deepEqual(h.order.slice(-2), ['main-casing-out', 'main-line-out']);
   assert.equal(h.context.mainMap.getLayer('main-line-back').paint['line-dasharray'], undefined);
   assert.match(h.context.renderRouteLegs(planned.days[0]), /tbd-badge/);
 });

@@ -1,5 +1,18 @@
 # Changelog
 
+## 23 October 2026 — Best of Europe places and solid/TBD overlaps
+
+- Added seven exact-branch saved places to Heading East: two Salzburg and five
+  Venice/Mestre entries, bringing Places to 27. Retained source links, approximate
+  pins, empty reviews and all prior venue imagery/editorial content.
+- Kept confirmed routes continuous where TBD legs overlap: confirmed context
+  paints above TBD, selected days remain on top, and TBD casings no longer erase
+  the route underneath. Geometry, colors and dotted status stay intact.
+- Updated O06, the route workflow, shared inventory/framework and trip intake;
+  added source-order/selection inheritance and animation/city framing coverage.
+  All 910 tests pass.
+
+
 ## 22 October 2026 — Salzburg–Venice photos
 
 - Owner follow-up: assigned `IMG_3652.HEIC` the exact saved GPS pin from preceding

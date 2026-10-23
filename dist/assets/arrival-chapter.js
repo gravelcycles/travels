@@ -136,8 +136,10 @@
         if (active) path.lineTo(tip.x, tip.y);
         const style = trail.style;
         context.lineCap = 'round'; context.lineJoin = 'round';
-        context.setLineDash([]); context.lineWidth = style.casingWidth;
-        context.strokeStyle = style.casing; context.globalAlpha = 0.96; context.stroke(path);
+        if (style.casing) {
+          context.setLineDash([]); context.lineWidth = style.casingWidth;
+          context.strokeStyle = style.casing; context.globalAlpha = 0.96; context.stroke(path);
+        }
         context.setLineDash((style.dash || []).map(value => value * style.width));
         context.lineWidth = style.width; context.strokeStyle = style.color; context.globalAlpha = 1; context.stroke(path);
       }
