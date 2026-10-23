@@ -2,25 +2,35 @@
 
 ## Best of Europe additions and route overlap — 23 October 2026
 
-Authorized: import saved-list venues near the newly photographed Salzburg–Venice
-stays and fix solid routes being disrupted by overlapping dotted TBD routes.
-Work is isolated in `/private/tmp/travels-places-route-overlap` on
-`codex/places-route-overlap`, based on remote main `cabd7bb`; pending primary
-Studio changes remain intact. The current public list has 49 entries, including
-two new Salzburg and five Venice/Mestre matches. Innsbruck/Bolzano have no new
-matches. Keep saved status, exact branch pins, sourced facts and no inferred
-visits, ratings, photo links or image permissions. Prior detours remain excluded.
-O06 records solid/TBD overlap acceptance. Intake and shared map/canvas fixes are
-implemented. All 910 tests and the production build pass, including canvas trails and
-city-framing casing regression coverage. Desktop Places review confirms all 27 entries and the new exact
-branch details. The owner explicitly authorized browser access to the existing
-private photos after the initial automatic origin-access rejection; normal local
-photo mode now uses the untouched private derivatives. No access policy or photo
-source was changed. Desktop and 390 × 844 phone checks confirm the actual 142-photo trip, all 27
-Places, Venice’s five-place city filter, exact Casa Napoli address/source and
-empty reviews, working map pins and the existing private-photo sidebar. Source
-audit confirms that only the seven Places records changed in the journey. Next:
-integrate latest main, publish and verify Pages plus fresh public content.
+Complete. The owner requested saved-list places near the newly photographed
+Salzburg–Venice stays and a fix for solid routes disrupted by dotted TBD lines.
+Release `ae76e11` is live through successful
+[Pages run 39912715119](https://github.com/gravelcycles/travels/actions/runs/39912715119).
+Seven freshly fetched public files match the tested output byte-for-byte;
+the live browser confirms all 27 places and the seven new entries.
+
+The current list has 49 entries: two new Salzburg and five Venice/Mestre matches,
+with no new Innsbruck/Bolzano matches. All are saved suggestions with exact
+branch pins and sources; existing 20 places, 56 images, 142 trip photos,
+editorial edits and routes remain intact. See [the intake record](docs/HEADING_EAST.md#saved-places-extension--23-october-2026).
+O06 and the route workflow own overlap acceptance: confirmed context stays above
+TBD, selected routes retain priority, and TBD casings stay transparent through
+city framing and the opening/arrival canvas traces.
+
+All **910 tests**, production/repeat builds and diff checks pass. Source-order,
+selected-day, preview and animation regressions cover the reference, Heading East,
+a demo and an independently populated fresh city draft. Browser review covers
+the actual private-photo trip on desktop and 390 × 844 phone, the 27-place
+list, Venice's five-place filter, exact branch details, map pins, solid overview
+and selected confirmed/TBD routes. The owner explicitly authorized normal browser
+access to the existing private photos after the initial automatic origin rejection;
+no access settings were changed.
+
+The primary Studio checkout contains the scoped content/code/current-guidance
+updates and compatible regressions. Its build and all 73 targeted tests pass;
+280 other files remained byte-identical and every pre-existing trip field was
+preserved. Unrelated pending work was neither committed nor published.
+No outbound update was sent. No task implementation or publication remains.
 
 ## Salzburg–Venice photo batch — 22 October 2026
 

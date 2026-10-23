@@ -45,6 +45,13 @@ the production build and diff checks pass. Browser review covers the actual
 142-photo journey on desktop and 390 × 844 phone: 27-place overview, the Venice
 five-place filter, exact branch details, empty reviews and map-pin coexistence.
 
+Published as `ae76e11` through successful
+[Pages run 39912715119](https://github.com/gravelcycles/travels/actions/runs/39912715119).
+Seven fresh public HTML/data/runtime files match the tested release exactly;
+the live browser confirms all seven additions and 27 places. Local Studio also
+retains the seven additions and applicable overlap correction without replacing
+its pending source edits; its build and 73 targeted tests pass.
+
 ## Salzburg–Venice photo batch — 22 October 2026
 
 Owner request: add and upload the new folder `photos/salzburg-venice/` to the
