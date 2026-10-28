@@ -16,7 +16,16 @@ geometries, stay/date/media data and the Railjet are unchanged. Strict routing
 preserves all 45 legs with no warnings; all 910 tests and reproducible builds
 pass. Current direction and supersession live in
 [the trip record](docs/HEADING_EAST.md#matching-forni-bus-corridors--28-october-follow-up).
-Next: latest-main integration, Pages/public verification and scoped Studio sync.
+Complete. Integrated current main and published `90273c1` through successful
+[Pages run 40677073577](https://github.com/gravelcycles/travels/actions/runs/40677073577).
+Six freshly fetched public HTML/data files match the tested release byte-for-byte;
+the live model names 100/110 in both directions and has the corrected 50/51 km
+line 100 distances. Actual Forni/Vienna desktop/phone travel rows pass. Studio
+sources match the release; its build and 15 targeted tests pass. Sixteen scoped
+source/generated/doc files changed while all 284 other pre-existing working
+files remained byte-identical, with the original branch/HEAD preserved. No photo
+access, media upload or Worker change was needed. No implementation/publication
+remains; exact departures and terminal streets remain representative.
 
 ## Forni–Vienna via Udine and Railjet — 28 October 2026
 

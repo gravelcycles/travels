@@ -159,6 +159,12 @@ strict preservation, fresh public files and local Studio synchronization are
 recorded in WIP. The earlier same-day release below documents the initial Vienna
 access correction; its bus geometry is superseded by this follow-up.
 
+Delivered in `90273c1` through successful
+[Pages run 40677073577](https://github.com/gravelcycles/travels/actions/runs/40677073577).
+All 910 tests and strict/reproducible builds pass; six fresh public files match
+the release exactly. Studio is synchronized with a passing build and 15 targeted
+checks. All other trip/working data is preserved.
+
 ### Vienna access correction — 28 October 2026
 
 Owner direction: “bus to udine and then train (railjet) to vienna”. This
