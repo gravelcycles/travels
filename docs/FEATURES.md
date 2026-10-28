@@ -166,7 +166,10 @@ uses the existing city/TBD and multimodal contracts: twelve dated stays through
 Forni and nineteen undated stays, with Bratislava after Poland and Slovenia after
 Zagreb. Route order, dates and network provenance remain trip content. The Vienna
 [28 October access correction](HEADING_EAST.md#vienna-access-correction--28-october-2026)
-uses buses via Tolmezzo to Udine, then ÖBB Railjet to Vienna. It supersedes the
+uses bus 110 to Tolmezzo, bus 100 to Udine, then ÖBB Railjet to Vienna. The
+[same-day corridor correction](HEADING_EAST.md#matching-forni-bus-corridors--28-october-follow-up)
+keeps the same 100/110 services in both directions and removes false motorway
+detours, retaining legitimate one-way street differences. It supersedes the
 Carnia/Tarvisio bus-transfer chain; departure times remain unconfirmed.
 
 Heading East's second camera batch uses the existing incremental photo importer

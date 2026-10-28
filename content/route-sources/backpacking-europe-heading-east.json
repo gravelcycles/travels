@@ -1427,23 +1427,16 @@
       "strategy": "preserve",
       "provenance": {
         "provider": "OSRM / OpenStreetMap",
-        "retrievedAt": "2026-10-20",
+        "retrievedAt": "2026-10-28",
         "profile": "driving",
+        "service": "100",
         "requestUrls": [
-          "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.2422,46.0569;13.197,46.153;13.105,46.367;13.0194,46.4006?overview=full&geometries=geojson&steps=false"
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.2422,46.0569;13.0194,46.4006?overview=full&geometries=geojson&steps=false"
         ],
         "requestCoordinates": [
           [
             13.2422,
             46.0569
-          ],
-          [
-            13.197,
-            46.153
-          ],
-          [
-            13.105,
-            46.367
           ],
           [
             13.0194,
@@ -1452,29 +1445,57 @@
         ],
         "rawSha256": [
           {
-            "file": "adjustment-20261020/udine-tolmezzo-1.json",
-            "sha256": "f1cbc239ed852a5ec84bf83a3eaa4e4f6c9fb429bfb4ed2929d47a6586726b55"
+            "file": "bus-100-110-20261028/udine-tolmezzo-direct.json",
+            "sha256": "ccc67a8c8769f936b9243e51a71a19d568745ab5ab4edc71ed7f14721964123a"
           }
         ],
         "coordinateOrder": "longitude,latitude",
         "simplifyTolerance": 3e-05,
-        "rawPointCount": 1940,
-        "outputPointCount": 469,
-        "rawDistanceKm": 69.824,
-        "distanceKm": 69.747,
+        "rawPointCount": 1118,
+        "outputPointCount": 279,
+        "rawDistanceKm": 50.014,
+        "distanceKm": 49.976,
+        "providerDistanceKm": 50.05,
         "endpointOffsetsMeters": [
           96,
           10
         ],
         "waypointOffsetsMeters": [
           9,
-          287,
-          70,
           10
         ],
         "largestRawGapKm": 1.263,
         "maxSectionJoinMeters": 0,
-        "notes": "Network reconstruction, not an exact booked service or operator GPS trace. Forni dates and inbound train/bus modes are owner-confirmed; onward dates and connections are TBD. Transit anchors do not assert passenger calls or exact terminal entrances. See docs/HEADING_EAST.md."
+        "serviceEvidence": {
+          "operatorUrl": "https://tplfvg.it/it/servizi/nuoviservizi/area_udinese_revisione_orari_sett26/",
+          "checkedAt": "2026-10-28",
+          "operatorTimetableUpdatedAt": "2026-10-26",
+          "description": "Line 100: Tolmezzo–Udine via autostrada. Owner confirms 100/110 in both directions."
+        },
+        "supersededReconstruction": {
+          "retrievedAt": "2026-10-20",
+          "requestUrls": [
+            "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.2422,46.0569;13.197,46.153;13.105,46.367;13.0194,46.4006?overview=full&geometries=geojson&steps=false"
+          ],
+          "rawSha256": [
+            {
+              "file": "adjustment-20261020/udine-tolmezzo-1.json",
+              "sha256": "f1cbc239ed852a5ec84bf83a3eaa4e4f6c9fb429bfb4ed2929d47a6586726b55"
+            }
+          ],
+          "distanceKm": 69.747,
+          "reason": "Off-motorway shaping anchors forced false detours. Replaced with the common A23 corridor in each legal driving direction."
+        },
+        "notes": "Owner follow-up, 28 October: use the same bus services and corridor in both directions, 100 Udine–Tolmezzo and 110 Tolmezzo–Forni. Removed erroneous shaping anchors east of the A23; reviewed OSRM steps identify Autostrada Alpe-Adria/A23 and the SS52 Tolmezzo approach. Independent direction-aware road lines retain only carriageway and one-way urban differences (maximum 315 m separation); they are representative bus corridors, not operator GPS tracks or verified departure-specific terminal streets. Railjet onward remains unchanged. See docs/HEADING_EAST.md#matching-forni-bus-corridors--28-october-follow-up.",
+        "roadNameReview": {
+          "requestUrl": "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.2422,46.0569;13.0194,46.4006?overview=full&geometries=geojson&steps=true",
+          "rawFile": "bus-100-110-20261028/udine-tolmezzo-steps.json",
+          "sha256": "d0ca09902b1f190a85951d35f3578db9c8c4c769cf298c28659aa031282d9ba5",
+          "verifiedRefs": [
+            "A23",
+            "SS52"
+          ]
+        }
       }
     },
     "backpacking-europe-heading-east-tolmezzo-forni": {
@@ -1523,7 +1544,14 @@
         ],
         "largestRawGapKm": 0.376,
         "maxSectionJoinMeters": 0,
-        "notes": "Network reconstruction, not an exact booked service or operator GPS trace. Forni dates and inbound train/bus modes are owner-confirmed; onward dates and connections are TBD. Transit anchors do not assert passenger calls or exact terminal entrances. See docs/HEADING_EAST.md."
+        "notes": "Network reconstruction, not an exact booked service or operator GPS trace. Forni dates and inbound train/bus modes are owner-confirmed; onward dates and connections are TBD. Transit anchors do not assert passenger calls or exact terminal entrances. See docs/HEADING_EAST.md. 28 October follow-up confirms line 110 in both directions; retain the reviewed SS52 valley lines, whose small directional Tolmezzo street differences stay within 272 m. See docs/HEADING_EAST.md#matching-forni-bus-corridors--28-october-follow-up.",
+        "service": "110",
+        "serviceEvidence": {
+          "operatorUrl": "https://tplfvg.it/it/servizi/nuoviservizi/area_udinese_revisione_orari_sett26/",
+          "checkedAt": "2026-10-28",
+          "operatorTimetableUpdatedAt": "2026-10-26",
+          "description": "Line 110: Pieve di Cadore–Forni di Sopra–Ampezzo–Tolmezzo. Owner confirms 100/110 in both directions."
+        }
       }
     },
     "backpacking-europe-heading-east-forni-tolmezzo": {
@@ -1572,8 +1600,14 @@
         ],
         "largestRawGapKm": 0.376,
         "maxSectionJoinMeters": 0,
-        "notes": "Reviewed road reconstruction retained for the owner’s 28 October correction: buses from Forni via Tolmezzo to Udine, then ÖBB Railjet to Vienna. Exact boarding point, departure times and accommodation walk remain unconfirmed; the Forni city anchor is representative. The earlier 20 October Carnia/Tarvisio timetable is superseded. See docs/HEADING_EAST.md#vienna-access-correction--28-october-2026.",
-        "service": "110"
+        "notes": "Reviewed road reconstruction retained for the owner’s 28 October correction: buses from Forni via Tolmezzo to Udine, then ÖBB Railjet to Vienna. Exact boarding point, departure times and accommodation walk remain unconfirmed; the Forni city anchor is representative. The earlier 20 October Carnia/Tarvisio timetable is superseded. See docs/HEADING_EAST.md#vienna-access-correction--28-october-2026. 28 October follow-up confirms line 110 in both directions; retain the reviewed SS52 valley lines, whose small directional Tolmezzo street differences stay within 272 m. See docs/HEADING_EAST.md#matching-forni-bus-corridors--28-october-follow-up.",
+        "service": "110",
+        "serviceEvidence": {
+          "operatorUrl": "https://tplfvg.it/it/servizi/nuoviservizi/area_udinese_revisione_orari_sett26/",
+          "checkedAt": "2026-10-28",
+          "operatorTimetableUpdatedAt": "2026-10-26",
+          "description": "Line 110: Pieve di Cadore–Forni di Sopra–Ampezzo–Tolmezzo. Owner confirms 100/110 in both directions."
+        }
       }
     },
     "backpacking-europe-heading-east-zagreb-ljubljana": {
@@ -1829,23 +1863,16 @@
       "strategy": "preserve",
       "provenance": {
         "provider": "OSRM / OpenStreetMap",
-        "retrievedAt": "2026-10-20",
+        "retrievedAt": "2026-10-28",
         "profile": "driving",
+        "service": "100",
         "requestUrls": [
-          "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.0194,46.4006;13.105,46.367;13.197,46.153;13.2422,46.0569?overview=full&geometries=geojson&steps=false"
+          "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.0194,46.4006;13.2422,46.0569?overview=full&geometries=geojson&steps=false"
         ],
         "requestCoordinates": [
           [
             13.0194,
             46.4006
-          ],
-          [
-            13.105,
-            46.367
-          ],
-          [
-            13.197,
-            46.153
           ],
           [
             13.2422,
@@ -1854,35 +1881,48 @@
         ],
         "rawSha256": [
           {
-            "file": "adjustment-20261020/tolmezzo-udine-1.json",
-            "sha256": "e9f3b12bce988029466ff68190082d6fdc9b52725f02f975c1580867b4ec39d5"
+            "file": "bus-100-110-20261028/tolmezzo-udine-direct.json",
+            "sha256": "e828d385443efd789ab76d9e66c3f199309afc02aa804a7eb89ab8fbcfcd6d6d"
           }
         ],
         "coordinateOrder": "longitude,latitude",
         "simplifyTolerance": 3e-05,
-        "rawPointCount": 1840,
-        "outputPointCount": 435,
-        "rawDistanceKm": 61.706,
-        "distanceKm": 61.626,
+        "rawPointCount": 1122,
+        "outputPointCount": 296,
+        "rawDistanceKm": 51.018,
+        "distanceKm": 50.983,
+        "providerDistanceKm": 51.056,
         "endpointOffsetsMeters": [
           10,
           96
         ],
         "waypointOffsetsMeters": [
           10,
-          70,
-          287,
           9
         ],
         "largestRawGapKm": 1.266,
         "maxSectionJoinMeters": 0,
-        "notes": "Reviewed 20 October network reconstruction restored unchanged on 28 October at the owner’s request. Buses reach Udine via Tolmezzo; the onward train is ÖBB Railjet. Exact departures, bus streets and bookings remain unconfirmed. Transfer points do not assert exact boarding entrances or an accommodation walk. See docs/HEADING_EAST.md#vienna-access-correction--28-october-2026.",
-        "restoredFrom": {
-          "commit": "93fc1f6",
-          "segmentId": "backpacking-europe-heading-east-tolmezzo-udine",
-          "restoredAt": "2026-10-28",
-          "reason": "Owner correction: bus to Udine, then Railjet to Vienna; supersedes the 20 October Carnia/Tarvisio bus transfer route."
-        }
+        "serviceEvidence": {
+          "operatorUrl": "https://tplfvg.it/it/servizi/nuoviservizi/area_udinese_revisione_orari_sett26/",
+          "checkedAt": "2026-10-28",
+          "operatorTimetableUpdatedAt": "2026-10-26",
+          "description": "Line 100: Tolmezzo–Udine via autostrada. Owner confirms 100/110 in both directions."
+        },
+        "supersededReconstruction": {
+          "retrievedAt": "2026-10-20",
+          "requestUrls": [
+            "https://routing.openstreetmap.de/routed-car/route/v1/driving/13.0194,46.4006;13.105,46.367;13.197,46.153;13.2422,46.0569?overview=full&geometries=geojson&steps=false"
+          ],
+          "rawSha256": [
+            {
+              "file": "adjustment-20261020/tolmezzo-udine-1.json",
+              "sha256": "e9f3b12bce988029466ff68190082d6fdc9b52725f02f975c1580867b4ec39d5"
+            }
+          ],
+          "distanceKm": 61.626,
+          "reason": "Off-motorway shaping anchors forced false detours. Replaced with the common A23 corridor in each legal driving direction."
+        },
+        "notes": "Owner follow-up, 28 October: use the same bus services and corridor in both directions, 100 Udine–Tolmezzo and 110 Tolmezzo–Forni. Removed erroneous shaping anchors east of the A23; reviewed OSRM steps identify Autostrada Alpe-Adria/A23 and the SS52 Tolmezzo approach. Independent direction-aware road lines retain only carriageway and one-way urban differences (maximum 315 m separation); they are representative bus corridors, not operator GPS tracks or verified departure-specific terminal streets. Railjet onward remains unchanged. See docs/HEADING_EAST.md#matching-forni-bus-corridors--28-october-follow-up."
       }
     },
     "backpacking-europe-heading-east-udine-vienna": {

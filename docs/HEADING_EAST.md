@@ -117,13 +117,47 @@ passes through Mestre; no specific train departure has been selected here.
 
 | Changed incoming stay | Reconstructed candidate corridor |
 | --- | --- |
-| Forni di Sopra | Train Venice–Mestre–Treviso–Pordenone–Udine; buses Udine–Tolmezzo and Tolmezzo–Ampezzo–Forni |
-| Vienna | Buses Forni–Tolmezzo–Udine, then ÖBB Railjet via Tarvisio, Villach, Klagenfurt, the Koralmbahn, Graz, Bruck and Semmering (28 October correction) |
+| Forni di Sopra | Train Venice–Mestre–Treviso–Pordenone–Udine; bus 100 Udine–Tolmezzo and bus 110 Tolmezzo–Ampezzo–Forni |
+| Vienna | Bus 110 Forni–Tolmezzo, bus 100 Tolmezzo–Udine, then ÖBB Railjet via Tarvisio, Villach, Klagenfurt, the Koralmbahn, Graz, Bruck and Semmering (28 October correction) |
 | Bratislava | Split the retained Kraków–Budapest railway at Bratislava hlavná stanica, retaining the Katowice–Bohumín–Břeclav corridor |
 | Budapest | Remaining retained Bratislava–Štúrovo–Vác railway |
 | Ljubljana | Rail from Zagreb via Dobova and Zidani Most |
 | Lake Bled | Retain Ljubljana–Kranj–Lesce-Bled rail plus local bus |
 | Split | Retain Bled–Lesce local bus; reverse reviewed rail through Ljubljana to Zagreb, then retain Zagreb–Split rail |
+
+### Matching Forni bus corridors — 28 October follow-up
+
+Owner clarification: travel to/from Forni should use the “same bus routes”,
+“100 to the 110”; fix the differing map lines. Inbound is **100 Udine → Tolmezzo,
+then 110 Tolmezzo → Forni di Sopra**. Outbound is **110 Forni → Tolmezzo, then
+100 Tolmezzo → Udine**, followed by the retained Railjet to Vienna.
+[TPL FVG’s current list](https://tplfvg.it/it/servizi/nuoviservizi/area_udinese_revisione_orari_sett26/),
+updated 26 October and checked 28 October, confirms 100 via the motorway and
+110 through Ampezzo. No departure-specific timetable is newly asserted.
+
+The earlier road reconstruction used off-motorway shaping anchors and created
+false detours: 69.7 km inbound and 61.6 km outbound for line 100. Replace both
+with independently routed A23 motorway corridors: 50.0 km inbound, 51.0 km
+outbound. Reviewed road steps identify A23/Autostrada Alpe-Adria and the SS52
+Tolmezzo approach. The corrected durable A23 anchors sit on the actual line.
+Both directions now stay within 315 m of each other, including one-way urban
+streets and separated motorway carriageways; those small legal differences
+are intentional. Do not force exact reversal through one-way roads.
+
+Line 110 already followed the same SS52 valley through Ampezzo in both
+directions. Retain its reviewed 43.2/42.6 km geometry; the small directional
+Tolmezzo street differences stay within 272 m. The manifest identifies services
+100/110 for all four legs, preserves original/new request URLs and hashes, and
+explains the superseded detours. Raw responses and review data are ignored in
+`build/route-inputs/backpacking-europe-heading-east/bus-100-110-20261028/`.
+
+Acceptance: exactly the same 100/110 services and physical corridor in both
+directions, with a regression rejecting separation over 350 m. Updated source
+and displayed distances must agree. All other geometry, 31 stays, confirmed/TBD
+dates, photos, saved copy and Railjet remain unchanged; still 45 legs. Test/build,
+strict preservation, fresh public files and local Studio synchronization are
+recorded in WIP. The earlier same-day release below documents the initial Vienna
+access correction; its bus geometry is superseded by this follow-up.
 
 ### Vienna access correction — 28 October 2026
 
@@ -136,10 +170,11 @@ Semmering. [ÖBB’s direct-service list](https://www.obb-italia.com/de/zugverbi
 checked 28 October, supports the Udine–Villach–Graz–Wien Railjet corridor.
 Exact departures, bookings and travel-date works are not newly verified.
 
-Restore the reviewed Tolmezzo–Udine road line (61.6 km) and full Udine–Vienna
-railway (493.5 km) from `93fc1f6`, unchanged; retain Forni–Tolmezzo (42.6 km).
-The manifest preserves original router requests, source hashes and restoration
-provenance. Remove the superseded three bus legs and Boscoverde-start train,
+The initial correction restored the Tolmezzo–Udine road and full Udine–Vienna
+railway from `93fc1f6`. The railway (493.5 km) remains unchanged; the same-day
+100/110 follow-up above replaces the road detours while retaining line 110.
+The manifest preserves original router requests, source hashes, restoration
+and supersession provenance. Remove the superseded three bus legs and Boscoverde-start train,
 and the now-unused Carnia/Tarvisio bus-transfer places. All other routes,
 31 stay IDs/order/dates, photos, saved copy and overrides remain intact. Forni
 is still confirmed through 29 October; Vienna and later stays remain TBD.

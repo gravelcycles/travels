@@ -1,5 +1,23 @@
 # Current workstreams
 
+## Matching Forni bus corridors — 28 October follow-up
+
+Owner correction: the travel to/from Forni should use the same buses, “100 to
+the 110”; fix the differing route lines. Inbound is Udine → Tolmezzo (100),
+then Tolmezzo → Forni (110); outbound reverses those services. The 100 lines
+currently differ by a false road detour exceeding 5 km laterally; the 110 lines
+already share the valley corridor with small directional terminal differences.
+TPL FVG’s 26 October list confirms both service corridors. Rebuilt the two
+100 lines on A23 without the faulty off-motorway anchors: 50.0/51.0 km, within
+315 m of the opposite line including one-way streets. The unchanged 110 lines
+stay within 272 m. Source notes identify 100/110 for all four legs. A physical
+corridor regression rejects the former multi-kilometer detour. All 43 other
+geometries, stay/date/media data and the Railjet are unchanged. Strict routing
+preserves all 45 legs with no warnings; all 910 tests and reproducible builds
+pass. Current direction and supersession live in
+[the trip record](docs/HEADING_EAST.md#matching-forni-bus-corridors--28-october-follow-up).
+Next: latest-main integration, Pages/public verification and scoped Studio sync.
+
 ## Forni–Vienna via Udine and Railjet — 28 October 2026
 
 Owner direction: “bus to udine and then train (railjet) to vienna”. Supersedes

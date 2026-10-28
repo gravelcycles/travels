@@ -134,5 +134,7 @@ See [the researched itinerary and limitations](docs/HEADING_EAST.md) and
 [its preserved route manifest](content/route-sources/backpacking-europe-heading-east.json).
 The 45 legs (27 rail, 18 bus) use preserved OSM network reconstructions.
 The [28 October correction](docs/HEADING_EAST.md#vienna-access-correction--28-october-2026)
-restores buses via Tolmezzo to Udine, then ÖBB Railjet to Vienna. Owner-confirmed
+uses bus 100 Udine–Tolmezzo and bus 110 Tolmezzo–Forni in both directions,
+then ÖBB Railjet from Udine to Vienna. The same-day corridor correction removes
+false off-motorway detours; direction-aware terminal streets remain representative. Owner-confirmed
 city dates and service choice remain separate from unverified departure times.

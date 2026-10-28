@@ -2,6 +2,11 @@
 
 ## 28 October 2026 — Forni–Vienna via Udine
 
+- Owner follow-up: use the same 100 (Udine–Tolmezzo) and 110
+  (Tolmezzo–Forni) services in both directions. Rebuilt line 100 along the A23
+  without erroneous off-motorway detours, updated distances, retained legitimate
+  one-way road differences and line 110 geometry, and added a corridor regression.
+
 - Replaced the Carnia/Tarvisio bus transfer chain with buses from Forni via
   Tolmezzo to Udine, then ÖBB Railjet to Vienna, as requested by the owner.
 - Restored the reviewed Tolmezzo–Udine road and full Udine–Vienna rail geometry

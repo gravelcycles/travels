@@ -44,12 +44,29 @@ test('the requested undated extension keeps the photo itinerary and transport ge
  const vienna=j.days[12],viennaLegs=vienna.segmentIds.map(id=>j.segments.find(s=>s.id===id));
  assert.deepEqual(viennaLegs.map(s=>s.mode),['bus','bus','train']);
  assert.deepEqual(viennaLegs.map(s=>placeName(s.to)),['Tolmezzo','Udine','Vienna']);
- assert.ok(viennaLegs[1].distanceKm>60 && viennaLegs[1].distanceKm<65);
+ assert.ok(viennaLegs[1].distanceKm>50 && viennaLegs[1].distanceKm<52);
  assert.ok(viennaLegs.at(-1).distanceKm>490 && viennaLegs.at(-1).distanceKm<500);
  const rail=manifest.segments[viennaLegs.at(-1).id].provenance;
  assert.equal(rail.restoredFrom.commit,'93fc1f6');
  assert.equal(rail.serviceEvidence.service,'ÖBB Railjet');
- assert.match(j.note,/Udine, then an ÖBB Railjet to Vienna/);
+ assert.match(j.note,/bus 110 to Tolmezzo and bus 100 to Udine, then an ÖBB Railjet to Vienna/);
+ // Both directions follow the same 100/110 corridor. Compare physical
+ // lines, allowing only carriageway/one-way terminal differences, not detours.
+ const offset=(point,line)=>{
+  const scale=Math.cos(point[1]*Math.PI/180),x=point[0]*scale,y=point[1];let min=Infinity;
+  for(let i=1;i<line.length;i++){
+   const ax=line[i-1][0]*scale,ay=line[i-1][1],dx=(line[i][0]-line[i-1][0])*scale,dy=line[i][1]-line[i-1][1];
+   const t=Math.max(0,Math.min(1,((x-ax)*dx+(y-ay)*dy)/(dx*dx+dy*dy||1)));
+   min=Math.min(min,Math.hypot(x-ax-t*dx,y-ay-t*dy)*111.32);
+  }return min;
+ };
+ for(const [a,b,service] of [['udine-tolmezzo','tolmezzo-udine','100'],['tolmezzo-forni','forni-tolmezzo','110']]){
+  const ids=[a,b].map(short=>'backpacking-europe-heading-east-'+short),[out,back]=ids.map(id=>routes[id]);
+  for(const id of ids) assert.equal(manifest.segments[id].provenance.service,service);
+  for(const [line,other] of [[out,back],[back,out]])
+   assert.ok(line.every(point=>offset(point,other)<.35),`Bus ${service} must not invent a different corridor on return`);
+ }
+ assert.ok(j.segments.find(s=>s.id.endsWith('-udine-tolmezzo')).distanceKm<51);
  for(const old of ['tolmezzo-carnia','carnia-tarvisio','tarvisio-boscoverde','boscoverde-vienna']) {
   const id='backpacking-europe-heading-east-'+old;
   assert.ok(!j.segments.some(s=>s.id===id));

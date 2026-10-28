@@ -17,7 +17,7 @@
   "photoImport": {
     "sourceDirectory": "photos/euro-eastbound"
   },
-  "note": "City stops span arrival to departure, with confirmed dates through Forni di Sopra on 29 October. Venice → Udine is by train via Mestre, followed by buses via Tolmezzo to Forni. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed. The onward itinerary from Vienna to Athens is planned, not confirmed; dates, bookings and transfers remain TBD. Dotted routes mark these proposed legs. Rail is preferred where available; bus lines follow reconstructed road corridors, not operator GPS tracks. Poland remains Wrocław → Warsaw → Kraków, followed by Bratislava. Slovenia follows Zagreb: Ljubljana → Lake Bled, then Split and Dubrovnik. Lake Bled uses Lesce-Bled and a local bus; the return rail corridor toward Split runs via Ljubljana and Zagreb. Recheck travel dates for replacement buses. Udine, Tolmezzo, Lesce-Bled, Skopje, Tirana, Novi Pazar and Sarandë are transfer points, not extra stays. Forni–Vienna uses buses via Tolmezzo to Udine, then an ÖBB Railjet to Vienna via Tarvisio, Villach, Klagenfurt, the Koralmbahn and Graz. This owner correction of 28 October supersedes the Carnia/Tarvisio bus transfers. Exact departure times and bookings remain unconfirmed.",
+  "note": "City stops span arrival to departure, with confirmed dates through Forni di Sopra on 29 October. Venice → Udine is by train via Mestre, followed by bus 100 to Tolmezzo and bus 110 to Forni. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed. The onward itinerary from Vienna to Athens is planned, not confirmed; dates, bookings and transfers remain TBD. Dotted routes mark these proposed legs. Rail is preferred where available; bus lines follow reconstructed road corridors, not operator GPS tracks. Poland remains Wrocław → Warsaw → Kraków, followed by Bratislava. Slovenia follows Zagreb: Ljubljana → Lake Bled, then Split and Dubrovnik. Lake Bled uses Lesce-Bled and a local bus; the return rail corridor toward Split runs via Ljubljana and Zagreb. Recheck travel dates for replacement buses. Udine, Tolmezzo, Lesce-Bled, Skopje, Tirana, Novi Pazar and Sarandë are transfer points, not extra stays. Forni–Vienna uses bus 110 to Tolmezzo and bus 100 to Udine, then an ÖBB Railjet to Vienna via Tarvisio, Villach, Klagenfurt, the Koralmbahn and Graz. This owner correction of 28 October supersedes the Carnia/Tarvisio bus transfers. Exact departure times and bookings remain unconfirmed. Both directions use the same 100/110 bus corridors; small one-way city-road and motorway-carriageway differences remain representative.",
   "cover": "",
   "places": [
     {
@@ -739,18 +739,13 @@
       "to": "backpacking-europe-heading-east-tolmezzo",
       "via": [
         {
-          "name": "A23 corridor",
-          "lng": 13.20029,
-          "lat": 46.15178
-        },
-        {
-          "name": "Amaro",
-          "lng": 13.10508,
-          "lat": 46.36763
+          "name": "A23 motorway",
+          "lng": 13.1038,
+          "lat": 46.19544
         }
       ],
       "geometryStatus": "reconstructed",
-      "distanceKm": 69.7
+      "distanceKm": 50
     },
     {
       "id": "backpacking-europe-heading-east-tolmezzo-forni",
@@ -789,18 +784,13 @@
       "to": "backpacking-europe-heading-east-udine",
       "via": [
         {
-          "name": "Amaro",
-          "lng": 13.10508,
-          "lat": 46.36763
-        },
-        {
-          "name": "A23 corridor",
-          "lng": 13.20029,
-          "lat": 46.15178
+          "name": "A23 motorway",
+          "lng": 13.10385,
+          "lat": 46.1952
         }
       ],
       "geometryStatus": "reconstructed",
-      "distanceKm": 61.6
+      "distanceKm": 51
     },
     {
       "id": "backpacking-europe-heading-east-udine-vienna",
