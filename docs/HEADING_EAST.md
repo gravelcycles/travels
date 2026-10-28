@@ -151,6 +151,14 @@ transfer chain or 20 October departure time remains active. The atlas has
 parity, desktop/phone arrival and travel rows, strict preservation, full tests,
 reproducible build and fresh public deployment. WIP holds the delivery receipt.
 
+Delivered in `65b16e9` through successful
+[Pages run 40675338999](https://github.com/gravelcycles/travels/actions/runs/40675338999):
+all 910 tests/build pass, strict routing preserves 45 legs without warnings,
+and six freshly fetched public files exactly match the tested release. The
+actual-trip renderer passes desktop/phone three-row checks; browser visual
+review was blocked by automatic private-photo origin approval. Studio is synced
+with a passing local build and 15 targeted checks.
+
 ### Vienna access correction — 20 October follow-up
 
 **Historical: superseded by the [28 October correction](#vienna-access-correction--28-october-2026).**

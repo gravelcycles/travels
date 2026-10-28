@@ -16,8 +16,18 @@ rows and desktop/phone interactions; all 43 retained geometries are unchanged,
 and the two restored lines exactly match the reviewed source. Browser review
 was blocked by automatic origin approval for the unrelated private-photo
 service; no private-photo access was attempted through another path.
-Next: latest-main integration, Pages deployment/public verification and scoped
-Studio source synchronization. Departure times and bookings remain unverified.
+Complete. Integrated remote main immediately before publication. Release
+`65b16e9` passed [Pages run 40675338999](https://github.com/gravelcycles/travels/actions/runs/40675338999).
+Six fresh public HTML/data files match the tested output byte-for-byte; the
+public model confirms bus → bus → train to Tolmezzo, Udine and Vienna, with
+Railjet identified in the note. The primary Studio source/route/provenance and
+current trip notes now match the correction; its build and 15 targeted checks
+pass. Scoped synchronization changed 16 authorized source/generated/doc files;
+all 284 other pre-existing working files remain byte-identical, and the original
+branch/HEAD is unchanged. No media upload or Worker deployment was needed.
+Exact departure times and bookings remain unverified. The optional visual
+browser check remains limited by automatic private-photo origin approval;
+no task implementation or publication remains.
 
 ## Best of Europe additions and route overlap — 23 October 2026
 
