@@ -118,14 +118,42 @@ passes through Mestre; no specific train departure has been selected here.
 | Changed incoming stay | Reconstructed candidate corridor |
 | --- | --- |
 | Forni di Sopra | Train Venice–Mestre–Treviso–Pordenone–Udine; buses Udine–Tolmezzo and Tolmezzo–Ampezzo–Forni |
-| Vienna | Buses 110 Forni/Cella–Tolmezzo, 150 Tolmezzo–Carnia station, 200 Carnia–Tarvisio autostazione, 203 Tarvisio–Boscoverde; then rail to Vienna via Villach, Klagenfurt, the Koralmbahn, Graz, Bruck and Semmering |
+| Vienna | Buses Forni–Tolmezzo–Udine, then ÖBB Railjet via Tarvisio, Villach, Klagenfurt, the Koralmbahn, Graz, Bruck and Semmering (28 October correction) |
 | Bratislava | Split the retained Kraków–Budapest railway at Bratislava hlavná stanica, retaining the Katowice–Bohumín–Břeclav corridor |
 | Budapest | Remaining retained Bratislava–Štúrovo–Vác railway |
 | Ljubljana | Rail from Zagreb via Dobova and Zidani Most |
 | Lake Bled | Retain Ljubljana–Kranj–Lesce-Bled rail plus local bus |
 | Split | Retain Bled–Lesce local bus; reverse reviewed rail through Ljubljana to Zagreb, then retain Zagreb–Split rail |
 
+### Vienna access correction — 28 October 2026
+
+Owner direction: “bus to udine and then train (railjet) to vienna”. This
+supersedes the 20 October Carnia/Tarvisio bus-transfer choice and its timetable
+below. Vienna’s incoming travel is Forni di Sopra → Tolmezzo → Udine by bus,
+then Udine → Vienna by ÖBB Railjet. Tolmezzo and Udine remain transfers, not
+stays. Rail passes Tarvisio, Villach, Klagenfurt, the Koralmbahn, Graz, Bruck and
+Semmering. [ÖBB’s direct-service list](https://www.obb-italia.com/de/zugverbindungen/verbindungen-ab-italien),
+checked 28 October, supports the Udine–Villach–Graz–Wien Railjet corridor.
+Exact departures, bookings and travel-date works are not newly verified.
+
+Restore the reviewed Tolmezzo–Udine road line (61.6 km) and full Udine–Vienna
+railway (493.5 km) from `93fc1f6`, unchanged; retain Forni–Tolmezzo (42.6 km).
+The manifest preserves original router requests, source hashes and restoration
+provenance. Remove the superseded three bus legs and Boscoverde-start train,
+and the now-unused Carnia/Tarvisio bus-transfer places. All other routes,
+31 stay IDs/order/dates, photos, saved copy and overrides remain intact. Forni
+is still confirmed through 29 October; Vienna and later stays remain TBD.
+
+Acceptance: Vienna has exactly three ordered rows (bus, bus, train), ending
+at Tolmezzo, Udine and Vienna; the note identifies Railjet. No old four-bus
+transfer chain or 20 October departure time remains active. The atlas has
+45 reconstructed legs (27 rail, 18 bus). Verify detailed geometry, source/output
+parity, desktop/phone arrival and travel rows, strict preservation, full tests,
+reproducible build and fresh public deployment. WIP holds the delivery receipt.
+
 ### Vienna access correction — 20 October follow-up
+
+**Historical: superseded by the [28 October correction](#vienna-access-correction--28-october-2026).**
 
 The owner supplied a route through Carnia and Tarvisio Boscoverde, replacing
 our proposed backtrack via Udine. They clarified the pasted times are for
@@ -177,14 +205,15 @@ supports the Vienna/Graz–Venice Koralmbahn corridor.
 supports the Zagreb–Dobova–Ljubljana connection. Check travel dates for works,
 including the Ljubljana–Lesce corridor; exact services remain unsettled.
 
-The corrected map contains 47 reconstructed legs (27 rail, 20 bus), 31 stays and
+The 20 October correction contained 47 reconstructed legs (27 rail, 20 bus), 31 stays and
 about 10,578 km including TBD travel. Changed legs use full network responses from
 OpenRailRouting (OSM data 20 October, `all_tracks_1435`) and OSRM (`driving`).
 Bratislava's two legs and Lesce–Zagreb reuse reviewed coordinates by splitting
 or reversing them, without smoothing. Unchanged geometry is byte-for-byte
 identical as coordinate arrays. Remove the superseded Venice–Ljubljana,
 Lesce–Vienna and unsplit Kraków–Budapest legs from source/manifest/geometry.
-The later Vienna correction also removes Tolmezzo–Udine and Udine–Vienna.
+The 20 October Vienna correction removed Tolmezzo–Udine and Udine–Vienna;
+the 28 October correction restores both unchanged and supersedes that removal.
 
 Raw responses and the adjustment scripts are ignored under
 `build/route-inputs/backpacking-europe-heading-east/adjustment-20261020/`.

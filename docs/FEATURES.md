@@ -103,8 +103,8 @@ Live Photos playback is still an investigation. Private-video intake and live
 photo comments now have shared implementations; media publication and community
 service rollout follow their documented workflows.
 
-Heading East exercises the shared city-stay contract with eleven stops through
-Venice, 23 October 2026, and fourteen researched route legs. Extensions remain
+Heading East exercises the shared city-stay contract with twelve dated stays through
+Forni, 29 October 2026, nineteen undated stays and 45 reconstructed route legs. Extensions remain
 content-only; see [its intake and route evidence](HEADING_EAST.md).
 Its [chronological city photo order](HEADING_EAST.md#chronological-city-albums--12-october-2026)
 uses the existing album-order overrides, with no shared renderer change.
@@ -165,8 +165,9 @@ Heading East’s [20 October route adjustment](HEADING_EAST.md#route-adjustment-
 uses the existing city/TBD and multimodal contracts: twelve dated stays through
 Forni and nineteen undated stays, with Bratislava after Poland and Slovenia after
 Zagreb. Route order, dates and network provenance remain trip content. The Vienna
-access correction uses buses via Carnia and Tarvisio Boscoverde, with source-date
-timetable provenance separate from confirmed stay dates.
+[28 October access correction](HEADING_EAST.md#vienna-access-correction--28-october-2026)
+uses buses via Tolmezzo to Udine, then ÖBB Railjet to Vienna. It supersedes the
+Carnia/Tarvisio bus-transfer chain; departure times remain unconfirmed.
 
 Heading East's second camera batch uses the existing incremental photo importer
 and private publisher. Its per-file location review list is in

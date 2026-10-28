@@ -1,5 +1,24 @@
 # Current workstreams
 
+## Forni–Vienna via Udine and Railjet — 28 October 2026
+
+Owner direction: “bus to udine and then train (railjet) to vienna”. Supersedes
+the 20 October Carnia/Tarvisio bus transfer chain. Current scope and checks live
+in [the trip record](docs/HEADING_EAST.md#vienna-access-correction--28-october-2026).
+Implemented three ordered legs (Forni–Tolmezzo bus, Tolmezzo–Udine bus,
+Udine–Vienna train), restoring reviewed geometry from `93fc1f6` unchanged.
+Stay IDs/order/dates, photos, saved text and other routes are preserved.
+Work is isolated from the primary checkout’s pending work in
+`/private/tmp/travels-forni-20261028`, based on remote main `2f643ea`.
+Strict routing preserves all 45 legs with no warnings. All 910 tests and the
+production build pass. Actual-trip renderer checks confirm the three correct
+rows and desktop/phone interactions; all 43 retained geometries are unchanged,
+and the two restored lines exactly match the reviewed source. Browser review
+was blocked by automatic origin approval for the unrelated private-photo
+service; no private-photo access was attempted through another path.
+Next: latest-main integration, Pages deployment/public verification and scoped
+Studio source synchronization. Departure times and bookings remain unverified.
+
 ## Best of Europe additions and route overlap — 23 October 2026
 
 Complete. The owner requested saved-list places near the newly photographed
@@ -89,6 +108,8 @@ other saved photo edits are unchanged. This follow-up is complete. No outbound
 update was sent or acknowledged.
 
 ## Forni–Vienna via Carnia/Tarvisio — 20 October 2026
+
+Historical completed release; route choice superseded by the 28 October Udine/Railjet correction above.
 
 Owner follow-up replaces the proposed Udine backtrack with buses 110/150/200/203
 via Tolmezzo, Carnia station and Tarvisio autostazione to Boscoverde, then rail

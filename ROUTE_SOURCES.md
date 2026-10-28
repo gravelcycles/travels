@@ -132,5 +132,7 @@ visible in the stories. All precise private accommodation data stays local.
 
 See [the researched itinerary and limitations](docs/HEADING_EAST.md) and
 [its preserved route manifest](content/route-sources/backpacking-europe-heading-east.json).
-Ten rail legs and one Dresden–Ústí nad Labem road leg use detailed OSM network
-reconstructions. Owner-confirmed city dates are separate from inferred services.
+The 45 legs (27 rail, 18 bus) use preserved OSM network reconstructions.
+The [28 October correction](docs/HEADING_EAST.md#vienna-access-correction--28-october-2026)
+restores buses via Tolmezzo to Udine, then ÖBB Railjet to Vienna. Owner-confirmed
+city dates and service choice remain separate from unverified departure times.

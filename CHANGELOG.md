@@ -1,5 +1,15 @@
 # Changelog
 
+## 28 October 2026 — Forni–Vienna via Udine
+
+- Replaced the Carnia/Tarvisio bus transfer chain with buses from Forni via
+  Tolmezzo to Udine, then ÖBB Railjet to Vienna, as requested by the owner.
+- Restored the reviewed Tolmezzo–Udine road and full Udine–Vienna rail geometry
+  unchanged, removed superseded legs/transfer-only places, and retained all
+  stay dates, photos, editorial content and other routes.
+- Updated the trip record, route provenance and feature inventory; departure
+  times and bookings remain unconfirmed.
+
 ## 23 October 2026 — Best of Europe places and solid/TBD overlaps
 
 - Added seven exact-branch saved places to Heading East: two Salzburg and five
