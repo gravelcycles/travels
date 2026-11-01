@@ -132,7 +132,13 @@ visible in the stories. All precise private accommodation data stays local.
 
 See [the researched itinerary and limitations](docs/HEADING_EAST.md) and
 [its preserved route manifest](content/route-sources/backpacking-europe-heading-east.json).
-The 45 legs (27 rail, 18 bus) use preserved OSM network reconstructions.
+The 47 legs (29 rail, 18 bus) use preserved OSM network reconstructions.
+The [1 November correction](docs/HEADING_EAST.md#vienna-and-poland-dates--1-november-2026)
+replaces Wrocław with the researched Vienna–Břeclav–Bohumín–Kraków trains,
+then the fast Central Rail Line to Warsaw. Its first Kraków night is omitted
+as a stay. Three service numbers and their times are checked in ÖBB's date-specific
+planner; the 2 November fast train has no selected departure. The retained
+Warsaw–Kraków and Kraków–Bratislava geometries are unchanged.
 The [28 October correction](docs/HEADING_EAST.md#vienna-access-correction--28-october-2026)
 uses bus 100 Udine–Tolmezzo and bus 110 Tolmezzo–Forni in both directions,
 then ÖBB Railjet from Udine to Vienna. The same-day corridor correction removes

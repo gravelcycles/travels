@@ -103,8 +103,8 @@ Live Photos playback is still an investigation. Private-video intake and live
 photo comments now have shared implementations; media publication and community
 service rollout follow their documented workflows.
 
-Heading East exercises the shared city-stay contract with twelve dated stays through
-Forni, 29 October 2026, nineteen undated stays and 45 reconstructed route legs. Extensions remain
+Heading East exercises the shared city-stay contract with fifteen dated stays through
+Kraków, 11 November 2026, fifteen undated stays and 47 reconstructed route legs. Extensions remain
 content-only; see [its intake and route evidence](HEADING_EAST.md).
 Its [chronological city photo order](HEADING_EAST.md#chronological-city-albums--12-october-2026)
 uses the existing album-order overrides, with no shared renderer change.
@@ -162,9 +162,12 @@ See the [notification contract](PLACES_AND_COMMENTS.md#comment-notifications).
 Heading East’s [23 October list extension](HEADING_EAST.md#saved-places-extension--23-october-2026) adds two Salzburg and five Venice/Mestre venues through the existing Places contract.
 
 Heading East’s [20 October route adjustment](HEADING_EAST.md#route-adjustment--20-october-2026)
-uses the existing city/TBD and multimodal contracts: twelve dated stays through
-Forni and nineteen undated stays, with Bratislava after Poland and Slovenia after
-Zagreb. Route order, dates and network provenance remain trip content. The Vienna
+uses the existing city/TBD and multimodal contracts, with Bratislava after Poland
+and Slovenia after Zagreb. The [1 November dates/order correction](HEADING_EAST.md#vienna-and-poland-dates--1-november-2026)
+confirms Vienna/Warsaw/Kraków, removes Wrocław and puts the first Kraków visit
+within Warsaw's incoming travel. City validation permits travel gaps between
+non-overlapping stays without creating an event or assigning gap-day photos.
+Route order, dates and network provenance remain trip content. The Vienna
 [28 October access correction](HEADING_EAST.md#vienna-access-correction--28-october-2026)
 uses bus 110 to Tolmezzo, bus 100 to Udine, then ÖBB Railjet to Vienna. The
 [same-day corridor correction](HEADING_EAST.md#matching-forni-bus-corridors--28-october-follow-up)

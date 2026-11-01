@@ -338,10 +338,13 @@ test('photo intake skips undated TBD entries for the reference, demo and a fresh
   }
   const city = data.journeys.find(j => j.id === 'backpacking-europe-heading-east');
   const config = photoImportConfig(root, data, { journey: city.id });
-  assert.equal(config.daysByDate.size, 59);
+  assert.equal(config.daysByDate.size, 72);
   assert.equal(config.daysByDate.get('2026-09-30').title, 'Düsseldorf');
   assert.equal(config.daysByDate.get('2026-10-24').title, 'Forni di Sopra');
-  assert.equal(config.daysByDate.has('2026-10-30'), false);
+  assert.equal(config.daysByDate.get('2026-10-30').title, 'Vienna');
+  assert.equal(config.daysByDate.get('2026-11-02').title, 'Warsaw');
+  assert.equal(config.daysByDate.get('2026-11-06').title, 'Kraków');
+  assert.equal(config.daysByDate.has('2026-11-12'), false);
 });
 
 test('full-trip Replay stays inaccessible while arrival works for reference, demo and populated city draft', t => {
@@ -1274,10 +1277,20 @@ test('city events keep shared controls, date ranges, photo intake and Replay wit
   const shifted = prepareJourneyPlan(planData, planned, {startDate:'2028-03-01',endDate:'2028-03-03'}, state,'itinerary').journey;
   assert.deepEqual(shifted.days.map(d=>[d.id,d.calendarDate,d.calendarEndDate]),[[first.id,'2028-03-01','2028-03-02'],[second.id,'2028-03-02','2028-03-03']]);
   assert.throws(()=>prepareJourneyPlan(planData, planned,{endDate:'2028-02-28'},state),/departure cannot precede arrival/);
-  for(const range of [{calendarDate:'2028-02-28'},{calendarDate:'2028-03-01'},{calendarEndDate:'2028-02-28'}]) {
+  const gap = prepareJourneyPlan(planData, planned, {days:[{...first,calendarEndDate:'2028-02-28',date:'28 Feb'},{...second,calendarDate:'2028-03-01',date:'1 Mar'}]},state).journey;
+  assert.equal(gap.days.length,2,'an omitted travel night does not create a stay');
+  assert.equal(gap.days[0].calendarEndDate,'2028-02-28');
+  assert.equal(gap.days[1].calendarDate,'2028-03-01');
+  assert.equal(utils.eventForDate(gap,'2028-02-29'),undefined,'travel gaps are not assigned to a city');
+  const gapData={...data,journeys:data.journeys.map(j=>j.id===city.id?gap:j)};
+  const gapPhotos=photoImportConfig(root,gapData,{journey:city.id});
+  assert.equal(gapPhotos.daysByDate.has('2028-02-29'),false,'photo intake does not fill omitted stays');
+  const shiftedGap=prepareJourneyPlan(gapData,gap,{startDate:'2028-03-01',endDate:'2028-03-03'},state,'itinerary').journey;
+  assert.deepEqual(shiftedGap.days.map(d=>[d.calendarDate,d.calendarEndDate]),[['2028-03-01','2028-03-01'],['2028-03-03','2028-03-03']]);
+  for(const range of [{calendarDate:'2028-02-28'},{calendarEndDate:'2028-02-28'}]) {
     assert.throws(()=>prepareJourneyPlan(planData,planned,{days:[first,{...second,...range}]},state),/transfer date|departure cannot precede arrival/);
   }
-  for(const j of [data.journeys.find(j=>j.kind==='real'),data.journeys.find(j=>j.kind==='demo'),planned]) {
+  for(const j of [data.journeys.find(j=>j.kind==='real'),data.journeys.find(j=>j.kind==='demo'),planned,gap]) {
     assert.deepEqual(ids(renderJourneyPage(root,j)),ids(renderJourneyPage(root,city)));
     assert.deepEqual(assets(renderJourneyPage(root,j)),assets(renderJourneyPage(root,city)));
     assert.equal(utils.eventWord(j,'plural'),j.eventMode==='city'?'stops':'days');
@@ -1454,12 +1467,12 @@ test('day visibility uses trip-local dates, including today, ongoing stays and d
 test('Heading East groups the real city stays without inventing onward dates or changing confirmation', () => {
   const journey = loadContent(repo).data.journeys.find(j => j.id === 'backpacking-europe-heading-east');
   const utils = globalThis.JOURNEY_ATLAS_UTILS, now = new Date('2026-10-11T12:00:00Z');
-  assert.deepEqual(utils.planningCounts(journey, now), {past:8,locked:4,tbd:19});
+  assert.deepEqual(utils.planningCounts(journey, now), {past:8,locked:7,tbd:15});
   const snapshot = JSON.stringify(journey);
   const locked = utils.projectPlanning(journey, {past:false,locked:true,tbd:false}, now);
-  assert.deepEqual(locked.days.map(day => day.title), ['Innsbruck','Bolzano','Venice','Forni di Sopra']);
-  assert.deepEqual(locked.days.map(day => day.number), [9,10,11,12]);
-  assert.equal(locked.segments.length, 6);
+  assert.deepEqual(locked.days.map(day => day.title), ['Innsbruck','Bolzano','Venice','Forni di Sopra','Vienna','Warsaw','Kraków']);
+  assert.deepEqual(locked.days.map(day => day.number), [9,10,11,12,13,14,15]);
+  assert.equal(locked.segments.length, 14);
   assert.ok(!locked.places.some(place => /Athens|Prague/.test(place.name)));
   assert.equal(JSON.stringify(journey), snapshot);
 });

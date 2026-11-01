@@ -189,7 +189,11 @@ journal and albums. Existing trips retain Day/Days.
 
 In city mode, each entry has an arrival `calendarDate` and a departure or last
 known `calendarEndDate`, both ISO dates. End cannot precede start; consecutive
-stays meet on their shared transfer date, and the first/last boundaries match
+stays may meet on a shared transfer date or leave a travel gap, but cannot overlap.
+Keep owner-supplied dates when an overnight/transfer is intentionally omitted;
+attach its incoming legs to the next represented city without inventing a stay.
+Photo matching covers only each represented stay's dates, not the gap.
+The first/last boundaries match
 the journey range. A same-date origin or arrival-only final stop is valid.
 `date` remains an editable display label. Use a city title and destination;
 assign incoming travel legs to the arriving city. Transfer stations do not

@@ -1,5 +1,16 @@
 # Changelog
 
+## 1 November 2026 — Vienna and Poland dates
+
+- Confirmed Vienna 29 October–1 November, Warsaw 2–6 November and Kraków
+  6–11 November, then retained Bratislava and the remaining undated itinerary.
+- Removed Wrocław and the first Kraków night as stays. Warsaw's incoming travel
+  now has three operator-checked trains via Břeclav/Bohumín to Kraków, followed
+  by the fast Central Rail Line to Warsaw. Retained other route/photo/editorial data.
+- Allowed intentional travel gaps between non-overlapping city stays, preserving
+  supplied dates without fabricated events or gap-day photo assignments.
+- Updated the trip record, shared city workflow/feature contract and regressions.
+
 ## 28 October 2026 — Forni–Vienna via Udine
 
 - Owner follow-up: use the same 100 (Udine–Tolmezzo) and 110

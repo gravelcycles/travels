@@ -11,16 +11,21 @@ const {data,routes}=loadContent(root);
 const j=data.journeys.find(j=>j.id==='backpacking-europe-heading-east');
 const utils=globalThis.JOURNEY_ATLAS_UTILS;
 
-test('the requested undated extension keeps the photo itinerary and transport geometry distinct',()=>{
+test('confirmed Vienna and Poland dates retain the undated tail and reviewed transport geometry',()=>{
  const pending=j.days.slice(12);
- assert.deepEqual(pending.map(d=>d.title),['Vienna','Wrocław','Warsaw','Kraków','Bratislava','Budapest','Oradea','Sibiu','Timișoara','Belgrade','Zagreb','Ljubljana','Lake Bled','Split','Dubrovnik','Sarajevo','Ohrid','Qeparo','Athens']);
- assert.ok(pending.every(d=>d.planningStatus==='tbd' && !d.calendarDate && !d.calendarEndDate));
+ assert.deepEqual(pending.map(d=>d.title),['Vienna','Warsaw','Kraków','Bratislava','Budapest','Oradea','Sibiu','Timișoara','Belgrade','Zagreb','Ljubljana','Lake Bled','Split','Dubrovnik','Sarajevo','Ohrid','Qeparo','Athens']);
+ assert.deepEqual(pending.slice(0,3).map(d=>[d.calendarDate,d.calendarEndDate,d.planningStatus]),[['2026-10-29','2026-11-01',undefined],['2026-11-02','2026-11-06',undefined],['2026-11-06','2026-11-11',undefined]]);
+ assert.ok(pending.slice(3).every(d=>d.planningStatus==='tbd' && !d.calendarDate && !d.calendarEndDate));
+ assert.equal(j.days.length,30);assert.equal(j.endDate,'2026-11-11');
  assert.equal(utils.eventForDate(j,'2026-10-23').title,'Forni di Sopra');
- assert.equal(utils.eventForDate(j,'2026-10-29').title,'Forni di Sopra');
- assert.equal(utils.eventForDate(j,'2026-11-01'),undefined);
+ assert.equal(utils.eventForDate(j,'2026-10-29').title,'Vienna');
+ assert.equal(utils.eventForDate(j,'2026-11-01').title,'Vienna');
+ assert.equal(utils.eventForDate(j,'2026-11-02').title,'Warsaw');
+ assert.equal(utils.eventForDate(j,'2026-11-06').title,'Kraków');
+ assert.equal(utils.eventForDate(j,'2026-11-12'),undefined);
  const manifest=JSON.parse(fs.readFileSync(new URL('../content/route-sources/backpacking-europe-heading-east.json',import.meta.url)));
  const legs=pending.flatMap(d=>d.segmentIds.map(id=>j.segments.find(s=>s.id===id)));
- assert.equal(legs.filter(s=>s.mode==='train').length,13);assert.equal(legs.filter(s=>s.mode==='bus').length,15);
+ assert.equal(legs.filter(s=>s.mode==='train').length,15);assert.equal(legs.filter(s=>s.mode==='bus').length,15);
  for(const s of legs){
   const coords=routes[s.id],p=manifest.segments[s.id].provenance;
   assert.equal(manifest.segments[s.id].strategy,'preserve');assert.ok(coords.length>20);
@@ -50,6 +55,16 @@ test('the requested undated extension keeps the photo itinerary and transport ge
  assert.equal(rail.restoredFrom.commit,'93fc1f6');
  assert.equal(rail.serviceEvidence.service,'ÖBB Railjet');
  assert.match(j.note,/bus 110 to Tolmezzo and bus 100 to Udine, then an ÖBB Railjet to Vienna/);
+ const warsaw=j.days[13],arrival=warsaw.segmentIds.map(id=>j.segments.find(s=>s.id===id));
+ assert.deepEqual(arrival.map(s=>placeName(s.to)),['Břeclav','Bohumín','Kraków','Warsaw']);
+ assert.ok(arrival.every(s=>s.mode==='train'));
+ assert.deepEqual(arrival.slice(0,3).map(s=>manifest.segments[s.id].provenance.serviceEvidence.train),['RJ 252','EC 130','IC 115']);
+ assert.match(arrival[0].duration,/1 Nov 11:10–12:04/);
+ assert.match(arrival[3].duration,/Fast train/);
+ assert.equal(j.days.filter(d=>d.destinationId.endsWith('-krakow')).length,1);
+ assert.ok(!j.places.some(p=>p.id.endsWith('-wroclaw')));
+ assert.deepEqual(routes[arrival[3].id],[...routes[j.days[14].segmentIds[0]]].reverse(),'fast train uses the retained Central Rail Line in reverse');
+ assert.deepEqual(arrival[2].via.map(p=>p.name),['Zebrzydowice','Czechowice-Dziedzice','Oświęcim','Chrzanów Śródmieście','Trzebinia','Krzeszowice']);
  // Both directions follow the same 100/110 corridor. Compare physical
  // lines, allowing only carriageway/one-way terminal differences, not detours.
  const offset=(point,line)=>{
@@ -67,7 +82,7 @@ test('the requested undated extension keeps the photo itinerary and transport ge
    assert.ok(line.every(point=>offset(point,other)<.35),`Bus ${service} must not invent a different corridor on return`);
  }
  assert.ok(j.segments.find(s=>s.id.endsWith('-udine-tolmezzo')).distanceKm<51);
- for(const old of ['tolmezzo-carnia','carnia-tarvisio','tarvisio-boscoverde','boscoverde-vienna']) {
+ for(const old of ['tolmezzo-carnia','carnia-tarvisio','tarvisio-boscoverde','boscoverde-vienna','vienna-wroclaw','wroclaw-warsaw']) {
   const id='backpacking-europe-heading-east-'+old;
   assert.ok(!j.segments.some(s=>s.id===id));
   assert.equal(routes[id],undefined); assert.equal(manifest.segments[id],undefined);
@@ -82,9 +97,12 @@ test('the requested undated extension keeps the photo itinerary and transport ge
 });
 
 test('date resizing preserves undated city and calendar-day tails',()=>{
- const shifted=resizeCalendar(j,'2026-09-02','2026-10-30','itinerary');
- assert.deepEqual(shifted.days.slice(12),j.days.slice(12));
+ const shifted=resizeCalendar(j,'2026-09-02','2026-11-12','itinerary');
+ assert.deepEqual(shifted.days.slice(15),j.days.slice(15));
  assert.equal(shifted.days[11].calendarEndDate,'2026-10-30');
+ assert.equal(shifted.days[12].calendarEndDate,'2026-11-02');
+ assert.equal(shifted.days[13].calendarDate,'2026-11-03');
+ assert.equal(shifted.days[14].calendarEndDate,'2026-11-12');
  const daily={id:'new-trip',days:[{id:'dated',number:1,calendarDate:'2026-10-01',date:'1 Oct',segmentIds:[]},{id:'future',number:2,planningStatus:'tbd',date:'TBD',segmentIds:[]}]};
  const extended=resizeCalendar(daily,'2026-10-01','2026-10-02');
  assert.equal(extended.days.at(-1).id,'future');assert.equal(extended.days.at(-1).number,3);

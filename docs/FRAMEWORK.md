@@ -543,8 +543,12 @@ The shared event contract now supports `eventMode: "city"` and per-event
 `calendarEndDate`, with the existing `days`/`dayId` storage and URL IDs retained.
 Daily calendars remain the absent default. Creation, validation, planner edits,
 photo capture-date assignment, catalog, journal, location labels, mobile controls,
-albums inherit it; saved Replay metadata remains compatible. Heading East is a data instance with eleven city
-stops and fourteen reconstructed legs through Venice, not another page implementation.
+albums inherit it; saved Replay metadata remains compatible. City validation
+allows non-overlapping stays separated by travel gaps; incoming legs belong to
+the next represented city, and photo intake does not fill omitted stays.
+Heading East is a data instance with 30 city stops and 47 reconstructed legs,
+including the [1 November Vienna/Poland correction](HEADING_EAST.md#vienna-and-poland-dates--1-november-2026),
+not another page implementation.
 
 Remaining route evidence: personal departures and historical diversions are
 unconfirmed; the DB Monday notice establishes the probable replacement-bus

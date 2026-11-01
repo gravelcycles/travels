@@ -14,7 +14,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "5e0e94154e1596fd5d7fc92b81f967d59abecf781bccfb4d81e994a6316e36e3",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 856,
         "outputPointCount": 321,
         "rawDistanceKm": 93.714,
@@ -43,7 +43,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "2295c7059b56f2e938f177a888e6697c56f782e2a135d23ea926ef225683fa4c",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 467,
         "outputPointCount": 137,
         "rawDistanceKm": 62.05,
@@ -71,7 +71,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "a27eeac4e320af871c4ba6c8d369a57171dfbae20f46c8335c890dfdfc7a4278",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 5227,
         "outputPointCount": 1671,
         "rawDistanceKm": 784.235,
@@ -105,7 +105,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "77c9218d423d526adfc879fbfb0093ac54847683fb674d2ee5265c4a618b988b",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 3517,
         "outputPointCount": 1103,
         "rawDistanceKm": 476.999,
@@ -139,7 +139,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "85a2de449ab6793945aedb86ebf2fc83b95355c69dd2f3c6281a1633e902d278",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 434,
         "outputPointCount": 124,
         "rawDistanceKm": 40.353,
@@ -166,7 +166,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "78eed7c4a9da7cfb01e26205b3f55262c85e7354389abd1489066644784814ad",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 3408,
         "outputPointCount": 1024,
         "rawDistanceKm": 542.506,
@@ -201,7 +201,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "3ddb6507fd35181960aa9a0b2b9cc445455a119c61a253f210937eec85e831a1",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 1543,
         "outputPointCount": 423,
         "rawDistanceKm": 205.172,
@@ -229,7 +229,7 @@
         "profile": "driving",
         "rawSha256": "d78a88bd38bbd8d5eb7b0eec211fd9ffb69d76f6b0701633dbee59f0368af685",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 1209,
         "outputPointCount": 385,
         "rawDistanceKm": 64.729,
@@ -256,7 +256,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "d4ef421e9504241f87279f6c8c4566e15348236a94507365906d22a67c648572",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 1385,
         "outputPointCount": 448,
         "rawDistanceKm": 112.29,
@@ -284,7 +284,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "9365bb7f9bbf3aa9aaf65cdf0fc55aa02f957413715c146b960bbf280c6c2827",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 4937,
         "outputPointCount": 1787,
         "rawDistanceKm": 290.236,
@@ -314,7 +314,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "4a3dbd6049015092450caa3b280033a8dc645c54860cd302dd310fdca585a549",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 1521,
         "outputPointCount": 438,
         "rawDistanceKm": 124.591,
@@ -343,7 +343,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "ea14de4833586d71186ed757dc9259b31f1f021a0d7600d0786a839a03130206",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 2154,
         "outputPointCount": 690,
         "rawDistanceKm": 192.33,
@@ -373,7 +373,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "3d209b60fff403f2f89fb6a07eda151d0654bd7975360296199301a62af740d0",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 2066,
         "outputPointCount": 711,
         "rawDistanceKm": 125.414,
@@ -403,7 +403,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "e4072f5cacada078ee5beda7d162d55c58c12ef15b14278f8fbceb0b65814d5d",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 1848,
         "outputPointCount": 599,
         "rawDistanceKm": 265.517,
@@ -448,7 +448,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 761,
         "outputPointCount": 285,
         "rawDistanceKm": 52.71,
@@ -483,7 +483,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 218,
         "outputPointCount": 51,
         "rawDistanceKm": 4.4,
@@ -517,7 +517,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 223,
         "outputPointCount": 50,
         "rawDistanceKm": 4.414,
@@ -531,124 +531,6 @@
           25
         ],
         "largestRawGapKm": 0.143,
-        "maxSectionJoinMeters": 0,
-        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
-      }
-    },
-    "backpacking-europe-heading-east-vienna-wroclaw": {
-      "strategy": "preserve",
-      "provenance": {
-        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
-        "retrievedAt": "2026-10-08",
-        "profile": "all_tracks_1435",
-        "dataDate": "2026-10-08T04:00:00Z",
-        "requestUrls": [
-          "https://routing.openrailrouting.org/route?point=48.1851%2C16.378&point=48.7548%2C16.8929&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=48.7548%2C16.8929&point=49.9018%2C18.3572&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=49.9018%2C18.3572&point=50.0875%2C18.2198&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=50.0875%2C18.2198&point=50.6625%2C17.9307&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=50.6625%2C17.9307&point=51.098%2C17.038&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
-        ],
-        "rawSha256": [
-          {
-            "file": "backpacking-europe-heading-east-vienna-wroclaw-part1.json",
-            "sha256": "631bb274d5c1755324fb743228b9e8a0612841919f1a94fd54e436056329f367"
-          },
-          {
-            "file": "backpacking-europe-heading-east-vienna-wroclaw-part2.json",
-            "sha256": "4f1cc505215136dd964f2c5d1a0b134255bcd2f43ad27fa03589b36b9c87d9fe"
-          },
-          {
-            "file": "backpacking-europe-heading-east-vienna-wroclaw-part3.json",
-            "sha256": "b394894d78ee0a3ef6a568b99800d5d57a42fcac1cc69cb90c5e55c241b01926"
-          },
-          {
-            "file": "backpacking-europe-heading-east-vienna-wroclaw-part4.json",
-            "sha256": "274a39955a8cd9a820703140293752a3dff45bdeffd8d700bb6c266b1248a161"
-          },
-          {
-            "file": "backpacking-europe-heading-east-vienna-wroclaw-part5.json",
-            "sha256": "8adcbca3f63e12f8fba25682473993e5dc868e7f13318a1577120e72ba045fca"
-          }
-        ],
-        "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
-        "rawPointCount": 2914,
-        "outputPointCount": 753,
-        "rawDistanceKm": 463.989,
-        "distanceKm": 463.955,
-        "endpointOffsetsMeters": [
-          0,
-          3
-        ],
-        "waypointOffsetsMeters": [
-          0,
-          54,
-          171,
-          259,
-          104,
-          3
-        ],
-        "largestRawGapKm": 5.132,
-        "maxSectionJoinMeters": 0,
-        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
-      }
-    },
-    "backpacking-europe-heading-east-wroclaw-warsaw": {
-      "strategy": "preserve",
-      "provenance": {
-        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
-        "retrievedAt": "2026-10-08",
-        "profile": "all_tracks_1435",
-        "dataDate": "2026-10-08T04:00:00Z",
-        "requestUrls": [
-          "https://routing.openrailrouting.org/route?point=51.098%2C17.038&point=51.6447%2C17.8063&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=51.6447%2C17.8063&point=51.7445%2C18.0704&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=51.7445%2C18.0704&point=51.7624%2C19.5417&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=51.7624%2C19.5417&point=51.966%2C20.1515&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=51.966%2C20.1515&point=52.2288%2C21.0038&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
-        ],
-        "rawSha256": [
-          {
-            "file": "backpacking-europe-heading-east-wroclaw-warsaw-part1.json",
-            "sha256": "95923adffba4957dadfdb5979c192480ab8dcaaabdb0c58155ba0473ada0b21f"
-          },
-          {
-            "file": "backpacking-europe-heading-east-wroclaw-warsaw-part2.json",
-            "sha256": "4f2a382fa47349cae198da16b536d2dd3a8ef8645e111f477fddf369450278cf"
-          },
-          {
-            "file": "backpacking-europe-heading-east-wroclaw-warsaw-part3.json",
-            "sha256": "bde4b6336091725fce98b33959ecdb9f58f8a5ebec2a22a5b7e139556220e8fd"
-          },
-          {
-            "file": "backpacking-europe-heading-east-wroclaw-warsaw-part4.json",
-            "sha256": "770d5f29fc8bb6bb3b71661a83900e1713876fbcd6dbd408e52aed5dbcf22ae5"
-          },
-          {
-            "file": "backpacking-europe-heading-east-wroclaw-warsaw-part5.json",
-            "sha256": "7d7c8408ca94a2cceb4d0192a9e6a099c83f9d9cb1bfad907b692885f4da0296"
-          }
-        ],
-        "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
-        "rawPointCount": 2442,
-        "outputPointCount": 756,
-        "rawDistanceKm": 397.737,
-        "distanceKm": 397.696,
-        "endpointOffsetsMeters": [
-          3,
-          2
-        ],
-        "waypointOffsetsMeters": [
-          3,
-          31,
-          191,
-          83,
-          153,
-          2
-        ],
-        "largestRawGapKm": 5.167,
         "maxSectionJoinMeters": 0,
         "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
       }
@@ -680,7 +562,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 1541,
         "outputPointCount": 533,
         "rawDistanceKm": 293.693,
@@ -737,7 +619,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 1075,
         "outputPointCount": 394,
         "rawDistanceKm": 246.377,
@@ -791,7 +673,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 2665,
         "outputPointCount": 1166,
         "rawDistanceKm": 451.852,
@@ -843,7 +725,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 2687,
         "outputPointCount": 1077,
         "rawDistanceKm": 389.621,
@@ -899,7 +781,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 3128,
         "outputPointCount": 472,
         "rawDistanceKm": 164.237,
@@ -935,7 +817,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 3195,
         "outputPointCount": 895,
         "rawDistanceKm": 389.416,
@@ -991,7 +873,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 5746,
         "outputPointCount": 2571,
         "rawDistanceKm": 423.897,
@@ -1029,7 +911,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 5528,
         "outputPointCount": 1990,
         "rawDistanceKm": 254.128,
@@ -1066,7 +948,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 7796,
         "outputPointCount": 2389,
         "rawDistanceKm": 265.883,
@@ -1104,7 +986,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 15308,
         "outputPointCount": 3105,
         "rawDistanceKm": 284.603,
@@ -1142,7 +1024,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 7398,
         "outputPointCount": 1857,
         "rawDistanceKm": 220.591,
@@ -1180,7 +1062,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 3951,
         "outputPointCount": 1390,
         "rawDistanceKm": 180.359,
@@ -1217,7 +1099,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 3998,
         "outputPointCount": 1202,
         "rawDistanceKm": 138.387,
@@ -1254,7 +1136,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 5602,
         "outputPointCount": 1434,
         "rawDistanceKm": 227.898,
@@ -1291,7 +1173,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 2476,
         "outputPointCount": 675,
         "rawDistanceKm": 40.746,
@@ -1325,7 +1207,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 11196,
         "outputPointCount": 2868,
         "rawDistanceKm": 560.533,
@@ -1402,7 +1284,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 665,
         "outputPointCount": 182,
         "rawDistanceKm": 135.909,
@@ -1450,7 +1332,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 1118,
         "outputPointCount": 279,
         "rawDistanceKm": 50.014,
@@ -1528,7 +1410,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 2041,
         "outputPointCount": 466,
         "rawDistanceKm": 43.337,
@@ -1584,7 +1466,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 2001,
         "outputPointCount": 457,
         "rawDistanceKm": 42.702,
@@ -1655,7 +1537,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 1776,
         "outputPointCount": 641,
         "rawDistanceKm": 142.728,
@@ -1886,7 +1768,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 1122,
         "outputPointCount": 296,
         "rawDistanceKm": 51.018,
@@ -2006,7 +1888,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
+        "simplifyTolerance": 0.00003,
         "rawPointCount": 5774,
         "outputPointCount": 1825,
         "rawDistanceKm": 493.638,
@@ -2040,6 +1922,348 @@
           "operatorUrl": "https://www.obb-italia.com/de/zugverbindungen/verbindungen-ab-italien",
           "checkedAt": "2026-10-28",
           "notes": "ÖBB lists direct Venezia/Trieste–Udine–Villach–Graz–Wien Railjet services via the Koralmbahn. No departure number or exact travel-date timetable is asserted."
+        }
+      }
+    },
+    "backpacking-europe-heading-east-vienna-breclav": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "Reviewed OpenRailRouting / OpenStreetMap geometry",
+        "retrievedAt": "2026-11-01",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=48.1851%2C16.378&point=48.7548%2C16.8929&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=48.7548%2C16.8929&point=49.9018%2C18.3572&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0,
+        "rawPointCount": 111,
+        "outputPointCount": 111,
+        "rawDistanceKm": 89.193,
+        "distanceKm": 89.193,
+        "endpointOffsetsMeters": [
+          0,
+          0
+        ],
+        "maxSectionJoinMeters": 0,
+        "largestRawGapKm": 10.747,
+        "serviceEvidence": {
+          "provider": "ÖBB live journey planner",
+          "sourceUrl": "https://shop.oebbtickets.at/en/ticket?cref=nightride&outwardDateTime=2026-11-01T11%3A10&stationDestName=Krakow&stationOrigName=Wien",
+          "checkedAt": "2026-11-01",
+          "travelDate": "2026-11-01",
+          "train": "RJ 252",
+          "departure": "11:10",
+          "arrival": "12:04",
+          "timeZone": "Europe/Vienna",
+          "notes": "Owner-supplied departure and three-train count corroborated by the date-specific operator planner; timetable is not proof of tickets or actual running."
+        },
+        "notes": "Clipped the reviewed Vienna–Wrocław railway at Břeclav and Bohumín station track vertices; retained every interior coordinate without smoothing or a connector. Removed the superseded Wrocław destination.",
+        "derivedFrom": [
+          {
+            "segmentId": "backpacking-europe-heading-east-vienna-wroclaw",
+            "sourceCommit": "c5075c2",
+            "geometrySha256": "3234eb531c0a25a4aee1b330334636fbede3dbd2a59254553309abfb5413811d",
+            "sourceIndices": [
+              0,
+              110
+            ],
+            "provenance": {
+              "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+              "retrievedAt": "2026-10-08",
+              "profile": "all_tracks_1435",
+              "dataDate": "2026-10-08T04:00:00Z",
+              "requestUrls": [
+                "https://routing.openrailrouting.org/route?point=48.1851%2C16.378&point=48.7548%2C16.8929&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+                "https://routing.openrailrouting.org/route?point=48.7548%2C16.8929&point=49.9018%2C18.3572&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+                "https://routing.openrailrouting.org/route?point=49.9018%2C18.3572&point=50.0875%2C18.2198&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+                "https://routing.openrailrouting.org/route?point=50.0875%2C18.2198&point=50.6625%2C17.9307&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+                "https://routing.openrailrouting.org/route?point=50.6625%2C17.9307&point=51.098%2C17.038&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+              ],
+              "rawSha256": [
+                {
+                  "file": "backpacking-europe-heading-east-vienna-wroclaw-part1.json",
+                  "sha256": "631bb274d5c1755324fb743228b9e8a0612841919f1a94fd54e436056329f367"
+                },
+                {
+                  "file": "backpacking-europe-heading-east-vienna-wroclaw-part2.json",
+                  "sha256": "4f1cc505215136dd964f2c5d1a0b134255bcd2f43ad27fa03589b36b9c87d9fe"
+                },
+                {
+                  "file": "backpacking-europe-heading-east-vienna-wroclaw-part3.json",
+                  "sha256": "b394894d78ee0a3ef6a568b99800d5d57a42fcac1cc69cb90c5e55c241b01926"
+                },
+                {
+                  "file": "backpacking-europe-heading-east-vienna-wroclaw-part4.json",
+                  "sha256": "274a39955a8cd9a820703140293752a3dff45bdeffd8d700bb6c266b1248a161"
+                },
+                {
+                  "file": "backpacking-europe-heading-east-vienna-wroclaw-part5.json",
+                  "sha256": "8adcbca3f63e12f8fba25682473993e5dc868e7f13318a1577120e72ba045fca"
+                }
+              ],
+              "coordinateOrder": "longitude,latitude",
+              "simplifyTolerance": 0.00003,
+              "rawPointCount": 2914,
+              "outputPointCount": 753,
+              "rawDistanceKm": 463.989,
+              "distanceKm": 463.955,
+              "endpointOffsetsMeters": [
+                0,
+                3
+              ],
+              "waypointOffsetsMeters": [
+                0,
+                54,
+                171,
+                259,
+                104,
+                3
+              ],
+              "largestRawGapKm": 5.132,
+              "maxSectionJoinMeters": 0,
+              "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+            }
+          }
+        ]
+      }
+    },
+    "backpacking-europe-heading-east-breclav-bohumin": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "Reviewed OpenRailRouting / OpenStreetMap geometry",
+        "retrievedAt": "2026-11-01",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=48.1851%2C16.378&point=48.7548%2C16.8929&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=48.7548%2C16.8929&point=49.9018%2C18.3572&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0,
+        "rawPointCount": 387,
+        "outputPointCount": 387,
+        "rawDistanceKm": 192.353,
+        "distanceKm": 192.353,
+        "endpointOffsetsMeters": [
+          0,
+          0
+        ],
+        "maxSectionJoinMeters": 0,
+        "largestRawGapKm": 8.847,
+        "serviceEvidence": {
+          "provider": "ÖBB live journey planner",
+          "sourceUrl": "https://shop.oebbtickets.at/en/ticket?cref=nightride&outwardDateTime=2026-11-01T11%3A10&stationDestName=Krakow&stationOrigName=Wien",
+          "checkedAt": "2026-11-01",
+          "travelDate": "2026-11-01",
+          "train": "EC 130",
+          "departure": "12:15",
+          "arrival": "14:23",
+          "timeZone": "Europe/Vienna",
+          "notes": "Owner-supplied departure and three-train count corroborated by the date-specific operator planner; timetable is not proof of tickets or actual running."
+        },
+        "notes": "Clipped the reviewed Vienna–Wrocław railway at Břeclav and Bohumín station track vertices; retained every interior coordinate without smoothing or a connector. Removed the superseded Wrocław destination.",
+        "derivedFrom": [
+          {
+            "segmentId": "backpacking-europe-heading-east-vienna-wroclaw",
+            "sourceCommit": "c5075c2",
+            "geometrySha256": "3234eb531c0a25a4aee1b330334636fbede3dbd2a59254553309abfb5413811d",
+            "sourceIndices": [
+              110,
+              496
+            ],
+            "provenance": {
+              "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+              "retrievedAt": "2026-10-08",
+              "profile": "all_tracks_1435",
+              "dataDate": "2026-10-08T04:00:00Z",
+              "requestUrls": [
+                "https://routing.openrailrouting.org/route?point=48.1851%2C16.378&point=48.7548%2C16.8929&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+                "https://routing.openrailrouting.org/route?point=48.7548%2C16.8929&point=49.9018%2C18.3572&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+                "https://routing.openrailrouting.org/route?point=49.9018%2C18.3572&point=50.0875%2C18.2198&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+                "https://routing.openrailrouting.org/route?point=50.0875%2C18.2198&point=50.6625%2C17.9307&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+                "https://routing.openrailrouting.org/route?point=50.6625%2C17.9307&point=51.098%2C17.038&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+              ],
+              "rawSha256": [
+                {
+                  "file": "backpacking-europe-heading-east-vienna-wroclaw-part1.json",
+                  "sha256": "631bb274d5c1755324fb743228b9e8a0612841919f1a94fd54e436056329f367"
+                },
+                {
+                  "file": "backpacking-europe-heading-east-vienna-wroclaw-part2.json",
+                  "sha256": "4f1cc505215136dd964f2c5d1a0b134255bcd2f43ad27fa03589b36b9c87d9fe"
+                },
+                {
+                  "file": "backpacking-europe-heading-east-vienna-wroclaw-part3.json",
+                  "sha256": "b394894d78ee0a3ef6a568b99800d5d57a42fcac1cc69cb90c5e55c241b01926"
+                },
+                {
+                  "file": "backpacking-europe-heading-east-vienna-wroclaw-part4.json",
+                  "sha256": "274a39955a8cd9a820703140293752a3dff45bdeffd8d700bb6c266b1248a161"
+                },
+                {
+                  "file": "backpacking-europe-heading-east-vienna-wroclaw-part5.json",
+                  "sha256": "8adcbca3f63e12f8fba25682473993e5dc868e7f13318a1577120e72ba045fca"
+                }
+              ],
+              "coordinateOrder": "longitude,latitude",
+              "simplifyTolerance": 0.00003,
+              "rawPointCount": 2914,
+              "outputPointCount": 753,
+              "rawDistanceKm": 463.989,
+              "distanceKm": 463.955,
+              "endpointOffsetsMeters": [
+                0,
+                3
+              ],
+              "waypointOffsetsMeters": [
+                0,
+                54,
+                171,
+                259,
+                104,
+                3
+              ],
+              "largestRawGapKm": 5.132,
+              "maxSectionJoinMeters": 0,
+              "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+            }
+          }
+        ]
+      }
+    },
+    "backpacking-europe-heading-east-bohumin-krakow": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-11-01",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-30T05:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=49.9004%2C18.35817&point=49.8715401%2C18.6216353&point=49.9154901%2C19.0073267&point=50.0420749%2C19.2003711&point=50.14453%2C19.4140925&point=50.1541226%2C19.4529565&point=50.1308311%2C19.6350888&point=50.0684%2C19.9474&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 1176,
+        "outputPointCount": 377,
+        "rawDistanceKm": 138.217,
+        "distanceKm": 138.199,
+        "endpointOffsetsMeters": [
+          0,
+          2.141
+        ],
+        "maxSectionJoinMeters": 0,
+        "largestRawGapKm": 2.614,
+        "serviceEvidence": {
+          "provider": "ÖBB live journey planner",
+          "sourceUrl": "https://shop.oebbtickets.at/en/ticket?cref=nightride&outwardDateTime=2026-11-01T11%3A10&stationDestName=Krakow&stationOrigName=Wien",
+          "checkedAt": "2026-11-01",
+          "travelDate": "2026-11-01",
+          "train": "IC 115",
+          "departure": "14:32",
+          "arrival": "16:38",
+          "timeZone": "Europe/Vienna",
+          "notes": "Owner-supplied departure and three-train count corroborated by the date-specific operator planner; timetable is not proof of tickets or actual running."
+        },
+        "notes": "Reconstructed IC 115 corridor through all six operator-listed intermediate stations. OSM station nodes constrain the railway; no route via Katowice is substituted. Preserve this reviewed geometry.",
+        "rawSha256": "ba0a026a5a2a1e7be26e19a4cbad554935d61b95dcd07e8f677245f181d1ca38",
+        "waypointOffsetsMeters": [
+          0.363,
+          1.344,
+          0.575,
+          2.328,
+          2.523,
+          6.948,
+          6.902,
+          2.429
+        ],
+        "stationSources": [
+          {
+            "name": "Zebrzydowice",
+            "sourceUrl": "https://www.openstreetmap.org/node/3525511368"
+          },
+          {
+            "name": "Czechowice-Dziedzice",
+            "sourceUrl": "https://www.openstreetmap.org/node/3553581200"
+          },
+          {
+            "name": "Oświęcim",
+            "sourceUrl": "https://www.openstreetmap.org/node/529102526"
+          },
+          {
+            "name": "Chrzanów Śródmieście",
+            "sourceUrl": "https://www.openstreetmap.org/node/1713216888"
+          },
+          {
+            "name": "Trzebinia",
+            "sourceUrl": "https://www.openstreetmap.org/node/6093920532"
+          },
+          {
+            "name": "Krzeszowice",
+            "sourceUrl": "https://www.openstreetmap.org/node/1661872853"
+          }
+        ]
+      }
+    },
+    "backpacking-europe-heading-east-krakow-warsaw": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
+        "retrievedAt": "2026-11-01",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-10-08T04:00:00Z",
+        "requestUrls": [
+          "https://routing.openrailrouting.org/route?point=52.2288%2C21.0038&point=50.8545%2C19.9606&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=50.8545%2C19.9606&point=50.3532%2C20.0165&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+          "https://routing.openrailrouting.org/route?point=50.3532%2C20.0165&point=50.0684%2C19.9474&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
+        ],
+        "rawSha256": [
+          {
+            "file": "backpacking-europe-heading-east-warsaw-krakow-part1.json",
+            "sha256": "bdb1d1403c12574d0e41fbcbcae919585075aaf1adc025494b1bfd6437baa2b5"
+          },
+          {
+            "file": "backpacking-europe-heading-east-warsaw-krakow-part2.json",
+            "sha256": "b1058205a0f1f71aeb58f04f825d97e8cbab891c02eebeae8b09fd4a8b1aec10"
+          },
+          {
+            "file": "backpacking-europe-heading-east-warsaw-krakow-part3.json",
+            "sha256": "636dd94a9f0407c31a40b412954652ae5a267daf8cf88fec45d29efa7ac983ae"
+          }
+        ],
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0,
+        "rawPointCount": 533,
+        "outputPointCount": 533,
+        "rawDistanceKm": 293.672,
+        "distanceKm": 293.672,
+        "endpointOffsetsMeters": [
+          2,
+          2
+        ],
+        "waypointOffsetsMeters": [
+          2,
+          1016,
+          392,
+          2
+        ],
+        "largestRawGapKm": 5.178,
+        "maxSectionJoinMeters": 0,
+        "notes": "Fast Kraków–Warsaw corridor on the Central Rail Line. Retained reverse direction remains unchanged for the 6 November return. Geometric reconstruction does not certify a selected service.",
+        "derivedFrom": [
+          {
+            "segmentId": "backpacking-europe-heading-east-warsaw-krakow",
+            "sourceCommit": "c5075c2",
+            "geometrySha256": "f65fdf2ec2f31bf5f52eedcf9c65f14d0fe70f29d342bb46ca12e63c9f73c5fa",
+            "operation": "Reverse the retained reviewed Central Rail Line geometry without smoothing or connectors."
+          }
+        ],
+        "serviceEvidence": {
+          "source": "Owner instruction, 1 November 2026",
+          "travelDate": "2026-11-02",
+          "service": "Fast train",
+          "notes": "No departure, train number or platform selected."
         }
       }
     }

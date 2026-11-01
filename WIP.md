@@ -1,5 +1,28 @@
 # Current workstreams
 
+## Vienna and Poland dates — 1 November 2026
+
+Authorized: confirm Vienna 29 October–1 November, Warsaw 2–6 November and
+Kraków 6–11 November; remove Wrocław and the first Kraków night as stays,
+show Vienna–Kraków–Warsaw as Warsaw's incoming travel, then retain Bratislava.
+Current direction and researched three-train timetable live in
+[the trip record](docs/HEADING_EAST.md#vienna-and-poland-dates--1-november-2026).
+The owner asks the agent to determine the transfers; ÖBB confirms Břeclav and
+Bohumín for the 11:10 departure on 1 November (RJ 252, EC 130, IC 115).
+Work is isolated at `/private/tmp/travels-vienna-poland-20261101`, based on
+remote main `c5075c2`; the primary checkout's pending edits are preserved.
+Implemented 30 stays and 47 legs, with four incoming train rows for Warsaw.
+All 43 retained geometries, media, saved places and editorial overrides are
+unchanged. Shared city validation accepts travel gaps and still rejects overlaps;
+independent fresh-city tests cover date/photo matching, calendar moves and
+reference/demo control inheritance. All 910 tests, strict preservation of 47
+routes without warnings, build/repeat-build and diff checks pass. Actual-trip
+desktop/phone renderer checks pass; desktop browser review confirms the dates,
+four train rows, full corridor and city map. Phone checks are automated, not a
+physical-device certification. Latest remote main is integrated.
+Next: publish and verify Pages/fresh public files, then synchronize only scoped
+changes into the primary Studio checkout. Publication is pending.
+
 ## Matching Forni bus corridors — 28 October follow-up
 
 Owner correction: the travel to/from Forni should use the same buses, “100 to

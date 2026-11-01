@@ -149,7 +149,7 @@ export function validateJourneys(data) {
       if (j.eventMode === 'city') {
         const start = calendarDate(d.calendarDate), end = calendarDate(d.calendarEndDate);
         if (end < start) fail(`${d.id}: stop departure cannot precede arrival`);
-        if (i && j.days[i - 1].calendarEndDate !== d.calendarDate) fail(`${d.id}: city stops must meet on their transfer date`);
+        if (i && j.days[i - 1].calendarEndDate > d.calendarDate) fail(`${d.id}: city stops cannot overlap before their transfer date`);
       } else if (d.calendarEndDate != null) fail(`${d.id}: date ranges require city event mode`);
     });
     if (assigned.size !== segments.size) fail(`${j.id}: every segment must belong to one day`);

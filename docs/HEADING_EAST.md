@@ -1,5 +1,62 @@
 # Backpacking Europe: Heading East
 
+## Vienna and Poland dates — 1 November 2026
+
+Owner direction: “vienna is oct 29-nov 1”, then Warsaw “nov 2 - nov 6”,
+Kraków “nov 6 - nov 11”, then “jump right to bratislava”. The first Kraków
+night on 1 November is deliberately omitted as a stay: show its railway within
+Warsaw's incoming travel. This supersedes the 20 October Vienna → Wrocław →
+Warsaw → Kraków order and the undated status of Vienna, Warsaw and Kraków.
+Remove Wrocław, retain the three existing city IDs and all other stay content,
+and leave Bratislava and the onward itinerary undated/TBD. The last confirmed
+departure and journey `endDate` become 11 November. The gap between Vienna's
+1 November departure and Warsaw's 2 November arrival represents travel; do not
+extend either city or invent an extra event to fill it.
+
+The owner specifies departure from Vienna at 11:10 on 1 November, three trains,
+and the fast train from Kraków to Warsaw on 2 November. When asked for change
+stations, the owner replied “you can figure it out”: research the operator
+planner rather than asking again or inventing transfers. ÖBB's live planner,
+checked for **1 November 2026**, confirms:
+
+| Train | Route | Departure | Arrival |
+| --- | --- | --- | --- |
+| RJ 252 | Wien Hbf → Břeclav | 11:10 | 12:04 |
+| EC 130 | Břeclav → Bohumín | 12:15 | 14:23 |
+| IC 115 | Bohumín → Kraków Główny | 14:32 | 16:38 |
+
+[Date-specific ÖBB search](https://shop.oebbtickets.at/en/ticket?cref=nightride&outwardDateTime=2026-11-01T11%3A10&stationDestName=Krakow&stationOrigName=Wien).
+The operator lists the IC 115 corridor via Zebrzydowice, Czechowice-Dziedzice,
+Oświęcim, Chrzanów Śródmieście, Trzebinia and Krzeszowice. Keep these distinct
+from the retained Kraków–Bratislava proposal via Katowice. Kraków → Warsaw uses
+the reviewed Central Rail Line in reverse; no particular 2 November departure,
+train number or platform is selected. Planner times are a checked timetable,
+not confirmation of tickets or actual running.
+
+The 47 legs (29 rail, 18 bus) preserve all 43 retained geometries exactly.
+Vienna–Břeclav (89.2 km) and Břeclav–Bohumín (192.4 km) clip the reviewed
+Vienna–Wrocław line at existing station-track vertices. The new Bohumín–Kraków
+line is 138.2 km through the six operator-listed stations, reconstructed from
+OpenRailRouting's standard-gauge network (OSM data 30 October), with station
+node sources, exact request, response hash and diagnostics in the manifest.
+Its 1,176 raw vertices simplify to 377, changing length by 0.013%; all request
+station snaps are within 7 m. The 293.7 km Kraków–Warsaw line exactly reverses
+the retained Warsaw–Kraków Central Rail Line. Other routes, Forni buses and
+the Kraków–Bratislava proposal are unchanged. Raw research and comparison files
+are ignored under `build/route-inputs/backpacking-europe-heading-east/poland-20261101/`.
+
+Acceptance: 30 stays, Vienna/Warsaw/Kraków dates exactly as supplied, only one
+Kraków stay (after Warsaw), no Wrocław, four incoming train rows for Warsaw,
+and retained Kraków → Bratislava travel. All existing photos, saved copy,
+Forni bus corridors and unrelated geometry remain unchanged.
+
+Verification: all 910 tests pass, including independent fresh-city gap/photo/
+calendar regressions and reference/demo inheritance. Strict routing preserves
+47 legs without warnings; repeat builds are byte-identical. Actual-trip
+desktop/phone renderers show the four correct train rows. Desktop browser
+review confirms the dates, stay list and full incoming corridor. Phone coverage
+is automated; no physical-device check is claimed. Publication remains pending.
+
 Intake and research: 8 October 2026. The owner confirmed 2026 and corrected the
 Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 October.
 Each city is one event. Taglines remain blank; the owner added the first seven
@@ -100,17 +157,21 @@ confirm the two saved pins are identical. Local Studio carries the same edit.
 Owner direction in “Update Europe trip route”: stay in Forni di Sopra from
 23–29 October, reach it by train to Udine followed by buses, move Slovenia
 between Zagreb and the remaining Croatia stops, and add Bratislava immediately
-after Poland. The owner then clarified “keep that section as is” for
-Vienna → Wrocław → Warsaw → Kraków. Do not move Wrocław after Warsaw or add a
-second Wrocław stay. This supersedes the 8 October onward order below.
+after Poland. The owner's initial “keep that section as is” clarification for
+Vienna → Wrocław → Warsaw → Kraków superseded the 8 October order. Its Poland
+sequence and undated status are now superseded by the
+[1 November correction](#vienna-and-poland-dates--1-november-2026), which removes
+Wrocław and omits the first Kraków night as a stay. Forni and Slovenia remain.
 
 Current itinerary after Venice:
-Forni di Sopra (23–29 October) → Vienna → Wrocław → Warsaw → Kraków → Bratislava
+Forni di Sopra (23–29 October) → Vienna (29 October–1 November) →
+Warsaw (2–6 November, via Kraków) → Kraków (6–11 November) → Bratislava
 → Budapest → Oradea → Sibiu → Timișoara → Belgrade → Zagreb → Ljubljana → Lake Bled
 → Split → Dubrovnik → Sarajevo → Ohrid → Qeparo → Athens.
 
-Forni is a confirmed city stay with no TBD flag. `endDate` is 29 October;
-all nineteen subsequent stays remain undated/TBD. Retain the original eleven
+Forni, Vienna, Warsaw and Kraków are confirmed city stays with no TBD flag.
+`endDate` is 11 November; all fifteen stays from Bratislava remain undated/TBD.
+Retain the original eleven
 city IDs/dates, existing photo albums, saved stories/notes, pins and ordering.
 Udine and Tolmezzo are transfers, not overnight stays. The Venice rail corridor
 passes through Mestre; no specific train departure has been selected here.
@@ -126,6 +187,10 @@ passes through Mestre; no specific train departure has been selected here.
 | Split | Retain Bled–Lesce local bus; reverse reviewed rail through Ljubljana to Zagreb, then retain Zagreb–Split rail |
 
 ### Matching Forni bus corridors — 28 October follow-up
+
+The stay/leg counts below describe that release; current dates/counts are in
+the [1 November correction](#vienna-and-poland-dates--1-november-2026). Its
+reviewed Forni bus geometry remains current and unchanged.
 
 Owner clarification: travel to/from Forni should use the “same bus routes”,
 “100 to the 110”; fix the differing map lines. Inbound is **100 Udine → Tolmezzo,
@@ -166,6 +231,10 @@ the release exactly. Studio is synchronized with a passing build and 15 targeted
 checks. All other trip/working data is preserved.
 
 ### Vienna access correction — 28 October 2026
+
+The undated Vienna status and total counts below describe that release; the
+[1 November correction](#vienna-and-poland-dates--1-november-2026) supersedes
+those dates/counts while preserving these incoming legs.
 
 Owner direction: “bus to udine and then train (railjet) to vienna”. This
 supersedes the 20 October Carnia/Tarvisio bus-transfer choice and its timetable
