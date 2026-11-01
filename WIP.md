@@ -20,8 +20,15 @@ routes without warnings, build/repeat-build and diff checks pass. Actual-trip
 desktop/phone renderer checks pass; desktop browser review confirms the dates,
 four train rows, full corridor and city map. Phone checks are automated, not a
 physical-device certification. Latest remote main is integrated.
-Next: publish and verify Pages/fresh public files, then synchronize only scoped
-changes into the primary Studio checkout. Publication is pending.
+Complete. Published `e962141` through successful
+[Pages run 41288815485](https://github.com/gravelcycles/travels/actions/runs/41288815485).
+Six fresh public HTML/data files match the tested release byte-for-byte; the
+public browser confirms the requested dates/order and four incoming train rows.
+The primary Studio sources are synchronized, with a passing build and all 58
+targeted checks. Its original branch/HEAD and 279 other pre-existing files are
+unchanged. No media upload, private-access change or Worker deployment was
+needed. No implementation or publication remains; the 2 November fast train
+still has no selected departure.
 
 ## Matching Forni bus corridors — 28 October follow-up
 

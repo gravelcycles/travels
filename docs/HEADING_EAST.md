@@ -55,7 +55,12 @@ calendar regressions and reference/demo inheritance. Strict routing preserves
 47 legs without warnings; repeat builds are byte-identical. Actual-trip
 desktop/phone renderers show the four correct train rows. Desktop browser
 review confirms the dates, stay list and full incoming corridor. Phone coverage
-is automated; no physical-device check is claimed. Publication remains pending.
+is automated; no physical-device check is claimed. Released as `e962141` through
+successful [Pages run 41288815485](https://github.com/gravelcycles/travels/actions/runs/41288815485).
+Six freshly fetched public HTML/data files match the tested release exactly,
+and a fresh public browser view confirms the requested dates/order and train
+rows. The primary Studio copy is synchronized with a passing build and 58
+targeted tests; all unrelated working files and its branch/HEAD are preserved.
 
 Intake and research: 8 October 2026. The owner confirmed 2026 and corrected the
 Rhine stops to Köln on 29–30 September, then Düsseldorf on 30 September–1 October.
