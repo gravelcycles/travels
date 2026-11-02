@@ -164,6 +164,7 @@
     // Cached HTML can briefly mix an older media helper with this runtime.
     // Keep its working reader path until navigation fetches the new asset hash.
     const photos = mediaUtils.items(journey).filter((photo) => photo.dayId === dayId);
+    if (mediaUtils.orderForDay) return mediaUtils.orderForDay(photos,dayById(dayId));
     const order = dayById(dayId)?.photoOrder || [];
     const positions = new Map(order.map((id, index) => [id, index]));
     return photos.map((photo, index) => ({ photo, index })).sort((a, b) => {

@@ -1,5 +1,13 @@
 # Changelog
 
+## 2 November 2026 — Fullscreen media fit and timestamped clips
+
+- Bound portrait native players and fit resting phone photos/videos around
+  visible controls, preserving full-source zoom and prepared-photo navigation.
+- Added validated camera capture times for Heading East's four clips and
+  interleaved them without changing any still order, assignment, note or Trash.
+- Updated shared media/fullscreen contracts and populated inheritance checks.
+
 ## 2 November 2026 — Recovered Heading East edits and videos
 
 - Restored IMG_3883 only and recovered six traveler notes, 33 other photo

@@ -1,5 +1,29 @@
 # Backpacking Europe: Heading East
 
+## Fullscreen media fit and clip placement — 2 November 2026
+
+Owner follow-up after the recovery release: “there's some sizing issues with
+the vids and photos. you should be able to see the full photo in full screen.
+also insert vids where they should be within the trip by timestamp (ignore out
+of place photos, etc)”. Fit the complete unzoomed media in the viewer. Insert
+the four clips by their actual camera capture times within their assigned
+Forni/Vienna albums. Preserve the still-photo sequence and assignments even
+where a photo's timestamp appears out of order; do not move or re-sort those
+photos. This supersedes appending these clips after all stills. Capture evidence
+and private asset publication remain as recorded below. The validated optional
+`takenAt` values are 26 October **14:47:49**, **14:48:56**, **14:51:40** and
+30 October **06:51:57**, in journey-local camera time. Forni's sequence is
+IMG_3838 → IMG_3849 video → IMG_3850 → A001 video → B8A… video → IMG_3856;
+Vienna's IMG_3985 video precedes IMG_5973. All 213 stills and their relative
+order/assignments remain unchanged; no Trash or notes change.
+
+Fixed portrait player overflow (960 × 1707 inside a 960 × 720 shell) and fitted
+phone media around visible controls. Desktop player now remains 960 × 720;
+phone-landscape reference photos and native videos fit between y=102 and y=260
+at 844 × 390. Browser checks cover portrait/landscape, zoom, resize, location,
+photo/video switches and the reference/demo/populated fresh draft. All 914 tests
+and the production build pass. Public deployment is pending in WIP.
+
 ## Restored photo, recovered edits and videos — 2 November 2026
 
 Owner follow-up: “please add back IMG_3883 (i removed it)”, “did you cut out

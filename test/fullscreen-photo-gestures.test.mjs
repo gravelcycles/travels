@@ -6,12 +6,35 @@ function imageTransform(f) {
   const transform=f.node('#modal-photo').style.transform;
   const match=transform.match(/translate3d\(([-\d.e]+)px,\s*([-\d.e]+)px,\s*0\) scale\(([-\d.e]+)\)/);
   assert.ok(match,`Expected image transform, got ${transform}`);
-  return {x:Number(match[1]),y:Number(match[2]),scale:Number(match[3])};
+  // Zoom is relative to the complete fitted photograph, whose base fit can
+  // now reserve the visible header/footer instead of hiding image edges.
+  const fit=Number(f.node('.photo-stage').style['--photo-fit-scale']) || 1;
+  const offset=parseFloat(f.node('.photo-stage').style['--photo-fit-y']) || 0;
+  return {x:Number(match[1]),y:Number(match[2])-offset,scale:Number(match[3])/fit};
 }
 function touch(f,type,id,x,y) {
   return f.dispatch('.photo-stage',type,{pointerId:id,pointerType:'touch',clientX:x,clientY:y});
 }
 function assertClose(actual,expected,message) {assert.ok(Math.abs(actual-expected)<.001,`${message}: ${actual} versus ${expected}`);}
+
+test('resting portrait photos fit between phone landscape controls without user zoom',()=>{
+  const f=viewerFixture({width:844,height:390});
+  f.node('.mobile-photo-header').offsetWidth=844;
+  f.node('.mobile-photo-header').offsetHeight=102;
+  f.node('.mobile-photo-footer').offsetWidth=844;
+  f.node('.mobile-photo-footer').offsetHeight=74;
+  f.node('.mobile-photo-actions').offsetWidth=200;
+  f.node('.mobile-photo-actions').offsetHeight=44;
+  f.node('#modal-photo').naturalWidth=2400;f.node('#modal-photo').naturalHeight=3200;
+  f.dispatch('#modal-photo','load');
+  f.api.openDay();
+  const fit=Number(f.node('.photo-stage').style['--photo-fit-scale']);
+  assertClose(fit,158/390,'Whole portrait fits above the actions and below the header');
+  assert.equal(f.node('.photo-viewer').style['--media-head'],'102px');
+  assert.equal(f.node('.photo-viewer').style['--media-foot'],'130px');
+  assert.equal(f.node('.photo-stage').style['--photo-fit-y'],'-14px');
+  assertClose(imageTransform(f).scale,1,'Fitting the complete photo is not user zoom');
+});
 
 test('one photo tap hides every chrome group; a second separated tap restores them',()=>{
   const f=viewerFixture();f.api.openDay();

@@ -35,6 +35,7 @@
     let gesture = null, pointers = new Map(), pinch = null, suppressClick = false;
     let locationTimer, locationFrame, revealFrame, settleLocation = false, swipeTimer, swipeFrame, dragFrame, zoomFrame, zoomInputFrame, dismissTimer, tapTimer;
     let locationFoot = 84, viewerHeight = 0, locationWidth = 0, locationStageHeight = 0;
+    let mediaHead = 0, mediaFoot = 0;
     let locationAnimating = false, revealDragging = false, locationVisualHeight = null;
     let dragOffset = 0, dragWidth = 0, swipeOffset = 0;
     let replayState = null;
@@ -46,6 +47,12 @@
       $('#viewer-photo-frame').append(node); return {node, delta};
     });
     const enabled = () => media.matches;
+    const mediaRatios = new WeakMap();
+    for (const node of [img,...neighbors.map(item=>item.node)]) node.addEventListener('load',()=>{
+      const ratio=node.naturalWidth/node.naturalHeight;
+      if(ratio>0)mediaRatios.set(node,ratio);
+      if(enabled() && dialog.open && !grid)transform(swipeOffset,locationWidth || stage.clientWidth);
+    });
     let swipeRaster = null, rasterInitialized = false;
     function initSwipeRaster() {
       if (rasterInitialized || !enabled()) return;
@@ -166,13 +173,25 @@
       $('[data-journey-action=unlock]').hidden = Boolean(window.JOURNEY_ATLAS_AUTH?.unlocked);
       if (enabled() && tab === 'story') requestAnimationFrame(api.preview);
     }
+    function mediaFit(photo = current.photos[current.index], node = img, readDimensions = false) {
+      const width = locationWidth || stage.clientWidth, height = locationStageHeight || stage.clientHeight;
+      const ratio = photo?.width / photo?.height || (readDimensions ? node.naturalWidth / node.naturalHeight : mediaRatios.get(node));
+      if (!ratio) return {width,height,fit:1,y:0};
+      const fullWidth = Math.min(width,height*ratio);
+      const foot=locationOpen?0:mediaFoot;
+      const fittedWidth = Math.min(width,Math.max(1,height-mediaHead-foot)*ratio);
+      return {width:fittedWidth,height:fittedWidth/ratio,fit:fittedWidth/Math.max(1,fullWidth),y:(mediaHead-foot)/2};
+    }
     function transform(dx = 0, width = stage.clientWidth) {
       swipeOffset = dx;
       const zoomed = String(scale > 1);
       if (viewer.dataset.zoomed !== zoomed) viewer.dataset.zoomed = zoomed;
-      img.style.transform = `translate3d(${dx + panX}px,${panY}px,0) scale(${scale})`;
+      const fit = mediaFit();
+      img.style.transform = `translate3d(${dx + panX}px,${panY + fit.y}px,0) scale(${scale * fit.fit})`;
+      stage.style.setProperty('--photo-fit-scale', `${fit.fit}`);
+      stage.style.setProperty('--photo-fit-y', `${fit.y}px`);
       stage.style.setProperty('--photo-swipe-x', `${dx}px`);
-      neighbors.forEach(({node,delta}) => { node.style.transform = `translate3d(${dx + delta * (width + 16)}px,0,0)`; });
+      neighbors.forEach(({node,delta,photo}) => { const fit=mediaFit(photo,node);node.style.transform = `translate3d(${dx + delta * (width + 16)}px,${fit.y ? `${fit.y}px` : '0'},0)${fit.fit===1?'':` scale(${fit.fit})`}`; });
       swipeRaster?.active(scale === 1 && !grid);
     }
     function queueSwipe(dx, width) {
@@ -241,13 +260,13 @@
       // photo's natural dimensions are not ready. Avoid measuring those bounds
       // twice during each selection update.
       if (next <= 1) { scale = 1; panX = panY = 0; transform(); return; }
-      const ratio = img.naturalWidth / img.naturalHeight || 1;
       const viewportWidth = stage.clientWidth, viewportHeight = stage.clientHeight;
-      const width = Math.min(viewportWidth, viewportHeight * ratio), height = width / ratio;
+      const {width,height,y} = mediaFit(undefined,img,true);
       const cover = Math.max(viewportWidth / Math.max(1, width), viewportHeight / Math.max(1, height));
       scale = clamp(next, 1, Math.max(4, cover)); if (scale === 1) panX = panY = 0;
       panX = clamp(panX, -panLimit(width,scale,viewportWidth), panLimit(width,scale,viewportWidth));
-      panY = clamp(panY, -panLimit(height,scale,viewportHeight), panLimit(height,scale,viewportHeight));
+      const verticalLimit=panLimit(height,scale,viewportHeight);
+      panY = height*scale>viewportHeight ? clamp(panY,-verticalLimit-y,verticalLimit-y) : 0;
       transform(0, viewportWidth);
     }
     function renderZoomGesture() {
@@ -256,9 +275,8 @@
         const next = pinch.scale * Math.hypot(a.x-b.x,a.y-b.y) / Math.max(1,pinch.distance);
         // zoom() owns the same bounds used by buttons and double-tap. Clamp the
         // target before focal calculation so a scale limit cannot move focus.
-        const ratio = img.naturalWidth / img.naturalHeight || 1;
         const width = stage.clientWidth, height = stage.clientHeight;
-        const fittedWidth = Math.min(width, height * ratio), fittedHeight = fittedWidth / ratio;
+        const {width:fittedWidth,height:fittedHeight} = mediaFit(undefined,img,true);
         const targetScale = clamp(next, 1, Math.max(4, width / Math.max(1,fittedWidth), height / Math.max(1,fittedHeight)));
         const target = root.JourneyPhotoZoom.focalZoom(pinch, targetScale, pinch.center, photoPoint((a.x+b.x)/2,(a.y+b.y)/2));
         panX = target.x; panY = target.y; zoom(targetScale);
@@ -281,8 +299,7 @@
     }
     function toggleZoom(event) {
       stopZoom();
-      const ratio = img.naturalWidth / img.naturalHeight || 1;
-      const width = Math.min(stage.clientWidth, stage.clientHeight * ratio), height = width / ratio;
+      const {width,height} = mediaFit(undefined,img,true);
       const from = {scale, x:panX, y:panY};
       const next = scale > 1 ? 1 : Math.max(2, stage.clientWidth / Math.max(1,width), stage.clientHeight / Math.max(1,height));
       // Keep the tapped part of the image under the finger, within its edges.
@@ -318,6 +335,12 @@
       viewerHeight = viewer.clientHeight;
       locationWidth = viewer.clientWidth;
       locationFoot = $('.mobile-photo-footer').offsetHeight;
+      const actions = $('.mobile-photo-actions');
+      const header = $('.mobile-photo-header'), footer = $('.mobile-photo-footer');
+      mediaHead = header.offsetWidth ? header.offsetHeight : 0;
+      mediaFoot = footer.offsetWidth ? locationFoot + (actions.offsetWidth ? actions.offsetHeight + 12 : 0) : 0;
+      viewer.style.setProperty('--media-head', `${mediaHead}px`);
+      viewer.style.setProperty('--media-foot', `${mediaFoot}px`);
       viewer.style.setProperty('--location-height', `${locationHeight}px`);
       reveal = locationOpen ? locationHeight : 0;
       stopLocation();
@@ -436,6 +459,7 @@
         locationStageHeight = nextHeight;
         stage.style.setProperty('--location-inset', `${locationInset(reveal)}px`);
         swipeRaster?.resize(locationWidth, locationStageHeight);
+        transform(swipeOffset,locationWidth);
         fitLocationPhoto(reduced.matches ? nextHeight : previousHeight);
         if (!reduced.matches) {
           $('#viewer-photo-frame').getBoundingClientRect();
@@ -796,7 +820,7 @@
     });
     function photoPoint(x, y) {
       const rect = stage.getBoundingClientRect();
-      return {x:x-rect.left-rect.width/2,y:y-rect.top-rect.height/2};
+      return {x:x-rect.left-rect.width/2,y:y-rect.top-rect.height/2-mediaFit().y};
     }
     $('.photo-close').addEventListener('click', event => {
       if (!enabled()) return;

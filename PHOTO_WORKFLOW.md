@@ -822,7 +822,14 @@ pan, pinch, cancelled gesture or completed dismissal must not schedule a stray
 single-tap toggle. Revealing controls and keyboard use must provide a reachable
 exit; hiding chrome must not lose the current photo or presenting screen.
 
-The fitted photograph remains complete and undistorted. Mobile zoomed photos
+The fitted photograph remains complete and undistorted. The **2 November 2026**
+correction also fits resting photos and native videos between visible controls,
+including landscape phones, and bounds the native video grid's intrinsic minimum.
+Reserve the actual measured header/footer/action space; do not crop tall media
+or cover its ends with opaque bars. Native and prepared photo surfaces share
+the fitted transform, and zoom/pan bounds use that same base size. Keep layout
+measurements out of pointer frames and retain the full derivative for zoom.
+Mobile zoomed photos
 use the full viewport, including the area behind overlaid controls; do not clip
 the zoom to a smaller resting photo frame. Desktop zoom fills the existing
 photo stage and retains its context sidebar. During pinch, preserve the photo point

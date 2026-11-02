@@ -194,6 +194,17 @@ photos as well as samples when the internal session is available.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
+Follow-up, **2 November 2026**: the complete resting photograph or video must
+fit inside the visible fullscreen area, including phone landscape. Bound native
+video grid tracks so a portrait poster/player cannot overflow the viewport.
+Visible header/footer/actions must not mask fitted image edges or native playback
+controls. Keep zoom relative to that complete fitted image, with full-viewport
+panning, focal continuity, prepared/native parity and unchanged detail/access.
+Verify portrait/landscape media, photo ↔ video switches, resize, zoom/reset and
+location open/close on the reference, demo, target trip and populated fresh draft.
+This supersedes allowing resting media behind opaque control bars; zoomed
+photos retain the earlier full-viewport behavior.
+
 This extends O03/O08/O18 across every atlas. The owner asked for mobile
 fullscreen Share “next to comments … on the left side”, “a close button … in the
 top right of the photo”, and one tap to “hide all the extra buttons and just show

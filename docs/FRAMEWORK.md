@@ -134,7 +134,7 @@ password system.
 | `dist/assets/map-style.js` | Shared basemap palette, restrained settlement typography, and route/label stacking for every viewer map and Studio |
 | `dist/assets/atlas-utils.js` | Shared photo resolution, cover choice, camera helpers, preloading, desktop image reveals and other helpers |
 | `dist/assets/group-travel.js`, `group-travel.css`, `scripts/journey-extras.mjs` | Shared group projection, roster/day route details, group/media presentation and optional data validation |
-| `dist/assets/media-utils.js` | Mixed gallery items, cached reader media index by immutable journey projection/source-array identity, opening-frame thumbnail extraction/cache, native video playback and cleanup inside the shared photo viewer |
+| `dist/assets/media-utils.js` | Mixed gallery items, cached reader media index by immutable journey projection/source-array identity, timestamped clip insertion preserving all still positions/assignments, opening-frame thumbnail extraction/cache, bounded native video playback and cleanup inside the shared photo viewer |
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |
 | `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching; optional native-resolution AVIF for full loads with WebP fallback and unchanged authentication |
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |

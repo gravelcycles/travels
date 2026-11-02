@@ -159,6 +159,13 @@ See the [notification contract](PLACES_AND_COMMENTS.md#comment-notifications).
 
 ## Features versus editorial content
 
+The **2 November fullscreen/media-order correction** fits complete resting
+photos and videos around visible controls, including phone landscape. Timestamped
+clips join the existing still sequence without re-sorting or relocating photos;
+undated videos retain legacy ordering. See the [media contract](../JOURNEY_WORKFLOW.md#day-videos),
+[fullscreen workflow](../PHOTO_WORKFLOW.md#fullscreen-controls-and-focal-zoom)
+and WIP for verification/publication status.
+
 Heading East's [2 November recovery and clips](HEADING_EAST.md#restored-photo-recovered-edits-and-videos--2-november-2026)
 uses the existing recovery/Trash and private-video pipelines: restore the named
 photo, preserve the traveler's notes/removals/order and include supported clips

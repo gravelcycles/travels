@@ -746,8 +746,17 @@ Optional `poster` and `creditUrl` use HTTPS; `credit` supplies attribution text.
 Optional `groupIds` use the same audience rule as legs/photos. `hidden: true`
 and `assetStatus: "local"` entries are omitted from public bundles. Omitted
 videos preserve the ordinary photo-only experience. A day containing only
-video still has a working gallery. Existing photo order is preserved, followed
-by videos in source order; full-trip Replay stays disabled.
+video still has a working gallery. Existing photo order and day assignments
+are preserved. A clip's optional `takenAt` records a reviewed camera-local
+`YYYY-MM-DD · HH:mm` timestamp, with optional `:ss`; invalid dates/times fail
+validation. Interleave dated clips against the longest chronological sequence
+of dated stills inside that event's calendar range. Ignore out-of-place stills
+as ordering anchors without moving them. A timestamped clip before/after the
+available anchors goes before/after that sequence; undated clips retain their
+stable tail order, and an explicit existing media position wins. Do not infer
+capture time from a title, filename, export date or host time zone. Omitted
+timestamps preserve legacy source order. This **2 November 2026** correction
+supersedes appending every clip after stills. Full-trip Replay stays disabled.
 
 Use a reviewed MP4 (H.264/AAC is the intended intake format), a poster, and a
 useful caption/transcript where needed. Thumbnail tiles show the opening frame,

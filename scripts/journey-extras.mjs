@@ -1,6 +1,7 @@
 import { validatePointsOfInterest } from './places-content.mjs';
 import {isPrivateVideoUrl,MAX_VIDEO_BYTES,MAX_VIDEO_SECONDS} from './video-contract.mjs';
 import {isPrivatePhotoUrl} from './photo-variants.mjs';
+import '../dist/assets/media-utils.js';
 const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const safeUrl = value => {
   if (typeof value !== 'string') return false;
@@ -52,6 +53,7 @@ export function validateJourneyExtras(journey) {
     }
   }
   for (const video of videos) {
+    if (video.takenAt != null && globalThis.JOURNEY_ATLAS_MEDIA.captureTime(video.takenAt) === null) fail(`${video.id}: takenAt must be a valid camera-local YYYY-MM-DD · HH:mm[:ss] timestamp`);
     if (!journey.days.some(day => day.id === video.dayId)) fail(`${video.id}: video references an unknown day`);
     if (typeof video.title !== 'string' || !video.title.trim() || typeof video.caption !== 'string') fail(`${video.id}: video needs title and caption text`);
     if (video.visibility === 'private') {

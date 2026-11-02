@@ -79,7 +79,7 @@
  .photo-stage { bottom:var(--location-inset,0px); }
  .photo-stage figure,.viewer-photo-frame { width:100%; height:100%; }
  .viewer-photo-frame { overflow:visible; transform:var(--location-photo-transform,none); }
- .viewer-photo-frame::before { transform:translate3d(var(--photo-swipe-x,0px),0,0); will-change:transform; }
+ .viewer-photo-frame::before { transform:translate3d(var(--photo-swipe-x,0px),var(--photo-fit-y,0px),0) scale(var(--photo-fit-scale,1)); will-change:transform; }
  /* Keep carousel positioning stable when loaded images exchange roles. */
  .photo-stage #modal-photo { position:absolute; inset:0; z-index:1; object-fit:contain; will-change:transform; -webkit-user-drag:none; }
  .photo-stage .mobile-photo-neighbor:not([hidden]) { position:absolute; inset:0; display:block; pointer-events:none; object-fit:contain; will-change:transform; }

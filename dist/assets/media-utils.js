@@ -4,6 +4,50 @@
   const isVideo = item => item?.mediaType === 'video';
   const videoItem = video => ({ ...video, mediaType:'video', videoSrc:video.src, src:video.poster || '', alt:video.title, caption:video.title, description:video.caption });
   const items = journey => [...(journey.photos || []), ...(journey.videos || []).filter(video => !video.hidden).map(videoItem)];
+  // Camera-local time, independent of the reader's time zone. Display titles
+  // and export/container dates are never chronology sources.
+  function captureTime(value) {
+    const parts = /^(\d{4})-(\d{2})-(\d{2}) · (\d{2}):(\d{2})(?::(\d{2}))?$/.exec(value || '');
+    if (!parts) return null;
+    const [,year,month,day,hour,minute,second='00'] = parts;
+    const date = new Date(Date.UTC(+year,+month-1,+day,+hour,+minute,+second));
+    const normalized = `${year}-${month}-${day}T${hour}:${minute}:${second}.000Z`;
+    return date.toISOString() === normalized ? date.getTime() : null;
+  }
+  function interleaveVideos(ordered, day) {
+    const explicit = new Set(day.photoOrder || []);
+    const clips = ordered.map((item,position)=>({item,position,time:captureTime(item.takenAt)}))
+      .filter(entry=>isVideo(entry.item) && entry.time !== null && !explicit.has(entry.item.id))
+      .sort((a,b)=>a.time-b.time || a.position-b.position);
+    if (!clips.length) return ordered;
+    const ids = new Set(clips.map(entry=>entry.item.id)), base = ordered.filter(item=>!ids.has(item.id));
+    // Use the longest chronological run as anchors. Pinned/misdated photos
+    // stay exactly where the traveler put them, without pulling clips astray.
+    const tails = [];
+    for (let position=0;position<base.length;position++) {
+      const item=base[position], time=captureTime(item.takenAt), date=item.takenAt?.slice(0,10);
+      if (isVideo(item) || time === null || day.calendarDate && date < day.calendarDate || (day.calendarEndDate || day.calendarDate) && date > (day.calendarEndDate || day.calendarDate)) continue;
+      let low=0,high=tails.length;
+      while(low<high){const mid=(low+high)>>1;if(tails[mid].time<=time)low=mid+1;else high=mid;}
+      tails[low]={position,time,previous:tails[low-1]};
+    }
+    const anchors=[];for(let entry=tails.at(-1);entry;entry=entry.previous)anchors.unshift(entry);
+    const buckets=new Map(), tail=base.findIndex(isVideo);let next=0;
+    for(const clip of clips) {
+      while(next<anchors.length && anchors[next].time<=clip.time)next++;
+      const position=anchors[next]?.position ?? (anchors.length ? anchors.at(-1).position+1 : tail<0?base.length:tail);
+      if(!buckets.has(position))buckets.set(position,[]);
+      buckets.get(position).push(clip.item);
+    }
+    return base.flatMap((item,position)=>[...(buckets.get(position)||[]),item]).concat(buckets.get(base.length)||[]);
+  }
+  function orderForDay(media, day) {
+    const order=day.photoOrder || [], positions=new Map(order.map((id,position)=>[id,position]));
+    const ordered=media.map((photo,position)=>({photo,position})).sort((a,b)=>
+      (positions.get(a.photo.id) ?? order.length+a.position) - (positions.get(b.photo.id) ?? order.length+b.position) || a.position-b.position
+    ).map(entry=>entry.photo);
+    return interleaveVideos(ordered,day);
+  }
   const indexes = new WeakMap();
   // Reader projections are immutable. A group/planning change creates a new
   // journey; replacing any source array also invalidates this derived index.
@@ -17,11 +61,7 @@
       byDay.get(photo.dayId).push(photo);
     }
     for (const day of journey.days || []) {
-      const photos = byDay.get(day.id) || [], order = day.photoOrder || [];
-      const positions = new Map(order.map((id, position) => [id, position]));
-      byDay.set(day.id, photos.map((photo, position) => ({photo, position})).sort((a, b) =>
-        (positions.get(a.photo.id) ?? order.length + a.position) - (positions.get(b.photo.id) ?? order.length + b.position) || a.position - b.position
-      ).map(entry => entry.photo));
+      byDay.set(day.id,orderForDay(byDay.get(day.id) || [],day));
     }
     const result = {photos:journey.photos, videos:journey.videos, days:journey.days, byDay, byId,
       ordered:(journey.days || []).flatMap(day => byDay.get(day.id) || [])};
@@ -138,5 +178,5 @@
     root.addEventListener?.('atlas-photos-unlocked',()=>{if(current?.protected){const item=current;stop();show(item);}});
     return { show, stop, pause };
   }
-  root.JOURNEY_ATLAS_MEDIA = { isVideo, videoItem, items, index, label, duration, thumbnail, createPosterLoader, createVideoPlayer,captionVtt };
+  root.JOURNEY_ATLAS_MEDIA = { isVideo, videoItem, items, index, orderForDay, captureTime, label, duration, thumbnail, createPosterLoader, createVideoPlayer,captionVtt };
 })(typeof window !== 'undefined' ? window : globalThis);

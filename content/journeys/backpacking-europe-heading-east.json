@@ -3220,7 +3220,8 @@
       "visibility": "private",
       "protected": true,
       "assetStatus": "published",
-      "sourceHash": "67fd2bdd8c4b038279bf8750f5ad781c598ac5eb4d4b522e630ec2814d0785be"
+      "sourceHash": "67fd2bdd8c4b038279bf8750f5ad781c598ac5eb4d4b522e630ec2814d0785be",
+      "takenAt": "2026-10-26 · 14:47:49"
     },
     {
       "id": "backpacking-europe-heading-east-video-ad126b1a53dfe2922758",
@@ -3238,7 +3239,8 @@
       "visibility": "private",
       "protected": true,
       "assetStatus": "published",
-      "sourceHash": "ad126b1a53dfe29227587892946638c9de7647f10aa9ea589b06f67cfd676feb"
+      "sourceHash": "ad126b1a53dfe29227587892946638c9de7647f10aa9ea589b06f67cfd676feb",
+      "takenAt": "2026-10-26 · 14:48:56"
     },
     {
       "id": "backpacking-europe-heading-east-video-6652cc4e8af2dd47f003",
@@ -3256,7 +3258,8 @@
       "visibility": "private",
       "protected": true,
       "assetStatus": "published",
-      "sourceHash": "6652cc4e8af2dd47f00397ab3745ecc7fea0d03d9845403c8cb7e687a446f9fb"
+      "sourceHash": "6652cc4e8af2dd47f00397ab3745ecc7fea0d03d9845403c8cb7e687a446f9fb",
+      "takenAt": "2026-10-26 · 14:51:40"
     },
     {
       "id": "backpacking-europe-heading-east-video-668d7c4eac3085f7d88a",
@@ -3274,7 +3277,8 @@
       "visibility": "private",
       "protected": true,
       "assetStatus": "published",
-      "sourceHash": "668d7c4eac3085f7d88ab254c68a2198254547848d222c7a99207d6f6828d9b4"
+      "sourceHash": "668d7c4eac3085f7d88ab254c68a2198254547848d222c7a99207d6f6828d9b4",
+      "takenAt": "2026-10-30 · 06:51:57"
     }
   ]
 }

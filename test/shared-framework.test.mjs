@@ -972,6 +972,28 @@ test('unified media items keep photo order and include day-linked video thumbnai
   assert.equal(clip.mediaType,undefined, 'Normalization does not mutate source content');
 });
 
+test('timestamped video placement inherits real, demo and independently populated draft models', t => {
+  const root=fixture(t),fresh=createJourney(root,input),{data}=loadContent(root,{includeDrafts:true});
+  const template=data.journeys.find(j=>j.kind==='demo' && j.videos?.length).videos[0];
+  for(const original of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo' && j.videos?.length),data.journeys.find(j=>j.id===fresh.id)]) {
+    const journey=structuredClone(original),day=journey.days[0],date=day.calendarDate;
+    const first={id:`${journey.id}-fit-first`,dayId:day.id,takenAt:`${date} · 10:00`,src:'https://example.com/first.webp'},last={...first,id:`${journey.id}-fit-last`,takenAt:`${date} · 12:00`};
+    journey.photos=[first,last];journey.videos=[{...template,id:`${journey.id}-fit-clip`,dayId:day.id,takenAt:`${date} · 11:00`}];
+    journey.days=journey.days.map(d=>({...d,photoOrder:d.id===day.id?[first.id,last.id]:[]}));
+    validateJourneyExtras(journey);
+    assert.deepEqual(globalThis.JOURNEY_ATLAS_MEDIA.index(journey).byDay.get(day.id).map(item=>item.id),[first.id,journey.videos[0].id,last.id]);
+    journey.videos[0].takenAt='2026-02-30 · 12:00';assert.throws(()=>validateJourneyExtras(journey),/takenAt must be a valid/);
+  }
+  const heading=data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),overrides=readOverrides(root);
+  heading.photos=heading.photos.map(photo=>globalThis.JOURNEY_ATLAS_UTILS.resolvePhoto(photo,overrides.photos[photo.id])).filter(photo=>!photo.trashed);
+  heading.days=heading.days.map(day=>({...day,...overrides.days[day.id]}));
+  const before=structuredClone(heading),media=globalThis.JOURNEY_ATLAS_MEDIA.index(heading);
+  const forni=media.byDay.get('backpacking-europe-heading-east-forni-stay'),vienna=media.byDay.get('backpacking-europe-heading-east-vienna-stay');
+  assert.deepEqual(forni.map((item,i)=>item.mediaType==='video'?i:null).filter(i=>i!==null),[14,16,17]);
+  assert.equal(vienna[0].mediaType,'video');assert.equal(media.ordered.length,217);
+  assert.deepEqual(heading,before);
+});
+
 test('video playback uses the existing viewer and stops, releases and retries media safely', async () => {
   const media = globalThis.JOURNEY_ATLAS_MEDIA;
   const node = () => ({ listeners:{}, hidden:false, textContent:'', addEventListener(name, fn) { this.listeners[name] = fn; }, setAttribute(key, value) { this[key] = value; }, removeAttribute(key) { delete this[key]; } });

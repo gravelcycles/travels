@@ -1,5 +1,35 @@
 # Current workstreams
 
+## Fullscreen media fit and clip timestamps — 2 November 2026
+
+Owner correction: show the full photograph/video in fullscreen and insert clips
+by capture timestamp, ignoring out-of-place photos. Preserve the existing still
+sequence, assignments, notes, pins and Trash; do not re-sort or relocate photos.
+Shared viewer/order work is isolated on `codex/fullscreen-media-fit-20261102`
+at `/private/tmp/travels-restore-20261102`, based on main `4626e1d`.
+Reproduced the portrait-video sizing failure on the live desktop page: its
+960 × 1707 player overflows a 960 × 720 shell because of the grid item's intrinsic
+minimum. Fixed native grid minima and measured phone media insets; fitted photos,
+previews and prepared neighbors share geometry while zoom retains full detail.
+The same portrait player now stays 960 × 720 at 1280 × 720. At 844 × 390, both
+the reference portrait and native video fit between y=102 and y=260; opening
+Location keeps the entire photo between the header and sheet. Actual browser
+checks cover Heading East, Switzerland–Italy, Nine to Como and an independently
+populated two-day draft, including portrait orientation, zoom, resize, grid and
+public/private native playback. These are responsive browser checks, not new
+physical-device certification.
+Added four verified `takenAt` values and shared timestamp insertion: Forni clips
+occupy positions 15/17/18 of 38; Vienna's clip is first. All still records, order
+overrides, assignments, notes, pins, Trash and routes are byte-identical.
+All 914 tests and the production build pass; 111 targeted interaction/framework
+checks also pass after the final location fitting adjustment. Primary Studio's
+capture times, ordering helper and bounded player are synchronized; its 60
+targeted tests/build pass. Its older independent phone implementation already
+fits between bars and remains intact with unrelated pending work.
+Current owner/fullscreen/media contracts, inventory and trip record are updated.
+Next: integrate current main, deploy Pages, verify fresh public sizing/order and
+record the release receipt. Public deployment is pending.
+
 ## Heading East restore, edits and clips — 2 November 2026
 
 Authorized: restore IMG_3883 only, recover/publish the latest traveler edits,
