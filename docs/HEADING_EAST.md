@@ -67,8 +67,18 @@ existing sidebar/fullscreen boundaries, chronology and cross-city navigation.
 Actual-model desktop/phone automation passes; desktop browser review includes
 the rail corridor, five travel rows, populated Forni album, a full RAW and an
 unlocated image. Phone checks are automated, not physical-device certification.
-All 910 tests, strict preservation of 48 routes and the actual Worker runtime
-checks pass. WIP owns the remaining Worker/Pages deployment and Studio sync status.
+All 910 tests, strict preservation of 48 routes, repeat builds and the actual
+Worker runtime checks pass. Release `c511345` passed
+[Pages run 41482521182](https://github.com/gravelcycles/travels/actions/runs/41482521182); eight freshly fetched public files match
+the release exactly. The live browser confirms the train details and new private
+full-photo/RAW rendering, with 246 visible photos. New WebP/AVIF URLs still reject
+anonymous reads with 401/no-store. Worker version
+`2d7374c0-f95b-4a74-87d9-1393cd1558fd` deployed both indexes before Pages.
+Local Studio sources/assets match the addition, preserving all old photo edits
+and unrelated working changes; its build and 13 targeted tests pass. The trip
+record and deduplication workflow are current. No requested implementation or
+publication remains; four clips and the nine absent GPS pins retain the boundaries
+above. Detailed delivery and preservation receipts live in WIP.
 
 ## Vienna and Poland dates — 1 November 2026
 

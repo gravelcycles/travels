@@ -27,8 +27,22 @@ uploaded and checksum/MIME verified; all 104 photo/AVIF descriptors are publishe
 Matching Worker eligibility/share indexes are deployed as version
 `2d7374c0-f95b-4a74-87d9-1393cd1558fd`; prior version
 `3843b54d-a2be-4f67-8aa4-7dfd25a088b1` is the rollback reference.
-Next: publish Pages, verify fresh public files/media boundaries, and synchronize
-only scoped primary Studio sources/assets. Pages publication is still pending.
+Complete. Published `c511345` through successful
+[Pages run 41482521182](https://github.com/gravelcycles/travels/actions/runs/41482521182). Eight fresh public HTML/data files
+match the tested release byte-for-byte: all 104 additions are live, with 246
+visible photos and both corrected train legs. Fresh public browser checks confirm
+the five travel rows and actual private full-photo/RAW rendering; anonymous new
+WebP and AVIF requests still return 401/no-store. Responsive local browser checks
+also cover the missing-GPS city context, location dismissal, cross-city entry and
+Vienna's twelve-photo grid. Phone gesture coverage remains automated/responsive,
+without a new physical-device certification.
+Primary Studio sources, 416 verified derivatives and 104 untouched originals plus
+their private metadata records are synchronized. Its build and 13 targeted tests
+pass; 23 scoped source/generated/doc files changed while 277 other pre-existing
+working files, original branch `updates` and HEAD `3373246` remain unchanged.
+No implementation/publication remains for the requested stills and track. Four
+clips remain held; nine missing-GPS pins remain intentionally unset pending owner
+locations. No outbound update was sent or acknowledged.
 
 ## Vienna and Poland dates — 1 November 2026
 
