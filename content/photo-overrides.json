@@ -3635,7 +3635,8 @@
     "location": {
       "lat": 47.00287222222222,
       "lng": 11.505233333333333
-    }
+    },
+    "description": "Truck hauls pulled by train over mountain passes. "
   },
   "backpacking-europe-heading-east-upload-833e786e4db00d874ef7": {
     "reviewed": true,
@@ -3743,7 +3744,8 @@
     "location": {
       "lat": 45.43458611111111,
       "lng": 12.3469
-    }
+    },
+    "description": "the cables can't go underground and are not on street poles. They're plastered to the side of the building instead!!"
   },
   "backpacking-europe-heading-east-upload-782f5d3970f59b0553fe": {
     "reviewed": true,
@@ -3812,7 +3814,8 @@
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": null,
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-bb2090ef03d596a1e7e3": {
     "reviewed": true,
@@ -3824,7 +3827,8 @@
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": null,
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-679b27c782cbae4a9060": {
     "reviewed": true,
@@ -3836,13 +3840,15 @@
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": null,
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-3ba99277949b35f05aff": {
     "reviewed": true,
     "locationStatus": "unlocated-no-gps",
     "locationLabel": "",
-    "location": null
+    "location": null,
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-cb2b043154b18346947e": {
     "reviewed": true,
@@ -3878,7 +3884,8 @@
     "location": {
       "lat": 46.416675,
       "lng": 12.587477777777778
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-7707e58668ccf635a5a2": {
     "reviewed": true,
@@ -3929,7 +3936,8 @@
     "location": {
       "lat": 46.4458,
       "lng": 12.565650000000002
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-69856e9706c08cc4d3db": {
     "reviewed": true,
@@ -3938,7 +3946,8 @@
     "location": {
       "lat": 46.442947222222216,
       "lng": 12.567647222222222
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-6d4d7dfb25a2aff2bdee": {
     "reviewed": true,
@@ -3965,7 +3974,8 @@
     "location": {
       "lat": 46.44285277777777,
       "lng": 12.567455555555556
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-9f3cb37bbb7f8c637b75": {
     "reviewed": true,
@@ -3983,7 +3993,8 @@
     "location": {
       "lat": 46.44284722222222,
       "lng": 12.567480555555555
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-d7afe9672051ce0d20b1": {
     "reviewed": true,
@@ -4046,7 +4057,8 @@
     "location": {
       "lat": 46.4197,
       "lng": 12.580594444444444
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-e7ed1a8e3823bb0eb84a": {
     "reviewed": true,
@@ -4064,7 +4076,8 @@
     "location": {
       "lat": 46.424524999999996,
       "lng": 12.559327777777778
-    }
+    },
+    "trashed": false
   },
   "backpacking-europe-heading-east-upload-22c035684287c10dce38": {
     "reviewed": true,
@@ -4073,7 +4086,8 @@
     "location": {
       "lat": 46.42554722222222,
       "lng": 12.556461111111112
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-658b9ec3ee6dee1b3e4c": {
     "reviewed": true,
@@ -4109,7 +4123,8 @@
     "location": {
       "lat": 46.416405555555556,
       "lng": 12.586975
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-42cf0bfe9cb2fb0373c1": {
     "reviewed": true,
@@ -4127,7 +4142,8 @@
     "location": {
       "lat": 46.41663055555556,
       "lng": 12.587347222222222
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-e9208a6ce5973b8a4ac2": {
     "reviewed": true,
@@ -4136,7 +4152,8 @@
     "location": {
       "lat": 46.41659166666666,
       "lng": 12.587294444444446
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-323277145625c6c5ec61": {
     "reviewed": true,
@@ -4154,7 +4171,8 @@
     "location": {
       "lat": 46.416602777777776,
       "lng": 12.587280555555557
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-8bf17d7e6e74267d9191": {
     "reviewed": true,
@@ -4172,7 +4190,8 @@
     "location": {
       "lat": 46.41686111111111,
       "lng": 12.587311111111111
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-11f7d1bd88831431ecb9": {
     "reviewed": true,
@@ -4190,7 +4209,8 @@
     "location": {
       "lat": 46.416583333333335,
       "lng": 12.587316666666668
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-68bf3adfe902e85a205f": {
     "reviewed": true,
@@ -4217,7 +4237,8 @@
     "location": {
       "lat": 46.50472777777778,
       "lng": 13.604949999999999
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-652b50686d488769d250": {
     "reviewed": true,
@@ -4226,7 +4247,8 @@
     "location": {
       "lat": 46.50514722222222,
       "lng": 13.605516666666666
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-8f734e4fdbc7e91314a9": {
     "reviewed": true,
@@ -4235,7 +4257,8 @@
     "location": {
       "lat": 48.20815555555556,
       "lng": 16.371322222222222
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-a89de5e99fef27b4eb93": {
     "reviewed": true,
@@ -4244,7 +4267,8 @@
     "location": {
       "lat": 48.19664444444444,
       "lng": 16.363772222222224
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-74948a6c4cf4d5a3a3e0": {
     "reviewed": true,
@@ -4271,7 +4295,8 @@
     "location": {
       "lat": 48.208288888888895,
       "lng": 16.339327777777775
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-8514036ab8331497c45e": {
     "reviewed": true,
@@ -4403,7 +4428,8 @@
     "location": {
       "lat": 46.498444444444445,
       "lng": 11.355025
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-7594f484033d1d6b8e46": {
     "reviewed": true,
@@ -4430,7 +4456,8 @@
     "location": {
       "lat": 45.43768055555555,
       "lng": 12.321302777777777
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-3c1b784ea7aea43591b1": {
     "reviewed": true,
@@ -4448,7 +4475,8 @@
     "location": {
       "lat": 45.43765,
       "lng": 12.321222222222222
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-8bc9cf80e1b3995037da": {
     "reviewed": true,
@@ -4457,7 +4485,8 @@
     "location": {
       "lat": 45.44036111111111,
       "lng": 12.324819444444444
-    }
+    },
+    "description": "The street art exhibit \"poster\"."
   },
   "backpacking-europe-heading-east-upload-c4178cff647ae568037e": {
     "reviewed": true,
@@ -4466,7 +4495,8 @@
     "location": {
       "lat": 45.43909166666666,
       "lng": 12.329705555555556
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-9f8b90875d80d21dc078": {
     "reviewed": true,
@@ -4475,7 +4505,8 @@
     "location": {
       "lat": 45.43909166666666,
       "lng": 12.329705555555556
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-87135544993ce1c855cf": {
     "reviewed": true,
@@ -4502,7 +4533,8 @@
     "location": {
       "lat": 45.43912222222222,
       "lng": 12.330175
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-33729c8f9e41c1687403": {
     "reviewed": true,
@@ -4520,7 +4552,8 @@
     "location": {
       "lat": 45.43190277777777,
       "lng": 12.320427777777777
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-5f7c42853636dad1afbe": {
     "reviewed": true,
@@ -4529,7 +4562,8 @@
     "location": {
       "lat": 45.441966666666666,
       "lng": 12.322013888888888
-    }
+    },
+    "description": "The art exhibit poster."
   },
   "backpacking-europe-heading-east-upload-f890fab3f59ae93545cc": {
     "reviewed": true,
@@ -4538,7 +4572,8 @@
     "location": {
       "lat": 45.44419722222222,
       "lng": 12.329575
-    }
+    },
+    "description": "frescoes in a supermarket."
   },
   "backpacking-europe-heading-east-upload-0df0b19999738ee9c0a2": {
     "reviewed": true,
@@ -4547,7 +4582,8 @@
     "location": {
       "lat": 45.44191111111111,
       "lng": 12.333452777777778
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-a9854344d90b64c2dcbd": {
     "reviewed": true,
@@ -4556,7 +4592,8 @@
     "location": {
       "lat": 45.44190277777778,
       "lng": 12.333558333333334
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-3555d7bd62cbb1bd23bc": {
     "reviewed": true,
@@ -4565,7 +4602,8 @@
     "location": {
       "lat": 45.43746944444444,
       "lng": 12.340933333333334
-    }
+    },
+    "description": "da dodgers lose!"
   },
   "backpacking-europe-heading-east-upload-a4ea366f4d79487aee75": {
     "reviewed": true,
@@ -4583,7 +4621,8 @@
     "location": {
       "lat": 46.416405555555556,
       "lng": 12.586819444444446
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-ab67b3983b2b52fa9c4a": {
     "reviewed": true,
@@ -4706,7 +4745,8 @@
     "location": {
       "lat": 46.44293611111111,
       "lng": 12.567480555555555
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-7b18b55ebd0ce86900e3": {
     "reviewed": true,

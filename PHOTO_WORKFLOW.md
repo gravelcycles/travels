@@ -663,7 +663,13 @@ Nine to Como example uses the public [MDN video test](https://developer.mozilla.
 with attribution and explicit test labeling; it is not actual trip footage.
 No video binary or new photo binary is committed or republished.
 
-The ordinary photo importer still rejects videos. Use **Media → Videos → Add a private video** for local clips. Private delivery now shares the
+The ordinary photo importer still rejects videos. For an owner-authorized mixed
+media-folder intake, send supported clips through the video pipeline as well as
+stills through the photo pipeline. Do not hold or omit a supported clip merely
+because the still importer rejects it. Preserve file-by-file intake outcomes;
+report an actual unsupported input, failed processing or out-of-scope clip.
+The owner's 2 November Heading East correction reaffirms this existing support.
+Use **Media → Videos → Add a private video** for local clips. Private delivery now shares the
 existing photo password policy and R2 bucket, using a separate range-aware video
 route; public MDN playback is unchanged. **Photo route groups** continues to edit
 existing photo assignments without changing their files.

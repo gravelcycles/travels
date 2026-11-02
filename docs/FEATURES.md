@@ -159,6 +159,13 @@ See the [notification contract](PLACES_AND_COMMENTS.md#comment-notifications).
 
 ## Features versus editorial content
 
+Heading East's [2 November recovery and clips](HEADING_EAST.md#restored-photo-recovered-edits-and-videos--2-november-2026)
+uses the existing recovery/Trash and private-video pipelines: restore the named
+photo, preserve the traveler's notes/removals/order and include supported clips
+from the mixed batch. Capability already exists; verification and release status
+are in WIP. The photo workflow now explicitly routes mixed batches through both
+importers rather than omitting clips at the still-only boundary.
+
 Heading East’s [23 October list extension](HEADING_EAST.md#saved-places-extension--23-october-2026) adds two Salzburg and five Venice/Mestre venues through the existing Places contract.
 
 Heading East’s [20 October route adjustment](HEADING_EAST.md#route-adjustment--20-october-2026)

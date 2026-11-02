@@ -2385,15 +2385,6 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-b277c0131282b95f1197": {
-          "dayId": "backpacking-europe-heading-east-bolzano-stay",
-          "title": "Bolzano",
-          "thumbnail": {
-            "key": "v1/1a5610945b0781183ba5f985ad846a92eae4ef0ebfed88b7c3faaa2b643da13f.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
         "backpacking-europe-heading-east-upload-7594f484033d1d6b8e46": {
           "dayId": "backpacking-europe-heading-east-venice-stay",
           "title": "Venice",
@@ -2412,15 +2403,6 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-080f85e6241cdc794402": {
-          "dayId": "backpacking-europe-heading-east-venice-stay",
-          "title": "Venice",
-          "thumbnail": {
-            "key": "v1/ddcb0fd347078a10896231d99166353f98b34286f99a21c31be799db04cf4417.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
         "backpacking-europe-heading-east-upload-3c1b784ea7aea43591b1": {
           "dayId": "backpacking-europe-heading-east-venice-stay",
           "title": "Venice",
@@ -2430,15 +2412,6 @@ export default {
             "height": 360
           }
         },
-        "backpacking-europe-heading-east-upload-843917b2fd6c70538bb0": {
-          "dayId": "backpacking-europe-heading-east-venice-stay",
-          "title": "Venice",
-          "thumbnail": {
-            "key": "v1/5a615933df2b2aed396cc49296e79748407156543d0c677efd7dfa993cbe4ace.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
         "backpacking-europe-heading-east-upload-8bc9cf80e1b3995037da": {
           "dayId": "backpacking-europe-heading-east-venice-stay",
           "title": "Venice",
@@ -2446,24 +2419,6 @@ export default {
             "key": "v1/46a1c9ef6d591d53adc694b1d375517592a6006b0014e00709064b9d0cfe5b65.webp",
             "width": 480,
             "height": 360
-          }
-        },
-        "backpacking-europe-heading-east-upload-c4178cff647ae568037e": {
-          "dayId": "backpacking-europe-heading-east-venice-stay",
-          "title": "Venice",
-          "thumbnail": {
-            "key": "v1/9394e75a46d57704de9f5dcb1c68195c4b1e2b3fa14e6004af0d151aa71ca63a.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-9f8b90875d80d21dc078": {
-          "dayId": "backpacking-europe-heading-east-venice-stay",
-          "title": "Venice",
-          "thumbnail": {
-            "key": "v1/6aeee75e5b8591b3595b83d6879e2537bb5b12a77511512d71cb46666b62994f.webp",
-            "width": 480,
-            "height": 640
           }
         },
         "backpacking-europe-heading-east-upload-87135544993ce1c855cf": {
@@ -2480,15 +2435,6 @@ export default {
           "title": "Venice",
           "thumbnail": {
             "key": "v1/81f54056a87df74f44d2d0d84f1b687a8a394e46a0b044fbd0f586a10064f629.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-008a701769cdff936110": {
-          "dayId": "backpacking-europe-heading-east-venice-stay",
-          "title": "Venice",
-          "thumbnail": {
-            "key": "v1/99b8f82aed36778720bdf48c3bb95af5f0e0cedd00824aa4ea2896c24a70e9f4.webp",
             "width": 480,
             "height": 640
           }
@@ -2511,15 +2457,6 @@ export default {
             "height": 853
           }
         },
-        "backpacking-europe-heading-east-upload-d38032bf1521b0b04b02": {
-          "dayId": "backpacking-europe-heading-east-venice-stay",
-          "title": "Venice",
-          "thumbnail": {
-            "key": "v1/f85ad30e5364367786d1859abfe938030dd7ac35a30c0ecff58a977551ecd7d7.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
         "backpacking-europe-heading-east-upload-5f7c42853636dad1afbe": {
           "dayId": "backpacking-europe-heading-east-venice-stay",
           "title": "Venice",
@@ -2536,24 +2473,6 @@ export default {
             "key": "v1/f824a057857e56ca3245898593462d7b914b3e9dd0458567de5f2d7f88bd926d.webp",
             "width": 480,
             "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-0df0b19999738ee9c0a2": {
-          "dayId": "backpacking-europe-heading-east-venice-stay",
-          "title": "Venice",
-          "thumbnail": {
-            "key": "v1/03a8c83193d73b8ba7e99ddcecd8ee2650acb11046fb57ed024816685b49ab79.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "backpacking-europe-heading-east-upload-a9854344d90b64c2dcbd": {
-          "dayId": "backpacking-europe-heading-east-venice-stay",
-          "title": "Venice",
-          "thumbnail": {
-            "key": "v1/f89d0fd125e60b4f2c9dfe59d5bc88dad19c777718ba209abb376919ff5e5c2b.webp",
-            "width": 480,
-            "height": 360
           }
         },
         "backpacking-europe-heading-east-upload-3555d7bd62cbb1bd23bc": {
@@ -2610,29 +2529,11 @@ export default {
             "height": 360
           }
         },
-        "backpacking-europe-heading-east-upload-03c053385fb44d6b4f38": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/98f222ad0265572fa595068fb30470512f2ff0d3eeb9d1fb09fb152928de18f0.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
         "backpacking-europe-heading-east-upload-f16c9827d18565078643": {
           "dayId": "backpacking-europe-heading-east-forni-stay",
           "title": "Forni di Sopra",
           "thumbnail": {
             "key": "v1/72009fa034f48c67970c155f85f8fac5d3d963d776d2985d17eadf1669452c31.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "backpacking-europe-heading-east-upload-6f9774ef7c76d65023f0": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/5658edde753d5ecc953c3a5eaf4d573e019c41d4711119b089da9465925e49dc.webp",
             "width": 480,
             "height": 360
           }
@@ -2646,15 +2547,6 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-9754eb5c5fe1d30a2645": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/100f6aad6e65fa1a9a88a23ac2ee02b5e374a1a3f4a8221c034493595979376d.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
         "backpacking-europe-heading-east-upload-7707e58668ccf635a5a2": {
           "dayId": "backpacking-europe-heading-east-forni-stay",
           "title": "Forni di Sopra",
@@ -2662,15 +2554,6 @@ export default {
             "key": "v1/7d335a3d581c51055a5bc28a90abcc6a7f34b50f72ec1f1e29a0f6a7524348e5.webp",
             "width": 480,
             "height": 641
-          }
-        },
-        "backpacking-europe-heading-east-upload-c2d60dc190fda7a333bb": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/e2dd97731cc3bcf0c8486448589a5aeae59e64690c511dcdb36f629253b2ecda.webp",
-            "width": 480,
-            "height": 853
           }
         },
         "backpacking-europe-heading-east-upload-8b756e2a37a445b6f03f": {
@@ -2718,24 +2601,6 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-acf6ecb0fe5cc5b30d90": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/77f7adbbb1245b68a1be3c0fda011c8c916caf8f7b9c198c512789aa04380c3f.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-69856e9706c08cc4d3db": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/6f8b5868dfc0917a04e961446b329b81a806f4fa91554afb6f6c294fea87e653.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
         "backpacking-europe-heading-east-upload-6d4d7dfb25a2aff2bdee": {
           "dayId": "backpacking-europe-heading-east-forni-stay",
           "title": "Forni di Sopra",
@@ -2754,24 +2619,6 @@ export default {
             "height": 360
           }
         },
-        "backpacking-europe-heading-east-upload-3ba99277949b35f05aff": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/58507812bee143ff4510b26f7dea2bf48294a43781535d68d8e8f0ba239d8749.webp",
-            "width": 480,
-            "height": 853
-          }
-        },
-        "backpacking-europe-heading-east-upload-8e0c39b11bbc615b92fc": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/8119604941ee809b592d960e3e8d2c8712a898ba9cd4ded634ccca4cae13de38.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
         "backpacking-europe-heading-east-upload-9f3cb37bbb7f8c637b75": {
           "dayId": "backpacking-europe-heading-east-forni-stay",
           "title": "Forni di Sopra",
@@ -2779,15 +2626,6 @@ export default {
             "key": "v1/052bb7f322b7b50d2c72db7242faa97fef8152b5d242aa9e2b143b3edc5e2b36.webp",
             "width": 480,
             "height": 360
-          }
-        },
-        "backpacking-europe-heading-east-upload-aa9ededfcbcb00dfee0c": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/01142fb4fff3e0124ce83cb3b7174d2fb5565f8a6f37b4bb88579a2871457afb.webp",
-            "width": 480,
-            "height": 640
           }
         },
         "backpacking-europe-heading-east-upload-d7afe9672051ce0d20b1": {
@@ -2808,29 +2646,11 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-6d19dc24c852083c7813": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/582abd8e96d151241698bea1933863de50ad9adfaec5e24a82768f246df90c0e.webp",
-            "width": 480,
-            "height": 853
-          }
-        },
         "backpacking-europe-heading-east-upload-9255ee1582e330121cd0": {
           "dayId": "backpacking-europe-heading-east-forni-stay",
           "title": "Forni di Sopra",
           "thumbnail": {
             "key": "v1/f6797204a32541ca2399d4659879d547695022bbdbc918c20c06697a1a1344e0.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "backpacking-europe-heading-east-upload-35c8d82ca1876d7b0e9c": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/a61585c2cf4be731f05f3c2400bae1e3bfaabc1226b9f2df13f932ac5e3e917b.webp",
             "width": 480,
             "height": 360
           }
@@ -2880,15 +2700,6 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-1886ea69a0caa49bd528": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/382e30bd075a46fb399e3d46b15dbf6906258f4b7a091ff801eae10693a6ceea.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
         "backpacking-europe-heading-east-upload-e7ed1a8e3823bb0eb84a": {
           "dayId": "backpacking-europe-heading-east-forni-stay",
           "title": "Forni di Sopra",
@@ -2903,15 +2714,6 @@ export default {
           "title": "Forni di Sopra",
           "thumbnail": {
             "key": "v1/6361dc0e30b33851eba5295ca62bd531a87166bba11560921be3fe9aa5855be7.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-22c035684287c10dce38": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/73da586c1c043e76d9618eae744ff4f8011ad68ef5ad660e44e4cd8d7f0ae583.webp",
             "width": 480,
             "height": 640
           }
@@ -2943,38 +2745,11 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-f92d3ed73206d4f3ee89": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/ad49a6a1874f0c6ebd150ffa6971957b18afce05d8b15919a6bd47f6e0f64df3.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
         "backpacking-europe-heading-east-upload-42cf0bfe9cb2fb0373c1": {
           "dayId": "backpacking-europe-heading-east-forni-stay",
           "title": "Forni di Sopra",
           "thumbnail": {
             "key": "v1/b6c2ed0cd6c03d747e2aa6da090a62147a62438e934fb3bc259ce2732c6757b2.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "backpacking-europe-heading-east-upload-b9909b183cc2352c8e83": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/9149f79f9907c5ea5fc1663d631edd2272dfc3064ca757a0aecbc118f6ce998f.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-e9208a6ce5973b8a4ac2": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/4a4b2c08176c83a62f9df77f92a7a90fc470e4fac2bdee584bcbd417d565d6f0.webp",
             "width": 480,
             "height": 360
           }
@@ -2988,15 +2763,6 @@ export default {
             "height": 360
           }
         },
-        "backpacking-europe-heading-east-upload-c938b46d533a9342484e": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/7d9c01e06ba8ce49a0c4edff467eb8ee0107165947ba7a911674c4e9ca0c9ada.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
         "backpacking-europe-heading-east-upload-8bf17d7e6e74267d9191": {
           "dayId": "backpacking-europe-heading-east-forni-stay",
           "title": "Forni di Sopra",
@@ -3006,15 +2772,6 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-a6d32990095ad222f030": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/9c66658d762367672ce314c9205abe579d71bfdbeeb14a6b033a799f554f3ba0.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
         "backpacking-europe-heading-east-upload-11f7d1bd88831431ecb9": {
           "dayId": "backpacking-europe-heading-east-forni-stay",
           "title": "Forni di Sopra",
@@ -3022,15 +2779,6 @@ export default {
             "key": "v1/c0eeeafca51f1a6850f793daec36d013a6a908fe315e2564af6e0f8ce1d5ba47.webp",
             "width": 480,
             "height": 360
-          }
-        },
-        "backpacking-europe-heading-east-upload-24cb7150ac7b854a4aba": {
-          "dayId": "backpacking-europe-heading-east-forni-stay",
-          "title": "Forni di Sopra",
-          "thumbnail": {
-            "key": "v1/debdc570a2be22a6e3bd57b3e34b11dcf440565299ed79ef66d032bd72c9c34d.webp",
-            "width": 480,
-            "height": 172
           }
         },
         "backpacking-europe-heading-east-upload-68bf3adfe902e85a205f": {
@@ -3047,33 +2795,6 @@ export default {
           "title": "Forni di Sopra",
           "thumbnail": {
             "key": "v1/771391583d217d3d01ec3b1cbfcec84b441300e3b56ef15078b9f3e5cec30c63.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-400656fe60f33c9aac4c": {
-          "dayId": "backpacking-europe-heading-east-vienna-stay",
-          "title": "Vienna",
-          "thumbnail": {
-            "key": "v1/3ccaa594e920fffcaa6a2dec7267cdb82f927d2a6c104e223904a8fc150fd399.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
-        "backpacking-europe-heading-east-upload-652b50686d488769d250": {
-          "dayId": "backpacking-europe-heading-east-vienna-stay",
-          "title": "Vienna",
-          "thumbnail": {
-            "key": "v1/d169fd1d9e32099a398f0a69c2248fe43cc1befeb70015a7fedc3b0f2be8d936.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-8f734e4fdbc7e91314a9": {
-          "dayId": "backpacking-europe-heading-east-vienna-stay",
-          "title": "Vienna",
-          "thumbnail": {
-            "key": "v1/f2edb8c82e506f37d9707cf4b0ba27ae61fe670c55763c6b179125178ee296fd.webp",
             "width": 480,
             "height": 640
           }
@@ -3096,15 +2817,6 @@ export default {
             "height": 640
           }
         },
-        "backpacking-europe-heading-east-upload-a89de5e99fef27b4eb93": {
-          "dayId": "backpacking-europe-heading-east-vienna-stay",
-          "title": "Vienna",
-          "thumbnail": {
-            "key": "v1/14432f604019c328d5f0121a790ceeaff0fefbf694f6d69f7610142e60bf2def.webp",
-            "width": 480,
-            "height": 360
-          }
-        },
         "backpacking-europe-heading-east-upload-74948a6c4cf4d5a3a3e0": {
           "dayId": "backpacking-europe-heading-east-vienna-stay",
           "title": "Vienna",
@@ -3119,15 +2831,6 @@ export default {
           "title": "Vienna",
           "thumbnail": {
             "key": "v1/d2cfcbe5664edb24388ea212958606dae321d255661f13bbd41ae06be01e6006.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-b86d7d7c4bc6f6d9092a": {
-          "dayId": "backpacking-europe-heading-east-vienna-stay",
-          "title": "Vienna",
-          "thumbnail": {
-            "key": "v1/e7500db4bfb11c7fb118291b0603381f82155b06c5ceffb3e782fa0f4f065106.webp",
             "width": 480,
             "height": 640
           }

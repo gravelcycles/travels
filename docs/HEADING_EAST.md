@@ -1,5 +1,49 @@
 # Backpacking Europe: Heading East
 
+## Restored photo, recovered edits and videos — 2 November 2026
+
+Owner follow-up: “please add back IMG_3883 (i removed it)”, “did you cut out
+the videos??? i thought we supported them”, and “i also made a bunch of edits.
+please add them back”. This authorizes restoring that one photograph, recovering
+the latest Heading East edits, and processing/publishing all four supported clips
+in `photos/venice-vienna ish/`. It supersedes the earlier same-day clip hold and
+the latest draft's Trash choice for `IMG_3883.HEIC` only. Preserve every other
+removal, exact traveler note, pin, order and saved edit; do not restore all Trash.
+The owner subsequently explicitly approved uploading these four named clips to
+the existing private R2 bucket with the same protected access as trip photos.
+
+The primary saved sources initially matched the published release; the newer
+edits were in the 19:51 UTC Heading East recovery snapshot, not lost from the
+manifests. Recovered through Studio's ordinary flow. An intervening save placed
+IMG_3883 in Trash; the explicit owner restore resolves that field to the draft's
+restored value. Other fields merge normally. Preserve the original snapshot and
+local backups. The new Venice order is traveler-edited and takes precedence over
+the earlier same-day chronology verification for that album.
+
+The four source clips are `IMG_3849.MOV`, `A001_10261448_C080.mov`,
+`B8A7934C-B9EC-44F8-9B52-157B1816CFBF.MP4` (26 October, Forni) and
+`IMG_3985.MOV` (30 October, Vienna). Use actual QuickTime capture dates, rather
+than later export/container dates. Titles are capture timestamps; captions stay
+blank. Prepare bounded H.264/AAC copies and opening-frame posters, retain private
+originals, verify orientation and playback, then publish through the existing
+private media gateway. Video support already exists; no new viewer or access
+policy is needed. Recovered six notes verbatim, 33 retained new Trash choices
+and the Venice reorder; IMG_3883 is visible. Together with the 25 prior Trash
+choices, 213 still photos remain visible. All 271 still-source records and
+original derivatives are preserved. The four reviewed clips run approximately
+35.3, 11.8, 31.5 and 15.1 seconds; the first three belong to Forni and the last
+to Vienna. Their eight optimized objects total 24,860,703 bytes. Poster review
+confirms the three landscape clips and one portrait clip are upright. The
+publisher checks private access, account storage, bytes and hashes before any
+clip enters the public bundle. All eight objects are uploaded and byte/hash
+verified; account storage was 903,285,142 bytes before this 24,860,703-byte upload,
+below the existing 9 GB ceiling. Desktop playback passed for all four clips;
+responsive phone playback passed at 390 × 844. All 910 tests, the production
+build and actual Worker runtime checks pass. All eight remote objects also pass
+MIME verification. Matching gateway indexes are deployed as
+`181409f3-bf05-4314-9b4c-b5110ad220eb` before Pages (rollback:
+`2d7374c0-f95b-4a74-87d9-1393cd1558fd`). Public deployment is pending.
+
 ## Kraków–Warsaw train and photo batch — 2 November 2026
 
 Owner direction: “we ended up taking the 12:06 from krakow to warsaw today”;
@@ -35,8 +79,10 @@ pins are reviewed against the actual city/excursion/transfer context. Keep all p
 records, 25 Trash decisions, edits, saved places and cover. Expected visible
 trip total after verified publication: **246**. Captions, notes and place labels
 start blank. Camera GPS candidates require geographic review before saving;
-missing GPS stays unlocated. Four supplied clips remain private and held for
-separate video review/intake; none is passed through the still importer.
+missing GPS stays unlocated. At this earlier checkpoint four clips were held
+for separate video review/intake. The later owner correction and explicit
+private-upload approval above supersede that hold; the clips use the video
+pipeline rather than the still importer.
 
 The owner supplies **20 October 2026 at 13:09** for
 `7B61E942-B2F4-45C7-8660-D78C6860AF7B_71BA6BE1-918D-498D-8B4E-3AC6574728BC.JPG`,

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2 November 2026 — Recovered Heading East edits and videos
+
+- Restored IMG_3883 only and recovered six traveler notes, 33 other photo
+  removals and the edited Venice album order through Studio's recovery/save flow.
+- Added the four previously held supported clips through the existing private
+  H.264/AAC/poster pipeline, assigned by actual capture dates to Forni and Vienna.
+- Clarified mixed-media intake: use both supported importers, preserve existing
+  edits and report actual failures instead of silently omitting videos.
+
 ## 2 November 2026 — Kraków–Warsaw 12:06 and Venice–Vienna photos
 
 - Replaced the direct Kraków–Warsaw assumption with Os 34132 via Trzebinia to

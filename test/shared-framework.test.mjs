@@ -945,7 +945,7 @@ test('group and media validation reject broken references, false meetups and uns
 test('build omits hidden/local videos and planner protects days containing only video', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const { data } = loadContent(root, { includeDrafts:true });
-  const sample = data.journeys.find(j => j.videos?.length);
+  const sample = data.journeys.find(j => j.kind === 'demo' && j.videos?.some(video => video.visibility === 'public'));
   sample.videos.push({ ...sample.videos[0], id:'hidden-clip', hidden:true, src:'https://example.com/HIDDEN-CLIP.mp4' });
   sample.videos.push({ ...sample.videos[0], id:'local-clip', assetStatus:'local', src:'https://example.com/LOCAL-CLIP.mp4' });
   writeJson(path.join(root, `content/journeys/${sample.id}.json`), sample);

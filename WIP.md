@@ -1,5 +1,30 @@
 # Current workstreams
 
+## Heading East restore, edits and clips — 2 November 2026
+
+Authorized: restore IMG_3883 only, recover/publish the latest traveler edits,
+and include all four supported clips omitted from the last batch. Current scope,
+supersession and file list live in
+[the trip record](docs/HEADING_EAST.md#restored-photo-recovered-edits-and-videos--2-november-2026).
+Recovered the 19:51 UTC Heading East draft through Studio and saved it with the
+explicit IMG_3883 restoration, preserving other Trash decisions and exact notes.
+Work is isolated at `/private/tmp/travels-restore-20261102`, based on main
+`c849c0f`; primary pending work and recovery originals are retained.
+Recovered six exact notes, 33 retained new removals and the Venice order; the
+named photo is restored and 25 prior Trash choices remain. The four clips are
+prepared, upright and locally playable; all 910 tests and the actual Worker
+runtime checks pass. The owner explicitly approved the exact four private R2
+uploads; all eight objects (24,860,703 bytes) are uploaded and byte/hash verified.
+Renewed existing Cloudflare access through a narrowed five-permission consent
+(user/account read, background access, Workers write and Workers Scripts write),
+excluding unrelated DNS, AI and security permissions from the default request.
+All eight remote objects also pass MIME/checksum verification. Matching gateway
+indexes are deployed as `181409f3-bf05-4314-9b4c-b5110ad220eb`; rollback version
+is `2d7374c0-f95b-4a74-87d9-1393cd1558fd`.
+Next: publish/test fresh public photos, notes
+and video playback, and synchronize published descriptors/docs to the primary
+editor. Public deployment is pending.
+
 ## Kraków–Warsaw 12:06 and photo intake — 2 November 2026
 
 Authorized: rebuild today's 12:06 Kraków–Warsaw track and incrementally import
