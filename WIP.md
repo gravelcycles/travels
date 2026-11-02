@@ -21,9 +21,20 @@ excluding unrelated DNS, AI and security permissions from the default request.
 All eight remote objects also pass MIME/checksum verification. Matching gateway
 indexes are deployed as `181409f3-bf05-4314-9b4c-b5110ad220eb`; rollback version
 is `2d7374c0-f95b-4a74-87d9-1393cd1558fd`.
-Next: publish/test fresh public photos, notes
-and video playback, and synchronize published descriptors/docs to the primary
-editor. Public deployment is pending.
+Complete. Published `277e87b` through successful
+[Pages run 41518545583](https://github.com/gravelcycles/travels/actions/runs/41518545583).
+All seven changed public HTML/data outputs match the tested release bytes.
+Fresh remembered-access browser checks confirm the restored 2400 × 3200 photo,
+213 stills plus four clips, and all four private clips playing with advancing
+time, readyState 4 and no media error. Anonymous video/poster requests remain
+401/no-store. Six exact notes and the saved Venice order match the recovery
+snapshot; 33 new and 25 prior Trash choices are preserved.
+Primary Studio has the published descriptors, eight matching derivatives and
+all four untouched originals/private metadata records; build and 60 targeted
+tests pass. Eighteen scoped source/generated/doc files changed while 282 other
+pre-existing files, branch `updates` and HEAD `3373246` remain unchanged.
+Live-documentation check complete: mixed-media guidance and the trip record
+capture the recovery, explicit clip approval and superseded hold/album order.
 
 ## Kraków–Warsaw 12:06 and photo intake — 2 November 2026
 

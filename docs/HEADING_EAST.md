@@ -42,7 +42,19 @@ responsive phone playback passed at 390 × 844. All 910 tests, the production
 build and actual Worker runtime checks pass. All eight remote objects also pass
 MIME verification. Matching gateway indexes are deployed as
 `181409f3-bf05-4314-9b4c-b5110ad220eb` before Pages (rollback:
-`2d7374c0-f95b-4a74-87d9-1393cd1558fd`). Public deployment is pending.
+`2d7374c0-f95b-4a74-87d9-1393cd1558fd`).
+
+Complete: published `277e87b` through successful
+[Pages run 41518545583](https://github.com/gravelcycles/travels/actions/runs/41518545583).
+All seven changed public outputs match the tested bytes. Fresh live browser
+checks confirm IMG_3883 at 2400 × 3200 and all four private clips playing with
+advancing time, readyState 4 and no media error. The viewer holds 213 stills plus
+four clips; Forni has 35 stills/three clips and Vienna seven stills/one clip.
+Anonymous video/poster access remains 401/no-store. Primary Studio sources,
+private originals/metadata and eight derivatives are synchronized; its build
+and 60 targeted tests pass. Unrelated pending work and the original branch/HEAD
+are preserved. Phone playback verification is responsive browser coverage,
+without a new physical-device certification.
 
 ## Kraków–Warsaw train and photo batch — 2 November 2026
 
