@@ -22,8 +22,17 @@ serving MIME/checksum checks pass. Primary source/assets/current guidance are
 synchronized; its seven targeted tests/build and the real editor preview confirm
 the new timestamp positions without replacing its older independent phone work.
 The live-documentation check captures the sibling-folder request and explicit
-two-clip exclusion. Next publish Pages and verify fresh protected playback,
-unchanged private access and exact deployed bytes; deployment remains pending.
+two-clip exclusion. Complete. Published `ad0c1ce` through successful
+[Pages run 41528087447](https://github.com/gravelcycles/travels/actions/runs/41528087447),
+including all 916 CI tests and a reproducible build. All nine changed public
+outputs match the tested bytes. Fresh public browser checks confirm all four
+private clips with advancing time, readyState 4/no media errors, the timestamped
+filmstrip/grid positions, bounded desktop portrait playback and complete phone
+framing. All eight anonymous video/poster requests remain 401/no-store.
+Primary's 17 scoped files and sixteen private asset/original records are updated;
+283 other pre-existing files, branch `updates` and HEAD `3373246` are unchanged.
+No accepted clip remains pending. No gateway policy, itinerary or outbound
+announcement change was needed; the two excluded originals remain untouched.
 
 ## Fullscreen media fit and clip timestamps — 2 November 2026
 

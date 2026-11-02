@@ -46,8 +46,15 @@ Primary Studio has the matching descriptors, sixteen private derivative/original
 records and converter/order corrections; its targeted tests and build pass.
 Existing source photos/overrides, Heading East, route data and family editorial
 fields are unchanged. Shared viewer controls and phone implementation are retained.
-Pages delivery and fresh protected playback verification are pending; see
-[WIP](../../WIP.md#neighboring-upload-folder-videos--2-november-2026).
+Published as `ad0c1ce` through successful
+[Pages run 41528087447](https://github.com/gravelcycles/travels/actions/runs/41528087447).
+All nine changed public outputs match the tested release bytes. Fresh public
+browser checks confirm all four private clips with advancing playback,
+readyState 4 and no media errors, the correct filmstrip/grid positions and full
+portrait framing on desktop and 390 × 844 phone. All eight anonymous video/poster
+requests return 401/no-store. Primary's 17 scoped files are updated while 283
+other existing files and branch/HEAD remain unchanged. The live-documentation
+check is complete; no accepted clip or deployment work remains.
 
 ## Earlier still-photo publication — 8 October 2026
 
