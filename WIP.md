@@ -27,8 +27,17 @@ capture times, ordering helper and bounded player are synchronized; its 60
 targeted tests/build pass. Its older independent phone implementation already
 fits between bars and remains intact with unrelated pending work.
 Current owner/fullscreen/media contracts, inventory and trip record are updated.
-Next: integrate current main, deploy Pages, verify fresh public sizing/order and
-record the release receipt. Public deployment is pending.
+Complete. Published `aab5362` through successful
+[Pages run 41523801258](https://github.com/gravelcycles/travels/actions/runs/41523801258).
+All 14 changed public outputs match the tested release bytes. Fresh public
+browser checks confirm the 960 × 720 portrait player, the complete phone photo
+between y=102 and y=260, clips at Forni positions 15/17/18 and Vienna position 1,
+and advancing private portrait/Vienna playback with readyState 4/no media error.
+Anonymous video/poster requests remain 401/no-store. Primary preview independently
+confirms the timestamped Forni order; 20 scoped source/generated/doc files changed,
+while 280 other pre-existing files, branch `updates` and HEAD `3373246` remain
+unchanged. No new private binaries, gateway policy or outbound update was needed.
+The live-documentation check is complete; no requested implementation remains.
 
 ## Heading East restore, edits and clips — 2 November 2026
 

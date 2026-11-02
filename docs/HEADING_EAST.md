@@ -22,7 +22,14 @@ phone media around visible controls. Desktop player now remains 960 × 720;
 phone-landscape reference photos and native videos fit between y=102 and y=260
 at 844 × 390. Browser checks cover portrait/landscape, zoom, resize, location,
 photo/video switches and the reference/demo/populated fresh draft. All 914 tests
-and the production build pass. Public deployment is pending in WIP.
+and the production build pass. Complete: published `aab5362` through successful
+[Pages run 41523801258](https://github.com/gravelcycles/travels/actions/runs/41523801258).
+All 14 changed public outputs match the tested bytes. Fresh live checks confirm
+the bounded portrait player, complete phone-landscape IMG_3883, Forni positions
+15/17/18, Vienna's first clip, and advancing private video playback without media
+errors. Anonymous clips/posters remain 401/no-store. Primary Studio's scoped
+sources/order/player and current guidance are synchronized; its 60 targeted tests
+and build pass. Unrelated working files and the original branch/HEAD are retained.
 
 ## Restored photo, recovered edits and videos — 2 November 2026
 
