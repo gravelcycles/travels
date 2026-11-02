@@ -102,6 +102,12 @@ unpublished editorial work and remaining service/intake projects. In particular,
 Live Photos playback is still an investigation. Private-video intake and live
 photo comments now have shared implementations; media publication and community
 service rollout follow their documented workflows.
+The [2 November family folder audit](workstreams/family-content.md#neighboring-upload-folder-video-audit--2-november-2026)
+adds four timestamped clips through this pipeline and explicitly excludes two
+out-of-trip-date inputs. Full-range camera footage is converted to standard
+range with its contrast and upright orientation preserved.
+Timestamp insertion also accepts older yearless still labels within their owning
+event's calendar range, without rewriting saved photo labels or order.
 
 Heading East exercises the shared city-stay contract with fifteen dated stays through
 Kraków, 11 November 2026, fifteen undated stays and 48 reconstructed route legs. Extensions remain

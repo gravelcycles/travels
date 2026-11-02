@@ -11,9 +11,21 @@ import {readJson,loadContent,writeJson} from '../scripts/journey-content.mjs';
 import {privatePhotoFile} from '../scripts/photo-variants.mjs';
 import {buildSite} from '../scripts/build-site.mjs';
 import {writePlanSources} from '../scripts/studio-plan-sources.mjs';
+import {createJourney} from '../scripts/create-journey.mjs';
 import sharp from 'sharp';
 const repo=path.resolve(import.meta.dirname,'..');
-function fixture(t){const root=fs.mkdtempSync(path.join(os.tmpdir(),'atlas-video-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));for(const dir of ['content','dist'])fs.cpSync(path.join(repo,dir),path.join(root,dir),{recursive:true,filter:file=>!file.includes('/drafts/')});return root;}
+function fixture(t){
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'atlas-video-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));
+ for(const dir of ['content','dist'])fs.cpSync(path.join(repo,dir),path.join(root,dir),{recursive:true,filter:file=>!file.includes('/drafts/')});
+ // Real-trip clip descriptors have no matching private binaries in a test
+ // fixture. Exercise imports/publishing only with this test's generated media.
+ for(const name of fs.readdirSync(path.join(root,'content/journeys'))){
+  if(!name.endsWith('.json'))continue;
+  const file=path.join(root,'content/journeys',name),journey=readJson(file);
+  if(journey.kind==='real'&&journey.videos){delete journey.videos;writeJson(file,journey);}
+ }
+ return root;
+}
 function synthetic(root){const file=path.join(root,'fixture.mov');execFileSync(process.env.ATLAS_FFMPEG||'ffmpeg',['-nostdin','-v','error','-f','lavfi','-i','testsrc2=size=320x180:rate=24','-f','lavfi','-i','sine=frequency=440:sample_rate=44100','-t','1','-c:v','libx264','-c:a','aac','-metadata','title=PRIVATE SOURCE','-metadata','location=+47.5000+008.5000/','-metadata','creation_time=2026-08-14T12:00:00Z','-y',file],{timeout:30000});return fs.readFileSync(file);}
 function remoteFixture(){const writes=[],objects=new Map();let usage=100_000_000,badChecksum=false,publicBucket=false;return{writes,objects,set usage(v){usage=v;},set badChecksum(v){badChecksum=v;},set publicBucket(v){publicBucket=v;},async api(resource,options={}){
  if(resource.endsWith('/domains/managed'))return Response.json({success:true,result:{enabled:publicBucket}});
@@ -53,4 +65,19 @@ test('bad inputs, missing day, oversized/long videos and exceeded storage never 
  await importStudioVideo(root,{...input,bytes:synthetic(root)});const remote=remoteFixture();remote.usage=8_999_999_999;
  await assert.rejects(publishVideoAssets(root,journey.id,{publish:true,remote:remote.api}),/9 GB/);assert.equal(remote.writes.length,0);
  remote.usage=1;remote.publicBucket=true;await assert.rejects(publishVideoAssets(root,journey.id,{publish:true,remote:remote.api}),/Disable all public/);assert.equal(remote.writes.length,0);
+});
+test('full-range rotated camera footage imports as an upright standard-range derivative',async t=>{
+ const root=fixture(t),fresh=createJourney(root,{title:'Synthetic video QA',startDate:'2030-05-10',endDate:'2030-05-10',timeZone:'Europe/Zurich'});
+ const {data}=loadContent(root,{includeDrafts:true});
+ const source=path.join(root,'full-range.mov'),rotated=path.join(root,'rotated.mov');
+ execFileSync(process.env.ATLAS_FFMPEG||'ffmpeg',['-nostdin','-v','error','-f','lavfi','-i','testsrc2=size=320x240:rate=24','-t','0.5','-vf','scale=in_range=tv:out_range=pc','-c:v','libx264','-color_range','pc','-y',source],{timeout:30000});
+ execFileSync(process.env.ATLAS_FFMPEG||'ffmpeg',['-nostdin','-v','error','-display_rotation','90','-i',source,'-c','copy','-y',rotated],{timeout:30000});
+ assert.equal(videoFacts(await probeVideo(rotated)).video.pix_fmt,'yuvj420p');
+ for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'),data.journeys.find(j=>j.id===fresh.id)]){
+  const {video}=await importStudioVideo(root,{journeyId:journey.id,dayId:journey.days[0].id,title:'Synthetic full-range portrait',filename:'rotated.mov',bytes:fs.readFileSync(rotated)});
+  const facts=verifyVideoDerivative(await probeVideo(privateVideoFile(root,video.src)));
+  assert.equal(facts.width,240);assert.equal(facts.height,320);assert.equal(facts.video.pix_fmt,'yuv420p');assert.notEqual(facts.video.color_range,'pc');
+  assert.ok(!facts.video.side_data_list?.some(item=>item.rotation));
+  assert.equal(video.assetStatus,'local');
+ }
 });

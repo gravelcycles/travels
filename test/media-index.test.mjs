@@ -27,6 +27,19 @@ test('video-only days sort recorded capture times and retain undated legacy clip
   for(const bad of ['26 Oct 2026 · 14:47','2026-02-30 · 12:00','2026-10-26 · 24:00','2026-10-26 · 14:47:99'])assert.equal(captureTime(bad),null,bad);
 });
 
+test('legacy still dates anchor clips only within the owning event calendar',()=>{
+  const {captureTime}=globalThis.JOURNEY_ATLAS_MEDIA,day={id:'day',calendarDate:'2026-08-16'};
+  assert.equal(captureTime('16 Aug · 17:37',day),Date.UTC(2026,7,16,17,37));
+  assert.equal(captureTime('1 Sept · 09:00',{calendarDate:'2026-09-01'}),Date.UTC(2026,8,1,9));
+  for(const value of ['16 Aug · 17:37','17 Aug · 17:37','16 Aug · 24:00'])assert.equal(captureTime(value,value==='16 Aug · 17:37'?undefined:day),null);
+  const stay={id:'winter',calendarDate:'2026-12-30',calendarEndDate:'2027-01-02'};
+  assert.equal(captureTime('1 Jan · 09:00',stay),Date.UTC(2027,0,1,9));
+  assert.equal(captureTime('30 Dec · 09:00',stay),Date.UTC(2026,11,30,9));
+  assert.equal(captureTime('30 Feb · 09:00',{calendarDate:'2026-02-01',calendarEndDate:'2026-03-02'}),null);
+  const photos=[{id:'early',dayId:'day',takenAt:'16 Aug · 16:49'},{id:'late',dayId:'day',takenAt:'16 Aug · 17:57'}];
+  assert.deepEqual(index({days:[day],photos,videos:[{id:'clip',dayId:'day',takenAt:'2026-08-16 · 17:37:19'}]}).ordered.map(p=>p.id),['early','clip','late']);
+});
+
 test('reader remains usable when cached HTML loads the older media helper during deployment',()=>{
   const source=fs.readFileSync(new URL('../dist/assets/app.js',import.meta.url),'utf8');
   const fn=name=>{const start=source.indexOf(`  function ${name}(`);return source.slice(start,source.indexOf('\n  function ',start+1));};

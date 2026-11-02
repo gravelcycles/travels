@@ -569,12 +569,15 @@ computer host time zone never participates. Review camera-clock mistakes manuall
 
 ## Video and fallback-media decisions
 
-The six held family MOV files remain private and are not part of the public
-atlas. Private-video intake and protected delivery were implemented on
-8 October; use the documented Studio video workflow when a clip is authorized.
-Do not redesign a pipeline that already exists or pass MOV files through the
-still-photo importer. Existing held footage still needs clip-specific review
-and publication authorization.
+Private-video intake and protected delivery were implemented on 8 October;
+use the documented Studio video workflow for authorized clips. The owner's
+2 November neighboring-folder audit authorizes the four in-trip family MOVs;
+the two with June/July capture dates are explicitly excluded. The exact intake
+and publication state live in [the family record](docs/workstreams/family-content.md#neighboring-upload-folder-video-audit--2-november-2026).
+Do not redesign the existing pipeline or pass MOV files through the still-photo
+importer. A folder audit checks all sibling upload directories, deduplicates
+original hashes against imported clips, and reports out-of-trip inputs without
+inventing dates or assigning them to the currently open atlas.
 
 Days without a visible family photograph use an intentional empty state, with
 no stock or third-party fallback images. Day headings, routes and navigation
@@ -688,6 +691,9 @@ metadata, chapters, subtitles/data tracks and prepares a metadata-stripped WebP
 opening-frame poster. Original bytes and full probe metadata stay under ignored
 `photos/studio-video-uploads/<journey>/`; derivatives stay under ignored
 `build/private-video-assets/v1/` and `build/private-photo-assets/v1/`.
+Full-range camera samples are converted to standard limited range before being
+tagged, preserving contrast and passing the same strict H.264 `yuv420p` checks;
+rotation is applied to the derivative pixels rather than retained as metadata.
 Private speech transcripts and timed captions are rejected until protected text
 delivery is available. Titles and brief editorial notes remain public journey
 text, like existing photo captions. Public videos may use supplied transcripts
@@ -702,9 +708,11 @@ and View in Media action retain access across workspaces. Journey switching is
 blocked during the import, and reload/close uses an unload guard. Connection
 failure explains how to retry; checksum deduplication prevents duplicate clips.
 
-Preview locally before publishing. Six previously held family MOVs remain held:
-implementing this pipeline does not authorize publishing those clips. For a
-specific reviewed clip, run a dry run and then the explicitly authorized upload:
+Preview locally before publishing. Implementing this pipeline alone does not
+authorize publishing held footage; later explicit owner intake instructions
+govern their stated scope. The family audit above supersedes the original
+six-clip hold for its four accepted inputs only. For a specific reviewed clip,
+run a dry run and then the explicitly authorized upload:
 
 ```sh
 npm run videos:publish -- --journey <id> --video <video-id>

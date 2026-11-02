@@ -1,5 +1,30 @@
 # Current workstreams
 
+## Neighboring upload-folder videos — 2 November 2026
+
+Authorized: audit sibling upload folders and add missed clips using the existing
+private video pipeline. The owner explicitly excludes the two out-of-trip-date
+family clips; the four accepted names/timestamps and superseded hold are in
+[the family intake record](docs/workstreams/family-content.md#neighboring-upload-folder-video-audit--2-november-2026).
+Work is isolated on `codex/remaining-upload-videos-20261102` at
+`/private/tmp/travels-restore-20261102`, based on main `d768d7c`; unrelated primary
+changes and all existing media/editorial choices remain intact.
+Inventory complete: ten unique originals, four already published Heading East,
+four accepted family clips and two owner-excluded family clips. Four upright
+derivatives/posters are prepared and locally playable, including phone grid and
+native playback. All eight objects (32,225,204 bytes) are uploaded privately and
+downloaded for checksum verification. The shared converter now handles the
+full-range camera input, and the ordering helper resolves older yearless still
+labels within their event calendar; saved still data and sequence are unchanged.
+Synthetic intake/order checks pass for the reference, a demo and fresh draft.
+All 916 tests/build pass; 77 final ordering/framework checks and all eight exact
+serving MIME/checksum checks pass. Primary source/assets/current guidance are
+synchronized; its seven targeted tests/build and the real editor preview confirm
+the new timestamp positions without replacing its older independent phone work.
+The live-documentation check captures the sibling-folder request and explicit
+two-clip exclusion. Next publish Pages and verify fresh protected playback,
+unchanged private access and exact deployed bytes; deployment remains pending.
+
 ## Fullscreen media fit and clip timestamps — 2 November 2026
 
 Owner correction: show the full photograph/video in fullscreen and insert clips

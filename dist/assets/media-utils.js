@@ -6,9 +6,23 @@
   const items = journey => [...(journey.photos || []), ...(journey.videos || []).filter(video => !video.hidden).map(videoItem)];
   // Camera-local time, independent of the reader's time zone. Display titles
   // and export/container dates are never chronology sources.
-  function captureTime(value) {
+  function captureTime(value, event) {
     const parts = /^(\d{4})-(\d{2})-(\d{2}) · (\d{2}):(\d{2})(?::(\d{2}))?$/.exec(value || '');
-    if (!parts) return null;
+    if (!parts) {
+      // Older still manifests use "16 Aug · 11:00". Resolve only within the
+      // owning event's actual date range; never guess a reader-local year.
+      const legacy = /^(\d{1,2}) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept?|Oct|Nov|Dec) · (\d{2}:\d{2}(?::\d{2})?)$/.exec(value || '');
+      if (!legacy || !event?.calendarDate) return null;
+      const end = event.calendarEndDate || event.calendarDate;
+      const month = String(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].indexOf(legacy[2].slice(0,3))+1).padStart(2,'0');
+      for (const year of new Set([event.calendarDate.slice(0,4),end.slice(0,4)])) {
+        const date = `${year}-${month}-${legacy[1].padStart(2,'0')}`;
+        if (date < event.calendarDate || date > end) continue;
+        const time = captureTime(`${date} · ${legacy[3]}`);
+        if (time !== null) return time;
+      }
+      return null;
+    }
     const [,year,month,day,hour,minute,second='00'] = parts;
     const date = new Date(Date.UTC(+year,+month-1,+day,+hour,+minute,+second));
     const normalized = `${year}-${month}-${day}T${hour}:${minute}:${second}.000Z`;
@@ -25,7 +39,7 @@
     // stay exactly where the traveler put them, without pulling clips astray.
     const tails = [];
     for (let position=0;position<base.length;position++) {
-      const item=base[position], time=captureTime(item.takenAt), date=item.takenAt?.slice(0,10);
+      const item=base[position], time=captureTime(item.takenAt,day), date=time === null ? null : new Date(time).toISOString().slice(0,10);
       if (isVideo(item) || time === null || day.calendarDate && date < day.calendarDate || (day.calendarEndDate || day.calendarDate) && date > (day.calendarEndDate || day.calendarDate)) continue;
       let low=0,high=tails.length;
       while(low<high){const mid=(low+high)>>1;if(tails[mid].time<=time)low=mid+1;else high=mid;}

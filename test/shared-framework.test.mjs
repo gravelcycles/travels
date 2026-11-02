@@ -982,6 +982,9 @@ test('timestamped video placement inherits real, demo and independently populate
     journey.days=journey.days.map(d=>({...d,photoOrder:d.id===day.id?[first.id,last.id]:[]}));
     validateJourneyExtras(journey);
     assert.deepEqual(globalThis.JOURNEY_ATLAS_MEDIA.index(journey).byDay.get(day.id).map(item=>item.id),[first.id,journey.videos[0].id,last.id]);
+    const legacy=new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',timeZone:'UTC'}).format(new Date(`${date}T00:00:00Z`));
+    journey.photos=[{...first,takenAt:`${legacy} · 10:00`},{...last,takenAt:`${legacy} · 12:00`}];
+    assert.deepEqual(globalThis.JOURNEY_ATLAS_MEDIA.index(journey).byDay.get(day.id).map(item=>item.id),[first.id,journey.videos[0].id,last.id]);
     journey.videos[0].takenAt='2026-02-30 · 12:00';assert.throws(()=>validateJourneyExtras(journey),/takenAt must be a valid/);
   }
   const heading=data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),overrides=readOverrides(root);
@@ -992,6 +995,15 @@ test('timestamped video placement inherits real, demo and independently populate
   assert.deepEqual(forni.map((item,i)=>item.mediaType==='video'?i:null).filter(i=>i!==null),[14,16,17]);
   assert.equal(vienna[0].mediaType,'video');assert.equal(media.ordered.length,217);
   assert.deepEqual(heading,before);
+  const family=data.journeys.find(j=>j.id==='switzerland-italy-family-2026');
+  family.photos=family.photos.map(photo=>globalThis.JOURNEY_ATLAS_UTILS.resolvePhoto(photo,overrides.photos[photo.id])).filter(photo=>!photo.trashed);
+  family.days=family.days.map(day=>({...day,...overrides.days[day.id]}));
+  const familyBefore=structuredClone(family),familyMedia=globalThis.JOURNEY_ATLAS_MEDIA.index(family);
+  for(const [dayId,positions] of [['family-d4',[7]],['family-d6',[12]],['family-d10',[3,4]]]){
+    const items=familyMedia.byDay.get(dayId);
+    assert.deepEqual(items.map((item,i)=>item.mediaType==='video'?i:null).filter(i=>i!==null),positions);
+  }
+  assert.equal(familyMedia.ordered.length,107);assert.deepEqual(family,familyBefore);
 });
 
 test('video playback uses the existing viewer and stops, releases and retries media safely', async () => {

@@ -752,7 +752,10 @@ are preserved. A clip's optional `takenAt` records a reviewed camera-local
 validation. Interleave dated clips against the longest chronological sequence
 of dated stills inside that event's calendar range. Ignore out-of-place stills
 as ordering anchors without moving them. A timestamped clip before/after the
-available anchors goes before/after that sequence; undated clips retain their
+available anchors goes before/after that sequence. Older still labels such as
+`16 Aug · 11:00` resolve their missing year only from the owning event's calendar
+range; labels outside that range remain ignored without rewriting photo data.
+Undated clips retain their
 stable tail order, and an explicit existing media position wins. Do not infer
 capture time from a title, filename, export date or host time zone. Omitted
 timestamps preserve legacy source order. This **2 November 2026** correction

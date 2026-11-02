@@ -39,7 +39,9 @@ export function verifyVideoDerivative(metadata) {
 export async function buildVideoAssets(root, source, staging) {
   const metadata = await probeVideo(source), facts = videoFacts(metadata);
   const output = path.join(staging,'derivative.mp4'), poster = path.join(staging,'poster.png');
-  const args = ['-nostdin','-v','error','-protocol_whitelist','file,pipe','-i',source,'-map',`0:${facts.video.index}`,'-map','0:a:0?','-map_metadata','-1','-map_chapters','-1','-sn','-dn','-vf',"scale=w='min(1280,iw)':h='min(1280,ih)':force_original_aspect_ratio=decrease:force_divisible_by=2,setsar=1",'-c:v','libx264','-pix_fmt','yuv420p','-preset','fast','-crf','23','-maxrate','4000k','-bufsize','8000k','-r','30','-c:a','aac','-b:a','128k','-ac','2','-movflags','+faststart','-y',output];
+  // Convert full-range camera footage to limited-range samples as well as
+  // marking the output; changing only the tag would alter its contrast.
+  const args = ['-nostdin','-v','error','-protocol_whitelist','file,pipe','-i',source,'-map',`0:${facts.video.index}`,'-map','0:a:0?','-map_metadata','-1','-map_chapters','-1','-sn','-dn','-vf',"scale=w='min(1280,iw)':h='min(1280,ih)':force_original_aspect_ratio=decrease:force_divisible_by=2:out_range=tv,setsar=1",'-c:v','libx264','-pix_fmt','yuv420p','-color_range','tv','-preset','fast','-crf','23','-maxrate','4000k','-bufsize','8000k','-r','30','-c:a','aac','-b:a','128k','-ac','2','-movflags','+faststart','-y',output];
   try {
     await run(process.env.ATLAS_FFMPEG || 'ffmpeg', args, {timeout:15*60*1000,maxBuffer:1024*1024});
     await run(process.env.ATLAS_FFMPEG || 'ffmpeg', ['-nostdin','-v','error','-i',output,'-frames:v','1','-vf','scale=640:-2','-map_metadata','-1','-y',poster], {timeout:30000,maxBuffer:1024*1024});

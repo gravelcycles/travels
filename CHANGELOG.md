@@ -1,5 +1,20 @@
 # Changelog
 
+## 2 November 2026 — Neighboring upload-folder videos
+
+- Audited all sibling upload folders and deduplicated ten unique original clips
+  against existing imports. Added the four accepted August family videos to
+  their existing days with actual camera timestamps and blank optional copy.
+- Preserved the four published Heading East clips and all still-photo edits;
+  excluded the two June/July clips at the owner's explicit direction.
+- Updated the family intake and private-video workflow to supersede the old hold
+  only for the accepted clips and retain file-by-file audit outcomes.
+- Converted full-range camera samples to standard range before strict derivative
+  validation, preserving contrast and orientation; added synthetic regression
+  coverage across the reference, a demo and a fresh draft.
+- Used the owning event's calendar to interpret older yearless still labels as
+  timestamp anchors, leaving saved photo data and order unchanged.
+
 ## 2 November 2026 — Fullscreen media fit and timestamped clips
 
 - Bound portrait native players and fit resting phone photos/videos around

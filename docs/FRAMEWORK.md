@@ -134,7 +134,7 @@ password system.
 | `dist/assets/map-style.js` | Shared basemap palette, restrained settlement typography, and route/label stacking for every viewer map and Studio |
 | `dist/assets/atlas-utils.js` | Shared photo resolution, cover choice, camera helpers, preloading, desktop image reveals and other helpers |
 | `dist/assets/group-travel.js`, `group-travel.css`, `scripts/journey-extras.mjs` | Shared group projection, roster/day route details, group/media presentation and optional data validation |
-| `dist/assets/media-utils.js` | Mixed gallery items, cached reader media index by immutable journey projection/source-array identity, timestamped clip insertion preserving all still positions/assignments, opening-frame thumbnail extraction/cache, bounded native video playback and cleanup inside the shared photo viewer |
+| `dist/assets/media-utils.js` | Mixed gallery items, cached reader media index by immutable journey projection/source-array identity, timestamped clip insertion preserving still order/assignments and resolving older yearless still labels only within the event calendar, opening-frame thumbnail extraction/cache, bounded native video playback and cleanup inside the shared photo viewer |
 | `dist/assets/replay-utils.js` | Automatic/curated timeline, route progress, pacing |
 | `dist/assets/photo-auth.js`, `workers/photo-auth/` | Shared protected-photo access, loading and caching; optional native-resolution AVIF for full loads with WebP fallback and unchanged authentication |
 | `dist/assets/catalog.js`, `dist/assets/styles.css` | Catalog behavior and shared visual styles |
@@ -442,6 +442,10 @@ ranges under the existing photo policy, public-clip transcripts/timed captions, 
 checksum-verified publication. No family footage was uploaded as part of the
 implementation. The Worker streams from the same private R2 bucket. See
 `PHOTO_WORKFLOW.md` for asset status, grant scope and the storage ceiling.
+The 2 November family intake exposed full-range camera footage: the shared
+converter now converts samples and tags to limited range before strict H.264
+validation. Synthetic rotated-footage checks cover the reference, a demo and a
+fresh independently populated draft; originals and metadata remain private.
 Studio now edits rosters, membership, leg/photo/video assignments, group
 overnights, meetup and hosted public video entries through the validated
 planner. Photo assignments retain their canonical manifest layout; checks are
@@ -555,7 +559,7 @@ unconfirmed; the DB Monday notice establishes the probable replacement-bus
 endpoints but not the actual coach streets. See `docs/HEADING_EAST.md`. No new
 framework migration is required for additional cities or later photo intake.
 
-Private video follow-ups: protected speech transcript/timed-caption delivery is pending; private clips reject those fields. Public-clip timed caption editing currently uses content/agent operations; Studio provides plain transcript editing. Per-day group membership and paired Live Photos remain separate follow-ups. Original held MOVs require clip-specific review/publication authorization.
+Private video follow-ups: protected speech transcript/timed-caption delivery is pending; private clips reject those fields. Public-clip timed caption editing currently uses content/agent operations; Studio provides plain transcript editing. Per-day group membership and paired Live Photos remain separate follow-ups. Held footage requires owner review/publication authorization; the [family audit](workstreams/family-content.md#neighboring-upload-folder-video-audit--2-november-2026) records the four accepted and two excluded originals.
 
 
 Photos + Places production follow-up (8 October): `point.photoIds` is the one
