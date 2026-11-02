@@ -1472,7 +1472,8 @@ test('Heading East groups the real city stays without inventing onward dates or 
   const locked = utils.projectPlanning(journey, {past:false,locked:true,tbd:false}, now);
   assert.deepEqual(locked.days.map(day => day.title), ['Innsbruck','Bolzano','Venice','Forni di Sopra','Vienna','Warsaw','Kraków']);
   assert.deepEqual(locked.days.map(day => day.number), [9,10,11,12,13,14,15]);
-  assert.equal(locked.segments.length, 14);
+  assert.equal(locked.segments.length, 15);
+  assert.ok(locked.places.some(place => place.name === 'Zawiercie'), 'transfer survives the confirmed-stay projection');
   assert.ok(!locked.places.some(place => /Athens|Prague/.test(place.name)));
   assert.equal(JSON.stringify(journey), snapshot);
 });

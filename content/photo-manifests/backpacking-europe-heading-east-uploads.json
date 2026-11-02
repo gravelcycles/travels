@@ -4629,5 +4629,3957 @@
     "assetStatus": "published",
     "protected": true,
     "sourceHash": "c2a4bf92faf7b27706ab43622bdb7310fd95ad297dc8b81cc65d426edbed0371"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-8514036ab8331497c45e",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/2f49960841b57cbfc209e65d1666b980b30c4325324ee82e85d8c9f1efb719e9.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/d8097d9741eb74e7475a1880b189591a86e6bb6c683a647edc9723c8120b31bd.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/9a6238fdcdda3c674cbb0b7b2d07a0960e2433da9497ca28bc7d6f893fd20dbc.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/2f49960841b57cbfc209e65d1666b980b30c4325324ee82e85d8c9f1efb719e9.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/96a94eb15f39737e61b89ad6ac27d3ad90471fd3a2cc8f22e9b16f07d00b7fa1.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 514473,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAABwBQCdASogABgAPxlwslEspiSisBgMAZAjCUAXqwaR7UdPLESYf1MT/0KcxnDjyjj9VqIAAP7xD4ibLylnxipz1fPPtHTcOU1oCeFW+Y9rNtlzDQ5oM7ayM5DL3XQNsyUhoczyjECJ5RI+EmJmLfH6W7mQAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Salzburg",
+    "sourceFilename": "IMG_5621.HEIC",
+    "takenAt": "2026-10-11 · 10:48",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "8514036ab8331497c45e6e80594bb592ad37b11cb36784456d924b4daccc1039"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-2cb4f05596bc016c6052",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/733edee9804896893f2659e0b322bd5f4accf9f0165cb0d78e2082eaa1ae9f81.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/9800905fdc304e96c4196577ce6d3091bb08496561f862db0992e2d1774b9977.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/57762d194e7836557fab4ebe8c373b52d26e085e805649095a16d7e6d3439888.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/733edee9804896893f2659e0b322bd5f4accf9f0165cb0d78e2082eaa1ae9f81.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/38a8e389809891e797348703ca05180162d1f086f99de16277bbc5676565a6ac.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 483360,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqgAAABXRUJQVlA4IJwAAAAQBgCdASogACsAPwFkq1CrJaQiurmYAWAgCUAU6PfILcK5j0AOJbc1w5dd41uIgI7a6PfA/IXO69AA445X2kNTshLcCBp4/PF2ZNP7Cc2DIONj8PemLrmu2G9vg38765lLWT069OP4eIBpuuMzCUMe1/DZVDcl1hjM1UgbURmDo1cdhoCbWwiUWOZDDYgFdivPVHGWKPKfshSgAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Salzburg",
+    "sourceFilename": "IMG_5649.HEIC",
+    "takenAt": "2026-10-12 · 10:33",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "2cb4f05596bc016c6052475c3def8ac72b630f7813dd784d85df2903b628fb05"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-bc5e65ff38a2a2cd65cb",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/a15a9c79e3df361c6ef16494c76fe6a69d671f2eef8d6c2bdb943ac5b93cb3ee.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/39c88ad59b4aab3daefeaf0e1a32285eeb45a3e8705e6cd79b61e2d110c39883.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/cb0a92311fbef2dc848f81a15b8f6a7ef43c4970124dfff4d42927f9273fc8b1.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/a15a9c79e3df361c6ef16494c76fe6a69d671f2eef8d6c2bdb943ac5b93cb3ee.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/2434ce37d20873d9e6d4591f09dced760099a94c2cd2286ab0acd1f2e8dc5f46.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 665832,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsAAAABXRUJQVlA4ILQAAACwBgCdASogACsAPvVmqlCqpaQiurzIAVAeiWUAwoJ3ZohrVBA1ZKXs63SxDWtgxIJACEt/rDkutB7A/NuvEAD+05+3+fajTxaLq1Kqqo+V47e9uZXy/eeGy5wmen4eXevpvUhXWEiUxMCsf7NSpaGcn7kNwVqgKKM12y3TA5he4tf+mpYbc0Q1vGoYCYPYbXYZn3IM3CqLPbTW1KFZDTnbUeKhFi7oi4G27wG/Er9npyPsAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Salzburg",
+    "sourceFilename": "snapseed_camera_capture_20261012_114659_395.heic",
+    "takenAt": "2026-10-12 · 11:46",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "bc5e65ff38a2a2cd65cb117003b55d75357b0d601495b9bdfc07632bb2d6dc5b"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-19b6d06a76069f4a82da",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/1f3a7bd194d51021d2061807f067f51ef7d40a9cd17093e3b1e97c0b45e5d550.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/004158077b300c7595d2edb9f78c51ad06f1286f53d143268386e725988c9ee6.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/c7dec4600b128c974e24390b30eaf0ebc85f7eeba2d27da91405f924833776d9.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/1f3a7bd194d51021d2061807f067f51ef7d40a9cd17093e3b1e97c0b45e5d550.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/49f5024e977b5c4c57f77c2bd95d571122a6e955379d183665f0aeeec502179c.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1125313,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAAAQBQCdASogABgAPwlysVCrpyUisAwBcCEJYwCuHBK2Aiiljzt5lxUEbDRZOVQNO/EAAPnj/ayl/MtkvD86H8womr8XFfDfONfMvREnLS/r6MFPvu417ATZH21v4JlIGrfewtoV7uz5buIjHW1XpOkmYekfkI352gAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Salzburg",
+    "sourceFilename": "IMG_5663.HEIC",
+    "takenAt": "2026-10-12 · 12:09",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "19b6d06a76069f4a82da287779723d140fadda7b953afe7ecbe26baac1894fd5"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-bff3c9bf8bba84e2adbf",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/a771ceb199bdd100c333f0034b19ca36c65f7a5f013b0d2d05a95d65c8b88cc4.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/592b010ba1f8ba0bf00c99866e210a24ab0dfcca140ca6b336f33b3a794a47e8.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/5737186918b4b3e10ce5b9b2e06291489e1b506ac9bde87349a129be2829dbb9.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/a771ceb199bdd100c333f0034b19ca36c65f7a5f013b0d2d05a95d65c8b88cc4.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/52b179dc7377fb8d9d5db475227807f76de74f28013f13e6461dc6328f8f63ee.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1482364,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRtoAAABXRUJQVlA4IM4AAACQBgCdASogACsAPxl2tlKspqUisBVaqZAjCWIAtOgn9ubyi4S/YIAfNv+gIm1zKg3jgw4MTTKta4xQY5AAAP7L5xNqWx6SFXWmsSsdSaexoOqbCQvN7kGsnGFNEJ8WijBKxYrG2IA5ayO5H66WjGnu1IbxSdctZQRui6YduVbUTXxJdFF9nQqIr/k5LGdq0Xs6xIDaNKONwgzRu+E31mXZTtvs6/mCtjFngnc5cDHHzfwyU0KE5DUw4CrjcaPOVdf+i9PCMKG0+P5NJ2AYAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Salzburg",
+    "sourceFilename": "IMG_5677.HEIC",
+    "takenAt": "2026-10-12 · 14:19",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "bff3c9bf8bba84e2adbfc393b28dda782fa295373e191c8032076d6a8892c564"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-92082e771f9ce285063d",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/a9eb9e7adfa38a95888141ae4f72c790fa5831fb814fc4c0a21aec6a75d2ff9b.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/e0eea2c59e05c9fe41040c238ec432ef921ab375c98bb176f8a9f46ef4659483.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/a210a268f5a0d81ca0aef3d3522de6efbfd6b5233ac73bedfcedd2b392fa76bc.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/a9eb9e7adfa38a95888141ae4f72c790fa5831fb814fc4c0a21aec6a75d2ff9b.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/2a88e8b58544c378be6e26f90dbc24adf2757e7a8d37a86603a9d2532e885725.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 773651,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRuAAAABXRUJQVlA4INQAAABwBgCdASogACsAPxl0s1MspiSiqrgN+ZAjCWIAxNgEnAQ7/ySIcU+R1zUBxIe2SwagOwRTZsMA4PZ9UAAAUNB7oawkHZy2ia76d0n4V3fYYNqfVAnLQlXf2CrLrCa+kipMKI0pPNUjDz1fug1FdjNhKmx+F9cbYpkp7z+GflaP1N3n/9oU9xkOtIdXyYQGbsJi3Vnj9naqk+wCJlstJ58/C0w180lhF0Dnl99rWJyWLjOBtPxutVsLhqmgd78QE7F35IQ0FWR33/aEiODl3z6rzwAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Salzburg",
+    "sourceFilename": "snapseed_camera_capture_20261013_112042_909.heic",
+    "takenAt": "2026-10-13 · 11:20",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "92082e771f9ce285063dac213cb81e8d46d2572d486aa8e8bc856eaf456fd4bb"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-933fbd8a763188001889",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/7c4bd358175a4b955d03570856e755cd161beef813af5635dad8eecf8bc23e68.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/1cf06c22fdc8d70f72a5b17914e46b50403f20d39f76feed3e0ef16f2a0d8a74.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/a0cb05bb8fe1b5596df9723564d7f7f8f429d405a8710b35f7a9c5cf7e17b695.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/7c4bd358175a4b955d03570856e755cd161beef813af5635dad8eecf8bc23e68.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/a7ac2caee87496d2f7483e090be9d87a2cbd3f7e2170cf8e3e23c34ad4f90341.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1752165,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrYAAABXRUJQVlA4IKoAAACwBQCdASogACsAPxl6uFYspqUjqrgIAZAjCWYAuwAKYXEq2BaJcaPSG4uz1ndPMT7CyCr9S4AA/rB0W5Fc8WAQXbTPm/kh6WpUI9oax6bHj/LOHu/3VLnDYSacItsk0t82cDB2qGsybDxEIJ/JjgnI01KfPYGPO4qcqayVzG00w+r8GQr5UGLAMrpHuYNVWPUQ2qimOKrg4NVDpRI2N7DNBM6Pa0drGFieAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Salzburg",
+    "sourceFilename": "IMG_5690.HEIC",
+    "takenAt": "2026-10-13 · 12:07",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "933fbd8a7631880018899ddb1c03d1a74e684dbc6707e224b78c6641f41ca75f"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-c6b91e0341f96b166b7f",
+    "dayId": "backpacking-europe-heading-east-salzburg-stay",
+    "src": "/private-photos/assets/v1/97c410364ad375b38c7a44f8b7a88ab8f437e6939399aaf496f75a353d528cd3.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/8ebeab895d77a96c55a5e15a1f19f35a01b2308738ba89651ad9e6493b77e8a7.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/0195887b9164a90f1e61d6586e7c9c72062f6d4a6c1ca1431446a07a792bf349.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/97c410364ad375b38c7a44f8b7a88ab8f437e6939399aaf496f75a353d528cd3.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/14b37af0717a841dce6c80838cba19cf00bd09c6694a4e026b2bd261545bad76.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 584466,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAABwBgCdASogACsAPxmCuVYsqCWjqrgIAZAjCWQArDNCyVf6T7XRFM799KpiABbP8jOwREIU7GpalmiFfAAA/sqT8z2DhL7syQ+HBs8NgvwwM+KvAuIHK4uuiIK9shpXValau0oaX6g/HKt9GKcL6X+AID9PiLba6UuucZe6k+PB6JPTvHTz+EhZ0wQQRQKZBJWG4b8Re6G8Ra/qK8YP5a16y3IK8XIAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Salzburg",
+    "sourceFilename": "IMG_5699.HEIC",
+    "takenAt": "2026-10-14 · 11:44",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "c6b91e0341f96b166b7f7bbcb7ec693e053aa9ff58d3259216ecd3d8d798b619"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-fb45432c33cac7e3e096",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/3bbaa6c946f213b37675b1ae9ad0aa047c600479e8ab10fea67af1b5b75395a5.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/2151c473cd1242226c983c3550bc12b3f9a95a3ad6dea7a28926033299fe10a0.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/2ff2a6c6e11239934e53a9949527f3a2f1f2fb83cc20a65f25d24b28e20093c2.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/3bbaa6c946f213b37675b1ae9ad0aa047c600479e8ab10fea67af1b5b75395a5.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/18d40a6e58739566738df9227a26960fc5409ba418ea5dd965d63d11246931e2.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 719314,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAACQBgCdASogACsAPxl+rVCsqSQisBqqqZAjCWMAzUhzHb3pyv5TSMh2gbxs49jzgjYqJ68kJp1NTl53ofCgAP6NPLymz8PFY1GYuNpEV7CcQzqxH9R4lIgwGdXy4GDR1qNRN6BHvi4RIm+kYkcJoDbVGRV1P86QoasTmcfIeXCPuPctU+/EKVkkaDsYYGgbFYmlaVaZ7/hClSzaZ1DyW0AA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Innsbruck",
+    "sourceFilename": "snapseed_camera_capture_20261015_180310_672.heic",
+    "takenAt": "2026-10-15 · 18:03",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "fb45432c33cac7e3e09669b86f3ab6fb2e74e3bce2788f11c59045d1af4a8333"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-41b47507b1c95f339205",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/d5b0690825fbd3be8f93e39f7f014a74d7edf7da9a1c2542673b2e8ec01e8a57.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/9ae4407470fcd07919fea48336f489f2ce1df27694939370cce969e3a64f21e2.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/0efd082f29ae3ea39cf66855a6d3e8096d30ce3e25a145e10c0d04af31884b8a.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/d5b0690825fbd3be8f93e39f7f014a74d7edf7da9a1c2542673b2e8ec01e8a57.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/34f3c2448b8d72151310c587b2656c85a945989b1dc1353ec6d126f8a2eaf6b0.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 595761,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRugAAABXRUJQVlA4INwAAADwBgCdASogACsAPxl4tlMspqUiqrgMAZAjCWIApzUgq5SZEv+2ZFrupp8WuFnLw4LchTd0iOLpcEb7DOVAhxAAAMyP5YBh7WvKk4ov18lbSZw3EC8KAIJEjNOqBjmwixe/vmR8mvyCjDDt5gGPVbCowBiCr5ZWjgdLOxlCW5KofIRnm9mcH+CaUloJ1Qg5ifijtvQHScxtavcSqvNv2kOyzuHOiZKHpW7ZlDLLkqSuBVSDibFitnngycS5m3m8EImdbtud7cPlc9zGi5ew8RvTpOwMeolKtYzkAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Innsbruck",
+    "sourceFilename": "IMG_5732.HEIC",
+    "takenAt": "2026-10-15 · 18:21",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "41b47507b1c95f3392058c57c1db4863a84bc097a11fb446d040da3543893233"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-8a1178db7945270c3026",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/48284f6b7b8d6c2b3e76935bbba8b40a0e8674e1ba95266f7906777778ec6097.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/117af70e2dba7dd346c1401a5418019825c571cdb8db7ba06f190c81c55deb8d.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/912a4898f8ec78fabc5ef63310a63e9c2b1cf907828117e44a6b244fa3520626.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/48284f6b7b8d6c2b3e76935bbba8b40a0e8674e1ba95266f7906777778ec6097.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/18d2319a4099d63791e0a3abdecfe615117197dd7523d2a8350fb94a1d5b396c.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 594176,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRuwAAABXRUJQVlA4IOAAAABQBgCdASogACsAPxl8sFKsp6QiqrgN+ZAjCWIAqSfd9G0Rw1xm+vHn1Nyx41FVADml6M2iVPpTu2/G0ADgHP55DUumV/n6YV2uQrTVlWXzADDOxoP445fqXOQ5yA9IQq6jf7NpgbWJog8/c4uaj0MXKbGqDdQS5LLLBN2X/Kj3HA7VJi29atPRy2sZTfoLQV1RJP4aABnhtnbEqcb0XM/LTHJ9VcGDMzgSrCSJSBfItofwa74+VuEhQTqMN/8Vxp0tOqU9M0bqlmp18WM+Oc/Q3Fy4MjSyF6FEfwqtM/YwAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Innsbruck",
+    "sourceFilename": "IMG_5733.HEIC",
+    "takenAt": "2026-10-15 · 18:21",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "8a1178db7945270c3026d5823f714e38ef1914f1243efa8da3cadb2f6e341740"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-d769144ccd67fb494ea3",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/07a6ff9ead5a5ff4479ba0aa8a98e1e5f9dc8e6cf31ad5b67080ca887f07e4c2.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/f6a517a108754ee62755ece69be1795bb166649731b65fb920e5097a56bb90e6.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/b99695179ccb29aee90f9b01218445de6bb8da3f044fae870adaf16672011a2d.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/07a6ff9ead5a5ff4479ba0aa8a98e1e5f9dc8e6cf31ad5b67080ca887f07e4c2.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c966bc80cb08e38f2109706a82689eb9f2b20ece9e768bc35797d21b08b4a80f.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1063296,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABQBQCdASogABgAPxl8uVMsp6YiqAqpkCMJQBYdgiOh4PHvz4iAe9iML1ksbtD8GXubcAAA/rFMOxhGAw83THzE2TaACDbG1FMXTF+tpLngo0ZnndUfjjSWAc/EYykb2jTCCVAPUZLe/AlrBCX5l9F0AnJKThRH79rCgAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Innsbruck",
+    "sourceFilename": "IMG_5734.HEIC",
+    "takenAt": "2026-10-15 · 18:43",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "d769144ccd67fb494ea376cca3f4be9dd7e6b2105e6dd152a15c9f0d89b4bb60"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-d4d467d298c913813bee",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/31f78e97aa6c08e6f07dbb53413b51c414fda676d7ca78ce63b4b820220b167e.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/ec9d947f6ca288395311de98b234ee7bc0b0a622be608f3cb566c32e04c1c745.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/53aced0a5b7ba0d6c56689fa0c24c9d0a3a716ea3af165595e1b04814b70f274.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/31f78e97aa6c08e6f07dbb53413b51c414fda676d7ca78ce63b4b820220b167e.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/1210bdbcedf989911d1db23f263d24e19c52abf36b7395757f3be8ba8eccddb9.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 900664,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqoAAABXRUJQVlA4IJ4AAAAwBgCdASogACsAPxl8slIsqCSiqqwBkCMJaACsM2jBRUevf9bWwU0nlVKfF+3RXLZ412vYvryS+wggAP0Um0vGbnhOpfEIaAXzmDLAQRKMnQ+Tcc3r7cfz4feVv0aT2gXIhsZyhbVyVscE7HoUm2pZULLJSV6CFEfcuorwmjpI9lt5AJCRIvL9bCFXakwdzhjPtb5IBDH0rub1QAAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Innsbruck",
+    "sourceFilename": "IMG_5748.HEIC",
+    "takenAt": "2026-10-16 · 17:02",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "d4d467d298c913813bee3aaa6198093a37876cb99c4d17b49bc935e4c31319ab"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-cdebec2564cbf75f7d60",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/7a1931010d20344f58bf8a3b8b34c283f8bcc13babf8e290ffdb1022d9d04d41.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/75b66b97c1746f6d3f3077342b77b776243d467ae7e330fa6d85ad03287fc88f.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/c45ad4ffa697ea9f5c6bd7ceb33a9d27863466e87a86349a7f474810c17d929b.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/7a1931010d20344f58bf8a3b8b34c283f8bcc13babf8e290ffdb1022d9d04d41.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/4daad637a968e1d1f66a4f8e5ab69d2141f588d6155a80eeae05fad996a30b21.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 598550,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRroAAABXRUJQVlA4IK4AAAAwBgCdASogACsAPxlyslQspiQjMBVaqZAjCUATpnYA9Ohzw/5vDeOgLwRsmdhl6nlp911gSH0tCEEAAMxS2tmm0vEv6L7BccOL7AXH+0/ipbnSsOpcIVSIzSRaIXTn3zvzmuj2FtT4vzEbwdNTK3HFZ9H0dnfWQURmOiY3gSbggSxlk/0dTVVx5r1VInL+5CHGBybnytrhIalOgpLnr0dg35uibTS4ejt5CyCmAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Innsbruck",
+    "sourceFilename": "IMG_5757.HEIC",
+    "takenAt": "2026-10-16 · 18:56",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "cdebec2564cbf75f7d60b45d71d032bc58dbe067c55aca4b47f4ad92b65b2540"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-bbf6fd050ce6caeb8b05",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/f126ac448ccaee25967118b621e32339b6ff0825dfd270dddc5feb5a885f6283.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/dd03465c6f64974cd955c1eda3c66dd388353006edd7e12aa4982b20b080af54.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/6b9fa1df55c63c01ebf169c337e443785a61b9a03e1ac34d57c2112720834ec2.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/f126ac448ccaee25967118b621e32339b6ff0825dfd270dddc5feb5a885f6283.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6b8397615e65cac63230ef91faff720a530a7572c4dc731904b54c7940bc3874.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 328014,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqAAAABXRUJQVlA4IJQAAACwBQCdASogACsAPxl2tVSspqSjMBVYAZAjCUAW9wUC4KE+BIpJal3ab2Y4AO2M2MUQPZNjCigA/stxKIPgGWpRDPKty6Z/cqlxvVy62XFC9omg/BnDHWZLOHQn00vdaDMYilyRfOhpNs2E9kgabv7r2nbzZroIEHjFw9QTLPalAe/nA0cO7H6lJO2wAj9DulIgsBoA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Innsbruck",
+    "sourceFilename": "IMG_5758.HEIC",
+    "takenAt": "2026-10-17 · 11:17",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "bbf6fd050ce6caeb8b050f3aabbff06e7846ded3f80a8725a2fbfb2ea15bcfea"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-3c23d31fd2cc1f9c767c",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/3ff9ec27696eaafe92cad1992397a78eae8d0a486d0547255c05128840fb2b71.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/ddb869dda61997d66b0be106bb670af38d5bf9ea8d936fc2eb7ef09b5b28ad6c.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/e7840874b73c1aed543fdd6fb9a45850ded3e3e9218a970f6a961d44b67041c0.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/3ff9ec27696eaafe92cad1992397a78eae8d0a486d0547255c05128840fb2b71.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/fb4f88ea688aadf25b5fdfcd7607c60d11dcd741cbd540207432c602827f5e23.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 867214,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAABQBACdASogABgAPwVsrVCrpiQit/qoAXAgiWIAvzgJcc2ItSV7XGbuoNoAAO0BD3AxZL7Lzbmgxv1rz6VTPNJdEq/j5UCMeQgwOt26gTDJ5mPQCTDmPggjAD/e35vKWkoBGOT+mqaEt/RIy5qbqQaAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Innsbruck",
+    "sourceFilename": "snapseed_camera_capture_20261017_142106_083.heic",
+    "takenAt": "2026-10-17 · 14:21",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "3c23d31fd2cc1f9c767cffaafc5ea3abf1ae4204878596b8cb0f406089dd3789"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-37933de1a8bc738b6fea",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/20368e39187f22e2d5b97428c599d322173b7c302874d74fc26bc3ad0d75c068.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/eb93dd91b18ef647accdc24d581d9a5efe6955de05829003f6ed99a9cd25cbe3.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/03217fe59ef6d65012128d914ed510d961a7175a0888b6ecdd391a26195631a7.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/20368e39187f22e2d5b97428c599d322173b7c302874d74fc26bc3ad0d75c068.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/59bd637c95aef4e040678647589026754dc3aadcff30c70e4700fd560915269c.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 961640,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAABwBACdASogABgAPxl8tVCsqCUisAgBkCMJYwDCgBZF7Y5p+tMTl0eIiAdboAD28VDsq+3sq2LNfLM/Sst0eOZeB9j7OPKotJdIxipowwMSXL4HG9FGKNzPdyP/6PqlR/pIx3XU+AgpSUs2az2vMFmADQoRj7AtEWxXkM8y3tAh39in0AIEAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Innsbruck",
+    "sourceFilename": "IMG_5761.HEIC",
+    "takenAt": "2026-10-17 · 15:11",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "37933de1a8bc738b6fea4eaa1b757525daebfdcb65aae47bf5f69f7c4d94cde7"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-268bcb58c5e1b999a5e0",
+    "dayId": "backpacking-europe-heading-east-innsbruck-stay",
+    "src": "/private-photos/assets/v1/1be15b96111fb7335b1ff363a33a48ffbe128dd770b5a55934b0ac062526a4d5.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/ce5c8def7a6bb29d457901492627b8a4865fc1af571087200c873febd18b1ea1.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/d0701e611a5601c60cb19a339c8f12e512f55e93251334cd7961204c9fef8003.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/1be15b96111fb7335b1ff363a33a48ffbe128dd770b5a55934b0ac062526a4d5.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/209e44bdeb0c3b1cdc46f93c6737d69c3a098c2894480dd9fa58255c9c555e48.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 489742,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqoAAABXRUJQVlA4IJ4AAACQBgCdASogACsAPxmAs1OsqCQiqrgMAZAjCWQAtRuFS3oxl+js12bBbZpT2Gh0bUD3z8KkmU6WMGFIj5OAAP7LIR29baxY3qkmS9MPvg7njKFeRVBwRyMFWG5SpI68jkH1NIXqLxxGyfvAd8vwDoxjKv/sp/bkWDcXDUddCKdyK63PtzBF0ZySAwKpCbzhghKPlcf6wIDzkVWRExAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Innsbruck",
+    "sourceFilename": "IMG_5762.HEIC",
+    "takenAt": "2026-10-17 · 15:11",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "268bcb58c5e1b999a5e0457bb7000c716668e98be7fe047e8f9037823d3b65e6"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-b277c0131282b95f1197",
+    "dayId": "backpacking-europe-heading-east-bolzano-stay",
+    "src": "/private-photos/assets/v1/89edf2e573b4a12737a8872486f4b8b2b48235533618edcbfa64bfffcfc1bdc4.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/1a5610945b0781183ba5f985ad846a92eae4ef0ebfed88b7c3faaa2b643da13f.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/833d1b61cfa135c315dbdc23cf8f81a5d564cd54ce639140572c8e22f9a64b86.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/89edf2e573b4a12737a8872486f4b8b2b48235533618edcbfa64bfffcfc1bdc4.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/fc3c53ff6e8bbe8bbb4140a530c94f7b604c117ae030af6def688a90fc379286.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1013594,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRuIAAABXRUJQVlA4INYAAADQBgCdASogACsAPwlqqVCrpaOitVv8AXAhCUAVHo0JXT9wvdk7DLPcq7mpGOEU1qKxHXu3Amrqt4enKtqeygAA/tb8iS6KN6x8uI+E3m4RaEGyZkCEPq+yf5x5rixV7xsXDZvp5c8wIJXKPrW+S0V/8BRoqz8ICWgnbUi0Z6WBCvfg9Y3PmCgk+E5VTJtlZSqa6m1T+pLqh2KmjWdQbWADOR19nVGR3z5QPIbThLIsxBsXDelpKH9ggRbgqK9G8EKKxHaJCSNRf5ZW97h4Dn6VuRAVcAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Bolzano",
+    "sourceFilename": "IMG_5771.HEIC",
+    "takenAt": "2026-10-18 · 16:29",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "b277c0131282b95f11976607c5a60b1baabc2fe7d3078f4dbe8f81b826f38c9c"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-7594f484033d1d6b8e46",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/bc1287d2c2ed06cd15804d82eb48bb39d9284a5f833fc8af18e44ab9f5851632.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/b7d71eeeeb18152c95b322a111463505f661dc9beb450f012626dd2e25bd44f2.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/d014c71192596c9d4e96b99522d696fe19d2db5dd32273eb6a886a9e35e19a77.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/bc1287d2c2ed06cd15804d82eb48bb39d9284a5f833fc8af18e44ab9f5851632.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6b329063c822a886d6096acd246f075bde81edb93a003baf3831279020cad202.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 596237,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAACQBACdASogACsAPwVsq1CrpiOjurZoAXAgiWUAvVhdmq7gA+Mkfwwxz+LPwAAA/u73jo7eHXSAhtrlgAdJ4QLyBzxYynkbzMrJ8aZZqQEdxlAadGnFjj78pSXna3MTbkpyW0I+onvP3EoGm6sFB919zZwAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5807.HEIC",
+    "takenAt": "2026-10-19 · 18:07",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "7594f484033d1d6b8e46f523503e1215381e39877a36c55aeb6feb421294754c"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-9953b7363e790973d1b4",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/c4f0a7001ad3f929f7beb272ba2292c2854e9a4af77b6cf4128279fe2640c8fd.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/6f96b9e1b7c56dc2daeac7a64dceaed18a3004b9ac8369e51096063fcb5f0688.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/55e33c78980a3110e5821551795cbd8a1cedc292ad539f094a23e818d5b2a879.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/c4f0a7001ad3f929f7beb272ba2292c2854e9a4af77b6cf4128279fe2640c8fd.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c7181edf7be52d7e6501fc3c6f072278e9862251ecb8e34732e1772b4bc6bf7b.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 705523,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAABQBQCdASogACsAPv1qqVCrJiQiurmYAWAfiWUAwZAuiyDeV7exbm/v5DcpVIGtT+0tEPAA/uzuapXkQ3mhWXB40RVdFf3Yn+sibNwYlYCv8m/CmDb+kfFP8QYx3jW/WWrcxAPvx5M3K9c6otIgtPO/KY4AAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5812.HEIC",
+    "takenAt": "2026-10-19 · 18:19",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "9953b7363e790973d1b47c0cc020493b500b6a67936dc127a4cb6fc571ec5b4c"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-080f85e6241cdc794402",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/e30ab876ee84c8f2e04a42576d7fc3b445e74ee7195aeed49f862184687e1e56.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/ddcb0fd347078a10896231d99166353f98b34286f99a21c31be799db04cf4417.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/544825874fdd7613a4ae87e2054222067ecc7ac8ac055ad184e148d9f4754b7f.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/e30ab876ee84c8f2e04a42576d7fc3b445e74ee7195aeed49f862184687e1e56.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/8285eba9081537ce7291366af3beb9a12b2cb49d1ebaf29c5e0d548f97aaa42d.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 837398,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRr4AAABXRUJQVlA4ILIAAACwBgCdASogACsAPwVuqVCrpqOitVv8AXAgiWMAv2svzKfNaz7wooHK1GboPZERhzsLntU39MVAyuC0K5iiAAD+/KYosgrRSxrYaPOnqlnB4A1M5K4y5B+OhJDpU4eXw2JpoFsJuB+PlF7kOBqaEqFzPyEUCjNwWEo/aipSwaBBcoFYp6U8o9rNQOur959lxr2f82RyCzVle5lPhZwjcNSPKrlaVyTPxqXiASDELqkhAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5834.HEIC",
+    "takenAt": "2026-10-19 · 19:45",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "080f85e6241cdc7944028e2ffe0a03cdfb9bf6c26e716500c8cf17de9b50733d"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-3c1b784ea7aea43591b1",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/60abf80ead27e54f44499fd3eafdd60272a780ae18f3a8020f21e8045384985e.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/319abbb7a0cac8ad242cc9ec950467ba4dfd902e99606ad32743eb4425031446.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/53cea335cbdf906f6985fbc2bd8ef0d9ce65de7e1cb1c5450d7faf108e43a6b2.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/60abf80ead27e54f44499fd3eafdd60272a780ae18f3a8020f21e8045384985e.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/2abcb4b554a1dc05337152b187779f66cf13c55dddb5a0cecfd7819d825f629d.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1304965,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAABQBQCdASogABgAPxl6s1EsqCSisAgBkCMJZQDCgCHwX2YkBjc89WRCtcvoHTfOfbfacgAA/qJIfV+48qac9CKzeYXSR657TvLjISYL6VJW8uinzU3Ju04GNpAxMdmeL4Q126l/SsZ98tXqAgnY2fC9JX3rW0Cvyqn3H6FY0gAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5837.HEIC",
+    "takenAt": "2026-10-19 · 19:47",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "3c1b784ea7aea43591b1fb5a1352a091b0f00f3b1708d6389e1756ab7dd29438"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-843917b2fd6c70538bb0",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/476c0332523e424d8d26a8f5c892ace6a637854ceae02b5f7f29ce99101327d3.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/5a615933df2b2aed396cc49296e79748407156543d0c677efd7dfa993cbe4ace.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/d08f06ffac0affe00bab1d94ced7ac68481d0f138272b49e0a88824fd42ce87f.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/476c0332523e424d8d26a8f5c892ace6a637854ceae02b5f7f29ce99101327d3.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/985f36c5688cac8f9a31387e744807669bb94f28723eb2141d75ce2f22af5328.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 565079,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAABwBQCdASogACsAPwlysVCrpyUisBqtUXAhCWVf9lgDK/5dWA+7EOfSZT7PIvJeNhZJdQ4AAP7xrQmWt2fuCvb/7U7B+KNXAhaP8MgoapSgtqXV5xRXcKX10vIoxwgFYnzYT+kT20LbEHvYTkUR92Wf9OXkC4IAzDijZVqFg1MjlIAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5838.HEIC",
+    "takenAt": "2026-10-19 · 19:50",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "843917b2fd6c70538bb05c8199d7f4ef0b27cb44d6e160dbb241568b3c5d2141"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-8bc9cf80e1b3995037da",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/109e5a400ab2e0c154d4e1303f492faf17598eaca1ede88dc49123017af19f31.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/46a1c9ef6d591d53adc694b1d375517592a6006b0014e00709064b9d0cfe5b65.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/0c5ffb1c14c661562f5944f18f7ee6e0d54b4580c57fe2749a896c922321ec26.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/109e5a400ab2e0c154d4e1303f492faf17598eaca1ede88dc49123017af19f31.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c65da4fcf901a472a3706dc8428c795919a8d93673600ef9878e701c4edecccb.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1800643,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAACwAwCdASogABgAPxl0s1EspqSisBgMAZAjCUAToALUytI7zxOIAAD+yiePyZnfeLB8XLlNuXsaQTnWnk+LuLWKFd6Z5YxPbZhns3hNcsIP2YQf/McVsMhiHbFDbERfmlM4AAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5845.HEIC",
+    "takenAt": "2026-10-20 · 11:35",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "8bc9cf80e1b3995037daa146fa0dfe8b99d9a4f58bae019ceb37f024dcc4aea1"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-c4178cff647ae568037e",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/6320fcd001172c1e61665f65b71071bc6c01d515fc85203547e4a050945b2bc9.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/9394e75a46d57704de9f5dcb1c68195c4b1e2b3fa14e6004af0d151aa71ca63a.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/9e6e6ca5c945d1034269399aa6a76818348b2d96bfec3e079a6bab7788110c70.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/6320fcd001172c1e61665f65b71071bc6c01d515fc85203547e4a050945b2bc9.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b78b548031fc70388b088775dbd87930aa42d23453f074646437ddc11a550a4e.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 504106,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRq4AAABXRUJQVlA4IKIAAACQBgCdASogACsAPwFoq1CrJiQiurmYAWAgCWMAvVhUMajnjPx+0QuLU+MUzt+j02qIGQKTBMc0ETgWBHX4APjaaayfbg5p8aYNYcjpt4affCuN72y+NQHeQ8RnKOxz1xgvoqkaFFwtGUODc1NekLEfULtIJ72QlYMPyDy5JARduZMlSCnhWhPyHUHkD/SQOB/rAqrDPBv00B5UNvV5aKvKAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5851.HEIC",
+    "takenAt": "2026-10-20 · 11:44",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "c4178cff647ae568037e04ce7dbf4aa7849bd6ae671bdd43b4b6506ed1c20f35"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-9f8b90875d80d21dc078",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/4e9a2a63ce9b2f49bb3519bbd68a2c58263996f73b9723245e2e282f1534f712.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/6aeee75e5b8591b3595b83d6879e2537bb5b12a77511512d71cb46666b62994f.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/bb147578d24c3148658cec1718b32669e187356aa4edc576d89e36d9468c74db.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/4e9a2a63ce9b2f49bb3519bbd68a2c58263996f73b9723245e2e282f1534f712.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/42c78385012fd61e65f6e789735218476b0e347a9d2defeb02f971d6880be95a.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 774277,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAAAQBgCdASogACsAPxl4rlGspyQisBVdUZAjCWMAuK+sgjZ8O3AMMFp1Z7bfLqU4MwqDUaAWRFmiYnwA/J4voWG3vGL9C9uz0GLaZLZNN/1Xv64j7LNFq66cYkzV11N3Nm/ZjGGW0LZqyiwVtgBMlvvFWS0c8M6UZfpjcFHWiFg0wlgQmqryQ2NO2eLwFov5ouGKjV0ZN60gd6FhX5YEcMDRURD73sAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5852.HEIC",
+    "takenAt": "2026-10-20 · 11:44",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "9f8b90875d80d21dc078236cfde480b31b3149b197c7a2b7088753be2d012a90"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-87135544993ce1c855cf",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/bdd9d48b22bdf85a61364617519663f3988a7b9adba158d6059e09f5eabcdbcc.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/b1081d0a22e27f786f21ee4418a68890112064a6de9962f5864630adaa258a3c.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/3012c74a11e2e67a13c72eaa855fbfec0165fcc341b5ea671c4e40028ab863a8.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/bdd9d48b22bdf85a61364617519663f3988a7b9adba158d6059e09f5eabcdbcc.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/2127e5995aca7b2025a3295161242676866fdcb141628dba952f225b7ed5100e.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 758647,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAADQBQCdASogACsAPxmAs1KsqKSiqqwBkCMJYwC/7HBvN0lLQYJcWBVX+tmxMNxUmfv6HbTX+8EAAP5nDBiIOqtYcGd8AbDeMouAI58SHoB0+mu9rZYCA9Tj/SMPcEHZ4poSwqwvryGOwGE7O5kHR2aqhINJPbfDjBEsPe7t+6hkn99k/B7xJyXt3OzoAFbBxnoYUB8Fnn10yb7vIk9xrXdnaSTFIxAt+gA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5853.HEIC",
+    "takenAt": "2026-10-20 · 11:44",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "87135544993ce1c855cfa9c6a9cda76ef68dabab0e5b1b92afbe15a0e31cbed4"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-92c8866d5e86e3241c40",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/cc541add3b53304a27a693d9a5701e778aab7bd894ec0a6bad73bc2ff5b453ac.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/81f54056a87df74f44d2d0d84f1b687a8a394e46a0b044fbd0f586a10064f629.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/9b44955f5c4d452c75b8cffae0332bce2d4082a5d91dc55b83b9d2eedef7f91b.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/cc541add3b53304a27a693d9a5701e778aab7bd894ec0a6bad73bc2ff5b453ac.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/be8bfe421205ead4d4f22d46332a72acc3f9330edce8108822166b38196a766c.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1278762,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrgAAABXRUJQVlA4IKwAAADQBgCdASogACsAPxl0tlKspiUisBVaqZAjCWMAxnxPCo6wfw7C+VJ5WSzyC+aY18UncfTAJhSpQNLinU+M0AAA/h0gdb8sy8KU+9z1GiyT6BxGP5f5F4kqc36s74yXyqramjFfKnXdeOZX7ikszVNIUC+zMrT8GZ5nfMNy8I2k79/31qyZQgeq9lSUBzmsb74PQp4xKu6gJ6rjQcZ+qVsPy95QL9ts/DqEgAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5856.HEIC",
+    "takenAt": "2026-10-20 · 11:45",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "92c8866d5e86e3241c40aaf637bb226e5c63e3ebc27ab38ad6d24be6d55c89b2"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-008a701769cdff936110",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/f5f961d4a29af236b92ea7e6b8a3553fce88d9a4d343758f1a34ed0671e90bd6.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/99b8f82aed36778720bdf48c3bb95af5f0e0cedd00824aa4ea2896c24a70e9f4.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/3d3c9cc59079fd1c3630f9c7b6fda9a5f0694f41cc3c26fcc296fa5f41603695.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/f5f961d4a29af236b92ea7e6b8a3553fce88d9a4d343758f1a34ed0671e90bd6.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d1feafbd78b913052da0d83f64e33e2ab7fc9dc30d2849e469ae568797b2be99.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 653674,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAAAQBQCdASogACsAPv1orFCrJiSitUwBYB+JYwDDrCtMnpZ8/XWg6hhxiqdP5t84TPyAAP6djpYPqtfRX4vkWs6GVXZq8x6XE5dKF/sUUiXOleW9JN5/M5d6KyVyqez+KEIu5mR72tdXz7ClyEv/adqCDwi+0mbm2h3cme9NR2avQLauV+Dq3S69nWNNvNYUScgAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5859.HEIC",
+    "takenAt": "2026-10-20 · 11:45",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "008a701769cdff936110479b6500280879f0f08c96f14ea12e601bbf441eb05a"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-33729c8f9e41c1687403",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/8d2ccbe7b78e910835090bfd1574c6c894623abd2b92c444120a6223c4dc0439.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/1078a31936bdb35723eed498f6f887111c5720659e1977a3e1eb68b0a5ca8443.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/044e881139b26148b3660729f1b6d636bf657b62abf9deb65e7c1834cf772391.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/8d2ccbe7b78e910835090bfd1574c6c894623abd2b92c444120a6223c4dc0439.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/4f7e7135a6d9398db488052f8893b50aadf9fdfb8406ca397f01c68cc2cf877e.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 508691,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAACQBgCdASogACsAPxmCsVKsqSQiqrgN+ZAjCWUAt7hKZ8PXCw22BnkEkpMalojuw/bkb+IhBwKc+k1ZwJ8AANsft4hMfRDdpq7ZRFibZcgCA7nl4HmGn/l/O6fvwekGM/FljxgDJBwiYbiqGHNaAoJNzk/hJFuLo//3RRrhrbY7vbq0Lzn4AsCzExQAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5861.HEIC",
+    "takenAt": "2026-10-20 · 11:51",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "33729c8f9e41c1687403dfb25a37794dd066ca0eb8a1bc94d3c2f21b3517a6a9"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-679b27c782cbae4a9060",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/65e089b6a8c652f38086625348d8081ee9f6352986d6306b1d68201609380602.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/8d148b7401427ff909aa54e625990c911b9a90b1fd3a216f3884b2930da3eb6b.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/d78ac8a85a7b96b2c20514407acbb548820cf9df19467e43189f0a3b74372891.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/65e089b6a8c652f38086625348d8081ee9f6352986d6306b1d68201609380602.webp",
+        "width": 1801
+      }
+    ],
+    "width": 1801,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/0d94b0c39f7e80764d4dfaa99d583cd9f41a40d87591236b3770201b3476784a.avif",
+      "width": 2062,
+      "height": 3664,
+      "bytes": 512820,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRh4BAABXRUJQVlA4IBIBAABQCACdASogADkAPxl8tVOsp6SirBVbMZAjCUAWIbJ/HgfNkBRExGdXJ+LSL0o7WMaZkinjbTjb9wk6N7roNxQZM5LRkiLbd+wcSQAA/vJ2JAH56FDcPctF0e8drttXBFApd4iy2Ut1IO+2l9qUjceLRor+yjHs9wuhGhRUg17jP8f7LIj3KTEXhA2nItqJPUGcvTaxXFB/IGDEaY/lLn+cvme6GTVa+83s5hgV2iP3p3tYXk4p/Una2TMFxtslB59ERMVARYDaw3BUWgzVTwNyCfvPWgCcRx6ccvNS/pEC0tHVEwZ4xd5oTvt9vhNvx3D4/+xouVqWLhExjmGHlH6YD5ttR4picEJ8KpDWAlvsJIgA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "7B61E942-B2F4-45C7-8660-D78C6860AF7B_71BA6BE1-918D-498D-8B4E-3AC6574728BC.JPG",
+    "takenAt": "2026-10-20 · 13:09",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "679b27c782cbae4a906077231f686c4bf6c195c4e8738e43a8ef595f81ad1b29"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-d38032bf1521b0b04b02",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/478c64ac6f60246308ad172cb2fa72d8fa25cc8203f9379264352eeac1244272.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/f85ad30e5364367786d1859abfe938030dd7ac35a30c0ecff58a977551ecd7d7.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/a674bd3a78a2e7743c52494bf8d4f6c216f64fb00aff0603078f8b527aa5ae0b.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/478c64ac6f60246308ad172cb2fa72d8fa25cc8203f9379264352eeac1244272.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6283f725e2d6675ce421c7157e6030adc608072886800a1e6edbd9d165daec5e.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 782062,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAADQBACdASogABgAPxl4tFGspyUiqA1RkCMJagCdIW0Eqtfaag35dwBNXMneqx/EgAD92CVf7WCkOiUBo7bNl2cBuSRj/WVima5w99DoraQ9JTfc+9sRzQxY09it+n2r+eLySuKBTFQOI1PiE2ZeadceTuhqMtJoAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5871.HEIC",
+    "takenAt": "2026-10-20 · 13:35",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "d38032bf1521b0b04b028c84c43f0a7a3332f427b200c0fe3f47887e23a29916"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-5f7c42853636dad1afbe",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/9eab921cab778f0ecc22cda0bd8d795fc4051e786b815cfa363872a75e85fc52.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/1f8d308f10c5bab1b090bcb0dfab2f5518e55daaca0e70c64dcd4d1393e81ca9.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/50edafffedb72f58d00f9164f8dca6ea0365092231d92705627e1dba7bff6aeb.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/9eab921cab778f0ecc22cda0bd8d795fc4051e786b815cfa363872a75e85fc52.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c988be00bea1a700fdec13f0479a06933e52c6b25bc716813f4087eed4fefb0c.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1305871,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRswAAABXRUJQVlA4IMAAAAAwBgCdASogACsAPxl2sFGspySitVQIAZAjCWYArAALBOjhwE0ajyPdWfoEkZjkRZc/J/NY8O74hTLwAOImXW4poS03unAdJCgYCUefRAT+0xQFKfFeZkqI2NZQl8kmF6KpPWhayePuT9ntVGZgPRD+52UWsMoqGFV5jvIshEJiQVxSa/UWNgHvRiZ2D63Dh9uc85nOyc0Tky+DHVkgx4YPZtQXTpTv1eohqbf3h5KMIVqQbH4jimh4E1on2J99AAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5897.HEIC",
+    "takenAt": "2026-10-22 · 14:15",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "5f7c42853636dad1afbeed71da9ab12b78c6f55669cb8fc508dc47ad7f1211ea"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-f890fab3f59ae93545cc",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/5635530aaca9040e62487b2f90b18b7123491c9887e40ac6a83b2de48a861375.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/f824a057857e56ca3245898593462d7b914b3e9dd0458567de5f2d7f88bd926d.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/12980a6b592fbeacdeda231625dc490cf7f9cfa093bb2cff2e3ae5d17c9b150b.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/5635530aaca9040e62487b2f90b18b7123491c9887e40ac6a83b2de48a861375.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b4c78f6e238dd6d412edc390536dafdf1d2d9a3b40ecf7bd5509d56bf81c0f03.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1055616,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRs4AAABXRUJQVlA4IMIAAACwBgCdASogACsAPxF2slCsJ6Siqq35gCIJQBTo/bj2beFI20eUwL8q9nh6Jk9sxK3k2zH3wrbJx9Nmh/lYQAD+8N+uXc7KTjO2eYKIKVcJGmWZktUeBFnnoHiFqT/UcfEBQzDcL7SpBpXKOVK5KyiP2Peg3inN2s3Gf1xLpzBzKUd2WIbhWoX8D54S28uig9Z522dB2w19b6xxkPpo7qx234q6D1IX8We6eOYhYgTXo5eFQSWwUcnDNKPuO4tF9VXAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5898.HEIC",
+    "takenAt": "2026-10-22 · 14:35",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "f890fab3f59ae93545cc49eb3e8cc0d9f8b1d28dbfe2df87dd48ee8483137d1f"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-0df0b19999738ee9c0a2",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/d4b3a2f553cb0cb0b2d7563f0186d0272777c424db7f686a9433b8c1f7af1985.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/03a8c83193d73b8ba7e99ddcecd8ee2650acb11046fb57ed024816685b49ab79.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/e173803da79fa7c203484b53aa6920ccb6a719329b87db059a5e4f14e981af64.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/d4b3a2f553cb0cb0b2d7563f0186d0272777c424db7f686a9433b8c1f7af1985.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/a24f96bda3b93799495ed674cf0a87e695600b6daa6af4b6ae874f4873c7c745.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 2607640,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAACwBQCdASogABgAPxF4tFCsJ6UisBgMAYAiCWIAuzMhhSs6TKmxizeomxj7yfpfGcq5MTTjAgAA/OSY7AjdVA2h6Bx+cdJCFIfsq+mH2BLr8fNBm4AQRWIEt6d24uTwDzJYv+Ys8ZVwclwHJ73UGBRyu2w4MCjp1UkmzNtxemWTFaf2SAAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5907.HEIC",
+    "takenAt": "2026-10-22 · 15:45",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "0df0b19999738ee9c0a2ec871ef734f802cfca05d343da93360892e9f3d747cf"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-a9854344d90b64c2dcbd",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/b1299986b76f69a749ab6cca996ac54f3bcb5d89a4f5d3d96646500c0a97e26e.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/f89d0fd125e60b4f2c9dfe59d5bc88dad19c777718ba209abb376919ff5e5c2b.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/f79595da3c15b4d34b17be8e7d986d2d25f260a9cc2adc3c0fea035df506e925.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/b1299986b76f69a749ab6cca996ac54f3bcb5d89a4f5d3d96646500c0a97e26e.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/2a70015f688c5b1f536ba199e52c5ac09df05fd90afda19eb009133c12eaa6aa.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 2160982,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqQAAABXRUJQVlA4IJgAAABQBQCdASogABgAPxmCtlIsqaUisAgBkCMJaACdMtpDYc+dDRDKzq/IiyvGAGOYPybRzYAA99rehi1yM1eJrFFzBR1cFh8IvhbxpLIgOt8umnKUP4mnjW3JxbvQQMco4ViLPt1HE/xcazb7ywWeHCsfQDo8qoTmmvblq/9Q5bTTMee0XSOJkJGJ0pf2dn1PT0lp/YF1BoswAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5910.HEIC",
+    "takenAt": "2026-10-22 · 15:53",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "a9854344d90b64c2dcbd9421ca9f5f04f4564f386d2fcc7b49f3652a5f06b374"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-3555d7bd62cbb1bd23bc",
+    "dayId": "backpacking-europe-heading-east-venice-stay",
+    "src": "/private-photos/assets/v1/fb3dabc8b9749503887b5e14c1e61ae274eec042c657ac67c446f1c7c2abc817.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/ab64433173333118c61b95f2bdaf7686c0a6a3584cc09cc9fc2e3454b275649a.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/966dc6f4a4ac99996f3186ab679af18bf269534a756fed6982dea8e21e845c37.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/fb3dabc8b9749503887b5e14c1e61ae274eec042c657ac67c446f1c7c2abc817.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/34f277999d0acf090791fc98e6ccfc01ea98b6c8fdad58a1fd177aa6170551cd.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1206591,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAABQBQCdASogABgAPxmAuVSsqCWjKAqpkCMJYgC1G47EZmWuIjKt8k01IYAWXmviM68CeAAA9ytJ4YxX2hUq+liOjxE1iDD5lD9Kgbk1wVoWkJtQQtGnAglSVFzAdP3SR/fkgGV6n6ul8Fnja9lSOL9cLath/rUbPKcMZO1tTdBoLgFiMRaKvBInyZR9ieMWgAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Venice",
+    "sourceFilename": "IMG_5913.HEIC",
+    "takenAt": "2026-10-22 · 16:35",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "3555d7bd62cbb1bd23bcc23c4334ff79d652db21e8ae3ea0d1d68bc9c036d1dc"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-a4ea366f4d79487aee75",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/0d7ba095aa1d4b0f9f91c4661c0fda4126d705007a7a9faca205e96d3c24e835.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/aa43c30674f73bc5bbc5e45045b79598423be9c9854a4682cc04db3492d7d34c.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/bbd038cb2af898502c768430bd4581ad9b694eb9a5c0fb71c63273f030171400.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/0d7ba095aa1d4b0f9f91c4661c0fda4126d705007a7a9faca205e96d3c24e835.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ac8598a27bb02acaf38480c2814506c06a5d922ba6b1d92795b246960009d6bb.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 958939,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAAAwBQCdASogABgAPxFwrlCsJqQit/VYAYAiCWQAvkgJUFEWNqLOUCymHAtsLlazoc9PgAD8XSGYoYGqlHx6hQobx5n7LiadVSH5QHUBhsPSCVlCHvr7+4QWICdRBAorGGbX+KtYlUUB0D8CfuiDzpy/cwK/crzXjM+2l8AOZwAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_5916.HEIC",
+    "takenAt": "2026-10-23 · 12:59",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "a4ea366f4d79487aee750befe58b1cbc9efa3f5082fd057b482d281eca5f13d7"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-37729bcdd2a99fa90440",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/100f2511f25ab1a89bd976811275fb08480ca44163f88ff88dfe736bbc9a04e9.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/0314ba58d83cbd1cde81c3c2949d31a023bbbcf73d746efee73816ad5a0e6a7d.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/2b03755a651abd0d4c9f10941142259759b2f1740705e6e9c6db373d6a1077c2.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/100f2511f25ab1a89bd976811275fb08480ca44163f88ff88dfe736bbc9a04e9.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/267b3d87516ed7908946452fa8b40a6be12ac460371b1636610c999fed06772a.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 660671,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAADQBQCdASogACsAPxVusFCspiSisBqtUZAiiWcAvdAym5cRVNojoF3kZhW7hVsyq+dtLCf++1AAAP6L+ZVZUXvwCYaa4UbVS6rPKjY2kCWo9X7Tt/oe5meWDeycmdqgJI5TLywUzO/B1He/Zof1vGegQx1o/TZMRhnlRR1GpSyXc18NPmAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "snapseed_camera_capture_20261023_142504_447.heic",
+    "takenAt": "2026-10-23 · 14:25",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "37729bcdd2a99fa904407822a3014bcd030b683fb54d827c17629db8a4d3da85"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-a5f32101044c9a50bb7c",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/f6bbfb409de31fd401d9dfad8367e73b170741020d5c13bca4b3f247dca97b61.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/529005cfe2cc2711f09806209409d0d8e335855f50b8bbbeafa45ce30f5cb79e.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/5acac8c5594eaee2f886c928e56c322d9d537823a47f0936238739a67e3ee014.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/f6bbfb409de31fd401d9dfad8367e73b170741020d5c13bca4b3f247dca97b61.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c1ae6947da090c619e669128e3fda267e5acb0a8907796c271b1994c583ea00f.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 675920,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAABwBQCdASogABgAPxmAtVUsp6SjKAqpkCMJYwCsABAII/LcjBwEJWWD+Ojw4tWXslOff5cAAPyx/gH19lEsOsG58FL2VOuw7+VJSq/Vpu+h1RZ/xRan4fNQwNRUh4yV4PmG3UfE9xXUt1Ea8Utg7kdBkD6lCpdtu5q4wyYUf37IAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "snapseed_camera_capture_20261023_150932_124.heic",
+    "takenAt": "2026-10-23 · 15:09",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "a5f32101044c9a50bb7cf073b3b3d89ab1fd43d8d5d8aff980bfe0437ab496aa"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-cb2b043154b18346947e",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/e387a366ac8f116fa8a89984aa59ded5ab8bd3b7eea96eccedf41b3724f06c1c.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/33f7653f6c4dd8a210618f6dc92ade99f5fce6516f2bbcc1bff7ee7bbb92b8f0.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/8f08bd29379dc96fbf0f65ed478777f4bbaa87ee1b7f683ef1e65042f669c75b.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/e387a366ac8f116fa8a89984aa59ded5ab8bd3b7eea96eccedf41b3724f06c1c.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/fe3cb5cd45a7e5144ae75a583f134caf418f5ca0ac51caf5c7e73a344e71118e.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1265242,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrYAAABXRUJQVlA4IKoAAACwBgCdASogACsAPxl2t1IspyWisBVaqZAjCWQApIAnfUl/i1z/+vaBVCxarzHr+oK+3qwiC3IFfeZkwe6cAAD+Zgw3m+3s7VQQo1oCOBu+17s16fwH+7x9oOo+IH7n7HtNXDswTXC3ZB9/8nEGAE/8BWSjKYR34TITiDKfSDzFan39XCl9gIjBkQwiFFCJ/0TOdSMuP9cLa4KYljy9+HaafNgBUJQ6jhJgAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3768.HEIC",
+    "takenAt": "2026-10-23 · 17:34",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "cb2b043154b18346947e0e5464a28614d2117cea3dee12dddfd5c07124374de4"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-ec84b3dd179a0efde4ff",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/30f3bcf3e33848bbe23b453d5609bdbb4dbca4692db4aaf5cc5dbbdb7f3f8240.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/f5f57ad2679b15d71bcb0aeb2a8697f1a022899fd7eb012e9247386584556d0c.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/0f24e1a5eeaa69d6a8f87ac6ae298745fac54de64125abfcd634d4104043f371.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/30f3bcf3e33848bbe23b453d5609bdbb4dbca4692db4aaf5cc5dbbdb7f3f8240.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/5db34277bed64e297c9d17d582bc55352e8199de1f3a1a3773810d93b6f02462.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1612878,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAAAQBQCdASogABgAPxmAtlUsqCSjKAqpkCMJQBkTAes8FmWmEefknwNlzagaOImZ2UkAAP7FgbdyEG9DpeLfvCTewYv6hFXmuJejCuVLve4SnLWMY003ToDDG38svOEjlVV8u5y8fqf/u81LSc0/k0PxYGGxUvQOrlcAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3771.HEIC",
+    "takenAt": "2026-10-23 · 17:39",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "ec84b3dd179a0efde4ffd7761470fd8a075bf60735db7a1057b337cf938ac434"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-03c053385fb44d6b4f38",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/70af119cdeeab4f65f4e905a3d977100543594888a451fb8ab847c7b5af92556.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/98f222ad0265572fa595068fb30470512f2ff0d3eeb9d1fb09fb152928de18f0.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/f48117c3fc05e7c6df04593e5ffa6da671f9f90b64cd00ef0fa6b1e5adaf8d46.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/70af119cdeeab4f65f4e905a3d977100543594888a451fb8ab847c7b5af92556.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6852d1d387c5c9b85bc6d7bb0fe61b52bf1d7508606c0c2ae54abf00fe19b608.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1020189,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAACQBQCdASogABgAPxl4r1EspyQisBgMAZAjCWIAzjhWS8l5XK8WxCuGzz2BrNfx8Zf7EWZ/gAD+6FAceCsEZQ7jZDZFxsH7xY0bVFzYst20B85BWYmC83mLvPjZcr4qA5Lt30sHWwAMAeha/OfsgGUYdmfMrUxnW/9l7jwt5WHA4FyheEm/ZBB+Gx+GClNAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "79DB1CEF-AE4B-4C48-ADE6-27578265809D.DNG",
+    "takenAt": "2026-10-24 · 08:34",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "03c053385fb44d6b4f382c35cb5416860f6d3addeb5b1fb06171a1b5bbb4c8ef"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-f16c9827d18565078643",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/20029707f6d109be5f2e400bb59edc0478b0ca1308d5a8eb5149102b2be6dad4.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/72009fa034f48c67970c155f85f8fac5d3d963d776d2985d17eadf1669452c31.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/d6781a1be1d51c23c064296ee4bc0356cd22ce950019015cf47360bdbef56b8e.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/20029707f6d109be5f2e400bb59edc0478b0ca1308d5a8eb5149102b2be6dad4.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/6ba22a998584fa41030b692f4cb470f1846465a78ddf860da0b9d542d6578a21.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1316914,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAABQBQCdASogABgAPxF0q1CsJyOisAwBgCIJZgDGnP8K+W8qmzDeH6itj1zBky0CzVec4IAA/vTvanBGdz0XcjnWjC0l/VRAPu7aMhk4PG7jUE0ItEIO/+sTIyMIIcAShcGzCrqewEemyI7lAD/0UJN9oO5Bzvqtp06iE1KVNE2ecd6CvualS40eYRhrgAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3778.HEIC",
+    "takenAt": "2026-10-24 · 09:13",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "f16c9827d18565078643f22ce90da1423899df2cc28c84aa40daba5727326957"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-6f9774ef7c76d65023f0",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/4ea3776a1b0f5b2f2c97791d57ad0adfe3e64d944a33671ef11e853825ae4247.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/5658edde753d5ecc953c3a5eaf4d573e019c41d4711119b089da9465925e49dc.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/3c73e187adf389750a2bc9e7ce1615e6d162ece3d4aee8f27d58c8bf2ce521e4.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/4ea3776a1b0f5b2f2c97791d57ad0adfe3e64d944a33671ef11e853825ae4247.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/59bf37cf0eae71467efb7ebbc539b0372b76e11eedfedb5ed142e67266b5e366.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 607764,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAACwBACdASogABgAPxl2tlQspqUjMBgIAZAjCWIAnTOOwMOrLG/TettfDHVjsEdwAN1tY6D/ZmIHdoIK+x2Ij3ZKEkdcFwSiePp3nd/QE86ohSki/G+lQhlw0isWiQavQIbZwX9EJEgAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_5933.HEIC",
+    "takenAt": "2026-10-24 · 18:30",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "6f9774ef7c76d65023f0f968c4b9b754fd296f85d94314e62a8717725bb4df4f"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-ab67b3983b2b52fa9c4a",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/4ff208cf89d8a86d826694b6f68e5a953a7ac169aa8bc8b9c51806e354e38013.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/cfddb42ab869bf765f2946640d8a6486b383530ef4515c60e45942564900c9c8.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/71222566cd845fb77c0ecfe31ec5e5dab785fe2ea8293ac15d8a523c09d06d7b.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/4ff208cf89d8a86d826694b6f68e5a953a7ac169aa8bc8b9c51806e354e38013.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/7cbd06df34a917d5e00a205e1b2fd1dcd284bad7e5a784efec174ca2271296c6.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 453062,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAACQBQCdASogACsAPw1wrVCsJqQitVv4AYAhiWIAwoAA9ElzDSt4BnPJEuZba1MO5wwKgeATgAD8bxpb7ohXNRgWG9qZw2F9WWn3Bni4TVOIEx83sANvSnN9K/QYqShImvL+SbeTyuYERKa7CLeGXBm7QUoWJiLMSzAkuC583KVYU3jIFxpqDCjaBtZwAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_5934.HEIC",
+    "takenAt": "2026-10-24 · 18:30",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "ab67b3983b2b52fa9c4ad2e0e76917022a24ba0ace3fb4b1cff6a8d4750d5117"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-9754eb5c5fe1d30a2645",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/92da690740eddd2d170d7d09bbd1db1be0f342a86ab14d6bbd03f4f85bbb60f8.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/100f6aad6e65fa1a9a88a23ac2ee02b5e374a1a3f4a8221c034493595979376d.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/199cfce1d379ba48cbe9c31ef51f7bd70ae9f07052cb59814d08d05a57b51469.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/92da690740eddd2d170d7d09bbd1db1be0f342a86ab14d6bbd03f4f85bbb60f8.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/91d4d83d198b5885d056f8a3a0d334ebb19931c6661b05a950bfc0eedbd48374.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1052487,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAACwBACdASogABgAPxl6slEsqCSisAgBkCMJYwAAXJDPlqOjBJE7D2+MTwnDD4O8AP2RNlS9iYgBp/njQRe5OKG/mpUxBeJ+Qnt3vu4NVIiEXuEEFj60B4QAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3786.HEIC",
+    "takenAt": "2026-10-24 · 18:31",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "9754eb5c5fe1d30a264588929d1b53bbc808114a97b7363938ed9801c07f3c36"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-7707e58668ccf635a5a2",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/aa3d84a90c857eb31fe48470aaa429ab69de5101fd249a49e0afe0f21c6b2f01.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/7d335a3d581c51055a5bc28a90abcc6a7f34b50f72ec1f1e29a0f6a7524348e5.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/2415ec36b016dc3208888c95322c9a7a773b6c574fb1bb2f44a076d4ed1ae313.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/aa3d84a90c857eb31fe48470aaa429ab69de5101fd249a49e0afe0f21c6b2f01.webp",
+        "width": 2397
+      }
+    ],
+    "width": 2397,
+    "height": 3199,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/c1755b19b6b6b4621333381b188cb985d621f30d1a145068f80f3d84472abc39.avif",
+      "width": 2599,
+      "height": 3469,
+      "bytes": 905776,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrwAAABXRUJQVlA4ILAAAADwBgCdASogACsAPxl6sFCsqCSisBVdUZAjCWMAzYSAVWp5uwCwDt0U0igCQoJ36mrkbEGQT0G7P36d6/h9u0QAAP7tCDjPSm+M0Qi1LIHA5e+jjxOcCrRuZHMmDBHT2HdW32cHUelKLwvppxjdzrjpTqnM6vRviTsUUuOj57smS3mVNklJ2dOGtrbd+ZamzQ3twVqM8dENnUUVa3f1DYrdVxliQwCN8Uzq5AN5F/gAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3795.HEIC",
+    "takenAt": "2026-10-25 · 15:24",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "7707e58668ccf635a5a2de7804296fb7a5877ac3a55458ae7b3aaf1a63a7e5d2"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-c2d60dc190fda7a333bb",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/3a90d933995d2e4fac5bef645e44cafc23b2813528f4c5fb609c0b0b382d6cac.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/e2dd97731cc3bcf0c8486448589a5aeae59e64690c511dcdb36f629253b2ecda.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/1180c041d35c2a2897a46a668258487a24d7078097a4ec2707c84a0304d6d2c5.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/3a90d933995d2e4fac5bef645e44cafc23b2813528f4c5fb609c0b0b382d6cac.webp",
+        "width": 1800
+      }
+    ],
+    "width": 1800,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/7ea24017af3d320c5ec22c5aa4206dd4ce453839e17733582d52acac5795d455.avif",
+      "width": 2160,
+      "height": 3840,
+      "bytes": 830666,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsgAAABXRUJQVlA4ILwAAABQBwCdASogADkAPvVkp1CqpaOiu/toAVAeiWMAx+Rv8WJ/S3qRckjwgPZAewazn4onRgZKV+/rHyv4tETn40li6yygAP7vSowpVKbxM4aM/PKISIzF2D7/hdWFCZNnfRMk7pXby9v6yYdCAbOTjWuUyR9mATftUhW+j4cYuz545thPVV8Ifn5Cq3CV+/KTWNEtMeun/wsRJkWLm3WW/gwET6JE7wk1jwBDCSXmW0qqYxJlRMDy/OcidKAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "8ED788F2-35DE-4E73-8B39-269FDB51075C.JPG",
+    "takenAt": "2026-10-25 · 16:17",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "c2d60dc190fda7a333bbc0521b067473b8255ba1fb6e131bf885f36243b739ed"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-8b756e2a37a445b6f03f",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/bc7b0a27653430a969cd1705535692587cf5258d6f567225f71ea7a14f79ee02.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/6b47ebb5c7c8950d0ea0bf335e2e5aa7b76e18d52568a7eebebbfa9228c6e512.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/a41af0ed44ecacf23e31563198051e15e4e83e80d4ab490e314312c86006b690.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/bc7b0a27653430a969cd1705535692587cf5258d6f567225f71ea7a14f79ee02.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/40353dba64cea25806858db0f08949e77f821a3e4d56ac046ea0abb922e3e5b1.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 816398,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrgAAABXRUJQVlA4IKwAAACwBQCdASogACsAPxl6slIsp6SiqqwBkCMJQBfO8TBtcUNhDuDHRiQ3IspQ1ez4Zw8HN7VUSQAA/u+O+623UoA0J+uXdk0t33Qs+wsNUdOH7CNz7t5EUzARGLLmD12jP1zKYS4khyelCAVR7raFTt1TVCLuGlsa9oxrBZiFaEdl2Eyt3ItYTduPq7almankIZRRnkCPAyWjvb4Lid1R61tsTqZk8TBPzQF7rgAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_5942.HEIC",
+    "takenAt": "2026-10-25 · 19:21",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "8b756e2a37a445b6f03f8468fe840c196ba4f8d2fdfab983ed92f70bb4a7acad"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-188f6746b5b62c08c0c6",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/a3c43a93605782f47807224420cf323aa215da4b40009fffab9d9d2d857ee62d.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/0fbada2de1a68ef10ef71848f1760adf3fb8b920f94bd0585352d2b14925a6f5.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/334c43a37ff51a8e03baa807369c4a02ad3ba75f56e2c2749bed2e7960c78da0.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/a3c43a93605782f47807224420cf323aa215da4b40009fffab9d9d2d857ee62d.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/db145e99b2d574cf4887285c4389f40f96240dbfe101abfc479f04b9953f887a.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1250521,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAAAQBQCdASogABgAPxl6uFOsp6WiqAqpkCMJaACsACn7Qbbuuf5M6QQQIqe3jz6mXpVAAOzsUrEnkUn2G8zqP6u+wWVcKw/0K9ZLlq87F1tnFljXndiv1jWLXfVkPBIFPrfa+FHrTh4+KcqQl03y1ydmkaTvN75IdCY8fcJ0gfXAigAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3802.HEIC",
+    "takenAt": "2026-10-26 · 11:01",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "188f6746b5b62c08c0c6961b4bd50c1d045d4a2da25fbb8be20eac21e12836c8"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-f515c0099ca12b076907",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/bc04771cf3f1ec5dc1a793e74114dc2708c06f682e2adcaacbd07b725e423a13.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/3a95625a91f01d0754353ccba88cb921a6554070caa3b7551a4fd551b2292fb9.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/a6c88ddc83e2d4153903718e4bf55781b3d516f11ec4b060cd580b67edacd2b8.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/bc04771cf3f1ec5dc1a793e74114dc2708c06f682e2adcaacbd07b725e423a13.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/5d9e9d712b7791bd74a862115b996932610958b89ff5c5e41d3e9ceff3818116.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1286478,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAADwBQCdASogACsAPxmCtVMsqSUiqqoBkCMJbAC2/ACA2Gq9g2gZKFq7lTddVpQABQjR+Yu5nsCzoABeebDYPfWM71jGYf/iHPFKlrBuh3G/+A6+WQKGwfnP4ktLxZhM/bQasH37JdhAGoBCQY1oklCozVx8XUDfpTOElGFBFCMemL/ztCvk/9SJLzG5AVB3BtRgDsBQKQy2t8K2E4deXxdjYyYAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3803.HEIC",
+    "takenAt": "2026-10-26 · 11:07",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "f515c0099ca12b076907c5201a76d07a5f1764f90a7a9dc294c31e9fde56962d"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-822370b27f8eb43f9f2a",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/8153d5af01a1c1071d7bceb6d35d5ad55fb7b25285bd525292db7c5c9651cc8b.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/80df58ae308ffc912cbad63e46386fcb3d316420f453e0d0f4dea5bbd0b5e863.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/a3965a7b7430f01a8a19c47de9d9bbd63c528c63352d16330b604c370337caae.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/8153d5af01a1c1071d7bceb6d35d5ad55fb7b25285bd525292db7c5c9651cc8b.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ad168665f411221d10f9adf9838081fdbd8383374698478c7a9fa0d853863297.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1917318,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAABQBQCdASogABgAPxl6s1EsqCSisAgBkCMJaAC7ACK1LwAPLNPr5Grth2NvEWWmMvGE3QAA/sPJPvInV+iyDoFj11GSxYcMbn8sSGZG//62115Souye9/F4EXEW/ZwDe8ltoqvSiRDo7Yjl48G14AMyeaejYtkTBJCE263ZJvEF+JAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3819.HEIC",
+    "takenAt": "2026-10-26 · 13:39",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "822370b27f8eb43f9f2a2b33a1dbf6dab5be9c0fc26cf240f595c228fdde1246"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-0b648f47b4394bfc1bf6",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/435536cb86e081390e808b40c984c8c1e0cb3626aaea62db254e810ea0c409e4.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/a5808e3b96913113b421d8350af9081e4c87d7a9375a51cd429cbd1917831f22.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/0d902aeafe30356e15d6bd51759d913fab7b77c8d2218533bfef431baaed3266.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/435536cb86e081390e808b40c984c8c1e0cb3626aaea62db254e810ea0c409e4.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/5cb9cb2055cbe906f15de119c2b34d0aead7627bd32558e8b0e2c8641f4908af.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 2397716,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRtgAAABXRUJQVlA4IMwAAADQBgCdASogACsAPxmAtVIsqKUiqrgMAZAjCWQAsR9VwPx02DpkO5HChpnonB0c2IykmbQS/8GcKLmILVQt3gAA/G0+svwpvOLK+J1WSWS/8dfrcA9TcBBo6DE7AUq57e2FTDRnFtiNFGAP8oDcNWRzh1zmw6kxtSqZT6EsUg/Hsljtl8peSIPh8Sq0jWS6TNKpfIQY1g3oYlrsI3GFsuPaPP+GDDY894KS7BoDqW0Yn1DhRIq9cSl0kAghwWOtZAtGXRW90xas4RHAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3821.HEIC",
+    "takenAt": "2026-10-26 · 13:46",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "0b648f47b4394bfc1bf67de99fea1d1388d256ec2b5c65f75ebf385281cd3916"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-acf6ecb0fe5cc5b30d90",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/784b857ab2ee7001334cb504094d3a930bbf1793d6b0e8a09db62549c605d631.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/77f7adbbb1245b68a1be3c0fda011c8c916caf8f7b9c198c512789aa04380c3f.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/f3ae6b92bbb970dd249df5b3572aaea3c2daf183691cfa165ef5895869ca1bd3.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/784b857ab2ee7001334cb504094d3a930bbf1793d6b0e8a09db62549c605d631.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/28cbec7336ae70f6f6488c6e21824dc3dfa771dbde922707c58f594d60fcfeff.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1604817,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqQAAABXRUJQVlA4IJgAAAAQBgCdASogACsAPxFyr1CsJyQisAqpgCIJQBbCgrNFVHaLJ/+S4LcgD1UeUUGyys/4L+6r/2fhWQAA/rUfO+KxOUnVEMgRQwx8ko3bU2CdZDMm7OlYTwg9WrSKwcwQXWCetjcrWUgnqaUoRb0A6dgKIJPIp3O0duwKJwHa9kwbMGInjsii8v6980fawkyP730mzzNse75AAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3823.HEIC",
+    "takenAt": "2026-10-26 · 14:14",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "acf6ecb0fe5cc5b30d9027a620ca2dcccfb1ca1ae4e1a2a32ddc51746a53625a"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-69856e9706c08cc4d3db",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/c16feb49f7bd003e2a920094532b59cbc21c4a91ecc67aa321d8ba27f8f75e6c.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/6f8b5868dfc0917a04e961446b329b81a806f4fa91554afb6f6c294fea87e653.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/7105d0d4451e7ce969ac0d738ef82519e80a0c5064fd28facd60314d25d8be71.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/c16feb49f7bd003e2a920094532b59cbc21c4a91ecc67aa321d8ba27f8f75e6c.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/a039018d9fbfeb54b9a922bede4664f24502ca500e1842c46a14eabef4670e78.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 958940,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrwAAABXRUJQVlA4ILAAAACQBQCdASogACsAPxl6s1SspyQjKrgMAZAjCWRmQABho5Pgs4h01LWCAiL+hrpiAagsim/bSAD+vwv/V5xI9NNNaUJX6Kf/kl6k/ewiGFGQ/9etLedayhqn4pVuhYpdiRs5Xkg/hb8ZZgSkUnTjVR6KwBk0oG/JUso4uy6j8LL8QfQUDmwEU22AliLkGPPvYr4P9pBhdUsMjFiIJ76+J9V3MS/kktQDJHEaQ3Xp6sAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3830.HEIC",
+    "takenAt": "2026-10-26 · 14:37",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "69856e9706c08cc4d3dbb09299b23717d8b957db6b5ea1007e7ae36c1f483969"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-6d4d7dfb25a2aff2bdee",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/26a721b7f949b3791807dabccc68852f5f81d9bd3fe072ea409bf9dfc59c5ebf.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/de547a5fedf4ef722405e010d4b2b366d80aeca539131d25f4bfcc3839a4af09.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/d303d8863d4253f26ac09aa8e25c7ad5eb64d4111e357802d2132af470bb6dcf.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/26a721b7f949b3791807dabccc68852f5f81d9bd3fe072ea409bf9dfc59c5ebf.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/3ecafdfee2da59ee6b2f0bf30f177f1e435bfa19a1d87415b6b55de28e6ae679.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 956187,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAAAQBQCdASogABgAPxlytlMspiUisBgIAZAjCWQAtRtkBSGxkBw+LgHHVnh5yaOZ92kAAP7W1c4E3CyJ0+dPfmfGBUjMZ7yUV+q8okyaF2MEFKXYWTEfGhCiA1Z1fXuOuwYp0ThcsBEylKemk5ySYAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3838.HEIC",
+    "takenAt": "2026-10-26 · 14:43",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "6d4d7dfb25a2aff2bdee74f6e22e0190da59ca417f2a25bb186e788ee9c372b6"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-49ad2f0b9a689ac4596a",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/df1fb5ef4af1615ba35d6bb7019ca7725e198cfdc860b018b812e770397bb5ee.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/200418f08338fda7eab71dbfdb42c99d0b810f0ca2fc1c041c01ffafb9142806.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/041f277db05d0c2754e7aec1fe6c801b19f41512daf85ea4037abb33535d73bd.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/df1fb5ef4af1615ba35d6bb7019ca7725e198cfdc860b018b812e770397bb5ee.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/98c4f6b5965668c56c39af7a51346a8317a05299b2e52be7c38fa072f52bac41.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 355543,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAQBQCdASogABgAPxmGvFasqKYjqAgBkCMJZACpI8WEqUDvoNUMB0g2Q1nOivEBJZBgAP7TANxt9tEvpEgqUJSLnxjKKpuVuY8slK/htqmT8G7g3/D+Ap/AueDH7kFVnnL1GAtaVyew5lDJOYAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3850.HEIC",
+    "takenAt": "2026-10-26 · 14:48",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "49ad2f0b9a689ac4596a3d84474860c3937a74a72934962c2d86ef0a1d1f2834"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-3ba99277949b35f05aff",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/369817e0eeb1a7ae264151601adf31d168d8661b075f69f1c43d069620334643.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/58507812bee143ff4510b26f7dea2bf48294a43781535d68d8e8f0ba239d8749.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/b29b3e06c81ead450782ad040fd794e7a67d26cf5d1a33bc338e7389dc82447e.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/369817e0eeb1a7ae264151601adf31d168d8661b075f69f1c43d069620334643.webp",
+        "width": 1800
+      }
+    ],
+    "width": 1800,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b63f5ff7729e19afcad51bb676a42d96e95ee570f24af82b7b9830461ba604f8.avif",
+      "width": 2160,
+      "height": 3840,
+      "bytes": 614528,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAAAQBgCdASogADkAPv1qr1CrJiSit/qsAWAfiWMAy2h0jQ8e9Xgf7oqDc0CivEkFDHIvlgVLS8bHxAAA/vJd8vILluEpvZ09Sf0WEz1NJdM2j31n6nKs1dkI7+MhM+h4ZTSBHleJvJz/CytsYTTehK9UoUjCSP2S7kUXRZGVo6A1cQ83rL2Eh5pMwenuDacyy7MfDZyapg+HV9ePnM94m1mV+bggAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "F4F1DAC8-A43A-4001-9953-124800412D08.JPG",
+    "takenAt": "2026-10-26 · 14:51",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "3ba99277949b35f05aff5e48c622316a865677cbd16403dda6bd365fe2df4125"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-8e0c39b11bbc615b92fc",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/b797990978e3c1db464c8d776ebac4b164eb5815d732576bec1dbc3de55f7bc2.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/8119604941ee809b592d960e3e8d2c8712a898ba9cd4ded634ccca4cae13de38.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/91137dd434ac66ae5cec971244e744298a58e2840accd3d3194359a61debb325.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/b797990978e3c1db464c8d776ebac4b164eb5815d732576bec1dbc3de55f7bc2.webp",
+        "width": 3088
+      }
+    ],
+    "width": 3088,
+    "height": 2316,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/dc436012012ac42d3132ad01cc07125e8f29ffb81a93a5a8aca2c59aea8bf439.avif",
+      "width": 3088,
+      "height": 2316,
+      "bytes": 520528,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAAAwBQCdASogABgAPwlwsFCrpqSisAwBcCEJZgCdMxgCsJkFqB6HKzT95xnPxzAbaGXIAAD3rfT5feJ2ZjhkwB9Jjy855qzfJTrXykS0XAPyTJos3vX32V0mkNogD5NpbJ/kzQJHljsI2bgXkv1QbI8nhxO33zypDepX5CQD4LuPBGIZFlKnSZ7iGIH5q+kAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3854.HEIC",
+    "takenAt": "2026-10-26 · 14:52",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "8e0c39b11bbc615b92fc19e0cffc24a029da0b71768b8ab36f6019ced77938c2"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-9f3cb37bbb7f8c637b75",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/397b69d9ed84d70ecd36cb8591a6610b1ce3815b3008934b350fc3e0d304a970.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/052bb7f322b7b50d2c72db7242faa97fef8152b5d242aa9e2b143b3edc5e2b36.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/d986e33c8be55c7af2ca6828e6eef1c832558e576207ace3f88da6f939ce53e6.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/397b69d9ed84d70ecd36cb8591a6610b1ce3815b3008934b350fc3e0d304a970.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d3f14fb4484211560a390396282544b440eaecaa781814ca5f8bc0a9edce1420.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1487523,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAACQBQCdASogABgAPxl8tFIsqCUisBgIAZAjCUAWI/B3txySh5tFp3Hz8pgSqgx7LB4hytWdSAD+8+m7qDU/2Ls2D9iNgCPMYdC4qN+BovUq0wldpZos8VyDodC44mxmSeJ2G5qyFOy1efLRS+3hkUcwTytJzP1wAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3856.HEIC",
+    "takenAt": "2026-10-26 · 14:52",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "9f3cb37bbb7f8c637b75e85a52b26054190f04f7766c3f49fd1fad12cb085270"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-aa9ededfcbcb00dfee0c",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/d242d8114bee5923af3bf5e4a2b7e7e61d40dbd33383fb8731a771bd1745b0e9.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/01142fb4fff3e0124ce83cb3b7174d2fb5565f8a6f37b4bb88579a2871457afb.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/573cbbc91c3b599cd5f70f954ba233e273ae5cb7c3e919c3936bc51ecc4145e2.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/d242d8114bee5923af3bf5e4a2b7e7e61d40dbd33383fb8731a771bd1745b0e9.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/18e79c285f36e4c97f6fbcfd6143153aa1a000ce68ad275e52a7005eb8354351.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1358048,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAABQBQCdASogACsAPxlyslCspqSisBqqqZAjCWIAnTKAAOz17puhwMZIqc/CWQpVQs/6pAAAyccyiyZf4799N6W1i4tVaeKpTopnA7QKLaELkJSY80aixtt+Vr3Lkybpvl8w9eTdVMD76iL74XXS8s8ZeiHyGYxhlarSo/Wxx4cj7Y+6lRKgrKM2kO/Z8fd1u4ywRwJISm3JsOI5V8QW1cexHlQAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3858.HEIC",
+    "takenAt": "2026-10-26 · 14:53",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "aa9ededfcbcb00dfee0c0482b4e7421aac2bbd552774d5a074dfce7b6387eaa4"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-d7afe9672051ce0d20b1",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/bb5fcab870b8eda93016910066af54cb91a5e9bf58efe4e2a1d1f2665ca6b865.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/46635111e237a14a0b779d369b8ab884de34d3177c853617f3dfcb85e81872f6.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/ea9afdbd6686b1ab0e4ce209a37a74226a83dc59e08f76c5ddd23f11aa6921e5.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/bb5fcab870b8eda93016910066af54cb91a5e9bf58efe4e2a1d1f2665ca6b865.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/317de07ad5f0b694325e72c17c6a2291c3b7bdb4d4c01937c6e6de6f59411030.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1556046,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsAAAABXRUJQVlA4ILQAAAAwBgCdASogACsAPxFyrlCsJqQitVgIAYAiCWYArDNowWxKiDmmccikYvWv8ZlhksSKh6ZWIMwYVhkAAIsazhTZ9yLljcgNeherC5UxclVAMh6YyEczlJlb15UUiZNCRZAAOEcOpZOM5L3iIgCasa8kQoQDDRkywAl6YeIx68my8F/x8fHMRjb9KjL+CQo43NAnyvsRZniW4C8AcSqty6croS4EGxFVN8kRsacjWDdX5QgdAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3859.HEIC",
+    "takenAt": "2026-10-26 · 14:53",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "d7afe9672051ce0d20b1107a6bfc1ceba0f058cd6d46b132d0c83ce993e2944c"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-47e105d37867ff4f1379",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/a6bc115d730bbbc857ad81c6184da8ce023be292046b807b8fc94420d616a8de.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/29a369269e00676d5d293f85e7e66ef3e6b33016d2164cd11bd3bec82df9c72d.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/17e3b661f81b61f638b24bb50fc968cce176ba447454d3e8c489cdfdb0487e4c.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/a6bc115d730bbbc857ad81c6184da8ce023be292046b807b8fc94420d616a8de.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/aa7e8801addbfcbbd2a03f1199837d41ccf6007d2cf2f8de2ceb88c8cbef1b5a.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 695686,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAAAwBgCdASogACsAPxVyslCspqSitVgIAZAiiUAW2QLNpOJFZ8AwyfZtZfyYiySqLYk9tjtfOlwe9zeAAPx9WnOwu6jApsSxq71ZWQ3KAfZig3QuBOV0pbFZg0SM/524hvOX9jK3BCnyR9IFBJEYNrau9cWtGVaLevRF1C8SpiFHW2/5aS2QiIAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3862.HEIC",
+    "takenAt": "2026-10-26 · 14:53",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "47e105d37867ff4f1379234f7497851ce61a0553bf66e71a5a22d6aedcb3e3ba"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-6d19dc24c852083c7813",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/0ead00db1737e05818b94a53463a7102232efe7fc86a4a9d88bbeac7ab471188.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/582abd8e96d151241698bea1933863de50ad9adfaec5e24a82768f246df90c0e.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/a5ca2405890f8a6a38da30e7863dcce5351c5c378c02dfe5384d80a543cfb8f7.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/0ead00db1737e05818b94a53463a7102232efe7fc86a4a9d88bbeac7ab471188.webp",
+        "width": 1800
+      }
+    ],
+    "width": 1800,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/3ec063f54bc816da583e1e4867fbceb9811c65245016fe08bfc63df9746ecd8b.avif",
+      "width": 2160,
+      "height": 3840,
+      "bytes": 250534,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsgAAABXRUJQVlA4ILwAAACwBQCdASogADkAPvVkqFCqpaQiu/toAVAeiWYAqARuyEsIt9hTCb5DlpUatLUNytsyt+bvFwAA/useX6Wpid+tUwQsP7ec2J303fX3I2F8Z3xv96fO1vDYliIsec/szSiHSHfBEEWgNe28XqmVpJ1ND898z4gJ5SmSiYwA1zBDQ0bTysH/+MbbjJ2QCVXShR88EInUdoEzoRUS/9nIYZECRLRP9F+WF9NXQqg2YHVL6U/5U3z74AohaAAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "4B591C21-B1AD-48D7-90FC-F127E04B3141.JPG",
+    "takenAt": "2026-10-26 · 14:59",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "6d19dc24c852083c78137e63c95407b6aab5371857bb3b8b3cb227c34e09388d"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-9255ee1582e330121cd0",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/ca7378e110ed1cad866d21f91cbb656751d06dc43fdaf533c199285301b5ffbc.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/f6797204a32541ca2399d4659879d547695022bbdbc918c20c06697a1a1344e0.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/fd14346da79584cc4020527d9473090c4945f0523f74160c0502d91ed1bf453c.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/ca7378e110ed1cad866d21f91cbb656751d06dc43fdaf533c199285301b5ffbc.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/9ed8703c9f17316ca50d4a387963b58c4d705c5f880d90449d36242d4ccf61ce.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 787961,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAACwBQCdASogABgAPwl0sFCrpyUisAwBcCEJQBZdnMhVws4dKPWRWGkEM0ddnGpvGWm5MHfHwaAA/llmHVrs/S0ElilNTrcrgbkNoG82Q/pWYZWVau/Wt6uTiFaPxjSh471cn85OCiPvNp78PvKw2QDYqDm/WznAxeqyYWXCtdsV25bKxgT/ch6vcCu7sEkJy4YAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "snapseed_camera_capture_20261026_150600_284.HEIC",
+    "takenAt": "2026-10-26 · 15:05",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "9255ee1582e330121cd0f387903f9a91489031709ceb32ce1c150129990ecf6c"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-35c8d82ca1876d7b0e9c",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/af89737fda8a6984ed9668b43997005c7bc8f0789b979091cbabe99367c51044.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/a61585c2cf4be731f05f3c2400bae1e3bfaabc1226b9f2df13f932ac5e3e917b.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/9c9c7ca56baa598881da815c393f0682a9cd1193f5f67d0797e8ea7373a73258.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/af89737fda8a6984ed9668b43997005c7bc8f0789b979091cbabe99367c51044.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/48d5edf79184b48a162e3999e174fe8d062093b2485e22d696737f18e0552d2a.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 725215,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAAAQBQCdASogABgAPxmAtFUsp6SjKAqpkCMJYwCdM2QBJ+S0RTWjcWJUyk68eg7i71EAANnKFKzBRXecV80X+rTNn1hWKwH5qybrXQLfbBdDIIcEHRKpgacY1B2+5XyDf0N5iGmDxvPjPB8HOJziaTV6LleVJG1oPIcJYMI64dgAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "snapseed_camera_capture_20261026_150626_180.heic",
+    "takenAt": "2026-10-26 · 15:06",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "35c8d82ca1876d7b0e9cd9104ac28b33caf657cbc1bb1d82a7cde6de3ac65552"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-7b18b55ebd0ce86900e3",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/5ee1d43edb56018864dbd75b017491299f9095463ba43ce7b41fe8294e5b0a67.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/64c7f5486086ed7a5d827e50d716293e9f0a6e43912c01004b760cf9d1aee616.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/2ef75eadf12bf341ecc863acdcd58125832cf54fbac74732ff2c94b1059874c2.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/5ee1d43edb56018864dbd75b017491299f9095463ba43ce7b41fe8294e5b0a67.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ae369669d95391c9afb367dbd4ab2cb9d6e6b8e00cc8851bcaaa0c0a28a1e855.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 914502,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqAAAABXRUJQVlA4IJQAAADwBQCdASogACsAPwVsrFCrpiQiurZoAXAgiUyPKjmkL6BC7eC98f/RUqMRDzZRDvRC8Z17wlhjAAD+VAt16+NKh5MiE3Yc3+0eC/wMVrbIG7Gl9TZ8JVy+aqyGH0ArB0LgSz7fM5tK9y88g8rZK0XEIRKqqbQtThqumZxjJcET7gpw+Nh2wfKt3yxF+YpM2Lx+QAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "snapseed_camera_capture_20261026_150640_216.heic",
+    "takenAt": "2026-10-26 · 15:06",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "7b18b55ebd0ce86900e3a4b587fa974b097663c57df7e251dc8352bdd5d4901a"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-3a7d046ba5016ef9c892",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/056edfb21d00d0870bddfa6a3c812868d65830def6f9c777cc7a5f773abfc39b.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/9f5a3f63885c3261b3d7956680975b433c2b998f780fe03e282bac4b46d7e7df.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/767672cd3d70a804a6aac0ed680f850e448d1473d9c7dc279c5fe2a5b9659da2.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/056edfb21d00d0870bddfa6a3c812868d65830def6f9c777cc7a5f773abfc39b.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/7ccba05b15c53ec56fa351e6c9ee65e4bd5790bf0851b9e49805f4bd08a21a44.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1492138,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAAAwBgCdASogACsAPxlwslGspaSisBqqqZAjCWMAyJgUL5LgvrIedlaI+D1X0lH0LsSeqUmrvtAS0bAAAP4DurRevGSSKSZ8xUmJWsocX6MOQpy0G7lMa3RKBAJjRDePhrkb9CmkUb4GBg/x4r1zaXOWluVMWNw9TQAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3869.HEIC",
+    "takenAt": "2026-10-26 · 15:57",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "3a7d046ba5016ef9c8923ec0fd42035291496d69f78cdd876b92b3d31ce3c050"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-7929ff545f667bc1026c",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/0578100ed1a4a5c3c526f2b1f5a28581800f38952eff43e78495960cf55ec5e9.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/cec21ccb7abed7979ea5556571ba07b7875e36f690ac762a2e94be8b0e184022.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/df560149a44c2515126264927e668e2667f1d4fcc4e5bd857a28cd03cd11e1f1.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/0578100ed1a4a5c3c526f2b1f5a28581800f38952eff43e78495960cf55ec5e9.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/508c164023802a9fe89e70354065fb96223e8508080389cd0635fbe57e8baeb1.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 2058700,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqIAAABXRUJQVlA4IJYAAADQBgCdASogACsAPw1srVCsJaQitVv4AYAhiWUAyRAYt6HwHTFrD4LtgtRVi5YAKXD7l/5Ix9FcmxzQMHNrWAAA/mjk5jetIjnqTb9+DPij3TtXW7dsasv8QPc0Gfg13FPWti7/NdJpPxYqt4x6SSgNO15Ao6xNdhQfytYlkYBj+0THul0KteiUiqvPNRGR62wYBRgAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3872.HEIC",
+    "takenAt": "2026-10-26 · 16:11",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "7929ff545f667bc1026c854805ef2fa43ad45e6ceb8b12e4a1a727b69f9cee80"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-387117e9fdc4c0f7e413",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/9e7edeccda5b74fd7fce806de9bd7c911929013f2d572179a90e65bc03d8f47a.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/9206a88b0e0884b7c207609b73105b396b2a128ae673e6c009db42dffc1c26b7.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/9842b8c316a6fd5703f9042c6625848675c046eb63dfed30d5b1a51368e74acf.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/9e7edeccda5b74fd7fce806de9bd7c911929013f2d572179a90e65bc03d8f47a.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/4593d41bd0684549a6a7316ecec3819bc5a0d587e5383e1a0930bdf430d3224c.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1266240,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAwBQCdASogABgAPxmAuVQsqCYjKAqpkCMJYgC06ArCvqcCzpX5qngtcp8elHrsX9c8wADZPByYQeePkPU9G7OPdL1xClzYoJ3YtPFdfm/rtN3EjK5/sfXdGwRRPVXA0GMV9znxCL4DEUAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3873.HEIC",
+    "takenAt": "2026-10-26 · 16:12",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "387117e9fdc4c0f7e4137a00c3c221b26f2828cfc6af7141712e19b05408805f"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-eb744eeef12f41f712d3",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/9befacd722cc5427515141eb1177a0ed68bd2a914b2b411c55768d2c8001bfe7.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/63114a70947908d0ef8feba0fd9f9b3ebfdb69a3eeff1b2800f2570d45110a67.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/d2df0a0b05afcfacefd9733006e7ee1cabd742fc43c824d77188a9249786c028.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/9befacd722cc5427515141eb1177a0ed68bd2a914b2b411c55768d2c8001bfe7.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/fbb6fe6cc81c1a7f4e207264dbbb09fbb99fd96a4a611b1a7f2d16db419ccc72.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 784093,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAABQBgCdASogACsAPxl+tlQsqCUjMBVYAZAjCUAWo3JwGs0RTD9uP45imf+cM0WaZPir2DT85yexzRfQAADZw7MlZVfOlQZ52Mh/osXWP/iTlAR8Tt0z7T3kBAM22wZcnRx3RPEG5jl21cH+TsWTHfFB6Bu4xXHywijKqiPcrnycq+bYKn8lBpFhPk2Qmx+NAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3877.HEIC",
+    "takenAt": "2026-10-26 · 16:32",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "eb744eeef12f41f712d3fe3b754029e27d61f11bb3dc4e3dad41730b80d9e1c7"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-1886ea69a0caa49bd528",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/a266cfb49032693e5e0437ea0962a632b2ae4dc6f90d24992c9bf14d43b2932e.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/382e30bd075a46fb399e3d46b15dbf6906258f4b7a091ff801eae10693a6ceea.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/5aa69b2c096de938010012a5d483ec4868267643d4806ac9da390103df0b828c.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/a266cfb49032693e5e0437ea0962a632b2ae4dc6f90d24992c9bf14d43b2932e.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/0c5d8f5e0db71661667d98f423ff6deeb4303bb0a726156495db0f14cb67e563.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1445572,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsAAAABXRUJQVlA4ILQAAADQBQCdASogACsAPxl8sFMsp6QiqqwBkCMJYwDBkBfK79W4DdHn4f+woKDoNdJ8/sJ3YRQ2/uMgAPjMvMIQB/e+K0NOzbiCh/SNoULeDfBXJp01nkr2Ek3PcNx86PIzRFnlZ/iWqw5pDHT4jB+iOJY6MfSPjZtOHAKB2JnrSWED3t7pYOwH7E6wExoJdR4Vxh8GKIuw+pv9Ok3FVB3ME/+FG6fB+VmoV5OFcZQFq3TsDcGIAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3881.HEIC",
+    "takenAt": "2026-10-27 · 11:50",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "1886ea69a0caa49bd5286f4c04aef78c8147c685336bda485e136fe9a332e733"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-e7ed1a8e3823bb0eb84a",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/34b1b6fa0e83c55a8bd271df1564275a47b0690b86c8dbe28a45f67f32a14946.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/4fbc07bfe6b0c2b189870443783033543a8fe92e7ea44c3d5e210824fa559385.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/809520be4ac7415f04f2e3240ae8a305dc3346d8457d70f1d3beaf5959344e5c.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/34b1b6fa0e83c55a8bd271df1564275a47b0690b86c8dbe28a45f67f32a14946.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/a46649ffed0219ff62af93a6b7b1c8e2f21732744135a4e84384569852c089b9.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1257832,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrwAAABXRUJQVlA4ILAAAABwBgCdASogACsAPxl6s1QspyQjKrgMAZAjCWMAuwAgyVz55qCjhUFSon9TJvJG1NcpzPXwWOSDEaUD1AAA/uem+Da8IuZca2FCWg8O+sjqD6RMYAnS7/gY7+4MtM6A2JA0HuvH2txTcIvNskxpc6e6CDtb2kUOQpF+/rUIREYdBmd5s81g/+va3V3lHowF/6t6+6HySVQfcaly1ciRbfC3Q3lDW+hhOmT+1FCfAPQAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3882.HEIC",
+    "takenAt": "2026-10-27 · 13:55",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "e7ed1a8e3823bb0eb84a99c4e0c3df3289b7f0c5056b340a68b6909f51051e2c"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-78e013a6efeea9764cb8",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/c496b6e9c7773578853a1e97a64b0d587c11c45d31c1be9a25a98b945afe53f5.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/6361dc0e30b33851eba5295ca62bd531a87166bba11560921be3fe9aa5855be7.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/c02df1562fabfd7ea478034da70b0d6c26d0ea7a4858b24cc4845c675963bc6a.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/c496b6e9c7773578853a1e97a64b0d587c11c45d31c1be9a25a98b945afe53f5.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/8912bc4218a7a8e0ec7e27ccc50951bc3683a6386cfa0603e2be31ba28e60ba2.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1922124,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRq4AAABXRUJQVlA4IKIAAABQBgCdASogACsAPxlus1CspiSisBqqqZAjCWMAuKgPC1FbzeYd3qW7CIPN9dJfwkmkjzo/L8p6iixRoAD+6oZqxukIiKJqYGQC6tp2RrDTBW/XFdhq/GQTRdgObBx/9T4tPFYfmCsZAjUjaZ/SW6Ic9TML5NwFFriJgUF4dkbrLMFPD5VaUUFssDkPOqto6Mu4H+YpOgBOlX5+XXGPatrZAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3883.HEIC",
+    "takenAt": "2026-10-27 · 13:56",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "78e013a6efeea9764cb88ba6d3bf023c9a69d8cbd8ef14c2300e12a6c8e68560"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-22c035684287c10dce38",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/9b67d2612ffb1d5fd807b5930a344380d651452615217b30abd1ed0aed66b943.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/73da586c1c043e76d9618eae744ff4f8011ad68ef5ad660e44e4cd8d7f0ae583.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/e642cb117df8a97eaa9a6415a4e4cfc9a267f3a7d8130c343b3c27d0c6504b1f.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/9b67d2612ffb1d5fd807b5930a344380d651452615217b30abd1ed0aed66b943.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/e09767ec9415c1f4b30fa64c587de30ca6406454cb1c222dd55ac2b9b8db6bd4.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1374284,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrwAAABXRUJQVlA4ILAAAADQBQCdASogACsAPw1ur1CsJqSitVgMAYAhiUAXYPW6AsEfCHY+aA5oIaYTa7zUaMVQYAuffg4AAPnIWDbgrzCwQNCVNxSoiq8vyLFoGRGD1UeKRFLmaIl9MhxiD82FR0Nb959Ljx3l54sqRNNAx2A1mpUMlJk4/JzI/038iGXZbTwvcMp8fsV1W34CkjiUKfyr1E4/u5JtRGhRwVV3EhHGT8uDkucSKMHNym2RD+wAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3888.HEIC",
+    "takenAt": "2026-10-27 · 14:14",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "22c035684287c10dce38a6f2336aef5a58cae3c4e52fd5c74fa3c6ccafff80e2"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-658b9ec3ee6dee1b3e4c",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/3336756d1b5d0a94f1ef518f7935c1106a6da934563e933822c48d402c3f1da3.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/cd39234ed02038cb0fa94a39d7b6bd34ab7b46b626be2ba8eb048f28b838531c.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/630ddd4801a1c85b93dc2d5c8f399e3ec35ee1e7db8d56d0bb7dccebeaf3bb30.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/3336756d1b5d0a94f1ef518f7935c1106a6da934563e933822c48d402c3f1da3.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/7717b2243b2b37099c198a1cd6b634ab68039b0d7f0f9743ec7f0ed464236bf1.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1094411,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAADQBACdASogABgAPxl4tFIspyUiqA1RkCMJYgC7AAxJgF/b+LnUA/sFa5RAudtMgAD5+cb3ghgNhhCQnn+3nmPWd3T5ZzYGrc3Kk/tauzKYClrrrKqzlYte8LdpQzVOdVPXH+VvMwMFlBCn5/g66CUypIBUbgEooAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3893.HEIC",
+    "takenAt": "2026-10-27 · 14:40",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "658b9ec3ee6dee1b3e4c422cc11d670ff05cd0b59110d7ebb3f3492889cb5f12"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-d223f02a82d5f4786f23",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/2eb1665788635c8770e7efda6d3e62a9a6fa472e6eb142263d37bc033c0d39c1.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/c4540c2c86e7bf1878c77796c7f48aa641228c106eeef87ca37b4114f793461e.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/267bb58e2bbf8def240a659cd15caf9926dde5ab935f2d540e82705b8b4b23a4.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/2eb1665788635c8770e7efda6d3e62a9a6fa472e6eb142263d37bc033c0d39c1.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/efdc036da757b65270e5e6d992c25ac459d41d1f161ee9f4e8ed25790bc370c6.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1148739,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAABwBQCdASogACsAPw1yslCsJyUisAqpgCGJZACw7AUEZ+UuLDeJsIhR5p6tO5RBSvBvL2AAAPnjEg26zdnuo+pmf6ifJpRml84d0wNGJnqD3uBxFbQcVLvz31K5/SDvP9CaJTK7CocqjunYNvIyd5UN5j4o8Bxa5rEkFO81JEMZpCql3oofSkgCozaZDugLzcE4VtCVMK9YFuycZhBryoAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3899.HEIC",
+    "takenAt": "2026-10-27 · 14:43",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "d223f02a82d5f4786f238850e8b489462925025653e055c48f1fb197c881293a"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-4578eaacd85791116f1d",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/86c6340f088e1c15a6252a10e0f491caa2a88c7ee35414506b26d5396469c6e9.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/1742393dbb35e66b393bcb3d2d14a3734eac59e2e0fa10dca2662e8559acdd0e.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/0d4e9b8175613f20b73fdbbf984ca9e65e172cfed255afdb6579fbc69520f42c.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/86c6340f088e1c15a6252a10e0f491caa2a88c7ee35414506b26d5396469c6e9.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/f14819b2c2f0854c1451494fb88c247341da476590e4c2a24fbef15061f54300.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1904520,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsgAAABXRUJQVlA4ILwAAADwBgCdASogACsAPxl+tlIsqKUiqrgMAZAjCWMAuDeu8CyRO+jugpDZMw40UmSehXTTmT/EGiuqJGvUV0cLChAAAP5fgZcFXhKayTbf2jJg4j10zt7CcFJ7cq/x1nRIXRgCpfYDahLbN/qtISYlsbmhc6zoqe13cDuy2YgfIrP3pZ6kB6KFgGTv6/nrbX8qrlnd4fDZPqC02Ge/1i6Xg2+OEB5Rpl+KNRLiszW8Glo3zXHMQkPB1AYpX2AAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3909.HEIC",
+    "takenAt": "2026-10-27 · 16:38",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "4578eaacd85791116f1dcfc31d86ab25a88e82a50357d6282f5f413c6d0f82a0"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-f92d3ed73206d4f3ee89",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/8ffa5d7c22191108201810e69179d78d33646682a15aeafbc6409cd52d07759f.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/ad49a6a1874f0c6ebd150ffa6971957b18afce05d8b15919a6bd47f6e0f64df3.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/f3f0acd6de7676f55648f2ca053294378eb432444ca660f509087ca9484edf95.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/8ffa5d7c22191108201810e69179d78d33646682a15aeafbc6409cd52d07759f.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/9ff5e59b7745d0434b07fdebe4fa7cb84cb13e9fa1ae6ed10485d95bc6b43101.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 897427,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRtwAAABXRUJQVlA4INAAAAAQBwCdASogACsAPxl0slMspiQiqrgN+ZAjCUAXYAoHefJD17cEJRqXcCJ3yPthEXSgtJnEJJkRB7BkdPmypPlQAAD9qGZtFcGJi5PYj2wuAQMLyrhn+vEGVS26985TNc9J4vZctXOp7LvQjjDDalss0KB6kfUPYjzFijncNGAoStiw42gx9vNGmnuDbeTJRpbm2wE/MLMbe3q3fBdneuDHRE1BWfqqtdMXUEnsTSFxuqptLpzMpsfTv4FOnH+0OiaCHcO5bCdHmv7HlD6p2AAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3911.HEIC",
+    "takenAt": "2026-10-27 · 18:09",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "f92d3ed73206d4f3ee890da803c67ea2780b17c0698acb617402d39f8668dda9"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-42cf0bfe9cb2fb0373c1",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/7b63422fb1f50e35332350804f5957445b75428e13e04c12325d2ae998f21c8a.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/b6c2ed0cd6c03d747e2aa6da090a62147a62438e934fb3bc259ce2732c6757b2.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/5b61811070cb946f2557ca17c477a16a9b0b0013ff7777de776334253960fe66.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/7b63422fb1f50e35332350804f5957445b75428e13e04c12325d2ae998f21c8a.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/cad1dcff888476ff689e9bb814bdaab048a337f22c243211e797639739f96580.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1251571,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAAAwBQCdASogABgAPxl0s1CspqSisBgMAZAjCWQArDMhhIwMdN7Cg4LtOYZ2sut+pcc3QAD+6xL+1XJNaz/0H8rstVhN8bjQhZHqh7atmsWqlFBlaa8SJy9OsNijvAFmkb5D0hwGJ3p03RmDUo7ZSRWQGCzxW6KXcsLx89mJRgGVFGd+M2/02+AAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3919.DNG",
+    "takenAt": "2026-10-28 · 07:09",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "42cf0bfe9cb2fb0373c171a4a3298daed9ec3636639aeabaadf18078be2dc848"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-b9909b183cc2352c8e83",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/1931c2c5767ea1188b20dde7d8969570f61f3e9fe446750ac60d23bcedd84b67.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/9149f79f9907c5ea5fc1663d631edd2272dfc3064ca757a0aecbc118f6ce998f.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/20a85035e4b21b5639a546b59f65b5be9c399ce22842869aee26d0e0c9ebdcba.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/1931c2c5767ea1188b20dde7d8969570f61f3e9fe446750ac60d23bcedd84b67.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3201,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/0f5e4f27f454bd50a362d9f6d15258462bffda11db018a2719c4fb28aeda46d8.avif",
+      "width": 2932,
+      "height": 3910,
+      "bytes": 1022474,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsYAAABXRUJQVlA4ILoAAACwBgCdASogACsAPxl+tlGsqKUisBVaqZAjCWoAp0e0gpiRbStwZBSwj1/nRCBKyBRiH2TFU4Xe0exAkxW5wAD+7d2CXjm+rIMPx5ov4f+RqpPiQjwWJoY5Me8PH/KYQklqdOW9ON3dYy5AuuofD1I/2iCDYTXqWb1TaeltuvZQ0+CMPVy9mjnD30LYCUWVl0dMa1zF9LEGRSKFROl2BVmrEz/yzw2COWlM1u2R3xFOKOeztJDe5nMYAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3924.jpg",
+    "takenAt": "2026-10-28 · 07:10",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "b9909b183cc2352c8e83d27e187dcf1d625ba38789cc273e797fc174a368023a"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-e9208a6ce5973b8a4ac2",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/6c94299e6e9aa8da7b0db982aa980c84dc2c83761c33522574f401ee200e226d.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/4a4b2c08176c83a62f9df77f92a7a90fc470e4fac2bdee584bcbd417d565d6f0.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/84c4661bda5116849953455578d1960cb3439846a5dcbd968e588cc042490ab2.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/6c94299e6e9aa8da7b0db982aa980c84dc2c83761c33522574f401ee200e226d.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/79eb994996ed75ca2d5937ed6c227e58dc0ac8b90623bc2ea8be293acd48e9b3.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 920075,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAADQBQCdASogABgAPxluslCspiSit/VYAZAjCUAK2AHwSpacoulCUYV/Sn2M5SJOB+LM7i3sLiwAAP7W/wGqI4+A6evrHW2Iek8jXRtSJSdRl9nH3uMksjNizkJ58Q/FotZ+AqwCVJAAm7rxnIdB+IfioLnhu2EefoUDB+XPPdiSpmhJEzAKL0BU/pQFvkAsRqE5ad42kqunpAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3932.HEIC",
+    "takenAt": "2026-10-28 · 15:53",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "e9208a6ce5973b8a4ac2d021268815d60664e969197fea74b7a63ebd972082fb"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-323277145625c6c5ec61",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/cd1fdbacc886187741c076fc25e1fcbbcfee69653551ebdb5c21d29c4fa8997a.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/a5f4b6a3dd2aa710e0d7212278a553c26811a58278f1a2e7cc7b05c5f6da932b.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/861e22bc0751e774e406139754c650acb8cb6893426837ba93cb74205144767d.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/cd1fdbacc886187741c076fc25e1fcbbcfee69653551ebdb5c21d29c4fa8997a.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/61319c9c0500e273a9db866c9dc9bc2e83f956ba2f59efbe747d467e5ab3de1d.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1251439,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAAAQBQCdASogABgAPxl+uFSsqCUjKAqpkCMJZAC2yDT4FcU0QoIiEcItb/JTSYaEKisAAP7rRrIyMclu4xt847XivaUSV5jZwIsdYPn/a8JSu8KixNabrETJlsm/umcJ6gJMjinSQrQ62XTqqqcEuijnHOBc6zhjyuvaqJTRA630eR0cOJvmFRWDktJN6Eu3YcDoTYSJWXiN4wAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3938.HEIC",
+    "takenAt": "2026-10-28 · 15:54",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "323277145625c6c5ec619ab10dab03dc675f9fd755a024ec2621d2c272104fd6"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-c938b46d533a9342484e",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/2332f95c6ea6e93b9daab3166b4a6dd7849f24c53cea761e775d4df459542ac8.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/7d9c01e06ba8ce49a0c4edff467eb8ee0107165947ba7a911674c4e9ca0c9ada.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/3c6d56ed2b5fb1afbed81f91bb62bf72c9080b66af446436b9d6dcd1d3376e65.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/2332f95c6ea6e93b9daab3166b4a6dd7849f24c53cea761e775d4df459542ac8.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/5d279cc6e9cd03fcce9ad304023a2551f1903745f2e897adb0eefda23c56185f.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1304716,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAABwBQCdASogABgAPxmAsVKsqKQiqA1RkCMJYwC/a47G1XPng8oHv7HPVorMUZH4sQQKahAAAP7WyBsEfmKoKnEGCyo5WFT79QyREw/ayTzbt1yFSocjiMeORvwWcKbILeCRLkeUQdAz5hrVelWkRdRNb3glEXsD6lbhKV6xZNEnr/ZkGCMn7imJwcpXI7YFAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3939.HEIC",
+    "takenAt": "2026-10-28 · 15:55",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "c938b46d533a9342484e05b94a07340decf34689351a4a65ab0790645a224745"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-8bf17d7e6e74267d9191",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/c166442bc88239b0ab4bfb71263c6c1fda23595cd091721c2b004f2fd9661378.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/bcb514385a45aaf17ff1e31a8b8df63c0d4f7c50d545412dac8b3fb10f34cd85.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/c4b32971312c88adcfc7d322fe41cfb9338a221b9f11dfa8a0ad46e260624d5c.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/c166442bc88239b0ab4bfb71263c6c1fda23595cd091721c2b004f2fd9661378.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/0fa448de0abf4caac6894f7407af05c3701f3b321d23dc0088fa8cc7c0431723.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 860280,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRqQAAABXRUJQVlA4IJgAAAAQBgCdASogACsAPxlyrFCspqQisBqtUZAjCWgAuzOKDIoVEXqhZvYSf3OuoDfsYyFpZPmyqdXN/QAA/dU33WcmBZNVkAdWY2q5i8qeaLNzwyynDC/w6yH36Mn/R83wzjfIbUnmG3VncLgLfkrOu60OxvPzVThj5zarePogxseHdc4PGEVkJzlxsvSRf7Zy40c0Nwt+KwAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3941.jpg",
+    "takenAt": "2026-10-28 · 16:56",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "8bf17d7e6e74267d91912922104ab1e7a2f73398ba3a8a34fb99900bb7981457"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-a6d32990095ad222f030",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/c2c23fd93e53c3dbdf053e8053ae0283ffb435c2bf843ae1b2f2f408043e9bbb.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/9c66658d762367672ce314c9205abe579d71bfdbeeb14a6b033a799f554f3ba0.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/b349981021c5c360cc45a1160a106d6dd81eb8f7543d7e19fc9482aa9332e71a.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/c2c23fd93e53c3dbdf053e8053ae0283ffb435c2bf843ae1b2f2f408043e9bbb.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/a42111a5d7ba9c34db4ab28e985ab90f4ba6644557d76daea285061f9bbb81bf.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 839659,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAAAQBQCdASogABgAPw10s1CsJyUisAwBgCGJYwC90CFjgJEnmY6AI4m5j3sIS8tzG/fIAP6xe4G3XIZZvi2WbqWW9fcGlw4f84rnaYfymIY5IaHXnFIuCck9pEMpciCGAXFj6lieDFnQCWJiYuQAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3946.HEIC",
+    "takenAt": "2026-10-28 · 17:03",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "a6d32990095ad222f03066daad4f8c7429863e23cac644a5f7700babd49aeb38"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-11f7d1bd88831431ecb9",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/42be21367a27575698f6d32ac053fab298626964dd201276610af2f9e8056ee1.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/c0eeeafca51f1a6850f793daec36d013a6a908fe315e2564af6e0f8ce1d5ba47.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/054dc3c862d6aa3637c59984e947d3383c14ec8c0e8c636a68ec7fb0c5668b78.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/42be21367a27575698f6d32ac053fab298626964dd201276610af2f9e8056ee1.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/0f6daa31f52ed64972961568f7960f8fa1daf721bb3722262ed2084ca3a999fb.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 876479,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAADwBACdASogABgAPwlirFCrpSQit/qoAXAhCUAXug9n71I/w799oucQMdDl0BukDAAA/rFCfFZrOMruzESnYorfGieZTM3QZkkcJiceam3fxLGKCS4+ZU1Io3tK2oGkv4g9Bo1f3unt659tD/gN20WPvudmJRPRUkYT8l420XXuEgAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3947.HEIC",
+    "takenAt": "2026-10-28 · 17:05",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "11f7d1bd88831431ecb98abbb167494804d03c67eeaf803ef7a5636f2e2d44dc"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-24cb7150ac7b854a4aba",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/5e5b90f1b5f6c309195f9034f1c8a844542f01522e03e61682872a7f1a624604.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/debdc570a2be22a6e3bd57b3e34b11dcf440565299ed79ef66d032bd72c9c34d.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/aee34523d1b06823bb5a0eaf26ca072a1cd117dd20dd2a64a80e7cde084fead2.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/5e5b90f1b5f6c309195f9034f1c8a844542f01522e03e61682872a7f1a624604.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 1146,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ead083163fe779345b181bbf115b974bc25cf937b18da0b387474514e50aa22a.avif",
+      "width": 10636,
+      "height": 3810,
+      "bytes": 2044610,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADwAwCdASogAAsALtmMxmMkLKysjIDYSxgFR6FmJfw/SRRY65S4iK8AAPakqGoDw+HZbzTDfdHgm9T5czDfNnvIRycXVXImWox/oS7RmMTN8uqJ+LLl36TIqS3ZIbf9Tf6AAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3949.HEIC",
+    "takenAt": "2026-10-28 · 17:06",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "24cb7150ac7b854a4abac31cd929954687de7ea8e88ea93dba49b1bb9e9edcc0"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-68bf3adfe902e85a205f",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/d7fecfd49be000eb909b2ab979c114fc55536a2707dc44699ba8f6108fe7a221.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/9075d05cb2834f5a3537d15af6bcd5d5f084ec278a29ce35dadcd58125ad2753.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/9b5521fe04982763f866d51e69b5a2892848a9e491e74ded5c91d556f42e4db7.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/d7fecfd49be000eb909b2ab979c114fc55536a2707dc44699ba8f6108fe7a221.webp",
+        "width": 2492
+      }
+    ],
+    "width": 2492,
+    "height": 3201,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/98fa10af2a23e3dc78db74b4c0d99faddc9b235beb44a1def9ae0a1cc1c0f506.avif",
+      "width": 2747,
+      "height": 3528,
+      "bytes": 473390,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsAAAABXRUJQVlA4ILQAAAAQBgCdASogACkAPwFuq1CrJqQiurZoAWAgCWIArhwWZnknkaIOFRPqUxYjkcwrAoooB02qiHt1K4AA/lFYALOiqocbZTWY//Akp+inVvSXLBnZIHpDrbrqqs+d/PVXDxXepE9BTsKG2gr4nVk/yU0WuU3ZsADxDG7fek+emCz9lunpZxWBOswWFANLMiD2+M95NNyXuoxGrf1ixU6+SVspqiufUG5R/4Pdo3B5u+UAPmQAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3960.jpg",
+    "takenAt": "2026-10-29 · 07:08",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "68bf3adfe902e85a205f1f807a0e86497d6e0bb05d736895933ce5c13cd64796"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-c7b5900844c4e1bbcad5",
+    "dayId": "backpacking-europe-heading-east-forni-stay",
+    "src": "/private-photos/assets/v1/769d5f3d9abdc14b60f61223a652a14404998cc6b7c2f17aa5fca174747c27cd.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/771391583d217d3d01ec3b1cbfcec84b441300e3b56ef15078b9f3e5cec30c63.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/6389cf47c7657d9502c5256208eb904b2b149a090886f6ba46bc48e75e6b54a0.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/769d5f3d9abdc14b60f61223a652a14404998cc6b7c2f17aa5fca174747c27cd.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ca1bc3947f2465e3a281134ea54fc98e15bace00403b48caefef9e72bc6a5849.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1142932,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRrYAAABXRUJQVlA4IKoAAACwBQCdASogACsAPxV6sFCsqCSisBqqqZAiiWIAxzAJgpejeQ1lAyIks/gn1KzFGEOHfE44TAAA1oWf3DNAncPJF31rlQiPr1pWhLFio1C0pguD/p613PmKEELnhh0Hono6Trq2YbRHq92Dl0oKIEiNEQRn3Wj5HREavFvsM6tDjXspQiIt1EW3Nm4d0rxEsuARo9OqNiNVlZsySdRykmke3VydOakf2AAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Forni di Sopra",
+    "sourceFilename": "IMG_3968.HEIC",
+    "takenAt": "2026-10-29 · 07:26",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "c7b5900844c4e1bbcad52395bfde86ea868601eddd386e5bf2399bb6f91f4349"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-400656fe60f33c9aac4c",
+    "dayId": "backpacking-europe-heading-east-vienna-stay",
+    "src": "/private-photos/assets/v1/1f686fdfe3a21451564bf503f8288e057e88ac27e891935e4f261fb85ae5f4eb.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/3ccaa594e920fffcaa6a2dec7267cdb82f927d2a6c104e223904a8fc150fd399.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/6df053060407315ad2f3bba7ee59e05ea255135118f9f9723b285c17cdad42d1.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/1f686fdfe3a21451564bf503f8288e057e88ac27e891935e4f261fb85ae5f4eb.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/a9552afea5615a52b2377c553f0d7ce909d4d0f626bfbe2f1c5d2508ac4d072e.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1261909,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAABQBQCdASogABgAPxlyr1CspqQisAgBkCMJZgC+SBt09uh6RwSXjQ+E2U/uh5uO8lPWNEgA+a4D4m83DU2mh166toF37BI5+72WqbDWpLkNdPqo0WNbgr+lxD0rOZPDc5xIVEEi1OIBhwaF9LnZUia2igSF7RPRw/coN4qt/6BwxOgA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Vienna",
+    "sourceFilename": "IMG_3975.heic",
+    "takenAt": "2026-10-29 · 13:25",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "400656fe60f33c9aac4c46cf72a8ff09063d198c7b3fd91ed083caaa102b2fd0"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-652b50686d488769d250",
+    "dayId": "backpacking-europe-heading-east-vienna-stay",
+    "src": "/private-photos/assets/v1/075611107e2ccfdecbbdc40a32ba2c5a594fe21f225b4336990572d1cca1e3f4.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/d169fd1d9e32099a398f0a69c2248fe43cc1befeb70015a7fedc3b0f2be8d936.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/4c092694841b68711d544ccf863dc7b69e0b8fd0d9dd61cd1dbf62ab3a3a1207.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/075611107e2ccfdecbbdc40a32ba2c5a594fe21f225b4336990572d1cca1e3f4.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/12a3b2033fe5a34cfc2808e0e823e9d9c4b313261c11c6fef27ac96ffb0f0639.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 776695,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRtAAAABXRUJQVlA4IMQAAADQBQCdASogACsAPxl4sFEspySiqq35kCMJZAC7Gv3ANTMtGE5DDnT7yvddI8iEoBKtbY4HUAQAAPfa6rIcQOLJ4WOIeYnXN9xPZu34zQLkS/Z9tXECiGgfGC1KSKC8n6EqZosjF6mm/hKoonVvTJ7QbQPxadjDwGX+BH7yBOPyVmXqFljSpOEO1OY0SSnGTV7kvyfexiPuLpfpfWMQR6VSWRF8iET9qehp0PHqvoZ8mNLS/oNY3h/QdosoD7J3csu4AAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Vienna",
+    "sourceFilename": "IMG_3977.heic",
+    "takenAt": "2026-10-29 · 13:27",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "652b50686d488769d25034ed202ecdfe6624e680fd411dde3ae162af6e6a3941"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-8f734e4fdbc7e91314a9",
+    "dayId": "backpacking-europe-heading-east-vienna-stay",
+    "src": "/private-photos/assets/v1/d4508867237e1870b17d8440f8ac4114169b724b583fbcee902dea85f551eb55.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/f2edb8c82e506f37d9707cf4b0ba27ae61fe670c55763c6b179125178ee296fd.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/f2500e79532f71dd958e989d4f139796da408750c4b56143195d8c53c31c1cd4.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/d4508867237e1870b17d8440f8ac4114169b724b583fbcee902dea85f551eb55.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/d9776c403452fd82d78d6dad34d3e9a4f8e701154d14afdae2c4037ce3ff0730.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1057639,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRtIAAABXRUJQVlA4IMYAAAAwBwCdASogACsAPxmEs1UsqKQjKrgKAZAjCWIAwP0zQpg8TuJnBL+aMC4szik6YslluPcwL1Zs4QN7VGCMuOBpAAAA/l7D9K2EmKsdr5Qa0IAu8yZSvWNqWfwNflhnemtjQXoIBIS9JErNzNPT88nOCPtZmBOg3vum03mmy00MCysFAY02irWrqEHhUADpUAT02nip1FYPMRx0ZiczTpTzvnutN3P6YjPjs3+HIpxgYePDyyF6d33JiPgNzAn1fnQkodYgAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Vienna",
+    "sourceFilename": "IMG_3991.HEIC",
+    "takenAt": "2026-10-30 · 12:37",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "8f734e4fdbc7e91314a99a9b4dc19cc32f406e4de94bb4be0cbefc48182a1f79"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-a85ebae717143cf94760",
+    "dayId": "backpacking-europe-heading-east-vienna-stay",
+    "src": "/private-photos/assets/v1/9ca5ec00b4f8742dd3abdde759ef1fad7847026892d4301774d3faa29c62c57a.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/c76fb890a8b6ad80e0065dabc527dc60f0a07614dd750fb1176bbef1e5efdb52.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/b8efcb58be2e43b1b5ae9bec7c1e64abd1fae285af00b4d23c29751bb04f7fc2.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/9ca5ec00b4f8742dd3abdde759ef1fad7847026892d4301774d3faa29c62c57a.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/e541b01e99c3717e640da962160b89cdc8e81aa9690267e43db7d034702160b8.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1066330,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRswAAABXRUJQVlA4IMAAAADwBQCdASogACsAPwFsrVCrJiSitVv8AWAgCWwAuy+gaP0YpFTgHVtQeLTRuaU4gJmEPYSjf6oSQAD+d7H7C2eL/Cy1wbt3u/YL9haYZB+xhSKyEckL0+FVRtr4lIIgz0vXuk+G0Iythj+ZoOHvFuUgA6QIuzOp7CDNX5KMIid+QqnjWxMZK3OftS75SaFDmbpZWZ6rytpJ4ifB4km3sRH57jFxIqS1y/1APIx/OwvoVaQ74aaCcniYeysR1EznwAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Vienna",
+    "sourceFilename": "IMG_5973.HEIC",
+    "takenAt": "2026-10-30 · 13:39",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "a85ebae717143cf947603666f00476f6269f8ac97d009672f379d0cd34c32928"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-200672e79e136e39ec65",
+    "dayId": "backpacking-europe-heading-east-vienna-stay",
+    "src": "/private-photos/assets/v1/ec703835b044a0127767b3c077e1b02497cf0325f672588fc014ad70f6738aea.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/c870e8a6f635c497366170dbdec4173a9b2303dfc6069033c2170db9db8b6def.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/a6187e327504ed43d641ac1d416713399aaa6204481076ee4f29d414bedf7825.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/ec703835b044a0127767b3c077e1b02497cf0325f672588fc014ad70f6738aea.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/1dbed201fd8471354076027f99f646b712f797878492aa1a19ba5a7d128e2145.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 1406736,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsYAAABXRUJQVlA4ILoAAADwBgCdASogACsAPxlws1KspaSisBqoAZAjCWIAwChmFfU8zCIc0BsFO7sMADOJ/Sjxlt1qWltr/Of+RoNPZUwAAP73VVepgfcqNIW+i790rpEHGTjS8pORwYwGL0n0/e0zEmSoaXPGf4FvXw+dQDgtwVSnot8wgiSuYPu2LUOVL7MdUK/M9CUlz5D8RRfbt94DiaZ4Uq9lO+gtYwYmUt3lUx82nR0pr50YdX25x1bvzba7ycTq3wEBAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Vienna",
+    "sourceFilename": "IMG_5975.HEIC",
+    "takenAt": "2026-10-30 · 14:10",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "200672e79e136e39ec652ab226ff3ea804fc6b0f7c04c995ba59e75fc8fb4841"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-a89de5e99fef27b4eb93",
+    "dayId": "backpacking-europe-heading-east-vienna-stay",
+    "src": "/private-photos/assets/v1/8ff1f4e1e84bf0246f2065377a26113655f3134ca32f49fe31ed9d711617bcae.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/14432f604019c328d5f0121a790ceeaff0fefbf694f6d69f7610142e60bf2def.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/44b766d44ba9f7459b4903deb8c0baed826bcd391df7d4587a004d346e86a6da.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/8ff1f4e1e84bf0246f2065377a26113655f3134ca32f49fe31ed9d711617bcae.webp",
+        "width": 3200
+      }
+    ],
+    "width": 3200,
+    "height": 2400,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/0a690f4a98b6d2fe31e06ae693a7dce3721af9d9bc82dc7511497348f5e99ba3.avif",
+      "width": 4032,
+      "height": 3024,
+      "bytes": 1339007,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAAAwBQCdASogABgAPxmGtlUsqSSjKAqpkCMJQBZwAbmfM+lT+KzU511MJ4uXiJXBTKyT0AD9sjnzTYUrpD9shsc8gJsrztPbyGi0M/B4NWuifUn2yyq//c9v2j5WEr7D6w/rRW3ksXwf5mB9RltYNhUNk3h7RYka6xhMTzVnU1LGPZdtcAAAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Vienna",
+    "sourceFilename": "IMG_3995.DNG",
+    "takenAt": "2026-10-30 · 14:12",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "a89de5e99fef27b4eb93a7714c2097a758cd49fc8eb321866bebe9ae251ccc5e"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-74948a6c4cf4d5a3a3e0",
+    "dayId": "backpacking-europe-heading-east-vienna-stay",
+    "src": "/private-photos/assets/v1/7c9b31720e96e01b8d34dde4431fffadf4c7f39f3236446adc54439c0e45598e.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/8d68e205b5217247d00b91e12c2d18f2029bfae83a1477242a251bdd7c7f801d.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/096522a2a6e2aee5723019d153f2791c5319cefcd09d4507a92d0c258364d420.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/7c9b31720e96e01b8d34dde4431fffadf4c7f39f3236446adc54439c0e45598e.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/ceaaaade51a11360729fad3016960814f1362cdd41706bc8d764e69495d1c362.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 619949,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRtAAAABXRUJQVlA4IMQAAACQBgCdASogACsAPxlus1CspiSisBqqqZAjCUAVgALLTJjDRSrS6PE/1mYoTdH51wXb8+mPAggH6hOaWLSAAP5SB0RU2CZU4kW1tAT1YI2yoJcX1EBi4smbbbXPDEe3FO71dIzCKTtkS3u1omHlCuEZ7vzF7flKVMlbFe5KTpiHB6Mqp1eXjYURUBLXjE8/1PlRYd6snYoIHFKXj8Xr+tGGmBh6Fec/uAuz70eP1+eKLLeqKwOFclRzey0CJCb9rtDAAAAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Vienna",
+    "sourceFilename": "IMG_3997.HEIC",
+    "takenAt": "2026-10-30 · 15:00",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "74948a6c4cf4d5a3a3e0c211a2f96b14e124e948ed1b7c62abd6f107d3129006"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-6d505ec251fe83ad0858",
+    "dayId": "backpacking-europe-heading-east-vienna-stay",
+    "src": "/private-photos/assets/v1/864d84a7e4411b2e9a473a68e846dd6ce5a439ce78d9c0e22a7044fca3fe0104.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/d2cfcbe5664edb24388ea212958606dae321d255661f13bbd41ae06be01e6006.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/8efe9a5fb122599990f5b2a896893485c5cde1ef4dbb4a3e60d1fab3ca67a396.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/864d84a7e4411b2e9a473a68e846dd6ce5a439ce78d9c0e22a7044fca3fe0104.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/596754ae88c2665e86cbc4d5fb1d06ad659b85bbdc4d90b58183194592339d17.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 844416,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRuwAAABXRUJQVlA4IOAAAADwBgCdASogACsAPw10rVCsJyQitVQMAYAhiWwAnTLHCIAM5Axctd8T68ejwI50geaDVxPhNjnLsoczfXuEk18AAPuXrzG6EHxtWVAb0oLJSQ2ei441r7EUZTq6k03bcQaguDPdQjCWu1mKqfUJSRG072pxpn7SBuPh1pRdLgBv9+dIzi+AplgdpEMc9dVfq7iE66CT5ktT94hQ1Tj5pOa90W7Y1DBQYsFlSLWmwfUMXbVR/rKaZukiLJIjYgt4xomaBjvykNn8DefeWgDzNeUC6e6K0jHhpozWWxM8AogAAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Vienna",
+    "sourceFilename": "IMG_4006.HEIC",
+    "takenAt": "2026-10-30 · 19:15",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "6d505ec251fe83ad0858f15716e5058e5a4c18577ebee103e136bd2c05641fbe"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-b86d7d7c4bc6f6d9092a",
+    "dayId": "backpacking-europe-heading-east-vienna-stay",
+    "src": "/private-photos/assets/v1/a76467fd0d1e7559ab0c5465be22bbf9e7b9351c89cad3028ad9e019c36ef63c.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/e7500db4bfb11c7fb118291b0603381f82155b06c5ceffb3e782fa0f4f065106.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/fed15e6bba1b81e463179f0f4d59be6f1ad3cc6cd6ef21a3b05e45d370b6bb48.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/a76467fd0d1e7559ab0c5465be22bbf9e7b9351c89cad3028ad9e019c36ef63c.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/b76a8eaa99af710f144ad279efd3aab62f2d0618bff873558ef68bd22cc7a716.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 941789,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRs4AAABXRUJQVlA4IMIAAADwBgCdASogACsAPxl6tFGsp6UiqqwBkCMJaACADNH4SJHsJR3Zq0jVrXFyJ7O/CFFwlKnJQ4yjMWi9tTmn+fIAAP73fKiYqhmGnFY2DcuQcAKwZ9vfk6n3Mr8yiddn2Ty4oI41uBJiIeSy5208YQYWB9jeuek458XXuXB6Hj7kj3easSrwo/F+4cob+uF9a+xl4rSW2JL42bZCgK3ClSiwiODfNtZUdAB8BJNTs641eodJ80AsXnZmxN5BhPh9KI4wAA==",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Vienna",
+    "sourceFilename": "IMG_4007.heic",
+    "takenAt": "2026-10-30 · 19:43",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "b86d7d7c4bc6f6d9092a1d74de78bb05a2a6a21f9c2622f44052e6ebcbf2ccb0"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-bb2090ef03d596a1e7e3",
+    "dayId": "backpacking-europe-heading-east-vienna-stay",
+    "src": "/private-photos/assets/v1/f671ecd63a926e8a5bc03f72c5dd2f5ee4f5b7b4eeccc52dc4c3005e2cea8735.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/a5637e3a9d6ae5c8012784c71913fc68075d9508f38f12198dc33f985432a69c.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/20720941609d2e6eaaea26cde2787a377c9725bf9a8cc102c260c309e29ac4a9.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/f671ecd63a926e8a5bc03f72c5dd2f5ee4f5b7b4eeccc52dc4c3005e2cea8735.webp",
+        "width": 1800
+      }
+    ],
+    "width": 1800,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/164d2155ae15d5f474367cef69b7a5e9aa64828d11fa89c4ab73d2dfcaab4619.avif",
+      "width": 2160,
+      "height": 3840,
+      "bytes": 410550,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRgIBAABXRUJQVlA4IPYAAADQCACdASogADkAPxl+rVGsqKOisBgKAZAjCWMAuKhPfU6ZNtsiAi6e5vvMFPdK01X/a1ybdNv82M+9iqMJcbhu55WiMfbafL7Q9mTHzNYAAPxUC03gtg+YlKNNaQxreTJ0FqsiwjdOLKGh2gKsklTvdtnaWnTlwbgjAOe2aBaFOtTlFQd0LEmPaFkylOMo9Jn2yYFUzHVYu/9nu2E0pStLgBWW2zRWPwiukDKIGtmwZsJxfpsXzmsy1HukyNB6TVd7nW2tQb6kD8pryA0amMWYVPWfAk6LWivZkdzY7V/69/4ZZraIXaSwciBvmYapP01NVcAAAAA=",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Vienna",
+    "sourceFilename": "586BB2BE-1260-44D0-B62D-46C87C053B48.JPG",
+    "takenAt": "2026-10-31 · 15:53",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "bb2090ef03d596a1e7e3c26ee36b5d0b59da7ff52bf7f8d99ed82a1a4483c094"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-45558162b72ea4a90efd",
+    "dayId": "backpacking-europe-heading-east-vienna-stay",
+    "src": "/private-photos/assets/v1/ee04a3601a63e0d5c68db639ab012e00b1083329323ede4170266ef9478f48a5.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/2d149a3f5c678d62fa21e8c652260f0a10e26b29b98cf9083a8a30f1dfefacbc.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/bc9545865254de392475ac6e6a8bf01381e36fd0fa931474062f9d4e9b9ec437.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/ee04a3601a63e0d5c68db639ab012e00b1083329323ede4170266ef9478f48a5.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/a3363af35753da599883e67497857302dc873458f43b4a85bda4ef2bb8e654f6.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 797834,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRtAAAABXRUJQVlA4IMQAAACwBgCdASogACsAPwF2rFCrKKQitVgMAWAgCWgAqSaAAf56Q892pFYP64vMtl+gaT0ayW6WCxJ5QOC8BbdDwADiCqownx0lExMJi+4XOAPEwIAQ9TMW7Et/woLl8DiEpXC/NVbgOT0Bml8VXKkcWJnCpTCDIHc7kOtWHh/ZqDiVl5+rhfcRWgyGd1TrXGZBy8jHTx0OhtP/4cpe+U9JExvUFT/GL5QU5XLHS2qi4olH7wTYhqfFoQM8ck8B4DIkYkzhewAA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Vienna",
+    "sourceFilename": "IMG_5990.HEIC",
+    "takenAt": "2026-10-31 · 16:45",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "45558162b72ea4a90efd7247195889a7e184f6b75de0951493525b5858cb9117"
+  },
+  {
+    "id": "backpacking-europe-heading-east-upload-6d238f9b0292a3896d88",
+    "dayId": "backpacking-europe-heading-east-vienna-stay",
+    "src": "/private-photos/assets/v1/bb23ffdf06d3e6d0b8f47936d5b91ce26d4eb54a59888c2ee0171921141b829a.webp",
+    "srcset": [
+      {
+        "src": "/private-photos/assets/v1/be130f773c1f43804f1987271839a900699da6c385000fcf4175dcdd3624b89e.webp",
+        "width": 480
+      },
+      {
+        "src": "/private-photos/assets/v1/20c96a564b92cd75c8bb8cce1d01b2a21e9ac39162c09dee05d2fd2b7fa22425.webp",
+        "width": 1280
+      },
+      {
+        "src": "/private-photos/assets/v1/bb23ffdf06d3e6d0b8f47936d5b91ce26d4eb54a59888c2ee0171921141b829a.webp",
+        "width": 2400
+      }
+    ],
+    "width": 2400,
+    "height": 3200,
+    "fullAvif": {
+      "src": "/private-photos/assets/v1/3bf0a8453c2a56bb0889366ed6a83023d91d2426c535a03cff47d8fe5ba30d89.avif",
+      "width": 3024,
+      "height": 4032,
+      "bytes": 676159,
+      "assetStatus": "published"
+    },
+    "blur": "data:image/webp;base64,UklGRsQAAABXRUJQVlA4ILgAAACQBgCdASogACsAPxlwtFGspaUiqrgN+ZAjCWIAqScTTIVBkPckYskjvWt3J5BUq9aDzIgDi08FHogdZYAAAP53STX9sDRs9h9Yb5ZCpS6Dx+K5o4JR8LVrC4xgSlEsAjG/DwU8nFvkbCeDXBT2BzjcWXKU1pn76SclrRxqVQkcY/cPMqYSYwhrVRaAp1sDu5Hhc9a1qCDxDj8iHQwHKIi9dmtciyh+XvGGv65C30WCOkZyKl6cbVgA",
+    "caption": "",
+    "description": "",
+    "captionSource": "camera-import",
+    "alt": "Trip photograph from Vienna",
+    "sourceFilename": "IMG_5991.HEIC",
+    "takenAt": "2026-10-31 · 17:51",
+    "assetStatus": "published",
+    "protected": true,
+    "sourceHash": "6d238f9b0292a3896d881cc9cda70e1f5f2eb79c24616d6d8cc1c1b18c159d78"
   }
 ]

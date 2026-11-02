@@ -25,7 +25,7 @@ test('confirmed Vienna and Poland dates retain the undated tail and reviewed tra
  assert.equal(utils.eventForDate(j,'2026-11-12'),undefined);
  const manifest=JSON.parse(fs.readFileSync(new URL('../content/route-sources/backpacking-europe-heading-east.json',import.meta.url)));
  const legs=pending.flatMap(d=>d.segmentIds.map(id=>j.segments.find(s=>s.id===id)));
- assert.equal(legs.filter(s=>s.mode==='train').length,15);assert.equal(legs.filter(s=>s.mode==='bus').length,15);
+ assert.equal(legs.filter(s=>s.mode==='train').length,16);assert.equal(legs.filter(s=>s.mode==='bus').length,15);
  for(const s of legs){
   const coords=routes[s.id],p=manifest.segments[s.id].provenance;
   assert.equal(manifest.segments[s.id].strategy,'preserve');assert.ok(coords.length>20);
@@ -56,14 +56,26 @@ test('confirmed Vienna and Poland dates retain the undated tail and reviewed tra
  assert.equal(rail.serviceEvidence.service,'ÖBB Railjet');
  assert.match(j.note,/bus 110 to Tolmezzo and bus 100 to Udine, then an ÖBB Railjet to Vienna/);
  const warsaw=j.days[13],arrival=warsaw.segmentIds.map(id=>j.segments.find(s=>s.id===id));
- assert.deepEqual(arrival.map(s=>placeName(s.to)),['Břeclav','Bohumín','Kraków','Warsaw']);
+ assert.deepEqual(arrival.map(s=>placeName(s.to)),['Břeclav','Bohumín','Kraków','Zawiercie','Warsaw']);
  assert.ok(arrival.every(s=>s.mode==='train'));
  assert.deepEqual(arrival.slice(0,3).map(s=>manifest.segments[s.id].provenance.serviceEvidence.train),['RJ 252','EC 130','IC 115']);
  assert.match(arrival[0].duration,/1 Nov 11:10–12:04/);
- assert.match(arrival[3].duration,/Fast train/);
+ assert.match(arrival[3].duration,/Os 34132 · 2 Nov 12:06–13:12/);
+ assert.match(arrival[4].duration,/EIC 4504 · 2 Nov 13:34–15:24/);
+ assert.deepEqual(arrival.slice(3).map(s=>manifest.segments[s.id].provenance.serviceEvidence.train),['Os 34132','EIC 4504']);
  assert.equal(j.days.filter(d=>d.destinationId.endsWith('-krakow')).length,1);
  assert.ok(!j.places.some(p=>p.id.endsWith('-wroclaw')));
- assert.deepEqual(routes[arrival[3].id],[...routes[j.days[14].segmentIds[0]]].reverse(),'fast train uses the retained Central Rail Line in reverse');
+ const distanceToLine=(point,line)=>{
+  const scale=Math.cos(point[1]*Math.PI/180);let min=Infinity;
+  for(let i=1;i<line.length;i++){const a=line[i-1],b=line[i],dx=(b[0]-a[0])*scale,dy=b[1]-a[1],px=(point[0]-a[0])*scale,py=point[1]-a[1],t=Math.max(0,Math.min(1,(px*dx+py*dy)/(dx*dx+dy*dy||1)));min=Math.min(min,Math.hypot(px-t*dx,py-t*dy)*111.32);}return min;
+ };
+ const western=routes[arrival[3].id],express=routes[arrival[4].id];
+ assert.deepEqual(western.at(-1),express[0],'both trains meet at the same Zawiercie track point');
+ for(const point of [[19.4529,50.1540],[19.2933,50.2471],[19.2720,50.2600],[19.2650,50.3668]]) assert.ok(distanceToLine(point,western)<.2,'regional line visits the western station corridor');
+ assert.ok(arrival[3].distanceKm>88&&arrival[3].distanceKm<90);
+ assert.ok(arrival[4].distanceKm>250&&arrival[4].distanceKm<255,'express has no mismatched-platform return loop');
+ assert.ok(distanceToLine([20.9655,52.2195],express)<.15,'express passes Warszawa Zachodnia');
+ assert.deepEqual(arrival[3].via.map(p=>p.name),['Trzebinia','Jaworzno Szczakowa','Dąbrowa Górnicza Ząbkowice']);
  assert.deepEqual(arrival[2].via.map(p=>p.name),['Zebrzydowice','Czechowice-Dziedzice','Oświęcim','Chrzanów Śródmieście','Trzebinia','Krzeszowice']);
  // Both directions follow the same 100/110 corridor. Compare physical
  // lines, allowing only carriageway/one-way terminal differences, not detours.

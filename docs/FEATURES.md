@@ -104,7 +104,7 @@ photo comments now have shared implementations; media publication and community
 service rollout follow their documented workflows.
 
 Heading East exercises the shared city-stay contract with fifteen dated stays through
-Kraków, 11 November 2026, fifteen undated stays and 47 reconstructed route legs. Extensions remain
+Kraków, 11 November 2026, fifteen undated stays and 48 reconstructed route legs. Extensions remain
 content-only; see [its intake and route evidence](HEADING_EAST.md).
 Its [chronological city photo order](HEADING_EAST.md#chronological-city-albums--12-october-2026)
 uses the existing album-order overrides, with no shared renderer change.

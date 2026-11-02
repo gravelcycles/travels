@@ -1,5 +1,75 @@
 # Backpacking Europe: Heading East
 
+## Kraków–Warsaw train and photo batch — 2 November 2026
+
+Owner direction: “we ended up taking the 12:06 from krakow to warsaw today”;
+redo the track and add `photos/venice-vienna ish/`, removing duplicates. The
+owner explicitly asks the agent to determine the train. ÖBB's date-specific
+planner, checked for 2 November 2026, identifies **Os 34132** Kraków Główny
+12:06 → Zawiercie 13:12, then **EIC 4504** Zawiercie 13:34 → Warszawa Centralna
+15:24. The regional train runs via Trzebinia, Jaworzno Szczakowa, Sosnowiec Maczki,
+Dąbrowa Górnicza Ząbkowice and Łazy. The express uses the Central Rail Line and
+stops at Warszawa Zachodnia. This supersedes the prior unset direct fast-train
+assumption for this inbound journey only. Warsaw → Kraków on 6 November remains
+unchanged. Timetable details are researched; actual delays and parallel tracks
+are not independently recorded.
+
+Sources: [ÖBB planner](https://shop.oebbtickets.at/en/ticket/timetable), searched
+Krakow Glowny → Warszawa Centralna, 02.11.2026, departure 12:00; station coordinates
+from [PKP PLK](https://portalpasazera.pl/KatalogStacji?stacja=Zawiercie). The two
+new rail lines are 89.0 km and 252.7 km, reconstructed on OpenRailRouting's
+standard-gauge network (OSM 1 November). Exact requests, response hashes, snaps
+and diagnostics live in the route manifest; raw evidence stays in ignored
+`build/route-inputs/backpacking-europe-heading-east/krakow-warsaw-20261102/`.
+All 46 other lines remain unchanged. Zawiercie is a transfer, not a new stay:
+30 stays, 48 legs, five incoming train rows for Warsaw.
+
+Photo intake: 155 supplied files, comprising 151 stills and four video clips.
+45 stills exactly match existing source hashes; two further exports repeat
+`IMG_3850.HEIC` and `IMG_5933.HEIC`. Skip these 47 repeats without deleting
+private originals or restoring Trash. Distinct adjacent shots remain distinct.
+The remaining **104 new stills** include three DNGs: Salzburg 8, Innsbruck 10,
+Bolzano 1, Venice 19, Forni 54 and Vienna 12. After merging, these albums hold
+23, 16, 5, 35, 54 and 12 visible photos respectively. The 95 available camera
+pins are reviewed against the actual city/excursion/transfer context. Keep all prior 167 intake
+records, 25 Trash decisions, edits, saved places and cover. Expected visible
+trip total after verified publication: **246**. Captions, notes and place labels
+start blank. Camera GPS candidates require geographic review before saving;
+missing GPS stays unlocated. Four supplied clips remain private and held for
+separate video review/intake; none is passed through the still importer.
+
+The owner supplies **20 October 2026 at 13:09** for
+`7B61E942-B2F4-45C7-8660-D78C6860AF7B_71BA6BE1-918D-498D-8B4E-3AC6574728BC.JPG`,
+whose file has no embedded date. Assign it to Venice and preserve that owner
+provenance separately from camera metadata. On 29 October, `IMG_3960.jpg` and
+`IMG_3968.HEIC` remain in Forni because their GPS precedes departure; the two
+Tarvisio photos belong to Vienna's incoming journey. Preserve actual timestamps
+and insert new photos chronologically without changing existing relative order.
+
+Nine new stills have no embedded GPS and must have no fabricated exact pin:
+
+| File | Capture date/time | Album |
+| --- | --- | --- |
+| `IMG_5621.HEIC` | 11 Oct 10:48 | Salzburg (incoming train) |
+| `7B61E942…JPG` (full name above) | 20 Oct 13:09, owner supplied | Venice |
+| `79DB1CEF-AE4B-4C48-ADE6-27578265809D.DNG` | 24 Oct 08:34 | Forni |
+| `8ED788F2-35DE-4E73-8B39-269FDB51075C.JPG` | 25 Oct 16:17 | Forni |
+| `IMG_5942.HEIC` | 25 Oct 19:21 | Forni |
+| `IMG_3803.HEIC` | 26 Oct 11:07 | Forni |
+| `F4F1DAC8-A43A-4001-9953-124800412D08.JPG` | 26 Oct 14:51 | Forni |
+| `4B591C21-B1AD-48D7-90FC-F127E04B3141.JPG` | 26 Oct 14:59 | Forni |
+| `586BB2BE-1260-44D0-B62D-46C87C053B48.JPG` | 31 Oct 15:53 | Vienna |
+
+All 416 optimized private WebP/AVIF objects (246,181,038 bytes) passed remote
+SHA-256 and MIME verification. O01/O02/O03/O05/O08/O10/O11/O14/O15 inheritance
+checks retain blank copy, explicit-only Place links, reviewed/missing pin states,
+existing sidebar/fullscreen boundaries, chronology and cross-city navigation.
+Actual-model desktop/phone automation passes; desktop browser review includes
+the rail corridor, five travel rows, populated Forni album, a full RAW and an
+unlocated image. Phone checks are automated, not physical-device certification.
+All 910 tests, strict preservation of 48 routes and the actual Worker runtime
+checks pass. WIP owns the remaining Worker/Pages deployment and Studio sync status.
+
 ## Vienna and Poland dates — 1 November 2026
 
 Owner direction: “vienna is oct 29-nov 1”, then Warsaw “nov 2 - nov 6”,
@@ -28,9 +98,8 @@ checked for **1 November 2026**, confirms:
 [Date-specific ÖBB search](https://shop.oebbtickets.at/en/ticket?cref=nightride&outwardDateTime=2026-11-01T11%3A10&stationDestName=Krakow&stationOrigName=Wien).
 The operator lists the IC 115 corridor via Zebrzydowice, Czechowice-Dziedzice,
 Oświęcim, Chrzanów Śródmieście, Trzebinia and Krzeszowice. Keep these distinct
-from the retained Kraków–Bratislava proposal via Katowice. Kraków → Warsaw uses
-the reviewed Central Rail Line in reverse; no particular 2 November departure,
-train number or platform is selected. Planner times are a checked timetable,
+from the retained Kraków–Bratislava proposal via Katowice. That release used the reviewed Central Rail Line in reverse for Kraków → Warsaw;
+its unset departure is superseded by the [2 November correction](#krakówwarsaw-train-and-photo-batch--2-november-2026). Planner times are a checked timetable,
 not confirmation of tickets or actual running.
 
 The 47 legs (29 rail, 18 bus) preserve all 43 retained geometries exactly.

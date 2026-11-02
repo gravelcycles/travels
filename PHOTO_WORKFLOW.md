@@ -160,8 +160,13 @@ them until asset publishing succeeds. This prevents broken live photo links.
 
 For another camera-folder batch, compare original SHA-256 hashes against both
 the base and upload manifests before calling the incremental importer. An exact
-repeat keeps its existing photo ID, day, edits and location. Record every supplied
-file as imported, already present, or held for a stated reason. Give the owner
+repeat keeps its existing photo ID, day, edits and location. When duplicates are
+explicitly flagged, also compare decoded images for metadata-only or differently
+encoded repeated exports; visually verify matches before excluding one. Nearby
+capture times or similar scenes alone do not establish a duplicate. Keep originals
+private and intact; deduplication skips repeat imports rather than erasing files.
+Record every supplied file as imported, already present, or held for a stated
+reason. Give the owner
 a filename/date list of new photos without GPS; leave their pins unset. Dates
 outside the itinerary require an owner-selected album while retaining the real
 capture date. No full reimport is needed.

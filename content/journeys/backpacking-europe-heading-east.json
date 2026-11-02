@@ -17,7 +17,7 @@
   "photoImport": {
     "sourceDirectory": "photos/euro-eastbound"
   },
-  "note": "City stops span arrival to departure, with confirmed dates through Kraków on 11 November. Venice → Udine is by train via Mestre, followed by bus 100 to Tolmezzo and bus 110 to Forni. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed. Vienna is 29 October–1 November, Warsaw 2–6 November and Kraków 6–11 November. The onward itinerary from Bratislava to Athens is planned, not confirmed; dates, bookings and transfers remain TBD. Dotted routes mark these proposed legs. Rail is preferred where available; bus lines follow reconstructed road corridors, not operator GPS tracks. Travel from Vienna to Warsaw passes through Kraków, without a separate first Kraków stay. Warsaw is followed by Kraków, then Bratislava; Wrocław is omitted. Slovenia follows Zagreb: Ljubljana → Lake Bled, then Split and Dubrovnik. Lake Bled uses Lesce-Bled and a local bus; the return rail corridor toward Split runs via Ljubljana and Zagreb. Recheck travel dates for replacement buses. Udine, Tolmezzo, Lesce-Bled, Skopje, Tirana, Novi Pazar and Sarandë are transfer points, not extra stays. Forni–Vienna uses bus 110 to Tolmezzo and bus 100 to Udine, then an ÖBB Railjet to Vienna via Tarvisio, Villach, Klagenfurt, the Koralmbahn and Graz. This owner correction of 28 October supersedes the Carnia/Tarvisio bus transfers. Other departure times and bookings remain unconfirmed. Both directions use the same 100/110 bus corridors; small one-way city-road and motorway-carriageway differences remain representative. Vienna–Kraków departs 1 November at 11:10: RJ 252 to Břeclav, EC 130 to Bohumín, then IC 115 to Kraków (scheduled arrival 16:38). Kraków–Warsaw on 2 November is by fast train on the Central Rail Line; no departure is selected.",
+  "note": "City stops span arrival to departure, with confirmed dates through Kraków on 11 November. Venice → Udine is by train via Mestre, followed by bus 100 to Tolmezzo and bus 110 to Forni. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed. Vienna is 29 October–1 November, Warsaw 2–6 November and Kraków 6–11 November. The onward itinerary from Bratislava to Athens is planned, not confirmed; dates, bookings and transfers remain TBD. Dotted routes mark these proposed legs. Rail is preferred where available; bus lines follow reconstructed road corridors, not operator GPS tracks. Travel from Vienna to Warsaw passes through Kraków, without a separate first Kraków stay. Warsaw is followed by Kraków, then Bratislava; Wrocław is omitted. Slovenia follows Zagreb: Ljubljana → Lake Bled, then Split and Dubrovnik. Lake Bled uses Lesce-Bled and a local bus; the return rail corridor toward Split runs via Ljubljana and Zagreb. Recheck travel dates for replacement buses. Udine, Tolmezzo, Lesce-Bled, Skopje, Tirana, Novi Pazar and Sarandë are transfer points, not extra stays. Forni–Vienna uses bus 110 to Tolmezzo and bus 100 to Udine, then an ÖBB Railjet to Vienna via Tarvisio, Villach, Klagenfurt, the Koralmbahn and Graz. This owner correction of 28 October supersedes the Carnia/Tarvisio bus transfers. Other departure times and bookings remain unconfirmed. Both directions use the same 100/110 bus corridors; small one-way city-road and motorway-carriageway differences remain representative. Vienna–Kraków departs 1 November at 11:10: RJ 252 to Břeclav, EC 130 to Bohumín, then IC 115 to Kraków (scheduled arrival 16:38). Kraków–Warsaw on 2 November departs at 12:06: Os 34132 via Trzebinia and Jaworzno Szczakowa to Zawiercie (13:12), changing to EIC 4504 at 13:34 for Warsaw (15:24 scheduled). Zawiercie is a transfer, not a separate stay.",
   "cover": "",
   "places": [
     {
@@ -347,6 +347,13 @@
       "lng": 18.35817,
       "lat": 49.9004,
       "country": "Czechia"
+    },
+    {
+      "id": "backpacking-europe-heading-east-zawiercie",
+      "name": "Zawiercie",
+      "lng": 19.42303,
+      "lat": 50.48094,
+      "country": "Poland"
     }
   ],
   "segments": [
@@ -918,25 +925,41 @@
       "duration": "126 min · IC 115 · 1 Nov 14:32–16:38"
     },
     {
-      "id": "backpacking-europe-heading-east-krakow-warsaw",
+      "id": "backpacking-europe-heading-east-krakow-zawiercie",
       "mode": "train",
       "from": "backpacking-europe-heading-east-krakow",
-      "to": "backpacking-europe-heading-east-warsaw",
+      "to": "backpacking-europe-heading-east-zawiercie",
       "via": [
         {
-          "name": "Miechów",
-          "lng": 20.01125,
-          "lat": 50.35428
+          "name": "Trzebinia",
+          "lat": 50.1540031,
+          "lng": 19.4529019
         },
         {
-          "name": "Włoszczowa Północ",
-          "lng": 19.94709,
-          "lat": 50.85777
+          "name": "Jaworzno Szczakowa",
+          "lat": 50.2471161,
+          "lng": 19.2933003
+        },
+        {
+          "name": "Dąbrowa Górnicza Ząbkowice",
+          "lat": 50.3668464,
+          "lng": 19.2650044
         }
       ],
       "geometryStatus": "reconstructed",
-      "distanceKm": 293.7,
-      "duration": "Fast train"
+      "distanceKm": 89,
+      "durationMinutes": 66,
+      "duration": "66 min · Os 34132 · 2 Nov 12:06–13:12"
+    },
+    {
+      "id": "backpacking-europe-heading-east-zawiercie-warsaw",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-zawiercie",
+      "to": "backpacking-europe-heading-east-warsaw",
+      "geometryStatus": "reconstructed",
+      "distanceKm": 252.7,
+      "durationMinutes": 110,
+      "duration": "110 min · EIC 4504 · 2 Nov 13:34–15:24"
     },
     {
       "id": "backpacking-europe-heading-east-warsaw-krakow",
@@ -1667,7 +1690,8 @@
         "backpacking-europe-heading-east-vienna-breclav",
         "backpacking-europe-heading-east-breclav-bohumin",
         "backpacking-europe-heading-east-bohumin-krakow",
-        "backpacking-europe-heading-east-krakow-warsaw"
+        "backpacking-europe-heading-east-krakow-zawiercie",
+        "backpacking-europe-heading-east-zawiercie-warsaw"
       ],
       "calendarDate": "2026-11-02",
       "calendarEndDate": "2026-11-06"

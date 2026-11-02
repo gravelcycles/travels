@@ -1,5 +1,15 @@
 # Changelog
 
+## 2 November 2026 — Kraków–Warsaw 12:06 and Venice–Vienna photos
+
+- Replaced the direct Kraków–Warsaw assumption with Os 34132 via Trzebinia to
+  Zawiercie, then EIC 4504 on the Central Rail Line, using reviewed rail geometry.
+- Added 104 new stills, skipping 47 repeats and holding four
+  clips. Preserved existing photos, Trash, copy, cover and chronological albums;
+  retained nine missing-GPS empty states and the owner-supplied Venice timestamp.
+- Updated the trip intake/provenance, feature count and physical-corridor checks.
+
+
 ## 1 November 2026 — Vienna and Poland dates
 
 - Confirmed Vienna 29 October–1 November, Warsaw 2–6 November and Kraków

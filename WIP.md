@@ -1,5 +1,35 @@
 # Current workstreams
 
+## Kraków–Warsaw 12:06 and photo intake — 2 November 2026
+
+Authorized: rebuild today's 12:06 Kraków–Warsaw track and incrementally import
+`photos/venice-vienna ish/`, removing duplicates. The owner asks the agent to
+research the train; ÖBB identifies Os 34132 to Zawiercie, then EIC 4504.
+Current evidence, supersession, deduplication and missing-GPS list live in
+[the trip record](docs/HEADING_EAST.md#krakówwarsaw-train-and-photo-batch--2-november-2026).
+Work is isolated from the dirty primary checkout at
+`/private/tmp/travels-krakow-warsaw-20261102`, based on remote main `053d509`.
+Implemented the two railway corridors (89.0/252.7 km); retained all other
+46 geometries and the 30 stays. Prepared 104 new stills from 155 supplied files:
+47 repeat stills skipped, four clips held. All 167 prior intake records, 25 Trash
+choices, saved copy/pins, cover and existing relative album orders are unchanged.
+The owner supplies the undated Venice selfie's capture time as 20 October 2026 at 13:09. Nine missing GPS pins
+remain unset; all 95 available camera pins and six chronological albums are
+reviewed. All 910 tests, the production build, 48-route strict preservation and
+the actual Worker runtime checks pass. Actual desktop browser review covers the
+western rail corridor, five travel rows, populated Forni sidebar/fullscreen,
+blank photo copy, RAW display and unlocated city context; actual-model automated
+checks cover phone route taps and desktop/phone cross-city photo navigation.
+The owner explicitly approved the private 104-photo upload and renewal of the
+existing Cloudflare authorization; device OAuth completed after the short
+localhost callback expired. All 416 objects (246,181,038 bytes) are privately
+uploaded and checksum/MIME verified; all 104 photo/AVIF descriptors are published.
+Matching Worker eligibility/share indexes are deployed as version
+`2d7374c0-f95b-4a74-87d9-1393cd1558fd`; prior version
+`3843b54d-a2be-4f67-8aa4-7dfd25a088b1` is the rollback reference.
+Next: publish Pages, verify fresh public files/media boundaries, and synchronize
+only scoped primary Studio sources/assets. Pages publication is still pending.
+
 ## Vienna and Poland dates — 1 November 2026
 
 Authorized: confirm Vienna 29 October–1 November, Warsaw 2–6 November and
@@ -27,8 +57,8 @@ public browser confirms the requested dates/order and four incoming train rows.
 The primary Studio sources are synchronized, with a passing build and all 58
 targeted checks. Its original branch/HEAD and 279 other pre-existing files are
 unchanged. No media upload, private-access change or Worker deployment was
-needed. No implementation or publication remains; the 2 November fast train
-still has no selected departure.
+needed. No work remains for that date correction. Its unset 2 November departure is
+superseded by the 12:06 train workstream above.
 
 ## Matching Forni bus corridors — 28 October follow-up
 

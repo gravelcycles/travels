@@ -2206,65 +2206,130 @@
         ]
       }
     },
-    "backpacking-europe-heading-east-krakow-warsaw": {
+    "backpacking-europe-heading-east-krakow-zawiercie": {
       "strategy": "preserve",
       "provenance": {
-        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
-        "retrievedAt": "2026-11-01",
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-11-02",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=50.0684%2C19.9474&point=50.1540031%2C19.4529019&point=50.2471161%2C19.2933003&point=50.3668464%2C19.2650044&point=50.4809444%2C19.4231181&profile=all_tracks_1435&points_encoded=false&instructions=false&details=railway_class&way_point_max_distance=0&details=road_environment",
         "profile": "all_tracks_1435",
-        "dataDate": "2026-10-08T04:00:00Z",
-        "requestUrls": [
-          "https://routing.openrailrouting.org/route?point=52.2288%2C21.0038&point=50.8545%2C19.9606&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=50.8545%2C19.9606&point=50.3532%2C20.0165&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=50.3532%2C20.0165&point=50.0684%2C19.9474&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
-        ],
-        "rawSha256": [
-          {
-            "file": "backpacking-europe-heading-east-warsaw-krakow-part1.json",
-            "sha256": "bdb1d1403c12574d0e41fbcbcae919585075aaf1adc025494b1bfd6437baa2b5"
-          },
-          {
-            "file": "backpacking-europe-heading-east-warsaw-krakow-part2.json",
-            "sha256": "b1058205a0f1f71aeb58f04f825d97e8cbab891c02eebeae8b09fd4a8b1aec10"
-          },
-          {
-            "file": "backpacking-europe-heading-east-warsaw-krakow-part3.json",
-            "sha256": "636dd94a9f0407c31a40b412954652ae5a267daf8cf88fec45d29efa7ac983ae"
-          }
-        ],
+        "dataDate": "2026-11-01T05:00:00Z",
+        "rawSha256": "1dee7c23f81f097d89c06f5625eada46bae780ec17d6742c70f6ee477a5d00ec",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0,
-        "rawPointCount": 533,
-        "outputPointCount": 533,
-        "rawDistanceKm": 293.672,
-        "distanceKm": 293.672,
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 821,
+        "outputPointCount": 263,
+        "rawDistanceKm": 89.029,
+        "distanceKm": 89.017,
         "endpointOffsetsMeters": [
           2,
-          2
+          6
         ],
         "waypointOffsetsMeters": [
           2,
-          1016,
-          392,
+          1,
+          0,
+          1,
+          6
+        ],
+        "largestRawGapKm": 1.824,
+        "maxSectionJoinMeters": 0,
+        "serviceEvidence": {
+          "provider": "ÖBB operator journey planner",
+          "url": "https://shop.oebbtickets.at/en/ticket/timetable",
+          "checkedAt": "2026-11-02",
+          "date": "2026-11-02",
+          "train": "Os 34132",
+          "departure": "12:06",
+          "arrival": "13:12",
+          "intermediateStops": [
+            "Kraków Łobzów",
+            "Kraków Bronowice",
+            "Zabierzów",
+            "Krzeszowice",
+            "Trzebinia",
+            "Jaworzno Szczakowa",
+            "Sosnowiec Maczki",
+            "Dąbrowa Górnicza Południowa",
+            "Dąbrowa Górnicza Ząbkowice",
+            "Łazy"
+          ]
+        },
+        "stationSources": [
+          {
+            "name": "Trzebinia",
+            "lat": 50.1540031,
+            "lng": 19.4529019,
+            "url": "https://portalpasazera.pl/KatalogStacji?stacja=Trzebinia"
+          },
+          {
+            "name": "Jaworzno Szczakowa",
+            "lat": 50.2471161,
+            "lng": 19.2933003,
+            "url": "https://portalpasazera.pl/KatalogStacji?stacja=Jaworzno%20Szczakowa"
+          },
+          {
+            "name": "Dąbrowa Górnicza Ząbkowice",
+            "lat": 50.3668464,
+            "lng": 19.2650044,
+            "url": "https://portalpasazera.pl/KatalogStacji?stacja=D%C4%85browa%20G%C3%B3rnicza%20Z%C4%85bkowice"
+          },
+          {
+            "name": "Zawiercie",
+            "lat": 50.4809444,
+            "lng": 19.4231181,
+            "url": "https://portalpasazera.pl/KatalogStacji?stacja=Zawiercie"
+          }
+        ],
+        "notes": "Owner confirms the 12:06 Kraków–Warsaw journey on 2 November. Date-specific operator lookup identifies a change at Zawiercie: Os 34132 12:06–13:12, then EIC 4504 13:34–15:24. Alignment reconstructs the physical rail corridor, not the exact parallel track or actual running times. First leg follows Trzebinia–Jaworzno Szczakowa–Sosnowiec Maczki–Dąbrowa Górnicza Ząbkowice; second follows the Central Rail Line without intermediate passenger stops until Warszawa Zachodnia. Warsaw endpoint request includes no compulsory platform waypoint: a rejected candidate through a mismatched Zachodnia track created a 38 km return loop. Final candidate is continuous with no such reversal. All other geometry is retained."
+      }
+    },
+    "backpacking-europe-heading-east-zawiercie-warsaw": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap",
+        "retrievedAt": "2026-11-02",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=50.4809444%2C19.4231181&point=52.2288%2C21.0038&profile=all_tracks_1435&points_encoded=false&instructions=false&details=railway_class&way_point_max_distance=0&details=road_environment",
+        "profile": "all_tracks_1435",
+        "dataDate": "2026-11-01T05:00:00Z",
+        "rawSha256": "057cdc948501baf268e059b12d321d1a26542dcafdfcea04460617dd885e4aed",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 0.00003,
+        "rawPointCount": 971,
+        "outputPointCount": 339,
+        "rawDistanceKm": 252.706,
+        "distanceKm": 252.698,
+        "endpointOffsetsMeters": [
+          6,
+          2
+        ],
+        "waypointOffsetsMeters": [
+          6,
           2
         ],
         "largestRawGapKm": 5.178,
         "maxSectionJoinMeters": 0,
-        "notes": "Fast Kraków–Warsaw corridor on the Central Rail Line. Retained reverse direction remains unchanged for the 6 November return. Geometric reconstruction does not certify a selected service.",
-        "derivedFrom": [
+        "serviceEvidence": {
+          "provider": "ÖBB operator journey planner",
+          "url": "https://shop.oebbtickets.at/en/ticket/timetable",
+          "checkedAt": "2026-11-02",
+          "date": "2026-11-02",
+          "train": "EIC 4504",
+          "departure": "13:34",
+          "arrival": "15:24",
+          "intermediateStops": [
+            "Warszawa Zachodnia"
+          ]
+        },
+        "stationSources": [
           {
-            "segmentId": "backpacking-europe-heading-east-warsaw-krakow",
-            "sourceCommit": "c5075c2",
-            "geometrySha256": "f65fdf2ec2f31bf5f52eedcf9c65f14d0fe70f29d342bb46ca12e63c9f73c5fa",
-            "operation": "Reverse the retained reviewed Central Rail Line geometry without smoothing or connectors."
+            "name": "Zawiercie",
+            "lat": 50.4809444,
+            "lng": 19.4231181,
+            "url": "https://portalpasazera.pl/KatalogStacji?stacja=Zawiercie"
           }
         ],
-        "serviceEvidence": {
-          "source": "Owner instruction, 1 November 2026",
-          "travelDate": "2026-11-02",
-          "service": "Fast train",
-          "notes": "No departure, train number or platform selected."
-        }
+        "notes": "Owner confirms the 12:06 Kraków–Warsaw journey on 2 November. Date-specific operator lookup identifies a change at Zawiercie: Os 34132 12:06–13:12, then EIC 4504 13:34–15:24. Alignment reconstructs the physical rail corridor, not the exact parallel track or actual running times. First leg follows Trzebinia–Jaworzno Szczakowa–Sosnowiec Maczki–Dąbrowa Górnicza Ząbkowice; second follows the Central Rail Line without intermediate passenger stops until Warszawa Zachodnia. Warsaw endpoint request includes no compulsory platform waypoint: a rejected candidate through a mismatched Zachodnia track created a 38 km return loop. Final candidate is continuous with no such reversal. All other geometry is retained."
       }
     }
   }
