@@ -4664,7 +4664,8 @@
     "location": {
       "lat": 48.19961111111111,
       "lng": 16.352711111111113
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-6d238f9b0292a3896d88": {
     "reviewed": true,
@@ -4673,7 +4674,8 @@
     "location": {
       "lat": 48.20130833333334,
       "lng": 16.349091666666666
-    }
+    },
+    "trashed": true
   },
   "backpacking-europe-heading-east-upload-bc5e65ff38a2a2cd65cb": {
     "reviewed": true,

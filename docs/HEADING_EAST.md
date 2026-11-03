@@ -1,5 +1,26 @@
 # Backpacking Europe: Heading East
 
+## Vienna photo cleanup — 3 November 2026
+
+Owner follow-up after editing in localhost Studio: “deleted a couple of photos.
+pls update”. The saved source differs from the last release in exactly two
+`trashed: true` fields, both in Vienna:
+
+| Photo ID suffix | Capture time on 31 October |
+| --- | --- |
+| `upload-45558162b72ea4a90efd` | 16:45 |
+| `upload-6d238f9b0292a3896d88` | 17:51 |
+
+Both IDs use the `backpacking-europe-heading-east-` prefix. Honor these removals
+through the existing recoverable Trash flow; originals and derivatives remain
+private. All other overrides, notes, pins, album order, cover and trip/video
+sources are unchanged. The latest Studio recovery snapshot is clean with no
+unfinished photo fields. The reader now has **211 stills + three videos = 214
+items**; Vienna has five stills and its retained video. The earlier counts below
+describe their dated releases. Verify the two photos are absent from the public
+photo arrays and Vienna album while IMG_3883 stays restored and the 32-second
+Forni clip stays hidden. Release checks are recorded in [WIP](../WIP.md#vienna-photo-cleanup--3-november-2026).
+
 ## Remove the last Forni clip — 3 November 2026
 
 Owner follow-up: “remove the last forni di sopra video … the 32 second one”.

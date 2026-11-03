@@ -2843,24 +2843,6 @@ export default {
             "width": 480,
             "height": 853
           }
-        },
-        "backpacking-europe-heading-east-upload-45558162b72ea4a90efd": {
-          "dayId": "backpacking-europe-heading-east-vienna-stay",
-          "title": "Vienna",
-          "thumbnail": {
-            "key": "v1/2d149a3f5c678d62fa21e8c652260f0a10e26b29b98cf9083a8a30f1dfefacbc.webp",
-            "width": 480,
-            "height": 640
-          }
-        },
-        "backpacking-europe-heading-east-upload-6d238f9b0292a3896d88": {
-          "dayId": "backpacking-europe-heading-east-vienna-stay",
-          "title": "Vienna",
-          "thumbnail": {
-            "key": "v1/be130f773c1f43804f1987271839a900699da6c385000fcf4175dcdd3624b89e.webp",
-            "width": 480,
-            "height": 640
-          }
         }
       }
     },

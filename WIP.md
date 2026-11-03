@@ -1,5 +1,24 @@
 # Current workstreams
 
+## Vienna photo cleanup — 3 November 2026
+
+Authorized: publish the two saved localhost Studio photo removals. The
+[trip record](docs/HEADING_EAST.md#vienna-photo-cleanup--3-november-2026) identifies
+the two Vienna stills. Source comparison against released `f2f09d5` finds only
+their `trashed: true` flags; the latest recovery snapshot is clean, with no
+unfinished photo fields. Work is isolated on `codex/photo-cleanup-20261103` at
+`/private/tmp/travels-restore-20261102`; primary pending work and running Studio
+are preserved. All 924 tests, the production build and actual Worker-runtime
+checks pass. Public photo/override arrays exclude both removed IDs; counts are
+211 stills/three videos, 214 journey items and six Vienna items. IMG_3883 remains
+visible and the 32-second Forni clip remains hidden. All other source overrides
+and trip/video data match the previous release. The build also removes exactly
+those two IDs from the discussion/share indexes; deploy the matching Worker
+before Pages under the existing operations contract. Primary build passes;
+only the three scoped documentation files changed beyond the user's saved
+sources/output, with all other pending files and Studio retained. Pending:
+Worker/index deployment, Pages publication and fresh public album verification.
+
 ## Forni clip removal and play icon — 3 November 2026
 
 Owner requests removing the last 32-second Forni clip and a normal circular play

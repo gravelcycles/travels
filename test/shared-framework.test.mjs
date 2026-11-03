@@ -1000,7 +1000,7 @@ test('timestamped video placement inherits real, demo and independently populate
   const removedClipId='backpacking-europe-heading-east-video-6652cc4e8af2dd47f003';
   assert.equal(heading.videos.find(video=>video.id===removedClipId).hidden,true,'The removed 32-second clip stays recoverable in source');
   assert.ok(!media.ordered.some(item=>item.id===removedClipId),'The removed clip is absent from the reader');
-  assert.equal(vienna[0].mediaType,'video');assert.equal(media.ordered.length,216);
+  assert.equal(vienna[0].mediaType,'video');assert.equal(media.ordered.length,214);
   assert.deepEqual(heading,before);
   const family=data.journeys.find(j=>j.id==='switzerland-italy-family-2026');
   family.photos=family.photos.map(photo=>globalThis.JOURNEY_ATLAS_UTILS.resolvePhoto(photo,overrides.photos[photo.id])).filter(photo=>!photo.trashed);
