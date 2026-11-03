@@ -16,8 +16,18 @@ and trip/video data match the previous release. The build also removes exactly
 those two IDs from the discussion/share indexes; deploy the matching Worker
 before Pages under the existing operations contract. Primary build passes;
 only the three scoped documentation files changed beyond the user's saved
-sources/output, with all other pending files and Studio retained. Pending:
-Worker/index deployment, Pages publication and fresh public album verification.
+sources/output, with all 297 other tracked/pending files and Studio retained.
+Complete: matching Worker/index `2e43e373-fa9b-4d7c-86ab-e00f67b3db2b` was deployed
+before Pages (prior version `181409f3-bf05-4314-9b4c-b5110ad220eb`). Published
+`d96887f` through successful
+[Pages run 41605882177](https://github.com/gravelcycles/travels/actions/runs/41605882177).
+All six changed public outputs match the tested bytes. Fresh remembered-access
+browser verification shows five Vienna stills/one video, with the last retained
+photo at journey item 214 of 214 and normal protected video playback (readyState
+4, advancing time, no media error). Both deleted IDs are absent from public
+photo/override arrays and the discussion/share indexes. The trip record captures
+these scoped removals; no shared rule changed. Localhost Studio remains running
+at port 4173. No accepted implementation or publication work remains.
 
 ## Forni clip removal and play icon — 3 November 2026
 
