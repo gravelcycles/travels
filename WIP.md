@@ -19,7 +19,15 @@ rules, feature inventory and trip provenance record both corrections. Scoped
 primary synchronization preserves its independent renderer: six targeted tests
 and its build pass; 18 task files changed while 282 other pending/tracked files,
 branch `updates` and HEAD `3373246` are retained. Latest remote main remains
-`d22dc38`. Pending: Pages publication and fresh public verification.
+`d22dc38`. Complete: published `5a17ffb` through successful
+[Pages run 41600145615](https://github.com/gravelcycles/travels/actions/runs/41600145615).
+All nine changed public outputs match the tested release bytes. A fresh public
+page restores remembered access, shows only the 35/12-second Forni clips and
+216 journey items, and confirms the icon's accessible name/64 px target and
+native playback (readyState 4, advancing time, no media error). Next from the
+12-second clip reaches IMG_3856 directly, skipping the removed portrait clip.
+Private originals and derivatives remain protected and recoverable. The play
+icon and removal are delivered; no accepted implementation/publication remains.
 
 ## Video viewer gestures and landscape size — 3 November 2026
 
