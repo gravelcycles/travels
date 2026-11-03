@@ -871,6 +871,10 @@ test('group routes and day videos are shared by the reference, sample and a fres
     const html = renderJourneyPage(root, journey, { preview: true });
     for (const id of ['travel-party', 'viewer-video', 'journey-video', 'mobile-routes-action', 'viewer-video-play']) assert.ok(ids(html).includes(id));
     assert.match(html, /<video id="journey-video" controls playsinline preload="none"/);
+    const playButton = html.match(/<button id="viewer-video-play"[^>]*>([\s\S]*?)<\/button>/);
+    assert.match(playButton[0], /aria-label="Play video"/);
+    assert.match(playButton[1], /<svg[^>]*aria-hidden="true"/);
+    assert.equal(playButton[1].replace(/<[^>]+>/g, '').trim(), '', 'Play is an icon with an accessible name, not a text pill');
     assert.ok(html.indexOf('id="journey-video"') > html.indexOf('id="photo-dialog"'));
     assert.ok(html.indexOf('id="journey-video"') < html.indexOf('id="replay-dialog"'));
     assert.doesNotMatch(html, /id="video-dialog"|id="mobile-day-videos"/);
@@ -992,8 +996,11 @@ test('timestamped video placement inherits real, demo and independently populate
   heading.days=heading.days.map(day=>({...day,...overrides.days[day.id]}));
   const before=structuredClone(heading),media=globalThis.JOURNEY_ATLAS_MEDIA.index(heading);
   const forni=media.byDay.get('backpacking-europe-heading-east-forni-stay'),vienna=media.byDay.get('backpacking-europe-heading-east-vienna-stay');
-  assert.deepEqual(forni.map((item,i)=>item.mediaType==='video'?i:null).filter(i=>i!==null),[14,16,17]);
-  assert.equal(vienna[0].mediaType,'video');assert.equal(media.ordered.length,217);
+  assert.deepEqual(forni.map((item,i)=>item.mediaType==='video'?i:null).filter(i=>i!==null),[14,16]);
+  const removedClipId='backpacking-europe-heading-east-video-6652cc4e8af2dd47f003';
+  assert.equal(heading.videos.find(video=>video.id===removedClipId).hidden,true,'The removed 32-second clip stays recoverable in source');
+  assert.ok(!media.ordered.some(item=>item.id===removedClipId),'The removed clip is absent from the reader');
+  assert.equal(vienna[0].mediaType,'video');assert.equal(media.ordered.length,216);
   assert.deepEqual(heading,before);
   const family=data.journeys.find(j=>j.id==='switzerland-italy-family-2026');
   family.photos=family.photos.map(photo=>globalThis.JOURNEY_ATLAS_UTILS.resolvePhoto(photo,overrides.photos[photo.id])).filter(photo=>!photo.trashed);

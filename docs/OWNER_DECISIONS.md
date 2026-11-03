@@ -194,6 +194,15 @@ photos as well as samples when the internal session is available.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
+Later follow-up, **3 November 2026**: replace the visible “Play video” text pill
+with a normal, restrained circular play icon (“a normal apple-esque play button”).
+This applies to the shared viewer across every atlas. Keep an opaque, readable
+button, at least a 44 px target, the accessible name “Play video” and keyboard
+activation/focus. It starts playback explicitly and disappears while playing;
+native controls and gallery gestures retain their behavior. Check the icon on
+phone portrait/landscape and desktop in the target, reference, demo and fresh draft.
+This supersedes the labeled central pill, not the thumbnail duration badges.
+
 Follow-up, **3 November 2026**: videos must share the viewer's horizontal media
 swipes, tap-to-hide/restore chrome, pull-down return and pull-up Location. The
 owner reports that excluding clips from photo gestures prevents browsing and

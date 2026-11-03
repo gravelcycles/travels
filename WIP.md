@@ -1,5 +1,26 @@
 # Current workstreams
 
+## Forni clip removal and play icon — 3 November 2026
+
+Owner requests removing the last 32-second Forni clip and a normal circular play
+button. [The trip record](docs/HEADING_EAST.md#remove-the-last-forni-clip--3-november-2026)
+identifies the 31.507667-second portrait clip; the
+[shared decision](docs/OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
+supersedes the visible text pill. Isolated on `codex/video-play-button-20261103`
+at `/private/tmp/travels-restore-20261102`, based on main `d22dc38`; unrelated
+primary work is preserved. Source hides only that clip; shared markup/styles
+use an accessible opaque 64 px circular icon. All 924 tests and the production
+build pass. Actual target/reference/demo/independently populated draft checks
+confirm the icon, explicit playback and no media errors; target phone portrait,
+844 × 390 landscape, desktop keyboard activation and video → next-still browsing
+pass. Forni has 37 items and the journey 216; the removed clip is absent from
+public bundles, with all other trip source data unchanged. Current owner/media
+rules, feature inventory and trip provenance record both corrections. Scoped
+primary synchronization preserves its independent renderer: six targeted tests
+and its build pass; 18 task files changed while 282 other pending/tracked files,
+branch `updates` and HEAD `3373246` are retained. Latest remote main remains
+`d22dc38`. Pending: Pages publication and fresh public verification.
+
 ## Video viewer gestures and landscape size — 3 November 2026
 
 Owner correction: videos should share the controls that work for photos;

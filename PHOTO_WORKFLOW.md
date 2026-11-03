@@ -21,6 +21,8 @@ transfer, then publish separate optimized derivatives.
 The shared video viewer also inherits picture swipes, chrome taps and pull
 navigation, with native playback/seeking kept in its control strip. Short
 landscape uses compact chrome and hiding it gives the clip the full viewport.
+Its central play control is an opaque circular icon, without visible text, with
+an accessible “Play video” name, keyboard focus and a minimum 44 px target.
 The [mixed-media contract](JOURNEY_WORKFLOW.md#day-videos) owns
 the 3 November 2026 correction and its input boundaries; verify paused and
 playing photo ↔ video ↔ video navigation without changing photo zoom or access.

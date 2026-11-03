@@ -3259,7 +3259,8 @@
       "protected": true,
       "assetStatus": "published",
       "sourceHash": "6652cc4e8af2dd47f00397ab3745ecc7fea0d03d9845403c8cb7e687a446f9fb",
-      "takenAt": "2026-10-26 · 14:51:40"
+      "takenAt": "2026-10-26 · 14:51:40",
+      "hidden": true
     },
     {
       "id": "backpacking-europe-heading-east-video-668d7c4eac3085f7d88a",

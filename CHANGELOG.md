@@ -1,5 +1,13 @@
 # Changelog
 
+## 3 November 2026 — Forni clip removal and play icon
+
+- Removed the requested 32-second portrait Forni video from the reader, keeping
+  its private assets and recoverable hidden source. Other media/edits remain.
+- Replaced the central “Play video” pill with an opaque circular play icon across
+  the shared viewer, preserving its accessible name, keyboard and playback.
+- Updated the current owner/media guidance and Heading East provenance.
+
 ## 3 November 2026 — Video gestures and landscape playback
 
 - Enabled gallery swipes, chrome taps, pull-down return and pull-up Location on

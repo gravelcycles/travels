@@ -1,5 +1,21 @@
 # Backpacking Europe: Heading East
 
+## Remove the last Forni clip — 3 November 2026
+
+Owner follow-up: “remove the last forni di sopra video … the 32 second one”.
+Hide `backpacking-europe-heading-east-video-6652cc4e8af2dd47f003`, the portrait
+`B8A7934C-B9EC-44F8-9B52-157B1816CFBF.MP4`, whose reviewed duration is
+31.507667 seconds and camera capture is 26 October 14:51:40. This supersedes the
+2 November inclusion of that clip only. Preserve its private original,
+derivatives and recoverable source record (`hidden: true`). The reader must omit
+it from all albums, previews, counts and public video bundles. The remaining
+213 stills and three clips keep their saved content/order; Forni has 35 stills
+and two clips (positions 15 and 17), Vienna seven stills and one clip. The
+retained Forni sequence is IMG_3838 → IMG_3849 video → IMG_3850 → A001 video →
+IMG_3856. All earlier four-clip counts below describe their dated release.
+The same follow-up's shared play-icon preference is recorded in the
+[owner decision](OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026).
+
 ## Fullscreen media fit and clip placement — 2 November 2026
 
 Owner follow-up after the recovery release: “there's some sizing issues with

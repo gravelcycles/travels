@@ -435,6 +435,9 @@ native mobile gesture ownership, hidden/local video exclusion, planner
 preservation and template inheritance. Day details derive each group's roster,
 route and overnight from the source itinerary, even while a group is selected.
 Videos now use the existing photo viewer and all album/grid entry points.
+The shared template/styles supply an opaque circular play icon with an accessible
+“Play video” name; the 3 November follow-up replaces the visible text pill while
+retaining explicit playback, keyboard focus and native controls.
 The 3 November correction gives video pictures the same horizontal browsing,
 chrome taps and pull navigation; native playback/seeking retains its own lower
 control strip. Short landscape uses compact chrome, and hidden chrome releases

@@ -770,7 +770,11 @@ player. Extraction is serialized and the cache is bounded. The video host must
 permit cross-origin frame extraction; supply a reviewed HTTPS poster when it
 does not. A thumbnail failure leaves the video playable with a fallback label.
 
-Playback uses an explicit large play control, native play/pause/seek/volume/
+Playback starts with a simple opaque circular play icon (64 px), with the
+accessible name “Play video” and normal keyboard activation/focus. No visible
+text pill; it hides while playing. This later **3 November 2026** owner correction
+applies to the shared template/styles, including demos and fresh drafts.
+Playback uses native play/pause/seek/volume/
 fullscreen controls, `playsinline` and `preload="none"`. Opening a video does not
 autoplay. Captions sit outside the player controls. Switching to a photo,
 changing groups/trips or closing the viewer releases the source; opening the
