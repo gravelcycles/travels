@@ -12,7 +12,7 @@ import { studioRouteAvailability, proposeStudioRoute } from '../scripts/studio-r
 import { photoImportConfig } from '../scripts/photo-import-config.mjs';
 import '../dist/assets/replay-utils.js';
 import '../dist/assets/arrival-chapter.js';
-import {arrivalCameraHarness} from './arrival-camera-harness.mjs';
+import {arrivalCameraHarness,arrivalRouteHarness} from './arrival-camera-harness.mjs';
 import {openingRouteHarness} from './opening-route-harness.mjs';
 import '../dist/assets/atlas-utils.js';
 import '../dist/assets/map-style.js';
@@ -1507,6 +1507,33 @@ test('reference, demo, city stops and independent populated draft inherit visibl
         assert.equal(moves[0].camera.padding,undefined,'No second offset can crop vertical routes');
         assert.equal(fits[0].options.padding.bottom,phone?64:154);
       }
+    }
+  }
+});
+
+test('arrival completion preserves selected routes for reference, demo, city stops and a populated fresh draft', t => {
+  const root=fixture(t),draft=createJourney(root,{...input,slug:'arrival-route-style-draft',eventMode:'city'});
+  draft.places=[{id:'harbour',name:'Harbour',lng:139.7,lat:35.6},{id:'garden',name:'Garden',lng:139.8,lat:35.7}];
+  draft.segments=[{id:'draft-train',mode:'train',from:'harbour',to:'garden',geometry:[[139.7,35.6],[139.8,35.7]]},
+    {id:'draft-bus',mode:'bus',planningStatus:'tbd',from:'garden',to:'harbour',geometry:[[139.8,35.7],[139.7,35.6]]}];
+  const first=draft.days[0];
+  draft.days=[{...first,calendarEndDate:first.calendarDate},
+    {...first,id:`${draft.id}-return`,number:2,calendarDate:'2028-02-29',calendarEndDate:'2028-02-29'},
+    {...first,id:`${draft.id}-rest`,number:3,calendarDate:'2028-03-01',calendarEndDate:'2028-03-01',segmentIds:[]}];
+  draft.days[0].placeId='garden';draft.days[0].segmentIds=['draft-train'];
+  draft.days[1].placeId='harbour';draft.days[1].segmentIds=['draft-bus'];
+  const {data,routes}=loadContent(root);
+  for(const journey of [data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.kind==='demo'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),draft]){
+    for(const day of journey.days){
+      const h=arrivalRouteHarness(journey,routes,day.id);
+      const paints=()=>h.layers().filter(layer=>layer.id.startsWith('main-')).map(({id,paint})=>({id,paint}));
+      const expected=paints();
+      h.start();if(h.context.arrivalPlan.legs.length){h.tick(0);h.tick(1750);}
+      assert.equal(h.context.phase,'stay',`${journey.id}: ${day.id}`);
+      assert.deepEqual(paints(),expected,'Completion retains transport colors, patterns, width, opacity and context');
+      for(const layer of h.layers().filter(layer=>layer.id.startsWith('arrival-guide-')))assert.equal(layer.layout.visibility,'none','The transient gray guide cannot cover restored routes');
+      h.start();h.skip();assert.deepEqual(paints(),expected,'Skipping preserves the same selected routes');
+      h.start(true);assert.deepEqual(paints(),expected,'Reduced motion inherits the same resting map');
     }
   }
 });

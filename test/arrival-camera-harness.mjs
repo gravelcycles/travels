@@ -1,8 +1,36 @@
 import fs from 'node:fs';
 import vm from 'node:vm';
 import '../dist/assets/arrival-chapter.js';
+import {routeOverlapHarness} from './route-overlap-harness.mjs';
 const source=fs.readFileSync(new URL('../dist/assets/app.js',import.meta.url),'utf8');
 function fn(name){const start=source.indexOf(`  function ${name}(`);return source.slice(start,source.indexOf('\n  function ',start+1));}
+
+// Keep the production route painter and arrival-to-city callbacks together;
+// only the canvas, camera and clock are isolated from browser rendering.
+export function arrivalRouteHarness(journey, routes, dayId) {
+  const h=routeOverlapHarness(journey,routes,dayId),{context,map}=h;
+  const queued=new Map(),cameraMoves=[];let next=0,reducedMotion=false;
+  Object.assign(context,{arrivalChapter:null,arrivalDrawing:null,arrivalPlaceMarkers:[],mainFeedback:null,
+    arrivalPlan:globalThis.JOURNEY_ATLAS_ARRIVAL.plan(journey.segments.filter(s=>context.activeDay().segmentIds.includes(s.id)),context.segmentCoordinates),
+    cityCamera:()=>({center:[11,47],zoom:12.5}),mapPadding:()=>32,prefersReducedMotion:()=>reducedMotion,
+    renderArrivalChapter:phase=>{context.phase=phase;},$:()=>({style:{}}),
+    drawArrival(){
+      context.arrivalDrawing={draw(){},destroy(){}};
+      context.syncArrivalLayers();
+    }
+  });
+  map.resize=()=>{};map.easeTo=camera=>cameraMoves.push(camera);
+  context.window.JOURNEY_ATLAS_ARRIVAL={create:options=>globalThis.JOURNEY_ATLAS_ARRIVAL.create({...options,
+    requestFrame:callback=>{queued.set(++next,callback);return next;},cancelFrame:id=>queued.delete(id)})};
+  vm.runInContext(['segmentById','segmentsForDay','arrivalKey','syncArrivalLayers','restoreArrivalLine','showCity'].map(fn).join('\n'),context);
+  const start=source.indexOf('  arrivalChapter = window.JOURNEY_ATLAS_ARRIVAL.create({');
+  vm.runInContext(source.slice(start,source.indexOf('\n  });',start)+7),context);
+  return {...h,cameraMoves,
+    start(reduced=false){reducedMotion=reduced;context.arrivalChapter.start(context.arrivalKey(context.activeDay()),context.arrivalPlan,{reducedMotion});},
+    skip(){context.arrivalChapter.stay();},
+    tick(time){const [id,callback]=queued.entries().next().value;queued.delete(id);callback(time);}
+  };
+}
 
 export function arrivalCameraHarness(legs,{width=600,height=540,phone=false}={}){
   const markers=[],calls=[],listeners=new Map(),rect={top:100,bottom:height+100,width,height};

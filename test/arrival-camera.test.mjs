@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {arrivalCameraHarness,arrivalLayerHarness} from './arrival-camera-harness.mjs';
+import {arrivalCameraHarness,arrivalLayerHarness,arrivalRouteHarness} from './arrival-camera-harness.mjs';
 const legs=[{id:'north-south',geometry:[[11,49],[11.1,47],[11,45]]}];
 
 test('arrival resizes after rendering the card and applies fitted bounds padding exactly once',()=>{
@@ -43,9 +43,23 @@ test('north–south endpoint labels sit outside the travelled line, keeping the 
 });
 
 
-test('city framing keeps TBD casings transparent after arrival settles',()=>{
-  const h=arrivalCameraHarness([{...legs[0],planningStatus:'tbd'}, {id:'confirmed',geometry:legs[0].geometry}]);
-  h.city();
-  const casings=h.calls.filter(c=>c.type==='paint'&&c.id.includes('-casing-'));
-  assert.deepEqual(casings.map(c=>c.value),[0,0.25]);
+test('completed, skipped, repeated and reduced-motion arrivals retain active route styling and quiet context',()=>{
+  const journey={id:'route-style',places:[],segments:[
+    {id:'rail',mode:'train',geometry:[[11,49],[11,47]]},
+    {id:'bus',mode:'bus',planningStatus:'tbd',geometry:[[11,47],[11,46]]},
+    {id:'other',mode:'train',geometry:[[11,49],[11,46]]}
+  ],days:[{id:'selected',segmentIds:['rail','bus']},{id:'other-day',segmentIds:['other']}]};
+  const h=arrivalRouteHarness(journey,{},'selected');
+  const expected=journey.segments.flatMap(segment=>['line','casing'].map(part=>({id:`main-${part}-${segment.id}`,paint:structuredClone(h.map.getLayer(`main-${part}-${segment.id}`).paint)})));
+  const check=()=>{
+    assert.equal(h.context.phase,'stay');assert.equal(h.context.mapScope,'day');
+    for(const {id,paint} of expected){assert.deepEqual(JSON.parse(JSON.stringify(h.map.getLayer(id).paint)),paint,id);if(!id.endsWith('-other'))assert.equal(h.map.getLayer(id).layout.visibility,'visible',id);}
+    for(const id of ['rail','bus'])for(const part of ['line','casing'])assert.equal(h.map.getLayer(`arrival-guide-${part}-${id}`).layout.visibility,'none','The gray guide must not cover the active route after playback');
+    assert.equal(h.map.getLayer('main-casing-bus').paint['line-opacity'],0,'TBD gaps stay transparent');
+  };
+  h.start();h.tick(0);h.tick(1750);check();
+  h.start();h.skip();check();
+  h.start();h.tick(0);h.tick(1750);check();
+  h.start(true);check();
+  assert.equal(h.cameraMoves.length,4,'Each stay still frames the destination');
 });

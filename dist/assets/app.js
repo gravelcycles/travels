@@ -1017,6 +1017,8 @@
       for (const part of ['line', 'casing']) {
         const id = `main-${part}-${leg.segment.id}`;
         if (mainMap.getLayer(id)) mainMap.setLayoutProperty(id, 'visibility', 'visible');
+        const guideId = `arrival-guide-${part}-${leg.segment.id}`;
+        if (mainMap.getLayer(guideId)) mainMap.setLayoutProperty(guideId, 'visibility', 'none');
       }
     }
   }
@@ -1054,14 +1056,6 @@
     mainMap.resize();
     const padding = mapPadding(112), camera = cityCamera(mainMap,day,padding);
     mainFeedback?.empty(!camera);
-    for (const segment of segmentsForDay(day)) {
-      const id = `main-line-${segment.id}`;
-      if (mainMap.getLayer(id)) {
-        mainMap.setPaintProperty(id, 'line-opacity', ['case',['boolean',['feature-state','previewed'],false],1,0.3]);
-        mainMap.setPaintProperty(id, 'line-width', ['case',['boolean',['feature-state','previewed'],false],6,3]);
-        mainMap.setPaintProperty(`main-casing-${segment.id}`, 'line-opacity', segment.planningStatus === 'tbd' ? 0 : 0.25);
-      }
-    }
     // cameraForBounds already includes the screen offset for its padding.
     if (camera) mainMap.easeTo({...camera, duration:prefersReducedMotion()?0:duration});
     else mainMap.easeTo({center:[0,20],zoom:1.5,duration:0});

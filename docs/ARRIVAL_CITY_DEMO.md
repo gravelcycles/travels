@@ -6,8 +6,14 @@ drafts. The synthetic review fixtures below remain local only.
 
 Selecting a new stop frames its incoming route, draws each leg in order, then
 settles into the destination. The normal story remains alongside the map. At the
-destination, the railway becomes quiet context and **View photos** opens the
-existing gallery. **Replay arrival** repeats the sequence; **Skip to city** ends
+destination, the selected event’s route stays active in its transport colors,
+normal selected width and full opacity; other events remain quiet context.
+**View photos** opens the existing gallery. The owner’s 3 November 2026
+correction (“keep the current route live … and colored”) supersedes the earlier
+post-arrival fade. Completion, Skip to city, Replay arrival, reduced motion and
+returning from photos share this same resting route style; preserve mode/TBD
+patterns, clear TBD casings and ordinary route interactions. See
+[O09](OWNER_DECISIONS.md). **Replay arrival** repeats the sequence; **Skip to city** ends
 it early. Dragging/zooming during arrival cancels the automatic camera and offers
 **Back to city**. Reduced motion and route-free stops go straight to the stay.
 
@@ -21,7 +27,9 @@ and update on every display frame, with no 30 Hz limit. The circle has a white
 rim and no arrow or symbol inside. Route projection and path prefixes
 are cached; playback does not rebuild GeoJSON or send work to the map's route
 workers. The overlay respects train/bus/TBD styling and display pixel density,
-reprojects on resize, and restores the regular map layers when it ends.
+reprojects on resize, and restores the regular map layers when it ends. Hide
+the temporary grey guide at the same handoff so it cannot wash out the restored
+transport colors after completion, skipping or manual interruption.
 
 Selecting a stop pans and zooms directly to the complete incoming route in one
 850 ms ease, with no separate pullback/re-zoom or flight arc. An already-fitted

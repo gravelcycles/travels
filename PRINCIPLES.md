@@ -26,7 +26,8 @@ Specific current decisions and their supersessions are recorded there.
 - Do not invent precision; mark representative schedules and routes honestly.
 - On day focus, keep trip context grey and put the selected day's routes on top
   in their transport colors, with greater width and full opacity. Keep those
-  colors during route inspection so the map key remains consistent.
+  colors, width and opacity after arrival playback, skipping and city framing,
+  and during route inspection so the map key remains consistent.
 - Line patterns should remain distinguishable without relying only on color.
 - Every shared feature change must also work on the demo page.
 - Preserve private photo originals; publish reviewed, optimized derivatives.

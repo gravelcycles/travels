@@ -1,5 +1,15 @@
 # Changelog
 
+## 3 November 2026 — Keep the selected route colored after arrival
+
+- Arrival completion and city framing retain the selected event’s transport
+  colors, width, full opacity and route interactions. Skip, Replay arrival,
+  reduced motion and map returns use the same styling; other events stay quiet.
+  The temporary grey arrival guide clears when native routes return.
+- Updated O09, principles, feature/framework and route/arrival guidance, replacing
+  the earlier city-stage fade. Shared regressions cover the actual route painter
+  and arrival callbacks, reference, demo, Heading East and an independent draft.
+
 ## 3 November 2026 — Forni clip removal and play icon
 
 - Removed the requested 32-second portrait Forni video from the reader, keeping

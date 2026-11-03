@@ -1,5 +1,29 @@
 # Current workstreams
 
+## Keep the current route active after arrival — 3 November 2026
+
+Owner correction: after the arrival replay, “keep the current route live” and
+“colored”. [O09](docs/OWNER_DECISIONS.md) and the
+[arrival contract](docs/ARRIVAL_CITY_DEMO.md) supersede the selected-route fade
+on entering the city. Applies across daily/city trips, demos and drafts:
+completion, Skip to city, replay, reduced motion and map returns retain selected
+colors, width, opacity and interactions; other days remain quiet. Isolated on
+`codex/keep-current-route-colored-20261103` at
+`/private/tmp/travels-current-route-20261103`, based on main `f2f09d5`; unrelated
+primary changes remain preserved. Removed the city-stage paint overrides and hid the temporary grey guide when
+restoring native routes; browser replay exposed that second source of washed-out
+color. Production-painter/arrival-callback regressions cover completion, skip,
+repeat, reduced motion, quiet context and transparent TBD gaps across every event
+in the reference, demo, Heading East and independently populated fresh city draft.
+All 925 tests and the production build pass. Actual desktop/390 px phone checks
+confirm vivid train/bus routes, replay/skip, photo/grid returns, rest events and
+colored TBD dots; the empty draft retains its ordinary fallback. Shared guidance
+is updated in the same change, including supersession of the old city-stage fade.
+Primary synchronization is scoped to runtime/guidance and preserves concurrent
+Vienna removals and its independent older renderer.
+Next: integrate latest main, rerun affected release checks, publish and verify
+Pages plus fresh public behavior. No trip facts or private assets are changed.
+
 ## Forni clip removal and play icon — 3 November 2026
 
 Owner requests removing the last 32-second Forni clip and a normal circular play

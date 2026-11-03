@@ -615,7 +615,12 @@ redraws preserve the canvas trace and quiet guide, guarding missing layers. All 
 shorter than the previous 2.5 seconds), hold for 250 ms, then
 start the city zoom; empty/reduced-motion stays skip playback and the hold.
 The overlay is transient shared rendering, with regular map layers restored on
-completion/cancellation and projection refreshed on resize.
+completion/cancellation and projection refreshed on resize. City framing leaves
+the selected route’s normal transport colors, width, opacity and interactions
+intact, including completion, Skip to city, Replay arrival, reduced motion and
+map returns. Only other events remain quiet; the 3 November correction in
+[O09](OWNER_DECISIONS.md) supersedes the former city-stage fade. Restoring native
+route layers also hides the temporary grey guide so it cannot cover their colors.
 The local review generator renders the shared template with explicitly synthetic
 media; original content and private services remain outside the fixture.
 The owner approved deployment on 10 October 2026, including timing and

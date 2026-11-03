@@ -118,6 +118,13 @@ router and require no external API requests in the viewer.
 
 ## Review the published representation
 
+Arrival completion/city framing keeps the selected event’s transport colors,
+selected width and full opacity; it must not fade into grey context after
+playback. Check completion, Skip to city, Replay arrival, reduced motion and
+photo/map returns with route interactions and TBD patterns intact. Other events
+remain quiet. See [O09](docs/OWNER_DECISIONS.md) and the
+[arrival contract](docs/ARRIVAL_CITY_DEMO.md) for the 3 November correction.
+
 For overlapping confirmed and TBD corridors, preserve the stored coordinates
 and transport colors. The shared viewer paints TBD context first, confirmed
 context above it, and selected-day routes last. TBD line casings are transparent

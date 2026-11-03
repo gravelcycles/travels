@@ -83,7 +83,10 @@ retain resting bars. Verification and deployment status are in
 Shared [Arrival → city](ARRIVAL_CITY_DEMO.md) playback traces the incoming
 route with a plain orange tracking circle at display cadence after one direct
 850 ms pan/zoom. The camera stays still for the linear 1.5-second trace and
-0.25-second arrival hold, then eases into the destination over 900 ms. Full-route
+0.25-second arrival hold, then eases into the destination over 900 ms. The
+selected event’s route retains its transport colors, selected width and full
+opacity after completion, skipping, replaying, reduced motion and map returns;
+other events stay quiet ([3 November correction, O09](OWNER_DECISIONS.md)). Full-route
 framing applies bounds padding once and clears endpoint labels and the desktop
 overlay; the external phone card does not consume map space a second time.
 The same stroke and marker sizes preserve mobile/desktop clarity, including
