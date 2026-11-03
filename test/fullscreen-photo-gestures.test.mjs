@@ -25,6 +25,7 @@ test('resting portrait photos fit between phone landscape controls without user 
   f.node('.mobile-photo-footer').offsetHeight=74;
   f.node('.mobile-photo-actions').offsetWidth=200;
   f.node('.mobile-photo-actions').offsetHeight=44;
+  f.node('.mobile-photo-actions').offsetTop=260;
   f.node('#modal-photo').naturalWidth=2400;f.node('#modal-photo').naturalHeight=3200;
   f.dispatch('#modal-photo','load');
   f.api.openDay();
@@ -129,14 +130,14 @@ test('a pinch returning to fitted size cannot turn its remaining finger into bro
   }
 });
 
-test('control taps and native video taps never toggle photo chrome',()=>{
+test('control taps retain their own actions while video picture taps toggle chrome',()=>{
   const f=viewerFixture();f.api.openDay();
   for(const selector of ['.photo-close','#open-photo-comments','#mobile-share-photo']) {
     f.click(selector,'.photo-stage');f.flush(500);
     assert.equal(f.node('.photo-viewer').dataset.chrome,'true',selector);
   }
   const video=viewerFixture({videoIndex:0});video.api.openDay();video.click('.photo-stage');video.flush(500);
-  assert.equal(video.node('.photo-viewer').dataset.chrome,'true');
+  assert.equal(video.node('.photo-viewer').dataset.chrome,'false');
 });
 
 test('photo-only browsing stays clean across swipes and hides an open location panel',()=>{

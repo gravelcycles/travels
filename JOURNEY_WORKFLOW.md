@@ -774,8 +774,21 @@ Playback uses an explicit large play control, native play/pause/seek/volume/
 fullscreen controls, `playsinline` and `preload="none"`. Opening a video does not
 autoplay. Captions sit outside the player controls. Switching to a photo,
 changing groups/trips or closing the viewer releases the source; opening the
-phone grid or backgrounding pauses it. Failures offer retry. Native video taps
-and scrubbing are not intercepted by photo swipe/zoom gestures.
+phone grid or backgrounding pauses it. Failures offer retry. The video picture
+shares horizontal gallery swipes, pull-down return, pull-up Location and a tap
+to hide/restore chrome. The lower 56 px of a video with controls visible belongs
+to native playback/seeking, and a native fullscreen player keeps its own input.
+Buttons never start gallery gestures; cancellation snaps back without changing
+selection. A second finger cancels a video navigation gesture; photo pinch/zoom
+keeps its existing behavior. This 3 November 2026 correction supersedes excluding
+the entire video from gallery gestures.
+
+Short phone landscape uses one compact control row at each safe edge; the
+redundant next-event banner is hidden while event jumps remain in the header.
+Tapping to hide chrome removes the video insets and playback buttons, fitting
+the complete clip to the whole viewport. Restoring chrome fits it between the
+controls again. No crop/stretch, autoplay or change to source/detail/access is
+introduced. Video and adjacent still previews follow the swipe together.
 
 Private entries instead require `visibility: "private"`, `protected: true`,
 `mimeType: "video/mp4"`, and explicit `assetStatus: "local" | "published"`. Their

@@ -30,12 +30,13 @@
     const dialog = $('#photo-dialog'), viewer = $('.photo-viewer'), stage = $('.photo-stage');
     let img = $('#modal-photo');
     const panel = $('#photo-location-panel'), locationHeading = $('.photo-location-heading'), strip = $('#viewer-filmstrip');
+    const videoElement = $('#journey-video'), videoShell = $('#viewer-video');
     let current = { photos: [], index: 0, day: null }, locationOpen = false, grid = false, chrome = true, gridOrigin = null;
     let reveal = 0, paintedReveal = 0, locationHeight = 300, scale = 1, panX = 0, panY = 0;
     let gesture = null, pointers = new Map(), pinch = null, suppressClick = false;
     let locationTimer, locationFrame, revealFrame, settleLocation = false, swipeTimer, swipeFrame, dragFrame, zoomFrame, zoomInputFrame, dismissTimer, tapTimer;
     let locationFoot = 84, viewerHeight = 0, locationWidth = 0, locationStageHeight = 0;
-    let mediaHead = 0, mediaFoot = 0;
+    let mediaHead = 0, mediaFoot = 0, chromeHead = 0, chromeFoot = 0;
     let locationAnimating = false, revealDragging = false, locationVisualHeight = null;
     let dragOffset = 0, dragWidth = 0, swipeOffset = 0;
     let replayState = null;
@@ -191,6 +192,7 @@
       stage.style.setProperty('--photo-fit-scale', `${fit.fit}`);
       stage.style.setProperty('--photo-fit-y', `${fit.y}px`);
       stage.style.setProperty('--photo-swipe-x', `${dx}px`);
+      if (current.photos[current.index]?.mediaType === 'video') videoShell.style.transform = `translate3d(${dx}px,0,0)`;
       neighbors.forEach(({node,delta,photo}) => { const fit=mediaFit(photo,node);node.style.transform = `translate3d(${dx + delta * (width + 16)}px,${fit.y ? `${fit.y}px` : '0'},0)${fit.fit===1?'':` scale(${fit.fit})`}`; });
       swipeRaster?.active(scale === 1 && !grid);
     }
@@ -319,10 +321,22 @@
       zoomFrame = requestAnimationFrame(frame);
     }
     function setChrome(value) {
+      const changed = chrome !== value;
       chrome = value; viewer.dataset.chrome = String(chrome);
+      const nativeControls = !enabled() || chrome;
+      if (videoElement.controls !== nativeControls) videoElement.controls = nativeControls;
+      if (changed) applyMediaInsets();
       for (const selector of ['.mobile-photo-header', '.mobile-photo-footer', '.mobile-photo-actions', '.photo-close', '#album-continue']) {
         $(selector).inert = enabled() && (grid || !chrome);
       }
+    }
+    function applyMediaInsets() {
+      const reserve = chrome || current.photos[current.index]?.mediaType !== 'video';
+      mediaHead = reserve ? chromeHead : 0;
+      mediaFoot = reserve ? chromeFoot : 0;
+      viewer.style.setProperty('--media-head', `${mediaHead}px`);
+      viewer.style.setProperty('--media-foot', `${mediaFoot}px`);
+      if (enabled() && dialog.open && !grid) transform(swipeOffset,locationWidth || stage.clientWidth);
     }
     function cancelTap() {
       clearTimeout(tapTimer); tapTimer = null; lastTap = null;
@@ -337,10 +351,10 @@
       locationFoot = $('.mobile-photo-footer').offsetHeight;
       const actions = $('.mobile-photo-actions');
       const header = $('.mobile-photo-header'), footer = $('.mobile-photo-footer');
-      mediaHead = header.offsetWidth ? header.offsetHeight : 0;
-      mediaFoot = footer.offsetWidth ? locationFoot + (actions.offsetWidth ? actions.offsetHeight + 12 : 0) : 0;
-      viewer.style.setProperty('--media-head', `${mediaHead}px`);
-      viewer.style.setProperty('--media-foot', `${mediaFoot}px`);
+      chromeHead = header.offsetWidth ? header.offsetHeight : 0;
+      chromeFoot = Math.max(footer.offsetWidth ? locationFoot : 0,
+        actions.offsetWidth ? viewerHeight - actions.offsetTop : 0);
+      applyMediaInsets();
       viewer.style.setProperty('--location-height', `${locationHeight}px`);
       reveal = locationOpen ? locationHeight : 0;
       stopLocation();
@@ -679,7 +693,7 @@
       // a tap on Close immediately after dragging) must always be accepted.
       suppressClick = false;
       const locationHeader = event.currentTarget === locationHeading;
-      if ((!locationHeader && event.target.closest('button:not(#mobile-photo-location)')) || event.target.closest('#viewer-video')) return;
+      if ((!locationHeader && event.target.closest('button:not(#mobile-photo-location)')) || nativeVideoControl(event)) return;
       resetDismiss();
       const offset = stopSwipe(event.currentTarget === stage && scale === 1);
       flushZoomGesture();
@@ -697,7 +711,7 @@
         animateLocation(); revealTo(locationOpen ? locationHeight : 0); return;
       }
       if (pointers.size === 2) {
-        if (current.photos[current.index]?.mediaType === "video") return;
+        if (current.photos[current.index]?.mediaType === 'video') { gesture = null; cancelTap(); suppressClick = true; return; }
         if (event.currentTarget === stage && !gesture?.handle) finishPhotoReveal();
         // A pinch takes ownership of the visible translation, not the swipe's
         // old endpoint. Subsequent focal zoom keeps that image point anchored.
@@ -729,7 +743,7 @@
           : gestureAxis(gesture.dx, gesture.dy);
         gesture.dismiss = gesture.axis === 'y' && gesture.dy > 0 && !gesture.handle &&
           scale === 1 && !locationOpen && gesture.startReveal === 0 &&
-          current.photos[current.index] && current.photos[current.index].mediaType !== 'video';
+          current.photos[current.index];
       }
       if (!gesture.axis) return;
       if (gesture.axis === 'y' && gesture.swipeOffset) {
@@ -789,7 +803,7 @@
       // A second touch on the map or body must also cancel the header pull,
       // while retaining that surface's native interaction.
       if (event.target.closest('.photo-location-heading,#mobile-photo-location') ||
-          event.target.closest('.photo-stage') && !event.target.closest('button,#viewer-video')) return;
+          event.target.closest('.photo-stage') && !event.target.closest('button') && !nativeVideoControl(event)) return;
       gesture = pinch = null; cancelTap(); suppressClick = true;
       animateLocation(); revealTo(locationOpen ? locationHeight : 0);
     }, true);
@@ -804,8 +818,22 @@
         }
       }, true);
     });
+    function nativeVideoControl(event) {
+      const video = event.target.closest('video');
+      if (!video) return false;
+      if (document.fullscreenElement === video || video.webkitDisplayingFullscreen) return true;
+      if (!video.controls) return false;
+      // Native controls are in a closed browser shadow tree. Leave their lower
+      // touch strip alone; the rest of the video uses the gallery gestures.
+      return event.clientY >= video.getBoundingClientRect().bottom - 56;
+    }
     stage.addEventListener('click', event => {
-      if (!enabled() || (event.target.closest('button') || event.target.closest('#viewer-video')) || current.photos[current.index]?.mediaType === 'video' || grid) return;
+      if (!enabled() || event.target.closest('button') || nativeVideoControl(event) || grid) return;
+      if (current.photos[current.index]?.mediaType === 'video') {
+        event.preventDefault(); cancelTap();
+        if (chrome && locationOpen) setLocation(false);
+        setChrome(!chrome); return;
+      }
       const now = performance.now();
       if (lastTap && now-lastTap.time < 280 && Math.hypot(event.clientX-lastTap.x,event.clientY-lastTap.y) < 40) { cancelTap(); toggleZoom(event); }
       else {
@@ -890,7 +918,7 @@
       if(replayState)replayControlsChanged(replayState);
       renderDay();save();
     });
-    window.addEventListener('resize',()=>{swipeRaster?.clear();cancelTap(); resetDismiss(); stopSwipe(); pointers.clear(); gesture = pinch = null; measure();measureReplay();});
+    window.addEventListener('resize',()=>{swipeRaster?.clear();cancelTap(); resetDismiss(); stopSwipe(); pointers.clear(); gesture = pinch = null; videoElement.controls = !enabled() || chrome; measure();measureReplay();});
     new ResizeObserver(()=>{ $('.map-panel').style.setProperty('--day-summary-height',`${$('.mobile-day-summary').offsetHeight}px`); }).observe($('.mobile-day-summary'));
     save();
     return {enabled,presentOverlay,dismissOverlay,renderDay,tabChanged,update,preparePhoto,prepareOpen,open,closed,openGrid,replayControlsChanged,locationVisible:()=>locationOpen,gridVisible:()=>enabled()&&grid,gridOrigin:()=>enabled()?gridOrigin:null,

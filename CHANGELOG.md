@@ -1,5 +1,14 @@
 # Changelog
 
+## 3 November 2026 — Video gestures and landscape playback
+
+- Enabled gallery swipes, chrome taps, pull-down return and pull-up Location on
+  video pictures while keeping native playback/seeking and buttons separate.
+- Kept landscape video chrome to one row at each safe edge; hiding controls
+  fits the complete clip to the whole viewport. Preserved photo zoom and sources.
+- Updated the shared owner decision, media contracts and regression coverage
+  for real trips, a demo and an independently populated fresh draft.
+
 ## 2 November 2026 — Neighboring upload-folder videos
 
 - Audited all sibling upload folders and deduplicated ten unique original clips

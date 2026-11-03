@@ -1006,6 +1006,26 @@ test('timestamped video placement inherits real, demo and independently populate
   assert.equal(familyMedia.ordered.length,107);assert.deepEqual(family,familyBefore);
 });
 
+test('video picture gestures inherit target, reference, demo and independently populated draft models', t=>{
+  const root=fixture(t),created=createJourney(root,input),{data}=loadContent(root,{includeDrafts:true});
+  const fresh=data.journeys.find(j=>j.id===created.id),day=fresh.days[0];
+  fresh.photos=[{id:'fresh-before',dayId:day.id,width:640,height:480},{id:'fresh-after',dayId:day.id,width:480,height:640}];
+  fresh.videos=[{id:'fresh-clip',dayId:day.id,title:'Synthetic clip',src:'https://example.test/synthetic.mp4',width:1280,height:720}];
+  for(const j of [data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='nine-to-como'),fresh]){
+    const ordered=globalThis.JOURNEY_ATLAS_MEDIA.index(j).ordered,clip=ordered.findIndex(p=>p.mediaType==='video');
+    assert.ok(clip>=0,j.id);
+    const f=viewerFixture({journey:{...j,photos:ordered}});f.api.openDay();f.api.selectPhoto(clip);
+    const video=f.node('#journey-video');video.closest=q=>q==='video'?video:null;
+    const delta=clip+1<ordered.length?1:-1,event={target:video,clientX:250,clientY:180};
+    f.dispatch('.photo-stage','pointerdown',event);f.dispatch('.photo-stage','pointermove',{...event,clientX:250-delta*150});f.frame();
+    f.dispatch('.photo-stage','pointerup',{...event,clientX:250-delta*150});f.flush();
+    assert.equal(f.index,clip+delta,j.id);
+    f.api.selectPhoto(clip);f.click('#journey-video','.photo-stage');assert.equal(f.node('.photo-viewer').dataset.chrome,'false',j.id);
+  }
+  const css=read(root,'dist/assets/mobile.css');
+  assert.match(css,/@media\(max-width:900px\) and \(max-height:500px\) and \(orientation:landscape\)/);
+});
+
 test('video playback uses the existing viewer and stops, releases and retries media safely', async () => {
   const media = globalThis.JOURNEY_ATLAS_MEDIA;
   const node = () => ({ listeners:{}, hidden:false, textContent:'', addEventListener(name, fn) { this.listeners[name] = fn; }, setAttribute(key, value) { this[key] = value; }, removeAttribute(key) { delete this[key]; } });

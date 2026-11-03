@@ -86,7 +86,7 @@ test('closing or replacing a photo cancels a queued pinch frame',()=>{
 
 test('video scrubbing stays native, video taps cannot zoom, and opening the media grid pauses playback', () => {
   const f = viewerFixture({videoIndex:1}); f.api.openDay(); f.api.selectPhoto(1);
-  const stage = f.node('.photo-stage'), target = {closest:query => query === '#viewer-video' ? target : null};
+  const stage = f.node('.photo-stage'), target = {controls:true,getBoundingClientRect:()=>({bottom:706}),closest:query => query === 'video' ? target : null};
   const event = {pointerId:1,button:0,clientX:250,clientY:650,target,currentTarget:stage};
   stage.handlers.get('pointerdown')(event);
   stage.handlers.get('pointermove')({...event,clientX:50});
@@ -169,13 +169,13 @@ test('a second finger cancels a location-header drag without zooming or closing 
   assert.equal(f.node('#photo-dialog').open,true);
 });
 
-test('a second finger on the map or native video cancels the header pull without intercepting content',()=>{
+test('a second finger on the map or native playback controls cancels the header pull',()=>{
   for(const nativeVideo of [false,true]) {
   const f=viewerFixture();f.api.openDay();f.click('#mobile-photo-location');
   const header='.photo-location-heading';
   f.dispatch(header,'pointerdown',{clientX:120,clientY:350});
   f.dispatch(header,'pointermove',{clientX:125,clientY:410});
-  const target=nativeVideo?{closest:query=>query==='.photo-stage'?f.node('.photo-stage'):query==='button,#viewer-video'?f.node('#viewer-video'):null}:f.node('#photo-map');
+  const target=nativeVideo?{controls:true,getBoundingClientRect:()=>({bottom:556}),closest:query=>query==='.photo-stage'?f.node('.photo-stage'):query==='video'?target:null}:f.node('#photo-map');
   const second=f.dispatch('#photo-dialog','pointerdown',{target,pointerId:2,clientX:240,clientY:500});
   assert.equal(second.prevented,undefined);assert.equal(second.stopped,undefined);
   f.dispatch(header,'pointermove',{clientX:125,clientY:490});
@@ -483,14 +483,14 @@ test('a downward pull follows the finger, and a second finger cancels dismissal 
   assert.equal(dialog.open,true);assert.match(f.node('#modal-photo').style.transform,/scale\([234]/);
 });
 
-test('location collapses before photo dismissal; zoom, grids, video and desktop retain their gestures',()=>{
+test('location collapses before dismissal; zoom, grids and desktop retain their gestures',()=>{
   const f=viewerFixture({reducedMotion:true});f.api.openDay();
   f.drag('.photo-stage',0,-160);f.drag('.photo-stage',0,200);f.flush();
   assert.equal(f.controller.locationVisible(),false);assert.equal(f.node('#photo-dialog').open,true);
   f.click('.photo-stage');f.click('.photo-stage');f.drag('.photo-stage',0,220);f.flush();
   assert.equal(f.node('#photo-dialog').open,true);assert.ok(Number(f.node('#modal-photo').style.transform.match(/scale\(([^)]+)\)/)[1])>1);
-  for(const state of ['grid','video','desktop','handle']) {
-    const g=viewerFixture({videoIndex:state==='video'?0:-1});g.api.openDay();
+  for(const state of ['grid','desktop','handle']) {
+    const g=viewerFixture();g.api.openDay();
     if(state==='grid')g.click('#mobile-photo-grid');if(state==='desktop')g.resize(false);
     g.drag(state==='handle'?'#mobile-photo-location':'.photo-stage',0,220);g.flush();
     assert.equal(g.node('#photo-dialog').open,true,state);

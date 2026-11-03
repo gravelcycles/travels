@@ -18,6 +18,13 @@ transfer, then publish separate optimized derivatives.
 
 ## Album appearance
 
+The shared video viewer also inherits picture swipes, chrome taps and pull
+navigation, with native playback/seeking kept in its control strip. Short
+landscape uses compact chrome and hiding it gives the clip the full viewport.
+The [mixed-media contract](JOURNEY_WORKFLOW.md#day-videos) owns
+the 3 November 2026 correction and its input boundaries; verify paused and
+playing photo ↔ video ↔ video navigation without changing photo zoom or access.
+
 The **All photos** day/stop chooser shares the day photo roll's near-black
 canvas, compact sans-serif heading, white titles and muted metadata. Use square
 photo covers directly on that canvas, with a sticky heading and solid Close

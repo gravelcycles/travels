@@ -1,5 +1,31 @@
 # Current workstreams
 
+## Video viewer gestures and landscape size — 3 November 2026
+
+Owner correction: videos should share the controls that work for photos;
+horizontal browsing is blocked on clips and landscape videos are tiny.
+[The current decision](docs/OWNER_DECISIONS.md#fullscreen-photo-controls-and-focal-zoom--16-october-2026)
+supersedes blanket video gesture exclusions. Work is isolated on
+`codex/video-viewer-controls-20261103` at `/private/tmp/travels-restore-20261102`,
+based on main `cd6fa38`; primary pending work and trip/media sources are retained.
+Reproduced on the live Heading East landscape clip at 844 × 390: the native
+player is only 158 px high between y=102 and y=260, and a picture swipe is ignored.
+Implemented shared picture swipes, chrome taps, pull navigation and a compact
+landscape layout while reserving native playback controls. At the same 844 × 390
+viewport, the landscape clip now fits at 294 px high with chrome and 390 px with
+it hidden; no crop or source change is involved. Actual browser checks cover
+Heading East, Switzerland–Italy, Nine to Como and an independently populated
+two-day/four-media draft: paused/playing video → photo, photo → video, adjacent
+clips, cross-day browsing, chrome restoration, native pause/seek, portrait/short
+landscape, Location and pull-down return to the retained grid. Reference photo
+double-tap zoom/reset remains correct. These are browser checks, not a new
+physical-iPhone certification. All 924 tests/build pass, including cancelled
+gestures, native controls/fullscreen ownership, two fingers and photo regressions.
+Current owner/media/feature guidance and the live-documentation check capture
+the correction and superseded blanket video exclusions. Next complete scoped
+primary-preview synchronization, publish Pages and verify fresh public gestures,
+playback, landscape bounds and exact deployed bytes. Delivery remains pending.
+
 ## Neighboring upload-folder videos — 2 November 2026
 
 Authorized: audit sibling upload folders and add missed clips using the existing

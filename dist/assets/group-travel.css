@@ -60,9 +60,9 @@
 @media(max-width:900px) {
   .viewer-video { top:var(--media-head,0px); bottom:var(--media-foot,0px); }
   .photo-viewer[data-location-visible="true"] .viewer-video { bottom:0; }
-  .photo-viewer[data-media-type="video"] .photo-stage { touch-action: auto; }
+  .photo-viewer[data-media-type="video"] .photo-stage { touch-action: none; }
   .photo-viewer[data-media-type="video"] #modal-photo { display: none; }
-  .photo-viewer[data-media-type="video"] .mobile-photo-neighbor { display: none; }
+  .photo-viewer[data-chrome="false"] .viewer-video-play { visibility:hidden; pointer-events:none; }
   .photo-viewer[data-media-type="video"] #mobile-photo-time { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .viewer-video-play { padding: 14px 19px; }
 }

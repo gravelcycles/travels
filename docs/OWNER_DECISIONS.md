@@ -194,6 +194,20 @@ photos as well as samples when the internal session is available.
 
 ## Fullscreen photo controls and focal zoom — 16 October 2026
 
+Follow-up, **3 November 2026**: videos must share the viewer's horizontal media
+swipes, tap-to-hide/restore chrome, pull-down return and pull-up Location. The
+owner reports that excluding clips from photo gestures prevents browsing and
+makes landscape playback tiny. Reserve native playback/scrubbing controls for
+their own actions; a drag on the picture browses the continuous trip roll.
+Use compact controls in short landscape and let hiding chrome give the video
+the whole viewport, preserving its complete aspect ratio. Keep Back, Close,
+grid, Share, event jumps and playback accessible, and retain photo zoom and
+gesture quality. This supersedes blanket exclusions of the video surface from
+gallery gestures and treating the prior inset-fit check as sufficient video UX.
+Check paused/playing clips, photo ↔ video ↔ video transitions, cancellation,
+native seeking, Location, grid return and portrait/landscape rotation across
+the target, reference, demo and an independently populated fresh draft.
+
 Follow-up, **2 November 2026**: the complete resting photograph or video must
 fit inside the visible fullscreen area, including phone landscape. Bound native
 video grid tracks so a portrait poster/player cannot overflow the viewport.
