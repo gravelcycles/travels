@@ -10,7 +10,8 @@ completion, Skip to city, replay, reduced motion and map returns retain selected
 colors, width, opacity and interactions; other days remain quiet. Isolated on
 `codex/keep-current-route-colored-20261103` at
 `/private/tmp/travels-current-route-20261103`, based on main `f2f09d5`; unrelated
-primary changes remain preserved. Removed the city-stage paint overrides and hid the temporary grey guide when
+primary changes remain preserved. Removed the city-stage paint overrides and
+hid the temporary grey guide when
 restoring native routes; browser replay exposed that second source of washed-out
 color. Production-painter/arrival-callback regressions cover completion, skip,
 repeat, reduced motion, quiet context and transparent TBD gaps across every event
@@ -21,8 +22,41 @@ colored TBD dots; the empty draft retains its ordinary fallback. Shared guidance
 is updated in the same change, including supersession of the old city-stage fade.
 Primary synchronization is scoped to runtime/guidance and preserves concurrent
 Vienna removals and its independent older renderer.
-Next: integrate latest main, rerun affected release checks, publish and verify
-Pages plus fresh public behavior. No trip facts or private assets are changed.
+Integrated latest main `ecea1af`, retaining the concurrent Vienna photo removals,
+public counts and eligibility indexes; the cleanup service is already deployed.
+Primary targeted checks (73 tests) and its build pass.
+The integrated release again passes all 925 tests, the production build and
+clean generated-output checks. Next: publish and verify Pages plus fresh public
+behavior. This correction changes no trip facts or private assets.
+
+## Vienna photo cleanup — 3 November 2026
+
+Authorized: publish the two saved localhost Studio photo removals. The
+[trip record](docs/HEADING_EAST.md#vienna-photo-cleanup--3-november-2026) identifies
+the two Vienna stills. Source comparison against released `f2f09d5` finds only
+their `trashed: true` flags; the latest recovery snapshot is clean, with no
+unfinished photo fields. Work is isolated on `codex/photo-cleanup-20261103` at
+`/private/tmp/travels-restore-20261102`; primary pending work and running Studio
+are preserved. All 924 tests, the production build and actual Worker-runtime
+checks pass. Public photo/override arrays exclude both removed IDs; counts are
+211 stills/three videos, 214 journey items and six Vienna items. IMG_3883 remains
+visible and the 32-second Forni clip remains hidden. All other source overrides
+and trip/video data match the previous release. The build also removes exactly
+those two IDs from the discussion/share indexes; deploy the matching Worker
+before Pages under the existing operations contract. Primary build passes;
+only the three scoped documentation files changed beyond the user's saved
+sources/output, with all 297 other tracked/pending files and Studio retained.
+Complete: matching Worker/index `2e43e373-fa9b-4d7c-86ab-e00f67b3db2b` was deployed
+before Pages (prior version `181409f3-bf05-4314-9b4c-b5110ad220eb`). Published
+`d96887f` through successful
+[Pages run 41605882177](https://github.com/gravelcycles/travels/actions/runs/41605882177).
+All six changed public outputs match the tested bytes. Fresh remembered-access
+browser verification shows five Vienna stills/one video, with the last retained
+photo at journey item 214 of 214 and normal protected video playback (readyState
+4, advancing time, no media error). Both deleted IDs are absent from public
+photo/override arrays and the discussion/share indexes. The trip record captures
+these scoped removals; no shared rule changed. Localhost Studio remains running
+at port 4173. No accepted implementation or publication work remains.
 
 ## Forni clip removal and play icon — 3 November 2026
 

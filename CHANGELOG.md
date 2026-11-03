@@ -10,6 +10,12 @@
   the earlier city-stage fade. Shared regressions cover the actual route painter
   and arrival callbacks, reference, demo, Heading East and an independent draft.
 
+## 3 November 2026 — Vienna photo cleanup
+
+- Published the owner's two new Vienna photo Trash choices from saved Studio
+  sources, retaining every other edit and all private media for recovery.
+- Updated Heading East provenance and rebuilt the public photo data/counts.
+
 ## 3 November 2026 — Forni clip removal and play icon
 
 - Removed the requested 32-second portrait Forni video from the reader, keeping
