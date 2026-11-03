@@ -2,32 +2,31 @@
 
 ## Keep the current route active after arrival — 3 November 2026
 
-Owner correction: after the arrival replay, “keep the current route live” and
-“colored”. [O09](docs/OWNER_DECISIONS.md) and the
-[arrival contract](docs/ARRIVAL_CITY_DEMO.md) supersede the selected-route fade
-on entering the city. Applies across daily/city trips, demos and drafts:
-completion, Skip to city, replay, reduced motion and map returns retain selected
-colors, width, opacity and interactions; other days remain quiet. Isolated on
-`codex/keep-current-route-colored-20261103` at
-`/private/tmp/travels-current-route-20261103`, based on main `f2f09d5`; unrelated
-primary changes remain preserved. Removed the city-stage paint overrides and
-hid the temporary grey guide when
-restoring native routes; browser replay exposed that second source of washed-out
-color. Production-painter/arrival-callback regressions cover completion, skip,
-repeat, reduced motion, quiet context and transparent TBD gaps across every event
-in the reference, demo, Heading East and independently populated fresh city draft.
-All 925 tests and the production build pass. Actual desktop/390 px phone checks
-confirm vivid train/bus routes, replay/skip, photo/grid returns, rest events and
-colored TBD dots; the empty draft retains its ordinary fallback. Shared guidance
-is updated in the same change, including supersession of the old city-stage fade.
-Primary synchronization is scoped to runtime/guidance and preserves concurrent
-Vienna removals and its independent older renderer.
-Integrated latest main `ecea1af`, retaining the concurrent Vienna photo removals,
-public counts and eligibility indexes; the cleanup service is already deployed.
-Primary targeted checks (73 tests) and its build pass.
-The integrated release again passes all 925 tests, the production build and
-clean generated-output checks. Next: publish and verify Pages plus fresh public
-behavior. This correction changes no trip facts or private assets.
+Complete. Owner correction: “keep the current route live” and “colored” after
+arrival replay. [O09](docs/OWNER_DECISIONS.md) and the
+[arrival contract](docs/ARRIVAL_CITY_DEMO.md) supersede the city-stage fade across
+all atlases. The selected routes keep their normal transport colors, width,
+opacity and interactions; restoring them also hides the temporary grey guide.
+Other days stay quiet, including overlapping confirmed/TBD routes.
+
+Implementation `1c2a344`, integrated with latest main `ecea1af` and published as
+`825589c` through successful
+[Pages run 41607233728](https://github.com/gravelcycles/travels/actions/runs/41607233728).
+All 925 integrated tests, production build and generated-output checks pass.
+Production-painter/callback regressions cover completion, skip, repeated replay,
+reduced motion, rest events and every routed event in Heading East, the reference,
+demo and an independent populated city draft. Actual desktop/390 px phone checks
+confirm vivid train/bus routes, colored TBD dots and photo/grid map returns;
+the empty draft retains its normal fallback. Fresh public Venice and current
+Warsaw arrivals/replays stay colored on desktop/phone, with remembered access,
+214 journey items and no browser errors. All five changed public outputs match
+the tested release bytes. Shared guidance was updated with the implementation.
+
+Work is isolated on `codex/keep-current-route-colored-20261103` at
+`/private/tmp/travels-current-route-20261103`. Scoped primary runtime/guidance
+synchronization retains branch `updates`, HEAD `3373246`, its independent renderer
+and concurrent Vienna removals; its 73 targeted tests/build pass. No trip facts
+or private assets changed, and no accepted implementation/publication remains.
 
 ## Vienna photo cleanup — 3 November 2026
 
