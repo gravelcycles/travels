@@ -22,9 +22,21 @@ double-tap zoom/reset remains correct. These are browser checks, not a new
 physical-iPhone certification. All 924 tests/build pass, including cancelled
 gestures, native controls/fullscreen ownership, two fingers and photo regressions.
 Current owner/media/feature guidance and the live-documentation check capture
-the correction and superseded blanket video exclusions. Next complete scoped
-primary-preview synchronization, publish Pages and verify fresh public gestures,
-playback, landscape bounds and exact deployed bytes. Delivery remains pending.
+the correction and superseded blanket video exclusions. Complete. Published
+`a80b26e` through successful
+[Pages run 41596243079](https://github.com/gravelcycles/travels/actions/runs/41596243079).
+All seven changed public outputs match the tested release bytes. A fresh public
+page restores remembered access and confirms readyState 4/no video error,
+294/390 px landscape bounds, tap restoration, a playing video → photo swipe
+that pauses/releases the source, photo → video and adjacent video swipes.
+The scoped video gestures/size changes and current guidance are synchronized
+into primary without replacing its older independent photo renderer. Its 35
+targeted tests/build pass; a fresh editor-preview tab independently confirms
+294/390 px video fitting, chrome taps and video → photo navigation. Fifteen
+scoped files changed while 285 other pre-existing files, all trip/media sources,
+branch `updates` and HEAD `3373246` remain unchanged. No new upload, gateway
+policy, itinerary or outbound announcement change was needed. No accepted
+implementation or deployment work remains.
 
 ## Neighboring upload-folder videos — 2 November 2026
 
