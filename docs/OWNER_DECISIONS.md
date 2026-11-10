@@ -27,6 +27,67 @@ permission to erase it. An agent suggestion, passing test or prototype is not an
 owner decision. Resolve apparent conflicts from dated evidence and record which
 choice supersedes which; ask only if a consequential ambiguity remains.
 
+## Load, interaction and flow fixes — 10 November 2026
+
+Owner priority for the sitewide review: “true ‘correctness’ matters, but ux
+matters more (perf, user flows, ease of finding/clicking buttons etc etc).” Rank
+load time, responsiveness, flow friction and reachable controls ahead of internal
+tidiness on every atlas; correctness still gets fixed when visitors can hit it.
+
+After the review the owner authorized: “let’s tackle the perf bugs. the flow bugs
+… we can move forward on too”, “fix the back button issue, fix the heaviness, fix
+the history rewrite when unnecessary, and the other correctness bugs”, and, for
+the broken items, “the first 2 we can fix” (dead Places images, devices whose
+clock disagrees with the photo service). This applies to shared code across
+real journeys, demos and fresh drafts.
+
+**O20 · Load and reach.** Current decisions from that exchange:
+
+- Visitor-facing text is at least 12 px in every shared stylesheet. Stop rows
+  keep their photo count on one line; a long date-and-transport line may wrap.
+- Controls a finger must hit are at least 44 px, including the phone header
+  link to the catalog, the map photo-card close button and viewer feedback
+  buttons. A small visual control may keep its size with a larger hit area.
+- A locked phone visitor finds Unlock photos in the album grid header, where
+  the blurred photos are. A journey with no protected photos or private clips
+  shows no unlock control or prompt.
+- Photo arrow keys do nothing while the Share dialog is open.
+- An unchanged view writes no browser history, and a refused history write
+  never interrupts navigation.
+- Changing the stop or scope restyles the existing route layers; the result
+  must equal a fresh draw (paint, order, visibility, no leftover preview state
+  or arrival guides). Routes and city boundaries ship in compact public form
+  without moving any reviewed line or changing any city frame.
+- The whole-trip desktop journal shows the traveler’s own introduction above
+  the existing “Choose a stop” line. It adds no generated copy, button or
+  selected event (O06/O10).
+- A venue image its host refuses collapses out of the place card and place
+  header instead of leading with “Photo unavailable”. Locked trip photos keep
+  their existing state. The Photos tab still reports unavailable images.
+
+**Declined or left as they are (do not reopen without the owner):** raw capture
+timestamps in the viewer (“raw timestamps are fine”); commenters losing
+edit/delete on their own comments when the 30-day remembered cookie lapses
+(“30 day comment loss is fine i think”); the roughly four-second arrival
+playback on stop changes (O09). The map’s **Filter days/stops** menu stays
+alongside the sidebar toggles on desktop because the
+[TBD contract](../JOURNEY_WORKFLOW.md) asks for both, and the phone overview
+keeps its card action because it is the only action on a trip with no photos
+or places.
+
+**Still the owner’s call:** how long a tab’s access token should live (the
+service issues one hour; see [private access](../PHOTO_AUTH_HANDOFF.md)); a
+durable source for Heading East’s venue images, whose Google-hosted links now
+refuse every request ([trip record](HEADING_EAST.md)); and whether to drop the
+original filename and source hash from public photo data, which is low
+sensitivity and optional.
+
+Acceptance: check the reference, Heading East, Florence–Genoa (no photos), a
+demo and an independently populated fresh draft on desktop and at 320/390 px.
+Numbers for each performance fix use the same fixture on both sides
+([10 November measurements](PERFORMANCE_PASS_2026-11-10.md)); desktop results
+do not certify a phone. Delivery status stays in [WIP](../WIP.md).
+
 ## Initial page presentation — 20 October 2026
 
 Owner correction: “make sure all initial loaded pages don't have flashes,”
@@ -170,6 +231,7 @@ ready GPU surface. See the incident record.
 | O14 · Media and access | Originals stay private; publish optimized, metadata-stripped derivatives through the existing private Cloudflare pipeline. Photo passwords are shared across the site with remembered access, not per-trip accounts/SSO. Keep Markdown and commit messages free of real credential names/labels, recipient names, password fragments and identifying hints; maintenance receipts stay generic (owner correction, 11 October 2026). Keep services free unless the owner changes that constraint. | Count all supplied stills, including bulk DNG imports; review GPS/date matching, checksum-verify uploads, use resumable single-file transfers on poor Wi-Fi. Show non-trashed photos while preserving deletions. Never recreate retired public photo Releases. [Photo workflow](../PHOTO_WORKFLOW.md), [service operations](COMMUNITY_OPERATIONS.md). |
 | O15 · Delivery and proposals | The agent operates tools, Studio, assets, tests, Git and deployment. Completed authorized work deploys by default after integrating current main and verifying Pages/public content. A request for ideas or a local demo remains that scope until implementation/publication is authorized. | Retain existing authorization; do not ask the owner to run commands or approve already approved work again. Preserve other work, local prototypes and unpublished media. A commit/build alone is not a deployment receipt. [Deployment](DEPLOYMENT.md), [WIP](../WIP.md). |
 | O16 · Living documentation | Every agent reads and maintains the current docs as part of the task. New corrections, preferences and follow-up clarifications become durable guidance in the same change, without another owner request. This is a standing owner priority, explicitly reaffirmed 11 October 2026. | Before delivery or handoff, reconcile all new owner direction with the correct shared decision or trip record, replace superseded current guidance, and record any implementation still pending. A fresh task must be able to continue from the repository without the previous chat. Follow the [update procedure](#record-the-next-correction-before-closing-the-task). |
+| O20 · Load and reach | Text at least 12 px, 44 px touch targets, unlock offered where locked photos appear and nowhere else, no history writes or route rebuilds for an unchanged view, compact public route and boundary data. Full text: [10 November 2026](#load-interaction-and-flow-fixes--10-november-2026). | Compare the restyled map with a fresh draw; check 320/390 px wrapping and targets; re-measure with the same fixture before claiming a gain. Trips with no private media show no unlock. |
 
 “Apple-like” means these observable qualities: stable layout, clear hierarchy,
 large useful imagery, restrained copy, continuous geographic context, responsive

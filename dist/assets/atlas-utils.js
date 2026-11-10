@@ -71,6 +71,27 @@
   }
 
   const cityPoint = p => Array.isArray(p) && p.length === 2 && p.every(Number.isFinite) && Math.abs(p[0]) <= 180 && Math.abs(p[1]) <= 90;
+  // Per-page trip data carries each route as a delta-encoded string (five
+  // decimals) or [decimals, string]; scripts/public-geometry.mjs writes them
+  // and verifies that this function restores the source coordinates exactly.
+  // Plain coordinate arrays (Studio previews, drafts, tests) pass through.
+  function decodeRoute(value) {
+    const plain = typeof value === 'string';
+    if (!plain && !(Array.isArray(value) && value.length === 2 && Number.isInteger(value[0]) && typeof value[1] === 'string')) return value;
+    const text = plain ? value : value[1], factor = 10 ** (plain ? 5 : value[0]), coordinates = [];
+    let index = 0, lng = 0, lat = 0;
+    const next = () => {
+      let result = 0, scale = 1, chunk;
+      do { chunk = text.charCodeAt(index++) - 63; result += (chunk & 31) * scale; scale *= 32; } while (chunk >= 32);
+      return result % 2 ? -(result + 1) / 2 : result / 2;
+    };
+    while (index < text.length) { lng += next(); lat += next(); coordinates.push([lng / factor, lat / factor]); }
+    return coordinates;
+  }
+  function decodeRoutes(routes) {
+    if (routes && typeof routes === 'object') for (const id of Object.keys(routes)) routes[id] = decodeRoute(routes[id]);
+    return routes;
+  }
   const cityPolygons = boundary => boundary?.type === 'Polygon' ? [boundary.coordinates] : boundary?.type === 'MultiPolygon' ? boundary.coordinates : [];
   function validCityBoundary(boundary) {
     const polygons = cityPolygons(boundary);
@@ -104,9 +125,26 @@
   }
   function cityFrameCoordinates({center,boundary,photos=[],places=[],dayId}) {
     const polygons = validCityBoundary(boundary) ? cityPolygons(boundary) : [];
+    // The whole trip's photos and places are offered to every city. Reject the
+    // ones that cannot be within five miles of this boundary from its padded
+    // bounding box before running the per-edge geodesic tests. The padding is
+    // deliberately generous, so this never changes which points qualify.
+    let reachable = () => true;
+    if (polygons.length) {
+      const reference = polygons[0][0][0][0], relative = lng => ((lng-reference+540)%360)-180;
+      let south = 90, north = -90, west = 180, east = -180;
+      for (const polygon of polygons) for (const [lng,lat] of polygon[0]) {
+        const x = relative(lng);
+        if (lat < south) south = lat; if (lat > north) north = lat; if (x < west) west = x; if (x > east) east = x;
+      }
+      const reach = 8.04672/6371*180/Math.PI*1.05, shrink = Math.cos(radians(Math.min(89.9,Math.max(Math.abs(south-reach),Math.abs(north+reach)))));
+      const reachLng = shrink > 0.2 ? reach/shrink : 360;
+      reachable = point => point[1] >= south-reach && point[1] <= north+reach && relative(point[0]) >= west-reachLng && relative(point[0]) <= east+reachLng;
+    }
     const nearby = point => {
       if (!cityPoint(point)) return false;
       if (cityPoint(center) && cityAngle(center,point)*6371 <= 8.04672) return true;
+      if (!reachable(point)) return false;
       if (polygons.some(polygon => insideCityRing(point,polygon[0]) && !polygon.slice(1).some(ring => insideCityRing(point,ring)))) return true;
       return polygons.some(polygon => polygon.some(ring => ring.some((a,i) => i>0 && cityEdgeDistance(point,ring[i-1],a) <= 8.04672)));
     };
@@ -444,5 +482,7 @@
     return start === end ? format(start) : `${format(start)} – ${format(end)}`;
   }
 
-  root.JOURNEY_ATLAS_UTILS = { journeyPresentation, validCityBoundary, cityFrameCoordinates, journeyToday, planningCategory, planningCounts, projectPlanning, eventWord, eventCopy, applyEventCopy, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
+  // Restore the page's routes once, before the map, arrival and Studio code read them.
+  decodeRoutes(root.JOURNEY_ATLAS_ROUTE_GEOMETRY);
+  root.JOURNEY_ATLAS_UTILS = { decodeRoute, decodeRoutes, journeyPresentation, validCityBoundary, cityFrameCoordinates, journeyToday, planningCategory, planningCounts, projectPlanning, eventWord, eventCopy, applyEventCopy, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

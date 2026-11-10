@@ -1281,3 +1281,19 @@ Attribution: © [OpenStreetMap contributors](https://www.openstreetmap.org/copyr
 ODbL. Playback uses the saved geometry and sends no photo locations to geocoders.
 Qeparo returned village points without a boundary polygon, so its view uses
 the shared five-mile destination-radius fallback plus all marked stop places.
+
+### Venue image availability — 10 November 2026
+
+All 54 Google-hosted venue image links (the `gps-cs-s/…=s1200-k-no` form)
+returned HTTP 403 to a plain request on 10 November, and every Berlin place
+card showed “Photo unavailable” on the live site. They loaded on 11 October, so
+these links are time-limited rather than permanent. The two venue-website
+images still load. Selections, credits and source links are unchanged.
+
+Shared presentation now collapses a refused image out of the place card and
+header ([O20](OWNER_DECISIONS.md#load-interaction-and-flow-fixes--10-november-2026)).
+That hides the symptom only. A durable source is the owner's decision: fresh
+links will lapse again, and storing copies changes the “linked, not reused”
+provenance above. Do not fetch these images with a spoofed referrer or other
+workaround for the host's refusal.
+

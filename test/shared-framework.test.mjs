@@ -1115,7 +1115,7 @@ test('real, demo and a fresh draft inherit settlement contrast and route stackin
       modeStyles: { train: { width: 5.8, color: '#0072b2' } }, palette: { casing: '#fffef8' },
       segmentCoordinates: segment => segment.geometry || [[0, 0], [0.1, 0.1]]
     });
-    vm.runInContext(appFunction('addSegmentLayer'), context);
+    vm.runInContext(appFunction('segmentLayerPaint') + appFunction('addSegmentLayer'), context);
     const segment = journey.segments.find(s => s.mode === 'train') || { id: 'fresh-draft-leg', mode: 'train' };
     const decorations = { layerIds: [], sourceIds: [], hitLayerIds: [] };
     context.addSegmentLayer(map, decorations, segment, { prefix: 'test', selected: true, interactive: true, opacity: 1 });

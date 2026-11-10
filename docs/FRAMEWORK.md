@@ -154,6 +154,31 @@ password system.
 | `content/*-overrides.json` | Human edits, keyed by stable day/segment/photo IDs |
 | `content/drafts/`, `build/draft-assets/`, `build/studio-draft-overrides.json` | Ignored local drafts and edits |
 
+**Compact public geometry (10 November 2026):** `scripts/public-geometry.mjs`
+prepares what visitors download. Per-page `journey-data/*.js` routes are
+delta-encoded strings (five decimals) or `[decimals, string]`, chosen as the
+smallest precision that reproduces every source coordinate; anything that
+cannot round-trip exactly stays a coordinate array. `atlas-utils.js` decodes
+`JOURNEY_ATLAS_ROUTE_GEOMETRY` in place on load, so the map, arrival, Replay
+data and tests keep reading arrays. The files remain four pure JSON assignments
+because the [update snapshot reader](UPDATE_ANNOUNCEMENTS.md) refuses anything
+else; never add executable code to them. Published city boundaries drop
+vertices within 100 m of the simplified outline (kept vertices are source
+points); sources, Studio previews and the legacy `route-geometry.js`
+verification bundle keep full geometry. `cityFrameCoordinates` rejects points
+outside a boundary's generously padded bounding box before its per-edge tests;
+the shortcut must never change a frame.
+
+**Route layers persist (10 November 2026):** `drawMainMap` restyles and
+reorders the existing `main-*` layers when the journey, legs, modes, statuses
+and line shapes are unchanged, and rebuilds otherwise. Both paths take paint
+from `segmentLayerPaint`. A restyle must also do what a rebuild did
+implicitly: restore visibility, clear feature state and remove temporary
+arrival-guide layers. Map labels build route strokes from prepared Web
+Mercator values with one affine projection on a flat map, and fall back to
+`map.project` per point for anything else. See the
+[measurements](PERFORMANCE_PASS_2026-11-10.md).
+
 **Source/output exception:** hand-authored JS/CSS currently lives under `dist`.
 Do not delete that directory or treat all its files as generated. Generated
 files are public HTML, `generated-pages.json`, `generated-data.json`, and these data bundles:

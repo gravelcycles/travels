@@ -155,6 +155,15 @@ uses the existing album-order overrides, with no shared renderer change.
 | Update checkpoints and message drafts | Agent-operated live-site baseline, stable-ID new-trip/photo counts by city/stop, compact manual WhatsApp text, trip-specific frozen drafts and acknowledgments, per-trip status and recoverable local history | Select a trip when multiple are published; combined `--all` is explicit. Sharing one trip leaves others pending and preserves the original baseline. Demos/drafts/local-only/trashed photos excluded. Prepare/copy never acknowledges or sends. No Studio UI or provider integration | update-inventory, update-public-snapshot, update-announcements; [workflow](UPDATE_ANNOUNCEMENTS.md) |
 | Reproducible delivery | Validated generation, cache-busted assets, Pages CI, bounded orphan-deployment recovery/retry and public verification | Reviewed published sources; no private originals/network fetch needed for site build; GitHub service failures remain visible | build-site, Pages workflow, recover-pages |
 
+The **10 November load and interaction pass** ([O20](OWNER_DECISIONS.md#load-interaction-and-flow-fixes--10-november-2026))
+changes no feature's behavior on purpose: trip data ships compact routes and
+boundaries, stop changes restyle existing route layers, label placement and
+city framing do far less work, unchanged views write no history, text is at
+least 12 px, small controls have 44 px targets, the whole-trip desktop journal
+shows the traveler's introduction, and venue images their host refuses collapse
+out of place cards. [Measurements](PERFORMANCE_PASS_2026-11-10.md); release
+status in WIP.
+
 Comment notifications extend photo conversations with red unread-number badges
 on photo Comments buttons and plain total counts once read. The top-right bell
 shows **Most recent comments** across the trip and opens the selected photo

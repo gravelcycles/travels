@@ -153,8 +153,11 @@
     }
     function wireImages(container) {
       container.querySelectorAll('img').forEach(img => {
-        const loaded = () => { img.closest('.pp-media')?.classList.remove('is-loading', 'is-unavailable'); };
-        const failed = () => { const media = img.closest('.pp-media'); if (media) { media.classList.remove('is-loading'); media.classList.add('is-unavailable'); } };
+        const loaded = () => { img.closest('.pp-media')?.classList.remove('is-loading', 'is-unavailable', 'is-failed'); };
+        // is-failed marks an image its host would not serve, as distinct from
+        // a locked trip photo. A place card or header then reads as a place
+        // without a picture instead of leading with an error tile.
+        const failed = () => { const media = img.closest('.pp-media'); if (media) { media.classList.remove('is-loading'); media.classList.add('is-unavailable', 'is-failed'); } };
         img.addEventListener('load', loaded); img.addEventListener('error', failed);
         if (img.complete) img.naturalWidth ? loaded() : failed();
       });

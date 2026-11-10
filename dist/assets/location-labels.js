@@ -69,6 +69,63 @@
     return clusters.sort((a, b) => Number(b.selected) - Number(a.selected));
   }
 
+  // Screen-space route strokes for pin placement. A flat map projects Web
+  // Mercator coordinates with one affine transform, so a long trip's route
+  // points need not each go through map.project on every pan: project three
+  // reference points, check a fourth, then transform the prepared Mercator
+  // values directly. Points that land within half a pixel of the previous kept
+  // point are merged, and strokes that cannot reach the viewport are dropped;
+  // pin boxes only exist inside it. Any map this does not describe (pitched,
+  // a test double, an inexact fit) keeps the point-by-point projection.
+  const mercatorX = lng => lng / 360 + 0.5;
+  const mercatorY = lat => 0.5 - Math.log(Math.tan(Math.PI / 4 + Math.max(-85.05, Math.min(85.05, lat)) * Math.PI / 360)) / (2 * Math.PI);
+  // Route geometry arrays are stable for the life of the page; convert each once.
+  const preparedRoutes = new WeakMap();
+  function prepareRoute(route) {
+    let mercator = preparedRoutes.get(route.coordinates);
+    if (!mercator || mercator.length !== route.coordinates.length * 2) {
+      mercator = new Float64Array(route.coordinates.length * 2);
+      route.coordinates.forEach(([lng, lat], index) => { mercator[index * 2] = mercatorX(lng); mercator[index * 2 + 1] = mercatorY(lat); });
+      preparedRoutes.set(route.coordinates, mercator);
+    }
+    return { ...route, mercator };
+  }
+  function flatProjection(map, routes) {
+    if (typeof map.getPitch !== 'function' || map.getPitch() !== 0) return null;
+    const sample = routes.find(route => route.coordinates.length)?.coordinates;
+    if (!sample) return null;
+    const [lng, lat] = sample[0], far = sample[sample.length - 1];
+    const references = [[lng, lat], [lng + 1, lat], [lng, lat + (lat > 0 ? -1 : 1)]];
+    const [origin, east, north] = references.map(coordinate => map.project(coordinate));
+    const [ox, oy] = [mercatorX(lng), mercatorY(lat)], dx = mercatorX(lng + 1) - ox, dy = mercatorY(references[2][1]) - oy;
+    if (![origin, east, north].every(point => Number.isFinite(point?.x) && Number.isFinite(point?.y)) || !dx || !dy) return null;
+    const a = (east.x - origin.x) / dx, c = (east.y - origin.y) / dx, b = (north.x - origin.x) / dy, d = (north.y - origin.y) / dy;
+    const apply = (x, y) => ({ x: origin.x + a * (x - ox) + b * (y - oy), y: origin.y + c * (x - ox) + d * (y - oy) });
+    const check = map.project(far), predicted = apply(mercatorX(far[0]), mercatorY(far[1]));
+    return Math.abs(check.x - predicted.x) < 0.25 && Math.abs(check.y - predicted.y) < 0.25 ? apply : null;
+  }
+  function routeStrokesFor(map, routes, width, height) {
+    const exact = route => {
+      const points = route.coordinates.map(coordinate => map.project(coordinate));
+      return points.slice(1).map((end,index) => ({start:points[index],end,padding:route.padding,dayIds:route.dayIds || []}));
+    };
+    const project = routes.every(route => route.mercator) ? flatProjection(map, routes) : null;
+    if (!project) return routes.flatMap(exact);
+    const strokes = [];
+    for (const route of routes) {
+      const { mercator, padding } = route, count = mercator.length / 2, reach = (padding || 0) + 1, dayIds = route.dayIds || [];
+      if (count < 2) continue;
+      let start = project(mercator[0], mercator[1]);
+      for (let index = 1; index < count; index++) {
+        const end = project(mercator[index * 2], mercator[index * 2 + 1]);
+        if (index < count - 1 && Math.abs(end.x - start.x) < 0.5 && Math.abs(end.y - start.y) < 0.5) continue;
+        if (Math.max(start.x, end.x) >= -reach && Math.min(start.x, end.x) <= width + reach && Math.max(start.y, end.y) >= -reach && Math.min(start.y, end.y) <= height + reach) strokes.push({start,end,padding,dayIds});
+        start = end;
+      }
+    }
+    return strokes;
+  }
+
   function placePin(point, { dot, endpoint = false, targetSize, bounds, occupied = [], routes = [] }) {
     if (point.x < bounds.left || point.x > bounds.right || point.y < bounds.top || point.y > bounds.bottom) return null;
     // A 12 px endpoint plus its 1 px outer ring replaces the signpost foot.
@@ -209,10 +266,7 @@
       const targetSize = matchMedia('(max-width: 900px), (pointer: coarse)').matches ? 44 : 32;
       const clustered = clusterGroups(groups, coordinate => map.project(coordinate), targetSize + 8);
       const occupied = obstacles(), bounds = {left:4,right:width-4,top:4,bottom:height-4};
-      routeStrokes = routes.flatMap(route => {
-        const points = route.coordinates.map(coordinate => map.project(coordinate));
-        return points.slice(1).map((end,index) => ({start:points[index],end,padding:route.padding,dayIds:route.dayIds || []}));
-      });
+      routeStrokes = routeStrokesFor(map, routes, width, height);
       for (const group of clustered) {
         const dot = group.days.length > 1 || group.members.length > 1;
         const endpoint = endpoints.has(coordinateKey(group.coordinate));
@@ -280,7 +334,7 @@
     map.on('movestart', moving); map.on('moveend', schedule); map.on('resize', schedule);
     return {
       update(nextGroups, nextRoutes, endpointCoordinates = []) {
-        groups = nextGroups; routes = nextRoutes; endpoints = new Set(endpointCoordinates.map(coordinateKey));
+        groups = nextGroups; routes = nextRoutes.map(prepareRoute); endpoints = new Set(endpointCoordinates.map(coordinateKey));
         previewIds = []; closeCard(); schedule();
       },
       setPreview, closePreview, refresh: schedule, setSuspended,
@@ -292,5 +346,5 @@
       }
     };
   }
-  root.JOURNEY_ATLAS_LOCATION_LABELS = { groupsForJourney, dayText, overlaps, crossesRoute, clusterGroups, placePin, create };
+  root.JOURNEY_ATLAS_LOCATION_LABELS = { groupsForJourney, dayText, overlaps, crossesRoute, clusterGroups, placePin, routeStrokesFor, prepareRoute, create };
 })(typeof window === 'undefined' ? globalThis : window);

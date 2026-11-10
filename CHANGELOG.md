@@ -1,5 +1,23 @@
 # Changelog
 
+## 10 November 2026 — Load and interaction pass
+
+- Trip pages download less and do less: routes are losslessly delta-encoded and
+  city boundaries simplified in public data (Heading East data script 496 → 285 KB
+  gzipped), stop changes restyle the existing route layers instead of rebuilding
+  48 sources and 144 layers, map labels stop re-projecting every route point, and
+  city framing skips far-away photos before its boundary tests.
+- An unchanged view no longer rewrites browser history, a refused history write
+  cannot interrupt navigation, and photo arrow keys are ignored behind Share.
+- Text is at least 12 px; the phone catalog link, photo-card close and viewer
+  feedback buttons have 44 px targets. The whole-trip desktop journal shows the
+  traveler's introduction. Venue images their host refuses collapse out of
+  place cards and headers.
+- Recorded the owner's priority and scope as O20, with declined items and open
+  decisions, and same-fixture [measurements](docs/PERFORMANCE_PASS_2026-11-10.md).
+  Updated framework, feature and Heading East guidance. Access-check changes from
+  the same pass are tracked in WIP until released.
+
 ## 10 November 2026 — Heading East album order confirmation
 
 - Carried the owner's 2 November confirmation into the Heading East trip

@@ -38,7 +38,7 @@ export function legPreviewHarness(journey) {
     setMobileTab: () => openedMap++, pendingMapAction: null,
     moveActiveDay() { throw Error('Leg hover must not select another day'); }
   });
-  vm.runInContext(['placeById', 'segmentById', 'segmentsForDay', 'dayById', 'dayForSegment', 'escapeHtml', 'renderRouteLegs', 'syncInspectionClasses', 'setDayPreview', 'previewRouteLeg', 'deferDayPreviewClear', 'clearDayPreview', 'setInspectedFeatureState', 'clearSegmentInspection', 'routeHoverEnabled', 'addSegmentLayer'].map(fn).join('\n'), context);
+  vm.runInContext(['placeById', 'segmentById', 'segmentsForDay', 'dayById', 'dayForSegment', 'escapeHtml', 'renderRouteLegs', 'syncInspectionClasses', 'setDayPreview', 'previewRouteLeg', 'deferDayPreviewClear', 'clearDayPreview', 'setInspectedFeatureState', 'clearSegmentInspection', 'routeHoverEnabled', 'segmentLayerPaint', 'addSegmentLayer'].map(fn).join('\n'), context);
   const start = source.indexOf('  detailPanel.addEventListener("mouseover"');
   vm.runInContext(source.slice(start, source.indexOf('  [storyMedia, photoStrip]', start)), context);
   for (const segment of journey.segments) context.addSegmentLayer(context.mainMap, context.mainDecorations, segment, { prefix: 'main', interactive: true, selected: true, opacity: 1 });

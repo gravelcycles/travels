@@ -6,7 +6,7 @@
 }
 .arrival-chapter[hidden] { display: none!important; }
 .arrival-copy { flex: 1; min-width: 0; }
-.arrival-copy small { display: block; color: #657375; font-size: 10px; letter-spacing: .12em; font-weight: 700; text-transform: uppercase; }
+.arrival-copy small { display: block; color: #657375; font-size: 12px; letter-spacing: .12em; font-weight: 700; text-transform: uppercase; }
 .arrival-copy strong { display: block; font-family: Georgia, serif; font-size: 21px; margin-top: 3px; line-height: 1.15; }
 .arrival-actions { display: flex; gap: 7px; }
 .arrival-actions button { border: 1px solid #ccd4d1; padding: 10px 12px; min-height: 42px; background: transparent; color: #203b43; font-size: 12px; font-weight: 700; cursor: pointer; }
@@ -18,15 +18,15 @@
 .opening-route-tracing .location-label-anchor,
 .opening-route-tracing .rail-stop-marker { visibility: hidden; }
 .arrival-place-label { display: grid; gap: 2px; padding: 5px 8px; border: 1px solid #ccd4d1; border-radius: 4px; background: #fffdf7f2; color: #203b43; box-shadow: 0 2px 8px #203b4325; text-align: center; pointer-events: none; z-index: 5; white-space: nowrap; }
-.arrival-place-label small { font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: #657375; }
+.arrival-place-label small { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #657375; }
 .arrival-place-label strong { font-size: 12px; line-height: 1.2; }
 .map-panel:has(.arrival-chapter:not([hidden])) #map-legend { visibility: hidden; }
 @media (max-width: 900px) {
   .arrival-chapter { left: 12px; right: 12px; bottom: 180px; padding: 10px 12px; gap: 8px; }
   .arrival-copy strong { font-size: 18px; }
-  .arrival-copy small { font-size: 9px; letter-spacing: .09em; }
+  .arrival-copy small { font-size: 12px; letter-spacing: .09em; }
   .arrival-actions { gap: 5px; }
-  .arrival-actions button { padding: 8px 9px; min-height: 44px; font-size: 11px; }
+  .arrival-actions button { padding: 8px 9px; min-height: 44px; font-size: 12px; }
 }
 
 /* One phone stop card owns both travel progress and the resting city actions. */

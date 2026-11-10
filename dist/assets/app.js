@@ -685,6 +685,32 @@
     decorations.markers = [];
     decorations.hitLayerIds = [];
     decorations.routeLayers = [];
+    decorations.routeSignature = null;
+  }
+
+  // The parts of a route's style that follow the current selection. A fresh
+  // layer and a restyled existing layer both take their paint from here, so
+  // the two paths cannot drift apart.
+  function segmentLayerPaint(segment, options) {
+    const modeStyle = modeStyles[segment.mode] || { color: palette.route, width: 4.7, dash: null };
+    const baseColor = options.color || modeStyle.color;
+    const baseWidth = modeStyle.width + (options.selected ? 1.4 : 0);
+    const line = {
+      "line-color": ["case", ["boolean", ["feature-state", "previewed"], false], modeStyle.color, ["boolean", ["feature-state", "legMuted"], false], "#92999a", baseColor],
+      "line-width": ["case", ["any", ["boolean", ["feature-state", "inspected"], false], ["boolean", ["feature-state", "previewed"], false]], baseWidth + 3, baseWidth],
+      "line-opacity": ["case", ["boolean", ["feature-state", "previewed"], false], 1, ["boolean", ["feature-state", "previewMuted"], false], 0.24, options.opacity]
+    };
+    if (segment.planningStatus === 'tbd') line["line-dasharray"] = [1, 1.4];
+    else if (modeStyle.dash) line["line-dasharray"] = modeStyle.dash;
+    return {
+      casing: {
+        "line-color": palette.casing,
+        "line-width": ["case", ["any", ["boolean", ["feature-state", "inspected"], false], ["boolean", ["feature-state", "previewed"], false]], modeStyle.width + (options.selected ? 8.2 : 6.8), modeStyle.width + (options.selected ? 5.2 : 3.8)],
+        // A continuous casing would erase solid routes through the TBD gaps.
+        "line-opacity": segment.planningStatus === "tbd" ? 0 : ["case", ["boolean", ["feature-state", "previewed"], false], 0.96, ["boolean", ["feature-state", "previewMuted"], false], 0.2, options.opacity * (options.selected ? 0.96 : 0.82)]
+      },
+      line
+    };
   }
 
   function addSegmentLayer(map, decorations, segment, options) {
@@ -705,33 +731,20 @@
       }
     });
     const beforeLabelId = window.JOURNEY_ATLAS_MAP_STYLE.routeInsertionLayer(map);
+    const paint = segmentLayerPaint(segment, options);
     map.addLayer({
       id: casingId,
       type: "line",
       source: sourceId,
       layout: { "line-cap": "round", "line-join": "round" },
-      paint: {
-        "line-color": palette.casing,
-        "line-width": ["case", ["any", ["boolean", ["feature-state", "inspected"], false], ["boolean", ["feature-state", "previewed"], false]], modeStyle.width + (options.selected ? 8.2 : 6.8), modeStyle.width + (options.selected ? 5.2 : 3.8)],
-        // A continuous casing would erase solid routes through the TBD gaps.
-        "line-opacity": segment.planningStatus === "tbd" ? 0 : ["case", ["boolean", ["feature-state", "previewed"], false], 0.96, ["boolean", ["feature-state", "previewMuted"], false], 0.2, options.opacity * (options.selected ? 0.96 : 0.82)]
-      }
+      paint: paint.casing
     }, beforeLabelId);
-    const baseColor = options.color || modeStyle.color;
-    const baseWidth = modeStyle.width + (options.selected ? 1.4 : 0);
-    const paint = {
-      "line-color": ["case", ["boolean", ["feature-state", "previewed"], false], modeStyle.color, ["boolean", ["feature-state", "legMuted"], false], "#92999a", baseColor],
-      "line-width": ["case", ["any", ["boolean", ["feature-state", "inspected"], false], ["boolean", ["feature-state", "previewed"], false]], baseWidth + 3, baseWidth],
-      "line-opacity": ["case", ["boolean", ["feature-state", "previewed"], false], 1, ["boolean", ["feature-state", "previewMuted"], false], 0.24, options.opacity]
-    };
-    if (segment.planningStatus === 'tbd') paint["line-dasharray"] = [1, 1.4];
-    else if (modeStyle.dash) paint["line-dasharray"] = modeStyle.dash;
     map.addLayer({
       id: lineId,
       type: "line",
       source: sourceId,
       layout: { "line-cap": "round", "line-join": "round" },
-      paint
+      paint: paint.line
     }, beforeLabelId);
     if (options.interactive) {
       map.addLayer({
@@ -747,6 +760,43 @@
     decorations.sourceIds.push(sourceId);
     decorations.layerIds.push(casingId, lineId);
     (decorations.routeLayers ||= []).push({ segmentId: segment.id, sourceId, lineId });
+  }
+
+  // Changing the day or scope leaves the trip's routes where they are. Restyle
+  // and reorder the layers already on the map instead of removing and re-adding
+  // a GeoJSON source and three layers for every leg. The outcome matches a fresh
+  // draw: same paint, same order, default visibility, no leftover feature state
+  // and no temporary (arrival guide) layers. Returns false when the map has to
+  // be drawn from scratch.
+  function restyleMainRoutes(ordered, optionsFor, signature) {
+    const map = mainMap, decorations = mainDecorations;
+    if (!signature || decorations.routeSignature !== signature) return false;
+    if (!['setPaintProperty', 'setLayoutProperty', 'moveLayer', 'removeFeatureState'].every(name => typeof map[name] === 'function')) return false;
+    const parts = segment => ['casing', 'line', 'hit'].map(part => `main-${part}-${segment.id}`);
+    if (!ordered.every(segment => map.getSource(`main-source-${segment.id}`) && parts(segment).every(id => map.getLayer(id)))) return false;
+    decorations.cancelStopReveal?.();
+    decorations.markers.forEach(marker => marker.remove());
+    const kept = new Set(ordered.flatMap(parts)), keptSources = new Set(ordered.map(segment => `main-source-${segment.id}`));
+    decorations.layerIds.filter(id => !kept.has(id)).reverse().forEach(id => { if (map.getLayer(id)) map.removeLayer(id); });
+    decorations.sourceIds.filter(id => !keptSources.has(id)).reverse().forEach(id => { if (map.getSource(id)) map.removeSource(id); });
+    Object.assign(decorations, { layerIds: [], sourceIds: [], markers: [], hitLayerIds: [], routeLayers: [] });
+    const beforeLabelId = window.JOURNEY_ATLAS_MAP_STYLE.routeInsertionLayer(map);
+    for (const segment of ordered) {
+      const sourceId = `main-source-${segment.id}`, [casingId, lineId, hitId] = parts(segment);
+      const paint = segmentLayerPaint(segment, optionsFor(segment));
+      map.removeFeatureState({ source: sourceId });
+      for (const [id, values] of [[casingId, paint.casing], [lineId, paint.line]]) {
+        map.setLayoutProperty(id, 'visibility', 'visible');
+        for (const [property, value] of Object.entries(values)) map.setPaintProperty(id, property, value);
+        map.moveLayer(id, beforeLabelId);
+      }
+      map.moveLayer(hitId, beforeLabelId);
+      decorations.hitLayerIds.push(hitId);
+      decorations.layerIds.push(hitId, casingId, lineId);
+      decorations.sourceIds.push(sourceId);
+      decorations.routeLayers.push({ segmentId: segment.id, sourceId, lineId });
+    }
+    return true;
   }
 
   function railStopCoordinate(map, stop, coordinates) {
@@ -853,22 +903,31 @@
       return;
     }
     clearDayPreview();
-    clearDecorations(mainMap, mainDecorations);
     const selectedSegments = new Set(mapScope === "day" ? activeDay().segmentIds : []);
-    [...journey.segments]
+    const ordered = [...journey.segments]
       .sort((a, b) => Number(selectedSegments.has(a.id)) - Number(selectedSegments.has(b.id))
         // Confirmed routes stay continuous on shared corridors in the overview.
-        || Number(b.planningStatus === "tbd") - Number(a.planningStatus === "tbd"))
-      .forEach((segment) => {
-        const selected = selectedSegments.has(segment.id);
-        addSegmentLayer(mainMap, mainDecorations, segment, {
-          prefix: "main",
-          interactive: true,
-          selected,
-          color: mapScope === "day" && !selected ? palette.muted : undefined,
-          opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.78)
-        });
-      });
+        || Number(b.planningStatus === "tbd") - Number(a.planningStatus === "tbd"));
+    const optionsFor = (segment) => {
+      const selected = selectedSegments.has(segment.id);
+      return {
+        prefix: "main",
+        interactive: true,
+        selected,
+        color: mapScope === "day" && !selected ? palette.muted : undefined,
+        opacity: selected ? 1 : (mapScope === "day" ? 0.32 : 0.78)
+      };
+    };
+    // The same journey, legs, modes, statuses and line shapes can keep their layers.
+    const signature = [journey.id, ...journey.segments.map((segment) => {
+      const coordinates = segmentCoordinates(segment);
+      return [segment.id, segment.mode, segment.planningStatus || "", coordinates.length, coordinates[0], coordinates.at(-1)].join(":");
+    })].join("|");
+    if (!restyleMainRoutes(ordered, optionsFor, signature)) {
+      clearDecorations(mainMap, mainDecorations);
+      ordered.forEach((segment) => addSegmentLayer(mainMap, mainDecorations, segment, optionsFor(segment)));
+      mainDecorations.routeSignature = signature;
+    }
     syncArrivalLayers();
     openingRoute?.syncLayers();
     const stopJourney = journey;
@@ -1236,7 +1295,9 @@
       $('#sidebar-day-summary').textContent = 'Journey details';
       $('#focus-day').disabled = true;
       storyMedia.innerHTML = `<div class="story-empty"><span>The whole journey</span><strong>${escapeHtml(journey.title)}</strong><small>${escapeHtml(journey.dates)}</small></div>`;
-      detailPanel.innerHTML = `<p class="day-story">Choose a ${eventWord()} to explore its route and photos.</p>`;
+      // The whole-trip view has no event story; show the traveler's own
+      // introduction (when written) rather than leaving the journal empty.
+      detailPanel.innerHTML = `${journey.subtitle?.trim() ? `<p class="day-story journey-overview-intro">${escapeHtml(journey.subtitle.trim())}</p>` : ''}<p class="day-story journey-overview-hint">Choose a ${eventWord()} to explore its route and photos.</p>`;
       photoStrip.innerHTML = '';
       $('.photo-section').hidden = true;
       $('#story-view-photos').hidden = true;
@@ -2566,7 +2627,7 @@
       clearSegmentInspection(true);
       return;
     }
-    if (!photoDialog.open || document.querySelector('#comments-dialog[open], #experience-unlock[open], #trip-notifications-dialog[open]') || window.JOURNEY_ATLAS_MOBILE_UI?.keyTarget(event) || ['INPUT','SELECT','TEXTAREA'].includes(event.target.tagName)) return;
+    if (!photoDialog.open || document.querySelector('#comments-dialog[open], #experience-unlock[open], #trip-notifications-dialog[open], #share-link-dialog[open]') || window.JOURNEY_ATLAS_MOBILE_UI?.keyTarget(event) || ['INPUT','SELECT','TEXTAREA'].includes(event.target.tagName)) return;
     if (event.key === "ArrowLeft" && event.shiftKey) moveViewerDay(-1);
     else if (event.key === "ArrowRight" && event.shiftKey) moveViewerDay(1);
     else if (event.key === "ArrowLeft") moveViewer(-1);

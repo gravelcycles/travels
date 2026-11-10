@@ -73,7 +73,7 @@ export function mapEntryHarness(journey, {mobile: isMobile = false, ready = true
     openPhoto(id){context.openedPhoto=id;node('#photo-dialog').open=true;},openDayViewer(id){context.openedGrid=id;},selectPhoto(id){context.selectedPhoto=id;},
   });
   const functions = ['placeById','segmentById','dayById','activeDay','destinationForDay','segmentsForDay','photosForDay','orderedPhotos',
-    'segmentCoordinates','drawMainMap','renderDayNavigator','moveActiveDay','fitRoute','cancelOpeningRoute','openJourneyMap','playOpeningRoute',
+    'segmentCoordinates','restyleMainRoutes','drawMainMap','renderDayNavigator','moveActiveDay','fitRoute','cancelOpeningRoute','openJourneyMap','playOpeningRoute',
     'renderDays','dayCopyMarkup','renderStory','setActiveDay','restoreMapView','renderIntroduction','dismissIntroduction','restoreSharedView'];
   vm.runInContext(functions.map(appFunction).join('\n'), context);
   vm.runInContext(mobile,context);

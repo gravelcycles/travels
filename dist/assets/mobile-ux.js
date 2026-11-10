@@ -72,7 +72,15 @@
     function save(push = false) {
       if (restoring) return;
       const state = snapshot();
-      history[push ? 'pushState' : 'replaceState']({...history.state, mobileAtlas: state}, '', location.href);
+      // Resizes, repeated renders and photo steps ask for this far more often
+      // than the view changes. Rewriting an identical entry is wasted work, and
+      // WebKit rejects more than 100 history writes in 30 seconds; a rejected
+      // write must never abort the navigation that requested it.
+      const recorded = history.state?.mobileAtlas;
+      if (push || !recorded || JSON.stringify(recorded) !== JSON.stringify(state)) {
+        try { history[push ? 'pushState' : 'replaceState']({...history.state, mobileAtlas: state}, '', location.href); }
+        catch { /* The entry keeps its previous snapshot; the page itself is current. */ }
+      }
       previousState = state;
       api.viewChanged?.();
     }

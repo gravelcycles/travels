@@ -77,7 +77,7 @@ test('route sources preserve textual segment IDs for MapLibre rendered feature s
   const sources=new Map(),layers=[];
   const context=vm.createContext({eventWord: form => globalThis.JOURNEY_ATLAS_UTILS.eventWord({}, form),window:{JOURNEY_ATLAS_MAP_STYLE:{routeInsertionLayer:()=>undefined}},
     palette:{route:'#0072b2',casing:'#fff'},modeStyles:{train:{color:'#0072b2',width:5}},segmentCoordinates:()=>[[8,47],[7,47]]});
-  vm.runInContext(fn('addSegmentLayer'),context);
+  vm.runInContext(fn('segmentLayerPaint')+fn('addSegmentLayer'),context);
   context.addSegmentLayer({addSource:(id,source)=>sources.set(id,source),addLayer:layer=>layers.push(layer)},
     {sourceIds:[],layerIds:[],hitLayerIds:[]},{id:'arrival-train',mode:'train'},{prefix:'main',interactive:true,selected:false,opacity:1});
   const route=sources.get('main-source-arrival-train');

@@ -1,5 +1,44 @@
 # Current workstreams
 
+## Load, interaction and flow fixes — 10 November 2026
+
+Authorized by the owner after a sitewide review; direction, declined items and
+open decisions are [O20](docs/OWNER_DECISIONS.md#load-interaction-and-flow-fixes--10-november-2026).
+Work is on branch `claude/perf-flow-fixes` at `build/perf-flow-fixes`, cut
+from published `af4e7b7`. It is delivered in two parts.
+
+**Part 1 — data, map work, history, legibility, Places (this change).** Compact
+route and boundary data, persistent route layers, the label and city-framing
+shortcuts, history-write guard, Share-dialog arrow guard, 12 px text floor,
+44 px targets, whole-trip introduction and collapsed refused venue images.
+All 940 tests and the production build pass at this point of the branch.
+Checked in a desktop browser against a local server with local photo
+derivatives (`?photoSource=local`) at 1440 × 900, 375 × 812 and 320 × 640:
+Heading East overview, stop changes, arrival settle, album grid, fullscreen
+viewer with real key presses, Places list and detail; Switzerland–Italy stop
+selection; Florence–Genoa; the demo; the catalog. No new console errors.
+Same-fixture numbers are in the [measurement record](docs/PERFORMANCE_PASS_2026-11-10.md).
+Not checked: a physical phone, Safari, comment and review surfaces at the new
+text size (they need an unlocked session), and an independently populated
+fresh draft in a browser (covered by shared tests only).
+
+**Part 2 — access checks (implemented on the branch, not released).** Skip the
+remembered-cookie navigation for browsers that never unlocked, start it from the
+page head for those that have, replace rather than push that navigation, reuse an
+unexpired tab token without waiting for the status request, tolerate device
+clock skew, fail fast when a page script cannot load, hide unlock where a
+journey has no private media and show it in the phone album grid. Loader and
+entry tests cover each path. A real unlock against the live service cannot be
+exercised by an agent, so release it when the owner can try unlocking straight
+afterwards; revert the release commit if unlock fails.
+
+**Not done.** Service-side token lifetime (still one hour; the client accepts
+up to twelve) and a stated `expiresIn`; per-photo request cost and thumbnail
+concurrency; the fullscreen location map's route redraw; bundling/minification;
+fresh sources for Heading East venue images. Each needs either an owner
+decision or an unlocked session to measure.
+
+
 ## Keep the current route active after arrival — 3 November 2026
 
 Complete. Owner correction: “keep the current route live” and “colored” after

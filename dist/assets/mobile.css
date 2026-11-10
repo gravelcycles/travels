@@ -22,7 +22,7 @@
  .mobile-journey-actions { display:grid; grid-template-columns:1fr 1fr; gap:4px 12px; padding:12px 18px; border-top:1px solid var(--line); }
  .mobile-journey-actions button,.mobile-journey-actions a { display:flex; align-items:center; min-height:44px; border:0; border-radius:10px; background:transparent; padding:8px; color:var(--ink); font-size:14px; font-weight:500; line-height:1.3; text-align:left; text-decoration:none; cursor:pointer; }
  .mobile-journey-actions [hidden] { display:none; }
- .mobile-brand { grid-column:2; justify-self:center; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font:700 16px Georgia,serif; color:var(--ink); text-decoration:none; }
+ .mobile-brand { grid-column:2; justify-self:center; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font:700 16px/44px Georgia,serif; color:var(--ink); text-decoration:none; }
  .atlas-shell { height:calc(100dvh - var(--mobile-top) - var(--mobile-bottom)); min-height:0; }
  .mobile-nav { height:var(--mobile-bottom); padding:0 12px env(safe-area-inset-bottom); grid-template-columns:52px 1fr 52px; gap:8px; background:var(--panel); border-top:1px solid var(--line); }
  .mobile-nav button { color:var(--ink); text-transform:none; letter-spacing:0; font-size:14px; min-height:44px; cursor:pointer; }
@@ -34,7 +34,7 @@
  .route-inspector { display:none; }
  .map-status { top:12px; bottom:auto; max-width:85%; }
  .mobile-day-summary { display:block; padding:12px 20px 8px; border-top:1px solid var(--line); background:var(--panel); }
- .mobile-day-summary > span,.mobile-story-heading > span { color:var(--muted); font-size:11px; font-weight:750; text-transform:uppercase; letter-spacing:.06em; }
+ .mobile-day-summary > span,.mobile-story-heading > span { color:var(--muted); font-size:12px; font-weight:750; text-transform:uppercase; letter-spacing:.06em; }
  .mobile-day-summary h2 { font:700 22px/1.15 Georgia,serif; letter-spacing:-.02em; margin:7px 0; }
  .mobile-day-summary p { display:none; }
  .mobile-day-summary #mobile-day-tagline { display:block; margin:5px 0; font-size:13px; line-height:1.4; color:var(--ink-soft); font-style:italic; }
@@ -95,14 +95,14 @@
  .photo-location-heading::before { content:""; position:absolute; width:32px; height:4px; background:#bec9c4; border-radius:4px; top:5px; left:calc(50% - 16px); }
  .photo-location-heading strong,.photo-location-heading small { display:block; }
  .photo-location-heading strong { font:700 20px Georgia,serif; }
- .photo-location-heading small { font-size:11px; margin-top:4px; color:var(--ink-soft); }
+ .photo-location-heading small { font-size:12px; margin-top:4px; color:var(--ink-soft); }
  .photo-location-heading button { min-height:44px; min-width:44px; border:0; border-radius:50%; background:transparent; font-size:24px; cursor:pointer; }
  .photo-location-panel #photo-map { grid-column:auto; grid-row:auto; min-height:0; height:100%; margin:0 14px; border:0; border-radius:12px; }
  .photo-location-panel .photo-context-copy { grid-column:auto; grid-row:auto; max-height:65px; padding:8px 18px; overflow-y:auto; border:0; }
  .photo-location-panel .viewer-day-nav,.photo-location-panel #modal-progress,.photo-location-panel #modal-day-title,.photo-location-panel #modal-day-route,.photo-location-panel #modal-location { display:none; }
  .photo-location-panel .modal-description { margin:0; font-size:12px; }
  .mobile-photo-footer { display:block; position:absolute; bottom:0; left:0; right:0; height:var(--photo-foot); padding:4px 12px env(safe-area-inset-bottom); z-index:5; text-align:center; background:#091113; }
- #mobile-photo-time { display:block; min-height:22px; font-size:11px; line-height:22px; color:#aebdbd; }
+ #mobile-photo-time { display:block; min-height:22px; font-size:12px; line-height:22px; color:#aebdbd; }
  .mobile-photo-footer > div { display:grid; grid-template-columns:48px minmax(0,1fr) 48px; gap:8px; align-items:center; }
  #mobile-photo-location { touch-action:none; font-size:13px; }
  #mobile-photo-location > span[aria-hidden] { padding:0 5px; }
@@ -114,6 +114,10 @@
  .photo-viewer:is([data-grid="true"],[data-grid-origin="true"]) .viewer-filmstrip img { width:100%; height:100%; object-fit:cover; }
  .photo-viewer:is([data-grid="true"],[data-grid-origin="true"]) .mobile-grid-heading { position:absolute; top:0; left:0; right:0; z-index:13; height:calc(54px + env(safe-area-inset-top)); padding:env(safe-area-inset-top) 12px 0; display:flex; justify-content:space-between; align-items:center; background:#091113; color:white; }
  .mobile-grid-heading strong { font-size:13px; }
+ .mobile-grid-heading .mobile-grid-unlock { min-height:36px; padding:6px 14px; border:1px solid #ffffff8c; border-radius:24px; font-size:14px; white-space:nowrap; position:relative; }
+ .mobile-grid-heading .mobile-grid-unlock::before { content:""; position:absolute; inset:-4px 0; }
+ .mobile-grid-heading .mobile-grid-unlock[hidden] { display:none; }
+ .viewer-photo-feedback button { min-height:44px; padding-inline:18px; }
  .mobile-grid-heading button { font-size:15px; }
  .photo-viewer:is(.is-location-settling,.is-location-dragging) :is(.viewer-photo-frame,.photo-location-panel) { will-change:transform; }
  .photo-viewer:is(.is-location-settling,.is-location-dragging) .photo-stage { overflow:visible; }
@@ -164,9 +168,9 @@
  #replay-map { position:absolute; top:var(--replay-top); bottom:calc(var(--replay-controls-height) + var(--replay-story-height)); width:100%; height:auto; min-height:0; }
  #replay-map .maplibregl-ctrl-top-right { top:0; }
  .replay-story { position:absolute; top:auto; bottom:var(--replay-controls-height); left:0; right:0; width:100%; max-height:25dvh; margin:0; padding:16px 20px 12px; border:0; background:#142126; color:#f3f6f5; box-shadow:none; backdrop-filter:none; overflow-y:auto; overscroll-behavior:contain; }
- .replay-story .replay-eyebrow { color:#bdcec9; font-size:10px; letter-spacing:.08em; }
+ .replay-story .replay-eyebrow { color:#bdcec9; font-size:12px; letter-spacing:.08em; }
  .replay-story h2 { font:600 23px/1.12 Georgia,serif; letter-spacing:-.02em; margin:6px 0 8px; padding-right:0; }
- .replay-story .replay-mode { margin-top:6px; color:#adbfbd; font-size:10px; }
+ .replay-story .replay-mode { margin-top:6px; color:#adbfbd; font-size:12px; }
  .replay-story .replay-route { color:#bbd4d8; font-weight:500; font-size:12px; }
  .replay-story .replay-copy { font-size:13px; line-height:1.5; color:#d0dcd9; margin-top:8px!important; }
  .replay-explore { width:auto; border:0; border-radius:20px; background:#ffffff0e; color:#e0ece9; margin:12px 0 0; padding:8px 13px; min-height:40px; font-size:12px; font-weight:600; }
@@ -174,7 +178,7 @@
  .replay-timeline-row { order:0; width:100%; display:flex; align-items:center; gap:12px; }
  .replay-timeline-row label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
  .replay-timeline-row input { min-width:0; flex:1; min-height:28px; accent-color:#dce9e4; }
- #replay-day-label { font-size:10px; min-width:80px; color:#b9cbc8; font-weight:500; text-transform:none; }
+ #replay-day-label { font-size:12px; min-width:80px; color:#b9cbc8; font-weight:500; text-transform:none; }
  .replay-transport { order:1; width:100%; display:grid; grid-template-columns:1fr 60px 1fr auto; align-items:center; gap:12px; }
  .replay-transport button { border:0; border-radius:50%; padding:0; width:44px; height:44px; min-width:0; display:grid; place-items:center; justify-self:center; background:transparent; color:#fff; }
  #replay-toggle { width:54px; height:54px; min-width:0; background:#e3ece9; color:#112027; }

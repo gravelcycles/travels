@@ -20,7 +20,7 @@ export function routeOverlapHarness(journey, routes = {}, dayId = null) {
     mapIsReady:()=>true, renderPlanningFilters(){}, photoBubbles:null, renderLegend(){},
     clearDayPreview(){},syncArrivalLayers(){},openingRoute:null,addDayStopMarkers:()=>[],renderDayNavigator(){},locationLabels:null
   });
-  vm.runInContext(['clearDecorations','addSegmentLayer','drawMainMap'].map(viewerFunction).join('\n'),context);
+  vm.runInContext(['clearDecorations','segmentLayerPaint','addSegmentLayer','restyleMainRoutes','drawMainMap'].map(viewerFunction).join('\n'),context);
   context.drawMainMap(false);
   return {context,map,sources,layers:()=>map.getStyle().layers};
 }

@@ -10,7 +10,7 @@ import { readOverrides } from '../scripts/build-site.mjs';
 
 const root = new URL('../', import.meta.url).pathname;
 const source = fs.readFileSync(new URL('../dist/assets/app.js', import.meta.url), 'utf8');
-const names = ['railStopCoordinate', 'dayMapStops', 'addDayStopMarkers', 'revealStopsWithRoutes', 'clearDecorations', 'addSegmentLayer', 'syncViewerMap', 'syncArrivalLayers', 'drawMainMap'];
+const names = ['railStopCoordinate', 'dayMapStops', 'addDayStopMarkers', 'revealStopsWithRoutes', 'clearDecorations', 'segmentLayerPaint', 'addSegmentLayer', 'restyleMainRoutes', 'syncViewerMap', 'syncArrivalLayers', 'drawMainMap'];
 const functions = names.map(name => {
   const start = source.indexOf(`  function ${name}(`);
   assert.ok(start >= 0, name);
