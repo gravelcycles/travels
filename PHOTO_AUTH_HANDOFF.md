@@ -66,8 +66,9 @@ still holds: the page stays hidden until view and access are both resolved.
   stores `offset` only when non-zero. Offsets beyond two days fail closed.
 - **Lifetime bound.** The client accepts access tokens of up to twelve hours.
   The service still issues one hour, and a tab still makes one navigation per
-  expiry. Lengthening the service lifetime, and returning `expiresIn`, is an
-  owner decision: a copied bearer token stays usable until it expires.
+  expiry. The owner accepted that hourly reload on 10 November 2026, so the
+  service lifetime stays at one hour: a copied bearer token stays usable until
+  it expires. Do not lengthen it, or add `expiresIn`, without a new request.
 - **Nothing to unlock.** A journey page whose published media has no protected
   photo or private clip shows no header control and no prompt, and takes no
   cookie check. `[data-locked-only]` controls (the phone album grid's Unlock

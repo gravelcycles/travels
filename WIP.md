@@ -55,8 +55,10 @@ on 10 November that a fresh password sign-in works on the live site. Not
 exercised on the live service: the hourly token expiry, a device with a wrong
 clock, a failed script load, and the phone grid Unlock button on a phone.
 
-**Not done.** Service-side token lifetime (still one hour; the client accepts
-up to twelve) and a stated `expiresIn`; per-photo request cost and thumbnail
+**Closed without change.** Service-side token lifetime: the owner accepted the
+hourly reload on 10 November, so it stays at one hour.
+
+**Not done.** Per-photo request cost and thumbnail
 concurrency; the fullscreen location map's route redraw; bundling/minification;
 fresh sources for Heading East venue images. Each needs either an owner
 decision or an unlocked session to measure.

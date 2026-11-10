@@ -75,8 +75,12 @@ alongside the sidebar toggles on desktop because the
 keeps its card action because it is the only action on a trip with no photos
 or places.
 
-**Still the owner’s call:** how long a tab’s access token should live (the
-service issues one hour; see [private access](../PHOTO_AUTH_HANDOFF.md)); a
+**Access token lifetime (10 November 2026):** the owner accepted the hourly
+reload (“i think that’s fine”) once it was clear no password is retyped. The
+service keeps issuing one-hour tokens; see
+[private access](../PHOTO_AUTH_HANDOFF.md).
+
+**Still the owner’s call:** a
 durable source for Heading East’s venue images, whose Google-hosted links now
 refuse every request ([trip record](HEADING_EAST.md)); and whether to drop the
 original filename and source hash from public photo data, which is low
