@@ -18,6 +18,12 @@ Heading East overview, stop changes, arrival settle, album grid, fullscreen
 viewer with real key presses, Places list and detail; Switzerland–Italy stop
 selection; Florence–Genoa; the demo; the catalog. No new console errors.
 Same-fixture numbers are in the [measurement record](docs/PERFORMANCE_PASS_2026-11-10.md).
+Published as `ff6855f` through successful
+[Pages run 42873569996](https://github.com/gravelcycles/travels/actions/runs/42873569996).
+Fifteen fresh public files (five pages, the Heading East data script and nine
+shared assets) match the release bytes; the public data script transfers 287 KB
+gzipped. A fresh public Heading East load as a guest decodes every route, shows
+12 px stop text and runs four stop changes with no long task or console error.
 Not checked: a physical phone, Safari, comment and review surfaces at the new
 text size (they need an unlocked session), and an independently populated
 fresh draft in a browser (covered by shared tests only).
