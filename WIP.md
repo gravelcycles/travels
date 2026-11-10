@@ -50,10 +50,10 @@ URL; a same-tab reload reused the tab token with no navigation and only the
 background status request; catalog → trip → one Back press returned to the
 catalog. With the remembered note set to `0` in a fresh tab: no request to the
 photo service, the prompt, one Back press to the catalog, and no prompt or
-unlock control on Florence–Genoa. No console errors. Not exercised on the live
-service: typing the password for a new sign-in (owner only), the hourly token
-expiry, a device with a wrong clock, a failed script load, and the phone grid
-Unlock button on a phone.
+unlock control on Florence–Genoa. No console errors. The owner then confirmed
+on 10 November that a fresh password sign-in works on the live site. Not
+exercised on the live service: the hourly token expiry, a device with a wrong
+clock, a failed script load, and the phone grid Unlock button on a phone.
 
 **Not done.** Service-side token lifetime (still one hour; the client accepts
 up to twelve) and a stated `expiresIn`; per-photo request cost and thumbnail
