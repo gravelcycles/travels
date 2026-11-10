@@ -2191,6 +2191,13 @@ resumed, renamed or archived by this cleanup.
 
 ## Local-only material and recovery
 
+The 10 November primary checkout cleanup verified a private snapshot of all
+125 pending files from `updates` at `3373246`, plus the Studio recovery
+stores, private media and update ledger. The snapshot and checksum manifest
+live under ignored `build/checkout-recovery-20261110/`. Review any recovered
+file against current `main` before applying it. The November album order
+confirmation is carried forward in the [Heading East trip record](docs/HEADING_EAST.md#krakówwarsaw-train-and-photo-batch--2-november-2026).
+
 These remain on this machine and are not part of a fresh clone:
 
 - `photos/`, `build/private-photo-assets/`, upload derivatives and raw route

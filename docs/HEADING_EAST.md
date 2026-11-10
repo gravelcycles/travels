@@ -172,6 +172,13 @@ provenance separately from camera metadata. On 29 October, `IMG_3960.jpg` and
 Tarvisio photos belong to Vienna's incoming journey. Preserve actual timestamps
 and insert new photos chronologically without changing existing relative order.
 
+On 2 November 2026, the owner reaffirmed earliest-first ordering by capture
+time for Salzburg, Innsbruck, Bolzano, Venice, Forni di Sopra and Vienna.
+Preserve the saved relative order for equal timestamps. At that checkpoint,
+all 145 visible photos across those six albums were already in order in the
+saved overrides and Studio grids. Retain the
+[saved Berlin exception](#saved-photo-and-metadata-publication--16-october-2026).
+
 Nine new stills have no embedded GPS and must have no fabricated exact pin:
 
 | File | Capture date/time | Album |

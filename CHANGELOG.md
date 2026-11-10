@@ -1,5 +1,11 @@
 # Changelog
 
+## 10 November 2026 — Heading East album order confirmation
+
+- Carried the owner's 2 November confirmation into the Heading East trip
+  record. Six albums keep earliest-first capture order with stable ties,
+  and Berlin keeps its saved order.
+
 ## 3 November 2026 — Keep the selected route colored after arrival
 
 - Arrival completion and city framing retain the selected event’s transport
