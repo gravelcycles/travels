@@ -78,7 +78,15 @@ settles only after code redemption or a confirmed guest/cancel/error result.
 Back to a pending cached document settles guest browsing without redirecting
 again. Demo and local access settle immediately.
 
-Only slow startup shows neutral progress (500 ms). Missing scripts offer Retry
+Since 10 November 2026 `page-entry.js` also starts a returning browser's
+remembered-access navigation from the head, before the page scripts load, and
+reports it through `JOURNEY_ATLAS_ENTRY.restoring`; the build passes the service
+origin in the script's `data-photo-service` attribute on real pages only. An
+unexpired tab token settles `access` without a network wait. See
+[private access](../PHOTO_AUTH_HANDOFF.md#fewer-access-round-trips--10-november-2026).
+
+Only slow startup shows neutral progress (500 ms). A page script that fails to
+load offers Retry at once; other missing milestones offer Retry
 after 20 seconds without exposing uninitialized chrome; auth requests retain
 their existing 15-second deadlines. Neither timers nor `load` bypass milestones.
 No photo download, map tile, worker or neighbor-preparation readiness gates the

@@ -162,7 +162,10 @@ city framing do far less work, unchanged views write no history, text is at
 least 12 px, small controls have 44 px targets, the whole-trip desktop journal
 shows the traveler's introduction, and venue images their host refuses collapse
 out of place cards. [Measurements](PERFORMANCE_PASS_2026-11-10.md); release
-status in WIP.
+status in WIP. The same pass reduces remembered-access round trips: browsers that
+never unlocked stay on the page, returning browsers check from the page head,
+and trips without private media offer no unlock
+([private access](../PHOTO_AUTH_HANDOFF.md#fewer-access-round-trips--10-november-2026)).
 
 Comment notifications extend photo conversations with red unread-number badges
 on photo Comments buttons and plain total counts once read. The top-right bell

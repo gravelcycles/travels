@@ -7,11 +7,11 @@ class Element extends EventTarget {
  querySelectorAll(){return [];}
  append(){}setAttribute(){}removeAttribute(name){if(name==='srcset')this.srcset='';}focus(){}showModal(){this.open=true;}close(){this.open=false;}
 }
-function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/webp'}}),{startup=false,tabStorage=new Map(),clock=Date,hash='',avifSupport}={}){
- const elements=[],header=new Element(),events=new Map(),calls=[],revoked=[],timers=new Map(),blobs=new Map(),probes=[];let loginFlow,timerId=0,blobId=0;
+function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:{'Content-Type':'image/webp'}}),{startup=false,tabStorage=new Map(),browserStorage=new Map([['atlas-photo-remembered','1']]),clock=Date,hash='',avifSupport,journey,redeem,restoring,flow}={}){
+ const elements=[],header=new Element(),events=new Map(),calls=[],revoked=[],timers=new Map(),blobs=new Map(),probes=[];let loginFlow=flow,timerId=0,blobId=0;
  const document={body:new Element(),hidden:false,activeElement:new Element(),createElement(){const e=new Element();elements.push(e);return e;},querySelector(){return header;},querySelectorAll(){return [elements[0].querySelector('[data-unlock]'),elements[1].querySelector('[data-unlock]')];},addEventListener(n,fn){events.set(n,fn);}};
  const entryStates=[];
- const window={JOURNEY_ATLAS_ENTRY:{ready:part=>entryStates.push({part,unlocked:window.JOURNEY_ATLAS_AUTH?.unlocked})},JOURNEY_ATLAS_PHOTO_SERVICE:{origin:'https://photos.example.com'},addEventListener(n,fn){events.set(n,fn);},dispatchEvent(event){events.get(event.type)?.(event);},open(){throw new Error('Login should not require a popup');}};
+ const window={JOURNEY_ATLAS_ENTRY:{...(restoring!==undefined?{restoring}:{}),ready:part=>entryStates.push({part,unlocked:window.JOURNEY_ATLAS_AUTH?.unlocked})},JOURNEY_ATLAS_PHOTO_SERVICE:{origin:'https://photos.example.com'},addEventListener(n,fn){events.set(n,fn);},dispatchEvent(event){events.get(event.type)?.(event);},open(){throw new Error('Login should not require a popup');}};
  const Url=class extends URL{};Url.createObjectURL=blob=>{const url=`blob:fixture-${++blobId}`;blobs.set(url,blob);return url;};Url.revokeObjectURL=u=>revoked.push(u);
  class Probe {
   constructor(){probes.push(this);}
@@ -19,14 +19,16 @@ function fixture(fetchImpl=async()=>new Response(new Uint8Array([1,2]),{headers:
   finish(supported){this.naturalWidth=supported?1:0;this.naturalHeight=supported?1:0;if(supported)this.onload?.();else this.onerror?.();}
  }
  document.body.dataset.journeyScope=startup?'real':'demo';
- const navigations=[],historyUrls=[];const location=new URL('https://gravelcycles.github.io/travels/');location.hash=hash;location.assign=url=>navigations.push(url);
+ if(journey){document.body.dataset.journeyId=journey.id;window.JOURNEY_ATLAS_PHOTOS={[journey.id]:journey.photos||[]};window.JOURNEY_ATLAS_DATA={journeys:[{id:journey.id,videos:journey.videos||[]}]};}
+ const navigations=[],replaced=[],historyUrls=[];const location=new URL('https://gravelcycles.github.io/travels/');location.hash=hash;location.assign=url=>navigations.push(url);location.replace=url=>{navigations.push(url);replaced.push(url);};
+ const browserWrites=[],localStorage=browserStorage&&{getItem:k=>browserStorage.has(k)?browserStorage.get(k):null,setItem(k,v){browserWrites.push([k,v]);browserStorage.set(k,v);},removeItem:k=>browserStorage.delete(k)};
  const storage={getItem:k=>k==='atlas-photo-login'?JSON.stringify(loginFlow):tabStorage.get(k)||null,removeItem:k=>tabStorage.delete(k),setItem(k,v){if(k==='atlas-photo-login')loginFlow=JSON.parse(v);else tabStorage.set(k,v);}};
- const context=vm.createContext({window,document,location,...(avifSupport!==undefined?{Image:Probe}:{}),history:{replaceState(_state,_title,url){historyUrls.push(url);}},sessionStorage:storage,URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,Blob,btoa,Date:clock,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json({token:'fixture-access-token',expiresAt:Math.floor(clock.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
- vm.runInContext(source.replace('completeReturn();}', 'window.__startup=completeReturn();}').replace(/\}\)\(\);\s*$/, 'window.__completeReturn=completeReturn;})();'),context);
+ const context=vm.createContext({window,document,location,...(avifSupport!==undefined?{Image:Probe}:{}),history:{replaceState(_state,_title,url){historyUrls.push(url);}},sessionStorage:storage,...(localStorage?{localStorage}:{}),URL:Url,URLSearchParams,Event,AbortController,TextEncoder,crypto,Uint8Array,Blob,btoa,Date:clock,setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),setInterval:()=>2,clearInterval(){},fetch:async(...args)=>{if(args[0].endsWith('/auth/redeem'))return Response.json(redeem?redeem():{token:'fixture-access-token',expiresAt:Math.floor(clock.now()/1000)+3600});calls.push(args);return fetchImpl(...args);}});
+ vm.runInContext(source.replace('startup();}', 'window.__startup=startup();}').replace(/\}\)\(\);\s*$/, 'window.__completeReturn=completeReturn;})();'),context);
  async function unlock(spoof=false){loginFlow={state:'fixture-state',verifier:'v'.repeat(43),created:Date.now(),hash:''};location.hash=new URLSearchParams({photoAuthCode:'c'.repeat(43),state:spoof?'wrong-state':'fixture-state'}).toString();await window.__completeReturn();}
 
  async function returnFrom(kind){location.hash=new URLSearchParams({[kind]:kind==='photoAuthCode'?'c'.repeat(43):'1',state:loginFlow.state}).toString();await window.__completeReturn();}
- return {window,events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,blobs,probes,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,historyUrls,header:elements[1],entryStates};
+ return {window,events,document,timers,auth:window.JOURNEY_ATLAS_AUTH,calls,revoked,blobs,probes,unlock,navigations,dialog:elements[0],returnFrom,ready:window.__startup,tabStorage,browserStorage,browserWrites,replaced,historyUrls,header:elements[1],entryStates};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 test('a rendering surface can reuse only the current authorized full-image Blob without another request',async()=>{
@@ -180,7 +182,7 @@ test('logout during a pending fetch cannot restore a sharp image',async()=>{
  f.auth.lock();complete(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}));await settle();await settle();assert.equal(img.src,photo.blur);assert.equal(f.auth.unlocked,false);
 });
 test('401 relocks every loaded photo and clears tab access',async()=>{
- const f=fixture(async()=>new Response('{}',{status:401})),img=new Element();f.auth.setImage(img,photo);await f.unlock();await settle();assert.equal(f.auth.unlocked,false);assert.equal(img.src,photo.blur);assert.ok(!/localStorage|document\.cookie/.test(source));assert.equal(f.tabStorage.has('atlas-photo-access'),false);await waitForNavigation(f);
+ const f=fixture(async()=>new Response('{}',{status:401})),img=new Element();f.auth.setImage(img,photo);await f.unlock();await settle();assert.equal(f.auth.unlocked,false);assert.equal(img.src,photo.blur);assert.ok(!/document\.cookie/.test(source));assert.ok(f.browserWrites.length>0&&f.browserWrites.every(([key,value])=>key==='atlas-photo-remembered'&&['0','1'].includes(value)),'Only the non-secret remembered note may reach persistent storage');assert.equal(f.tabStorage.has('atlas-photo-access'),false);await waitForNavigation(f);
 });
 test('cleared viewer slots do not regain an old photo when access changes',async()=>{
  const f=fixture(),img=new Element();f.auth.setImage(img,photo);f.auth.clearImage(img);img.src='';
@@ -225,8 +227,78 @@ test('a fresh page automatically restores remembered access without opening the 
  const f=fixture(undefined,{startup:true});await f.ready;
  assert.equal(f.dialog.open,false);assert.equal(f.navigations.length,1);
  assert.equal(new URL(f.navigations[0]).searchParams.get('action'),'restore');
+ assert.deepEqual(f.replaced,f.navigations,'An automatic check must not leave a second copy of the page behind Back');
  await f.returnFrom('photoAuthCode');assert.equal(f.auth.unlocked,true);assert.equal(f.dialog.open,false);
  assert.equal(f.navigations.length,1,'Completing restoration must not redirect again');
+});
+const fixedClock=at=>class extends Date{static now(){return at;}};
+const BEFORE_CUTOVER=Date.UTC(2026,10,20),AFTER_CUTOVER=Date.UTC(2026,11,13);
+test('a browser that never unlocked stays on the atlas: no cookie-check navigation, one unlock prompt',async()=>{
+ for(const [browserStorage,clock] of [[new Map([['atlas-photo-remembered','0']]),fixedClock(BEFORE_CUTOVER)],[new Map(),fixedClock(AFTER_CUTOVER)],[null,fixedClock(AFTER_CUTOVER)]]){
+  const f=fixture(undefined,{startup:true,browserStorage,clock});await f.ready;
+  assert.equal(f.navigations.length,0);assert.equal(f.calls.length,0);assert.equal(f.dialog.open,true);assert.equal(f.auth.unlocked,false);
+  assert.deepEqual(f.entryStates,[{part:'access',unlocked:false}]);assert.equal(f.tabStorage.get('atlas-photo-guest'),'1');
+  f.header.querySelector('[data-unlock]').dispatchEvent(new Event('click'));await waitForNavigation(f);
+  assert.equal(new URL(f.navigations[0]).searchParams.get('action'),'login');assert.equal(f.replaced.length,0,'Explicit login keeps the atlas behind Back');
+ }
+});
+test('browsers remembered before the note existed keep their automatic restore until the old cookies lapse',async()=>{
+ const f=fixture(undefined,{startup:true,browserStorage:new Map(),clock:fixedClock(BEFORE_CUTOVER)});await f.ready;
+ assert.equal(f.navigations.length,1);assert.equal(new URL(f.navigations[0]).searchParams.get('action'),'restore');assert.equal(f.dialog.open,false);
+ await f.returnFrom('photoAuthCode');assert.equal(f.auth.unlocked,true);assert.equal(f.browserStorage.get('atlas-photo-remembered'),'1');
+});
+test('the remembered note follows the service: granted access sets it, a missing session or logout clears it',async()=>{
+ for(const [kind,expected] of [['photoAuthCode','1'],['photoAuthMissing','0'],['photoAuthLogout','0'],['photoAuthCancel','1']]){
+  const f=fixture(undefined,{startup:true});await f.ready;await f.returnFrom(kind);
+  assert.equal(f.browserStorage.get('atlas-photo-remembered'),expected,kind);
+ }
+});
+test('a cookie check that never returned does not send the same tab away again',async()=>{
+ const first=fixture(undefined,{startup:true});await first.ready;assert.equal(first.navigations.length,1);
+ // The service never answered; the visitor reloads or reopens the page in this tab.
+ const next=fixture(undefined,{startup:true,tabStorage:first.tabStorage,flow:{state:'s',verifier:'v',created:Date.now()-1000,hash:''}});await next.ready;
+ assert.equal(next.navigations.length,0);assert.equal(next.auth.unlocked,false);assert.equal(next.dialog.open,false);
+ assert.equal(next.tabStorage.get('atlas-photo-guest'),'1');assert.deepEqual(next.entryStates,[{part:'access',unlocked:false}]);
+ assert.equal(next.header.querySelector('[data-unlock]').hidden,false,'Explicit unlock stays available');
+ const later=fixture(undefined,{startup:true,flow:{state:'s',verifier:'v',created:Date.now()-600000,hash:''}});await later.ready;
+ assert.equal(later.navigations.length,1,'A long-abandoned attempt does not suppress the normal check');
+});
+test('a cookie check already started from the page head keeps this page pending; a failed start falls back',async()=>{
+ const started=fixture(undefined,{startup:true,restoring:Promise.resolve(true)});await started.ready;await settle();
+ assert.equal(started.navigations.length,0,'page-entry owns that navigation');assert.deepEqual(started.entryStates,[]);assert.equal(started.dialog.open,false);
+ started.events.get('pageshow')({persisted:true});assert.deepEqual(started.entryStates,[{part:'access',unlocked:false}]);
+ const failed=fixture(undefined,{startup:true,restoring:Promise.resolve(false)});await failed.ready;
+ assert.equal(failed.navigations.length,1);assert.equal(new URL(failed.navigations[0]).searchParams.get('action'),'restore');
+});
+test('a journey with no protected photos or private clips shows no unlock control or prompt and takes no cookie check',async()=>{
+ const empty={id:'riding-days',photos:[{src:'./assets/photos/public.webp'}],videos:[{visibility:'public'}]};
+ const f=fixture(undefined,{startup:true,journey:empty,browserStorage:new Map(),clock:fixedClock(AFTER_CUTOVER)});await f.ready;
+ assert.equal(f.navigations.length,0);assert.equal(f.dialog.open,false);assert.equal(f.header.querySelector('[data-unlock]').hidden,true);
+ assert.equal(f.tabStorage.has('atlas-photo-guest'),false,'The next page with private photos still offers its prompt');
+ const album=fixture(undefined,{startup:true,journey:{id:'album',photos:[photo]},browserStorage:new Map(),clock:fixedClock(AFTER_CUTOVER)});await album.ready;
+ assert.equal(album.dialog.open,true);assert.equal(album.header.querySelector('[data-unlock]').hidden,false);
+ const clips=fixture(undefined,{startup:true,journey:{id:'clips',videos:[{visibility:'private'}]},browserStorage:new Map(),clock:fixedClock(AFTER_CUTOVER)});await clips.ready;
+ assert.equal(clips.dialog.open,true);
+});
+test('a device clock far from the service clock can still unlock, reload and expire on schedule',async()=>{
+ for(const skew of [-7200,-300,300,7200,50000]){
+  let now=Date.UTC(2026,10,20,12);class Clock extends Date{static now(){return now;}}
+  const serverExpiry=Math.floor(now/1000)+skew+3600;
+  const f=fixture(async url=>url.endsWith('/auth/status')?Response.json({unlocked:true,expiresAt:serverExpiry}):new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}),{startup:true,clock:Clock,redeem:()=>({token:'skewed-token',expiresAt:serverExpiry})});
+  await f.ready;await f.returnFrom('photoAuthCode');
+  assert.equal(f.auth.unlocked,true,`skew ${skew}`);assert.equal(f.dialog.open,false);
+  const next=fixture(async url=>url.endsWith('/auth/status')?Response.json({unlocked:true,expiresAt:serverExpiry}):new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}}),{startup:true,clock:Clock,tabStorage:f.tabStorage});
+  await next.ready;assert.equal(next.auth.unlocked,true,`reload with skew ${skew}`);assert.equal(next.navigations.length,0);
+ }
+ const absurd=fixture(undefined,{startup:true,redeem:()=>({token:'t',expiresAt:Math.floor(Date.now()/1000)+40*86400})});
+ await absurd.ready;await absurd.returnFrom('photoAuthCode');assert.equal(absurd.auth.unlocked,false,'An implausible expiry still fails closed');
+});
+test('a stated lifetime from the service sets the local expiry exactly',async()=>{
+ let now=Date.UTC(2026,10,20,12);class Clock extends Date{static now(){return now;}}
+ const f=fixture(undefined,{startup:true,clock:Clock,redeem:()=>({token:'t',expiresAt:Math.floor(now/1000)+600+28800,expiresIn:28800})});
+ await f.ready;await f.returnFrom('photoAuthCode');assert.equal(f.auth.unlocked,true);
+ assert.ok([...f.timers.values()].some(timer=>Math.abs(timer.delay-28800000)<2000),'Expiry follows the stated lifetime, not the skewed timestamp');
+ assert.equal(JSON.parse(f.tabStorage.get('atlas-photo-access')).offset,600);
 });
 test('missing remembered access prompts once without a redirect loop',async()=>{
  const f=fixture(undefined,{startup:true});await f.ready;
@@ -239,14 +311,16 @@ test('logout and cancelled login do not automatically unlock again',async()=>{
  }
 });
 
-test('reload validates tab access before loading photos and avoids the restoration redirect',async()=>{
+test('reload reuses unexpired tab access at once, validates it in the background and avoids the restoration redirect',async()=>{
  const first=fixture();await first.unlock();const saved=JSON.parse(first.tabStorage.get('atlas-photo-access'));
  assert.ok(saved.expiresAt<=Date.now()/1000+3600);assert.deepEqual(Object.keys(saved).sort(),['expiresAt','token']);
  let authorize;const confirmation=new Promise(resolve=>authorize=resolve);
  const next=fixture((url)=>url.endsWith('/auth/status')?confirmation:Promise.resolve(new Response(new Uint8Array([1]),{headers:{'Content-Type':'image/webp'}})),{startup:true,tabStorage:first.tabStorage});
+ await next.ready;assert.deepEqual(next.entryStates,[{part:'access',unlocked:true}],'The page must not wait for the status round trip');
  const img=new Element();next.auth.setImage(img,photo);await settle();
- assert.equal(next.auth.unlocked,false);assert.equal(img.src,photo.blur);
- authorize(Response.json({unlocked:true,expiresAt:saved.expiresAt}));await next.ready;await settle();
+ assert.equal(next.auth.unlocked,true);assert.match(img.src,/^blob:/);
+ assert.ok(next.calls.some(([url,options])=>url.endsWith('/auth/status')&&options.headers.Authorization===`Bearer ${saved.token}`),'The service still validates the reused token');
+ authorize(Response.json({unlocked:true,expiresAt:saved.expiresAt}));await settle();
  assert.equal(next.auth.unlocked,true);assert.equal(next.navigations.length,0);assert.equal(next.dialog.open,false);assert.match(img.src,/^blob:/);
  assert.ok(!/lock/i.test(next.header.innerHTML.replace(/<[^>]*>/g,'')));
  next.auth.lock();assert.equal(next.tabStorage.has('atlas-photo-access'),false);assert.equal(next.tabStorage.get('atlas-photo-guest'),'1');
@@ -264,15 +338,15 @@ test('known guests stay on the atlas on reload and same-tab navigation, with pho
   await next.returnFrom('photoAuthCode');assert.equal(next.auth.unlocked,true);assert.equal(next.tabStorage.has('atlas-photo-guest'),false);
  }
 });
-test('pending tab validation keeps the unlock control and password prompt hidden',async()=>{
+test('pending tab validation never paints the unlock control, password prompt or a locked state',async()=>{
  let complete;const expiresAt=Math.floor(Date.now()/1000)+3600;
  const tabStorage=new Map([['atlas-photo-access',JSON.stringify({token:'fixture-token',expiresAt})]]);
- const f=fixture(()=>new Promise(resolve=>complete=resolve),{startup:true,tabStorage});await settle();
+ const f=fixture(()=>new Promise(resolve=>complete=resolve),{startup:true,tabStorage});await f.ready;await settle();
  assert.equal(f.header.querySelector('[data-unlock]').hidden,true);assert.equal(f.dialog.open,false);
- assert.deepEqual(f.entryStates,[],'A shared viewer must not paint locked UI while validation is pending');
- complete(Response.json({unlocked:true,expiresAt}));await f.ready;
+ assert.deepEqual(f.entryStates,[{part:'access',unlocked:true}],'A shared viewer opens unlocked while validation is pending');
+ complete(Response.json({unlocked:true,expiresAt}));await settle();
  assert.equal(f.header.querySelector('[data-unlock]').hidden,true);assert.equal(f.dialog.open,false);assert.equal(f.auth.unlocked,true);
- assert.deepEqual(f.entryStates,[{part:'access',unlocked:true}]);
+ assert.deepEqual(f.entryStates,[{part:'access',unlocked:true}]);assert.equal(f.navigations.length,0);
 });
 test('automatic redirect keeps the initial page hidden until a definitive return',async()=>{
  for(const result of ['photoAuthCode','photoAuthMissing','photoAuthCancel','photoAuthLogout']){
@@ -289,7 +363,8 @@ test('revoked or invalid cached access cannot display private photos',async()=>{
  for(const expiresAt of [Math.floor(Date.now()/1000)+3600,Math.floor(Date.now()/1000)-1,Math.floor(Date.now()/1000)+30*86400]){
   const tabStorage=new Map([['atlas-photo-access',JSON.stringify({token:'revoked-fixture-token',expiresAt})]]);
   const f=fixture(async()=>Response.json({unlocked:false},{status:401}),{startup:true,tabStorage});const img=new Element();f.auth.setImage(img,photo);
-  await f.ready;assert.equal(f.auth.unlocked,false);assert.equal(img.src,photo.blur);assert.equal(f.navigations.length,1);
+  await f.ready;await waitForNavigation(f);assert.equal(f.auth.unlocked,false);assert.equal(img.src,photo.blur);assert.equal(f.navigations.length,1);
+  assert.equal(new URL(f.navigations[0]).searchParams.get('action'),'restore');
  }
 });
 
@@ -410,12 +485,13 @@ test('failed decoded bytes are evicted and Retry bypasses the browser copy',asyn
  img.decode=()=>Promise.resolve();f.auth.setImage(img,photo,Infinity,{fullOnly:true});await settle();
  assert.equal(f.calls.length,2);assert.equal(f.calls[1][1].cache,'reload');assert.notEqual(img.src,bad);assert.equal(img.dataset.photoState,'ready');
 });
-test('startup auth headers and JSON bodies time out without navigating away on network failure',async()=>{
+test('a stalled startup status check times out without locking, prompting or navigating away',async()=>{
  for(const phase of ['headers','body']){
   const tabStorage=new Map([['atlas-photo-access',JSON.stringify({token:'fixture-token',expiresAt:Math.floor(Date.now()/1000)+3600})]]);
-  const f=fixture(()=>phase==='headers'?new Promise(()=>{}):Promise.resolve({ok:true,json:()=>new Promise(()=>{})}),{startup:true,tabStorage});
-  await settle();const img=new Element();f.auth.setImage(img,photo);[...f.timers.values()].find(t=>t.delay===15000).fn();await f.ready;
-  assert.equal(f.auth.unlocked,false);assert.equal(f.navigations.length,0);assert.equal(f.dialog.open,true);assert.equal(f.calls[0][1].signal.aborted,true);
+  const f=fixture(url=>!url.endsWith('/auth/status')?new Promise(()=>{}):phase==='headers'?new Promise(()=>{}):Promise.resolve({ok:true,json:()=>new Promise(()=>{})}),{startup:true,tabStorage});
+  await f.ready;await settle();const status=f.calls.find(([url])=>url.endsWith('/auth/status'));assert.ok(status);
+  [...f.timers.values()].find(t=>t.delay===15000).fn();await settle();
+  assert.equal(f.auth.unlocked,true,'A transient outage does not discard valid access');assert.equal(f.navigations.length,0);assert.equal(f.dialog.open,false);assert.equal(status[1].signal.aborted,true);
   assert.ok(f.tabStorage.has('atlas-photo-access'),'A timeout must not delete a potentially valid tab credential');
  }
 });

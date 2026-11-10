@@ -26,6 +26,9 @@ phone frame-rate or end-to-end page-load claim.
 | Same run: slowest click handler | 169 ms | 19 ms |
 | Route sources / layers created per stop change | 48 / 144 | 0 / 0 |
 | History writes for 60 `resize` events, desktop browser | 60 | 0 |
+| First visit, browser that never unlocked: page loads / top-level navigations to the photo service | 2 / 1 | 1 / 0 |
+| Same-tab reload with a valid tab token: requests awaited before the page is revealed | 2 (preflight + status) | 0 |
+| Returning browser, new tab: scripts that must run before the cookie-check navigation is requested | all 28 | 1 (`page-entry.js`) |
 
 ## Method
 
@@ -43,6 +46,9 @@ phone frame-rate or end-to-end page-load claim.
   1440 × 900, clicking stop rows 7–13 then 6. Long tasks from
   `PerformanceObserver`; the Browser pane was not frontmost, so animation timing
   is not reported.
+- **Access checks:** counted from the loader and entry-script logic and their
+  tests; the never-unlocked case was also observed in a local browser (one
+  navigation, no request to the service origin). Not timed on a network.
 - **History writes:** counted by wrapping `history.replaceState` and dispatching
   60 `resize` events on a selected stop.
 

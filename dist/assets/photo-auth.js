@@ -6,8 +6,22 @@
   const avifPath = /^\/private-photos\/assets\/v1\/[a-f0-9]{64}\.avif$/;
   let service = '';
   try { const url = new URL(config.origin); if (url.origin === config.origin && (url.protocol === 'https:' || (['127.0.0.1','localhost'].includes(location.hostname) && ['127.0.0.1','localhost'].includes(url.hostname)))) service = url.origin; } catch { /* Unconfigured always stays locked. */ }
-  let token = '', expiresAt = 0, generation = 0, expiryTimer, lastFocus, restoreAfterExpiry=false;
+  // expiresAt is kept on this device's clock; clockOffset is the service clock
+  // minus the device clock, estimated when a token is issued.
+  let token = '', expiresAt = 0, clockOffset = 0, generation = 0, expiryTimer, lastFocus, restoreAfterExpiry=false;
   const ACCESS_KEY='atlas-photo-access', RECOVERY_KEY='atlas-photo-recovery', GUEST_KEY='atlas-photo-guest';
+  // A non-secret, per-browser note of whether the first-party remembered cookie
+  // can exist: '1' after access was granted here, '0' after the service reported
+  // none or a logout. It never authorizes photos; it only spares browsers that
+  // never unlocked the cookie-check navigation on each new tab.
+  const REMEMBER_HINT='atlas-photo-remembered';
+  // Browsers that unlocked before the note existed carry no value. Their 30-day
+  // cookies have all lapsed by this date, after which a missing note means
+  // "never unlocked here". Until then a missing note keeps the cookie check.
+  const HINT_REQUIRED_FROM=1797033600000; // 12 December 2026 UTC
+  const MAX_ACCESS_SECONDS=43200, LEGACY_ACCESS_SECONDS=3600, MAX_CLOCK_OFFSET=2*86400;
+  const rememberedHint=()=>{try{return localStorage.getItem(REMEMBER_HINT);}catch{return null;}};
+  const setRememberedHint=value=>{try{localStorage.setItem(REMEMBER_HINT,value);}catch{}};
   const images = new Map(), cache = new Map();
   const MAX_CACHE = 96, MAX_CACHE_BYTES = 64 * 1024 * 1024;
   const STATUS_INTERVAL = 60000;
@@ -46,8 +60,22 @@
   status.innerHTML='<button type="button" data-unlock hidden>View photos</button>';
   (document.querySelector('.header-context')||document.querySelector('.site-header')||document.body).append(status);
   const message = dialog.querySelector('[data-auth-message]');
+  // A journey page with no protected photos or private clips has nothing to
+  // unlock; the catalog and every other page keep the control.
+  function pageHasPrivateMedia() {
+    const id=document.body.dataset?.journeyId;
+    if(!id)return true;
+    const photos=window.JOURNEY_ATLAS_PHOTOS?.[id], journey=window.JOURNEY_ATLAS_DATA?.journeys?.find?.(item=>item.id===id);
+    if(!Array.isArray(photos)||!journey)return true;
+    return photos.some(isProtected)||(journey.videos||[]).some(video=>video.visibility==='private');
+  }
   function updateControls() {
-    status.querySelector('[data-unlock]').hidden=Boolean(token)||local;
+    const nothingToUnlock=Boolean(token)||local||!pageHasPrivateMedia();
+    status.querySelector('[data-unlock]').hidden=nothingToUnlock;
+    // Unlock entries placed where a locked visitor meets blurred photos (the
+    // phone album grid, which has no header control). Samples have no lock.
+    const sample=document.body.dataset?.journeyScope==='demo';
+    for(const control of document.querySelectorAll('[data-locked-only]'))control.hidden=nothingToUnlock||sample;
   }
   function release(img) {
     const previous=images.get(img);previous?.cleanup?.();if(previous?.entry)previous.entry.refs.delete(img);images.delete(img);
@@ -74,7 +102,7 @@
     }
   }
   function lock(broadcast=true) {
-    token='';expiresAt=0;generation++;lastCheck=0;checkPending=null;restoreAfterExpiry=false;navigationPending=false;clearTimeout(expiryTimer);
+    token='';expiresAt=0;clockOffset=0;generation++;lastCheck=0;checkPending=null;restoreAfterExpiry=false;navigationPending=false;clearTimeout(expiryTimer);
     preloadTargets.clear();preloadCompleted.clear();preloadFailures.clear();preloadFallbacks.clear();immediatePreload='';
     try{sessionStorage.removeItem(ACCESS_KEY);}catch{}
     if(broadcast)rememberGuest();
@@ -419,7 +447,10 @@
     const returnTo=location.origin+location.pathname+location.search;
     try{sessionStorage.setItem(FLOW_KEY,JSON.stringify({state,verifier,hash:location.hash,created:Date.now()}));}
     catch{navigationPending=false;showPrompt('Allow session storage for this site to complete the secure login.');return;}
-    location.assign(`${service}/private-photos/auth/window?${new URLSearchParams({origin:location.origin,state,challenge,returnTo,action})}`);
+    const target=`${service}/private-photos/auth/window?${new URLSearchParams({origin:location.origin,state,challenge,returnTo,action})}`;
+    // An automatic check must not leave a second copy of this page behind Back;
+    // an explicit login or logout keeps the page the visitor chose to leave.
+    if(action==='restore'&&typeof location.replace==='function')location.replace(target);else location.assign(target);
   }
   async function completeReturn() {
     try { await restoreInitialAccess(); }
@@ -433,7 +464,16 @@
       // This preference never grants access; a new tab still checks the HttpOnly cookie.
       let guest=false;try{guest=sessionStorage.getItem(GUEST_KEY)==='1';}catch{}
       if(guest){updateControls();return;}
-      if(!await restoreTabAccess())await begin('restore');return;
+      if(restoreTabAccess())return;
+      // A check that left this tab and never came back (service unreachable,
+      // Back without a cached page) must not send the visitor away again.
+      let stalled=false;try{const flow=JSON.parse(sessionStorage.getItem(FLOW_KEY));stalled=Number.isFinite(flow?.created)&&Date.now()-flow.created<300000;sessionStorage.removeItem(FLOW_KEY);}catch{}
+      if(stalled){rememberGuest();updateControls();return;}
+      const remembered=rememberedHint();
+      if(remembered==='1'||(remembered===null&&Date.now()<HINT_REQUIRED_FROM)){await begin('restore');return;}
+      // Never unlocked in this browser: there is no remembered cookie to check.
+      if(pageHasPrivateMedia()){rememberGuest();showPrompt();}else updateControls();
+      return;
     }
     navigationPending=false;
     let flow;try{flow=JSON.parse(sessionStorage.getItem(FLOW_KEY));sessionStorage.removeItem(FLOW_KEY);}catch{}
@@ -441,35 +481,52 @@
     history.replaceState(null,'',location.pathname+location.search+(flow?.hash||''));
     window.dispatchEvent(new Event('hashchange'));
     if(!flow||params.get('state')!==flow.state||Date.now()-flow.created>300000){showPrompt('Login expired. Please unlock again.');return;}
-    if(params.has('photoAuthMissing')){rememberGuest();showPrompt();return;}
+    if(params.has('photoAuthMissing')){setRememberedHint('0');rememberGuest();if(pageHasPrivateMedia())showPrompt();else updateControls();return;}
+    if(params.has('photoAuthLogout'))setRememberedHint('0');
     if(params.has('photoAuthLogout')||params.has('photoAuthCancel')){lock();if(dialog.open)closePrompt();return;}
     const epoch=generation;
     try{
       const {response,data}=await requestJson(`${service}/private-photos/auth/redeem`,{method:'POST',credentials:'omit',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:params.get('photoAuthCode'),verifier:flow.verifier})});
       if(epoch!==generation)return;
-      if(!response.ok||!validAccess(data))throw new Error('Login expired. Please unlock again.');
-      acceptAccess(data);
+      const issued=response.ok?issuedAccess(data):null;
+      if(!validAccess(issued))throw new Error('Login expired. Please unlock again.');
+      acceptAccess(issued);
     }catch{if(epoch===generation)showPrompt('Could not restore photo access. Please unlock again.');}
   }
-  function validAccess(data){return typeof data?.token==='string'&&data.token.length<=2048&&Number.isInteger(data.expiresAt)&&data.expiresAt>Date.now()/1000&&data.expiresAt<=Date.now()/1000+3630;}
+  // A token arriving from the service is fresh by construction. When this
+  // device's clock disagrees with the service by more than the lifetime check
+  // allows, estimate the difference instead of rejecting a login that the
+  // service just accepted. The service still decides every photo request.
+  function issuedAccess(data){
+    if(typeof data?.token!=='string'||data.token.length>2048||!Number.isInteger(data.expiresAt))return null;
+    const remaining=data.expiresAt-Date.now()/1000;
+    const lifetime=Number.isInteger(data.expiresIn)&&data.expiresIn>0&&data.expiresIn<=MAX_ACCESS_SECONDS?data.expiresIn:null;
+    let offset=0;
+    if(lifetime!==null){if(Math.abs(remaining-lifetime)>30)offset=Math.round(remaining-lifetime);}
+    else if(!(remaining>0&&remaining<=MAX_ACCESS_SECONDS+30))offset=Math.round(remaining-LEGACY_ACCESS_SECONDS);
+    return {token:data.token,expiresAt:data.expiresAt,...(offset?{offset}:{})};
+  }
+  function validAccess(data){
+    const offset=data?.offset??0,now=Date.now()/1000;
+    return typeof data?.token==='string'&&data.token.length<=2048&&Number.isInteger(data.expiresAt)&&Number.isInteger(offset)&&Math.abs(offset)<=MAX_CLOCK_OFFSET&&data.expiresAt-offset>now&&data.expiresAt-offset<=now+MAX_ACCESS_SECONDS+30;
+  }
   function acceptAccess(data){
-    lock(false);token=data.token;expiresAt=data.expiresAt;lastCheck=Date.now();
-    // Only the one-hour access token is tab-scoped; the 30-day cookie stays HttpOnly.
-    try{sessionStorage.removeItem(GUEST_KEY);sessionStorage.setItem(ACCESS_KEY,JSON.stringify({token,expiresAt}));}catch{}
+    lock(false);token=data.token;clockOffset=data.offset||0;expiresAt=data.expiresAt-clockOffset;lastCheck=Date.now();
+    // Only the short-lived access token is tab-scoped; the 30-day cookie stays HttpOnly.
+    try{sessionStorage.removeItem(GUEST_KEY);sessionStorage.setItem(ACCESS_KEY,JSON.stringify({token,expiresAt:data.expiresAt,...(clockOffset?{offset:clockOffset}:{})}));}catch{}
+    setRememberedHint('1');
     expiryTimer=setTimeout(expireAccess,Math.max(0,expiresAt*1000-Date.now()));
     updateControls();if(dialog.open)closePrompt();for(const [img,item] of images)if(img.isConnected&&item.priority===0)hydrate(img);prepare();window.dispatchEvent(new Event('atlas-photos-unlocked'));
   }
-  async function restoreTabAccess(){
+  // An unexpired token from this tab opens the page without waiting on the
+  // network. The service authorizes every photo request regardless, and the
+  // background check below sends a rejected token through the usual
+  // expiry-and-restore path.
+  function restoreTabAccess(){
     let saved;try{saved=JSON.parse(sessionStorage.getItem(ACCESS_KEY));}catch{}
     if(!validAccess(saved))return false;
-    const epoch=generation;
-    try{
-      const {response,data}=await requestJson(`${service}/private-photos/auth/status`,{headers:{Authorization:`Bearer ${saved.token}`},credentials:'omit',cache:'no-store'});
-      if(epoch!==generation)return true;
-      if(response.status===401)return false;
-      if(!response.ok||data.unlocked!==true||data.expiresAt!==saved.expiresAt)throw new Error('Photo access unavailable');
-      acceptAccess(saved);return true;
-    }catch{if(epoch===generation)showPrompt('Photo access is taking too long or unavailable. Please try unlocking again.');return true;}
+    acceptAccess(saved);lastCheck=0;check();
+    return true;
   }
   async function check(){
     if(document.hidden)return;
@@ -529,7 +586,7 @@
     const {response,data}=await requestJson(`${service}/private-photos/video-access`,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify({src}),credentials:'omit',cache:'no-store'});
     if(epoch!==generation)throw new Error('Video access changed. Try again.');
     if(response.status===401){expireAccess();throw new Error('Unlock photos to watch this video.');}
-    if(!response.ok||typeof data?.grant!=='string'||data.grant.length>2048||!/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(data.grant)||!Number.isInteger(data.expiresAt)||data.expiresAt<=Date.now()/1000||data.expiresAt>Math.min(expiresAt,Date.now()/1000+630))throw new Error('Private video access is unavailable. Try again.');
+    if(!response.ok||typeof data?.grant!=='string'||data.grant.length>2048||!/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(data.grant)||!Number.isInteger(data.expiresAt)||data.expiresAt-clockOffset<=Date.now()/1000||data.expiresAt-clockOffset>Math.min(expiresAt,Date.now()/1000+630))throw new Error('Private video access is unavailable. Try again.');
     return `${service}${src}?grant=${encodeURIComponent(data.grant)}`;
   }
   async function acquirePoster(src) {
@@ -539,6 +596,14 @@
   }
   window.JOURNEY_ATLAS_AUTH={communityRequest,photoShareLink,begin,isProtected,markup,hydrate,prepare,setImage,setCachedImage,imageBlob,clearImage,setPreloads,videoSource,acquirePoster,preload(photo,width){if(isProtected(photo))setPreloadSources([...preloadTargets].map(src=>({src,fallback:preloadFallbacks.get(src),immediate:src===immediatePreload})).concat(selection(photo,width)).slice(-MAX_PREFETCH));},lock,showPrompt,raisePrompt,get unlocked(){return local||Boolean(token);}};
   const realPage=document.body.dataset.journeyScope!=='demo';status.hidden=!realPage;updateControls();
-  if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;completeReturn();}
+  function startup(){
+    // page-entry.js starts a returning browser's cookie check from the head;
+    // this page stays pending unless that navigation could not begin.
+    const early=window.JOURNEY_ATLAS_ENTRY?.restoring;
+    if(!early)return completeReturn();
+    navigationPending=true;
+    return Promise.resolve(early).then(started=>{if(started)return;navigationPending=false;return completeReturn();});
+  }
+  if(realPage&&!local){status.querySelector('[data-unlock]').hidden=true;startup();}
   else window.JOURNEY_ATLAS_ENTRY?.ready('access');
 })();

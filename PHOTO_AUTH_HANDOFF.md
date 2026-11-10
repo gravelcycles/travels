@@ -21,6 +21,63 @@ exercise real D1 persistence as well as existing photo auth/cache behavior.
 
 ## Private photo access — implementation handoff
 
+## Fewer access round trips — 10 November 2026
+
+Owner-authorized under [O20](docs/OWNER_DECISIONS.md#load-interaction-and-flow-fixes--10-november-2026)
+(“fix the back button issue”, “fix the heaviness”, and devices whose clock
+disagrees with the service). The service, its cookie and its token format are
+unchanged; these are client changes in `photo-auth.js` and `page-entry.js`.
+[O04's quiet-entry rule](docs/OWNER_DECISIONS.md#initial-page-presentation--20-october-2026)
+still holds: the page stays hidden until view and access are both resolved.
+
+- **Remembered note.** `localStorage['atlas-photo-remembered']` is `'1'` after
+  access was granted in this browser and `'0'` after the service reported no
+  session or a logout. It is not a credential and never authorizes anything.
+  A fresh tab makes the first-party cookie-check navigation only when the note
+  is `'1'`. A browser that never unlocked stays on the page, loads it once and
+  gets the usual prompt. Until **12 December 2026 UTC** a missing note still
+  takes the check, because browsers that unlocked before the note existed hold
+  cookies that lapse by then; after that date a missing note means “never
+  unlocked here”. The constant is `HINT_REQUIRED_FROM`; it can be deleted once
+  that date has passed.
+- **Head start.** For a `'1'` browser with no tab token, `page-entry.js` begins
+  the same `action=restore` navigation from the page head, before the map and
+  trip scripts load, using the service origin the build writes into its
+  `data-photo-service` attribute. `photo-auth.js` sees
+  `JOURNEY_ATLAS_ENTRY.restoring`, keeps access pending and takes over only if
+  that start fails. The two implementations of the PKCE navigation must stay
+  in step; `test/page-entry.test.mjs` checks the request and stored verifier.
+- **No duplicate history entry.** An automatic check uses `location.replace`,
+  so Back no longer returns to a second copy of the page. Explicit login and
+  logout keep `location.assign`.
+- **A check that never returned.** If this tab holds an unconsumed flow record
+  less than five minutes old and arrives without a result, it settles as guest
+  instead of navigating again. This covers an unreachable service and Back
+  without a cached page.
+- **Tab token reuse.** An unexpired tab token unlocks the page immediately and
+  the status request runs in the background. This supersedes waiting for
+  validation before reveal. The service still authorizes every photo request;
+  a rejected token goes through the existing expiry-and-restore path, and a
+  status timeout no longer prompts.
+- **Clock skew.** A token arriving from `auth/redeem` is fresh, so when its
+  expiry is implausible for this device's clock the client estimates the offset
+  (using a stated `expiresIn` when the service provides one, otherwise the
+  one-hour lifetime) and keeps expiry on the device clock. The tab record
+  stores `offset` only when non-zero. Offsets beyond two days fail closed.
+- **Lifetime bound.** The client accepts access tokens of up to twelve hours.
+  The service still issues one hour, and a tab still makes one navigation per
+  expiry. Lengthening the service lifetime, and returning `expiresIn`, is an
+  owner decision: a copied bearer token stays usable until it expires.
+- **Nothing to unlock.** A journey page whose published media has no protected
+  photo or private clip shows no header control and no prompt, and takes no
+  cookie check. `[data-locked-only]` controls (the phone album grid's Unlock
+  photos) are shown only while locked on a real page with private media.
+- **Fail fast.** A page script that fails to load offers Retry at once rather
+  than after the 20-second deadline.
+
+Not verifiable by an agent: a real unlock and remembered restore against the
+live service. Check both, plus a second tab and Back, straight after release.
+
 ## Quiet restoration — 10 September 2026
 
 **20 October extension:** [O04](docs/OWNER_DECISIONS.md#initial-page-presentation--20-october-2026)
@@ -43,7 +100,8 @@ The tab-scoped `atlas-photo-guest` preference records missing sessions, explicit
 locks, cancellation, and dismissal. Subsequent same-tab page loads remain on the
 atlas without another restoration redirect or automatic prompt. View photos
 always starts an explicit login; accepted access clears the preference. Fresh
-tabs without this preference still check the first-party remembered cookie.
+tabs without this preference check the first-party remembered cookie only when
+this browser has unlocked before ([10 November 2026](#fewer-access-round-trips--10-november-2026)).
 The preference never authorizes photos or changes credential storage.
 
 ## Expanded day preloading — 9 September 2026
@@ -350,7 +408,8 @@ verifier and the allowed atlas origin. A SQLite Durable Object consumes each
 code once and deletes expired grants. Session storage holds the temporary PKCE
 verifier/state and the one-hour access token, never a password, password proof,
 or 30-day remember token. The atlas removes the return fragment immediately.
-Reloads reuse the tab-scoped access token only after Cloudflare validates it;
+Reloads reuse an unexpired tab-scoped access token at once and validate it in
+the background ([10 November 2026](#fewer-access-round-trips--10-november-2026));
 this avoids leaving the site during normal reloads and same-tab navigation.
 The long-lived remembered cookie remains HttpOnly on Cloudflare. Tab storage is
 JavaScript-readable, so same-origin script security remains part of the trust

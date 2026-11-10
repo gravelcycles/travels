@@ -1,5 +1,20 @@
 # Changelog
 
+## 10 November 2026 — Fewer access round trips
+
+- A browser that never unlocked photos no longer leaves the page to check for a
+  remembered session: one page load, no request to the photo service, then the
+  usual prompt. Browsers that have unlocked start that check from the page head,
+  before the map and trip scripts load, and it no longer leaves a duplicate page
+  behind Back. A check that never returned settles as guest.
+- An unexpired tab token opens the page without waiting for the status request;
+  the service still authorizes every photo. A device whose clock disagrees with
+  the service can unlock. A failed page script offers Retry immediately.
+- Journeys with no private media show no unlock control or prompt; locked phone
+  visitors get Unlock photos in the album grid header.
+- Documented in [private access](PHOTO_AUTH_HANDOFF.md#fewer-access-round-trips--10-november-2026)
+  and the framework entry contract. Service code is unchanged.
+
 ## 10 November 2026 — Load and interaction pass
 
 - Trip pages download less and do less: routes are losslessly delta-encoded and
