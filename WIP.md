@@ -28,20 +28,32 @@ Not checked: a physical phone, Safari, comment and review surfaces at the new
 text size (they need an unlocked session), and an independently populated
 fresh draft in a browser (covered by shared tests only).
 
-**Part 2 — access checks (committed on the branch after part 1; release status below).** Skip the
+**Part 2 — access checks (published; release receipt below).** Skip the
 remembered-cookie navigation for browsers that never unlocked, start it from the
 page head for those that have, replace rather than push that navigation, reuse an
 unexpired tab token without waiting for the status request, tolerate device
 clock skew, fail fast when a page script cannot load, hide unlock where a
 journey has no private media and show it in the phone album grid. Loader and
-entry tests cover each path. A real unlock against the live service cannot be
-exercised by an agent, so release it when the owner can try unlocking straight
-afterwards; revert the release commit if unlock fails. All 951 tests and the
+entry tests cover each path. All 951 tests and the
 production build pass with both parts. A local browser check with the
 remembered note set to `0` confirmed one page load, no request to the photo
 service, the prompt, the preserved album-grid link and the grid Unlock button
 at 320 px; Florence–Genoa showed no prompt or control. Contract:
 [private access](PHOTO_AUTH_HANDOFF.md#fewer-access-round-trips--10-november-2026).
+Published on the owner's go-ahead as `6e397e1` through successful
+[Pages run 42886799870](https://github.com/gravelcycles/travels/actions/runs/42886799870);
+the five public pages and both access scripts match the release bytes. Checked
+on the public site in a desktop browser profile that already held a remembered
+sign-in: a fresh tab restored access with one redeem and loaded private photos;
+a second fresh tab started the check from the page head and returned to a clean
+URL; a same-tab reload reused the tab token with no navigation and only the
+background status request; catalog → trip → one Back press returned to the
+catalog. With the remembered note set to `0` in a fresh tab: no request to the
+photo service, the prompt, one Back press to the catalog, and no prompt or
+unlock control on Florence–Genoa. No console errors. Not exercised on the live
+service: typing the password for a new sign-in (owner only), the hourly token
+expiry, a device with a wrong clock, a failed script load, and the phone grid
+Unlock button on a phone.
 
 **Not done.** Service-side token lifetime (still one hour; the client accepts
 up to twelve) and a stated `expiresIn`; per-photo request cost and thumbnail
