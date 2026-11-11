@@ -112,8 +112,8 @@ range with its contrast and upright orientation preserved.
 Timestamp insertion also accepts older yearless still labels within their owning
 event's calendar range, without rewriting saved photo labels or order.
 
-Heading East exercises the shared city-stay contract with fifteen dated stays through
-Kraków, 11 November 2026, fifteen undated stays and 48 reconstructed route legs. Extensions remain
+Heading East exercises the shared city-stay contract with sixteen dated stays through
+Zakopane, 13 November 2026, fifteen undated stays and 50 reconstructed route legs. Extensions remain
 content-only; see [its intake and route evidence](HEADING_EAST.md).
 Its [chronological city photo order](HEADING_EAST.md#chronological-city-albums--12-october-2026)
 uses the existing album-order overrides, with no shared renderer change.
@@ -200,7 +200,10 @@ Heading East’s [20 October route adjustment](HEADING_EAST.md#route-adjustment-
 uses the existing city/TBD and multimodal contracts, with Bratislava after Poland
 and Slovenia after Zagreb. The [1 November dates/order correction](HEADING_EAST.md#vienna-and-poland-dates--1-november-2026)
 confirms Vienna/Warsaw/Kraków, removes Wrocław and puts the first Kraków visit
-within Warsaw's incoming travel. City validation permits travel gaps between
+within Warsaw's incoming travel. The
+[11 November correction](HEADING_EAST.md#kraków-and-zakopane-dates--11-november-2026)
+sets Kraków to 6–10 November, adds Zakopane 10–13 November, and replaces the
+direct Bratislava leg with FlixBus to Poprad followed by train. City validation permits travel gaps between
 non-overlapping stays without creating an event or assigning gap-day photos.
 Route order, dates and network provenance remain trip content. The Vienna
 [28 October access correction](HEADING_EAST.md#vienna-access-correction--28-october-2026)

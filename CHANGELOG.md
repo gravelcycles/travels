@@ -1,5 +1,17 @@
 # Changelog
 
+## 11 November 2026 — Kraków, Zakopane and Bratislava itinerary
+
+- Corrected Kraków to 6–10 November and added Zakopane for 10–13 November,
+  keeping Bratislava next and its onward dates TBD. The dated range now ends
+  13 November; stable existing IDs, saved media, copy and assignments remain.
+- Replaced the direct Kraków–Bratislava leg with Kraków–Zakopane rail, then
+  the owner's chosen FlixBus to Poprad and train to Bratislava. The map uses
+  sourced network reconstructions without inventing departure times.
+- Updated the [trip record](docs/HEADING_EAST.md#kraków-and-zakopane-dates--11-november-2026),
+  current inventories and route provenance, with actual-trip date/transfer and
+  planning-projection regressions.
+
 ## 10 November 2026 — Fewer access round trips
 
 - A browser that never unlocked photos no longer leaves the page to check for a

@@ -14,7 +14,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "5e0e94154e1596fd5d7fc92b81f967d59abecf781bccfb4d81e994a6316e36e3",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 856,
         "outputPointCount": 321,
         "rawDistanceKm": 93.714,
@@ -43,7 +43,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "2295c7059b56f2e938f177a888e6697c56f782e2a135d23ea926ef225683fa4c",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 467,
         "outputPointCount": 137,
         "rawDistanceKm": 62.05,
@@ -71,7 +71,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "a27eeac4e320af871c4ba6c8d369a57171dfbae20f46c8335c890dfdfc7a4278",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 5227,
         "outputPointCount": 1671,
         "rawDistanceKm": 784.235,
@@ -105,7 +105,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "77c9218d423d526adfc879fbfb0093ac54847683fb674d2ee5265c4a618b988b",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 3517,
         "outputPointCount": 1103,
         "rawDistanceKm": 476.999,
@@ -139,7 +139,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "85a2de449ab6793945aedb86ebf2fc83b95355c69dd2f3c6281a1633e902d278",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 434,
         "outputPointCount": 124,
         "rawDistanceKm": 40.353,
@@ -166,7 +166,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "78eed7c4a9da7cfb01e26205b3f55262c85e7354389abd1489066644784814ad",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 3408,
         "outputPointCount": 1024,
         "rawDistanceKm": 542.506,
@@ -201,7 +201,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "3ddb6507fd35181960aa9a0b2b9cc445455a119c61a253f210937eec85e831a1",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1543,
         "outputPointCount": 423,
         "rawDistanceKm": 205.172,
@@ -229,7 +229,7 @@
         "profile": "driving",
         "rawSha256": "d78a88bd38bbd8d5eb7b0eec211fd9ffb69d76f6b0701633dbee59f0368af685",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1209,
         "outputPointCount": 385,
         "rawDistanceKm": 64.729,
@@ -256,7 +256,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "d4ef421e9504241f87279f6c8c4566e15348236a94507365906d22a67c648572",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1385,
         "outputPointCount": 448,
         "rawDistanceKm": 112.29,
@@ -284,7 +284,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "9365bb7f9bbf3aa9aaf65cdf0fc55aa02f957413715c146b960bbf280c6c2827",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 4937,
         "outputPointCount": 1787,
         "rawDistanceKm": 290.236,
@@ -314,7 +314,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "4a3dbd6049015092450caa3b280033a8dc645c54860cd302dd310fdca585a549",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1521,
         "outputPointCount": 438,
         "rawDistanceKm": 124.591,
@@ -343,7 +343,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "ea14de4833586d71186ed757dc9259b31f1f021a0d7600d0786a839a03130206",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 2154,
         "outputPointCount": 690,
         "rawDistanceKm": 192.33,
@@ -373,7 +373,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "3d209b60fff403f2f89fb6a07eda151d0654bd7975360296199301a62af740d0",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 2066,
         "outputPointCount": 711,
         "rawDistanceKm": 125.414,
@@ -403,7 +403,7 @@
         "dataDate": "2026-10-08T04:00:00Z",
         "rawSha256": "e4072f5cacada078ee5beda7d162d55c58c12ef15b14278f8fbceb0b65814d5d",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1848,
         "outputPointCount": 599,
         "rawDistanceKm": 265.517,
@@ -448,7 +448,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 761,
         "outputPointCount": 285,
         "rawDistanceKm": 52.71,
@@ -483,7 +483,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 218,
         "outputPointCount": 51,
         "rawDistanceKm": 4.4,
@@ -517,7 +517,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 223,
         "outputPointCount": 50,
         "rawDistanceKm": 4.414,
@@ -562,7 +562,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1541,
         "outputPointCount": 533,
         "rawDistanceKm": 293.693,
@@ -619,7 +619,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1075,
         "outputPointCount": 394,
         "rawDistanceKm": 246.377,
@@ -673,7 +673,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 2665,
         "outputPointCount": 1166,
         "rawDistanceKm": 451.852,
@@ -725,7 +725,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 2687,
         "outputPointCount": 1077,
         "rawDistanceKm": 389.621,
@@ -781,7 +781,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 3128,
         "outputPointCount": 472,
         "rawDistanceKm": 164.237,
@@ -817,7 +817,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 3195,
         "outputPointCount": 895,
         "rawDistanceKm": 389.416,
@@ -873,7 +873,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 5746,
         "outputPointCount": 2571,
         "rawDistanceKm": 423.897,
@@ -911,7 +911,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 5528,
         "outputPointCount": 1990,
         "rawDistanceKm": 254.128,
@@ -948,7 +948,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 7796,
         "outputPointCount": 2389,
         "rawDistanceKm": 265.883,
@@ -986,7 +986,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 15308,
         "outputPointCount": 3105,
         "rawDistanceKm": 284.603,
@@ -1024,7 +1024,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 7398,
         "outputPointCount": 1857,
         "rawDistanceKm": 220.591,
@@ -1062,7 +1062,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 3951,
         "outputPointCount": 1390,
         "rawDistanceKm": 180.359,
@@ -1099,7 +1099,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 3998,
         "outputPointCount": 1202,
         "rawDistanceKm": 138.387,
@@ -1136,7 +1136,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 5602,
         "outputPointCount": 1434,
         "rawDistanceKm": 227.898,
@@ -1173,7 +1173,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 2476,
         "outputPointCount": 675,
         "rawDistanceKm": 40.746,
@@ -1207,7 +1207,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 11196,
         "outputPointCount": 2868,
         "rawDistanceKm": 560.533,
@@ -1284,7 +1284,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 665,
         "outputPointCount": 182,
         "rawDistanceKm": 135.909,
@@ -1332,7 +1332,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1118,
         "outputPointCount": 279,
         "rawDistanceKm": 50.014,
@@ -1410,7 +1410,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 2041,
         "outputPointCount": 466,
         "rawDistanceKm": 43.337,
@@ -1466,7 +1466,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 2001,
         "outputPointCount": 457,
         "rawDistanceKm": 42.702,
@@ -1537,7 +1537,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1776,
         "outputPointCount": 641,
         "rawDistanceKm": 142.728,
@@ -1555,68 +1555,6 @@
         "largestRawGapKm": 1.849,
         "maxSectionJoinMeters": 0,
         "notes": "Network reconstruction, not an exact booked service or operator GPS trace. Forni dates and inbound train/bus modes are owner-confirmed; onward dates and connections are TBD. Transit anchors do not assert passenger calls or exact terminal entrances. See docs/HEADING_EAST.md."
-      }
-    },
-    "backpacking-europe-heading-east-krakow-bratislava": {
-      "strategy": "preserve",
-      "provenance": {
-        "provider": "Reviewed OpenRailRouting / OpenStreetMap geometry",
-        "retrievedAt": "2026-10-20",
-        "profile": "all_tracks_1435",
-        "requestUrls": [
-          "https://routing.openrailrouting.org/route?point=50.0684%2C19.9474&point=50.2573%2C19.0189&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=50.2573%2C19.0189&point=49.9018%2C18.3572&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=49.9018%2C18.3572&point=48.7548%2C16.8929&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=48.7548%2C16.8929&point=48.1584%2C17.1064&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
-        ],
-        "coordinateOrder": "longitude,latitude",
-        "derivedFrom": [
-          {
-            "segmentId": "backpacking-europe-heading-east-krakow-budapest",
-            "retrievedAt": "2026-10-08",
-            "rawSha256": [
-              {
-                "file": "backpacking-europe-heading-east-krakow-budapest-part1.json",
-                "sha256": "a3dd6a711e85cb3dde366be6aded239fda127d9df3b1e370896533ea3643ced8"
-              },
-              {
-                "file": "backpacking-europe-heading-east-krakow-budapest-part2.json",
-                "sha256": "34cd54afb776ad1bb60ffd6bf4488168e3eae57bc1e1a930290eff99c6f63125"
-              },
-              {
-                "file": "backpacking-europe-heading-east-krakow-budapest-part3.json",
-                "sha256": "829469d34795afbadad663632cb236b73dad3c4d74a940379565f3c2efba7262"
-              },
-              {
-                "file": "backpacking-europe-heading-east-krakow-budapest-part4.json",
-                "sha256": "05092d3797b98e268435f72a77b97fa8207840d21a5474f80257421b1ee12e98"
-              },
-              {
-                "file": "backpacking-europe-heading-east-krakow-budapest-part5.json",
-                "sha256": "acc0d071529e74c80a0c1629fba1dca0b9fbfa863680869a0759ebeda5391dce"
-              },
-              {
-                "file": "backpacking-europe-heading-east-krakow-budapest-part6.json",
-                "sha256": "b513f9dd0f6ec6f491ef1f7c72ed44fa52aa6df6b2f9827792dba4338e771d17"
-              },
-              {
-                "file": "backpacking-europe-heading-east-krakow-budapest-part7.json",
-                "sha256": "10072bb9d3aa23dbc25c3e4468341ab9bffca067e2d4a247e198cbb61ad33cf1"
-              }
-            ]
-          }
-        ],
-        "simplifyTolerance": 0,
-        "rawPointCount": 1143,
-        "outputPointCount": 1143,
-        "rawDistanceKm": 430.953,
-        "distanceKm": 430.953,
-        "endpointOffsetsMeters": [
-          2,
-          0
-        ],
-        "maxSectionJoinMeters": 0,
-        "notes": "Reuses the reviewed network geometry by splitting/reversing retained sections, without smoothing or an endpoint connector. Raw counts and distance here describe those source coordinates. Dates and services remain TBD. See docs/HEADING_EAST.md."
       }
     },
     "backpacking-europe-heading-east-bratislava-budapest": {
@@ -1768,7 +1706,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1122,
         "outputPointCount": 296,
         "rawDistanceKm": 51.018,
@@ -1888,7 +1826,7 @@
           }
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 5774,
         "outputPointCount": 1825,
         "rawDistanceKm": 493.638,
@@ -2004,7 +1942,7 @@
                 }
               ],
               "coordinateOrder": "longitude,latitude",
-              "simplifyTolerance": 0.00003,
+              "simplifyTolerance": 3e-05,
               "rawPointCount": 2914,
               "outputPointCount": 753,
               "rawDistanceKm": 463.989,
@@ -2108,7 +2046,7 @@
                 }
               ],
               "coordinateOrder": "longitude,latitude",
-              "simplifyTolerance": 0.00003,
+              "simplifyTolerance": 3e-05,
               "rawPointCount": 2914,
               "outputPointCount": 753,
               "rawDistanceKm": 463.989,
@@ -2144,7 +2082,7 @@
           "https://routing.openrailrouting.org/route?point=49.9004%2C18.35817&point=49.8715401%2C18.6216353&point=49.9154901%2C19.0073267&point=50.0420749%2C19.2003711&point=50.14453%2C19.4140925&point=50.1541226%2C19.4529565&point=50.1308311%2C19.6350888&point=50.0684%2C19.9474&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
         ],
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 1176,
         "outputPointCount": 377,
         "rawDistanceKm": 138.217,
@@ -2216,7 +2154,7 @@
         "dataDate": "2026-11-01T05:00:00Z",
         "rawSha256": "1dee7c23f81f097d89c06f5625eada46bae780ec17d6742c70f6ee477a5d00ec",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 821,
         "outputPointCount": 263,
         "rawDistanceKm": 89.029,
@@ -2294,7 +2232,7 @@
         "dataDate": "2026-11-01T05:00:00Z",
         "rawSha256": "057cdc948501baf268e059b12d321d1a26542dcafdfcea04460617dd885e4aed",
         "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 0.00003,
+        "simplifyTolerance": 3e-05,
         "rawPointCount": 971,
         "outputPointCount": 339,
         "rawDistanceKm": 252.706,
@@ -2330,6 +2268,147 @@
           }
         ],
         "notes": "Owner confirms the 12:06 Kraków–Warsaw journey on 2 November. Date-specific operator lookup identifies a change at Zawiercie: Os 34132 12:06–13:12, then EIC 4504 13:34–15:24. Alignment reconstructs the physical rail corridor, not the exact parallel track or actual running times. First leg follows Trzebinia–Jaworzno Szczakowa–Sosnowiec Maczki–Dąbrowa Górnicza Ząbkowice; second follows the Central Rail Line without intermediate passenger stops until Warszawa Zachodnia. Warsaw endpoint request includes no compulsory platform waypoint: a rejected candidate through a mismatched Zachodnia track created a 38 km return loop. Final candidate is continuous with no such reversal. All other geometry is retained."
+      }
+    },
+    "backpacking-europe-heading-east-krakow-zakopane": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap railway network",
+        "retrievedAt": "2026-11-11",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=50.0684%2C19.9474&point=49.9751%2C19.8291&point=49.7477%2C19.5982&point=49.4704%2C20.0201&point=49.3007678%2C19.9630396&profile=non_tgv&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "non_tgv",
+        "dataDate": "2026-11-09T05:00:00Z",
+        "sourceUrl": "https://mdm-admin.kolejemalopolskie.com.pl/pl/rozklad-jazdy/rozklady-kolejowe/krakow-glowny-zakopane",
+        "rawSha256": "065c77bd05b9a86df45139c4e31055a8e3473f2748bb9551f55bfdbd1263507b",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 2617,
+        "outputPointCount": 943,
+        "rawDistanceKm": 136.007,
+        "distanceKm": 135.923,
+        "endpointOffsetsMeters": [
+          2,
+          0
+        ],
+        "waypointOffsetsMeters": [
+          2,
+          345,
+          397,
+          162,
+          2
+        ],
+        "largestRawGapKm": 1.31,
+        "largestOutputGapKm": 1.843,
+        "maxSectionJoinMeters": 0,
+        "notes": "Owner confirms Kraków departure/arrival in Zakopane on 10 November; transport mode is inferred from the established rail preference, not a supplied ticket or departure. Koleje Małopolskie K5 timetable valid 25 October–12 December 2026 establishes the Skawina–Sucha Beskidzka Zamek–Nowy Targ corridor. OpenRailRouting non_tgv reconstructs the railway; shaping requests snap onto its track, with no endpoint connector. No exact service, platform or actual running time is asserted.",
+        "stationSources": [
+          {
+            "name": "Zakopane",
+            "sourceUrl": "https://www.openstreetmap.org/node/9841395652",
+            "lat": 49.3007678,
+            "lng": 19.9630396
+          }
+        ]
+      }
+    },
+    "backpacking-europe-heading-east-zakopane-poprad": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap road network",
+        "retrievedAt": "2026-11-11",
+        "requestUrl": "https://routing.openstreetmap.de/routed-car/route/v1/driving/19.9637231,49.301903;20.1126,49.3331;20.2672,49.2703;20.2815,49.1655;20.2255018,49.1405092;20.2929767,49.0593951?overview=full&geometries=geojson&steps=true",
+        "profile": "driving",
+        "sourceUrl": "https://cdn-cf.cms.flixbus.com/drupal-assets/2026-03/N1365%20RJ%20od%202026.03.30.pdf",
+        "rawSha256": "f978b03b1da2a7f7d911b33e33c79e07403fad1d5a50f254cc16e1ec397a7056",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 2811,
+        "outputPointCount": 603,
+        "rawDistanceKm": 72.678,
+        "distanceKm": 72.593,
+        "endpointOffsetsMeters": [
+          137,
+          137
+        ],
+        "waypointOffsetsMeters": [
+          0,
+          61,
+          40,
+          1,
+          5,
+          26
+        ],
+        "largestRawGapKm": 0.857,
+        "largestOutputGapKm": 2.818,
+        "maxSectionJoinMeters": 0,
+        "notes": "Owner direction recorded 11 November 2026 specifies FlixBus Zakopane–Poprad followed by train to Bratislava; no specific departure date/time or booking supplied. Representative FlixBus N1365 corridor from the operator timetable valid 30 March 2026: Zakopane bus station–Bukowina Tatrzańska Klin–Jurgów/Podspády–Ždiar Tatra–Tatranská Lomnica bus station–Starý Smokovec bus station–Poprad bus station. Car-profile road reconstruction constrained through that corridor, not operator GPS. Actual terminal road endpoints are retained, separated from the journey rail-station pins by the measured offsets; no invented walking connector. A rejected nominal Jurgów shaping anchor selected a side road and was removed; the adjacent Bukowina and Ždiar anchors retain the documented crossing. Starý Smokovec uses its actual FlixBus terminal, not the rejected town-centre spur.",
+        "terminalSources": [
+          {
+            "name": "Zakopane Dworzec, FlixBus platform 12 stop position",
+            "sourceUrl": "https://www.openstreetmap.org/node/12986073458",
+            "lat": 49.301903,
+            "lng": 19.9637231
+          },
+          {
+            "name": "Autobusová stanica Poprad",
+            "sourceUrl": "https://www.openstreetmap.org/way/494293007",
+            "roadEndpoint": [
+              20.29329,
+              49.0595
+            ],
+            "notes": "Operator names Poprad AS at Jiřího Wolkera 466; OSM platform node4860742443 provides nearby terminal anchor. Car router retains its snapped road endpoint."
+          }
+        ],
+        "intermediateSources": [
+          {
+            "name": "Starý Smokovec FlixBus station",
+            "sourceUrl": "https://www.openstreetmap.org/node/14122367202",
+            "lat": 49.1405092,
+            "lng": 20.2255018,
+            "notes": "Replaced the rejected town-centre shaping point with this actual terminal. The final 142 m access loop follows its road circulation; no artificial out-and-back spur remains."
+          }
+        ]
+      }
+    },
+    "backpacking-europe-heading-east-poprad-bratislava": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap railway network",
+        "retrievedAt": "2026-11-11",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=49.0600912%2C20.2949412&point=49.2265%2C18.7469&point=48.8955%2C18.0498&point=48.15867%2C17.10675&profile=non_tgv&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "non_tgv",
+        "dataDate": "2026-11-09T05:00:00Z",
+        "sourceUrl": "https://www.zsr.sk/sluzby-verejnosti/pre-cestujucich/cestovny-poriadok-2025-2026",
+        "rawSha256": "0db89a4404bda309b826d8c08140e989a9cb020e2ddcad47c8e67e2846a96fa9",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 3490,
+        "outputPointCount": 1143,
+        "rawDistanceKm": 341.1,
+        "distanceKm": 341.032,
+        "endpointOffsetsMeters": [
+          6,
+          0
+        ],
+        "waypointOffsetsMeters": [
+          5,
+          39,
+          131,
+          0
+        ],
+        "largestRawGapKm": 4.677,
+        "largestOutputGapKm": 11.96,
+        "maxSectionJoinMeters": 0,
+        "notes": "Owner confirms train from Poprad to Bratislava after FlixBus from Zakopane, with no selected departure or booking. ŽSR 2025/2026 tables 180 and 120 valid 5 October 2026 support the Poprad–Štrba–Liptovský Mikuláš–Ružomberok–Vrútky–Žilina–Trenčín–Trnava–Bratislava hlavná stanica corridor. Reconstruction is constrained through Žilina and Trenčín; an unnecessary Trnava anchor that selected a short station-track spur was removed before acceptance. Exact service, parallel track, construction diversion and platform remain unconfirmed. The largest raw gap (4.677 km south of Piešťany at Drahovce) is a straight open-air mainline section: OSM way 483203739 contains ten connected nodes within 0.27 m of the router chord, with matching endpoints. It is not a missing railway section or tunnel.",
+        "stationSources": [
+          {
+            "name": "Poprad-Tatry (mainline, not TEŽ)",
+            "sourceUrl": "https://www.openstreetmap.org/node/9156014259",
+            "lat": 49.0600912,
+            "lng": 20.2949412
+          }
+        ],
+        "gapReviewSourceUrl": "https://www.openstreetmap.org/way/483203739"
       }
     }
   }

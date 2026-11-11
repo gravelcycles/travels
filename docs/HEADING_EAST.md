@@ -1,5 +1,44 @@
 # Backpacking Europe: Heading East
 
+## Kraków and Zakopane dates — 11 November 2026
+
+Owner correction: “krakow 6-10 (not 11), then zakopane (10-13) then bratislava”.
+Kraków is **6–10 November 2026**; add **Zakopane, 10–13 November**, then retain
+Bratislava and the onward itinerary with dates TBD. This supersedes the
+1 November Kraków departure of 11 November and direct Kraków → Bratislava
+sequence only. Keep Kraków's stable event ID, every existing photo assignment,
+saved copy, pin, album order and all unrelated itinerary content. The journey's
+last confirmed departure and `endDate` become **13 November**.
+
+Owner follow-up in the same task: “we will take flix to poprad and then train
+to brat”. Bratislava's incoming travel is **FlixBus Zakopane → Poprad**, then
+**train Poprad-Tatry → Bratislava**. Poprad is a transfer, not a separate stay.
+Kraków → Zakopane remains a researched rail
+candidate under the trip's standing rail preference, rather than an owner-
+confirmed service. Confirmed stay dates and chosen onward modes do not establish
+bookings, departure times or the exact road/track used.
+
+The 50 preserved network legs (31 rail, 19 bus) include three new lines:
+Kraków → Zakopane **135.9 km**, Zakopane → Poprad **72.6 km**, and
+Poprad → Bratislava **341.0 km**. All 47 unrelated geometries remain identical;
+the superseded direct Kraków → Bratislava line is removed from source, manifest
+and public output. The FlixBus terminal endpoints remain 137 m from the adjacent
+rail-station pins; no walking connector or road onto a railway platform is drawn.
+
+Primary corridor evidence: [Koleje Małopolskie timetables](https://kolejemalopolskie.com.pl/pl/rozklad-jazdy/rozklady-kolejowe/krakow-glowny-zakopane),
+[FlixBus Zakopane–Poprad](https://www.flixbus.com/bus-routes/bus-zakopane-poprad),
+[FlixBus N1365 timetable](https://cdn-cf.cms.flixbus.com/drupal-assets/2026-03/N1365%20RJ%20od%202026.03.30.pdf)
+and [ŽSR tables 180/120](https://www.zsr.sk/sluzby-verejnosti/pre-cestujucich/cestovny-poriadok-2025-2026). Exact operator sources, OSM station nodes, network
+requests, hashes, vertex/length checks and limitations are retained in the
+[route manifest](../content/route-sources/backpacking-europe-heading-east.json).
+
+Acceptance: 31 stays, Kraków 6–10 November followed by Zakopane 10–13 November,
+then Bratislava with two incoming legs in bus/train order and no Poprad stay.
+All fifteen stays from Bratislava remain undated/TBD. Existing media and edits
+remain unchanged; transfer-day photo intake on 10 November defaults to Zakopane
+without moving previously assigned photos. Geometry, source review and delivery
+checks are tracked in [WIP](../WIP.md#kraków-and-zakopane-dates--11-november-2026).
+
 ## Vienna photo cleanup — 3 November 2026
 
 Owner follow-up after editing in localhost Studio: “deleted a couple of photos.
@@ -215,14 +254,20 @@ above. Detailed delivery and preservation receipts live in WIP.
 
 ## Vienna and Poland dates — 1 November 2026
 
+The [11 November correction](#kraków-and-zakopane-dates--11-november-2026)
+supersedes this release's Kraków end date and direct Bratislava connection.
+The earlier Vienna/Warsaw dates and reviewed incoming geometry remain current.
+
 Owner direction: “vienna is oct 29-nov 1”, then Warsaw “nov 2 - nov 6”,
 Kraków “nov 6 - nov 11”, then “jump right to bratislava”. The first Kraków
 night on 1 November is deliberately omitted as a stay: show its railway within
 Warsaw's incoming travel. This supersedes the 20 October Vienna → Wrocław →
 Warsaw → Kraków order and the undated status of Vienna, Warsaw and Kraków.
 Remove Wrocław, retain the three existing city IDs and all other stay content,
-and leave Bratislava and the onward itinerary undated/TBD. The last confirmed
-departure and journey `endDate` become 11 November. The gap between Vienna's
+and leave Bratislava and the onward itinerary undated/TBD. That release set the last confirmed
+departure and journey `endDate` to 11 November; the
+[11 November correction](#kraków-and-zakopane-dates--11-november-2026) now sets
+Kraków to 6–10 November and adds Zakopane through 13 November before Bratislava. The gap between Vienna's
 1 November departure and Warsaw's 2 November arrival represents travel; do not
 extend either city or invent an extra event to fill it.
 
@@ -382,12 +427,15 @@ Wrocław and omits the first Kraków night as a stay. Forni and Slovenia remain.
 
 Current itinerary after Venice:
 Forni di Sopra (23–29 October) → Vienna (29 October–1 November) →
-Warsaw (2–6 November, via Kraków) → Kraków (6–11 November) → Bratislava
+Warsaw (2–6 November, via Kraków) → Kraków (6–10 November) →
+Zakopane (10–13 November) → Bratislava
 → Budapest → Oradea → Sibiu → Timișoara → Belgrade → Zagreb → Ljubljana → Lake Bled
 → Split → Dubrovnik → Sarajevo → Ohrid → Qeparo → Athens.
 
-Forni, Vienna, Warsaw and Kraków are confirmed city stays with no TBD flag.
-`endDate` is 11 November; all fifteen stays from Bratislava remain undated/TBD.
+Forni, Vienna, Warsaw, Kraków and Zakopane are confirmed city stays with no TBD flag.
+`endDate` is 13 November; all fifteen stays from Bratislava remain undated/TBD.
+The [11 November correction](#kraków-and-zakopane-dates--11-november-2026) owns
+the current Poland/Slovakia dates and route selection.
 Retain the original eleven
 city IDs/dates, existing photo albums, saved stories/notes, pins and ordering.
 Udine and Tolmezzo are transfers, not overnight stays. The Venice rail corridor
@@ -397,7 +445,8 @@ passes through Mestre; no specific train departure has been selected here.
 | --- | --- |
 | Forni di Sopra | Train Venice–Mestre–Treviso–Pordenone–Udine; bus 100 Udine–Tolmezzo and bus 110 Tolmezzo–Ampezzo–Forni |
 | Vienna | Bus 110 Forni–Tolmezzo, bus 100 Tolmezzo–Udine, then ÖBB Railjet via Tarvisio, Villach, Klagenfurt, the Koralmbahn, Graz, Bruck and Semmering (28 October correction) |
-| Bratislava | Split the retained Kraków–Budapest railway at Bratislava hlavná stanica, retaining the Katowice–Bohumín–Břeclav corridor |
+| Zakopane | Researched Kraków–Zakopane rail candidate (11 November addition) |
+| Bratislava | FlixBus from Zakopane to Poprad, then rail from Poprad-Tatry (owner follow-up, 11 November; supersedes direct Kraków route) |
 | Budapest | Remaining retained Bratislava–Štúrovo–Vác railway |
 | Ljubljana | Rail from Zagreb via Dobova and Zidani Most |
 | Lake Bled | Retain Ljubljana–Kranj–Lesce-Bled rail plus local bus |

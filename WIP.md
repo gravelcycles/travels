@@ -1,5 +1,26 @@
 # Current workstreams
 
+## Kraków and Zakopane dates — 11 November 2026
+
+Authorized: Kraków **6–10 November**, Zakopane **10–13 November**, then Bratislava;
+owner follow-up specifies **FlixBus to Poprad, then train to Bratislava**.
+[Current trip record](docs/HEADING_EAST.md#kraków-and-zakopane-dates--11-november-2026)
+owns supersession and acceptance. Bratislava/onward dates remain TBD; Poprad is
+a transfer. No media, saved copy or photo assignment changes are authorized.
+Work is isolated on `codex/heading-east-zakopane-20261111` at
+`/private/tmp/travels-zakopane-20261111`, based on remote main `ba1c782`.
+Implemented: 31 stays and 50 routes, preserving all 47 retained lines exactly.
+New reconstructed distances are 135.9 km rail to Zakopane, 72.6 km FlixBus to
+Poprad and 341.0 km rail to Bratislava. Operator/OSM sources, checked terminal
+gaps and route diagnostics are in the manifest. No departure times were added.
+All 951 tests and the build pass; strict routing preserves all 50 with no
+warnings. Desktop and 390 px browser checks confirm dates/order, the empty
+Zakopane album, and Bratislava's two bus/train travel rows. Phone checks are
+responsive browser coverage, not a physical-device certification.
+Next: integrate new remote main `fe13781` (the concurrent controls release),
+rerun integrated tests/build and affected browser checks, publish Pages and
+verify fresh public HTML/data. Primary UI edits remain preserved.
+
 ## Load, interaction and flow fixes — 10 November 2026
 
 Authorized by the owner after a sitewide review; direction, declined items and
@@ -342,6 +363,9 @@ clips remain held; nine missing-GPS pins remain intentionally unset pending owne
 locations. No outbound update was sent or acknowledged.
 
 ## Vienna and Poland dates — 1 November 2026
+
+Its Kraków departure and direct Bratislava connection are superseded by the
+[11 November update](#kraków-and-zakopane-dates--11-november-2026).
 
 Authorized: confirm Vienna 29 October–1 November, Warsaw 2–6 November and
 Kraków 6–11 November; remove Wrocław and the first Kraków night as stays,

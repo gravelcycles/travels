@@ -592,8 +592,8 @@ photo capture-date assignment, catalog, journal, location labels, mobile control
 albums inherit it; saved Replay metadata remains compatible. City validation
 allows non-overlapping stays separated by travel gaps; incoming legs belong to
 the next represented city, and photo intake does not fill omitted stays.
-Heading East is a data instance with 30 city stops and 47 reconstructed legs,
-including the [1 November Vienna/Poland correction](HEADING_EAST.md#vienna-and-poland-dates--1-november-2026),
+Heading East is a data instance with 31 city stops and 50 reconstructed legs,
+including the [11 November Kraków/Zakopane correction](HEADING_EAST.md#kraków-and-zakopane-dates--11-november-2026),
 not another page implementation.
 
 Remaining route evidence: personal departures and historical diversions are

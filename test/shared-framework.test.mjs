@@ -338,13 +338,16 @@ test('photo intake skips undated TBD entries for the reference, demo and a fresh
   }
   const city = data.journeys.find(j => j.id === 'backpacking-europe-heading-east');
   const config = photoImportConfig(root, data, { journey: city.id });
-  assert.equal(config.daysByDate.size, 72);
+  assert.equal(config.daysByDate.size, 74);
   assert.equal(config.daysByDate.get('2026-09-30').title, 'Düsseldorf');
   assert.equal(config.daysByDate.get('2026-10-24').title, 'Forni di Sopra');
   assert.equal(config.daysByDate.get('2026-10-30').title, 'Vienna');
   assert.equal(config.daysByDate.get('2026-11-02').title, 'Warsaw');
   assert.equal(config.daysByDate.get('2026-11-06').title, 'Kraków');
-  assert.equal(config.daysByDate.has('2026-11-12'), false);
+  assert.equal(config.daysByDate.get('2026-11-09').title, 'Kraków');
+  assert.equal(config.daysByDate.get('2026-11-10').title, 'Zakopane');
+  assert.equal(config.daysByDate.get('2026-11-13').title, 'Zakopane');
+  assert.equal(config.daysByDate.has('2026-11-14'), false);
 });
 
 test('full-trip Replay stays inaccessible while arrival works for reference, demo and populated city draft', t => {
@@ -1555,12 +1558,12 @@ test('day visibility uses trip-local dates, including today, ongoing stays and d
 test('Heading East groups the real city stays without inventing onward dates or changing confirmation', () => {
   const journey = loadContent(repo).data.journeys.find(j => j.id === 'backpacking-europe-heading-east');
   const utils = globalThis.JOURNEY_ATLAS_UTILS, now = new Date('2026-10-11T12:00:00Z');
-  assert.deepEqual(utils.planningCounts(journey, now), {past:8,locked:7,tbd:15});
+  assert.deepEqual(utils.planningCounts(journey, now), {past:8,locked:8,tbd:15});
   const snapshot = JSON.stringify(journey);
   const locked = utils.projectPlanning(journey, {past:false,locked:true,tbd:false}, now);
-  assert.deepEqual(locked.days.map(day => day.title), ['Innsbruck','Bolzano','Venice','Forni di Sopra','Vienna','Warsaw','Kraków']);
-  assert.deepEqual(locked.days.map(day => day.number), [9,10,11,12,13,14,15]);
-  assert.equal(locked.segments.length, 15);
+  assert.deepEqual(locked.days.map(day => day.title), ['Innsbruck','Bolzano','Venice','Forni di Sopra','Vienna','Warsaw','Kraków','Zakopane']);
+  assert.deepEqual(locked.days.map(day => day.number), [9,10,11,12,13,14,15,16]);
+  assert.equal(locked.segments.length, 16);
   assert.ok(locked.places.some(place => place.name === 'Zawiercie'), 'transfer survives the confirmed-stay projection');
   assert.ok(!locked.places.some(place => /Athens|Prague/.test(place.name)));
   assert.equal(JSON.stringify(journey), snapshot);
