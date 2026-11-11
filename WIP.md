@@ -93,7 +93,17 @@ The unlock page is served by the Worker and does not load `feel.css`.
 **Review aid.** The owner compared old and new with a scratch `compare.html`
 (two frames with side-by-side, phone and single-page layouts) beside the
 `dist` symlinks in the local preview root. It lives outside the repository;
-recreate it when a visual change needs the same side-by-side check. **Still open.** A physical phone and Safari check of the motion and press
+recreate it when a visual change needs the same side-by-side check. **Published** as `4c88b80` through successful
+[Pages run 42989085906](https://github.com/gravelcycles/travels/actions/runs/42989085906).
+Ten fresh public files (four journey pages and the catalog's `index.html`
+among them, plus `feel.css`, `app.js`, `mobile-ux.js`, `styles.css`,
+`mobile.css` and `page-entry.js`) match the release bytes. A fresh public demo
+load at 375 × 812 has `feel.css` applied, the new paper background, the stop
+picker's sheet rise armed after a first input, and no console errors. Not
+checked on the public site: an unlocked trip, any motion watched playing, and
+a physical phone.
+
+**Still open.** A physical phone and Safari check of the motion and press
 feedback; the sign-in page's background, which keeps the earlier colour until
 the access service is next deployed (the owner set this aside on 11 November);
 and the later-pass items listed under O22 and in [TODO](TODO.md#feel-and-finish--11-november-2026).
