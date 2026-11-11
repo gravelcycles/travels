@@ -95,8 +95,8 @@ The unlock page is served by the Worker and does not load `feel.css`.
 `dist` symlinks in the local preview root. It lives outside the repository;
 recreate it when a visual change needs the same side-by-side check. **Published** as `4c88b80` through successful
 [Pages run 42989085906](https://github.com/gravelcycles/travels/actions/runs/42989085906).
-Ten fresh public files (four journey pages and the catalog's `index.html`
-among them, plus `feel.css`, `app.js`, `mobile-ux.js`, `styles.css`,
+Ten fresh public files (the Heading East, Switzerland–Italy and demo pages,
+the catalog page, and `feel.css`, `app.js`, `mobile-ux.js`, `styles.css`,
 `mobile.css` and `page-entry.js`) match the release bytes. A fresh public demo
 load at 375 × 812 has `feel.css` applied, the new paper background, the stop
 picker's sheet rise armed after a first input, and no console errors. Not
