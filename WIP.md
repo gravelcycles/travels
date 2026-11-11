@@ -82,8 +82,9 @@ A code deploy does not upload secrets. After deploying: the live page serves
 the outlined Continue without photos and retry buttons and the same credential
 digest; anonymous photo GET and HEAD and the status check return 401; a
 foreign origin is refused with 400; the page renders correctly at 375 px.
-Not exercised after the deploy: a real password sign-in and remembered
-restore, which only the owner can do on the live site.
+The owner then confirmed on 11 November that a password sign-in works on the
+live site (“Yes, it works”). Remembered restore on a later visit was not
+separately checked after this deploy.
 
 **Not checked.** A physical phone and Safari, including how the pulls feel
 under a finger. Recent-comment thumbnails with real comments (the local server
