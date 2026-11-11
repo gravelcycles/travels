@@ -31,8 +31,12 @@ None of this changes how access is checked.
 
 The login page (`workers/photo-auth/window.mjs`) keeps its field order. Only
 **Unlock photos** is filled; **Continue without photos** and the retry button
-are outlined. This is a style-only change inside the Worker, so it reaches
-visitors only after `npm run auth:deploy`; see WIP for whether that has run.
+are outlined. This is a style-only change inside the Worker. It was deployed
+on 11 November 2026 as version `9065acc8-ab9d-40bb-b42d-2e27eeb81fa5` after the
+live and local credential parameters were compared by digest (identical) and
+the runtime checks passed; credentials and the signing key were not touched.
+A code-only `auth:deploy` never uploads secrets; only
+`auth:credentials -- deploy` does. See WIP for the receipt.
 
 ## Fewer access round trips — 10 November 2026
 

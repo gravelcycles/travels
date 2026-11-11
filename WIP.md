@@ -71,6 +71,20 @@ stop card in its new order with the lock on Photos, and the usual prompt, with
 no console errors. The public unlocked view was not rechecked: the review
 browser no longer held a remembered sign-in.
 
+**Login page deployed** on the owner's go-ahead (11 November 2026: “Yes, go
+ahead”) with `npm run auth:deploy` from published `412551a`, Worker version
+`9065acc8-ab9d-40bb-b42d-2e27eeb81fa5` (previous: `2e43e373-fa9b-4d7c-86ab-e00f67b3db2b`,
+whose deploy time matches `d96887f`, so the login page style is the only code
+difference). Before deploying: the live login page and the local secrets held
+the same number of credentials with an identical ID/salt/iteration digest, the
+115 access tests passed, and the dry-run plus workerd runtime checks passed.
+A code deploy does not upload secrets. After deploying: the live page serves
+the outlined Continue without photos and retry buttons and the same credential
+digest; anonymous photo GET and HEAD and the status check return 401; a
+foreign origin is refused with 400; the page renders correctly at 375 px.
+Not exercised after the deploy: a real password sign-in and remembered
+restore, which only the owner can do on the live site.
+
 **Not checked.** A physical phone and Safari, including how the pulls feel
 under a finger. Recent-comment thumbnails with real comments (the local server
 has no comment service; covered by the row test). Dragging the guide and
@@ -79,12 +93,6 @@ A fresh draft in a browser (shared tests only).
 
 **Still open.**
 
-- **Login page button colours are not live.** The Worker source is changed and
-  tested, but `npm run auth:deploy` has not run: the
-  [access handoff](PHOTO_AUTH_HANDOFF.md#agent-operated-maintenance) requires
-  comparing local credential IDs and salts with the live login page first, and
-  a wrong deploy could lock visitors out. Next action: do that comparison, run
-  `npm run auth:runtime-test`, deploy, then confirm a sign-in with the owner.
 - **Raw capture timestamps** stay in the viewer because O20 records “raw
   timestamps are fine”. The review's item 6 also proposed a readable format and
   the owner answered “good call” to the item as a whole; ask before changing.

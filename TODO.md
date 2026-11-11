@@ -28,8 +28,7 @@ activation work.
 ## Independent project workstreams
 
 - [ ] Findability pass follow-ups (11 November 2026, [WIP](WIP.md#findable-labelled-controls--11-november-2026)):
-  deploy the login-page button colours through the Worker after the credential
-  comparison; check the new pulls and the phone stop card on a physical phone;
+  check the new pulls and the phone stop card on a physical phone;
   decide with the owner whether phone stop details keep the trial layout.
 - [ ] **Physical iPhone loaded-photo presentation.** The owner's iPhone 12 Pro
       traces confirm 115–192 ms incoming-image paints, including without

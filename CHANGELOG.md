@@ -31,8 +31,8 @@
   comments show the photo and its stop.
 - Recent comments, the guide and the phone photo card close with the same
   downward pull as a photo conversation (one shared helper).
-- Login page buttons: only Unlock photos is filled (Worker source; deploy
-  status in WIP).
+- Login page buttons: only Unlock photos is filled. Deployed to the photo
+  service the same day after a credential comparison; receipt in WIP.
 
 ## 10 November 2026 — Fewer access round trips
 
