@@ -134,7 +134,7 @@ Implemented on `codex/durable-place-images-20261111`, isolated at
 including the current controls/login and Kraków/Zakopane releases. The primary
 checkout and its other work are preserved.
 
-**Ready for Pages publication.** All 56 image slots across 20 existing places
+**Complete and published.** All 56 image slots across 20 existing places
 now use our public Cloudflare venue namespace: 40 original selections and 16
 reviewed replacements. The seven places with no prior images remain unchanged.
 The [trip record](docs/HEADING_EAST.md#durable-venue-pictures--11-november-2026)
@@ -164,10 +164,21 @@ covered by shared regressions, not a new interactive phone-browser pass. A
 physical phone and Safari were not checked. No viewer layout or interaction
 code changed in this task.
 
-Next: fetch/check current main, publish the tested generated output to Pages,
-verify the successful Actions deployment and fresh public Heading East data,
-cards and gallery, then add the release receipt here. There are no missing or
-unverified image slots in the prepared release.
+Published as `802e608` through successful
+[Pages run 42985555178](https://github.com/gravelcycles/travels/actions/runs/42985555178).
+Six fresh public files (Heading East/catalog HTML, scoped/full journey data,
+catalog data and attribution) match the tested release bytes. A fresh canonical
+public load as a guest shows the restored Cloudflare-backed cards, opens the
+exact Barbès picture with its refined contributor credit and source link, and
+keeps the private-photo Unlock control. No new project script errors were
+observed. All 56 hosted pictures were independently downloaded and decoded.
+There are no missing image slots or remaining publication steps. The concurrent
+owner-choice release then integrated this repair and published as `80d251c`;
+its receipt is `24c05bd`. The primary checkout is clean at that receipt and
+contains all 56 hosted references and the new workflow. This task did not
+overwrite its concurrent edits. After that integration all 965 tests and the production build pass again,
+generated output is unchanged, six fresh public files match current main and
+all 56 verified image records are preserved.
 
 ## Load, interaction and flow fixes — 10 November 2026
 
