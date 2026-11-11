@@ -1258,6 +1258,22 @@
     select.innerHTML = availableJourneys.map((item) => `<option value="${escapeHtml(item.id)}" ${item.id === journey.id ? "selected" : ""}>${escapeHtml(item.label)}</option>`).join("");
   }
 
+  // Stop-row thumbnails. renderDays rebuilds every row on each selection, so
+  // a loaded picture is kept and moved into the new row rather than fetched and
+  // revealed again; only a row's first appearance creates and loads an image.
+  const dayThumbNodes = new Map();
+  globalThis.JOURNEY_ATLAS_DAY_THUMBS = container => {
+    container.querySelectorAll?.('[data-day-thumb]').forEach(slot => {
+      const id = slot.dataset.dayThumb, kept = dayThumbNodes.get(id);
+      if (kept) { slot.replaceWith(kept); return; }
+      const photo = photoById(id);
+      if (!photo) { slot.remove(); return; }
+      slot.innerHTML = photoImageMarkup(photo, { alt: "", sizes: "48px", targetWidth: 160 });
+      prepareProgressiveImages(slot);
+      dayThumbNodes.set(id, slot);
+    });
+  };
+
   function renderDays() {
     dayList.innerHTML = journey.days.map((day) => {
       const modes = modesForDay(day);
@@ -1275,10 +1291,13 @@
             <strong>${day.planningStatus === "tbd" ? '<span class="tbd-badge">TBD</span> ' : ""}${escapeHtml(day.title)}</strong>
             ${day.tagline?.trim() ? `<em>${escapeHtml(day.tagline)}</em>` : ""}
           </span>
-          <span class="day-meta">${photos.length ? `${mediaUtils.label(photos)}` : ""}</span>
+          <span class="day-meta">${photos.length ? `<span class="day-thumb" data-day-thumb="${escapeHtml(photos[0].id)}" aria-hidden="true"></span>${mediaUtils.label(photos)}` : ""}</span>
         </button>
       `;
     }).join("");
+    // Each row shows its album's first photo. The pictures are filled in by a
+    // hook kept outside this function so the rows stay plain markup.
+    globalThis.JOURNEY_ATLAS_DAY_THUMBS?.(dayList);
     syncInspectionClasses();
 
   }

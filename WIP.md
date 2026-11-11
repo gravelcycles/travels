@@ -103,6 +103,18 @@ picker's sheet rise armed after a first input, and no console errors. Not
 checked on the public site: an unlocked trip, any motion watched playing, and
 a physical phone.
 
+**Third change, on the owner's “yep all of it” (11 November 2026).** Stop-row
+thumbnails and larger catalog covers, built on branch `claude/photo-leads`.
+All 971 tests and the build pass. Checked in a desktop browser against a local
+server with local photo derivatives, old and new side by side: the phone
+picker and the desktop list show thumbnails on the 13 Heading East stops that
+have photos; choosing another stop keeps the same image nodes, still loaded;
+the catalog shows the larger covers at phone and desktop widths;
+Switzerland–Italy shows 14 thumbnails on 14 days and the demo two on three; no
+console errors. Not checked: a locked guest's blurred thumbnails, a fresh
+draft in a browser (shared tests only), a physical phone. The bundling
+investigation runs as separate work and has not reported.
+
 **Still open.** A physical phone and Safari check of the motion and press
 feedback; the sign-in page's background, which keeps the earlier colour until
 the access service is next deployed (the owner set this aside on 11 November);

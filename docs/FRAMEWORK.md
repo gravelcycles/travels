@@ -296,6 +296,13 @@ release status in [WIP](../WIP.md#feel-and-finish--11-november-2026).
 - **Stop changes** restart a short settle by alternating `data-day-swap`
   when `renderStory` shows a different stop (`data-story-key`); a re-render of
   the same stop does nothing.
+- **Stop-row thumbnails.** `renderDays` only writes an empty
+  `[data-day-thumb]` slot (it is evaluated alone by tests) and calls
+  `globalThis.JOURNEY_ATLAS_DAY_THUMBS`. That hook fills a slot through the
+  shared `photoImageMarkup`/`prepareProgressiveImages` path once, then moves
+  the same node into each rebuilt row, so a stop change never restarts a load
+  or a reveal. Catalog covers are sized in CSS only; `catalog.js` already picks
+  a derivative for the rendered box and pixel ratio.
 - **Palette** values are overridden in `feel.css :root`. The page background
   also appears in both templates' inline `html` style and in `page-entry.js`;
   the sign-in page in `workers/photo-auth` still has the earlier colour.

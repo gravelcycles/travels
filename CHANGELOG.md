@@ -1,5 +1,18 @@
 # Changelog
 
+## 11 November 2026 — Stop thumbnails and larger catalog covers
+
+- Every stop or day row now shows its album's first photo above the count, in
+  the phone picker and the desktop list ([O22](docs/OWNER_DECISIONS.md#feel-and-finish--11-november-2026)).
+  A thumbnail is created and loaded once, lazily, then kept across stop
+  changes; rows with no photos are unchanged and private photos follow the
+  existing access rules.
+- Catalog covers are larger: a 280 px cover column on desktop and a 16:9 cover
+  above the copy on phones, with the same focal points and automatic
+  derivative choice. Summaries show two lines.
+- `test/feel-contract.test.mjs` covers the row markup, node reuse and the
+  cover layout.
+
 ## 11 November 2026 — Feel and finish
 
 - Every control now answers a press, hover styling applies only where a

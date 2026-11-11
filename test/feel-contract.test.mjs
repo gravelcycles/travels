@@ -104,3 +104,17 @@ test('a grid photo grows from its thumbnail and returns to it without delaying t
     assert.ok(mobile.includes(owner), `motion is cleared when the layer changes: ${owner.slice(0, 40)}`);
   }
 });
+
+test('stop rows show their album\'s first photo and keep it across re-renders; catalog covers lead', () => {
+  const app = read('dist/assets/app.js'), css = read('dist/assets/styles.css');
+  assert.match(app, /<span class="day-meta">\$\{photos\.length \? `<span class="day-thumb" data-day-thumb="\$\{escapeHtml\(photos\[0\]\.id\)\}" aria-hidden="true"><\/span>\$\{mediaUtils\.label\(photos\)\}` : ""\}<\/span>/,
+    'the row keeps its count and adds a decorative slot for the first album photo; a row with no photos adds nothing');
+  assert.match(app, /globalThis\.JOURNEY_ATLAS_DAY_THUMBS\?\.\(dayList\);/, 'renderDays stays self-contained and hands the slots to a hook');
+  assert.match(app, /const id = slot\.dataset\.dayThumb, kept = dayThumbNodes\.get\(id\);\s*if \(kept\) \{ slot\.replaceWith\(kept\); return; \}/,
+    'a picture already created is moved into the rebuilt row, so a stop change never reloads or re-reveals it');
+  assert.match(app, /slot\.innerHTML = photoImageMarkup\(photo, \{ alt: "", sizes: "48px", targetWidth: 160 \}\);\s*prepareProgressiveImages\(slot\);/,
+    'thumbnails use the shared image markup and lazy loader, including private photos');
+  assert.match(css, /\.day-thumb \{[^}]*width: 46px; height: 46px;/);
+  assert.match(css, /\.journey-card \{ grid-template-columns: 280px minmax\(0, 1fr\); min-height: 168px; \}/);
+  assert.match(css, /@media \(max-width: 560px\) \{\s*\.journey-card \{ grid-template-columns: minmax\(0, 1fr\); min-height: 0; \}\s*\.journey-card-media \{ min-height: 0; aspect-ratio: 16 \/ 9; \}/);
+});

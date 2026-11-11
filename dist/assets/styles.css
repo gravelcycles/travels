@@ -712,3 +712,29 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
   .photo-viewer[data-desktop-zoomed="true"] #modal-photo { cursor: grab; }
   .photo-viewer[data-desktop-panning="true"] #modal-photo { cursor: grabbing; }
 }
+
+/* Stop rows: the album's first photo sits above its count. */
+.day-meta:has(.day-thumb) { gap: 5px; }
+.day-thumb { display: block; flex: none; width: 46px; height: 46px; border-radius: 10px; overflow: hidden; background: #203f45; }
+.day-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.day-thumb .media-video-badge { display: none; }
+
+/* Catalog: the cover leads each card. Covers keep the 5:3 desktop crop their
+   focal points were chosen for; phones stack the cover above the copy. */
+.journey-grid { gap: 16px; }
+.journey-card { grid-template-columns: 280px minmax(0, 1fr); min-height: 168px; }
+.journey-card-media, .journey-card-placeholder { min-height: 168px; }
+.journey-card-copy { align-self: center; padding: 20px 26px; }
+.journey-card-copy h2 { margin-bottom: 8px; font-size: 1.7rem; }
+.journey-card-copy p { -webkit-line-clamp: 2; font-size: .9rem; line-height: 1.5; }
+.journey-card-meta { margin-top: 12px; font-size: .8rem; font-weight: 600; }
+@media (max-width: 560px) {
+  .journey-card { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .journey-card-media { min-height: 0; aspect-ratio: 16 / 9; }
+  .journey-card:has(.journey-card-placeholder) .journey-card-media { aspect-ratio: auto; }
+  .journey-card-placeholder { min-height: 92px; }
+  .journey-card-copy { padding: 14px 16px 16px; }
+  .journey-card-copy h2 { font-size: 1.4rem; }
+  .journey-card-copy p { display: -webkit-box; font-size: .85rem; }
+  .journey-card-meta span:first-child { flex-basis: auto; }
+}

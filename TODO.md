@@ -353,15 +353,16 @@ as a local review artifact; unrelated Replay experiments remain separate.
 - [x] **Owner review and release** (press feedback, motion, icons, control
       shapes, palette, larger photos): approved 11 November 2026. See [WIP](WIP.md#feel-and-finish--11-november-2026)
       and [O22](docs/OWNER_DECISIONS.md#feel-and-finish--11-november-2026).
-- [ ] **Larger photographs, remaining:** stop-picker thumbnails and catalog
-      covers. Proposed, not authorised. (The desktop frame and the phone
-      stop-details photo shipped with O22.)
+- [x] **Larger photographs:** stop-row thumbnails and larger catalog covers
+      released 11 November 2026 on the owner's “yep all of it”, after the
+      desktop frame and the phone stop-details photo.
 - [ ] **Phone and Safari check** of the released motion and press feedback.
 - [ ] **Sign-in page background** to match the new paper colour at the next
       access-service deployment.
 - [ ] **Token consolidation:** fold the remaining raw colours, font sizes,
       radii and shadows into the shared tokens. Proposed, not authorised.
-- [ ] **Bundle and minify shared scripts and styles.** Needs a source/output
+- [ ] **Bundle and minify shared scripts and styles** (investigation started
+      11 November 2026 on the owner's request, as separate work). Needs a source/output
       split for the hand-authored `dist/assets`; an owner decision.
 
 ## Live Photos intake — checkpointed 8 October 2026

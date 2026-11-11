@@ -171,7 +171,9 @@ stop change settles its title and words; desktop full screen opens out of the
 page; the desktop lead photo is taller and phone stop details lead their photo
 row with a full-width picture; the phone stop card is a rounded sheet over the
 map; dates, transport and counts are sentence case; the palette is warm paper
-with one tint. Reduced motion removes the movement, and first paint, restored
+with one tint; every stop row shows its album's first photo above the count,
+and catalog covers are larger (stacked above the copy on phones). Reduced
+motion removes the movement, and first paint, restored
 views and browser Back are not animated. See the
 [framework contract](FRAMEWORK.md#feel-and-finish--11-november-2026).
 

@@ -79,10 +79,19 @@ slightly lighter hairlines; the system interface font instead of naming Inter,
 which the site never shipped. Georgia stays; a move to the Apple serif was
 considered and left out because it could not be checked outside Safari.
 
-Left for a later pass and not started: stop-picker thumbnails, larger catalog
-covers, a slimmer desktop header, folding the remaining raw colours and sizes
-into tokens, dark mode, the sign-in page's colours, and bundling/minifying the
-shared scripts (a build-pipeline decision). O21's stop-card photo row, readable
+Asked whether to continue with the remaining photo upgrades, and with the
+bundling task also on offer, the owner answered “yep all of it” (11 November
+2026). That authorised and released: the album's first photo as a thumbnail on
+every stop row (phone picker and desktop list), above its count, loaded once
+and kept across stop changes; and larger catalog covers (a 280 px cover column
+on desktop, the cover stacked above the copy at 16:9 on phones, same focal
+points). It also started the bundling investigation as separate work, which
+reports a recommendation before anything lands. Thumbnail and cover sizes are
+the agent's choices.
+
+Left for a later pass and not started: a slimmer desktop header, folding the
+remaining raw colours and sizes into tokens, dark mode and the sign-in page's
+colours. O21's stop-card photo row, readable
 capture dates and phone stop-details order (story, map, photos) are unchanged.
 
 Acceptance when reviewing or extending: put the current site and the change
@@ -96,7 +105,10 @@ title and words without re-running on a plain re-render; a grid
 photo opens from its tile and Back/Close returns it there, with an immediate
 return when the tile is off screen; a touch during the opening motion ends it;
 reduced motion shows none of this movement; no first-paint animation or flash
-(O04); swipe, pull-to-dismiss and location timings are unchanged. Contract:
+(O04); swipe, pull-to-dismiss and location timings are unchanged; choosing a stop
+leaves the row thumbnails in place without a reload or a second reveal, a stop
+with no photos has no thumbnail, and catalog covers stay sharp at their larger
+size on desktop and phone. Contract:
 [FRAMEWORK](FRAMEWORK.md#feel-and-finish--11-november-2026). Status and what was
 not checked: [WIP](../WIP.md#feel-and-finish--11-november-2026).
 
