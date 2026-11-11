@@ -30,6 +30,15 @@ glyph); Switzerland–Italy full screen (“Day 1 / Day 3” jumps); Florence–
 (no lock state or Unlock); the demo (recent comments heading). No console
 errors.
 
+**Published** as `fe13781` through successful
+[Pages run 42980737824](https://github.com/gravelcycles/travels/actions/runs/42980737824).
+Five fresh public files (the Heading East page, `app.js`, `mobile.css`,
+`styles.css`, `photo-bubbles.js`) match the release bytes. A fresh public
+Heading East load at 375 × 812 as a guest shows the wordmark home link, the
+stop card in its new order with the lock on Photos, and the usual prompt, with
+no console errors. The public unlocked view was not rechecked: the review
+browser no longer held a remembered sign-in.
+
 **Not checked.** A physical phone and Safari, including how the pulls feel
 under a finger. Recent-comment thumbnails with real comments (the local server
 has no comment service; covered by the row test). Dragging the guide and
