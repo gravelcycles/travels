@@ -44,8 +44,13 @@ controls update. Strict routing preserves all 50 routes with no warnings;
 production build and diff checks pass. Desktop and 390 px browser checks confirm
 correct dates/order, the empty Zakopane state and both Bratislava travel rows.
 Saved media, photo/comment eligibility and Worker indexes are unchanged.
-[WIP](../WIP.md#kraków-and-zakopane-dates--11-november-2026) records publication
-and primary Studio synchronization status separately.
+Published `3ceaa1e` through successful
+[Pages run 42981346025](https://github.com/gravelcycles/travels/actions/runs/42981346025).
+Six fresh public HTML/data files match the tested release bytes; the public
+browser confirms both date ranges and the Poprad bus/train transfer without
+console errors. Primary Studio sources are synchronized and rebuild cleanly.
+The [WIP receipt](../WIP.md#kraków-and-zakopane-dates--11-november-2026) retains
+the delivery evidence and verification limits. No requested work remains.
 
 ## Vienna photo cleanup — 3 November 2026
 

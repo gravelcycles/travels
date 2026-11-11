@@ -21,9 +21,16 @@ no-photo state and Bratislava's two bus/train travel rows and full route map.
 No browser errors were captured. Phone checks are responsive browser coverage,
 not a physical-device certification. Photo/comment eligibility and Worker
 indexes are unchanged; no media upload or Worker deployment is needed.
-Next: publish the checked commit to Pages, verify its successful deployment
-and fresh public HTML/data, then synchronize scoped primary Studio sources.
-Primary UI work and the unrelated access-worker follow-up remain preserved.
+Complete. Published `3ceaa1e` through successful
+[Pages run 42981346025](https://github.com/gravelcycles/travels/actions/runs/42981346025).
+Six fresh public HTML/data files match the tested release byte-for-byte, including
+the scoped journey bundle and complete geometry. A fresh public guest browser
+shows the corrected Kraków/Zakopane dates, Zakopane → Bratislava navigation and
+both Poprad transfer rows without console errors. The primary checkout was
+clean after its controls release; fast-forwarded it to this release, rebuilt
+without differences and preserved all concurrent work. Local Studio now reads
+the corrected itinerary. No implementation or publication remains for this
+correction. The unrelated access-worker follow-up above/below remains open.
 
 ## Findable, labelled controls — 11 November 2026
 
