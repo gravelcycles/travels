@@ -26,6 +26,17 @@
   current inventories and route provenance, with actual-trip date/transfer and
   planning-projection regressions.
 
+## 11 November 2026 — Owner picks: photo row, readable dates, map kept
+
+- The phone stop card shows the event's first photos above its buttons; a tile
+  opens that photo and “+N” opens the album.
+- Capture times display as “1 Oct 2026 · 20:44” in full screen, the photo
+  card's details and comment titles. Stored data is unchanged.
+- Phone stop details keep the stop's map: story and travel details, then the
+  route key and map, then photos.
+- Chosen by the owner from side-by-side screenshots; recorded in
+  [O21](docs/OWNER_DECISIONS.md#findable-labelled-controls--11-november-2026).
+
 ## 11 November 2026 — Findable, labelled controls
 
 - Owner-approved review of hard-to-find and misnamed controls, recorded as

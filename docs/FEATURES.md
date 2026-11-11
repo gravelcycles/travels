@@ -168,9 +168,11 @@ phone stop picker ends with Places, Unlock (while locked) and a how-to guide;
 the phone wordmark is the home link; the header access control says Unlock
 photos; the desktop toolbar says Zoom to {place} and Show whole trip; the locked
 phone grid carries a “Photos are private · Unlock” banner; the phone stop card
-leads with a larger Photos button and shows a settled arrival as one icon; stop
-rows put each line sample beside its transport word; phone stop details lead
-with the story and carry no second map; the selected-photo card has a larger
+leads with a larger Photos button, shows the event's first photos above it
+(the last tile “+N” opens the album) and shows a settled arrival as one icon;
+stop rows put each line sample beside its transport word; phone stop details
+lead with the story, then the stop's map, then photos; capture times display
+as “1 Oct 2026 · 20:44”; the selected-photo card has a larger
 photo, labelled Comments / Share / Show on map and Close on the card; viewer
 jumps name their destination; recent comments show the photo and its stop; the
 card and full screen share one trip-wide count; and recent comments, the guide

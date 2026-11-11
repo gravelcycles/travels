@@ -43,7 +43,7 @@ How to use this atlas) and the wordmark home link; the how-to guide; Unlock
 photos / Zoom to {place} / Show whole trip / Photos · N labels; locked-grid
 banner and Photos lock glyph; phone stop card order, sizes and Replay icon;
 named viewer jumps; stop-row line samples, single TBD and hidden empty filter
-group; phone stop details order without the second map (trial; markup kept);
+group; phone stop details order (story, map, photos);
 selected-photo card (larger photo, Close on the card, labelled actions,
 trip-wide count, reduced stop card, pull to close); the shared dismiss gesture
 on recent comments, the guide and the photo card; recent-comment thumbnails;
@@ -86,6 +86,20 @@ The owner then confirmed on 11 November that a password sign-in works on the
 live site (“Yes, it works”). Remembered restore on a later visit was not
 separately checked after this deploy.
 
+**Owner picks from pictures (11 November 2026).** Shown three A/B pairs of
+real phone screenshots, the owner chose readable capture dates (“1B”), the
+photo row on the stop card (“2B is nice!”) and the map kept in stop details
+(“i still want the map in there if it's a full page thing”). Implemented in
+shared code: `JOURNEY_ATLAS_UTILS.displayTakenAt` for every visitor-facing
+capture time, `#mobile-day-strip` rendered by `renderStory`, and the stop
+details order story → route key and map → photos. Checked locally with real
+photos at 375 × 812: Heading East stop card (tiles load, a tile opens its
+photo at the right position, Back returns to the map, “+20” opens the 24-item
+album), full screen showing “29 Jul 2026 · 06:17”, stop details with the map
+loaded; Switzerland–Italy days (three tiles plus “+N”, no row on the
+whole-trip card); Florence–Genoa (no row without photos). No console errors
+from the pages. Release receipt below.
+
 **Not checked.** A physical phone and Safari, including how the pulls feel
 under a finger. Recent-comment thumbnails with real comments (the local server
 has no comment service; covered by the row test). Dragging the guide and
@@ -94,9 +108,6 @@ A fresh draft in a browser (shared tests only).
 
 **Still open.**
 
-- **Raw capture timestamps** stay in the viewer because O20 records “raw
-  timestamps are fine”. The review's item 6 also proposed a readable format and
-  the owner answered “good call” to the item as a whole; ask before changing.
 - **Photo location's first open** showed a world view for a few seconds in a
   background browser pane. Not reproduced on a phone; related to the fullscreen
   location map work already listed below.

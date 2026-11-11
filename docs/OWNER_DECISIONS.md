@@ -65,20 +65,33 @@ fresh draft, and extends O03/O08/O17/O20.
   one matching outlined style; a settled arrival is one Replay icon beside the
   title. The whole-trip card shows “Choose a stop” only when it has no Photos
   or Places action (refines O20's kept card action). Reading “bigger” as the
-  Photos button and the photo thumbnails on the card and stop details is the
-  agent's interpretation.
+  Photos button and the photo thumbnails on the card and stop details was the
+  agent's interpretation. Shown both readings in pictures, the owner chose the
+  photo row (“2B is nice!”, 11 November 2026): the card also shows the event's
+  first photos, up to four, above the buttons. A tile opens that photo full
+  screen; when there are more, the last tile reads “+N” and opens the album.
+  The row is absent on the whole-trip card, on an event with no photos, while
+  travelling and while a photo is selected. The larger Photos button stays.
 - **Viewer jumps name their destination** (“good call”): the city for stays,
   “Day N” for daily trips, with **Stop/Day N · title** between them. Their
-  accessible names keep “Previous/Next city · title”. Raw capture timestamps
-  stay as they are; O20's “raw timestamps are fine” still stands.
+  accessible names keep “Previous/Next city · title”.
+- **Capture dates read as dates.** Shown “2026-10-01 · 20:44” beside
+  “1 Oct 2026 · 20:44”, the owner chose the second (“1B”, 11 November 2026).
+  Wherever a visitor sees a capture time (full screen, the photo card's
+  details, a comment's photo title) a stored `YYYY-MM-DD · HH:MM` stamp is
+  displayed as `D Mon YYYY · HH:MM`; any other wording is shown as written, and
+  stored data and Studio are unchanged. This supersedes O20's “raw timestamps
+  are fine”.
 - **Stop rows** (“good call”). A leg's line sample sits beside its transport
   word; photo counts stay on one line; a TBD event says TBD once (the badge),
   so its date line drops a leading “TBD ·”; a filter group with no events is
   hidden. Filter names are unchanged.
-- **Phone stop details, on trial** (“let's try it”). Title, the traveler's
-  words and Travel details come first, then the photo row with Share as an
-  icon. The second map is retired on phones; its markup stays dormant so the
-  trial is easy to reverse. The route key appears with open Travel details.
+- **Phone stop details.** Title, the traveler's words and Travel details come
+  first (“let's try it”), then the route key and the stop's map, then the photo
+  row with Share as an icon. The trial first dropped the map; shown both in
+  pictures, the owner kept the story-first order and asked for the map back:
+  “i still want the map in there if it's a full page thing” (11 November
+  2026). A full-page stop view keeps its map.
 - **Selected-photo card** (“sounds good … it looks a bit cluttered. pls help
   with the clutter”). The photo is larger and is the way to full screen; Close
   is a 44 px control on the card, not on the photograph; Comments, Share and
@@ -109,8 +122,10 @@ the wordmark opens the catalog; locked and unlocked first paints show no lock
 flash; the locked grid banner unlocks; stop-card buttons stay on one line and
 wrap as whole buttons; the photo card closes by Close, Back, Escape and a
 downward pull, while a sideways drag still browses and a tap still opens full
-screen; recent comments and the guide close from their headings; viewer jumps
-truncate long names; the album badge stays on its tile while scrolling; the
+screen; recent comments and the guide close from their headings; the stop
+card's photo tiles open their photo and “+N” opens the album, with Back
+returning to the map; stop details show story, map, then photos; a stored
+ISO capture stamp never appears raw; viewer jumps truncate long names; the album badge stays on its tile while scrolling; the
 card and full screen show the same total. Status and what was not checked are
 in [WIP](../WIP.md#findable-labelled-controls--11-november-2026).
 
@@ -153,11 +168,12 @@ real journeys, demos and fresh drafts.
   header instead of leading with “Photo unavailable”. Locked trip photos keep
   their existing state. The Photos tab still reports unavailable images.
 
-**Declined or left as they are (do not reopen without the owner):** raw capture
-timestamps in the viewer (“raw timestamps are fine”); commenters losing
+**Declined or left as they are (do not reopen without the owner):** commenters losing
 edit/delete on their own comments when the 30-day remembered cookie lapses
 (“30 day comment loss is fine i think”); the roughly four-second arrival
-playback on stop changes (O09). The map’s **Filter days/stops** menu stays
+playback on stop changes (O09). Raw capture timestamps were also left alone
+here (“raw timestamps are fine”) until the owner chose readable dates on
+11 November ([O21](#findable-labelled-controls--11-november-2026)). The map’s **Filter days/stops** menu stays
 alongside the sidebar toggles on desktop because the
 [TBD contract](../JOURNEY_WORKFLOW.md) asks for both, and the phone overview
 keeps its card action because it is the only action on a trip with no photos
@@ -797,6 +813,7 @@ not satisfy this continuity requirement. See [the photo workflow](../PHOTO_WORKF
 | Separate daily lead-photo selection | Album order determines first photo; journey cover remains independent | 9–12 September; `6bc0561`, `f6790e4` |
 | Hide-from-atlas and restore-all ambiguity | Show non-trashed photos; preserve deletions | Owner clarification 14 September; `06f5d63` |
 | Journey-wide actions repeated at the end of the phone stop picker; About this atlas; “View photos” as the header access label | Picker ends with Places, Unlock (locked) and How to use this atlas; the wordmark is home; the header says Unlock photos | Owner review answers, 11 November 2026; O21 |
+| Raw capture timestamps in the viewer (“raw timestamps are fine”, 10 November); phone stop details without a map (11 November trial) | Capture times display as “1 Oct 2026 · 20:44”; phone stop details keep the stop's map after the story | Owner picks from side-by-side pictures, 11 November 2026; O21 |
 | Removed day markers, then rotated map balloons | Upright signposts and quiet repeat dots; overview endpoints restored later | 10–11 September and 8 October; `249fcac`, `d8b5def` |
 | Pulsing next-day button and orange focus rings | No continuation halo; orange selection border, slim slate keyboard focus | 10 September; `c07d323` |
 | Public Release photo hosting, two-size derivatives | Private R2; responsive WebP sizes plus optional native AVIF and embedded blur | 9 September onward; [current photo workflow](../PHOTO_WORKFLOW.md#generated-image-sizes-and-private-publishing) |

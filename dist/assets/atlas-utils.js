@@ -38,6 +38,16 @@
     const focal = photo && photo.id === journey.coverPhoto?.photoId ? (journey.coverPhoto.focal || [50,50]) : [50, 50];
     return { photo, position: `${focal[0]}% ${focal[1]}%` };
   }
+  // Capture times are stored as the camera recorded them ("2026-10-01 · 20:44").
+  // Visitors read "1 Oct 2026 · 20:44"; any other wording is shown as written.
+  function displayTakenAt(value) {
+    const text = String(value ?? '').trim();
+    const match = /^(\d{4})-(\d{2})-(\d{2})(?:(?:\s*·\s*|\s+|T)(\d{2}:\d{2})(?::\d{2})?)?$/.exec(text);
+    if (!match) return text;
+    const month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][Number(match[2]) - 1], day = Number(match[3]);
+    if (!month || day < 1 || day > 31) return text;
+    return `${day} ${month} ${match[1]}${match[4] ? ` · ${match[4]}` : ''}`;
+  }
   function photoCaption(photo, day) {
     const caption = photo.caption || "";
     const time = photo.takenAt?.match(/(\d{2}:\d{2})$/)?.[1];
@@ -484,5 +494,5 @@
 
   // Restore the page's routes once, before the map, arrival and Studio code read them.
   decodeRoutes(root.JOURNEY_ATLAS_ROUTE_GEOMETRY);
-  root.JOURNEY_ATLAS_UTILS = { decodeRoute, decodeRoutes, journeyPresentation, validCityBoundary, cityFrameCoordinates, journeyToday, planningCategory, planningCounts, projectPlanning, eventWord, eventCopy, applyEventCopy, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
+  root.JOURNEY_ATLAS_UTILS = { decodeRoute, decodeRoutes, journeyPresentation, validCityBoundary, cityFrameCoordinates, journeyToday, planningCategory, planningCounts, projectPlanning, eventWord, eventCopy, applyEventCopy, displayTakenAt, eventContainsDate, eventForDate, eventDateLabel, createImageReveals, prepareImageReveals, resetImageReveal, addMapAttribution, photoPreloadPlan, dayPreloadPlan, resolvePhoto, visiblePhotos, resolveCover, photoCaption, travelDuration, proposalGate, locatedPhoto, validPhotoFrame, frameContainsPhoto, normalizePhotoFrame, photoMapFrame, photoMapCamera, photoInMapFrame, photoMapTransition };
 })(typeof globalThis === "undefined" ? this : globalThis);

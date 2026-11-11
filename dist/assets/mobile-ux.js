@@ -587,7 +587,7 @@
         button.setAttribute('aria-label', label); button.title = label;
       }
       const photo = data.photos[data.index];
-      $('#mobile-photo-time').textContent = photo?.mediaType === 'video' ? photo.title || photo.caption : photo?.takenAt || data.day.date;
+      $('#mobile-photo-time').textContent = photo?.mediaType === 'video' ? photo.title || photo.caption : (root.JOURNEY_ATLAS_UTILS?.displayTakenAt?.(photo?.takenAt) ?? photo?.takenAt) || data.day.date;
       $('#mobile-photo-prev').disabled = data.index <= 0;
       $('#mobile-photo-next').disabled = data.index >= data.photos.length - 1;
       $('#mobile-photo-location').disabled = !photo;

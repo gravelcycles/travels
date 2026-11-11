@@ -306,7 +306,7 @@ test('reference, demo and fresh-draft photo cards keep visible copy separate fro
     assert.equal(f.node('[data-bubble-caption]').textContent, '');
     assert.equal(f.node('[data-bubble-caption]').hidden, true);
     assert.equal(f.node('[data-bubble-description]').hidden, true);
-    assert.equal(f.node('[data-bubble-title]').textContent, photo.takenAt);
+    assert.equal(f.node('[data-bubble-title]').textContent, '28 Feb 2028 · 12:34', 'Capture times read as dates, not raw stamps');
     assert.equal(f.node('[data-bubble-place]').hidden, true, 'Identical coordinates do not produce an About place button');
     assert.equal(f.node('img').alt, photo.alt, 'Alt text remains available to screen readers');
     point.photoIds = [photo.id]; f.controller.refresh();
@@ -314,7 +314,7 @@ test('reference, demo and fresh-draft photo cards keep visible copy separate fro
     assert.equal(f.node('[data-bubble-place]').hidden, false, 'An owner-saved link remains available');
     assert.equal(f.node('[data-bubble-place]').textContent, `About ${point.name} →`);
     point.photoIds = []; f.controller.refresh();
-    assert.equal(f.node('[data-bubble-title]').textContent, photo.takenAt);
+    assert.equal(f.node('[data-bubble-title]').textContent, '28 Feb 2028 · 12:34', 'Capture times read as dates, not raw stamps');
     assert.equal(f.node('[data-bubble-place]').hidden, true, 'Removing a link clears the association');
     Object.assign(photo, { caption: 'Our lunch together', description: 'A note from the traveler', locationLabel: 'My chosen place label' });
     f.controller.refresh();
@@ -1915,8 +1915,18 @@ test('findability pass: every atlas inherits the labelled, reachable controls (o
   // A video badge belongs to its own album tile.
   assert.match(styles, /\.album-day \{ position:relative;/); assert.match(styles, /\.album-day \.media-video-badge \{ top:8px; bottom:auto; \}/);
   assert.match(styles, /\.planning-filter label\[hidden\] \{ display:none; \}/);
-  // Phone stop details lead with the story and carry no second map.
-  assert.match(mobile, /\.story-panel > \.sidebar-day-details \{ order:1; \}/); assert.match(mobile, /\.story-panel > \.mobile-story-map \{ display:none; \}/);
+  // Phone stop details lead with the story, then keep the stop's map and photos.
+  assert.match(mobile, /\.story-panel > \.sidebar-day-details \{ order:1; \}/); assert.match(mobile, /\.story-panel > \.mobile-story-map \{ order:3; \}/);
+  assert.doesNotMatch(mobile, /\.story-panel > \.mobile-story-map \{ display:none; \}/, 'The full-page stop details keep their map');
+  assert.match(mobile, /\.story-panel > \.story-album-entry \{ order:4;/);
+  // The phone stop card shows the event's first photos above its buttons.
+  for (const page of pages) assert.match(page, /<nav id="mobile-day-strip" class="mobile-day-strip"[^>]*hidden><\/nav>\s*<div><button id="mobile-day-photos"/);
+  assert.match(appFunction('renderStory'), /data-open-day-album/);
+  // Capture times read as dates wherever a visitor sees them.
+  const { displayTakenAt } = globalThis.JOURNEY_ATLAS_UTILS;
+  assert.equal(displayTakenAt('2026-10-01 · 20:44'), '1 Oct 2026 · 20:44'); assert.equal(displayTakenAt('2026-08-16 · 17:37:19'), '16 Aug 2026 · 17:37');
+  assert.equal(displayTakenAt('2028-02-28 12:01'), '28 Feb 2028 · 12:01'); assert.equal(displayTakenAt('2026-07-29'), '29 Jul 2026');
+  for (const written of ['14 Aug · 12:26', 'Sunday · 09:00', '', '2026-13-40 · 10:00']) assert.equal(displayTakenAt(written), written, 'Other wording is shown as written');
   // The whole-trip card repeats "Choose a stop" only when it has no other action.
   assert.match(mobile, /\[data-map-scope="journey"\] \.mobile-day-summary:has\(#mobile-day-photos:not\(:disabled\),#mobile-day-places:not\(\[hidden\]\)\) #mobile-day-details \{ display:none; \}/);
 });

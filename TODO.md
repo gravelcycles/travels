@@ -34,8 +34,8 @@ activation work.
       [delivery](WIP.md#durable-places-pictures--11-november-2026).
 
 - [ ] Findability pass follow-ups (11 November 2026, [WIP](WIP.md#findable-labelled-controls--11-november-2026)):
-  check the new pulls and the phone stop card on a physical phone;
-  decide with the owner whether phone stop details keep the trial layout.
+  check the new pulls, the stop card's photo row and stop details on a
+  physical phone.
 - [ ] **Physical iPhone loaded-photo presentation.** The owner's iPhone 12 Pro
       traces confirm 115–192 ms incoming-image paints, including without
       screenshots; the previous handoff correction did not fix the reported

@@ -21,7 +21,7 @@
   function photoTitle(photo, day = {}) {
     // Accessibility descriptions are not captions. Keep owner-written text and
     // the same capture-time fallback as the presenting viewer.
-    return root.JOURNEY_ATLAS_UTILS?.photoCaption?.(photo || {}, day) || photo?.caption || photo?.takenAt || 'Photograph';
+    return root.JOURNEY_ATLAS_UTILS?.photoCaption?.(photo || {}, day) || photo?.caption || (root.JOURNEY_ATLAS_UTILS?.displayTakenAt?.(photo?.takenAt) ?? photo?.takenAt) || 'Photograph';
   }
   function photoCollection(value, fallback = []) {
     return Array.isArray(value) ? { photos: value, label: '' } : value && Array.isArray(value.photos) ? { photos: value.photos, label: value.label || '' } : { photos: fallback, label: '' };

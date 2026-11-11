@@ -1299,6 +1299,8 @@
       // introduction (when written) rather than leaving the journal empty.
       detailPanel.innerHTML = `${journey.subtitle?.trim() ? `<p class="day-story journey-overview-intro">${escapeHtml(journey.subtitle.trim())}</p>` : ''}<p class="day-story journey-overview-hint">Choose a ${eventWord()} to explore its route and photos.</p>`;
       photoStrip.innerHTML = '';
+      const overviewRow = $('#mobile-day-strip');
+      if (overviewRow) { overviewRow.innerHTML = ''; overviewRow.hidden = true; }
       $('.photo-section').hidden = true;
       $('#story-view-photos').hidden = true;
       $('#share-lead-photo').hidden = true;
@@ -1355,6 +1357,20 @@
         `).join("")
       : "";
     $(".photo-section").hidden = !photos.length;
+    // Phone stop card: the event's first photos, with the last tile leading to
+    // the whole album. Tiles open that photo; "+N" opens the grid.
+    const mobileRow = $('#mobile-day-strip');
+    if (mobileRow) {
+      const shown = photos.slice(0, 4), more = photos.length - shown.length;
+      mobileRow.hidden = !shown.length;
+      mobileRow.innerHTML = shown.map((photo, index) => {
+        const image = photoImageMarkup(photo, { alt: "", sizes: "25vw", targetWidth: 480 });
+        return more > 0 && index === shown.length - 1
+          ? `<button type="button" data-open-day-album aria-label="See all ${escapeHtml(mediaUtils.label(photos))}">${image}<span aria-hidden="true">+${more}</span></button>`
+          : `<button type="button" data-open-photo="${escapeHtml(photo.id)}" aria-label="Open ${mediaUtils.isVideo(photo) ? 'video' : 'photo'} ${index + 1} of ${photos.length} full screen">${image}</button>`;
+      }).join("");
+      prepareProgressiveImages(mobileRow);
+    }
     prepareProgressiveImages(storyMedia);
     prepareProgressiveImages(photoStrip);
     syncInspectionClasses();
@@ -1542,9 +1558,6 @@
 
   function renderStoryMap() {
     if (!window.matchMedia('(max-width: 900px)').matches || $('.atlas-shell').dataset.mobileTab !== 'story') return;
-    // Phone stop details lead with the story; the preview map is retired there
-    // (hidden in mobile.css), so never build a map nobody can see.
-    if (!$('.mobile-story-map')?.offsetWidth) return;
     if (!storyMap) {
       try { storyMap = new maplibregl.Map({container:'story-map-preview',style:OPENFREEMAP_STYLE,center:[0,20],zoom:1.5,minZoom:1,interactive:false,attributionControl:false}); }
       catch (_error) { storyFeedback?.destroy(); storyFeedback=window.JOURNEY_ATLAS_MAP_FEEDBACK.create('story-map-preview',retryStoryMap);storyFeedback.fail();return; }
@@ -1751,7 +1764,7 @@
         }
       }
       $("#modal-caption").textContent = window.JOURNEY_ATLAS_UTILS.photoCaption(photo, day);
-      $("#modal-time").textContent = photo.takenAt || day.date;
+      $("#modal-time").textContent = (window.JOURNEY_ATLAS_UTILS.displayTakenAt?.(photo.takenAt) ?? photo.takenAt) || day.date;
       $("#modal-location").textContent = photo.locationLabel ? `⌖ ${photo.locationLabel}` : "";
       $("#mobile-photo-caption").textContent = photo.caption || "";
       $("#modal-description").textContent = photo.description || "";
@@ -2527,6 +2540,10 @@
   });
 
   [storyMedia, photoStrip].forEach(container => container.addEventListener('click', handlePhotoEntry));
+  $('#mobile-day-strip')?.addEventListener('click', event => {
+    if (event.target.closest('[data-open-day-album]')) $('#mobile-day-photos').click();
+    else handlePhotoEntry(event);
+  });
 
   $("#fit-route").addEventListener("click", fitRoute);
   $("#focus-day").addEventListener("click", () => { cancelArrival(); focusDay(activeDay()); renderArrivalChapter('explore'); });
