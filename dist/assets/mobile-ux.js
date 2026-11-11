@@ -159,7 +159,9 @@
         $('#mobile-day-meta').textContent=`${api.days().length} ${eventWord('plural')} · Choose a ${eventWord()} to explore its route`;
         $('#mobile-day-photos').textContent=info.albumHasVideos?'Photos & videos':'All photos';$('#mobile-day-photos').disabled=info.albumCount === 0;
       }
-      $('#mobile-day-details').textContent=api.scope()==='journey'?`Choose a ${eventWord()}`:`${eventWord('title')} details`;
+      // The whole-trip card keeps this as its fallback action; a selected stop shows a short label.
+      $('#mobile-day-details').textContent=api.scope()==='journey'?`Choose a ${eventWord()}`:'Details';
+      $('#mobile-day-details').setAttribute('aria-label',api.scope()==='journey'?`Choose a ${eventWord()}`:`${eventWord('title')} details`);
       $('#mobile-previous-day').disabled = index <= 0;
       $('#mobile-next-day').disabled = index >= api.days().length - 1;
       $('#mobile-day-picker .button-label').textContent = focused ? `${eventWord('title')} ${day.number} · ${day.title || day.date || ''}` : `All ${eventWord('plural')}`;
@@ -179,7 +181,6 @@
       $('#mobile-day-picker').setAttribute('aria-label', api.scope() === 'journey'
         ? tab === 'route' ? 'Return to whole journey map' : `Choose a ${eventWord()}`
         : `${tab === 'route' ? 'Return to' : `Choose a ${eventWord()}, current`} ${eventWord('title')} ${api.day().number}`);
-      $('[data-journey-action=unlock]').hidden = Boolean(window.JOURNEY_ATLAS_AUTH?.unlocked);
       if (enabled() && tab === 'story') requestAnimationFrame(api.preview);
     }
     function mediaFit(photo = current.photos[current.index], node = img, readDimensions = false) {
@@ -575,11 +576,13 @@
       const eventNav = $('.mobile-photo-event-nav');
       eventNav.hidden = Boolean(data.scoped || !previousEvent && !nextEvent);
       eventNav.setAttribute('aria-label', `Browse photo ${eventName === 'City' ? 'cities' : 'days'}`);
-      $('#mobile-photo-event-label').textContent = `${eventName} ${data.day.number} · ${data.day.title}`;
+      // The map, picker and location sheet say Stop/Day; the viewer uses the same word.
+      $('#mobile-photo-event-label').textContent = `${eventWord('title')} ${data.day.number} · ${data.day.title}`;
       for (const [direction, target] of [['previous', previousEvent], ['next', nextEvent]]) {
         const button = $(`#mobile-photo-${direction}-event`);
         button.disabled = !target;
-        $(`#mobile-photo-${direction}-event .button-label`).textContent = eventName;
+        // Each jump names where it goes: the city for stays, the numbered day otherwise.
+        $(`#mobile-photo-${direction}-event .button-label`).textContent = !target ? eventWord('title') : eventName === 'City' && target.day.title ? target.day.title : `${eventWord('title')} ${target.day.number}`;
         const label = `${direction === 'previous' ? 'Previous' : 'Next'} ${eventName.toLowerCase()}${target ? ` · ${target.day.title}` : ''}`;
         button.setAttribute('aria-label', label); button.title = label;
       }
@@ -905,9 +908,10 @@
     $('#mobile-story-expand').onclick=()=>navigate('map');
     $('#mobile-journey-actions').onclick=event=>{
       const action=event.target.closest('[data-journey-action]')?.dataset.journeyAction;if(!action)return;
-      if(action==='overview')overview();
-      else if(action==='photos')api.album();
-      else if(action==='unlock')window.JOURNEY_ATLAS_AUTH?.showPrompt();
+      // Whole-trip map, the album and the catalog have their own controls
+      // (header Back, the Photos button, the home wordmark); this list holds
+      // only what has no other home. Photo access hides Unlock when not needed.
+      if(action==='unlock')window.JOURNEY_ATLAS_AUTH?.showPrompt();
       else if(action==='about')presentOverlay('notes-dialog');
     };
     media.addEventListener('change',()=>{

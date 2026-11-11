@@ -13,13 +13,79 @@ Implemented: 31 stays and 50 routes, preserving all 47 retained lines exactly.
 New reconstructed distances are 135.9 km rail to Zakopane, 72.6 km FlixBus to
 Poprad and 341.0 km rail to Bratislava. Operator/OSM sources, checked terminal
 gaps and route diagnostics are in the manifest. No departure times were added.
-All 951 tests and the build pass; strict routing preserves all 50 with no
-warnings. Desktop and 390 px browser checks confirm dates/order, the empty
-Zakopane album, and Bratislava's two bus/train travel rows. Phone checks are
-responsive browser coverage, not a physical-device certification.
-Next: integrate new remote main `fe13781` (the concurrent controls release),
-rerun integrated tests/build and affected browser checks, publish Pages and
-verify fresh public HTML/data. Primary UI edits remain preserved.
+Integrated remote main `412551a`, preserving its controls release and current
+O21 guidance. All **955 tests**, the production build and diff checks pass;
+strict routing preserves all 50 with no warnings. Desktop and 390 px browser
+checks after integration confirm the corrected dates/order, Zakopane's deliberate
+no-photo state and Bratislava's two bus/train travel rows and full route map.
+No browser errors were captured. Phone checks are responsive browser coverage,
+not a physical-device certification. Photo/comment eligibility and Worker
+indexes are unchanged; no media upload or Worker deployment is needed.
+Next: publish the checked commit to Pages, verify its successful deployment
+and fresh public HTML/data, then synchronize scoped primary Studio sources.
+Primary UI work and the unrelated access-worker follow-up remain preserved.
+
+## Findable, labelled controls — 11 November 2026
+
+Authorized by the owner item by item after a findability review; direction,
+quotes and acceptance are [O21](docs/OWNER_DECISIONS.md#findable-labelled-controls--11-november-2026).
+Built on published `ba1c782`, on top of the 10 November load and reach release.
+
+**Delivered in shared code.** Picker closing list (Places, Unlock while locked,
+How to use this atlas) and the wordmark home link; the how-to guide; Unlock
+photos / Zoom to {place} / Show whole trip / Photos · N labels; locked-grid
+banner and Photos lock glyph; phone stop card order, sizes and Replay icon;
+named viewer jumps; stop-row line samples, single TBD and hidden empty filter
+group; phone stop details order without the second map (trial; markup kept);
+selected-photo card (larger photo, Close on the card, labelled actions,
+trip-wide count, reduced stop card, pull to close); the shared dismiss gesture
+on recent comments, the guide and the photo card; recent-comment thumbnails;
+album video badge anchoring; empty-conversation and disclosure-row fixes.
+
+**Checked.** All tests and the production build pass, including new coverage
+for the trip-wide count, the shared gesture's options, recent-comment rows and
+a template/CSS contract across the reference, the demo and a fresh draft.
+In a desktop browser against a local server with local photo derivatives
+(`?photoSource=local`): Heading East at 375 × 812 (stop card, photo card open
+and pulled closed, album grid, full screen with named jumps, stop picker, stop
+details with Travel details open, guide), at 320 × 640 (whole-trip card) and
+at 1440 × 900 (toolbar, arrival bar, sidebar card, all-photos badge on its own
+tile); the locked view with the remembered note set to `0` (grid banner, lock
+glyph); Switzerland–Italy full screen (“Day 1 / Day 3” jumps); Florence–Genoa
+(no lock state or Unlock); the demo (recent comments heading). No console
+errors.
+
+**Published** as `fe13781` through successful
+[Pages run 42980737824](https://github.com/gravelcycles/travels/actions/runs/42980737824).
+Five fresh public files (the Heading East page, `app.js`, `mobile.css`,
+`styles.css`, `photo-bubbles.js`) match the release bytes. A fresh public
+Heading East load at 375 × 812 as a guest shows the wordmark home link, the
+stop card in its new order with the lock on Photos, and the usual prompt, with
+no console errors. The public unlocked view was not rechecked: the review
+browser no longer held a remembered sign-in.
+
+**Not checked.** A physical phone and Safari, including how the pulls feel
+under a finger. Recent-comment thumbnails with real comments (the local server
+has no comment service; covered by the row test). Dragging the guide and
+recent comments closed in a browser (covered by the shared-gesture tests).
+A fresh draft in a browser (shared tests only).
+
+**Still open.**
+
+- **Login page button colours are not live.** The Worker source is changed and
+  tested, but `npm run auth:deploy` has not run: the
+  [access handoff](PHOTO_AUTH_HANDOFF.md#agent-operated-maintenance) requires
+  comparing local credential IDs and salts with the live login page first, and
+  a wrong deploy could lock visitors out. Next action: do that comparison, run
+  `npm run auth:runtime-test`, deploy, then confirm a sign-in with the owner.
+- **Raw capture timestamps** stay in the viewer because O20 records “raw
+  timestamps are fine”. The review's item 6 also proposed a readable format and
+  the owner answered “good call” to the item as a whole; ask before changing.
+- **Photo location's first open** showed a world view for a few seconds in a
+  background browser pane. Not reproduced on a phone; related to the fullscreen
+  location map work already listed below.
+- One Heading East photo filed under Berlin (1–5 Oct) is stamped 29 July; a
+  Studio check of its date or album is the owner's call.
 
 ## Load, interaction and flow fixes — 10 November 2026
 

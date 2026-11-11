@@ -62,6 +62,12 @@ care, while retaining the atlas's personal character. This means:
   when moving between views. A background update must never replace a draft.
 - Give each screen a clear primary action; reveal secondary actions where they
   are needed. Keep implementation and prototype explanations out of the story.
+- Name a control for what it does and put it where the need arises. A journey
+  action lives in one obvious place, not also at the end of a long list; a
+  locked state says so beside the thing it locks ([O21](docs/OWNER_DECISIONS.md#findable-labelled-controls--11-november-2026)).
+- A sheet that covers part of the screen closes with a downward pull on its
+  heading (or on the card itself), as well as Close, Back and Escape. Use the
+  shared gesture for new ones.
 - Make Back go one level up, Close dismiss the current surface, and Undo recover
   a recent removal according to the documented surface-specific flow. The phone
   photo control says Back and returns to its presenting screen, including the

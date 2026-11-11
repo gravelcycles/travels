@@ -26,14 +26,19 @@
   function photoCollection(value, fallback = []) {
     return Array.isArray(value) ? { photos: value, label: '' } : value && Array.isArray(value.photos) ? { photos: value.photos, label: value.label || '' } : { photos: fallback, label: '' };
   }
-  function bindDismissGesture(surface, heading, close) {
+  // Shared pull-down-to-close for sheets that cover part of the screen: the
+  // conversation, recent comments and the map photo card. `isOpen` lets a
+  // non-dialog surface opt in, `property` names the CSS offset it animates and
+  // `vertical` ignores drags that travel further sideways than down (for a
+  // surface whose content also swipes left and right).
+  function bindDismissGesture(surface, heading, close, { isOpen = () => surface.open, property = '--comments-drag-y', vertical = false } = {}) {
     let drag = null, suppressClick = false;
     function reset() {
       if (!drag && !surface.dataset.dragging) return;
       const previous = drag; drag = null;
       suppressClick ||= Boolean(previous?.moved);
       delete surface.dataset.dragging;
-      surface.style.removeProperty('--comments-drag-y');
+      surface.style.removeProperty(property);
       if (previous?.capture.hasPointerCapture?.(previous.id)) previous.capture.releasePointerCapture(previous.id);
     }
     surface.addEventListener('pointerdown', event => {
@@ -43,7 +48,7 @@
     }, true);
     heading.addEventListener('pointerdown', event => {
       if (drag && drag.id !== event.pointerId) { reset(); return; }
-      if (!surface.open || event.isPrimary === false || event.button !== 0) return;
+      if (!isOpen() || event.isPrimary === false || event.button !== 0) return;
       suppressClick = false;
       // Button capture preserves its native tap target while drag events still
       // bubble to the header, even if an initial sideways wobble leaves it.
@@ -58,12 +63,12 @@
       if (!drag.active) {
         // Sideways thumb wobble is harmless on a header; it must not lock out
         // the downward drag the traveler makes next.
-        if (y < 8) return;
+        if (y < 8 || vertical && y <= Math.abs(event.clientX - drag.x)) return;
         drag.active = true; surface.dataset.dragging = 'true';
       }
       event.preventDefault();
       drag.distance = Math.max(0, y);
-      surface.style.setProperty('--comments-drag-y', `${drag.distance}px`);
+      surface.style.setProperty(property, `${drag.distance}px`);
     });
     heading.addEventListener('pointerup', event => {
       if (!drag || event.pointerId !== drag.id) return;
@@ -269,7 +274,7 @@
       let changed = false;
       if (thread !== renderedThread) { resetThread(); renderedThread = thread; changed = true; }
       if (!comments.length) {
-        const markup = live && !store?.hasLoaded(currentPhoto?.id) ? `<div class="comments-empty"><span class="comments-empty-symbol" aria-hidden="true">${icon('comment')}</span><h3>${loadState === 'error' ? 'Comments unavailable' : 'Loading comments…'}</h3><p>${loadState === 'error' ? 'Try again when your connection is ready.' : 'You can start writing while we fetch the conversation.'}</p></div>` : `<div class="comments-empty"><span class="comments-empty-symbol" aria-hidden="true">${icon('comment')}</span><h3>No comments yet</h3><p>Share a memory or start the conversation.</p><button id="write-first-comment" type="button">Write the first comment ${icon('arrow')}</button></div>`;
+        const markup = live && !store?.hasLoaded(currentPhoto?.id) ? `<div class="comments-empty"><span class="comments-empty-symbol" aria-hidden="true">${icon('comment')}</span><h3>${loadState === 'error' ? 'Comments unavailable' : 'Loading comments…'}</h3><p>${loadState === 'error' ? 'Try again when your connection is ready.' : 'You can start writing while we fetch the conversation.'}</p></div>` : `<div class="comments-empty"><span class="comments-empty-symbol" aria-hidden="true">${icon('comment')}</span><h3>No comments yet</h3><p>Share a memory or start the conversation.</p></div>`;
         if (emptyMarkup !== markup || renderedRows.size) {
           list.innerHTML = markup; emptyMarkup = markup; renderedRows.clear(); changed = true;
         }

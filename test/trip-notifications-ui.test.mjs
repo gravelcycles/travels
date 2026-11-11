@@ -71,7 +71,7 @@ test('demo notification adapter covers the whole eligible trip and preserves loc
 });
 
 test('notification navigation survives native history microtask checkpoints between listeners', async () => {
-  const nodes = new Map(), tasks = []; let selected = null, commentsOpen = false;
+  const nodes = new Map(), tasks = []; let selected = null, commentsOpen = false, prepared = null;
   const row = { id: 'latest', photoId: 'p', displayName: 'Alex', body: 'Newest comment', createdAt: 10 };
   const node = selector => {
     if (!nodes.has(selector)) nodes.set(selector, {
@@ -102,8 +102,12 @@ test('notification navigation survives native history microtask checkpoints betw
     }
   };
   vm.runInNewContext(fs.readFileSync(new URL('../dist/assets/trip-notifications.js', import.meta.url), 'utf8'), { window, document });
-  const controller = window.JOURNEY_ATLAS_TRIP_NOTIFICATIONS.create({ live: true, unlocked: () => true, store: () => store, journey: () => ({ id: 'trip', days: [], photos: [{ id: 'p' }] }), openComment(comment) { selected = comment.photoId; commentsOpen = true; } });
+  const controller = window.JOURNEY_ATLAS_TRIP_NOTIFICATIONS.create({ live: true, unlocked: () => true, store: () => store, journey: () => ({ id: 'trip', days: [{ id: 'd1', title: 'Harbor', date: '1 Sept' }], photos: [{ id: 'p', dayId: 'd1' }] }), photoThumbnail: photo => `<img data-thumbnail="${photo.id}">`, prepareImages(container) { prepared = container; }, openComment(comment) { selected = comment.photoId; commentsOpen = true; } });
   controller.update(); controller.open();
+  // Each row leads with its photo and names the stop, not a bare capture time.
+  assert.match(node('#trip-notifications-list').innerHTML, /class="has-thumbnail"><span class="notification-thumbnail" aria-hidden="true"><img data-thumbnail="p"><\/span>/);
+  assert.match(node('#trip-notifications-list').innerHTML, /<span class="notification-photo">Harbor · 1 Sept</);
+  assert.equal(prepared, node('#trip-notifications-list'), 'Thumbnails load through the shared image pipeline');
   node('#trip-notifications-list').emit('click', { target: { closest: () => ({ dataset: { openComment: 'latest' } }) } });
   assert.equal(node('#trip-notifications-dialog').open, false);
   await Promise.resolve();

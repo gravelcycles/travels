@@ -243,6 +243,26 @@ demo and an independently populated city draft at four phone/desktop sizes.
 [TODO](../TODO.md) record current-main integration, post-integration checks
 and public delivery. Physical iPhone/Safari device testing is not claimed.
 
+## Shared control patterns — 11 November 2026
+
+- **Pull down to close.** `JOURNEY_ATLAS_PHOTO_COMMENTS.bindDismissGesture(surface,
+  handle, close, {isOpen, property, vertical})` is the one implementation for
+  part-screen sheets. Conversations use the defaults (`surface.open`,
+  `--comments-drag-y`). Recent comments, the guide and the phone photo card pass
+  `property: '--sheet-drag-y'`; the card also passes `isOpen` (it is not a
+  dialog) and `vertical: true` (its photo swipes sideways). A caller that is
+  not a dialog must call the returned `reset()` after closing. Style the
+  surface with `translate: 0 var(--sheet-drag-y, 0px)` and no transition while
+  `data-dragging=true`. The Places sheet (resize) and Photo location keep
+  their own tuned gestures.
+- **Locked-only controls.** `photo-auth.js` hides every `[data-locked-only]`
+  element unless access has resolved as locked on a page with private media,
+  and mirrors that state in `html[data-photos-locked]` for styling (the phone
+  Photos lock glyph). Add the attribute rather than reading auth state.
+- **Extracted functions.** Several tests evaluate single functions cut from
+  `app.js` (for example `renderDays`). Keep such a function self-contained;
+  a helper declared beside it is not visible to those tests.
+
 ## Rules for adding features
 
 1. Classify the request: trip content, a generally useful capability, or a true

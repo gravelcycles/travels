@@ -108,6 +108,9 @@ button { color: inherit; }
 .day-copy small { color: var(--muted); font-size: .75rem; font-weight: 750; letter-spacing: 0.045em; text-transform: uppercase; }
 .day-copy strong { margin-top: 3px; font: 700 1rem Georgia, "Times New Roman", serif; }
 .day-copy em { margin-top: 3px; color: var(--ink-soft); font-size: 0.76rem; font-style: italic; }
+/* A leg's line sample sits inline, beside the transport word it explains. */
+.day-copy small .line-swatch { margin: 0 6px 1px 0; vertical-align: middle; }
+.day-copy small .day-mode { display: inline-block; white-space: nowrap; }
 .day-meta { min-width: 48px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; color: var(--muted); font-size: .75rem; white-space: nowrap; }
 
 .line-swatch { --swatch: var(--route); width: 32px; height: 9px; display: inline-block; flex: 0 0 auto; background-position: center; background-repeat: repeat-x; filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff); }
@@ -130,6 +133,8 @@ button { color: inherit; }
 .map-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; align-self: center; }
 .map-actions button { background: var(--ink); color: #fff; border: 0; min-height: 40px; padding: 0 12px; font-weight: 800; font-size: 0.78rem; box-shadow: 0 7px 18px rgba(20, 48, 53, 0.14); cursor: pointer; white-space: nowrap; }
 .map-actions button:hover { background: var(--route); }
+/* The zoom button names its place; a long name must not push the toolbar wide. */
+#focus-day { max-width: 16em; overflow: hidden; text-overflow: ellipsis; }
 .map-actions button:disabled { background: #879694; color: #e7ece9; box-shadow: none; cursor: not-allowed; }
 .map-actions span { display: inline-grid; place-items: center; min-width: 21px; height: 21px; background: var(--selected); color: #fff; margin-left: 5px; }
 #map { position: relative; min-height: 0; background: var(--map-water); }
@@ -229,6 +234,16 @@ button.leg-card { cursor: pointer; }
 .notes-dialog { border: 0; padding: 0; box-shadow: 0 30px 90px rgba(10, 27, 31, 0.35); color: var(--ink); width: min(760px, calc(100vw - 28px)); background: var(--paper); }
 .notes-dialog::backdrop { background: rgba(10, 27, 31, 0.62); backdrop-filter: blur(5px); }
 .dialog-card { padding: 28px; }
+.notes-trip { margin: 0 0 20px; }
+.notes-trip strong { font-size: 0.8rem; letter-spacing: 0.06em; }
+.notes-journey-note { margin: 8px 0 0; color: var(--ink-soft); line-height: 1.55; font-size: 0.88rem; }
+/* The guide comes first; a trip's own note follows it, and only when written. */
+.notes-trip:has(.notes-journey-note:empty) { display: none; }
+/* The guide closes with the same heading pull as the other sheets. */
+.notes-dialog { translate: 0 var(--sheet-drag-y, 0px); transition: translate .2s ease-out; }
+.notes-dialog[data-dragging=true] { transition: none; }
+.notes-dialog .dialog-top { touch-action: none; user-select: none; -webkit-user-select: none; }
+@media (prefers-reduced-motion: reduce) { .notes-dialog { transition: none; } }
 .dialog-top { display: flex; justify-content: space-between; gap: 24px; }
 .dialog-top h2 { margin: 7px 0 0; font: 700 clamp(1.8rem, 4vw, 2.8rem)/1 Georgia, "Times New Roman", serif; max-width: 570px; letter-spacing: -0.04em; }
 .dialog-top > button { border: 0; background: transparent; font-size: 2rem; align-self: flex-start; cursor: pointer; }
@@ -501,8 +516,10 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 .album-heading button { display:grid; place-items:center; flex:none; width:44px; height:44px; border:0; border-radius:50%; background:#1e2b2e; color:#f4f6f4; cursor:pointer; }
 .album-heading button:hover { background:#2b3b3e; }
 #album-days { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); align-items:start; gap:20px 8px; padding:8px 20px 24px; }
-.album-day { display:flex; flex-direction:column; min-width:0; text-align:left; background:transparent; color:inherit; border:0; border-radius:6px; padding:0 0 6px; overflow:hidden; cursor:pointer; }
+.album-day { position:relative; display:flex; flex-direction:column; min-width:0; text-align:left; background:transparent; color:inherit; border:0; border-radius:6px; padding:0 0 6px; overflow:hidden; cursor:pointer; }
 .album-day:hover { background:#182528; }
+/* The badge belongs to this tile's cover, not to the scrolling dialog. */
+.album-day .media-video-badge { top:8px; bottom:auto; }
 .album-day:focus-visible,.album-heading button:focus-visible { outline:2px solid #aebfc0; outline-offset:2px; }
 .album-day img,.album-text-scene { display:block; width:100%; height:auto; aspect-ratio:1; object-fit:cover; border-radius:4px; background:#142126; }
 .album-text-scene { display:grid; place-items:center; padding:16px; color:#aebdbd; font-size:14px; text-align:center; }
@@ -574,7 +591,7 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 .photo-location-previous { background:var(--muted); box-shadow:0 0 0 4px #71878a33; opacity:.7; }
 
 /* Shared private-photo access */
-.photo-auth-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.photo-auth-controls button,.photo-unlock-dialog button{font:inherit;border:1px solid #38675f;border-radius:8px;padding:10px 14px;background:#245b53;color:#fff;cursor:pointer}.photo-auth-controls [data-photo-status]{font-size:12px}.photo-unlock-dialog{box-sizing:border-box;width:min(440px,calc(100vw - 32px));border:1px solid #adc0b4;border-radius:16px;padding:28px;background:#f9f5eb;color:#253e3b;box-shadow:0 20px 80px #182b2844}.photo-unlock-dialog::backdrop{background:#172c285c}.photo-unlock-dialog h2{font:32px Georgia,serif;margin:0 0 14px}.photo-unlock-dialog p{line-height:1.6}.photo-unlock-dialog .photo-unlock-hint{font-size:13px;color:#52675f}.photo-unlock-dialog .photo-auth-secondary{background:transparent;color:#245b53;border-color:transparent;padding-left:0}.photo-unlock-dialog [data-auth-message]{font-size:14px}.photo-auth-controls [hidden]{display:none!important}
+.photo-auth-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.photo-auth-controls button,.photo-unlock-dialog button{font:inherit;border:1px solid #38675f;border-radius:8px;padding:10px 14px;background:#245b53;color:#fff;cursor:pointer}.photo-auth-controls button{display:inline-flex;align-items:center;gap:7px}.photo-auth-controls button[hidden]{display:none}.photo-auth-controls button>svg{width:16px;height:16px;flex:none}.photo-auth-controls [data-photo-status]{font-size:12px}.photo-unlock-dialog{box-sizing:border-box;width:min(440px,calc(100vw - 32px));border:1px solid #adc0b4;border-radius:16px;padding:28px;background:#f9f5eb;color:#253e3b;box-shadow:0 20px 80px #182b2844}.photo-unlock-dialog::backdrop{background:#172c285c}.photo-unlock-dialog h2{font:32px Georgia,serif;margin:0 0 14px}.photo-unlock-dialog p{line-height:1.6}.photo-unlock-dialog .photo-unlock-hint{font-size:13px;color:#52675f}.photo-unlock-dialog .photo-auth-secondary{background:transparent;color:#245b53;border-color:transparent;padding-left:0}.photo-unlock-dialog [data-auth-message]{font-size:14px}.photo-auth-controls [hidden]{display:none!important}
 
 .viewer-photo-feedback { position:absolute; z-index:2; left:50%; top:50%; transform:translate(-50%,-50%); max-width:90%; padding:12px 18px; background:#0a1b1fee; color:#fff; text-align:center; border-radius:6px; font-size:.85rem; }
 .viewer-photo-feedback[hidden], .viewer-photo-feedback button[hidden] { display:none; }
@@ -620,6 +637,7 @@ html[data-input-mode="pointer"] :focus:not(:is(input, textarea, [contenteditable
 .planning-filter[hidden],.map-planning-filter[hidden] { display:none; }
 .planning-filter label { display:flex; gap:4px; align-items:center; justify-content:center; min-width:0; min-height:44px; font-size:12px; white-space:nowrap; cursor:pointer; }
 .planning-filter input { accent-color:var(--ink); width:14px; height:14px; margin:0; flex-shrink:0; }
+.planning-filter label[hidden] { display:none; }
 .planning-filter label:has(input:disabled) { cursor:default; }
 .planning-filter label:has(input:disabled:not(:checked)) { opacity:.45; }
 .planning-filter small { color:var(--muted); font-size:12px; font-variant-numeric:tabular-nums; }

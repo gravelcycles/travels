@@ -1,5 +1,5 @@
 /* Mobile day and photo screens. The desktop atlas retains its three-panel layout. */
-.mobile-journey-actions,.mobile-story-legend,.mobile-header,.mobile-day-summary,.mobile-story-heading,.mobile-story-map,.mobile-photo-header,.photo-location-heading,.mobile-grid-heading,.mobile-photo-footer,.mobile-replay-header { display:none; }
+.mobile-journey-actions,.mobile-story-legend,.mobile-header,.mobile-day-summary,.mobile-story-heading,.mobile-story-map,.mobile-photo-header,.photo-location-heading,.mobile-grid-heading,.mobile-grid-locked,.mobile-photo-footer,.mobile-replay-header { display:none; }
 .story-album-entry,.photo-location-panel { display:contents; }
 /* Outrank the shared .photo-stage img rule, including after a phone resize. */
 .photo-stage .mobile-photo-neighbor { display:none; }
@@ -114,9 +114,15 @@
  .photo-viewer:is([data-grid="true"],[data-grid-origin="true"]) .viewer-filmstrip img { width:100%; height:100%; object-fit:cover; }
  .photo-viewer:is([data-grid="true"],[data-grid-origin="true"]) .mobile-grid-heading { position:absolute; top:0; left:0; right:0; z-index:13; height:calc(54px + env(safe-area-inset-top)); padding:env(safe-area-inset-top) 12px 0; display:flex; justify-content:space-between; align-items:center; background:#091113; color:white; }
  .mobile-grid-heading strong { font-size:13px; }
- .mobile-grid-heading .mobile-grid-unlock { min-height:36px; padding:6px 14px; border:1px solid #ffffff8c; border-radius:24px; font-size:14px; white-space:nowrap; position:relative; }
- .mobile-grid-heading .mobile-grid-unlock::before { content:""; position:absolute; inset:-4px 0; }
- .mobile-grid-heading .mobile-grid-unlock[hidden] { display:none; }
+ /* Locked visitors see why the grid is blurred, and the way through, above the photos. */
+ .photo-viewer:is([data-grid="true"],[data-grid-origin="true"]) .mobile-grid-locked:not([hidden]) { display:flex; position:absolute; top:calc(54px + env(safe-area-inset-top)); left:0; right:0; z-index:13; box-sizing:border-box; height:60px; padding:8px 12px; align-items:center; justify-content:space-between; gap:12px; background:#091113; color:white; font-size:14px; }
+ .mobile-grid-locked > span { display:inline-flex; align-items:center; gap:8px; min-width:0; }
+ .mobile-grid-locked .ui-icon { width:18px; height:18px; }
+ .mobile-grid-locked button { min-height:44px; padding:0 18px; border:0; border-radius:24px; background:white; color:#0d1b1e; font-size:14px; font-weight:650; cursor:pointer; }
+ .photo-viewer:is([data-grid="true"],[data-grid-origin="true"]):has(.mobile-grid-locked:not([hidden])) .viewer-filmstrip { top:calc(114px + env(safe-area-inset-top)); }
+ .photo-viewer[data-grid-origin="true"] .mobile-grid-locked:not([hidden]) { z-index:0; }
+ /* The Photos entry carries a small lock while access is confirmed locked. */
+ :root[data-photos-locked="true"] #mobile-day-photos:not(:disabled)::before { content:""; width:15px; height:15px; margin-right:6px; flex:none; background:currentColor; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E") center/contain no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='2'/%3E%3Cpath d='M8 11V8a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E") center/contain no-repeat; }
  .viewer-photo-feedback button { min-height:44px; padding-inline:18px; }
  .mobile-grid-heading button { font-size:15px; }
  .photo-viewer:is(.is-location-settling,.is-location-dragging) :is(.viewer-photo-frame,.photo-location-panel) { will-change:transform; }
@@ -325,4 +331,51 @@
   .photo-dialog.is-dismiss-settling .mobile-photo-footer,
   .photo-dialog.is-dismiss-settling .album-continue { transition:none; }
  }
+}
+
+/* Findability pass — 11 November 2026 (owner-approved review items 5 and 8). */
+@media(max-width:900px) {
+ /* Stop card: one larger filled Photos action, matching quiet secondaries. */
+ .mobile-day-summary { position:relative; }
+ .mobile-day-summary > div { display:flex; flex-wrap:wrap; gap:8px; }
+ /* Buttons keep their words on one line; when three cannot share a row, Photos takes its own. */
+ .mobile-day-summary > div > button,.mobile-day-summary > div > #mobile-day-places { display:inline-flex; align-items:center; justify-content:center; flex:1 0 auto; min-width:0; max-width:100%; padding:0 14px; border:1px solid var(--line); background:var(--panel); color:var(--ink); line-height:1.15; white-space:nowrap; }
+ .mobile-day-summary > div > #mobile-day-photos { flex:1.8 0 auto; min-height:48px; border-color:var(--ink); background:var(--ink); color:white; font-size:15px; }
+ .mobile-day-summary > div > #mobile-day-photos:disabled { border-color:var(--line); background:var(--panel-cool); color:var(--muted); }
+ .mobile-day-summary > div > button[hidden] { display:none; }
+ /* The whole-trip card keeps "Choose a stop" only when it would otherwise offer nothing (O20). */
+ .atlas-shell[data-map-scope="journey"] .mobile-day-summary:has(#mobile-day-photos:not(:disabled),#mobile-day-places:not([hidden])) #mobile-day-details { display:none; }
+ /* A settled arrival is one quiet icon beside the title, not a fourth row. */
+ .mobile-day-summary .arrival-chapter[data-phase="stay"] { position:absolute; top:8px!important; right:12px!important; }
+ .mobile-day-summary .arrival-chapter[data-phase="stay"] .arrival-actions #arrival-replay { display:inline-grid; place-items:center; width:44px; min-height:44px; padding:0; border:1px solid var(--line); border-radius:50%; background:var(--panel); color:var(--ink); font-size:0; }
+ .mobile-day-summary .arrival-chapter[data-phase="stay"] .arrival-actions #arrival-replay[hidden] { display:none; }
+ .mobile-day-summary .arrival-chapter[data-phase="stay"] #arrival-replay::before { content:""; width:18px; height:18px; background:currentColor; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12a8 8 0 1 0 3-6.2M4 4v5h5'/%3E%3C/svg%3E") center/contain no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12a8 8 0 1 0 3-6.2M4 4v5h5'/%3E%3C/svg%3E") center/contain no-repeat; }
+ .mobile-day-summary:has(.arrival-chapter[data-phase="stay"]:not([hidden]) #arrival-replay:not([hidden])) > :is(span,h2) { display:block; padding-right:52px; }
+
+ /* Stop details: title, the traveler's words and travel details, then photos. */
+ .atlas-shell[data-mobile-tab="story"] .story-panel { display:flex; flex-direction:column; }
+ .story-panel > * { flex:none; }
+ .story-panel > .mobile-story-heading { order:0; padding-bottom:6px; }
+ .story-panel > .sidebar-day-details { order:1; }
+ /* The route key explains the legs, so it appears with them when Travel details is open. */
+ .story-panel > .mobile-story-legend { order:2; display:none; padding-top:4px; }
+ .story-panel:has(.travel-details[open]) > .mobile-story-legend:not(:empty) { display:flex; }
+ .story-panel > .story-album-entry { order:3; margin-top:6px; grid-template-columns:104px minmax(0,1fr) auto; align-items:center; }
+ .story-panel > .story-album-entry .story-media { width:104px; height:104px; }
+ .story-panel > .story-album-entry .story-media img { height:104px; }
+ .story-panel > .mobile-story-map { display:none; }
+ .story-album-entry .share-lead-photo { grid-column:3; grid-row:1; width:48px; height:48px; margin:0 8px 0 0; padding:0; justify-content:center; }
+ .story-album-entry .share-lead-photo > span { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+ /* Viewer jumps carry a destination name; keep long names inside their button. */
+ .mobile-photo-event-nav { grid-template-columns:minmax(68px,max-content) minmax(0,1fr) minmax(68px,max-content); }
+ .mobile-photo-event-nav button { max-width:34vw; min-width:0; }
+ .mobile-photo-event-nav .button-label { max-width:none; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+ /* The wordmark is the home button: a mark, a name and a full-height target. */
+ .mobile-brand { display:inline-flex; align-items:center; gap:7px; min-height:44px; padding:0 6px; border-radius:22px; }
+ .mobile-brand .brand-mark { width:24px; height:24px; }
+ .mobile-brand > span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+ .mobile-brand:active { background:#1532380f; }
+ /* Disclosure rows are finger-sized. */
+ .travel-details summary { padding-block:14px; }
+ .bubble-card details summary { padding-block:13px; }
 }

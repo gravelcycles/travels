@@ -39,6 +39,14 @@ remain unchanged; transfer-day photo intake on 10 November defaults to Zakopane
 without moving previously assigned photos. Geometry, source review and delivery
 checks are tracked in [WIP](../WIP.md#kraków-and-zakopane-dates--11-november-2026).
 
+Verification: all 955 tests pass after integrating current main and its shared
+controls update. Strict routing preserves all 50 routes with no warnings;
+production build and diff checks pass. Desktop and 390 px browser checks confirm
+correct dates/order, the empty Zakopane state and both Bratislava travel rows.
+Saved media, photo/comment eligibility and Worker indexes are unchanged.
+[WIP](../WIP.md#kraków-and-zakopane-dates--11-november-2026) records publication
+and primary Studio synchronization status separately.
+
 ## Vienna photo cleanup — 3 November 2026
 
 Owner follow-up after editing in localhost Studio: “deleted a couple of photos.

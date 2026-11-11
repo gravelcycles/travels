@@ -78,12 +78,18 @@
       const day=options.journey().days.find(day=>day.id===photo.dayId);$('[data-bubble-day]').textContent=day ? `${root.JOURNEY_ATLAS_UTILS.eventWord(options.journey(),'title')} ${day.number} · ${day.title}` : '';
       $('[data-bubble-caption]').textContent=photo.caption || '';$('[data-bubble-caption]').hidden=!photo.caption?.trim();
       $('[data-bubble-description]').textContent=photo.description || ''; $('[data-bubble-description]').hidden=!photo.description;
-      $('[data-bubble-count]').textContent=`${index+1} / ${list.length}`;
-      $('[data-bubble-count]').setAttribute('aria-label',`Photo ${index+1} of ${list.length} ${selection.browseJourney ? 'in the trip' : 'in this selection'}`);
+      // Trip-wide browsing matches the fullscreen count (photos and videos);
+      // a map cluster says its count is local.
+      const trip=selection.browseJourney ? options.tripPosition?.(photo) : null;
+      const position=trip ? trip.index+1 : index+1, total=trip ? trip.total : list.length;
+      $('[data-bubble-count]').textContent=`${position} of ${total}${!trip && selection.mapGroup ? ' here' : ''}`;
+      $('[data-bubble-count]').setAttribute('aria-label',`Photo ${position} of ${total} ${trip ? 'in the trip' : selection.mapGroup ? 'at this spot on the map' : 'in this selection'}`);
       document.getElementById('sidebar-day-summary').textContent=day?`${root.JOURNEY_ATLAS_UTILS.eventWord(options.journey(),'title')} details · ${day.title}`:'Day details';
       $('[data-bubble-prev]').disabled=index===0;$('[data-bubble-next]').disabled=index===list.length-1;
       $('[data-bubble-locate]').disabled=!model.located(photo);
       $('[data-bubble-location]').textContent=model.located(photo)?'':'No saved photo location. It remains in the album.';
+      // Phones show the details disclosure only when it adds something the card does not already say.
+      $('[data-bubble-notes]').dataset.empty=String(!photo.description?.trim()&&model.located(photo));
       $('[data-bubble-place]').hidden=!place;if(place){$('[data-bubble-place]').textContent=`About ${place.point.name} →`;$('[data-bubble-place]').dataset.placeId=place.point.id;}
       $('[data-bubble-unlock]').hidden=!auth()?.isProtected(photo)||Boolean(auth()?.unlocked);
       card.dataset.photoId=photo.id;options.photoChanged?.(photo);$('[data-bubble-comments]').hidden=!options.commentsAvailable?.();
@@ -191,11 +197,15 @@
     });
     stage.addEventListener('pointerup',event=>{
       if(gesture?.id!==event.pointerId)return;
+      // A pull that is closing the card is not a tap or a sideways browse.
+      if(card.dataset.dragging){gesture=null;suppressPhotoClick=true;return;}
       const dx=event.clientX-gesture.x,dy=event.clientY-gesture.y;gesture=null;
       suppressPhotoClick=Math.hypot(dx,dy)>8;
       if(Math.abs(dx)>28&&Math.abs(dx)>Math.abs(dy)*1.25)step(dx<0?1:-1);
     });
     stage.addEventListener('pointercancel',()=>{gesture=null;suppressPhotoClick=true;});
+    // Phones can pull the card down to close it, like the other part-screen sheets.
+    const dismissGesture=root.JOURNEY_ATLAS_PHOTO_COMMENTS?.bindDismissGesture?.(card,card,()=>{$('[data-bubble-close]').onclick();dismissGesture?.reset();},{isOpen:()=>phone()&&!card.hidden,property:'--sheet-drag-y',vertical:true});
     card.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();event.stopPropagation();step(event.key==='ArrowLeft'?-1:1);}if(event.key==='Escape'){event.preventDefault();event.stopPropagation();$('[data-bubble-close]').click();}});
     window.addEventListener('atlas-photos-locked',()=>{
       exact?.remove();exact=null;

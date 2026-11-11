@@ -57,7 +57,7 @@
   dialog.innerHTML='<h2 id="photo-unlock-title">Private photographs</h2><p>The journey is here to explore. Unlock the photos with a shared password.</p><button type="button" data-unlock>Unlock photos</button><p class="photo-unlock-hint">You’ll visit a secure login page, then return here. Access is remembered for 30 days.</p><p data-auth-message role="status" aria-live="polite"></p><button type="button" class="photo-auth-secondary" data-dismiss>Continue without photos</button>';
   document.body.append(dialog);
   const status = document.createElement('span');status.className='photo-auth-controls';
-  status.innerHTML='<button type="button" data-unlock hidden>View photos</button>';
+  status.innerHTML='<button type="button" data-unlock hidden><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Unlock photos</button>';
   (document.querySelector('.header-context')||document.querySelector('.site-header')||document.body).append(status);
   const message = dialog.querySelector('[data-auth-message]');
   // A journey page with no protected photos or private clips has nothing to
@@ -76,6 +76,8 @@
     // phone album grid, which has no header control). Samples have no lock.
     const sample=document.body.dataset?.journeyScope==='demo';
     for(const control of document.querySelectorAll('[data-locked-only]'))control.hidden=nothingToUnlock||sample;
+    // Styles mark photo entries (for example the phone Photos button) while locked.
+    if(document.documentElement?.dataset)document.documentElement.dataset.photosLocked=String(!(nothingToUnlock||sample));
   }
   function release(img) {
     const previous=images.get(img);previous?.cleanup?.();if(previous?.entry)previous.entry.refs.delete(img);images.delete(img);

@@ -608,7 +608,15 @@ test('one template supplies every control and asset to real trips, all samples, 
   const header = reference.match(/<header class="mobile-header"[\s\S]*?<\/header>/)?.[0];
   assert.doesNotMatch(header, /mobile-open-replay|>Replay</, 'Full-trip Replay is disabled on phones');
   const actions = reference.match(/<nav id="mobile-journey-actions"[\s\S]*?<\/nav>/)?.[0];
-  for (const action of ['overview', 'photos', 'unlock', 'about']) assert.ok(actions?.includes(`data-journey-action="${action}"`), `${action} remains accessible in the day picker`);
+  // Owner, 11 November 2026: the picker's closing list holds only what has no
+  // other home. Whole trip, the album and the catalog use their own controls.
+  for (const action of ['unlock', 'about']) assert.ok(actions?.includes(`data-journey-action="${action}"`), `${action} remains accessible in the day picker`);
+  for (const action of ['overview', 'photos']) assert.ok(!actions?.includes(`data-journey-action="${action}"`), `${action} is not repeated in the day picker`);
+  assert.match(actions, /data-journey-action="unlock"[^>]*data-locked-only[^>]*hidden/, 'Unlock appears only while photos are locked');
+  assert.match(actions, />How to use this atlas</);
+  assert.doesNotMatch(actions, /All journeys/);
+  assert.match(header, /<a href="\.\/" class="mobile-brand" aria-label="All journeys[^"]*">\s*<img class="brand-mark"/, 'The phone wordmark is the labelled way home');
+  for (const id of ['mobile-back', 'mobile-day-photos']) assert.ok(ids(reference).includes(id), `${id} carries the action the picker no longer repeats`);
   assert.ok(ids(reference).includes('mobile-story-legend'), 'Route key remains available in day details');
   for (const journey of data.journeys) {
     const preview = renderJourneyPage(root, journey, { preview: true });
@@ -1857,4 +1865,38 @@ test('overlapping solid/TBD routes preserve overview and selected-leg priority a
       assert.equal(selected.layers().filter(l=>l.id.startsWith('main-line-')).at(-1).id,`main-line-${pending.id}`,'Selected TBD remains in front of confirmed context');
     }
   }
+});
+
+test('findability pass: every atlas inherits the labelled, reachable controls (owner, 11 November 2026)', t => {
+  const root = fixture(t); createJourney(root, input);
+  const { data } = loadContent(root, { includeDrafts: true });
+  buildSite(root);
+  const pages = [read(root, 'dist/switzerland-italy.html'), read(root, 'dist/demo.html'), ...data.journeys.map(journey => renderJourneyPage(root, journey, {preview:true}))];
+  for (const page of pages) {
+    // Toolbar buttons say where the map will go.
+    assert.match(page, /id="fit-route"[^>]*>Show whole trip</);
+    assert.match(page, /id="focus-day"[^>]*data-event-copy="Zoom to day"/);
+    // Stop card: Photos leads, then Details and Places.
+    assert.match(page, /<div><button id="mobile-day-photos"[^>]*>Photos<\/button><button id="mobile-day-details"/);
+    // Locked phone grid explains itself above the photos.
+    assert.match(page, /<div class="mobile-grid-locked" data-locked-only hidden><span>[\s\S]*?Photos are private<\/span><button type="button" data-unlock aria-label="Unlock photos">Unlock<\/button><\/div>/);
+    // Selected-photo card: Close is on the card, not on the photograph, and each action is named.
+    const card = page.match(/<section id="map-photo-card"[\s\S]*?<\/section>/)[0];
+    assert.doesNotMatch(card.match(/<div class="bubble-card-image">[\s\S]*?<\/div>\s*<\/div>/)[0], /data-bubble-close/);
+    assert.match(card, /<\/div>\s*<button type="button" data-bubble-close aria-label="Close selected photos">/);
+    for (const label of ['Comments', 'Share', 'Show on map']) assert.match(card, new RegExp(`<span class="button-label">${label}</span>`));
+    // The guide replaces About and keeps the trip's own note after the steps.
+    const guide = page.match(/<dialog class="notes-dialog"[\s\S]*?<\/dialog>/)[0];
+    assert.match(guide, /HOW TO USE THIS ATLAS/); assert.match(guide, /data-event-copy="1 · Pick a day"/);
+    assert.ok(guide.indexOf('notes-grid') < guide.indexOf('id="notes-journey-note"'), 'Steps come before the trip note');
+  }
+  const styles = fs.readFileSync(new URL('../dist/assets/styles.css', import.meta.url), 'utf8');
+  const mobile = fs.readFileSync(new URL('../dist/assets/mobile.css', import.meta.url), 'utf8');
+  // A video badge belongs to its own album tile.
+  assert.match(styles, /\.album-day \{ position:relative;/); assert.match(styles, /\.album-day \.media-video-badge \{ top:8px; bottom:auto; \}/);
+  assert.match(styles, /\.planning-filter label\[hidden\] \{ display:none; \}/);
+  // Phone stop details lead with the story and carry no second map.
+  assert.match(mobile, /\.story-panel > \.sidebar-day-details \{ order:1; \}/); assert.match(mobile, /\.story-panel > \.mobile-story-map \{ display:none; \}/);
+  // The whole-trip card repeats "Choose a stop" only when it has no other action.
+  assert.match(mobile, /\[data-map-scope="journey"\] \.mobile-day-summary:has\(#mobile-day-photos:not\(:disabled\),#mobile-day-places:not\(\[hidden\]\)\) #mobile-day-details \{ display:none; \}/);
 });
