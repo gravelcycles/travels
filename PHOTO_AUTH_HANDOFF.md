@@ -21,6 +21,19 @@ exercise real D1 persistence as well as existing photo auth/cache behavior.
 
 ## Private photo access — implementation handoff
 
+## Labels and the login page — 11 November 2026
+
+The page header's access control reads **Unlock photos** with a lock icon
+(it used to read “View photos”, the same words as the album buttons). The phone
+album grid shows a “Photos are private · Unlock” banner in place of the grid
+header button, and `html[data-photos-locked]` lets styles mark photo entries.
+None of this changes how access is checked.
+
+The login page (`workers/photo-auth/window.mjs`) keeps its field order. Only
+**Unlock photos** is filled; **Continue without photos** and the retry button
+are outlined. This is a style-only change inside the Worker, so it reaches
+visitors only after `npm run auth:deploy`; see WIP for whether that has run.
+
 ## Fewer access round trips — 10 November 2026
 
 Owner-authorized under [O20](docs/OWNER_DECISIONS.md#load-interaction-and-flow-fixes--10-november-2026)

@@ -91,3 +91,42 @@
 .bubble-image-feedback:has([data-bubble-image-status]:not(:empty)) { background:var(--panel);padding:5px;border-radius:8px; }
 .bubble-image-feedback button { pointer-events:auto; }
 .bubble-card details { font-size:12px;overflow-wrap:anywhere; }
+
+/* Findability pass — 11 November 2026: the selected-photo card (review item 9).
+   The photo is the large target, each action says what it is, Close sits on
+   the card instead of on the photo, and phones can pull the card down. */
+.bubble-card-toolbar { flex-wrap:wrap;gap:4px 8px; }
+.bubble-card-actions { display:flex;flex-wrap:wrap;align-items:center;gap:6px; }
+.bubble-card .bubble-card-actions button { min-height:40px;padding:0 12px;gap:6px;border:1px solid var(--line);border-radius:22px;background:var(--panel);font-size:13px;font-weight:550;line-height:1;white-space:nowrap; }
+.bubble-card .bubble-card-actions [data-bubble-comments] { padding-inline:12px!important;gap:6px!important; }
+.bubble-card-navigation span { min-width:64px; }
+@media(min-width:901px) {
+ /* Close keeps its familiar corner over the large sidebar photo. */
+ .bubble-card { position:relative; }
+ .bubble-card-toolbar { padding-top:6px; }
+}
+@media(max-width:900px) {
+ .bubble-card { grid-template-columns:clamp(96px,30vw,132px) minmax(0,1fr);gap:10px;padding:16px 10px 10px;touch-action:none;translate:0 var(--sheet-drag-y,0px);transition:translate .2s ease-out; }
+ .bubble-card[data-dragging=true] { transition:none; }
+ .bubble-card::before { content:"";position:absolute;top:6px;left:50%;width:34px;height:4px;margin-left:-17px;border-radius:3px;background:#9ba4ad88;pointer-events:none; }
+ .bubble-card-image { align-self:start; }
+ .bubble-card .bubble-photo-open { touch-action:none; }
+ /* An expand corner, not a caption, marks the photo as the way to full screen. */
+ .bubble-photo-expand { right:6px;bottom:6px;width:26px;height:26px;padding:0;border-radius:50%;font-size:0; }
+ .bubble-photo-expand::before { content:"";position:absolute;inset:6px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7'/%3E%3C/svg%3E") center/contain no-repeat; }
+ /* Close belongs to the card: a full 44px target that is not on the photograph. */
+ .bubble-card [data-bubble-close] { top:10px;right:6px;width:44px;height:44px;min-width:44px;min-height:44px;background:transparent;color:var(--ink);font-size:26px; }
+ .bubble-card [data-bubble-close]:hover { background:#e9eee7; }
+ .bubble-card [data-bubble-close]::before { content:none; }
+ .bubble-card-copy { align-self:start; }
+ .bubble-card-navigation { margin-right:44px; }
+ .bubble-card-navigation span { min-width:0;font-size:13px;font-weight:600;color:var(--ink); }
+ .bubble-card .bubble-card-actions button { min-height:44px; }
+ .bubble-card [data-bubble-caption] { margin:8px 0 0; }
+ /* The disclosure appears only when it holds more than the card already shows. */
+ .bubble-card details[data-empty=true] { display:none; }
+ /* While a photo is selected the stop card is a title, not a second toolbar. */
+ .bubble-card-open .mobile-day-summary > div,.bubble-card-open .mobile-day-summary .arrival-chapter[data-phase="stay"] { display:none; }
+ .bubble-card-open .mobile-day-summary > :is(span,h2) { padding-right:0!important; }
+}
+@media(max-width:900px) and (prefers-reduced-motion:reduce) { .bubble-card { transition:none; } }

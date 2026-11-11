@@ -52,6 +52,8 @@
     let store, unsubscribe, journeyId = '', revision = 0, loading = false, error = '', opener, rendered = '', identityRequired = false;
     const allowed = () => enabled && (!live || options.unlocked());
     dialog.innerHTML = '<header class="conversation-heading"><div><h2 id="trip-notifications-title">Most recent comments</h2><p id="trip-notifications-journey"></p></div><button id="close-trip-notifications" class="pp-icon-button" type="button" aria-label="Close notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header><div id="trip-notifications-content" class="trip-notifications-content"><ul id="trip-notifications-list" aria-label="Recent comments"></ul><div id="trip-notifications-empty" class="trip-notifications-empty"></div></div><div class="trip-notifications-footer"><p id="trip-notifications-status" role="status"></p><button id="trip-notifications-retry" type="button" hidden>Try again</button><button id="trip-notifications-unlock" type="button" hidden>Unlock photos</button><button id="trip-notifications-more" type="button" hidden>Load more comments</button><small id="trip-notifications-local-note" hidden>Read status is kept for this visit because browser storage is unavailable.</small></div>';
+    // Recent comments close with the same header pull as a photo conversation.
+    root.JOURNEY_ATLAS_PHOTO_COMMENTS?.bindDismissGesture?.(dialog, dialog.querySelector('.conversation-heading'), () => close(), { property: '--sheet-drag-y' });
     const visibility = observeVisible({ container: $('#trip-notifications-content'), active: () => dialog.open && allowed() && !document.querySelector('.photo-unlock-dialog[open], #experience-unlock[open]'), read: ids => store.markRead(ids) });
     function updateBadges() {
       const summary = allowed() ? store?.notificationSummary() : null, unread = summary?.loaded ? summary.unread : 0;
@@ -76,10 +78,15 @@
         list.innerHTML = rows.map(comment => {
           const photo = (options.journey().photos || []).find(item => item.id === comment.photoId);
           const day = options.journey().days.find(item => item.id === photo?.dayId);
-          const label = root.JOURNEY_ATLAS_PHOTO_COMMENTS.photoTitle(photo, day);
+          // A traveler's caption names the photo; otherwise its stop and dates do,
+          // beside the thumbnail, instead of a bare capture timestamp.
+          const where = day ? [day.title, day.date].filter(Boolean).join(' · ') : '';
+          const label = photo?.caption?.trim() || where || root.JOURNEY_ATLAS_PHOTO_COMMENTS.photoTitle(photo, day);
+          const thumbnail = photo ? options.photoThumbnail?.(photo) || '' : '';
           const date = new Date(comment.createdAt), valid = Number.isFinite(date.getTime());
-          return `<li data-comment-id="${escape(comment.id)}" data-unread="${!store.readState?.isRead(comment.id)}"><button type="button" data-open-comment="${escape(comment.id)}"><span class="notification-author">${escape(comment.displayName)}<time${valid ? ` datetime="${date.toISOString()}" title="${escape(date.toLocaleString())}"` : ''}>${valid ? escape(date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })) : ''}</time></span><span class="notification-body">${escape(comment.body)}</span><span class="notification-photo">${escape(label)}<span aria-hidden="true"> →</span></span></button></li>`;
+          return `<li data-comment-id="${escape(comment.id)}" data-unread="${!store.readState?.isRead(comment.id)}"><button type="button" data-open-comment="${escape(comment.id)}"${thumbnail ? ' class="has-thumbnail"' : ''}>${thumbnail ? `<span class="notification-thumbnail" aria-hidden="true">${thumbnail}</span>` : ''}<span class="notification-author">${escape(comment.displayName)}<time${valid ? ` datetime="${date.toISOString()}" title="${escape(date.toLocaleString())}"` : ''}>${valid ? escape(date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })) : ''}</time></span><span class="notification-body">${escape(comment.body)}</span><span class="notification-photo">${escape(label)}<span aria-hidden="true"> →</span></span></button></li>`;
         }).join('');
+        options.prepareImages?.(list);
         $('#trip-notifications-content').scrollTop = scrollTop;
         visibility.refresh();
       }

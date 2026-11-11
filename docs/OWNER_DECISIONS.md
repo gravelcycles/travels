@@ -27,6 +27,93 @@ permission to erase it. An agent suggestion, passing test or prototype is not an
 owner decision. Resolve apparent conflicts from dated evidence and record which
 choice supersedes which; ask only if a consequential ambiguity remains.
 
+## Findable, labelled controls — 11 November 2026
+
+**O21 · Findability and placement.** The owner asked for a review of “ux
+issues (hard to find buttons, less/more buttons in better places, etc)”, then
+answered each finding. This applies to shared code on every atlas, demo and
+fresh draft, and extends O03/O08/O17/O20.
+
+- **Stop picker's closing list.** “whole trip map has somewhere else to view.
+  places we found i get. photos & videos has annother path, right? all journeys
+  can be found by clicking the home button? about this atlas maybe can become a
+  ‘how to’?” The list after the last stop holds only Places we found, Unlock
+  photos (while locked) and **How to use this atlas**. Whole trip, the album
+  and the catalog use their own controls (header Back, the Photos button, the
+  phone wordmark). The wordmark carries the brand mark and the accessible name
+  “All journeys”. The owner rejected both a header “more” menu and pinning the
+  list above the stops (“i don't love either option”); `mobile-menu` stays
+  absent. This supersedes O08's picker repeating those journey-wide actions.
+- **Guide.** The former About dialog is a short how-to: four steps, then the
+  trip's own note when written, then the privacy note. The step wording is the
+  agent's; the owner may rewrite it. It is help copy, never trip story (O10).
+- **Names say what happens.** “good fix. ‘show whole trip’ maybe?” The header
+  access control reads **Unlock photos** with a lock, never “View photos”. The
+  desktop toolbar reads **Zoom to {place}** and **Show whole trip**. The arrival
+  bar's album button reads **Photos · N**, like the phone card.
+- **Locked photos explain themselves** (“love it”). The phone album grid shows
+  “Photos are private” with an Unlock button above the tiles, and the phone
+  Photos button carries a small lock. Both appear only once access has resolved
+  as locked (O04), never on samples or a trip with nothing private. This
+  replaces O20's Unlock button inside the grid header, keeping its intent.
+- **Unlock page.** “i like the ‘username and password’ idea … keep as is with
+  small improvement for button colors.” Field order stays name, then password.
+  Unlock photos is the only filled button; Continue without photos and retry
+  are outlined.
+- **Phone stop card.** “i do like photos to be bibgger. but agreed on the
+  rest.” Photos leads the row, filled and larger; Details and Places follow in
+  one matching outlined style; a settled arrival is one Replay icon beside the
+  title. The whole-trip card shows “Choose a stop” only when it has no Photos
+  or Places action (refines O20's kept card action). Reading “bigger” as the
+  Photos button and the photo thumbnails on the card and stop details is the
+  agent's interpretation.
+- **Viewer jumps name their destination** (“good call”): the city for stays,
+  “Day N” for daily trips, with **Stop/Day N · title** between them. Their
+  accessible names keep “Previous/Next city · title”. Raw capture timestamps
+  stay as they are; O20's “raw timestamps are fine” still stands.
+- **Stop rows** (“good call”). A leg's line sample sits beside its transport
+  word; photo counts stay on one line; a TBD event says TBD once (the badge),
+  so its date line drops a leading “TBD ·”; a filter group with no events is
+  hidden. Filter names are unchanged.
+- **Phone stop details, on trial** (“let's try it”). Title, the traveler's
+  words and Travel details come first, then the photo row with Share as an
+  icon. The second map is retired on phones; its markup stays dormant so the
+  trial is easy to reverse. The route key appears with open Travel details.
+- **Selected-photo card** (“sounds good … it looks a bit cluttered. pls help
+  with the clutter”). The photo is larger and is the way to full screen; Close
+  is a 44 px control on the card, not on the photograph; Comments, Share and
+  Show on map are labelled on phone and desktop; the count is the photo's place
+  in the whole trip, or “N of M here” for a map cluster. On phones the stop
+  card shrinks to its title while a photo is selected, and Photo details shows
+  only when it adds a description or a missing-location note. This is the
+  chosen direction for the 16 October “simplify the tray” request. O03's
+  select-then-fullscreen boundary is unchanged.
+- **Pull down to close part-screen sheets.** “i also like drag down to close.
+  this is a pattern that would be nice to build into more 1/2 (not full) pages.
+  see if you can standardize this pattern wherever.” Photo conversations and
+  Photo location already had it; recent comments, the guide and the phone
+  photo card now share the same helper. A new part-screen surface uses it too.
+  The Places sheet keeps its own resize drag (map ↔ reading).
+- **Recent comments** (“yes”) lead each row with the photo's thumbnail and name
+  its caption, or else its stop and dates, instead of a bare capture time.
+- **One photo count** (“sure”): trip-wide counts include videos everywhere, so
+  the sidebar and full screen agree.
+- **Album video badge** (“sure”) sits on its own stop's cover.
+- **Smaller fixes** (“fix up any other smaller thing you see”): the empty
+  conversation no longer repeats “Write the first comment” above the composer;
+  disclosure rows are finger-sized.
+
+Acceptance, on phone (375 and 320 px) and desktop for the reference, a city
+atlas, a demo and a fresh draft: the picker ends with at most three entries and
+the wordmark opens the catalog; locked and unlocked first paints show no lock
+flash; the locked grid banner unlocks; stop-card buttons stay on one line and
+wrap as whole buttons; the photo card closes by Close, Back, Escape and a
+downward pull, while a sideways drag still browses and a tap still opens full
+screen; recent comments and the guide close from their headings; viewer jumps
+truncate long names; the album badge stays on its tile while scrolling; the
+card and full screen show the same total. Status and what was not checked are
+in [WIP](../WIP.md#findable-labelled-controls--11-november-2026).
+
 ## Load, interaction and flow fixes — 10 November 2026
 
 Owner priority for the sitewide review: “true ‘correctness’ matters, but ux
@@ -48,9 +135,10 @@ real journeys, demos and fresh drafts.
 - Controls a finger must hit are at least 44 px, including the phone header
   link to the catalog, the map photo-card close button and viewer feedback
   buttons. A small visual control may keep its size with a larger hit area.
-- A locked phone visitor finds Unlock photos in the album grid header, where
-  the blurred photos are. A journey with no protected photos or private clips
-  shows no unlock control or prompt.
+- A locked phone visitor finds Unlock photos above the album grid, where the
+  blurred photos are ([O21](#findable-labelled-controls--11-november-2026)
+  made it a labelled banner). A journey with no protected photos or private
+  clips shows no unlock control or prompt.
 - Photo arrow keys do nothing while the Share dialog is open.
 - An unchanged view writes no browser history, and a refused history write
   never interrupts navigation.
@@ -73,7 +161,7 @@ playback on stop changes (O09). The map’s **Filter days/stops** menu stays
 alongside the sidebar toggles on desktop because the
 [TBD contract](../JOURNEY_WORKFLOW.md) asks for both, and the phone overview
 keeps its card action because it is the only action on a trip with no photos
-or places.
+or places (O21 hides it when Photos or Places is offered).
 
 **Access token lifetime (10 November 2026):** the owner accepted the hourly
 reload (“i think that’s fine”) once it was clear no password is retyped. The
@@ -512,9 +600,10 @@ existing Places list/detail resizing contract remains separate.
 
 The earlier message rejects the clutter of the “group of photos in this location
 spot” screen and asks to explore simplifying/removing it “like a product
-designer”. That is a design-review request; a proposed replacement is not yet
-the chosen production behavior. Preserve O03/O08 while reviewing a selected-photo
-tray that makes the image primary and removes repeated context/actions.
+designer”. The owner chose a direction on 11 November 2026:
+[O21's selected-photo card](#findable-labelled-controls--11-november-2026)
+makes the image primary, labels its actions and removes the repeated stop
+actions while a photo is selected. O03/O08 selection rules are unchanged.
 
 
 ## UX corrections — 11 October 2026
@@ -698,6 +787,7 @@ not satisfy this continuity requirement. See [the photo workflow](../PHOTO_WORKF
 | Always-expanded travel details, generated stay labels | Compact expandable details, authored optional taglines, no stay filler | 15 September; `df5740d`, `7e26085` |
 | Separate daily lead-photo selection | Album order determines first photo; journey cover remains independent | 9–12 September; `6bc0561`, `f6790e4` |
 | Hide-from-atlas and restore-all ambiguity | Show non-trashed photos; preserve deletions | Owner clarification 14 September; `06f5d63` |
+| Journey-wide actions repeated at the end of the phone stop picker; About this atlas; “View photos” as the header access label | Picker ends with Places, Unlock (locked) and How to use this atlas; the wordmark is home; the header says Unlock photos | Owner review answers, 11 November 2026; O21 |
 | Removed day markers, then rotated map balloons | Upright signposts and quiet repeat dots; overview endpoints restored later | 10–11 September and 8 October; `249fcac`, `d8b5def` |
 | Pulsing next-day button and orange focus rings | No continuation halo; orange selection border, slim slate keyboard focus | 10 September; `c07d323` |
 | Public Release photo hosting, two-size derivatives | Private R2; responsive WebP sizes plus optional native AVIF and embedded blur | 9 September onward; [current photo workflow](../PHOTO_WORKFLOW.md#generated-image-sizes-and-private-publishing) |

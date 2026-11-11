@@ -237,6 +237,12 @@ wobble, prevent text selection and retain ordinary button taps/keyboard actions.
 Suppress the click after any moved header drag, including one starting on Close; short,
 horizontal or cancelled drags leave it open. Scrolling the thread and editing
 text do not drag the sheet. Keep Close, Escape, Back and reduced-motion behavior.
+The same helper now closes recent comments (from its heading), the how-to guide
+and the phone photo card; see the [shared pattern](FRAMEWORK.md#shared-control-patterns--11-november-2026).
+Recent-comment rows lead with the photo's thumbnail and name its caption, or
+its stop and dates ([O21](OWNER_DECISIONS.md#findable-labelled-controls--11-november-2026)).
+An empty conversation shows its message and the composer, without a second
+“Write the first comment” control.
 Load more belongs inside the thread scroller; short screens use a compact inline
 composer so the target comment remains readable. On portrait phones the existing
 full image and matching blurred preview align above the sheet without changing

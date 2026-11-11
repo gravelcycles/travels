@@ -50,7 +50,7 @@ test('selected groups stay visible when their first photo is offscreen without r
  const f=fixture({ready:true});f.controller.mapReady();f.controller.open(f.photos.slice(0,2),'b',{mapGroup:true});f.flush();
  f.map.project=([lng])=>({x:lng===8?-20:200,y:200});f.mapEvent('moveend');f.flush();
  assert.equal(f.liveMarkers().length,1);assert.deepEqual([...f.liveMarkers()[0].coordinate],[8.001,47]);
- assert.equal(f.node('[data-bubble-count]').textContent,'2 / 2');assert.equal(f.node('map-photo-card').dataset.photoId,'b');
+ assert.equal(f.node('[data-bubble-count]').textContent,'2 of 2 here');assert.equal(f.node('map-photo-card').dataset.photoId,'b');
  f.node('[data-bubble-prev]').onclick();f.flush();assert.equal(f.node('map-photo-card').dataset.photoId,'a');
  assert.equal(f.liveMarkers().length,1,'An offscreen current photo still has its visible group');
  f.map.project=()=>({x:-20,y:200});f.mapEvent('moveend');f.flush();assert.equal(f.liveMarkers().length,0);
@@ -62,13 +62,13 @@ test('a crowded first anchor does not hide a photo group with another usable loc
  f.setObstacles([{left:0,top:80,right:200,bottom:320}]);
  f.controller.open(f.photos.slice(0,2),'b',{mapGroup:true});f.flush();
  assert.equal(f.liveMarkers().length,1);assert.deepEqual([...f.liveMarkers()[0].coordinate],[8.001,47]);
- assert.equal(f.node('[data-bubble-count]').textContent,'2 / 2');
+ assert.equal(f.node('[data-bubble-count]').textContent,'2 of 2 here');
  const marker=f.liveMarkers()[0];f.setMoving(true);f.map.project=()=>({x:-200,y:-200});f.controller.refresh();f.flush();
  assert.equal(f.liveMarkers()[0],marker,'Intermediate camera positions must not cull the group');
  f.setMoving(false);f.mapEvent('moveend');f.flush();assert.equal(f.liveMarkers().length,0);
 });
 test('real bubble controller preserves selection across refresh and restores previous history on close',()=>{
- const f=fixture();f.controller.open(f.photos.slice(0,2),'b');assert.equal(f.node('map-photo-card').dataset.photoId,'b');assert.equal(f.node('[data-bubble-count]').textContent,'2 / 2');
+ const f=fixture();f.controller.open(f.photos.slice(0,2),'b');assert.equal(f.node('map-photo-card').dataset.photoId,'b');assert.equal(f.node('[data-bubble-count]').textContent,'2 of 2');
  f.controller.refresh();assert.equal(f.node('map-photo-card').dataset.photoId,'b');f.node('[data-bubble-prev]').onclick();assert.equal(f.node('map-photo-card').dataset.photoId,'a');
  f.node('[data-bubble-close]').onclick();assert.equal(f.node('map-photo-card').hidden,true);assert.equal(f.controller.isOpen(),false);assert.equal(f.node('img').src,undefined);
 });
@@ -77,8 +77,8 @@ test('auth expiry clears protected card pixels and unlock restores through the a
  f.unlock();assert.equal(f.node('img').src,'blob:a');assert.ok(f.cleared.length);assert.equal(f.node('[data-bubble-unlock]').hidden,true);
 });
 test('cross-day linked selection follows the photo day without discarding group order; filter removal cannot show stale content',()=>{
- const f=fixture();f.controller.open([f.photos[0],f.photos[2]]);f.node('[data-bubble-next]').onclick();assert.equal(f.day,'two');assert.equal(f.node('map-photo-card').dataset.photoId,'c');assert.equal(f.node('[data-bubble-count]').textContent,'2 / 2');
- f.setPhotos([f.photos[0]]);f.controller.refresh();assert.equal(f.node('map-photo-card').dataset.photoId,'a');assert.equal(f.day,'one');assert.equal(f.node('[data-bubble-count]').textContent,'1 / 1');f.setPhotos([]);f.controller.refresh();assert.equal(f.node('map-photo-card').hidden,true);
+ const f=fixture();f.controller.open([f.photos[0],f.photos[2]]);f.node('[data-bubble-next]').onclick();assert.equal(f.day,'two');assert.equal(f.node('map-photo-card').dataset.photoId,'c');assert.equal(f.node('[data-bubble-count]').textContent,'2 of 2');
+ f.setPhotos([f.photos[0]]);f.controller.refresh();assert.equal(f.node('map-photo-card').dataset.photoId,'a');assert.equal(f.day,'one');assert.equal(f.node('[data-bubble-count]').textContent,'1 of 1');f.setPhotos([]);f.controller.refresh();assert.equal(f.node('map-photo-card').hidden,true);
 });
 
 test('desktop selection stays inside the existing album sidebar through Places and responsive changes',()=>{
@@ -93,7 +93,7 @@ test('desktop selection stays inside the existing album sidebar through Places a
  f.places(false);assert.equal(card.hidden,false);assert.equal(card.dataset.photoId,'b');
  f.resize(true);assert.equal(card.parentElement,f.node('.map-panel'));
  assert.equal(f.node('sidebar-day-details').open,true);assert.equal(f.node('.photo-section').position,'after');
- assert.equal(card.dataset.photoId,'b');assert.equal(f.node('[data-bubble-count]').textContent,'2 / 2');
+ assert.equal(card.dataset.photoId,'b');assert.equal(f.node('[data-bubble-count]').textContent,'2 of 2');
  f.resize(false);assert.equal(card.parentElement,f.node('.story-album-entry'));
  f.controller.close();assert.equal(card.hidden,true);
  assert.equal(card.parentElement,f.node('.story-album-entry'));
@@ -220,4 +220,19 @@ test('closing trip browsing returns keyboard focus to the clicked cluster, not t
  const f=fixture();f.controller.open([f.photos[1]],'b',{mapGroup:true,browseJourney:true});
  f.controller.close({focus:true});f.flush();
  assert.equal(f.activeElement,f.node('[data-bubble-anchor="b"]'));
+});
+
+test('trip-wide browsing reports the photo\'s place in the whole roll; a map cluster says its count is local',()=>{
+ // The fullscreen roll counts photos and videos. The card must not show a smaller total for the same photo.
+ const f=fixture({tripPosition:photo=>({index:photo.id==='b'?51:50,total:214})});
+ f.controller.open(f.photos.slice(0,2),'b',{mapGroup:true,browseJourney:true});
+ assert.equal(f.node('[data-bubble-count]').textContent,'52 of 214');assert.match(f.node('[data-bubble-count]')['aria-label'],/in the trip/);
+ f.controller.close();f.controller.open(f.photos.slice(0,2),'b',{mapGroup:true});
+ assert.equal(f.node('[data-bubble-count]').textContent,'2 of 2 here');assert.match(f.node('[data-bubble-count]')['aria-label'],/at this spot on the map/);
+ f.controller.close();f.controller.open(f.photos.slice(0,2),'b');
+ assert.equal(f.node('[data-bubble-count]').textContent,'2 of 2');
+});
+test('phones hide the details disclosure unless it adds a description or a missing-location note',()=>{
+ const f=fixture();f.controller.open(f.photos.slice(0,2),'a');
+ assert.equal(f.node('[data-bubble-notes]').dataset.empty,String(!f.photos[0].description&&Number.isFinite(f.photos[0].lng)));
 });

@@ -322,7 +322,8 @@ test('reload reuses unexpired tab access at once, validates it in the background
  assert.ok(next.calls.some(([url,options])=>url.endsWith('/auth/status')&&options.headers.Authorization===`Bearer ${saved.token}`),'The service still validates the reused token');
  authorize(Response.json({unlocked:true,expiresAt:saved.expiresAt}));await settle();
  assert.equal(next.auth.unlocked,true);assert.equal(next.navigations.length,0);assert.equal(next.dialog.open,false);assert.match(img.src,/^blob:/);
- assert.ok(!/lock/i.test(next.header.innerHTML.replace(/<[^>]*>/g,'')));
+ // The only header control is Unlock photos, hidden once unlocked; there is no Lock or sign-out control.
+ assert.ok(!/\block photos|sign out/i.test(next.header.innerHTML.replace(/<[^>]*>/g,'')));assert.match(next.header.innerHTML,/>Unlock photos</);assert.equal(next.header.querySelector('[data-unlock]').hidden,true);
  next.auth.lock();assert.equal(next.tabStorage.has('atlas-photo-access'),false);assert.equal(next.tabStorage.get('atlas-photo-guest'),'1');
 });
 test('known guests stay on the atlas on reload and same-tab navigation, with photos still gated',async()=>{

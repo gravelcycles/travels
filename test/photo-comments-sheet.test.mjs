@@ -219,3 +219,22 @@ test('conversation scrolling and name-dialog returns keep the compact sheet, dra
   assert.equal(f.node('#comment-body').value, 'Still writing');
   assert.equal(f.node('#photo-dialog').open, true);
 });
+
+test('the shared dismiss gesture serves other sheets: own open state, own offset property and vertical-only pulls', () => {
+  // Recent comments, the guide and the map photo card reuse this helper. The
+  // card is not a dialog and its photo also swipes sideways.
+  const surface = element(), handle = element(); let closes = 0, open = false; surface.open = undefined;
+  const gesture = bindDismissGesture(surface, handle, () => { closes++; gesture.reset(); }, { isOpen: () => open, property: '--sheet-drag-y', vertical: true });
+  const point = (type, x, y) => handle.emit(type, { pointerId: 1, isPrimary: true, button: 0, clientX: x, clientY: y, target: handle, preventDefault() {}, stopImmediatePropagation() {} });
+  point('pointerdown', 100, 100); point('pointermove', 100, 220); point('pointerup', 100, 220);
+  assert.equal(closes, 0, 'A hidden surface ignores the pull');
+  open = true;
+  point('pointerdown', 100, 100); point('pointermove', 200, 130);
+  assert.equal(surface.dataset.dragging, undefined, 'A mostly sideways move stays a browse gesture');
+  point('pointerup', 200, 130); assert.equal(closes, 0);
+  point('pointerdown', 100, 100); point('pointermove', 104, 220);
+  assert.equal(surface.style.getPropertyValue('--sheet-drag-y'), '120px');
+  assert.equal(surface.style.getPropertyValue('--comments-drag-y'), '', 'Each surface animates its own offset');
+  point('pointerup', 104, 220);
+  assert.equal(closes, 1); assert.equal(surface.dataset.dragging, undefined); assert.equal(surface.style.getPropertyValue('--sheet-drag-y'), '');
+});

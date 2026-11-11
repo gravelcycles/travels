@@ -1104,7 +1104,7 @@
     $('#arrival-eyebrow').textContent = traveling ? `Getting here · ${modeLabel(day)}` : `${day.date || 'City chapter'}${day.planningStatus === 'tbd' ? ' · TBD' : ''}`;
     $('#arrival-title').textContent = traveling ? routeLabel(day) : phase === 'explore' ? `Explore ${name}` : `In ${name}`;
     $('#arrival-replay').hidden = traveling || !segmentsForDay(day).length;
-    $('#arrival-city').textContent = traveling ? 'Skip to city' : phase === 'explore' ? 'Back to city' : photosForDay(day.id).length ? 'View photos' : day.text?.trim() ? 'Read story' : `View ${eventWord()}`;
+    $('#arrival-city').textContent = traveling ? 'Skip to city' : phase === 'explore' ? 'Back to city' : photosForDay(day.id).length ? `${photosForDay(day.id).some(mediaUtils.isVideo) ? 'Photos & videos' : 'Photos'} · ${photosForDay(day.id).length}` : day.text?.trim() ? 'Read story' : `View ${eventWord()}`;
   }
 
   function showCity(day, duration = 900) {
@@ -1220,10 +1220,6 @@
     const album = orderedPhotos(), hasVideos = album.some(mediaUtils.isVideo);
     $('#show-all-photos').innerHTML = `${hasVideos ? 'Photos & videos' : 'All photos'} · <span id="photo-count">${album.length}</span>`;
     $('#show-all-photos').disabled = !album.length;
-    $('[data-journey-action="photos"]').textContent = hasVideos ? 'Photos & videos' : 'All photos';
-    $('[data-journey-action="photos"]').disabled = !album.length;
-    const presentation = window.JOURNEY_ATLAS_UTILS.journeyPresentation(journey, album);
-    $('[data-journey-action="overview"]').disabled = !presentation.hasMap;
     $("#focus-day").disabled = !dayCoordinates(activeDay()).length;
     $("#fit-route").disabled = !journeyCoordinates().length;
     $("#journey-summary").innerHTML = `
@@ -1268,15 +1264,18 @@
       const photos = photosForDay(day.id);
       const pattern = modes[0] || "stay";
       const selected = mapScope === "day" && day.id === activeDayId;
+      // The TBD badge beside the title already says it; drop a repeated prefix from the date line.
+      const date = day.planningStatus === "tbd" ? (day.date || '').replace(/^TBD\s*[·:–-]\s*/i, '').replace(/^./, letter => letter.toUpperCase()) : day.date || '';
+      const mode = modeLabel(day) || '';
       return `
         <button class="day-row ${selected ? "active" : ""}" data-day-id="${escapeHtml(day.id)}" type="button" ${selected ? 'aria-current="true"' : ""}>
           <span class="day-index">${String(day.number).padStart(2, "0")}</span>
           <span class="day-copy">
-            <small>${escapeHtml([day.date, modeLabel(day)].filter(Boolean).join(' · '))}</small>
+            <small>${escapeHtml(date)}${date && mode ? ' · ' : ''}${mode ? `<span class="day-mode">${pattern !== "stay" ? lineSwatch(pattern) : ""}${escapeHtml(mode)}</span>` : ''}</small>
             <strong>${day.planningStatus === "tbd" ? '<span class="tbd-badge">TBD</span> ' : ""}${escapeHtml(day.title)}</strong>
             ${day.tagline?.trim() ? `<em>${escapeHtml(day.tagline)}</em>` : ""}
           </span>
-          <span class="day-meta">${photos.length ? `${mediaUtils.label(photos)}` : ""}${pattern !== "stay" ? lineSwatch(pattern) : ""}</span>
+          <span class="day-meta">${photos.length ? `${mediaUtils.label(photos)}` : ""}</span>
         </button>
       `;
     }).join("");
@@ -1294,6 +1293,7 @@
     if (mapScope === 'journey') {
       $('#sidebar-day-summary').textContent = 'Journey details';
       $('#focus-day').disabled = true;
+      $('#focus-day').textContent = `Zoom to ${eventWord()}`;
       storyMedia.innerHTML = `<div class="story-empty"><span>The whole journey</span><strong>${escapeHtml(journey.title)}</strong><small>${escapeHtml(journey.dates)}</small></div>`;
       // The whole-trip view has no event story; show the traveler's own
       // introduction (when written) rather than leaving the journal empty.
@@ -1309,6 +1309,7 @@
     const day = activeDay();
     $("#sidebar-day-summary").textContent = `${eventWord("title")} details · ${day.title}`;
     $("#focus-day").disabled = !dayCoordinates(day).length;
+    $("#focus-day").textContent = `Zoom to ${destinationForDay(day)?.name || day.title || eventWord()}`;
     const photos = photosForDay(day.id);
     const firstPhoto = photos[0];
     if (firstPhoto) {
@@ -1410,6 +1411,7 @@
       const key = input.dataset.planningCategory;
       input.checked = planningVisibility[key] && counts[key] > 0;
       input.disabled = !counts[key] || (input.checked && selected.length === 1);
+      const label = input.closest?.('label'); if (label) label.hidden = !counts[key];
       input.title = !counts[key] ? `No ${eventWord('plural')} in this group`
         : input.disabled ? 'Keep at least one group visible' : '';
     });
@@ -1540,6 +1542,9 @@
 
   function renderStoryMap() {
     if (!window.matchMedia('(max-width: 900px)').matches || $('.atlas-shell').dataset.mobileTab !== 'story') return;
+    // Phone stop details lead with the story; the preview map is retired there
+    // (hidden in mobile.css), so never build a map nobody can see.
+    if (!$('.mobile-story-map')?.offsetWidth) return;
     if (!storyMap) {
       try { storyMap = new maplibregl.Map({container:'story-map-preview',style:OPENFREEMAP_STYLE,center:[0,20],zoom:1.5,minZoom:1,interactive:false,attributionControl:false}); }
       catch (_error) { storyFeedback?.destroy(); storyFeedback=window.JOURNEY_ATLAS_MAP_FEEDBACK.create('story-map-preview',retryStoryMap);storyFeedback.fail();return; }
@@ -2538,6 +2543,8 @@
     openAlbum();
   });
   $("#close-route-inspector").addEventListener("click", () => clearSegmentInspection(true));
+  // The guide is a part-screen sheet on phones; it closes with the shared heading pull.
+  window.JOURNEY_ATLAS_PHOTO_COMMENTS?.bindDismissGesture?.($('#notes-dialog'), $('#notes-dialog .dialog-top'), () => $('#notes-dialog').close(), {property:'--sheet-drag-y'});
   let viewerImage = $('#modal-photo');
   photoZoom = window.JourneyPhotoZoom?.createController({
     dialog: photoDialog, frame: $('#viewer-photo-frame'), image: viewerImage,
@@ -2677,12 +2684,17 @@
     protected: photo => window.JOURNEY_ATLAS_AUTH?.isProtected(photo),
     unlocked: () => window.JOURNEY_ATLAS_AUTH?.unlocked,
     unlock: () => window.JOURNEY_ATLAS_AUTH?.showPrompt(),
+    // Recent comments show which photo they belong to (same access rules as every thumbnail).
+    photoThumbnail: photo => photo ? photoImageMarkup(photo, { alt: '', sizes: '56px', targetWidth: 160 }) : '',
+    prepareImages: container => prepareProgressiveImages(container),
     explore: () => { dismissIntroduction(); setMobileTab('map'); },
     restoreMap: () => mapScope === 'day' ? restoreDayCamera() : fitJourneyBounds(),
     canRestoreMapCamera: () => mainMapReady && hasPlayedOpeningMove && !mainMap?.isMoving()
   });
   photoBubbles = window.JOURNEY_ATLAS_PHOTO_BUBBLES.create({
     journey:()=>sourceJourney, dayId:()=>activeDayId, photos:()=>orderedPhotos().filter(photo=>!mediaUtils.isVideo(photo)),
+    // The fullscreen roll counts photos and videos; report the same position.
+    tripPosition:photo=>{const roll=orderedPhotos(),index=roll.findIndex(item=>item.id===photo.id);return index<0?null:{index,total:roll.length};},
     map:()=>mainMap, ready:()=>mainMapReady, scope:()=>mapScope,
     photoUrl:preferredPhotoUrl, fullscreen:(id,photos,collectionLabel,{browseJourney}={})=>openPhoto(id,browseJourney || window.JOURNEY_ATLAS_MOBILE_UI?.enabled()?{}:{photos,collectionLabel}),
     explore:()=>{dismissIntroduction();clearSegmentInspection(true);if($('.atlas-shell').dataset.mobileTab!=='map')setMobileTab('map');},

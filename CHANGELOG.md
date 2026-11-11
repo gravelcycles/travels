@@ -1,5 +1,27 @@
 # Changelog
 
+## 11 November 2026 — Findable, labelled controls
+
+- Owner-approved review of hard-to-find and misnamed controls, recorded as
+  [O21](docs/OWNER_DECISIONS.md#findable-labelled-controls--11-november-2026).
+- Fixed: the all-photos video badge appeared on the wrong stop because its tile
+  was not a positioned element.
+- Phone: the stop picker ends with Places, Unlock (while locked) and a how-to
+  guide; the wordmark is the home link; the stop card leads with a larger
+  Photos button, matching Details and Places, and a Replay icon; stop details
+  lead with the story and drop the second map (trial); the locked album grid
+  says “Photos are private” with Unlock; viewer jump buttons name the next
+  and previous stop.
+- Everywhere: the header says Unlock photos; the toolbar says Zoom to {place}
+  and Show whole trip; stop rows pair each line sample with its transport and
+  say TBD once; the selected-photo card has a larger photo, named actions and
+  Close on the card; the card and full screen show one trip-wide count; recent
+  comments show the photo and its stop.
+- Recent comments, the guide and the phone photo card close with the same
+  downward pull as a photo conversation (one shared helper).
+- Login page buttons: only Unlock photos is filled (Worker source; deploy
+  status in WIP).
+
 ## 10 November 2026 — Fewer access round trips
 
 - A browser that never unlocked photos no longer leaves the page to check for a
