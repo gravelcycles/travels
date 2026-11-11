@@ -98,7 +98,15 @@ photo at the right position, Back returns to the map, “+20” opens the 24-ite
 album), full screen showing “29 Jul 2026 · 06:17”, stop details with the map
 loaded; Switzerland–Italy days (three tiles plus “+N”, no row on the
 whole-trip card); Florence–Genoa (no row without photos). No console errors
-from the pages. Release receipt below.
+from the pages. Rebased onto the same-day venue-picture release (`802e608`);
+all 965 tests and the build pass on the combined code. Published as `80d251c`
+through successful
+[Pages run 42985839460](https://github.com/gravelcycles/travels/actions/runs/42985839460);
+five fresh public files (the Heading East page, `app.js`, `atlas-utils.js`,
+`mobile-ux.js`, `mobile.css`) match the release bytes. A fresh public Heading
+East load at 375 × 812 as a guest shows stop details in the order story,
+route key, map, photos, a four-tile photo row ending “+20”, and the date
+formatter, with no console errors. The public unlocked view was not rechecked.
 
 **Not checked.** A physical phone and Safari, including how the pulls feel
 under a finger. Recent-comment thumbnails with real comments (the local server
