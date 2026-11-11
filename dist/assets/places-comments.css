@@ -10,11 +10,11 @@
   --community-shadow:0 12px 45px #142f3426;
 }
 [hidden].places-panel,[hidden].experience-bar,[hidden].open-photo-comments { display:none!important; }
-.experience-primary,.experience-secondary { min-height:44px; border-radius:12px; padding:11px 18px; font:600 14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; cursor:pointer; transition:background .16s,transform .16s; }
+.experience-primary,.experience-secondary { min-height:44px; border-radius:12px; padding:11px 18px; font:600 14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; cursor:pointer; transition:background var(--motion-fast) var(--ease-out),transform var(--motion-fast) var(--ease-out); }
 .experience-primary { background:var(--community-accent); color:white; border:1px solid transparent; }
-.experience-primary:hover:not(:disabled) { background:#244b41; }
+@media(hover:hover) { .experience-primary:hover:not(:disabled) { background:#244b41; } }
 .experience-secondary { color:var(--community-ink); background:transparent; border:1px solid var(--community-line); }
-.experience-secondary:hover:not(:disabled) { background:var(--community-tint); }
+@media(hover:hover) { .experience-secondary:hover:not(:disabled) { background:var(--community-tint); } }
 .experience-primary:disabled,.experience-secondary:disabled { opacity:.48; cursor:default; }
 .experience-primary:active:not(:disabled),.experience-secondary:active:not(:disabled) { transform:scale(.985); }
 :is(.places-panel,.place-lightbox,.comments-dialog,.experience-unlock,.experience-confirm,.experience-bar) :focus-visible { outline:3px solid #b6663f; outline-offset:3px; }
@@ -61,6 +61,6 @@ dialog.conversation-surface::backdrop { background:#1625360a; }
   dialog.conversation-surface { inset:12px 16px auto auto; width:min(440px,60vw); height:calc(var(--comments-viewport-height,100dvh) - 24px); }
 }
 @media(prefers-reduced-motion:no-preference) {
-  dialog.conversation-surface[open] { animation:conversation-float .18s ease-out; }
+  dialog.conversation-surface[open] { animation:conversation-float var(--motion-base) var(--ease-out); }
   @keyframes conversation-float { from { opacity:0; transform:translateY(6px) scale(.98); } to { opacity:1; transform:none; } }
 }

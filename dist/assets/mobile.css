@@ -155,7 +155,7 @@
  #mobile-photo-grid { justify-self:end; width:44px; }
  #mobile-photo-location { gap:6px; border-radius:24px; background:#ffffff0c; margin:0 auto; padding:7px 10px; font-weight:500; max-width:100%; }
  #mobile-photo-location > .ui-icon { width:18px; height:18px; color:#cad4d4; }
- #mobile-photo-location > .location-chevron { width:14px; height:14px; transition:transform 180ms ease; }
+ #mobile-photo-location > .location-chevron { width:14px; height:14px; transition:transform var(--motion-base) var(--ease-out); }
  #mobile-photo-location[aria-expanded="true"] .location-chevron { transform:rotate(180deg); }
  #mobile-photo-prev,#mobile-photo-next { width:48px; height:48px; border-radius:50%; border:1px solid #ffffff42; background:#e8f0ed; color:#132727; box-shadow:0 2px 8px #0003; }
  #mobile-photo-prev .ui-icon,#mobile-photo-next .ui-icon { width:28px; height:28px; stroke-width:2.5; }

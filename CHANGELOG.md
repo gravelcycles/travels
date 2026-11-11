@@ -1,5 +1,28 @@
 # Changelog
 
+## 11 November 2026 — Feel and finish
+
+- Every control now answers a press, hover styling applies only where a
+  pointer hovers, and interface motion shares three durations and two curves
+  ([O22](docs/OWNER_DECISIONS.md#feel-and-finish--11-november-2026)). Swipe,
+  pull-to-dismiss and location timings and the photo reveals are unchanged.
+- Phone screens push in, pop out and rise as sheets over the screen being
+  left; a grid photo grows from its tile and returns to it; a stop change
+  settles the new title and words; desktop full screen opens out of the page.
+  First paint, restored views and browser Back stay instant, and reduced
+  motion shows none of the movement.
+- Larger desktop lead photo and a full-width photo in phone stop details; the
+  phone stop card is a rounded sheet over the map; warmer paper palette;
+  sentence case for dates, transport and counts; line icons, chevron
+  disclosure rows, rounded buttons and one solid family of phone full-screen
+  controls. The system interface font replaces a typeface the site never
+  shipped.
+- New shared `feel.css` and motion, radius, elevation and font tokens;
+  `test/feel-contract.test.mjs` covers inheritance, the hover guard, token use
+  and the motion wiring across the reference, a demo and a fresh draft. The
+  sign-in page keeps its earlier background until the access service is next
+  deployed.
+
 ## 11 November 2026 — Durable Places pictures
 
 - Restored all 56 Heading East venue pictures through our Cloudflare storage:

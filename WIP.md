@@ -32,6 +32,72 @@ without differences and preserved all concurrent work. Local Studio now reads
 the corrected itinerary. No implementation or publication remains for this
 correction. The unrelated access-worker follow-up above/below remains open.
 
+## Feel and finish — 11 November 2026
+
+Direction, interpretation and acceptance are
+[O22](docs/OWNER_DECISIONS.md#feel-and-finish--11-november-2026).
+**Approved for release by the owner on 11 November 2026** (“love the feel.
+let's publish!”) after the second pass below. It was built as a local demo on
+branch `claude/feel-pass` (worktree `build/feel-pass`), merged up to
+`origin/main`, and released as one commit on `main`. The release receipt is
+recorded at the end of this section.
+
+**Second pass, after the owner could not tell the first from the live site.**
+Phone screens push, pop and rise as sheets (`data-tab-from` keeps the screen
+being left displayed until its animation ends); stronger press feedback; a
+stop change settles the new title and words; desktop full screen and the
+selected-photo card arrive with motion; the desktop lead-photo frame is
+`clamp(240px, 38vh, 400px)` and phone stop details lead their photo row with a
+full-width picture; a warmer paper palette (page background `#f4f1ea`, also in
+both templates and `page-entry.js`); sentence case for dates, transport and
+counts; the phone stop card is a rounded sheet over the map.
+
+**Built in shared code.** `dist/assets/feel.css` (new, loaded last by both
+templates): press feedback, screen and sheet entry motion, rounded buttons,
+line-icon sizing, chevron disclosure rows, catalog card lift, quieter labels
+and tile numbers, the phone full-screen control family, rounded dialogs.
+Tokens for motion, radius, elevation and the interface font in
+`styles.css :root`. Every `:hover` rule in the shared stylesheets now sits in
+`@media (hover:hover)`. Non-gesture transitions use the tokens. `app.js` arms
+screen motion and passes the tapped tile to the phone viewer; `mobile-ux.js`
+adds the tile-to-photo motion and the return on Back/Close. Template text
+arrows and close marks are line icons. `test/feel-contract.test.mjs` covers
+inheritance, tokens, the hover guard and the motion wiring.
+
+**Checked.** All 970 tests and the production build pass after the merge and
+the second pass. With the pane in view, the push and sheet-rise were sampled
+frame by frame and ran to rest; that run exposed a cancelled animation from
+the previous move ending the next one early, now fixed and covered. Pop and
+sheet-fall were then checked by state and by dispatching the events that clear
+them, because the pane had gone to the background again. Earlier checks: In a desktop browser
+against a local server with local photo derivatives (`?photoSource=local`), no
+console errors on: Heading East at 375 × 812 (map card, album grid, full
+screen, stop details with Travel details open, guide), at 320 × 640 (full
+screen: every control at least 44 px, no horizontal overflow) and at
+1200 × 750 (toolbar, arrival bar, journal, catalog); Switzerland–Italy desktop
+full screen; the demo's opening screen. Motion logic was checked by reading
+and finishing the animations from script: the tile-to-photo keyframes land on
+the tapped tile, Back returns to the grid with no animation left running,
+Details and the picker are armed, browser Back is not.
+
+**Not checked.** Pop and sheet-fall were not watched playing, nor the stop
+settle, the desktop viewer opening or the grid-photo motion: the review
+browser was in the background for those, where animations do not run. Frame
+rate is unmeasured. The second-pass layouts were seen before photos and map
+tiles had loaded. A physical phone and Safari,
+including whether press feedback paints on iOS and how the photo motion feels
+beside the tuned swipe. Comments, recent comments and Places sheets (the local
+server has no comment service). A fresh draft in a browser (shared test only).
+The unlock page is served by the Worker and does not load `feel.css`.
+
+**Review aid.** The owner compared old and new with a scratch `compare.html`
+(two frames with side-by-side, phone and single-page layouts) beside the
+`dist` symlinks in the local preview root. It lives outside the repository;
+recreate it when a visual change needs the same side-by-side check. **Still open.** A physical phone and Safari check of the motion and press
+feedback; the sign-in page's background, which keeps the earlier colour until
+the access service is next deployed (the owner set this aside on 11 November);
+and the later-pass items listed under O22 and in [TODO](TODO.md#feel-and-finish--11-november-2026).
+
 ## Findable, labelled controls — 11 November 2026
 
 Authorized by the owner item by item after a findability review; direction,

@@ -27,6 +27,79 @@ permission to erase it. An agent suggestion, passing test or prototype is not an
 owner decision. Resolve apparent conflicts from dated evidence and record which
 choice supersedes which; ask only if a consequential ambiguity remains.
 
+## Feel and finish — 11 November 2026
+
+**O22 · Feel and finish.** The owner asked “how can we level up the ui? … tryna
+make this site silky smooth”, chose the feel pass from the resulting proposal
+(“Yes, feel pass”, to be built as a local demo first), and then widened it:
+“also feel free to modernize color schemes, icons, vibes etc while still
+keeping in mind preferences from past commits.” This is shared work for every
+atlas, demo and fresh draft. It began as a local demo under O15 and was
+released on the owner's approval of the second pass: “love the feel. let's
+publish!” (11 November 2026).
+
+After trying the first demo the owner said: “i'm at a loss for what changed.
+it doesn't feel different.” That pass was small and almost entirely for the
+phone layout, while the owner was looking at the desktop layout. **A change the
+visitor cannot notice does not meet this decision**: the difference has to be
+visible at rest and felt on desktop as well as phone. The owner then lifted the
+one palette constraint: “dw about the coloring of the sign in screen for now
+feel free to update everything where you can if that's holding you back.” The
+page background and other colours may change; the sign-in page served by the
+access service may differ until it is next deployed, and matching it is a
+release follow-up, not a blocker.
+
+Accepted direction:
+
+- Make interaction feel smooth: controls answer a press, motion is consistent,
+  moving between screens is connected.
+- Modernise colours, icons and overall finish, within the recorded preferences:
+  warm paper and serif character, the established layout and phone navigation
+  (O03/O08), the dark album, solid full-screen controls (never translucent),
+  the reviewed brand mark, O21's labels, and O04's reveal and no-flash rules.
+- No decorative animation, and nothing that delays a photograph (the “Apple-like”
+  definition below still governs).
+
+The owner approved the second pass as a whole after trying it. The specific
+choices are the agent's and stay open to the owner's correction:
+press feedback as a clear dip with a springy release; three shared durations
+and two curves, with gesture settles and photo reveals left exactly as tuned;
+phone screens push in, pop out and rise as sheets over the screen being left,
+while first paint, restores and browser Back stay instant; a new stop's title
+and words settle in on desktop and phone; desktop full screen opens out of the
+page; a grid photo grows from its tile and returns to it; a taller desktop
+lead-photo frame and a full-width photo in phone stop details; a warmer paper
+palette with one tint; sentence case for dates, transport and counts, keeping
+capitals for section eyebrows; the phone stop card as a rounded sheet over the
+map; hover styling only where a pointer hovers; rounded pill buttons on desktop to match the phone; line icons in
+place of text arrows; chevron disclosure rows; one solid charcoal family for
+phone full-screen controls with the light photo arrows kept as the emphasised
+pair; quieter eyebrow labels and album tile numbers (kept, not removed);
+slightly lighter hairlines; the system interface font instead of naming Inter,
+which the site never shipped. Georgia stays; a move to the Apple serif was
+considered and left out because it could not be checked outside Safari.
+
+Left for a later pass and not started: stop-picker thumbnails, larger catalog
+covers, a slimmer desktop header, folding the remaining raw colours and sizes
+into tokens, dark mode, the sign-in page's colours, and bundling/minifying the
+shared scripts (a build-pipeline decision). O21's stop-card photo row, readable
+capture dates and phone stop-details order (story, map, photos) are unchanged.
+
+Acceptance when reviewing or extending: put the current site and the change
+side by side first; if the two cannot be told apart at rest on desktop and
+phone, it is not done. Then, on the reference, a city atlas, a demo and a fresh
+draft, at 320/375 px and desktop — every button visibly responds to a press; a tapped control does not stay highlighted on a phone; Details
+pushes in over the map and pops back out, the stop picker rises and falls as a
+sheet, the screen being left cannot be tapped and is hidden once the move ends,
+and browser Back does not replay an animation; a stop change settles the new
+title and words without re-running on a plain re-render; a grid
+photo opens from its tile and Back/Close returns it there, with an immediate
+return when the tile is off screen; a touch during the opening motion ends it;
+reduced motion shows none of this movement; no first-paint animation or flash
+(O04); swipe, pull-to-dismiss and location timings are unchanged. Contract:
+[FRAMEWORK](FRAMEWORK.md#feel-and-finish--11-november-2026). Status and what was
+not checked: [WIP](../WIP.md#feel-and-finish--11-november-2026).
+
 ## Findable, labelled controls — 11 November 2026
 
 **O21 · Findability and placement.** The owner asked for a review of “ux
@@ -348,6 +421,7 @@ ready GPU surface. See the incident record.
 | O14 · Media and access | Originals stay private; publish optimized, metadata-stripped derivatives through the existing private Cloudflare pipeline. Photo passwords are shared across the site with remembered access, not per-trip accounts/SSO. Keep Markdown and commit messages free of real credential names/labels, recipient names, password fragments and identifying hints; maintenance receipts stay generic (owner correction, 11 October 2026). Keep services free unless the owner changes that constraint. | Count all supplied stills, including bulk DNG imports; review GPS/date matching, checksum-verify uploads, use resumable single-file transfers on poor Wi-Fi. Show non-trashed photos while preserving deletions. Never recreate retired public photo Releases. [Photo workflow](../PHOTO_WORKFLOW.md), [service operations](COMMUNITY_OPERATIONS.md). |
 | O15 · Delivery and proposals | The agent operates tools, Studio, assets, tests, Git and deployment. Completed authorized work deploys by default after integrating current main and verifying Pages/public content. A request for ideas or a local demo remains that scope until implementation/publication is authorized. | Retain existing authorization; do not ask the owner to run commands or approve already approved work again. Preserve other work, local prototypes and unpublished media. A commit/build alone is not a deployment receipt. [Deployment](DEPLOYMENT.md), [WIP](../WIP.md). |
 | O16 · Living documentation | Every agent reads and maintains the current docs as part of the task. New corrections, preferences and follow-up clarifications become durable guidance in the same change, without another owner request. This is a standing owner priority, explicitly reaffirmed 11 October 2026. | Before delivery or handoff, reconcile all new owner direction with the correct shared decision or trip record, replace superseded current guidance, and record any implementation still pending. A fresh task must be able to continue from the repository without the previous chat. Follow the [update procedure](#record-the-next-correction-before-closing-the-task). |
+| O22 · Feel and finish | Controls answer a press; interface motion uses the shared tokens; phone screens push, pop and rise as sheets; a stop change settles in; photographs lead; warm paper palette; sentence-case meta text. A change must be visible beside the current site. Full text: [11 November 2026](#feel-and-finish--11-november-2026). | Compare old and new side by side at rest, then check press feedback, screen moves, browser Back without replay, reduced motion, first paint without animation, and unchanged swipe/pull/location timings. Reference, city atlas, demo and fresh draft; 320/375 px and desktop. |
 | O20 · Load and reach | Text at least 12 px, 44 px touch targets, unlock offered where locked photos appear and nowhere else, no history writes or route rebuilds for an unchanged view, compact public route and boundary data. Full text: [10 November 2026](#load-interaction-and-flow-fixes--10-november-2026). | Compare the restyled map with a fresh draw; check 320/390 px wrapping and targets; re-measure with the same fixture before claiming a gain. Trips with no private media show no unlock. |
 
 “Apple-like” means these observable qualities: stable layout, clear hierarchy,

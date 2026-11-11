@@ -791,7 +791,7 @@ test('shared browser code and HTML templates contain no concrete trip IDs or URL
 test('focus presentation follows keyboard and pointer input without moving or clearing focus', () => {
   const handlers = new Map(), root = { dataset: {} }, focused = { id: 'restored-dialog-button' };
   const document = { documentElement: root, activeElement: focused,
-    addEventListener(type, handler, capture) { assert.equal(capture, true); handlers.set(type, handler); }
+    addEventListener(type, handler, capture) { assert.equal(capture === true || capture?.capture === true, true); handlers.set(type, handler); }
   };
   vm.runInNewContext(read(repo, 'dist/assets/input-mode.js'), { document });
   assert.equal(root.dataset.inputMode, 'pointer', 'Auto-focused controls do not begin with a keyboard ring');

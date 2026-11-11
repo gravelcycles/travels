@@ -5,7 +5,7 @@
   const root = document.documentElement, pending = new Set(['view', 'access']), entryScript = document.currentScript;
   root.classList.add('page-starting');
   const style = document.createElement('style');
-  style.textContent = `html.page-starting{background:#ecefeb}html.page-starting body *{visibility:hidden!important}html.page-starting dialog::backdrop{visibility:hidden!important}html.page-starting #page-entry,html.page-starting #page-entry *{visibility:visible!important}#page-entry{position:fixed;inset:0;z-index:2147483647;display:grid;place-content:center;gap:16px;padding:32px;background:#ecefeb;color:#153238;font:16px/1.6 system-ui,sans-serif;text-align:center}#page-entry[hidden]{display:none!important}#page-entry p{margin:0}#page-entry button{font:inherit;padding:12px 20px;border:1px solid #728b86;border-radius:8px;background:#235c56;color:white;cursor:pointer}`;
+  style.textContent = `html.page-starting{background:#f4f1ea}html.page-starting body *{visibility:hidden!important}html.page-starting dialog::backdrop{visibility:hidden!important}html.page-starting #page-entry,html.page-starting #page-entry *{visibility:visible!important}#page-entry{position:fixed;inset:0;z-index:2147483647;display:grid;place-content:center;gap:16px;padding:32px;background:#f4f1ea;color:#153238;font:16px/1.6 system-ui,sans-serif;text-align:center}#page-entry[hidden]{display:none!important}#page-entry p{margin:0}#page-entry button{font:inherit;padding:12px 20px;border:1px solid #728b86;border-radius:8px;background:#235c56;color:white;cursor:pointer}`;
   document.head.append(style);
   let slow = false, failed = false;
   const panel = () => document.querySelector('#page-entry');

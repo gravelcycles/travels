@@ -1,8 +1,8 @@
 /* One trip summary supplies badges; unread counts use the familiar red circle. */
 .trip-notifications-button { position:relative; display:inline-flex; align-items:center; justify-content:center; flex:none; width:44px; height:44px; padding:10px; border:0; border-radius:50%; color:var(--ink); background:transparent; cursor:pointer; }
-.trip-notifications-button:hover { background:#1532380b; }
+@media(hover:hover) { .trip-notifications-button:hover { background:#1532380b; } }
 .site-header .trip-notifications-button { color:#f4f5f7; }
-.site-header .trip-notifications-button:hover { background:#ffffff18; }
+@media(hover:hover) { .site-header .trip-notifications-button:hover { background:#ffffff18; } }
 .trip-notifications-button:focus-visible { outline:2px solid #517eaa; outline-offset:2px; }
 .trip-notifications-button>svg { width:23px; height:23px; }
 .comment-count-badge,[data-comment-count] { display:inline-flex; align-items:center; justify-content:center; flex:none; min-width:19px; height:19px; padding:0 4px; font:600 12px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-variant-numeric:tabular-nums; border-radius:999px; white-space:nowrap; }
@@ -23,7 +23,7 @@ dialog.trip-notifications-dialog { inset:72px 20px auto auto; height:610px; max-
 #trip-notifications-list li:last-child { border-bottom:0; }
 #trip-notifications-list li[data-unread=true]::before { content:""; position:absolute; left:0; top:26px; width:6px; height:6px; border-radius:50%; background:#d82c35; pointer-events:none; }
 #trip-notifications-list button { display:block; width:100%; min-height:72px; border:0; padding:18px 12px; background:transparent; text-align:left; border-radius:12px; }
-#trip-notifications-list button:hover { background:var(--conversation-tint); }
+@media(hover:hover) { #trip-notifications-list button:hover { background:var(--conversation-tint); } }
 /* The photo a comment belongs to leads its row. */
 #trip-notifications-list button.has-thumbnail { display:grid; grid-template-columns:56px minmax(0,1fr); column-gap:12px; align-items:start; }
 #trip-notifications-list button.has-thumbnail > :not(.notification-thumbnail) { grid-column:2; }
@@ -51,7 +51,7 @@ dialog.trip-notifications-dialog { inset:72px 20px auto auto; height:610px; max-
 @media(max-width:380px) { .mobile-header #mobile-open-replay span { display:none; } .mobile-header #mobile-open-replay { padding:6px; } }
 
 /* Recent comments pull down to close from their heading, like a photo conversation. */
-dialog.trip-notifications-dialog { translate:0 var(--sheet-drag-y,0px); transition:translate .2s ease-out; }
+dialog.trip-notifications-dialog { translate:0 var(--sheet-drag-y,0px); transition:translate var(--motion-base) var(--ease-out); }
 dialog.trip-notifications-dialog[data-dragging=true] { transition:none; }
 .trip-notifications-dialog .conversation-heading { position:relative; touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; cursor:grab; }
 .trip-notifications-dialog[data-dragging=true] .conversation-heading { cursor:grabbing; }

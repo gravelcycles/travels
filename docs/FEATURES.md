@@ -162,6 +162,19 @@ uses the existing album-order overrides, with no shared renderer change.
 | Update checkpoints and message drafts | Agent-operated live-site baseline, stable-ID new-trip/photo counts by city/stop, compact manual WhatsApp text, trip-specific frozen drafts and acknowledgments, per-trip status and recoverable local history | Select a trip when multiple are published; combined `--all` is explicit. Sharing one trip leaves others pending and preserves the original baseline. Demos/drafts/local-only/trashed photos excluded. Prepare/copy never acknowledges or sends. No Studio UI or provider integration | update-inventory, update-public-snapshot, update-announcements; [workflow](UPDATE_ANNOUNCEMENTS.md) |
 | Reproducible delivery | Validated generation, cache-busted assets, Pages CI, bounded orphan-deployment recovery/retry and public verification | Reviewed published sources; no private originals/network fetch needed for site build; GitHub service failures remain visible | build-site, Pages workflow, recover-pages |
 
+The **11 November feel and finish pass** ([O22](OWNER_DECISIONS.md#feel-and-finish--11-november-2026))
+applies to every atlas, demo and draft through shared `feel.css` and tokens:
+controls dip when pressed; hover styling is limited to hovering pointers;
+phone Details pushes in and pops out, and the stop picker rises and falls as a
+sheet; a grid photo grows from its tile and returns to it on Back or Close; a
+stop change settles its title and words; desktop full screen opens out of the
+page; the desktop lead photo is taller and phone stop details lead their photo
+row with a full-width picture; the phone stop card is a rounded sheet over the
+map; dates, transport and counts are sentence case; the palette is warm paper
+with one tint. Reduced motion removes the movement, and first paint, restored
+views and browser Back are not animated. See the
+[framework contract](FRAMEWORK.md#feel-and-finish--11-november-2026).
+
 The **11 November findability pass** ([O21](OWNER_DECISIONS.md#findable-labelled-controls--11-november-2026))
 changes where controls live and what they are called, on every atlas: the
 phone stop picker ends with Places, Unlock (while locked) and a how-to guide;

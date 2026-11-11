@@ -1,0 +1,197 @@
+/* Feel and finish, shared by every atlas, demo and draft.
+   Loaded after the feature stylesheets. Tokens live in styles.css :root.
+   Rules here are short and interruptible; nothing waits on an animation.
+   Gesture settles (photo swipe, pull to dismiss, location) keep the literal
+   timings their scripts wait on, and photo reveals keep the reviewed 350/650 ms. */
+
+/* ---- Press feedback: every control answers a finger or a click ---------- */
+:where(button, summary, a.journey-card, a.brand, a.mobile-brand, a.header-link) { -webkit-tap-highlight-color: transparent; }
+@media (prefers-reduced-motion: no-preference) {
+  :where(button, a.journey-card, a.mobile-brand) {
+    transition: scale var(--motion-base) var(--ease-spring), background-color var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+  }
+  /* Going down is quick; coming back up has a little life in it. */
+  :where(button, a.journey-card, a.mobile-brand):active { transition-duration: 70ms, var(--motion-fast), var(--motion-fast), var(--motion-fast), var(--motion-fast); transition-timing-function: var(--ease-out); }
+  :where(button, a.journey-card, a.mobile-brand):active:not(:disabled, [aria-disabled="true"]) { scale: var(--press-scale); }
+}
+@media (prefers-reduced-motion: reduce) {
+  :where(button, a.journey-card, a.mobile-brand):active:not(:disabled, [aria-disabled="true"]) { filter: brightness(.94); }
+}
+/* Wide rows, cards and photographs give a little; small controls give more. */
+.day-row, .album-day, .leg-card, .journey-card, .pp-card, .pp-hero, .bubble-photo-open, .story-media button,
+#trip-notifications-list button, .mobile-journey-actions button, .story-photo-action, .viewer-video-play { --press-scale: .98; }
+.viewer-filmstrip button, .photo-strip button, .pp-photo-grid button { --press-scale: .94; }
+/* Full-height viewer arrows and map pins stay put; they answer with colour. */
+.photo-nav, .location-pin, .pp-pin { --press-scale: 1; }
+summary { cursor: pointer; }
+
+/* ---- Screens: phone screens push, pop and rise like sheets --------------- */
+/* All three phone panels share one box (absolute, inset 0), so the screen being
+   left can stay where it is while the next one moves. Armed by script only for
+   a forward move the visitor made; first paint, restores and browser Back stay
+   instant (see setMobileTab). data-tab-from names the screen being left. */
+@keyframes feel-push-in { from { transform: translateX(100%); } }
+@keyframes feel-pop-out { to { transform: translateX(100%); } }
+@keyframes feel-sheet-up { from { transform: translateY(100%); } }
+@keyframes feel-sheet-down { to { transform: translateY(100%); } }
+@keyframes feel-hold { from { opacity: 1; } to { opacity: 1; } }
+@keyframes feel-recede { to { transform: translateX(-12%); filter: brightness(.9); } }
+@keyframes feel-return { from { transform: translateX(-12%); filter: brightness(.9); } }
+@keyframes feel-fade { from { opacity: 0; } }
+@media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .atlas-shell[data-tab-motion="on"] { overflow: hidden; }
+  /* Arriving */
+  .atlas-shell[data-tab-motion="on"][data-mobile-tab="story"] .story-panel { z-index: 600; animation: feel-push-in var(--motion-slow) var(--ease-out); box-shadow: -12px 0 32px rgba(20, 48, 53, .12); }
+  .atlas-shell[data-tab-motion="on"][data-mobile-tab="route"] .route-panel { z-index: 600; animation: feel-sheet-up var(--motion-slow) var(--ease-out); box-shadow: 0 -12px 32px rgba(20, 48, 53, .12); }
+  .atlas-shell[data-tab-motion="on"][data-tab-from="story"][data-mobile-tab="map"] .map-panel { animation: feel-return var(--motion-slow) var(--ease-out); }
+  /* Waiting beneath the arriving screen */
+  .atlas-shell[data-tab-motion="on"][data-tab-from="map"][data-mobile-tab="story"] .map-panel { display: grid; pointer-events: none; animation: feel-recede var(--motion-slow) var(--ease-out) forwards; }
+  .atlas-shell[data-tab-motion="on"][data-tab-from="map"][data-mobile-tab="route"] .map-panel { display: grid; pointer-events: none; animation: feel-hold var(--motion-slow) linear forwards; }
+  .atlas-shell[data-tab-motion="on"][data-tab-from="story"][data-mobile-tab="route"] .story-panel { display: flex; flex-direction: column; pointer-events: none; animation: feel-hold var(--motion-slow) linear forwards; }
+  /* Leaving above the screen that is revealed */
+  .atlas-shell[data-tab-motion="on"][data-tab-from="story"][data-mobile-tab="map"] .story-panel { display: flex; flex-direction: column; z-index: 600; pointer-events: none; animation: feel-pop-out var(--motion-slow) var(--ease-in-out) forwards; box-shadow: -12px 0 32px rgba(20, 48, 53, .12); }
+  .atlas-shell[data-tab-motion="on"][data-tab-from="route"]:not([data-mobile-tab="route"]) .route-panel { display: flex; z-index: 600; pointer-events: none; animation: feel-sheet-down var(--motion-slow) var(--ease-in-out) forwards; box-shadow: 0 -12px 32px rgba(20, 48, 53, .12); }
+}
+
+/* ---- Stop changes: the new stop's title and words settle in ------------- */
+@keyframes feel-swap-a { from { opacity: 0; transform: translateY(10px); } }
+@keyframes feel-swap-b { from { opacity: 0; transform: translateY(10px); } }
+@media (prefers-reduced-motion: no-preference) {
+  .atlas-shell[data-tab-motion-armed="true"][data-day-swap="a"] :is(#story-detail, .story-album-entry > .story-media, .mobile-day-summary > h2, .mobile-day-summary > span, .mobile-story-heading) { animation: feel-swap-a var(--motion-slow) var(--ease-out); }
+  .atlas-shell[data-tab-motion-armed="true"][data-day-swap="b"] :is(#story-detail, .story-album-entry > .story-media, .mobile-day-summary > h2, .mobile-day-summary > span, .mobile-story-heading) { animation: feel-swap-b var(--motion-slow) var(--ease-out); }
+  /* The selected row's marker grows into place. */
+  .day-index { transition: background-color var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-out), color var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out), scale var(--motion-base) var(--ease-spring); }
+  .day-row.active .day-index { scale: 1.08; }
+}
+
+/* ---- Sheets and dialogs: one way in ------------------------------------ */
+@keyframes feel-dialog-in { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+@keyframes feel-sheet-in { from { opacity: 0; transform: translateY(22px); } }
+@media (prefers-reduced-motion: no-preference) {
+  dialog.notes-dialog[open], dialog.share-link-dialog[open], dialog.conversation-surface[open], .experience-unlock[open] { animation: feel-dialog-in var(--motion-base) var(--ease-out); }
+  dialog.album-dialog[open] { animation: feel-fade var(--motion-base) linear; }
+  dialog.notes-dialog[open]::backdrop, dialog.share-link-dialog[open]::backdrop, dialog.conversation-surface[open]::backdrop, .experience-unlock[open]::backdrop { animation: feel-fade var(--motion-base) linear; }
+}
+@media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
+  dialog.notes-dialog[open], dialog.conversation-surface[open], .bubble-card:not([hidden]) { animation: feel-sheet-in var(--motion-base) var(--ease-out); }
+}
+@keyframes feel-viewer-in { from { opacity: 0; transform: scale(.975); } }
+@media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
+  /* Full screen opens out of the page instead of cutting to black. Skipped on a
+     direct photo link, where nothing has been pressed yet. */
+  .atlas-shell[data-tab-motion-armed="true"] ~ dialog.photo-dialog[open] { animation: feel-viewer-in var(--motion-base) var(--ease-out); }
+  .atlas-shell[data-tab-motion-armed="true"] ~ dialog.photo-dialog[open]::backdrop { animation: feel-fade var(--motion-base) linear; }
+  .atlas-shell[data-tab-motion-armed="true"] .bubble-card:not([hidden]) { animation: feel-dialog-in var(--motion-base) var(--ease-out); }
+}
+
+/* ---- Finish: one family of controls, quieter labels ---------------------- */
+/* Hairlines a touch lighter; surfaces separate by tone and soft elevation. */
+:root { --line: #d5dad5; }
+
+/* One quiet eyebrow style in place of heavy tracked capitals. */
+.brand small, .panel-intro .panel-label, .route-heading span, .journey-summary span, .map-title-card > span, .detail-eyebrow, .photo-heading > span, .dialog-top span, #modal-progress { font-weight: 650; letter-spacing: .08em; }
+.day-index { font-weight: 700; }
+@media (max-width: 900px) { .mobile-day-summary > span, .mobile-story-heading > span { font-weight: 650; } }
+
+/* Buttons share a rounded shape and one weight on desktop and phone. */
+.map-actions button, .journal-day-nav button, .arrival-actions button, .intro-actions button, .dialog-done { border-radius: var(--radius-pill); }
+.intro-actions button, .dialog-done { font-weight: 650; }
+.journal-day-nav button { display: inline-flex; align-items: center; gap: 4px; font-weight: 650; }
+.journal-day-nav button span { font-size: inherit; }
+.journal-day-nav button .ui-icon { width: 16px; height: 16px; }
+.journal-day-nav button:first-child { padding-left: 8px; }
+.journal-day-nav button:last-child { padding-right: 8px; }
+.viewer-day-nav { border-radius: var(--radius-s); overflow: hidden; }
+.viewer-day-nav .ui-icon, .day-navigator .ui-icon, .bubble-card-navigation .ui-icon { width: 18px; height: 18px; }
+.viewer-day-nav button, .day-navigator button, .bubble-card-navigation button { display: grid; place-items: center; }
+.bubble-card [data-bubble-close] { display: grid; place-items: center; }
+.bubble-card [data-bubble-close] .ui-icon { width: 18px; height: 18px; }
+.photo-nav { display: grid; place-items: center; }
+.photo-nav .ui-icon { width: 40px; height: 40px; stroke-width: 2; filter: drop-shadow(0 1px 3px rgba(0, 0, 0, .55)); }
+
+/* Catalog cards lift instead of sitting in a box. */
+a.journey-card { border-radius: var(--radius-m); border-color: var(--line); box-shadow: var(--shadow-1); }
+@media (prefers-reduced-motion: no-preference) { a.journey-card { transition: scale var(--motion-fast) var(--ease-out), translate var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out); } }
+@media (hover: hover) { a.journey-card:hover { box-shadow: var(--shadow-2); translate: 0 -2px; } }
+
+/* Disclosure rows: a line chevron that turns, in place of the browser's triangle. */
+.travel-details > summary, [data-bubble-notes] > summary, .map-planning-filter > summary { display: flex; align-items: center; list-style: none; }
+.travel-details > summary::-webkit-details-marker, [data-bubble-notes] > summary::-webkit-details-marker, .map-planning-filter > summary::-webkit-details-marker { display: none; }
+.travel-details > summary::before, [data-bubble-notes] > summary::before, .map-planning-filter > summary::before {
+  content: ""; flex: none; width: 7px; height: 7px; margin: 0 10px 0 3px; border: solid currentColor; border-width: 0 1.8px 1.8px 0; rotate: -45deg; opacity: .65;
+}
+.travel-details[open] > summary::before, [data-bubble-notes][open] > summary::before, .map-planning-filter[open] > summary::before { rotate: 45deg; translate: 0 -2px; }
+@media (prefers-reduced-motion: no-preference) { .travel-details > summary::before, [data-bubble-notes] > summary::before, .map-planning-filter > summary::before { transition: rotate var(--motion-fast) var(--ease-out), translate var(--motion-fast) var(--ease-out); } }
+
+/* Album tiles: the photograph leads, its number sits quietly in the corner. */
+.viewer-filmstrip span { top: 5px; left: 5px; padding: 2px 6px; border-radius: 6px; background: rgba(9, 17, 19, .58); font-weight: 650; font-variant-numeric: tabular-nums; }
+
+/* Full-screen photo controls on phones: one solid family. Photo arrows keep
+   their light fill as the single emphasised pair; nothing is translucent. */
+@media (max-width: 900px) {
+  .photo-viewer { --viewer-control: #1b282c; --viewer-control-line: #34474b; }
+  .mobile-photo-header button, .mobile-photo-event-nav button, #mobile-photo-location, .photo-viewer .photo-close, .photo-viewer #mobile-share-photo, .photo-viewer .open-photo-comments {
+    background: var(--viewer-control); border: 1px solid var(--viewer-control-line); color: #fff;
+  }
+  .mobile-photo-event-nav button, #mobile-photo-back { border-radius: var(--radius-pill); }
+  #mobile-photo-back { padding: 6px 14px 6px 8px; }
+  .mobile-photo-event-nav button { padding-inline: 10px; }
+}
+
+/* Dialogs share the rounded card shape of the sheets. */
+.notes-dialog, .share-link-dialog { border-radius: var(--radius-l); }
+.notes-grid, .storage-note { border-radius: var(--radius-m); }
+.notes-grid { overflow: hidden; }
+
+/* ---- Palette: warm paper, clean cards, one tint ------------------------- */
+/* Owner, 11 November 2026: colours may change everywhere; the sign-in screen
+   (served by the access service) may lag behind until it is next deployed. */
+:root {
+  --paper: #f4f1ea;
+  --panel: #fffdf9;
+  --panel-cool: #f6f3ec;
+  --line: #e4dfd5;
+  --tint: #f1ece1;
+  --ink: #122b30;
+  --ink-soft: #3a5358;
+  --muted: #5c6d6e;
+  --shadow: 0 16px 38px rgba(31, 41, 38, .13);
+}
+.day-row.active, .day-row.route-preview, .leg-card:focus-visible, .leg-card.route-preview { background: var(--tint); }
+@media (hover: hover) { .day-row:hover, .leg-card:hover, .bubble-card button:hover:not(:disabled) { background: var(--tint); } .bubble-card .bubble-photo-open:hover:not(:disabled) { background: transparent; } }
+.day-row { border-top-color: var(--line); }
+.map-header { background: var(--panel); }
+.site-header { border-bottom-color: transparent; }
+
+/* ---- Photographs lead ---------------------------------------------------- */
+@media (min-width: 901px) {
+  /* The sidebar's lead photo gets the room the selected-photo card already has. */
+  .story-media { height: clamp(240px, 38vh, 400px); }
+}
+@media (max-width: 900px) {
+  /* Stop details: the photo row becomes a full-width picture with its actions beneath. */
+  .story-panel > .story-album-entry { grid-template-columns: minmax(0, 1fr) auto; border-radius: var(--radius-l); background: var(--panel); box-shadow: var(--shadow-1); }
+  .story-panel > .story-album-entry .story-media { grid-column: 1 / -1; grid-row: 1; width: 100%; height: clamp(190px, 58vw, 320px); }
+  .story-panel > .story-album-entry .story-media img { height: 100%; }
+  .story-panel > .story-album-entry .story-photo-action { grid-column: 1; grid-row: 2; font-weight: 650; }
+  .story-panel > .story-album-entry .share-lead-photo { grid-column: 2; grid-row: 2; }
+}
+
+/* ---- Calm text: sentence case for dates, modes and counts ---------------- */
+/* Capitals stay on the few section eyebrows; row and meta text reads as text. */
+.day-copy small, .leg-mode, .map-legend span, .viewer-day-nav span, .arrival-copy small, .arrival-place-label small, .story-detail h3 { text-transform: none; letter-spacing: 0; font-weight: 600; }
+.day-copy small { font-size: .8rem; font-weight: 500; }
+.viewer-day-nav span, .map-legend span { font-size: .8rem; }
+@media (max-width: 900px) { .mobile-day-summary > span, .mobile-story-heading > span { text-transform: none; letter-spacing: 0; font-size: 13px; font-weight: 500; } }
+
+/* The lead photo's count sits on its own solid chip, off the picture's detail. */
+.story-media button > span { top: 12px; right: 12px; padding: 5px 10px; border-radius: var(--radius-pill); background: #122b30; font-weight: 650; letter-spacing: .04em; text-shadow: none; }
+
+/* ---- Phone: the stop card and picker read as one sheet over the map ------ */
+@media (max-width: 900px) {
+  .mobile-day-summary { margin-top: -18px; border-top: 0; border-radius: var(--radius-l) var(--radius-l) 0 0; box-shadow: 0 -10px 28px rgba(20, 48, 53, .14); z-index: 3; padding-top: 16px; }
+  .mobile-nav { border-top: 0; }
+  .mobile-header { border-bottom-color: transparent; box-shadow: 0 1px 0 var(--line), 0 6px 18px rgba(20, 48, 53, .06); position: relative; z-index: 2; }
+  /* Keep the map's credits control clear of the sheet's rounded corner. */
+  .map-panel .maplibregl-ctrl-bottom-right, .map-panel .maplibregl-ctrl-bottom-left { bottom: 18px; }
+}

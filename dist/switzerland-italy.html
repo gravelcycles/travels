@@ -30,26 +30,27 @@
     <meta name="twitter:description" content="Two weeks with family, from our Luzern base to the Italian lakes: mountain railways, boat rides, rainy rest days, and shared meals." />
     <meta name="twitter:image" content="https://gravelcycles.github.io/travels/assets/brand/share.png?v=0003476fd5f9" />
     <meta name="twitter:image:alt" content="A white globe inside an orange-tipped map pin on a blue square." />
-    <style>html{background:#ecefeb}</style>
-    <script src="./assets/page-entry.js?v=7b67b63877dc" data-photo-service="https://travels-private-photos.travels-journey-atlas.workers.dev"></script>
+    <style>html{background:#f4f1ea}</style>
+    <script src="./assets/page-entry.js?v=7b8db39dd855" data-photo-service="https://travels-private-photos.travels-journey-atlas.workers.dev"></script>
     <link rel="preconnect" href="https://travels-private-photos.travels-journey-atlas.workers.dev" crossorigin />
-    <script src="./assets/input-mode.js?v=a29da7d71afc"></script>
+    <script src="./assets/input-mode.js?v=2f45bddb6023"></script>
     <link rel="preconnect" href="https://tiles.openfreemap.org" />
     <link
       rel="stylesheet"
       href="./assets/vendor/maplibre-5.24.0/maplibre-gl.css?v=ab1e70d59ec4"
     />
-    <link rel="stylesheet" href="./assets/styles.css?v=2a60c31e75ff" />
-    <link rel="stylesheet" href="./assets/view-sharing.css?v=f3f38d4806c3" />
-    <link rel="stylesheet" href="./assets/mobile.css?v=22c03116c7c2" />
-    <link rel="stylesheet" href="./assets/group-travel.css?v=f464ca4b5531" />
+    <link rel="stylesheet" href="./assets/styles.css?v=88f04b00d5ae" />
+    <link rel="stylesheet" href="./assets/view-sharing.css?v=037932be5a3f" />
+    <link rel="stylesheet" href="./assets/mobile.css?v=84a08b0a6893" />
+    <link rel="stylesheet" href="./assets/group-travel.css?v=b7253808a196" />
     <link rel="stylesheet" href="./assets/map-feedback.css?v=31eb86c9e975" />
-    <link rel="stylesheet" href="./assets/places-comments.css?v=4722d9f0f6fa" />
-    <link rel="stylesheet" href="./assets/places-panel.css?v=f7e1a8785e2b" />
-    <link rel="stylesheet" href="./assets/photo-comments.css?v=2aed4cf283c7" />
-    <link rel="stylesheet" href="./assets/trip-notifications.css?v=014c16f811fd" />
-    <link rel="stylesheet" href="./assets/photo-bubbles.css?v=7312a5701f71" />
+    <link rel="stylesheet" href="./assets/places-comments.css?v=6098b6c7de9c" />
+    <link rel="stylesheet" href="./assets/places-panel.css?v=22fe65e5c421" />
+    <link rel="stylesheet" href="./assets/photo-comments.css?v=c09efbb93172" />
+    <link rel="stylesheet" href="./assets/trip-notifications.css?v=19c950699b0b" />
+    <link rel="stylesheet" href="./assets/photo-bubbles.css?v=d814b3331a5b" />
     <link rel="stylesheet" href="./assets/arrival-chapter.css?v=57665b78229e" />
+    <link rel="stylesheet" href="./assets/feel.css?v=7cdb665ea43c" />
   </head>
   <body data-journey-id="switzerland-italy-family-2026">
     <section id="page-entry" role="status" aria-live="polite" hidden><p>Opening Journey Atlas…</p><button type="button" hidden>Try again</button></section>
@@ -136,9 +137,9 @@
           </fieldset>
         </details>
         <div class="day-navigator" id="day-navigator" hidden aria-live="polite">
-          <button id="previous-day" type="button" data-event-aria="Previous day" aria-label="Previous day">←</button>
+          <button id="previous-day" type="button" data-event-aria="Previous day" aria-label="Previous day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg></button>
           <button id="focused-day-label" type="button" data-event-aria="Choose a day" aria-label="Choose a day"></button>
-          <button id="next-day" type="button" data-event-aria="Next day" aria-label="Next day">→</button>
+          <button id="next-day" type="button" data-event-aria="Next day" aria-label="Next day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button>
         </div>
         <div class="map-legend" id="map-legend"></div>
         <section class="arrival-chapter" id="arrival-chapter" aria-label="Arrival and city chapter" hidden>
@@ -181,10 +182,10 @@
               <button type="button" data-bubble-unlock hidden>Unlock photos</button>
               <div class="bubble-image-feedback"><span data-bubble-image-status role="status"></span><button type="button" data-bubble-retry hidden>Retry photo</button></div>
             </div>
-            <button type="button" data-bubble-close aria-label="Close selected photos">×</button>
+            <button type="button" data-bubble-close aria-label="Close selected photos"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
             <div class="bubble-card-copy">
               <div class="bubble-card-toolbar">
-                <div class="bubble-card-navigation"><button type="button" data-bubble-prev aria-label="Previous photo">←</button><span data-bubble-count aria-live="polite"></span><button type="button" data-bubble-next aria-label="Next photo">→</button></div>
+                <div class="bubble-card-navigation"><button type="button" data-bubble-prev aria-label="Previous photo"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg></button><span data-bubble-count aria-live="polite"></span><button type="button" data-bubble-next aria-label="Next photo"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button></div>
                 <div class="bubble-card-actions">
                   <button type="button" data-bubble-comments aria-label="Photo comments" title="Photo comments" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 1-8 8H4l1.5-4A8 8 0 1 1 20 11Z"/><path d="M8 10h8m-8 4h5"/></svg><span class="button-label">Comments</span><span data-comment-count aria-hidden="true" hidden></span></button>
                   <button type="button" data-share-view="selected" aria-label="Share photo" title="Share photo"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m-4 4 4-4 4 4M7 10H5v11h14V10h-2"/></svg><span class="button-label">Share</span></button>
@@ -273,7 +274,7 @@
           <button id="open-photo-comments" class="open-photo-comments" type="button" aria-haspopup="dialog" aria-controls="comments-dialog" hidden>Comments · <span id="photo-comments-count">0</span></button>
         </div>
         <section class="photo-stage" aria-live="polite">
-          <button class="photo-nav photo-prev" type="button" aria-label="Previous photo or video">‹</button>
+          <button class="photo-nav photo-prev" type="button" aria-label="Previous photo or video"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg></button>
           <figure>
             <div class="viewer-empty" id="viewer-empty" hidden><strong>No photographs</strong><span data-event-copy="Use the day arrows to keep exploring.">Use the day arrows to keep exploring.</span></div>
             <div class="viewer-photo-frame" id="viewer-photo-frame"><img id="modal-photo" alt="" />
@@ -284,16 +285,16 @@
               </div><div id="viewer-photo-feedback" class="viewer-photo-feedback" role="status" hidden><span id="viewer-photo-message"></span><button id="viewer-photo-retry" type="button" hidden>Retry photo</button></div></div>
             <figcaption id="modal-caption"></figcaption><time id="modal-time"></time>
           </figure>
-          <button class="photo-nav photo-next" type="button" aria-label="Next photo or video">›</button>
+          <button class="photo-nav photo-next" type="button" aria-label="Next photo or video"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button>
         </section>
         <aside class="photo-context">
           <div id="photo-location-panel" class="photo-location-panel"><header class="photo-location-heading"><div><strong id="photo-location-title">Photo location</strong><small id="photo-location-subtitle"></small></div><button id="mobile-location-close" type="button" aria-label="Hide photo location"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg></button></header>
           <div id="photo-map" aria-label="Map following the current photo or video"></div>
           <div class="photo-context-copy">
             <div class="viewer-day-nav">
-              <button id="viewer-previous-day" type="button" data-event-aria="Previous photo day" aria-label="Previous photo day">←</button>
+              <button id="viewer-previous-day" type="button" data-event-aria="Previous photo day" aria-label="Previous photo day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg></button>
               <span id="viewer-day-label"></span>
-              <button id="viewer-next-day" type="button" data-event-aria="Next photo day" aria-label="Next photo day">→</button>
+              <button id="viewer-next-day" type="button" data-event-aria="Next photo day" aria-label="Next photo day"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button>
             </div>
             <div class="viewer-photo-actions">
               <span id="modal-progress"></span>
@@ -392,7 +393,7 @@
     <script src="./assets/map-feedback.js?v=326752babbcc"></script>
     <script src="./assets/photo-zoom.js?v=085882a81f97"></script>
     <script src="./assets/photo-swipe-raster.js?v=c24e19769866"></script>
-    <script src="./assets/mobile-ux.js?v=b65157243121"></script>
+    <script src="./assets/mobile-ux.js?v=cb28ef733feb"></script>
     <script src="./assets/group-travel.js?v=55518f719e29"></script>
     <script src="./assets/media-utils.js?v=81998133d3b8"></script>
     <script src="./assets/location-labels.js?v=fc3359b90d4c"></script>
@@ -405,6 +406,6 @@
     <script src="./assets/photo-comments.js?v=7de2ad5528fb"></script>
     <script src="./assets/trip-notifications.js?v=0780f484a7fa"></script>
     <script src="./assets/view-sharing.js?v=4f3545b0c136"></script>
-    <script src="./assets/app.js?v=1e42133ff9aa"></script>
+    <script src="./assets/app.js?v=1eb7fe574827"></script>
   </body>
 </html>

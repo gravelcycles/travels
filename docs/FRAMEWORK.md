@@ -264,6 +264,46 @@ and public delivery. Physical iPhone/Safari device testing is not claimed.
   `app.js` (for example `renderDays`). Keep such a function self-contained;
   a helper declared beside it is not visible to those tests.
 
+## Feel and finish — 11 November 2026
+
+Contract for [O22](OWNER_DECISIONS.md#feel-and-finish--11-november-2026);
+release status in [WIP](../WIP.md#feel-and-finish--11-november-2026).
+
+- **Tokens** live in `styles.css :root`: `--motion-fast/base/slow`,
+  `--ease-out`, `--ease-in-out`, `--press-scale`, `--radius-s/m/l/pill`,
+  `--shadow-1/2/3`, `--font-ui`. New interface motion uses them. The literal
+  exceptions are the gesture settles in `mobile.css` that scripts wait on
+  (swipe 220 ms, pull-to-dismiss 180 ms, location 220 ms), the reviewed photo
+  reveals (350/650 ms) and the pin fade. Change a paired timer and its
+  transition together.
+- **`feel.css`** loads last in both templates and holds cross-cutting rules:
+  press feedback, entry motion and the shared control shapes. Put a feature's
+  own layout in its own stylesheet.
+- **Press feedback** is `scale: var(--press-scale)` on `:active`, using the
+  `scale` property so it composes with any `transform` a control already has.
+  A wide surface sets a gentler `--press-scale`; set `1` to opt out.
+- **Hover** rules go inside `@media (hover:hover)`. A test fails on a bare
+  `:hover` rule.
+- **Screen motion** runs only when `setMobileTab` sets
+  `data-tab-motion="on"`: after the visitor's first input, on an actual tab
+  change, and not during a history restore. First paint and browser Back stay
+  instant ([initial presentation](#initial-page-presentation)). The three
+  phone panels share one box, so `data-tab-from` keeps the screen being left
+  displayed (never tappable) beneath or above the arriving one. A listener on
+  the shell clears it on `animationend`/`animationcancel`, and only for the
+  panel `data-tab-from` names. Code that reads `offsetParent` to ask whether
+  the map is showing sees it as shown for that third of a second.
+- **Stop changes** restart a short settle by alternating `data-day-swap`
+  when `renderStory` shows a different stop (`data-story-key`); a re-render of
+  the same stop does nothing.
+- **Palette** values are overridden in `feel.css :root`. The page background
+  also appears in both templates' inline `html` style and in `page-entry.js`;
+  the sign-in page in `workers/photo-auth` still has the earlier colour.
+- **Grid photo motion** is a Web Animations layer on `#viewer-photo-frame`
+  added after the photo is selected; it never gates the image. `morph()`
+  measures the tile, `leave()` returns to it and falls back to `back()`.
+  Clear it with `cancelMorph()` whenever the viewer layer changes.
+
 ## Rules for adding features
 
 1. Classify the request: trip content, a generally useful capability, or a true

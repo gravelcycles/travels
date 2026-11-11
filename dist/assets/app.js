@@ -1290,6 +1290,13 @@
   }
 
   function renderStory() {
+    // A newly shown stop's title and words settle in (feel.css). Alternating the
+    // value restarts the animation; a re-render of the same stop leaves it alone.
+    const feelShell = $(".atlas-shell"), feelKey = mapScope === 'journey' ? 'journey' : activeDayId;
+    if (feelShell?.dataset && feelShell.dataset.storyKey !== feelKey) {
+      feelShell.dataset.storyKey = feelKey;
+      feelShell.dataset.daySwap = feelShell.dataset.daySwap === 'a' ? 'b' : 'a';
+    }
     if (mapScope === 'journey') {
       $('#sidebar-day-summary').textContent = 'Journey details';
       $('#focus-day').disabled = true;
@@ -1344,7 +1351,7 @@
       ${travelSummary ? `<p class="travel-summary">${escapeHtml(travelSummary)}</p>` : ''}
       ${day.segmentIds.length ? `<details class="travel-details"><summary>Travel details <span>${day.segmentIds.length} leg${day.segmentIds.length===1?'':'s'}</span></summary>${renderRouteLegs(day)}</details>` : ''}
       ${groupTravel.dayDetails(sourceJourney, sourceJourney.days.find(item => item.id === day.id), activeGroupId)}
-      <nav class="journal-day-nav" aria-label="Journal ${eventWord('plural')}"><button type="button" data-journal-step="-1" ${journey.days[0].id===day.id?'disabled':''}>← Previous ${eventWord()}</button><span>${eventWord('title')} ${day.number} of ${sourceJourney.days.length}</span><button type="button" data-journal-step="1" ${journey.days.at(-1).id===day.id?'disabled':''}>Next ${eventWord()} →</button></nav>
+      <nav class="journal-day-nav" aria-label="Journal ${eventWord('plural')}"><button type="button" data-journal-step="-1" ${journey.days[0].id===day.id?'disabled':''}><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6"/></svg><span>Previous ${eventWord()}</span></button><span>${eventWord('title')} ${day.number} of ${sourceJourney.days.length}</span><button type="button" data-journal-step="1" ${journey.days.at(-1).id===day.id?'disabled':''}><span>Next ${eventWord()}</span><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6"/></svg></button></nav>
     `;
 
     photoStrip.innerHTML = photos.length
@@ -1537,7 +1544,14 @@
   function setMobileTab(tab, {preserveCamera = false} = {}) {
     clearTimeout(mobileMapTimer); mobileMapTimer = null;
     if (tab === 'story') settleAtCity();
-    $(".atlas-shell").dataset.mobileTab = tab;
+    const shell = $(".atlas-shell");
+    // An arriving screen settles in only for a forward move the visitor made.
+    // First paint, restored views and browser Back stay instant (feel.css).
+    shell.dataset.tabMotion = shell.dataset.tabMotionArmed === 'true' && shell.dataset.mobileTab !== tab && !window.JOURNEY_ATLAS_MOBILE_UI?.restoring?.() ? 'on' : 'off';
+    // The screen being left stays in place beneath (or slides away above) the
+    // arriving one; feel.css reads this and an animationend listener clears it.
+    if (shell.dataset.tabMotion === 'on') shell.dataset.tabFrom = shell.dataset.mobileTab; else delete shell.dataset.tabFrom;
+    shell.dataset.mobileTab = tab;
     window.JOURNEY_ATLAS_MOBILE_UI?.tabChanged();
     window.JOURNEY_ATLAS_SHARING_UI?.changed();
     if (tab === "map" && mainMap) {
@@ -2615,12 +2629,24 @@
   replayDialog.addEventListener("close", ()=>{ pauseReplay(); if(replayMap) replayMap.stop();refreshPreloads(); });
   document.addEventListener('visibilitychange',()=>{if(document.hidden) { pauseReplay(); viewerTransition?.cancel(); }});
   $('#replay-retry-map').addEventListener('click',retryReplayMap);
+  // Screen motion waits for the visitor's first input, so nothing the page does
+  // on its own while opening (entry, restore, shared link) is animated.
+  for (const type of ['pointerdown', 'keydown']) document.addEventListener(type, () => { $(".atlas-shell").dataset.tabMotionArmed = 'true'; }, {capture:true, once:true, passive:true});
+  // The screen left behind is hidden again once its exit (or its wait beneath
+  // the arriving screen) has finished.
+  for (const type of ['animationend', 'animationcancel']) $(".atlas-shell").addEventListener(type, event => {
+    // Only the panel currently named as left behind may clear the state: a
+    // cancelled animation from the previous move must not end the new one.
+    const shell = event.currentTarget;
+    if (/^feel-(hold|recede|pop-out|sheet-down)$/.test(event.animationName) && event.target.classList?.contains(`${shell.dataset.tabFrom}-panel`)) delete shell.dataset.tabFrom;
+  });
   $("#viewer-filmstrip").addEventListener("click", (event) => {
     const button = event.target.closest("[data-viewer-index]");
     if (!button) return;
+    const origin = button.getBoundingClientRect();
     viewerPhotoIndex = Number(button.dataset.viewerIndex);
     updateViewer();
-    window.JOURNEY_ATLAS_MOBILE_UI?.gridSelected();
+    window.JOURNEY_ATLAS_MOBILE_UI?.gridSelected(origin);
   });
   photoDialog.addEventListener("click", (event) => {
     if (event.target === photoDialog) photoDialog.close();
