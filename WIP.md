@@ -114,6 +114,14 @@ Switzerland–Italy shows 14 thumbnails on 14 days and the demo two on three; no
 console errors. Not checked: a locked guest's blurred thumbnails, a fresh
 draft in a browser (shared tests only), a physical phone. The bundling
 investigation runs as separate work and has not reported.
+Published as `2df41a5` through successful
+[Pages run 42990564777](https://github.com/gravelcycles/travels/actions/runs/42990564777).
+Seven fresh public files (`app.js`, `styles.css`, `feel.css`, the catalog and
+the Heading East, Switzerland–Italy and demo pages) match the release bytes.
+On the public site in a desktop browser: the catalog's covers measure
+280 × 168, and the demo's rows carry two loaded 46 px thumbnails, with no
+console errors. Not checked on the public site: an unlocked or locked private
+trip's thumbnails, and a phone.
 
 **Still open.** A physical phone and Safari check of the motion and press
 feedback; the sign-in page's background, which keeps the earlier colour until
