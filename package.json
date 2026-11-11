@@ -15,6 +15,7 @@
     "journey:new": "node scripts/create-journey.mjs",
     "updates": "node scripts/update-announcements.mjs",
     "photos:publish": "node scripts/publish-photo-assets.mjs",
+    "places:publish": "node scripts/publish-place-images.mjs",
     "community:admin": "node scripts/community-admin.mjs",
     "community:index": "node scripts/build-community-index.mjs",
     "videos:publish": "node scripts/publish-video-assets.mjs",

@@ -54,6 +54,32 @@ test('owner link/unlink/reorder edits explicit references without changing photo
  editor.linkPhoto(item,'a',true,photos);editor.move(item.photoIds,2,-1);assert.deepEqual(item.photoIds,['no-location','a','second']);editor.linkPhoto(item,'a',false,photos);assert.deepEqual(item.photoIds,point.photoIds);assert.deepEqual(photos,original);
  assert.throws(()=>editor.linkPhoto(item,'foreign',true,photos),/journey/);const draft={id:'blank'};assert.deepEqual(editor.newPoint(draft).coordinates,[],'An unfinished place never gets [0,0]');
 });
+test('Studio preserves cached provenance through copy edits and invalidates it when the image changes',()=>{
+ const image={src:`https://photos.example.test/place-images/assets/v1/${'a'.repeat(64)}.webp`,alt:'The courtyard',credit:'The venue',sourceUrl:'https://venue.example.test/',permission:'cached',originalSrc:'https://venue.example.test/courtyard.jpg',cachedAt:'2026-11-11T12:00:00.000Z'};
+ const original=structuredClone(image);
+ editor.updateImage(image,'alt','Outdoor tables');editor.updateImage(image,'credit','Photographer · venue');editor.updateImage(image,'src',image.src);
+ assert.equal(image.originalSrc,original.originalSrc);assert.equal(image.cachedAt,original.cachedAt);assert.equal(image.permission,'cached');
+ editor.updateImage(image,'originalSrc','https://other.example.test/replacement.jpg');editor.updateImage(image,'cachedAt','2020-01-01T00:00:00.000Z');
+ assert.equal(image.originalSrc,original.originalSrc);assert.equal(image.cachedAt,original.cachedAt,'Cache provenance is maintained by publication');
+ editor.updateImage(image,'src','https://venue.example.test/new.jpg');
+ assert.equal(image.permission,'linked');assert.equal(image.originalSrc,undefined);assert.equal(image.cachedAt,undefined);
+ const licensed=structuredClone(original);editor.updateImage(licensed,'permission','licensed');editor.updateImage(licensed,'licenseUrl','https://venue.example.test/license');
+ assert.equal(licensed.permission,'licensed');assert.equal(licensed.originalSrc,undefined);assert.equal(licensed.cachedAt,undefined);assert.equal(licensed.licenseUrl,'https://venue.example.test/license');
+});
+test('Studio shows stored source provenance and edits it through the normal recoverable place draft',()=>{
+ const image={src:`https://photos.example.test/place-images/assets/v1/${'b'.repeat(64)}.webp`,alt:'The courtyard',credit:'The venue',sourceUrl:'https://venue.example.test/',permission:'cached',originalSrc:'https://venue.example.test/courtyard.jpg',cachedAt:'2026-11-11T12:00:00.000Z'};
+ const draft={id:'studio-cache-fixture',days:[{id:'one',number:1,title:'A city'}],pointsOfInterest:[{...point,images:[image],sources:[],reviews:[],status:'saved',category:'food'}]},listeners={};let changes=0,removed=0;
+ const cachedOption={disabled:false},permission={value:'cached',querySelector:()=>cachedOption};
+ const card={dataset:{poiImage:'0'},querySelector:selector=>selector==='[data-poi-cache-provenance]'?{remove(){removed++;}}:permission};
+ const container={innerHTML:'',addEventListener:(type,listener)=>{listeners[type]=listener;},querySelector:()=>null};
+ const view=editor.create({container,getDraft:()=>draft,getPhotos:()=>[],onChange:()=>{changes++;},onStatus(){},photoUrl:src=>src});view.render();
+ assert.match(container.innerHTML,/Stored source reference/);assert.match(container.innerHTML,/Stored 2026-11-11T12:00:00.000Z/);
+ assert.doesNotMatch(container.innerHTML,/data-poi-image-field="(?:originalSrc|cachedAt)"/,'Publication provenance is read-only');
+ function input(key,value){listeners.input({target:{dataset:{poiImageField:key},value,type:'text',hasAttribute:()=>false,closest:()=>card},stopImmediatePropagation(){}});}
+ input('credit','A corrected contributor');assert.equal(image.cachedAt,'2026-11-11T12:00:00.000Z');assert.equal(image.credit,'A corrected contributor');
+ input('src','https://venue.example.test/new.jpg');
+ assert.equal(changes,2);assert.equal(image.permission,'linked');assert.equal(permission.value,'linked');assert.equal(cachedOption.disabled,true);assert.equal(removed,1);assert.equal(image.originalSrc,undefined);
+});
 test('place association validation rejects missing, foreign and duplicate photo references',()=>{
  const journey=structuredClone(loadContent(path.resolve(import.meta.dirname,'..')).data.journeys.find(j=>j.id==='alpine-crossing'));
  assert.doesNotThrow(()=>validatePointsOfInterest(journey));

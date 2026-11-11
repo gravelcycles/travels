@@ -1436,6 +1436,26 @@ test('Photos + Places editing and rendering are inherited by family, sample and 
   }
 });
 
+test('cached venue imagery survives shared planning and public builds for reference, city, demo and populated fresh draft',t=>{
+  const root=fixture(t),created=createJourney(root,{...input,eventMode:'city'}),{data}=loadContent(root,{includeDrafts:true});
+  const journeys=[data.journeys.find(j=>j.id==='switzerland-italy-family-2026'),data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),data.journeys.find(j=>j.kind==='demo'),data.journeys.find(j=>j.id===created.id)];
+  const expected=new Map();
+  for(const journey of journeys){
+    const point={id:'independent-cached-venue',name:'Independent venue',category:'food',coordinates:[139.7,35.7],locationAccuracy:'approximate',status:'saved',dayIds:[journey.days[0].id],summary:'A separately researched venue.',sources:[{label:'Venue',url:'https://venue.example.test/'}],reviews:[],images:[{src:`https://photos.example.test/place-images/assets/v1/${'c'.repeat(64)}.webp`,alt:'The venue courtyard',credit:'Venue photographer',sourceUrl:'https://venue.example.test/gallery',permission:'cached',originalSrc:'https://venue.example.test/courtyard.jpg',cachedAt:'2026-11-11T12:00:00.000Z'}]};
+    const before=structuredClone({days:journey.days,places:journey.places,segments:journey.segments});
+    const changed=prepareJourneyPlan(data,journey,{pointsOfInterest:[...(journey.pointsOfInterest||[]),point]},readOverrides(root)).journey;
+    assert.deepEqual(changed.pointsOfInterest.at(-1),point);
+    assert.deepEqual({days:changed.days,places:changed.places,segments:changed.segments},before);
+    assert.deepEqual(globalThis.JOURNEY_ATLAS_PLACES.filterPlaces(changed).at(-1).images,point.images);
+    const source=path.join(root,`content/${journey.published?'journeys':'drafts'}/${journey.id}.json`),original=JSON.parse(fs.readFileSync(source,'utf8'));
+    writeJson(source,{...original,pointsOfInterest:changed.pointsOfInterest});expected.set(journey.id,point.images);
+  }
+  buildSite(root);const published=bundle(read(root,'dist/assets/journeys.js'),'JOURNEY_ATLAS_DATA');
+  for(const journey of journeys.filter(j=>j.published))assert.deepEqual(published.journeys.find(j=>j.id===journey.id).pointsOfInterest.at(-1).images,expected.get(journey.id));
+  assert.equal(published.journeys.some(j=>j.id===created.id),false,'A populated local draft remains local');
+  assert.deepEqual(loadContent(root,{includeDrafts:true}).data.journeys.find(j=>j.id===created.id).pointsOfInterest[0].images,expected.get(created.id));
+});
+
 test('TBD planning is shared by the family, demo and fresh draft without inventing dates', t => {
   const root = fixture(t), draft = createJourney(root, input);
   const {data} = loadContent(root);

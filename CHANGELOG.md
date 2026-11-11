@@ -1,5 +1,19 @@
 # Changelog
 
+## 11 November 2026 — Durable Places pictures
+
+- Restored all 56 Heading East venue pictures through our Cloudflare storage:
+  40 original selections retained and 16 reviewed venue-source replacements.
+  Credits, source links and original image/cache provenance remain available;
+  Café August keeps its three original outdoor pictures.
+- Added a shared reviewed-manifest publisher with metadata-stripped WebP,
+  immutable content hashes and checksum/MIME readback verification. Public venue
+  delivery has its own strict namespace inside the private R2 bucket; protected
+  traveler photos keep their existing access rules.
+- Added truthful `cached` source provenance and Studio preservation, shared
+  reference/demo/fresh-city-draft checks, and public/private Worker regressions.
+  Updated the owner decision, Places/photo/journey workflows and trip attribution.
+
 ## 11 November 2026 — Kraków, Zakopane and Bratislava itinerary
 
 - Corrected Kraków to 6–10 November and added Zakopane for 10–13 November,

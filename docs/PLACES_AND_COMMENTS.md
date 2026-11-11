@@ -297,9 +297,15 @@ Each entry has a stable ID, `name`, `category` (`food`/`sight`), `[lng, lat]`
 (`visited`/`saved`), `dayIds`, `summary`, and labeled HTTPS `sources`. Optional
 `note`, `address`, `mapsUrl`, `images`, `reviews`, `photoIds` and `sample` supply content.
 Images need `src`, `alt`, `credit`, `sourceUrl`, optional HTTPS `licenseUrl`, and `permission` (`owned`,
-`permission`, `licensed`, `illustration`, `linked`). `linked` is an owner-requested
+`permission`, `licensed`, `illustration`, `linked`, `cached`). `linked` is an owner-requested
 external reference: it requires an HTTPS image URL and cannot carry a local
-asset or a `licenseUrl`; it does not assert reuse rights. Reviews need `authorId`, `authorName`,
+asset, our hosted venue-image route or a `licenseUrl`; it does not assert reuse rights.
+`cached` records an owner-requested stored source reference, without claiming
+ownership, permission or a reuse license. It requires the original HTTPS image
+URL in `originalSrc`, an ISO timestamp in `cachedAt`, and an HTTPS
+`/place-images/assets/v1/<sha256>.webp` source without query/fragment; it cannot
+assert `licenseUrl`. Rights-backed copies keep their actual permission category.
+Reviews need `authorId`, `authorName`,
 an integer `rating` 1–5, and `text` (empty for a rating-only review); one entry per author per place. The UI derives
 the mean. A single joint review also works: one stable group author with one score.
 Saved/unvisited places cannot have ratings. Sources and private originals should
@@ -311,11 +317,51 @@ reference, not an ingestion API or permission to republish an image. Prefer our
 own photos, owner-provided venue images, or licensed images whose attribution and
 reuse basis can be recorded. The owner may explicitly request a curated,
 source-hosted image reference using `permission: "linked"`; keep its contributor
-credit and source link, without asserting a license or publishing a local copy.
-Otherwise retain the source link and leave the image slot empty when reuse is unclear. There is no automatic
-Google photo pull in the viewer or build. Permission-backed imported images
-become local optimized derivatives; linked references load from their original
-image host. Neither path needs a live place lookup.
+credit and source link without asserting a license. The 11 November 2026 owner
+direction makes reviewed Cloudflare copies the default for venue-image intake,
+including owner-requested source references recorded as `cached`. Prefer our own,
+permission-backed or licensed originals; keep any source restrictions in the
+provenance record and never describe attribution as permission. An inaccessible
+image remains a documented gap until recovered or replaced through ordinary
+source access. No spoofed referrer or other refusal workaround. There is no
+automatic Google photo pull in the viewer or build and no live place lookup.
+
+### Durable venue-image intake
+
+Agent-operated workflow, authorized 11 November 2026:
+
+1. Identify the exact venue/branch and inspect the full image. Preserve explicit
+   selections and subject constraints (Heading East's two owner-selected images,
+   Café August outdoors only, bakery counters). Replacements need factual alt
+   text and their own credit/source; do not transfer the old photographer credit.
+2. Obtain accessible bytes through ordinary requests or supplied files. Put
+   originals and the explicit reviewed manifest under ignored `build/`; do not
+   publish originals, cookies, credentials or camera metadata. Keep original
+   URLs/credits and the reason for each replacement in trip provenance.
+3. Run `npm run places:publish -- --manifest build/<batch>/reviewed.json
+   --report build/<batch>/report.json` to prepare metadata-stripped WebP,
+   proportionally resized to at most 1600 px without upscaling. The manifest is
+   `{reviewed:true,journeyId,images:[{pointId,imageIndex,inputFile,originalSrc,
+   alt,credit,sourceUrl,permission}]}`; use `cached` for requested source copies
+   without a verified reuse basis. Preserve `licenseUrl` only for rights-backed
+   categories. The command does not fetch websites or edit journey sources.
+4. Repeat with `--publish`. It stores content-addressed objects under
+   `places/v1/` in the existing private R2 bucket, then downloads every object
+   to verify SHA-256 and MIME before issuing a completed report. Never enable
+   public bucket domains. Deploy the shared Worker route before changing public
+   journey image URLs. `/place-images/assets/v1/<sha256>.webp` serves only that
+   public venue namespace; private trip keys remain behind existing auth.
+5. Apply verified report pictures to the selected journey entries; retain all
+   other content/edits. Update attribution and trip provenance, validate, test,
+   build and publish Pages. Confirm every hosted image decodes anonymously on a
+   fresh public load, check cards/detail/gallery on desktop and phone, and verify
+   private photo requests still fail without authorization. Check reference,
+   demo and an independently populated fresh draft when shared contracts change.
+
+Availability is independent of the original host after verified upload. Linked
+references remain supported for existing sources but are not the durable import
+default. Missing images retain the shared collapsed card/header and gallery
+failure states; never publish an unverified storage URL.
 
 Example prompt:
 

@@ -103,6 +103,53 @@ A fresh draft in a browser (shared tests only).
 - One Heading East photo filed under Berlin (1–5 Oct) is stamped 29 July; a
   Studio check of its date or album is the owner's call.
 
+## Durable Places pictures — 11 November 2026
+
+Owner request: “update our flow to store photos in cloudflare ourselves so we
+dont get blocked”; re-finding images is authorized. This resolves O20's open
+venue-hosting choice. Required behavior and source rules are in the
+[Places workflow](docs/PLACES_AND_COMMENTS.md#durable-venue-image-intake).
+
+Implemented on `codex/durable-place-images-20261111`, isolated at
+`/private/tmp/travels-place-images-20261111`; integrated remote main `650ade3`,
+including the current controls/login and Kraków/Zakopane releases. The primary
+checkout and its other work are preserved.
+
+**Ready for Pages publication.** All 56 image slots across 20 existing places
+now use our public Cloudflare venue namespace: 40 original selections and 16
+reviewed replacements. The seven places with no prior images remain unchanged.
+The [trip record](docs/HEADING_EAST.md#durable-venue-pictures--11-november-2026)
+and [attribution](dist/assets/places/ATTRIBUTION.md#heading-east--hosted-venue-photographs-11-november-2026)
+record exact recoveries, replacements, credits and source-size limits. Original
+bytes, source-candidate previews and review reports remain ignored under
+`build/venue-image-recovery/` in the primary checkout and `build/place-image-review/`
+in the isolated worktree.
+
+**Checked.** All 965 tests, production build and integrated Worker runtime
+checks pass. Worker version `26e6b633-287b-4e63-a92e-28b34b02ed45` is deployed
+with the latest login page. All 56 R2 objects (8,686,744 bytes) passed upload
+readback verification and an independent public download/SHA-256/MIME/decode
+check. Public HEAD/immutable ETag checks pass; private-photo GET/HEAD still
+return 401 anonymously. Cloudflare's edge rejects Python's HTTP client (1010);
+the ordinary Node client and browser load the public images, without custom
+headers or source-host workarounds.
+
+Actual desktop browser checks cover Heading East list/detail/gallery and all
+three retained Café August outdoor scenes; the reference's hidden empty Places
+action; the demo's three unchanged local image cards; and a freshly created,
+independently populated Berlin city draft using a verified hosted picture in
+its card/detail/full gallery. Public image bytes are used even in local previews.
+The responsive initial layouts were inspected in 390/320 px browser frames;
+frame action controls were unavailable, so phone Places interactions remain
+covered by shared regressions, not a new interactive phone-browser pass. A
+physical phone and Safari were not checked. No viewer layout or interaction
+code changed in this task.
+
+Next: fetch/check current main, publish the tested generated output to Pages,
+verify the successful Actions deployment and fresh public Heading East data,
+cards and gallery, then add the release receipt here. There are no missing or
+unverified image slots in the prepared release.
+
 ## Load, interaction and flow fixes — 10 November 2026
 
 Authorized by the owner after a sitewide review; direction, declined items and
@@ -163,8 +210,8 @@ hourly reload on 10 November, so it stays at one hour.
 
 **Not done.** Per-photo request cost and thumbnail
 concurrency; the fullscreen location map's route redraw; bundling/minification;
-fresh sources for Heading East venue images. Each needs either an owner
-decision or an unlocked session to measure.
+fresh sources for Heading East venue images (now authorized in the 11 November
+workstream above). The remaining measurement work needs an unlocked session.
 
 
 ## Keep the current route active after arrival — 3 November 2026

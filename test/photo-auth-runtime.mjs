@@ -20,6 +20,18 @@ try{
  const exchange=await redeem();assert.equal(exchange.status,200);const access=await exchange.json();
  assert.equal((await redeem()).status,401,'A code can only be used once');
  const bucket=await mf.getR2Bucket('PHOTOS'),bytes=new Uint8Array([82,73,70,70]);
+ const venueHash='d'.repeat(64),venueKey=`places/v1/${venueHash}.webp`,venueUrl=`https://photos.example.com/place-images/assets/v1/${venueHash}.webp`;
+ await bucket.put(venueKey,bytes,{httpMetadata:{contentType:'image/webp'}});
+ for(const method of ['GET','HEAD']) {
+  const venue=await mf.dispatchFetch(venueUrl,{method});assert.equal(venue.status,200);assert.equal(venue.headers.get('Content-Type'),'image/webp');
+  assert.equal(venue.headers.get('Cache-Control'),'public, max-age=31536000, immutable');assert.equal((await venue.arrayBuffer()).byteLength,method==='GET'?bytes.length:0);
+ }
+ assert.equal((await mf.dispatchFetch(venueUrl,{headers:{'If-None-Match':`"${venueHash}"`}})).status,304);
+ assert.equal((await mf.dispatchFetch(venueUrl,{method:'POST'})).status,405);
+ assert.equal((await mf.dispatchFetch(venueUrl+'?url=https://example.com/image.jpg')).status,404);
+ assert.equal((await mf.dispatchFetch('https://photos.example.com/place-images/assets/places/v1/'+venueHash+'.webp')).status,404);
+ assert.equal((await mf.dispatchFetch('https://photos.example.com/private-photos/assets/v1/'+venueHash+'.webp')).status,401);
+ console.log('Runtime public venue GET/HEAD, immutable revalidation and private namespace isolation checks passed.');
  const photoHeaders={Origin:'https://gravelcycles.github.io',Authorization:`Bearer ${access.token}`};
  for(const format of ['webp','avif']) {
   const key=`v1/${'a'.repeat(64)}.${format}`,contentType=`image/${format}`;

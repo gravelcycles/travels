@@ -131,6 +131,7 @@ password system.
 | `dist/assets/photo-places.js`, `photo-bubbles.js`, `photo-bubbles.css` | Shared Photos + Places associations, stable geographic map groups separate from desktop journey browsing, protected thumbnails and selection through the existing desktop sidebar/phone compact card; map bubbles and right-hand reel thumbnails select, the large selected/lead image opens fullscreen (ordinary desktop/phone entry uses the journey roll under O03/O08; explicit Places collections retain scope); close old map popups before day changes and keep location thumbnails independent of album browsing |
 | `dist/assets/photo-adjustments.js`, `studio/photo-adjustments-ui.js`, `scripts/studio-photo-adjustments.mjs` | Shared crop/rotation geometry, recoverable modal, and managed-source derivative generation. Atomic `imageEdit` overrides carry all matching WebP/blur sizes; public builds retain original/prior verified assets until the private publisher confirms the new files. `resolvePhoto` applies the complete set and clears the incompatible original AVIF; [contract](../PHOTO_WORKFLOW.md#crop-and-rotation-in-studio) |
 | `studio/place-editor.js` | Owner Places, credited images, curated reviews and ordered trip-photo links through the existing plan/save/recovery flow |
+| `scripts/publish-place-images.mjs`, `workers/photo-auth/place-images.mjs` | Agent-reviewed public venue derivatives, verified content-addressed R2 upload, public read-only namespace isolated from private traveler media; [intake contract](PLACES_AND_COMMENTS.md#durable-venue-image-intake) |
 | `dist/assets/view-sharing.js`, `view-sharing.css` | Shared view URL parsing/serialization, coalesced URL replacement, explicit thumbnail-link preparation and native share/copy fallback; surface controllers retain history ownership; no saved resume storage |
 | `workers/photo-auth/photo-sharing.mjs`, `scripts/build-photo-share-index.mjs` | Published still-photo share index, authenticated thumbnail-only link signing, server-rendered preview metadata and strictly indexed small-thumbnail delivery; public sample shares reuse public thumbnails; full-photo access is unchanged |
 | `dist/assets/app.js` | Shared viewer, journal, map interaction, album, introduction; dormant full-trip Replay UI. Confirmed/TBD context stacking and transparent TBD casings preserve overlaps (O06 / route workflow), including canvas arrival/opening trails |
@@ -600,8 +601,14 @@ from published real photos, excluding local and trashed items. CI checks its
 freshness. Deploy this index with the Worker before each Pages publication that
 changes photo eligibility. D1 provisioning and public rollout remain explicit
 operations in [COMMUNITY_OPERATIONS.md](COMMUNITY_OPERATIONS.md), alongside
-Free-plan limits and identity/retention behavior. Further image-intake automation
-remains separate backlog work. Curated group reviews now have owner-only local Studio editing; visitor write authorization has not changed.
+Free-plan limits and identity/retention behavior. Venue-image intake now uses
+the agent-operated verified Cloudflare publisher described in the
+[Places workflow](PLACES_AND_COMMENTS.md#durable-venue-image-intake), with a public
+`places/v1/` object namespace and strict read-only Worker route. The bucket itself
+remains private. `cached` retains original source/date without asserting rights;
+ordinary builds and the viewer never scrape or fetch image candidates. Further
+automated discovery remains separate backlog work. Curated group reviews now
+have owner-only local Studio editing; visitor write authorization has not changed.
 
 ## City events — 8 October 2026
 

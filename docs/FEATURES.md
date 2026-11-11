@@ -17,6 +17,13 @@ capture new corrections during the task and reconcile current docs before
 delivery; use the [live update procedure](OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task).
 Accepted work still pending belongs in WIP, not among delivered capabilities.
 
+Venue pictures use the [reviewed Cloudflare intake](PLACES_AND_COMMENTS.md#durable-venue-image-intake):
+metadata-stripped, proportionally resized WebP in an isolated public delivery
+namespace, with verified uploads, source credit and provenance retained. The
+agent operates intake; existing galleries use ordinary image URLs. `cached`
+identifies requested source copies without asserting a reuse license; Studio
+preserves their original URL/date. Private traveler media keeps its own access.
+
 All catalog/journey entries coordinate view restoration and photo access before
 revealing chrome, including shared photo dialogs and authentication returns.
 Slow initial checks use neutral progress with bounded recovery; intermediate

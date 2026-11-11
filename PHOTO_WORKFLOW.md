@@ -16,6 +16,14 @@ pin, without reordering the album. Groups fully outside the view or without room
 remain available in the album. Preserve the original metadata during
 transfer, then publish separate optimized derivatives.
 
+Venue pictures are separate public media, not protected traveler photographs.
+The 11 November 2026 owner direction stores reviewed copies in Cloudflare so
+expiring source links cannot blank the cards. Follow the
+[durable venue-image intake](docs/PLACES_AND_COMMENTS.md#durable-venue-image-intake)
+for source review, truthful provenance, optimized derivatives and verified public
+delivery. Never make the private photo bucket public or reuse family derivatives
+as venue images.
+
 ## Album appearance
 
 The shared video viewer also inherits picture swipes, chrome taps and pull

@@ -27,6 +27,12 @@ activation work.
 
 ## Independent project workstreams
 
+- [x] **Durable venue pictures — 11 November 2026.** Reviewed Cloudflare copies,
+      truthful source/cache provenance, verified immutable public delivery isolated
+      from private traveler media, and all 56 Heading East images recovered or
+      replaced. [Workflow](docs/PLACES_AND_COMMENTS.md#durable-venue-image-intake),
+      [delivery](WIP.md#durable-places-pictures--11-november-2026).
+
 - [ ] Findability pass follow-ups (11 November 2026, [WIP](WIP.md#findable-labelled-controls--11-november-2026)):
   check the new pulls and the phone stop card on a physical phone;
   decide with the owner whether phone stop details keep the trial layout.

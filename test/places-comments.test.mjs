@@ -73,6 +73,32 @@ test('linked place photos retain source provenance without claiming a reuse lice
   assert.throws(() => validatePointsOfInterest(journey), /externally hosted/);
 });
 
+test('cached venue references require durable public derivatives and truthful source provenance', () => {
+  const journey = example(), picture = journey.pointsOfInterest[0].images[0];
+  const hosted = `https://photos.example.test/place-images/assets/v1/${'a'.repeat(64)}.webp`;
+  Object.assign(picture, { src: hosted, permission: 'cached', originalSrc: 'https://venue.example.test/original.jpg', cachedAt: '2026-11-11T12:00:00.000Z' });
+  delete picture.licenseUrl;
+  assert.doesNotThrow(() => validatePointsOfInterest(journey));
+  for (const edit of [
+    image => { delete image.originalSrc; },
+    image => { image.originalSrc = 'http://venue.example.test/original.jpg'; },
+    image => { image.originalSrc = hosted; },
+    image => { delete image.cachedAt; },
+    image => { image.cachedAt = '2026-02-30T12:00:00.000Z'; },
+    image => { image.src = 'https://venue.example.test/original.jpg'; },
+    image => { image.src = hosted + '?token=temporary'; },
+    image => { image.src = hosted + '#photo'; },
+    image => { image.src = hosted.replace('/place-images/', '/private-photos/'); },
+    image => { image.licenseUrl = 'https://example.test/license'; },
+    image => { image.permission = 'linked'; }
+  ]) {
+    const invalid = structuredClone(journey); edit(invalid.pointsOfInterest[0].images[0]);
+    assert.throws(() => validatePointsOfInterest(invalid), /cached image|linked image/);
+  }
+  picture.permission = 'licensed'; picture.licenseUrl = 'https://example.test/license';
+  assert.doesNotThrow(() => validatePointsOfInterest(journey), 'Hosting does not erase an existing reuse license');
+});
+
 test('local comment simulation scopes journeys/photos and author deletion, retaining literal text', () => {
   const storage = memory(), trip = createDemoStore(storage, 'trip-a'), other = createDemoStore(storage, 'trip-b');
   const visitor = { id: 'visitor-one', name: ' Alex ' };

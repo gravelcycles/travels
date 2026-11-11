@@ -1251,8 +1251,9 @@ used the existing local-photo mode; no private photographs were needed.
 ### Place photos — 10 October 2026
 
 **Superseded selection:** the single-photo sets below were replaced by the
-11 October refresh recorded after this section. The external-reference contract
-and separation from traveler photos still apply.
+11 October refresh recorded after this section. The separation from traveler
+photos still applies; the 11 November hosted release below supersedes external
+storage.
 
 The owner explicitly requested at least one Google Maps photo for each of the
 20 saved places. Each place has one reviewed image from its exact branch's
@@ -1320,7 +1321,7 @@ preserved. Website references name the source publisher, not an assumed author.
 The complete selection and credits are in
 [the attribution record](../dist/assets/places/ATTRIBUTION.md#heading-east--linked-place-photographs).
 
-All images remain `linked` external references with HTTPS sources. No image
+At that release all images were `linked` external references with HTTPS sources. No image
 binaries, trip-photo associations, visits, ratings, itinerary or shared behavior
 are added by this content refresh. Future edits should retain this selection
 intent and the explicit two-photo replacements unless the owner changes it.
@@ -1354,8 +1355,53 @@ images still load. Selections, credits and source links are unchanged.
 
 Shared presentation now collapses a refused image out of the place card and
 header ([O20](OWNER_DECISIONS.md#load-interaction-and-flow-fixes--10-november-2026)).
-That hides the symptom only. A durable source is the owner's decision: fresh
-links will lapse again, and storing copies changes the “linked, not reused”
-provenance above. Do not fetch these images with a spoofed referrer or other
-workaround for the host's refusal.
+That hid the symptom only. The 11 November owner direction below resolves the
+durable-source decision and supersedes the linked-only storage choice. Do not
+fetch images with a spoofed referrer or another workaround for a host's refusal.
+
+### Durable venue pictures — 11 November 2026
+
+The owner requested storing pictures in Cloudflare to avoid source-host blocks
+and authorized re-finding photos. All **56 existing images across 20 places**
+now use our public venue-image route. The other seven saved places retain their
+intentional no-image state. No place facts, status, ratings, trip-photo links,
+traveler edits, albums or itinerary fields changed; the concurrent Kraków and
+Zakopane correction is retained.
+
+**40 original selections are preserved:** 38 recovered through their exact
+public Maps photo pages using fresh image URLs, plus the two website originals.
+Barbès keeps the exact three-tagine image; its displayed uploader was verified
+as **Barbès-Restaurant-Bar** and the source-only credit was refined accordingly.
+Café August keeps all three original outdoor views. All 17 original Prague
+Maps pictures, the original Berlin bakery counters and Origin Coffee's original
+set were recovered. No source restriction was bypassed.
+
+**16 replacements** fill the other slots. Magic John's third photo was no
+longer offered by its public viewer. Maps later required CAPTCHA during recovery;
+the agent stopped and used ordinary venue/operator pages for the remaining
+images. Abi’s replacement shows its actual counter/interior in revolutionSCREEN's
+Restaurant ABIS project gallery; it is not the original takeaway-meal image.
+Jill and Isabella use their exact branch pages, Tibet its garden-café page,
+Freddy Schilling its Eigelstein interior and operator menu, and Zurheide its
+Crown/Berliner Allee department and pâtisserie pages. The full per-slot credits,
+subjects and superseded original IDs are in
+[attribution](../dist/assets/places/ATTRIBUTION.md#heading-east--hosted-venue-photographs-11-november-2026).
+
+Each source record uses `permission: "cached"`, preserving credit, source page,
+original image URL and cache timestamp without asserting ownership or a license.
+The [shared intake workflow](PLACES_AND_COMMENTS.md#durable-venue-image-intake)
+owns future preparation: reviewed, metadata-stripped WebP, at most 1600 px without
+upscaling, content-addressed R2 storage and verified public delivery. Originals
+remain ignored. The two small Zurheide department images retain 400×284 source
+resolution; they are not enlarged. Venue pictures remain public and distinct
+from the existing protected traveler media.
+
+All 56 objects (8,686,744 bytes) passed R2 readback SHA-256/MIME checks and a
+separate anonymous public download, checksum and decode check. Public HEAD and
+immutable ETag revalidation work; anonymous private-photo GET/HEAD still return
+401. All 965 tests, the production build and Worker runtime checks pass after
+integrating current main. Desktop checks cover restored cards/detail/gallery,
+all three Café August outdoor views and a populated independent city draft.
+Delivery and remaining verification are recorded in
+[WIP](../WIP.md#durable-places-pictures--11-november-2026).
 

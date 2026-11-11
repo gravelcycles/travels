@@ -3,6 +3,12 @@ const text = (value, max = 2000) => typeof value === 'string' && value.trim().le
 const https = value => {
   try { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password; } catch { return false; }
 };
+const hostedPlaceImage = value => {
+  if (!https(value)) return false;
+  const url = new URL(value);
+  return /^\/place-images\/assets\/v1\/[a-f0-9]{64}\.webp$/.test(url.pathname) && !url.search && !url.hash;
+};
+const cachedDate = value => typeof value === 'string' && Number.isFinite(Date.parse(value)) && new Date(value).toISOString() === value;
 
 // Points of interest are editorial annotations, not itinerary routing nodes.
 export function validatePointsOfInterest(journey) {
@@ -25,9 +31,10 @@ export function validatePointsOfInterest(journey) {
     if (point.photoIds != null && (!Array.isArray(point.photoIds) || new Set(point.photoIds).size !== point.photoIds.length || point.photoIds.some(id => !journey.photos.some(photo => photo.id === id)))) fail(`${point.id} photoIds must be an ordered list of unique photos belonging to this journey`);
     if (!Array.isArray(point.images ?? []) || (point.images || []).length > 12) fail(`${point.id} has invalid images`);
     for (const picture of point.images || []) {
-      if (picture?.permission === 'linked' && (!https(picture.src) || picture.licenseUrl != null)) fail(`${point.id} linked image must remain externally hosted and cannot assert a license`);
+      if (picture?.permission === 'linked' && (!https(picture.src) || new URL(picture.src).pathname.startsWith('/place-images/') || picture.licenseUrl != null)) fail(`${point.id} linked image must remain externally hosted and cannot assert a license`);
+      if (picture?.permission === 'cached' && (!hostedPlaceImage(picture.src) || !https(picture.originalSrc) || new URL(picture.originalSrc).pathname.startsWith('/place-images/') || !cachedDate(picture.cachedAt) || picture.licenseUrl != null)) fail(`${point.id} cached image needs a hosted derivative, original HTTPS image, cache timestamp and no license claim`);
       if (picture?.licenseUrl != null && !https(picture.licenseUrl)) fail(`${point.id} image license needs a safe HTTPS URL`);
-      if (!picture || !(https(picture.src) || /^\.\/assets\/(?:photos|places)\/[a-z0-9-]+\.(?:webp|jpg|png)$/.test(picture.src)) || !text(picture.alt, 300) || !text(picture.credit, 300) || !https(picture.sourceUrl) || !['owned', 'permission', 'licensed', 'illustration', 'linked'].includes(picture.permission)) fail(`${point.id} image needs a safe source, alt, credit, source URL and image provenance`);
+      if (!picture || !(https(picture.src) || /^\.\/assets\/(?:photos|places)\/[a-z0-9-]+\.(?:webp|jpg|png)$/.test(picture.src)) || !text(picture.alt, 300) || !text(picture.credit, 300) || !https(picture.sourceUrl) || !['owned', 'permission', 'licensed', 'illustration', 'linked', 'cached'].includes(picture.permission)) fail(`${point.id} image needs a safe source, alt, credit, source URL and image provenance`);
     }
     if (!Array.isArray(point.reviews ?? []) || (point.reviews || []).length > 50) fail(`${point.id} has invalid reviews`);
     const reviewers = new Set();

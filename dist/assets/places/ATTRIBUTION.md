@@ -31,13 +31,16 @@ in each journey image record and shown in the gallery.
 
 ## Heading East — linked place photographs
 
+Historical 11 October selection record. The 11 November hosted release below
+supersedes the external-storage choice and identifies its replacements.
+
 Refreshed at the owner's request on 11 October 2026: the exact supplied photos
 replace Barbès and Abi’s; the other 18 saved places each have three images.
 Selections pair food (drinks for the bar) with atmosphere, preferring outdoor
 seating or street views where available. Bakery sets include their counters.
 These replace the single-photo selections recorded on 10 October.
 
-All 56 images were visually reviewed. They remain external, source-hosted
+All 56 images were visually reviewed for that release and used external, source-hosted
 references (`permission: "linked"`); no copies or reuse-license claims are
 published by this repository. They illustrate the venues, not the traveling
 group's visits or the venues' present-day menus/decor. Cards crop for layout;
@@ -111,3 +114,52 @@ atmosphere reference, not evidence of current prices or decor.
 | [Alriso Risotteria Italiana](https://www.google.com/maps?cid=13524212967538539244) | 1 | Jennifer Miller · Google Maps | `CIABIhD4IjCfFplMCyCuqX6yavXb` |
 | [Alriso Risotteria Italiana](https://www.google.com/maps?cid=13524212967538539244) | 2 | Explorer · Google Maps | `CIABIhBYzPzOQdhbwj-J4nwTg5JT` |
 | [Alriso Risotteria Italiana](https://www.google.com/maps?cid=13524212967538539244) | 3 | Alriso Risotteria Italiana · Google Maps | `CIABIhB_ehFuzRLTrz-qP0RZRjOG` |
+
+## Heading East — hosted venue photographs (11 November 2026)
+
+All **56 pictures across 20 places** now use metadata-stripped WebP copies in
+our Cloudflare venue-image namespace. **40 original selections** were retained:
+38 recovered from their exact public Maps photo viewers and the two still-live
+website images. Barbès’s exact tagine photograph is retained; its displayed
+uploader is now verified as **Barbès-Restaurant-Bar**. Café August’s three
+original outdoor scenes and all original bakery-counter selections that remain
+retrievable are preserved.
+
+The owner authorized storage and re-finding photos on 11 November. **16
+replacements** below fill the remaining slots: Maps explicitly no longer offered
+Magic John’s third image, then requested CAPTCHA during further recovery. No
+CAPTCHA, referrer restriction or other host refusal was bypassed. Abi’s original
+meal selection remains in the historical source record; its replacement shows
+the actual venue counter, not a claimed recovery of that meal. Menu pictures
+illustrate the operator’s food rather than asserting a branch-specific serving.
+The two Zurheide department views retain their source’s 400×284 resolution;
+no picture is enlarged during processing.
+
+These are `permission: "cached"` source references, **not a claim of ownership,
+permission or a reuse license**. Website credits identify publishers unless a
+photographer is actually named. Existing contributor credits/source links are
+retained for the recovered images. [The journey image records](../../../content/journeys/backpacking-europe-heading-east.json)
+retain every current source image URL, cache timestamp, credit and source page;
+the table above preserves the superseded selections and exact original IDs.
+The derivatives preserve the full composition and strip metadata; gallery
+presentation remains uncropped. Public venue delivery does not expose protected
+traveler photos.
+
+| Replaced slot | Current picture | Current credit and source |
+| --- | --- | --- |
+| Abi’s Luzern · 1 | The counter and orange tables inside Abi’s Luzern. | [revolutionSCREEN · Restaurant ABIS project gallery](https://revolutionscreen.net/homestorys/abis/) |
+| Magic John’s Pizza · 3 | Magic John’s shopfront with outdoor wooden seating. | [Magic John’s Pizza · venue website](https://www.magicjohns.com/) |
+| Tibet Kailash Gartencafé · 2 | The yellow Tibet Kailash Haus building beside the garden café. | [Tibet Kailash Haus · venue website](https://www.tibet-kailash-haus.de/angebot#gartencafe) |
+| Tibet Kailash Gartencafé · 3 | Tables and closed green parasols in Tibet Kailash Gartencafé’s garden. | [Tibet Kailash Haus · venue website](https://www.tibet-kailash-haus.de/angebot#gartencafe) |
+| Jill - Neapolitanische Pizza · 1 | Jill’s illuminated Sternschanze entrance with planted borders. | [Jill · venue website](https://jill.pizza/) |
+| Jill - Neapolitanische Pizza · 2 | A pizza topped with leafy greens, cured meat and cheese from Jill. | [Jill · venue website](https://jill.pizza/) |
+| Jill - Neapolitanische Pizza · 3 | A pizza at the mouth of Jill’s tiled oven. | [Jill · venue website](https://jill.pizza/) |
+| Isabella Glutenfree Pasteries · 1 | Pastries and cakes in the display counter at Isabella’s Alter Wall café. | [Isabella Glutenfreie Pâtisserie · venue website](https://www.isabella-patisserie.de/en/pages/cafes-hamburg-alter-wall) |
+| Isabella Glutenfree Pasteries · 2 | The street-facing building and outdoor tables at Isabella’s Alter Wall café. | [Isabella Glutenfreie Pâtisserie · venue website](https://www.isabella-patisserie.de/en/pages/cafes-hamburg-alter-wall) |
+| Isabella Glutenfree Pasteries · 3 | Tables, chairs and cushioned seating inside Isabella’s Alter Wall café. | [Isabella Glutenfreie Pâtisserie · venue website](https://www.isabella-patisserie.de/en/pages/cafes-hamburg-alter-wall) |
+| Freddy Schilling – Die Hamburger Manufaktur · 1 | The counter and tables inside Freddy Schilling’s Eigelstein branch. | [Freddy Schilling · venue website](https://www.freddyschilling.de/standorte/) |
+| Freddy Schilling – Die Hamburger Manufaktur · 2 | A burger from Freddy Schilling’s menu. | [Freddy Schilling · venue website](https://www.freddyschilling.de/speisekarte/) |
+| Freddy Schilling – Die Hamburger Manufaktur · 3 | A serving of fries from Freddy Schilling’s menu. | [Freddy Schilling · venue website](https://www.freddyschilling.de/speisekarte/) |
+| Zurheide Feine Kost - EDEKA Frischecenter · 1 | Italian food displays inside Zurheide Feine Kost in the Crown, Berliner Allee. | [Zurheide Feine Kost · venue website](https://www.zurheide-feine-kost.de/zurheide-center-im-crown-duesseldorf/) |
+| Zurheide Feine Kost - EDEKA Frischecenter · 2 | The pastry and cake counter at Zurheide Feine Kost in the Crown, Berliner Allee. | [Zurheide Feine Kost · venue website](https://www.zurheide-feine-kost.de/blog-news/patisserie-duesseldorf-berliner-allee/) |
+| Zurheide Feine Kost - EDEKA Frischecenter · 3 | Bottles and display shelves in Zurheide Feine Kost’s wine department, Berliner Allee. | [Zurheide Feine Kost · venue website](https://www.zurheide-feine-kost.de/zurheide-center-im-crown-duesseldorf/) |

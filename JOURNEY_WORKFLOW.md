@@ -856,11 +856,13 @@ Google's ratings as our group's opinions. The agent researches source links,
 reviews coordinates and attribution, proposes image candidates, and imports
 approved derivatives. Google Maps is an optional outbound reference; there is
 no Maps API or automatic photo scraper. Prefer our own, permission-backed or
-licensed imagery for local copies. When the owner explicitly requests public
-source-hosted photos, use `permission: "linked"`, an HTTPS image URL, the displayed
-contributor credit and the original source link. This records an external
-reference, not ownership or a reuse license; do not give it a `licenseUrl` or
-copy it into local public assets. Check every selected photo and exact branch.
+licensed imagery for stored copies. Reviewed Cloudflare derivatives are the
+default after the owner's 11 November 2026 storage correction; follow
+[durable venue-image intake](docs/PLACES_AND_COMMENTS.md#durable-venue-image-intake).
+Use `cached` with original image URL/date for owner-requested source copies
+without claiming reuse rights. Existing source-hosted references use `linked`;
+neither category asserts ownership or a license. Check every selected photo and
+exact branch; never bypass a refusing host or publish an unverified storage URL.
 
 These annotations do not alter route nodes or saved chapter data. Their content and reviews
 are public; private original images do not belong in journey JSON. Record an

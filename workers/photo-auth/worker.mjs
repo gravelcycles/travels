@@ -5,6 +5,7 @@ import { loginWindow } from './window.mjs';
 import { videoRequest } from './video-service.mjs';
 import { photoAssetDetails } from './photo-cache.mjs';
 import { photoSharingRequest } from './photo-sharing.mjs';
+import { placeImageRequest } from './place-images.mjs';
 const PREFIX = '/private-photos/';
 const COOKIE = '__Host-travel_photo_session';
 const cookie = (value, age) => `${COOKIE}=${value}; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=${age}`;
@@ -44,6 +45,9 @@ export default {
       const url = new URL(request.url), ownOrigin = url.origin, origin = request.headers.get('Origin');
       const allowed = allowedOrigins(env);
       corsOrigin = allowed.includes(origin) ? origin : null;
+      stage = 'place-image';
+      const placeImage = await placeImageRequest(request, env);
+      if (placeImage) return placeImage;
       if (request.method === 'OPTIONS') {
         const requested = (request.headers.get('Access-Control-Request-Headers') || '').toLowerCase().split(',').map(x => x.trim()).filter(Boolean);
         if (!corsOrigin || !['GET', 'HEAD', 'POST', 'PATCH', 'DELETE'].includes(request.headers.get('Access-Control-Request-Method')) || requested.some(h => !['authorization', 'content-type', 'if-none-match', 'range', 'if-range'].includes(h)) || !(url.pathname.startsWith('/community/') || url.pathname.startsWith(`${PREFIX}assets/`) || url.pathname.startsWith('/private-videos/assets/') || url.pathname === `${PREFIX}share` || url.pathname === `${PREFIX}video-access` || url.pathname === `${PREFIX}auth/status` || url.pathname === `${PREFIX}auth/redeem`)) return json(403, { error: 'Not allowed' }, corsOrigin);

@@ -168,11 +168,20 @@ reload (“i think that’s fine”) once it was clear no password is retyped. T
 service keeps issuing one-hour tokens; see
 [private access](../PHOTO_AUTH_HANDOFF.md).
 
-**Still the owner’s call:** a
-durable source for Heading East’s venue images, whose Google-hosted links now
-refuse every request ([trip record](HEADING_EAST.md)); and whether to drop the
-original filename and source hash from public photo data, which is low
-sensitivity and optional.
+**Venue-image follow-up, 11 November:** the owner requested “update our flow to
+store photos in cloudflare ourselves so we dont get blocked” and authorized
+finding replacements. Store reviewed venue-image derivatives in our Cloudflare
+storage rather than depending on expiring third-party links. Preserve credits,
+original image/source links and truthful provenance; self-storage does not make
+an image owned or licensed. Existing venue imagery remains public, separately
+from protected traveler media. This supersedes leaving the durable source as an
+open decision and the linked-only storage choice, not earlier venue/branch or
+outdoors-only selections. The [Places workflow](PLACES_AND_COMMENTS.md#durable-venue-image-intake)
+owns preparation, publication and verification; the [trip record](HEADING_EAST.md)
+owns recovered/replaced selections and gaps. Never bypass a source host's refusal.
+
+**Still the owner’s call:** whether to drop the original filename and source
+hash from public photo data, which is low sensitivity and optional.
 
 Acceptance: check the reference, Heading East, Florence–Genoa (no photos), a
 demo and an independently populated fresh draft on desktop and at 320/390 px.
