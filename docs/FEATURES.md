@@ -292,6 +292,8 @@ to duplicate and they do not certify route or photo-location accuracy.
 - [ROUTE_GEOMETRY_WORKFLOW.md](../ROUTE_GEOMETRY_WORKFLOW.md): detailed multimodal routes, provider import, provenance and review.
 - [TRAIN_ROUTE_WORKFLOW.md](../TRAIN_ROUTE_WORKFLOW.md): local railway network research and generation.
 - [FRAMEWORK.md](FRAMEWORK.md): source ownership, exceptions and remaining migration.
+- [VIEWER_SPEC.md](VIEWER_SPEC.md): skin-independent visitor UX and front-end API
+  specification; update it with any visitor-facing change.
 
 When changing a feature, update its row and the applicable workflow. Record
 reusable owner corrections and supersession in OWNER_DECISIONS.md and reconcile

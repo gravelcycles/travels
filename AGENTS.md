@@ -16,7 +16,8 @@
   Before creating a trip, read `JOURNEY_WORKFLOW.md`; before photo work, read
   `PHOTO_WORKFLOW.md`; before route work, read `ROUTE_GEOMETRY_WORKFLOW.md`
   (and `TRAIN_ROUTE_WORKFLOW.md` for rail); before Places/comments work, read
-  `docs/PLACES_AND_COMMENTS.md`. Load the target trip's intake/provenance too.
+  `docs/PLACES_AND_COMMENTS.md`; before a new skin or front end, read
+  `docs/VIEWER_SPEC.md`. Load the target trip's intake/provenance too.
 - Latest explicit owner direction governs its scope. Current decision/contract
   docs take precedence over dated handoffs, audits, changelog entries and demos.
   `PROJECT_STATE.md`, `AGENT_HANDOFF.md` and `UX_HANDOFF.md` are historical

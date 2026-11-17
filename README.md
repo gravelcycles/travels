@@ -28,6 +28,7 @@ not another copy of the application.
 - [Framework, audit, and remaining work](docs/FRAMEWORK.md)
 - [Design and interaction principles](PRINCIPLES.md)
 - [Feature inventory and required trip data](docs/FEATURES.md)
+- [Viewer specification for new skins (UX, controls, front-end API)](docs/VIEWER_SPEC.md)
 - [New-trip and shared-feature prompts for agents](docs/AGENT_PROMPTS.md)
 - [Step-by-step trip creation and publishing](JOURNEY_WORKFLOW.md)
 - [Standing agent rules](AGENTS.md)

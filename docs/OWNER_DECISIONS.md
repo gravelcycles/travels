@@ -993,9 +993,9 @@ agents.” Apply this to every task, not just documentation audits or new atlase
 
 | What changed | Durable home | Other updates when affected |
 | --- | --- | --- |
-| Shared UX, editorial or operating preference | The existing decision here, or a new stable decision ID | Relevant workflow; FEATURES for implemented behavior; PRINCIPLES only if a general principle changed |
+| Shared UX, editorial or operating preference | The existing decision here, or a new stable decision ID | Relevant workflow; FEATURES for implemented behavior; the [viewer spec](VIEWER_SPEC.md) for visitor-facing screens, controls, copy and states; PRINCIPLES only if a general principle changed |
 | Trip fact, selected image, itinerary or scoped editorial choice | Trip source/overrides and its intake/provenance record | Attribution and trip status as needed; no global rule for a one-trip choice |
-| Technical contract or authoring/delivery process | FRAMEWORK or the applicable workflow | FEATURES when capability changes; AGENTS/AGENT_PROMPTS/README when entry instructions change |
+| Technical contract or authoring/delivery process | FRAMEWORK or the applicable workflow | FEATURES when capability changes; the [viewer spec](VIEWER_SPEC.md) when the front-end API or data shape changes; AGENTS/AGENT_PROMPTS/README when entry instructions change |
 | Accepted work still unfinished or a task handoff | WIP: accepted direction, canonical links, exact next action, source/branch state and checks still needed | TODO for remaining work; label required behavior separately from implemented behavior |
 | Completed change and evidence | Dated CHANGELOG entry and relevant delivery/provenance notes | Link to the current rule; historical records never become a second current specification |
 

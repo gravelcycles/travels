@@ -1,5 +1,18 @@
 # Changelog
 
+## 17 November 2026 — Viewer specification for new skins
+
+- Added [docs/VIEWER_SPEC.md](docs/VIEWER_SPEC.md) at the owner's request: a
+  full, skin-independent specification of the public viewer (catalog, journey
+  opening, desktop and phone atlas, map, photo album/grid/viewer, selected
+  photo card, Places, comments and notifications, unlock, sharing, guide),
+  interaction-quality requirements, a skin contract, current tokens, and the
+  backend interface and data shapes the front end consumes. Studio and other
+  localhost editing tools are out of scope.
+- The ownership map in OWNER_DECISIONS, AGENTS, FEATURES and README now point
+  to the spec so later visitor-facing changes keep it current. Docs only; no
+  runtime or public output changes.
+
 ## 11 November 2026 — Stop thumbnails and larger catalog covers
 
 - Every stop or day row now shows its album's first photo above the count, in
