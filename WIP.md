@@ -1,5 +1,16 @@
 # Current workstreams
 
+## Map Lab demo prompt — 17 November 2026
+
+Owner request: a lightweight demo comparing five very different ways to draw
+the map, the whole-trip view, day/stop selection, train/transit animation
+between places, and places and photos on the map, using real app data. The
+photo screens are out of scope. The brief is
+[the Map Lab prompt](docs/AGENT_PROMPTS.md#prototype-map-and-transit-animation-options-local-demo).
+Status: prompt written, demo not started. Next action: a new agent runs the
+prompt on its own branch as a local demo (O15); nothing is deployed until the
+owner chooses a direction.
+
 ## Kraków and Zakopane dates — 11 November 2026
 
 Authorized: Kraków **6–10 November**, Zakopane **10–13 November**, then Bratislava;
