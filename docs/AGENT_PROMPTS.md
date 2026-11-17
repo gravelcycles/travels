@@ -86,11 +86,8 @@ fallback is not evidence about where the traveler was.
 > - [OWNER_DECISIONS.md](https://github.com/gravelcycles/travels/blob/main/docs/OWNER_DECISIONS.md)
 >   (especially O05–O07, O09, O14, O01/O02, O20–O22 and the Apple-like
 >   definition), and [PRINCIPLES.md](https://github.com/gravelcycles/travels/blob/main/PRINCIPLES.md).
-> - [docs/VIEWER_SPEC.md](https://github.com/gravelcycles/travels/blob/main/docs/VIEWER_SPEC.md)
->   §1, §7, §10, §11, §17.3, §18–19 for concepts, the current map, photo
->   bubbles, Places, the transport colour/pattern vocabulary and the data
->   shapes. If it is not on `main` yet, read it from
->   [branch `claude/hopeful-goldberg-3gjeel`](https://github.com/gravelcycles/travels/blob/claude/hopeful-goldberg-3gjeel/docs/VIEWER_SPEC.md).
+> - [PLACES_AND_COMMENTS.md](https://github.com/gravelcycles/travels/blob/main/docs/PLACES_AND_COMMENTS.md#photos--places--current-contract)
+>   for how photos and curated places appear on the map today.
 > - How it works today:
 >   - [ARRIVAL_CITY_DEMO.md](https://github.com/gravelcycles/travels/blob/main/docs/ARRIVAL_CITY_DEMO.md)
 >     and [arrival-chapter.js](https://github.com/gravelcycles/travels/blob/main/dist/assets/arrival-chapter.js)
@@ -134,6 +131,13 @@ fallback is not evidence about where the traveler was.
 >
 > Apply `CONTENT_OVERRIDES.days[id].photoOrder` and the photo overrides
 > (location, `mapFrame`) the way the viewer does. Skip trashed photos.
+>
+> **Transport vocabulary** (current; patterns matter more than colours):
+> train `#0072b2` solid · ferry (`boat`) `#007f8b` short dash · bus `#a85c00`
+> long dash · gondola `#7b4ba3` spaced dots · walk `#3d4a4d` fine dots · car
+> `#a43a2f` dash-dot · bike `#24804f` medium dash. TBD legs are dotted with no
+> casing. Brand blue is `#006f92` and selection orange is `#d4512c`.
+> Coordinates are `[lng, lat]`.
 >
 > **Photo privacy (O14, hard rule).** Real trips' photos are `protected`. The
 > photo service only accepts the public site's origin, so a local demo cannot
