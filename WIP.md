@@ -1,5 +1,55 @@
 # Current workstreams
 
+## Map Lab — 17 November 2026
+
+**Proposal only (O15).** The owner asked for “Map Lab: five ways to draw the
+journey”: a lightweight, standalone local demo comparing five very different
+map concepts on real data — whole-trip overview and opening, a minimal stop
+picker, leg animation between places, curated places and located photos —
+with deliberate departures from current decisions welcome but called out.
+Out of scope: full-screen viewer, albums, comments, unlock and Studio. **Do
+not change the shared viewer, deploy or merge to `main` until the owner picks
+a direction.** Record the owner's reactions and choice in
+[OWNER_DECISIONS](docs/OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task)
+as they arrive; add FEATURES/CHANGELOG entries only once something is adopted.
+
+Branch `claude/hopeful-einstein-1j5jjh` (from `origin/main` `7566aa4`).
+Everything lives in [`prototypes/map-lab/`](prototypes/map-lab/README.md):
+not in the build, not linked from the catalog, no shared runtime, template,
+CSS, test or journey source changed. Preview from the repository root with
+`python3 -m http.server 4180`, then open `/prototypes/map-lab/`
+(`?option=1–5&trip=…&event=…&motion=reduced`). The concepts are Night globe,
+Transit diagram, Ink atlas, Space-time and Follow-cam; the
+[comparison](prototypes/map-lab/COMPARISON.md) holds the table, measurements
+and the agent's recommendation (the choice is the owner's).
+
+Data: the public bundles in `dist/assets/journey-data/` are fetched directly;
+overrides, Trash, `photoOrder`, route geometry and city framing go through the
+shared helpers. Protected photos appear only as their embedded `blur` previews
+(O14); their private URLs never reach the options. Unlocated photos are never
+drawn; only `point.photoIds` link photos to places (O01/O02). Demo-only
+external hosts: OpenFreeMap, AWS Terrain Tiles (option 5), jsDelivr deck.gl
+9.1.14 (option 4), Google Fonts.
+
+Checked in headless Chromium (software WebGL): every option on Heading East
+(overview, Köln → Düsseldorf, Düsseldorf → Berlin, TBD tail), Switzerland–Italy
+day 6 (train, ferry, gondola) and Nine to Como day 1 (three route groups),
+Florence–Genoa (no photos), direct `event` links, desktop 1280 × 800 and phone
+390 × 844 / 320 px with no console errors, no visible text under 12 px, no
+horizontal overflow and 44 px shell/option targets. In every option reduced
+motion never animates, wheel input interrupts the opening, Skip ends a leg,
+Replay restarts it and the URL follows the stop; a request log shows no
+private-photo, worker or place-image URL. Frame times were measured with
+Playwright at 390 × 844 under 4× CPU throttling (numbers in the comparison).
+`npm test` (971 pass) and `npm run build` pass with `dist/` unchanged.
+Screenshots and recordings went to the owner in the task chat and are not
+committed. Option 4's deck.gl points have a ~43 px picking area (the scrubber
+is the main control). **Not checked:** a physical phone or any real GPU (software WebGL
+over-weights the camera-moving options), Safari/iOS, screen readers beyond
+names and roles, keyboard paths inside each map beyond the shell, Studio
+drafts (out of scope), and the fresh-draft/catalog flows a shared adoption
+would need. Next action: owner review of the five concepts.
+
 ## Kraków and Zakopane dates — 11 November 2026
 
 Authorized: Kraków **6–10 November**, Zakopane **10–13 November**, then Bratislava;

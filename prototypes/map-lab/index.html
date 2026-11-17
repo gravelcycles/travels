@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en" data-option="1" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Map Lab · five ways to draw the journey</title>
+  <script>
+    // Resolve the requested option and motion preference before first paint,
+    // so the page opens on that option's own background with no default flash.
+    (function () {
+      var params = new URLSearchParams(location.search), option = Number(params.get('option'));
+      if (!(option >= 1 && option <= 5)) option = 1;
+      var root = document.documentElement;
+      root.dataset.option = option;
+      root.dataset.theme = option === 1 || option === 5 ? 'dark' : 'light';
+      var motion = params.get('motion');
+      if (motion === 'reduced' || (!motion && matchMedia('(prefers-reduced-motion: reduce)').matches)) root.dataset.reduced = '1';
+    })();
+  </script>
+  <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="../../dist/assets/vendor/maplibre-5.24.0/maplibre-gl.css">
+  <link rel="stylesheet" href="shell.css">
+  <script src="../../dist/assets/vendor/maplibre-5.24.0/maplibre-gl.js"></script>
+  <script src="../../dist/assets/atlas-utils.js"></script>
+  <script src="../../dist/assets/media-utils.js"></script>
+  <script type="module" src="shell.js"></script>
+</head>
+<body>
+  <main id="stage" class="lab-stage" aria-label="Journey map"></main>
+
+  <header class="lab-top" aria-label="Map Lab controls">
+    <div class="lab-brand" aria-hidden="true"><span class="lab-brand-mark"></span><span class="lab-brand-word">Map Lab</span></div>
+    <nav class="lab-options" aria-label="Concept">
+      <button type="button" data-option="1" aria-pressed="false"><b>1</b><span>Night globe</span></button>
+      <button type="button" data-option="2" aria-pressed="false"><b>2</b><span>Transit diagram</span></button>
+      <button type="button" data-option="3" aria-pressed="false"><b>3</b><span>Ink atlas</span></button>
+      <button type="button" data-option="4" aria-pressed="false"><b>4</b><span>Space-time</span></button>
+      <button type="button" data-option="5" aria-pressed="false"><b>5</b><span>Follow-cam</span></button>
+    </nav>
+    <div class="lab-top-actions">
+      <label class="lab-trip">
+        <span class="lab-visually-hidden">Trip</span>
+        <select id="trip-select" aria-label="Trip"></select>
+      </label>
+      <button type="button" class="lab-icon-button" id="key-button" aria-label="Map key" aria-haspopup="dialog">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 7h6M3 12h4M3 17h7"/><path d="M13 7h8" stroke-dasharray="2.4 2"/><path d="M13 12h8" stroke-dasharray="5 2"/><path d="M13 17h8" stroke-dasharray=".1 2.6"/></svg>
+      </button>
+      <button type="button" class="lab-icon-button" id="about-button" aria-label="About this concept" aria-haspopup="dialog">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.6v.1"/></svg>
+      </button>
+      <button type="button" class="lab-icon-button" id="motion-button" aria-pressed="false" aria-label="Reduce motion">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 12h3l2.5-6 4 12 2.5-6h6"/></svg>
+      </button>
+      <button type="button" class="lab-icon-button" id="more-button" aria-label="Trip, key and settings" aria-haspopup="dialog">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5.5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="18.5" cy="12" r="1.9"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="lab-slot lab-slot-tools" id="slot-tools"></div>
+  <div class="lab-slot lab-slot-panel" id="slot-panel"></div>
+
+  <nav class="lab-dock" aria-label="Stops">
+    <button type="button" class="lab-dock-button" id="prev-button" aria-label="Previous stop">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button type="button" class="lab-dock-label" id="event-button" aria-haspopup="dialog" aria-label="Choose a stop">
+      <span class="lab-dock-kicker" id="event-kicker"></span>
+      <span class="lab-dock-title" id="event-title"></span>
+    </button>
+    <button type="button" class="lab-dock-button" id="next-button" aria-label="Next stop">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+    <button type="button" class="lab-dock-button" id="overview-button" aria-label="Show whole trip">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+    </button>
+    <button type="button" class="lab-dock-button lab-play" id="play-button" aria-label="Replay">
+      <svg class="lab-replay-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4.4h4.4"/></svg>
+      <svg class="lab-skip-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 5.5l9 6.5-9 6.5z"/><rect x="16" y="5.5" width="2.6" height="13" rx="1"/></svg>
+    </button>
+  </nav>
+
+  <dialog class="lab-sheet" id="stops-sheet" aria-labelledby="stops-heading">
+    <div class="lab-sheet-head"><h2 id="stops-heading">Stops</h2><button type="button" class="lab-icon-button" data-close aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <ol class="lab-stop-list" id="stop-list"></ol>
+  </dialog>
+
+  <dialog class="lab-sheet" id="key-sheet" aria-labelledby="key-heading">
+    <div class="lab-sheet-head"><h2 id="key-heading">Map key</h2><button type="button" class="lab-icon-button" data-close aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <ul class="lab-key" id="key-list"></ul>
+  </dialog>
+
+  <dialog class="lab-sheet lab-about" id="about-sheet" aria-labelledby="about-heading">
+    <div class="lab-sheet-head"><h2 id="about-heading">About</h2><button type="button" class="lab-icon-button" data-close aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div id="about-body"></div>
+  </dialog>
+
+  <dialog class="lab-sheet" id="more-sheet" aria-labelledby="more-heading">
+    <div class="lab-sheet-head"><h2 id="more-heading">Map Lab</h2><button type="button" class="lab-icon-button" data-close aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="lab-more-section">
+      <div class="lab-more-row"><select id="trip-select-more" aria-label="Trip"></select></div>
+      <div class="lab-more-row"><span>Reduce motion</span><button type="button" class="lab-pill" id="motion-button-more" aria-pressed="false">Off</button></div>
+      <div class="lab-more-row"><button type="button" class="lab-pill" id="key-button-more">Map key</button><button type="button" class="lab-pill" id="about-button-more">About this concept</button></div>
+    </div>
+  </dialog>
+
+  <div class="lab-status" id="lab-status" role="status" aria-live="polite"></div>
+</body>
+</html>
