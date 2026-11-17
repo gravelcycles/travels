@@ -8,7 +8,9 @@ document alone, without reading the code.
 
 **Written:** 17 November 2026, from the shared templates and runtime
 (`content/templates/*.html`, `dist/assets/*.js|css`) and the photo Worker
-(`workers/photo-auth/`), at commit `7566aa4`.
+(`workers/photo-auth/`), at commit `7566aa4`. It was then checked against the
+live site, locked and unlocked, on desktop (1440 px) and an iPhone 12
+viewport.
 
 **Scope**
 - **In scope:** the public catalog page, journey pages (real trips, demos and
@@ -193,6 +195,9 @@ The address bar always mirrors the current view (O18).
 - Legacy `#photo=` / `?photo=` / `?day=` links still work.
 - Defaults: a photo with no view means `view=photo`; a day with no view means
   `view=map`.
+- The overview URL still carries the internal first event, for example
+  `#day=<first>&view=map&scope=journey`. `scope=journey` is what makes it the
+  unselected overview.
 - Unknown or removed IDs fall back to a valid event.
 - A bare journey URL shows the normal introduction. There is no saved
   "resume where I was" behaviour; that was explicitly excluded.
@@ -229,6 +234,8 @@ Inside the viewer, comments and other dialogs close before the photo.
 | Travel time | "2 h 15 min–3 h travel", with "(2 of 3 legs timed)" and qualifiers such as "· with stops" when relevant |
 | Meta text | Sentence case for dates, transport and counts. Small-caps eyebrows (e.g. "THE DAYS") keep capitals (O22) |
 | Event number | Zero-padded in rows and eyebrows ("01", "DAY 03"), plain in labels ("Day 3") |
+| Comment and notification dates | Short month-first ("Oct 14"), with the full date and time in a tooltip |
+| Undated TBD event | "Dates to decide" in rows (the TBD badge carries the status) |
 
 ### 3.5 Day/stop wording
 
@@ -270,9 +277,11 @@ Order, top to bottom:
      - Phone: a 16:9 cover stacked above the copy (O22).
      - **Protected covers** show a blurred preview until unlocked and stay
        blurred if the visitor never unlocks.
-     - **No cover at all:** text art reading "A JOURNEY TAKING SHAPE" /
-       "Places to go. Memories to make your own."
-   - **Kicker** (eyebrow), **title** (display serif), **subtitle** (two lines).
+     - **No cover at all:** text art reading "Places to go. Memories to make
+       your own." The markup also has an "A JOURNEY TAKING SHAPE" eyebrow,
+       currently hidden.
+   - **Title** (display serif) and **subtitle** (two lines). The entry also
+     carries a kicker, but the card currently hides it.
    - **Meta line:** dates · "{N} days|stops" · distance label (§3.4).
    - There are no photo or comment counts on cards.
 4. **Empty state** (no published journeys): "The next mapped journey will
@@ -412,7 +421,8 @@ The heading row is "Journey details" in journey scope, or "Day details ·
 2. **View {N photos · M videos}.** Opens the viewer.
 3. **Share photo** (icon + text). Shares the lead photo (§14).
 4. **Selected-photo card.** Replaces the lead area while a photo is selected
-   from the map or reel (§10).
+   from the map or reel (§10). While it shows, the Day details disclosure
+   collapses to "Day details · {title}" below the reel.
 5. **Day details disclosure:**
    - Eyebrow "DAY 03 · {date}". TBD events add "TBD · Planned · not confirmed".
    - **Title** (large serif), optional **tagline** (italic), and the **story**
@@ -544,8 +554,8 @@ The heading row is "Journey details" in journey scope, or "Day details ·
 
 ### 7.6 Filter menu
 
-A collapsible control on the map, shown in journey scope when the trip has at
-least two planning categories.
+A collapsible control at the map's top-left, on desktop and phone. It is
+shown in journey scope when the trip has at least two planning categories.
 
 - Summary: "Filter days · All", the single category's name ("Future TBD"), or
   "2 groups".
@@ -670,7 +680,8 @@ While a photo is selected (§10), the card shrinks to its title.
 
 ### 9.1 Album ("All photos")
 
-A full-screen dialog on a **near-black canvas** with compact sans-serif type
+A dialog on a **near-black canvas** (large and centred over the page on
+desktop, full viewport on phone) with compact sans-serif type
 ([album appearance, 17 Oct](OWNER_DECISIONS.md#photo-album-appearance--17-october-2026)).
 
 - **Sticky heading:** "All photos · N" / "Photos & videos · N", and a solid
@@ -688,10 +699,13 @@ A full-screen dialog on a **near-black canvas** with compact sans-serif type
 
 ### 9.2 Phone event grid
 
-- **Heading:** **Back** plus "{title} · 12 photos · 1 video".
+- **Heading:** **Back** plus the count ("24 photos", "12 photos · 1
+  video"). Inside a collection it is "{collection} · 6 photos".
 - **Locked banner** (above the tiles, only once access has resolved as
   locked): lock icon, "Photos are private", and an **Unlock** button (O21).
-- Square tiles on the dark canvas. Videos carry a play badge with duration.
+- Three columns of square, numbered tiles ("01", "02"…) on the dark
+  canvas. The current photo is outlined. Videos carry a play badge with
+  duration.
 - **Tapping a tile grows it into the full-screen photo.** Back or Close
   shrinks it back to its tile; the return is immediate if the tile is off
   screen.
@@ -719,7 +733,8 @@ the **context sidebar** on the right.
 **Photo stage:**
 - The complete photo, fitted and undistorted, with previous/next arrows.
   Arrows are disabled at the journey ends.
-- Caption overlay (italic serif) when a caption exists.
+- Caption overlay (italic serif) when a caption exists, and the capture
+  time ("30 Sep 2026 · 16:33") as a small pill at the bottom of the photo.
 
 **Context sidebar**, in order:
 1. **Photo location map:** follows the photo with a current pin and a fading
@@ -738,7 +753,8 @@ the **context sidebar** on the right.
 5. **Filmstrip** of the current event. Clicking a thumbnail shows it.
 
 **Other parts of the viewer:**
-- A **Comments · N** button (§12.1) appears when comments are available.
+- A **Comments** button with its count (§12.1) floats at the top-right of the
+  sidebar, beside Close, when comments are available.
 - At the end of an event, a continuation button offers "Next day →" / "Day 4 ·
   {title}", "Next day with photos or videos →" or "Back to journey →". It has
   no pulsing halo.
@@ -758,8 +774,10 @@ the **context sidebar** on the right.
 ### 9.5 Phone full-screen viewer
 
 **Chrome:**
-- **Top row:** **Back** (labelled exactly "Back"), the count "4 of 12" in the
-  current album, the **grid** button, and **Close** (top-right).
+- **Top row:** **Back** (labelled exactly "Back"), the count, the **grid**
+  button, and **Close** (top-right).
+  - The count is the photo's place in the whole trip ("54 of 214"), matching
+    the card and desktop (O21). Inside a collection it counts the collection.
 - **Event bar:** its own full-width row. Previous/next jump buttons sit at
   the safe left and right edges, with "Day 3 · {title}" centred.
   - Jump labels name their destination: the city name, or "Day 4". Long names
@@ -909,7 +927,8 @@ every viewer Places button (O13).
 
 ### 11.2 Layouts
 
-- **Desktop:** a sidebar beside the map. The map stays interactive.
+- **Desktop:** takes over the right column in place of the journal while
+  open. The map stays interactive.
 - **Phone:** a bottom sheet that **opens expanded with results visible**
   ([mobile Places visibility, 12 Oct](OWNER_DECISIONS.md#mobile-places-visibility--12-october-2026)), with two heights:
   - **reading:** nearly full height;
@@ -1140,8 +1159,9 @@ States:
 
 - **Bell** in both headers, with a red unread badge (unread count only, never
   a total).
-- **Dialog:** "Most recent comments", the journey title, and Close. Dragging
-  the header down closes it too.
+- **Dialog:** a floating card (top-right on desktop, a sheet on phone) with
+  "Most recent comments", the journey title, and Close. Dragging the header
+  down closes it too.
 - Newest first across the **whole trip**, regardless of the selected event or
   group filter.
 - Row:
@@ -1191,7 +1211,10 @@ nothing private, and never as a flash before resolution.
 - **Selected-photo card:** an **Unlock photos** overlay on a locked photo.
 - **Viewer:** "Unlock photos to see this photograph." / "Unlock photos to
   watch this video."
-- **First-visit prompt** (automatic, when this browser has never unlocked):
+- **First-visit prompt.** Shown automatically on the first page a browser
+  opens if it has never unlocked, on the catalog as well as journey pages. It
+  appears once per tab: afterwards the tab browses as a guest and other pages
+  show only the header control.
   - "Private photographs" / "The journey is here to explore. Unlock the photos
     with a shared password."
   - **Unlock photos** (the only filled button).

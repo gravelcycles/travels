@@ -9,6 +9,11 @@
   interaction-quality requirements, a skin contract, current tokens, and the
   backend interface and data shapes the front end consumes. Studio and other
   localhost editing tools are out of scope.
+- Checked the spec against the live site, locked and unlocked, on desktop and an
+  iPhone 12 viewport. Corrected the details that differed from the first
+  draft: the trip-wide phone photo count, the catalog card's hidden kicker,
+  the once-per-tab unlock prompt, and where Places, notifications, the album
+  and the viewer's Comments button sit.
 - The ownership map in OWNER_DECISIONS, AGENTS, FEATURES and README now point
   to the spec so later visitor-facing changes keep it current. Docs only; no
   runtime or public output changes.
