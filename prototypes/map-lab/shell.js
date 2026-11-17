@@ -3,8 +3,8 @@
 import { TRIPS, loadTrip, MODES, modeOf, icon, escapeHtml } from './data.js';
 
 const OPTIONS = {
-  1: () => import('./options/01-night-globe.js'),
-  2: () => import('./options/02-transit-diagram.js'),
+  1: () => import('./options/01-globe.js'),
+  2: () => import('./options/02-transit-map.js'),
   3: () => import('./options/03-ink-atlas.js'),
   4: () => import('./options/04-space-time.js'),
   5: () => import('./options/05-follow-cam.js')
@@ -18,7 +18,9 @@ const state = {
   option: clampOption(params.get('option')),
   trip: TRIPS.some(t => t.id === params.get('trip')) ? params.get('trip') : TRIPS[0].id,
   event: params.get('event') || null,
-  reduced: html.dataset.reduced === '1'
+  reduced: html.dataset.reduced === '1',
+  // Light by default (O23); dark only when chosen.
+  mode: params.get('mode') === 'dark' ? 'dark' : 'light'
 };
 let trip = null, mod = null, playing = false, token = 0;
 const lab = window.__mapLab = { frames: [], playing: false, ready: false, option: state.option, log: [] };
@@ -29,6 +31,7 @@ function writeUrl() {
   next.set('trip', state.trip);
   if (state.event) next.set('event', state.event);
   if (state.reduced) next.set('motion', 'reduced');
+  if (state.mode === 'dark' && supportsDark()) next.set('mode', 'dark');
   const url = `${location.pathname}?${next}`;
   // Replace, never push: an unchanged view writes nothing (O20).
   if (url !== location.pathname + location.search) history.replaceState(null, '', url);
@@ -44,8 +47,10 @@ function insets() {
   return { top, bottom: innerHeight - Math.min(dockTop, panelTop) + 10, left: 16, right: 16 + toolsWidth };
 }
 
+function supportsDark(module = mod) { return Boolean(module?.meta?.modes?.includes('dark')); }
 const ctx = {
   slots: { tools: $('slot-tools'), panel: $('slot-panel') },
+  mode: 'light',
   insets,
   isPhone: () => matchMedia('(max-width: 760px)').matches,
   onPlayState: value => setPlaying(value),
@@ -83,6 +88,15 @@ function updateOptionButtons() {
   document.querySelectorAll('.lab-options button').forEach(button => {
     button.setAttribute('aria-pressed', String(Number(button.dataset.option) === state.option));
   });
+}
+function syncModeButtons() {
+  const offered = supportsDark(), dark = offered && state.mode === 'dark';
+  $('mode-button').hidden = !offered;
+  $('mode-row-more').hidden = !offered;
+  $('mode-button').setAttribute('aria-pressed', String(dark));
+  $('mode-button').title = dark ? 'Dark map is on' : 'Dark map';
+  $('mode-button-more').setAttribute('aria-pressed', String(dark));
+  $('mode-button-more').textContent = dark ? 'On' : 'Off';
 }
 function syncMotionButtons() {
   $('motion-button').setAttribute('aria-pressed', String(state.reduced));
@@ -197,8 +211,9 @@ async function mountCurrent(entry) {
   const root = document.createElement('div');
   root.className = 'lab-option-root';
   stage.append(root);
-  html.dataset.theme = module.meta.theme;
-  lab.option = state.option; lab.frames = [];
+  ctx.mode = supportsDark(module) && state.mode === 'dark' ? 'dark' : 'light';
+  html.dataset.theme = ctx.mode;
+  lab.option = state.option; lab.frames = []; lab.mode = ctx.mode;
   try {
     await module.mount(root, trip, ctx);
   } catch (error) {
@@ -206,13 +221,15 @@ async function mountCurrent(entry) {
   }
   if (mine !== token) { module.destroy(); return; }
   mod = module;
+  syncModeButtons();
   module.setReducedMotion(state.reduced);
   const event = state.event && trip.eventById(state.event);
   if (!event) state.event = null;
   writeUrl();
   updateChrome();
-  if (event) module.selectEvent(event.id, { animate: entry !== 'direct' });
-  else module.showOverview({ opening: true });
+  // 'direct' (shared link) and 'static' (appearance switch) land without animation.
+  if (event) module.selectEvent(event.id, { animate: entry !== 'direct' && entry !== 'static' });
+  else module.showOverview({ opening: entry !== 'static' });
   lab.ready = true;
 }
 
@@ -271,6 +288,15 @@ const toggleMotion = () => {
   mod?.setReducedMotion(state.reduced);
   if (state.reduced && playing) { mod?.skip?.(); setPlaying(false); }
 };
+const toggleMode = () => {
+  if (!supportsDark()) return;
+  state.mode = state.mode === 'dark' ? 'light' : 'dark';
+  writeUrl(); syncModeButtons();
+  document.querySelectorAll('dialog[open]').forEach(d => d.close());
+  mountCurrent('static');
+};
+$('mode-button').addEventListener('click', toggleMode);
+$('mode-button-more').addEventListener('click', toggleMode);
 $('motion-button').addEventListener('click', toggleMotion);
 $('motion-button-more').addEventListener('click', toggleMotion);
 $('stop-list').addEventListener('click', event => {

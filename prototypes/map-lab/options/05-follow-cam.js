@@ -5,7 +5,8 @@ import { MODES, modeOf, along, prefix, tracePlan, clock, ease, icon, escapeHtml,
 import { createMap, reveal, cameraFor, onUserInput, markerLayer, zoomToGroup, injectStyle, swatchSvg, OFM } from './common.js';
 
 export const meta = {
-  number: 5, name: 'Follow-cam', theme: 'dark', keyBackground: '#f4f1ea',
+  number: 5, name: 'Follow-cam', modes: ['light', 'dark'],
+  get keyBackground() { return S?.dark ? '#111823' : '#f4f1ea'; },
   tagline: 'Each leg as a short film: a split-flap board announces it, the camera chases a train, bus, ferry or gondola across real terrain, and photos pop up where they were taken.',
   whatsNew: [
     'MapLibre terrain (AWS Terrain Tiles) with hillshade, sky and OpenFreeMap 3D buildings.',
@@ -13,8 +14,9 @@ export const meta = {
     'Split-flap departure board per leg (mode · from → to · date · distance · duration · TBD status) and cinematic letterbox during travel.',
     'Photo cards pop up at their true capture points as the vehicle passes; places rise as labelled pins on arrival.'
   ],
-  keeps: ['Current transport colours and dash patterns with white casing; TBD dotted without casing.', 'Unselected overview; direct links land without animation; input interrupts; reduced motion shows the end state.', 'Board shows only real data: no invented times or platforms.'],
+  keeps: ['Real, light basemap and light controls by default (O23); a night drive is the optional dark mode.', 'Current transport colours and dash patterns with white casing; TBD dotted without casing.', 'Unselected overview; direct links land without animation; input interrupts; reduced motion shows the end state.', 'Board shows only real data: no invented times or platforms.'],
   departures: [
+    'Optional dark map (night drive), offered only when chosen (O23); the board keeps dark split-flap tiles in both modes.',
     'Moving, rotating, pitched camera throughout travel (O09 holds the camera still; leg playback is 2.4–7.5 s per leg instead of 1.5 s per stop).',
     'The opening is a tilting drone reveal rather than a flat still trace (O06).',
     'Full leg geometry is not always visible while travelling (O09 asks for the whole leg in view).',
@@ -23,7 +25,9 @@ export const meta = {
   phone: 'Strongest on a phone held upright: the chase view fills the screen and the board compresses to one title line and one detail line. Terrain and per-frame camera moves are the heaviest work of the five.'
 };
 
-const CASING = '#fffef8';
+let CASING = '#fffef8';
+const NIGHT = { train: '#56c8ff', boat: '#3de8d8', bus: '#ffb54d', gondola: '#cda6ff', walk: '#e6edf2', car: '#ff806f', bike: '#66e8a2' };
+const lineColor = mode => (S?.dark ? NIGHT[mode] : MODES[mode]?.color) || '#006f92';
 const CSS = `
 .o5 { background:#0c0f12; }
 .o5-board { position:absolute; z-index:6; left:50%; top: calc(var(--safe-t) + 70px); transform: translateX(-50%); width: min(560px, calc(100% - 20px));
@@ -71,6 +75,12 @@ const CSS = `
 .o5-hidden-markers .o5-photo, .o5-hidden-markers .o5-pin { opacity:0 !important; pointer-events:none; }
 .o5-photo, .o5-pin { transition: opacity 300ms; }
 :root[data-reduced] .o5 *, :root[data-reduced] .o5-board { animation:none !important; transition:none !important; }
+/* Light default (O23): light board panel, paper letterbox, no darkening vignette. */
+.o5-light .o5-board { background:#fffdf8; color:#a06a00; box-shadow: 0 10px 30px rgba(20,30,35,.2), inset 0 0 0 1px #e4ddd0; }
+.o5-light .o5-status { background:#f1eee7; color:#2a7a3b; }
+.o5-light .o5-status.is-tbd { color:#a85c00; border-color:#a85c00; background:transparent; }
+.o5-light .o5-letter { background:#f4f1ea; }
+.o5-light .o5-vignette { display:none; }
 .o5-card .maplibregl-popup-content { border-radius:14px; padding:10px 12px; font:13px/1.35 var(--font-ui); color:#1f2b2f; box-shadow:0 12px 30px #0006; max-width:240px; }
 .o5-card .maplibregl-popup-close-button { width:32px; height:32px; font-size:18px; }
 .o5-card .o5-card-img { width:200px; height:140px; border-radius:10px; background:#ccc center/cover; margin-bottom:6px; }
@@ -89,9 +99,11 @@ let S = null;
 export async function mount(container, trip, ctx) {
   injectStyle('lab-o5', CSS);
   container.classList.add('o5');
-  S = { trip, ctx, container, reduced: false, selected: null, landed: false, job: null, revealed: false, pops: [], timers: new Set() };
+  S = { trip, ctx, container, reduced: false, selected: null, landed: false, job: null, revealed: false, pops: [], timers: new Set(), dark: ctx.mode === 'dark' };
+  CASING = S.dark ? '#0b1220' : '#fffef8';
+  container.classList.add(S.dark ? 'o5-dark' : 'o5-light');
   const mine = S;
-  const map = await createMap(container, { style: OFM('liberty'), center: boundsCenter(trip.bounds), zoom: 4, maxZoom: 17.5, maxPitch: 78 }, { onStyle: styleMap });
+  const map = await createMap(container, { style: OFM(S.dark ? 'dark' : 'liberty'), center: boundsCenter(trip.bounds), zoom: 4, maxZoom: 17.5, maxPitch: 78 }, { onStyle: styleMap });
   if (S !== mine) { map.remove(); return; }
   S.map = map;
   addLayers();
@@ -119,14 +131,19 @@ function styleMap(map) {
   map.addSource('o5-dem', { type: 'raster-dem', tiles, tileSize: 256, encoding: 'terrarium', maxzoom: 12, attribution });
   map.addSource('o5-hs', { type: 'raster-dem', tiles, tileSize: 256, encoding: 'terrarium', maxzoom: 12 });
   const first = map.getStyle().layers.find(layer => layer.type === 'line' || layer.type === 'symbol')?.id;
-  map.addLayer({ id: 'o5-hillshade', type: 'hillshade', source: 'o5-hs', paint: { 'hillshade-exaggeration': 0.45, 'hillshade-shadow-color': '#3d3a33', 'hillshade-highlight-color': '#fffaf0', 'hillshade-accent-color': '#5a5446' } }, first);
+  map.addLayer({ id: 'o5-hillshade', type: 'hillshade', source: 'o5-hs', paint: S.dark
+    ? { 'hillshade-exaggeration': 0.55, 'hillshade-shadow-color': '#000000', 'hillshade-highlight-color': '#3b4c66', 'hillshade-accent-color': '#16202e' }
+    : { 'hillshade-exaggeration': 0.45, 'hillshade-shadow-color': '#3d3a33', 'hillshade-highlight-color': '#fffaf0', 'hillshade-accent-color': '#5a5446' } }, first);
   try { map.setTerrain({ source: 'o5-dem', exaggeration: 1.3 }); } catch (error) { console.warn(error); }
   try {
-    map.setSky({ 'sky-color': '#7fb0dc', 'horizon-color': '#f2e6d2', 'fog-color': '#e9e2d4', 'sky-horizon-blend': 0.5, 'horizon-fog-blend': 0.5, 'fog-ground-blend': 0.35, 'atmosphere-blend': 0 });
+    map.setSky(S.dark
+      ? { 'sky-color': '#0a1222', 'horizon-color': '#22324c', 'fog-color': '#0f1828', 'sky-horizon-blend': 0.5, 'horizon-fog-blend': 0.5, 'fog-ground-blend': 0.35, 'atmosphere-blend': 0 }
+      : { 'sky-color': '#7fb0dc', 'horizon-color': '#f2e6d2', 'fog-color': '#e9e2d4', 'sky-horizon-blend': 0.5, 'horizon-fog-blend': 0.5, 'fog-ground-blend': 0.35, 'atmosphere-blend': 0 });
   } catch (error) { console.warn(error); }
   for (const layer of map.getStyle().layers) {
-    if (/poi|shield|highway-name|road_one_way/.test(layer.id)) map.setLayoutProperty(layer.id, 'visibility', 'none');
-    if (/label_(city|town|village)/.test(layer.id)) map.setLayerZoomRange(layer.id, 8, 24);
+    if (/poi|shield|highway-name|highway_name|road_one_way|road_oneway/.test(layer.id)) map.setLayoutProperty(layer.id, 'visibility', 'none');
+    if (/(label|place)_(city|town|village)/.test(layer.id)) map.setLayerZoomRange(layer.id, 8, 24);
+    if (S.dark && layer.type === 'symbol' && layer.layout?.['text-field']) { try { map.setPaintProperty(layer.id, 'text-color', '#8ea4bf'); map.setPaintProperty(layer.id, 'text-halo-color', '#050b16'); } catch (e) { /* skip */ } }
   }
 }
 
@@ -152,10 +169,10 @@ function routeLayers(source, prefixId, before) {
     map.addLayer({ id: `${prefixId}-case-${mode}`, type: 'line', source, filter: ['all', ['==', ['get', 'mode'], mode], ['!', ['get', 'tbd']]], layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: { 'line-color': CASING, 'line-width': lineWidth(m.width + 3), 'line-opacity': 0.92 } }, before);
     map.addLayer({ id: `${prefixId}-line-${mode}`, type: 'line', source, filter: ['all', ['==', ['get', 'mode'], mode], ['!', ['get', 'tbd']]], layout: { 'line-cap': m.dash && m.dash[0] < 0.5 ? 'round' : 'butt', 'line-join': 'round' },
-      paint: { 'line-color': m.color, 'line-width': lineWidth(m.width), ...(m.dash ? { 'line-dasharray': m.dash } : {}) } }, before);
+      paint: { 'line-color': lineColor(mode), 'line-width': lineWidth(m.width), ...(m.dash ? { 'line-dasharray': m.dash } : {}) } }, before);
   }
   map.addLayer({ id: `${prefixId}-tbd`, type: 'line', source, filter: ['get', 'tbd'], layout: { 'line-cap': 'round', 'line-join': 'round' },
-    paint: { 'line-color': ['match', ['get', 'mode'], ...Object.entries(MODES).flatMap(([k, v]) => [k, v.color]), '#71878a'], 'line-width': lineWidth(4.2), 'line-dasharray': [0.1, 1.9], 'line-opacity': 0.85 } }, before);
+    paint: { 'line-color': ['match', ['get', 'mode'], ...Object.keys(MODES).flatMap(k => [k, lineColor(k)]), '#71878a'], 'line-width': lineWidth(4.2), 'line-dasharray': [0.1, 1.9], 'line-opacity': 0.85 } }, before);
 }
 function addLayers() {
   const map = S.map;
@@ -165,11 +182,14 @@ function addLayers() {
   map.addSource('o5-stops', { type: 'geojson', data: stopData() });
   routeLayers('o5-routes', 'o5r', before);
   routeLayers('o5-draw', 'o5d', before);
-  map.addLayer({ id: 'o5-stop', type: 'circle', source: 'o5-stops', paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 4, 10, 6.5], 'circle-color': ['case', ['get', 'tbd'], '#fffef8', '#1f2b2f'], 'circle-stroke-color': ['case', ['get', 'tbd'], '#71878a', '#fffef8'], 'circle-stroke-width': 2, 'circle-pitch-alignment': 'map' } });
+  map.addLayer({ id: 'o5-stop', type: 'circle', source: 'o5-stops', paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 4, 10, 6.5],
+    'circle-color': S.dark ? ['case', ['get', 'tbd'], '#0b1220', '#eaf5ff'] : ['case', ['get', 'tbd'], '#fffef8', '#1f2b2f'],
+    'circle-stroke-color': S.dark ? ['case', ['get', 'tbd'], '#9db3cd', '#0b1220'] : ['case', ['get', 'tbd'], '#71878a', '#fffef8'], 'circle-stroke-width': 2, 'circle-pitch-alignment': 'map' } });
   map.addLayer({ id: 'o5-stop-sel', type: 'circle', source: 'o5-stops', filter: ['==', ['get', 'placeId'], ''], paint: { 'circle-radius': 13, 'circle-color': 'rgba(0,0,0,0)', 'circle-stroke-color': '#d4512c', 'circle-stroke-width': 3, 'circle-pitch-alignment': 'map' } });
   map.addLayer({ id: 'o5-stop-hit', type: 'circle', source: 'o5-stops', paint: { 'circle-radius': 22, 'circle-color': '#000', 'circle-opacity': 0.01 } });
   map.addLayer({ id: 'o5-stop-label', type: 'symbol', source: 'o5-stops', layout: { 'text-field': ['get', 'name'], 'text-font': ['Noto Sans Bold'], 'text-size': 13, 'text-variable-anchor': ['top', 'bottom', 'left', 'right'], 'text-radial-offset': 0.9, 'text-optional': true },
-    paint: { 'text-color': ['case', ['get', 'tbd'], '#4c5d61', '#1f2b2f'], 'text-halo-color': '#fffef8', 'text-halo-width': 1.8 } });
+    paint: S.dark ? { 'text-color': ['case', ['get', 'tbd'], '#9fb3cc', '#e3eef9'], 'text-halo-color': '#050b16', 'text-halo-width': 1.6 }
+      : { 'text-color': ['case', ['get', 'tbd'], '#4c5d61', '#1f2b2f'], 'text-halo-color': '#fffef8', 'text-halo-width': 1.8 } });
   setRouteVisibility('o5r', true); setRouteVisibility('o5d', false);
   applySelection();
 }
@@ -527,7 +547,7 @@ export function setReducedMotion(value) { if (!S) return; S.reduced = Boolean(va
 export function legendSwatch(mode) {
   if (mode === 'tbd') return swatchSvg({ color: '#71878a', width: 4, dash: [0.1, 7.6] });
   const m = MODES[mode];
-  return swatchSvg({ color: m.color, width: 4, dash: m.dash ? m.dash.map(v => v * 4) : null, cap: m.dash && m.dash[0] < 0.5 ? 'round' : 'butt', casing: CASING });
+  return swatchSvg({ color: lineColor(mode), width: 4, dash: m.dash ? m.dash.map(v => v * 4) : null, cap: m.dash && m.dash[0] < 0.5 ? 'round' : 'butt', casing: CASING });
 }
 export function legendExtras() {
   return [
@@ -545,7 +565,7 @@ export function destroy() {
   S.offInput?.();
   S.photos?.destroy(); S.places?.destroy(); S.vehicle?.remove();
   S.map?.remove();
-  S.container.classList.remove('o5', 'is-travel', 'o5-hidden-markers');
+  S.container.classList.remove('o5', 'o5-dark', 'o5-light', 'is-travel', 'o5-hidden-markers');
   S = null;
 }
 void clock;

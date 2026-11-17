@@ -13,7 +13,9 @@
       if (!(option >= 1 && option <= 5)) option = 1;
       var root = document.documentElement;
       root.dataset.option = option;
-      root.dataset.theme = option === 1 || option === 5 ? 'dark' : 'light';
+      // Light is the default (O23); dark only when chosen and offered by the concept.
+      var dark = params.get('mode') === 'dark' && (option === 1 || option === 5);
+      root.dataset.theme = dark ? 'dark' : 'light';
       var motion = params.get('motion');
       if (motion === 'reduced' || (!motion && matchMedia('(prefers-reduced-motion: reduce)').matches)) root.dataset.reduced = '1';
     })();
@@ -35,8 +37,8 @@
   <header class="lab-top" aria-label="Map Lab controls">
     <div class="lab-brand" aria-hidden="true"><span class="lab-brand-mark"></span><span class="lab-brand-word">Map Lab</span></div>
     <nav class="lab-options" aria-label="Concept">
-      <button type="button" data-option="1" aria-pressed="false"><b>1</b><span>Night globe</span></button>
-      <button type="button" data-option="2" aria-pressed="false"><b>2</b><span>Transit diagram</span></button>
+      <button type="button" data-option="1" aria-pressed="false"><b>1</b><span>Globe</span></button>
+      <button type="button" data-option="2" aria-pressed="false"><b>2</b><span>Transit map</span></button>
       <button type="button" data-option="3" aria-pressed="false"><b>3</b><span>Ink atlas</span></button>
       <button type="button" data-option="4" aria-pressed="false"><b>4</b><span>Space-time</span></button>
       <button type="button" data-option="5" aria-pressed="false"><b>5</b><span>Follow-cam</span></button>
@@ -51,6 +53,9 @@
       </button>
       <button type="button" class="lab-icon-button" id="about-button" aria-label="About this concept" aria-haspopup="dialog">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.6v.1"/></svg>
+      </button>
+      <button type="button" class="lab-icon-button" id="mode-button" aria-pressed="false" aria-label="Dark map" hidden>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
       </button>
       <button type="button" class="lab-icon-button" id="motion-button" aria-pressed="false" aria-label="Reduce motion">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 12h3l2.5-6 4 12 2.5-6h6"/></svg>
@@ -107,6 +112,7 @@
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="lab-more-section">
       <div class="lab-more-row"><select id="trip-select-more" aria-label="Trip"></select></div>
+      <div class="lab-more-row" id="mode-row-more" hidden><span>Dark map</span><button type="button" class="lab-pill" id="mode-button-more" aria-pressed="false">Off</button></div>
       <div class="lab-more-row"><span>Reduce motion</span><button type="button" class="lab-pill" id="motion-button-more" aria-pressed="false">Off</button></div>
       <div class="lab-more-row"><button type="button" class="lab-pill" id="key-button-more">Map key</button><button type="button" class="lab-pill" id="about-button-more">About this concept</button></div>
     </div>

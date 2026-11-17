@@ -13,13 +13,22 @@ a direction.** Record the owner's reactions and choice in
 [OWNER_DECISIONS](docs/OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task)
 as they arrive; add FEATURES/CHANGELOG entries only once something is adopted.
 
+**Owner correction, 17 November 2026** (“all should be based on real maps.
+dark mode is ok but we def need light modes as default”), recorded as
+[O23](docs/OWNER_DECISIONS.md#map-concepts-real-maps-light-by-default--17-november-2026):
+every concept now sits on a real, light basemap by default. The transit
+concept is a transit map on true geography (schematic view removed); Globe
+(formerly Night globe) and Follow-cam open light and keep their night look
+behind an explicit **Dark map** switch (`&mode=dark`). No pick yet: reactions
+to the remaining concepts are still open.
+
 Branch `claude/hopeful-einstein-1j5jjh` (from `origin/main` `7566aa4`).
 Everything lives in [`prototypes/map-lab/`](prototypes/map-lab/README.md):
 not in the build, not linked from the catalog, no shared runtime, template,
 CSS, test or journey source changed. Preview from the repository root with
 `python3 -m http.server 4180`, then open `/prototypes/map-lab/`
-(`?option=1–5&trip=…&event=…&motion=reduced`). The concepts are Night globe,
-Transit diagram, Ink atlas, Space-time and Follow-cam; the
+(`?option=1–5&trip=…&event=…&motion=reduced&mode=dark`). The concepts are
+Globe, Transit map, Ink atlas, Space-time and Follow-cam; the
 [comparison](prototypes/map-lab/COMPARISON.md) holds the table, measurements
 and the agent's recommendation (the choice is the owner's).
 
@@ -42,6 +51,11 @@ Replay restarts it and the URL follows the stop; a request log shows no
 private-photo, worker or place-image URL. Frame times were measured with
 Playwright at 390 × 844 under 4× CPU throttling (numbers in the comparison).
 `npm test` (971 pass) and `npm run build` pass with `dist/` unchanged.
+After the O23 correction, Globe and Transit map were re-measured on the same
+fixture and settings, the behaviour, privacy and 320 px checks were repeated
+for the changed concepts (all pass, no target under 44 px), and the switch was
+checked: plain links open light, Dark map adds `&mode=dark`, light-only
+concepts hide it and fall back to light.
 Screenshots and recordings went to the owner in the task chat and are not
 committed. Option 4's deck.gl points have a ~43 px picking area (the scrubber
 is the main control). **Not checked:** a physical phone or any real GPU (software WebGL

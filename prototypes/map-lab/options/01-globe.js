@@ -1,28 +1,32 @@
-// Option 1 · Night globe. MapLibre globe, dark world, glowing trails, comet
-// legs with a gently following camera, photos that bloom as the comet passes.
+// Option 1 · Globe. MapLibre globe on a real basemap, light by default with
+// an optional night mode (O23): glowing trails, comet legs with a gently
+// following camera, photos that bloom as the comet passes.
 import { modeOf, along, prefix, tracePlan, clock, ease, icon, escapeHtml, boundsCenter, bearing as bearingOf, fmtKm, legTitle, placeIcon } from '../data.js';
 import { createMap, reveal, cameraFor, onUserInput, markerLayer, zoomToGroup, overlayCanvas, injectStyle, swatchSvg, OFM } from './common.js';
 
 export const meta = {
-  number: 1, name: 'Night globe', theme: 'dark', keyBackground: '#0a1322',
-  tagline: 'The journey as light crossing a night-side globe. The whole trip opens from space; each leg runs as a comet with a fading tail while the camera leans in behind it.',
+  number: 1, name: 'Globe', modes: ['light', 'dark'],
+  get keyBackground() { return S?.dark ? '#0a1322' : '#f7f5ef'; },
+  tagline: 'The journey crossing a real globe. The whole trip opens from space; each leg runs as a comet with a fading tail while the camera leans in behind it. Light by default, with a night mode.',
   whatsNew: [
-    'MapLibre globe projection with an atmosphere and a starfield; dark custom restyle of OpenFreeMap.',
-    'Comet animation with additive glow; travelled trails settle into glowing lines that keep each mode’s dash pattern.',
-    'Photos are glowing dots that bloom into blurred circular thumbnails as the comet passes; places are small stars.'
+    'MapLibre globe projection with an atmosphere over a warm, light OpenFreeMap restyle; a dark night restyle with a starfield is the optional mode.',
+    'Comet animation (additive glow at night); travelled trails settle into soft-haloed lines that keep each mode’s dash pattern.',
+    'Photos are small dots that bloom into blurred circular thumbnails as the comet passes; places are small stars.'
   ],
-  keeps: ['Transport dash patterns and per-mode hues (brightened for night).', 'Unselected opening, endpoint-only overview, TBD dotted without casing.', 'Direct links land in the city without animation; input interrupts; reduced motion shows the end state.'],
+  keeps: ['Real, light basemap by default (O23); current mode colours and dash patterns (brightened only at night).', 'Unselected opening, endpoint-only overview, TBD dotted without casing.', 'Direct links land in the city without animation; input interrupts; reduced motion shows the end state.'],
   departures: [
-    'Dark map (O22 asks for warm paper).',
     'Moving camera: the opening flies in from space and legs tilt and follow the travel direction (O06/O09 hold the camera still).',
+    'Optional dark map (offered only when chosen, per O23).',
     'Whole-trip Replay re-runs the opening (O09 disables full-trip Replay).'
   ],
-  phone: 'Same globe and follow camera; markers keep 44 px targets. The dark world makes the route read clearly at small sizes, but long follow shots crop the leg on narrow screens.'
+  phone: 'Same globe and follow camera; markers keep 44 px targets. Long follow shots crop the leg on narrow screens.'
 };
 
 const GLOW = { train: '#56c8ff', boat: '#3de8d8', bus: '#ffb54d', gondola: '#cda6ff', walk: '#e6edf2', car: '#ff806f', bike: '#66e8a2' };
 const CORE_DASH = { train: null, boat: [1.4, 2.2], bus: [5, 2.4], gondola: [0.1, 2.8], walk: [0.1, 1.9], car: [6, 1.8, 1.2, 1.8], bike: [2.6, 1.6] };
-const glow = mode => GLOW[mode] || '#9fd8ff';
+const DAY = { train: '#0072b2', boat: '#007f8b', bus: '#a85c00', gondola: '#7b4ba3', walk: '#3d4a4d', car: '#a43a2f', bike: '#24804f' };
+let PAL = DAY;
+const glow = mode => PAL[mode] || '#006f92';
 
 const CSS = `
 .o1 { background: radial-gradient(1200px 800px at 50% 40%, #0b1730 0%, #050a13 60%, #03060c 100%); }
@@ -62,6 +66,17 @@ const CSS = `
 .o1-popup .o1-pop-img { width: 200px; height: 140px; border-radius: 10px; background: #1b2638 center/cover; margin: 2px 0 8px; }
 .o1-popup .o1-choice { display:block; width:100%; min-height:44px; margin-top:4px; border:0; border-radius:10px; background:#1b2840; color:#eaf2fb; text-align:left; padding:6px 10px; font:inherit; cursor:pointer; }
 .o1-popup .o1-choice small { display:block; }
+.o1.o1-light { background: radial-gradient(1200px 800px at 50% 35%, #f8fbfd 0%, #e5edf3 60%, #d8e3eb 100%); }
+.o1-light .o1-photo .o1-dot { background:#e8912d; box-shadow: 0 0 0 2px #fffdf8, 0 1px 4px rgba(30,40,45,.35); }
+.o1-light .o1-photo .o1-thumb { background-color:#dfe6ea; box-shadow: 0 0 0 2.5px #fffdf8, 0 3px 10px rgba(30,40,45,.35); }
+.o1-light .o1-photo .o1-count { background:#fffdf8; color:#1f2b2f; box-shadow: 0 1px 3px rgba(30,40,45,.3); }
+.o1-light .o1-place { color:#b07d00; }
+.o1-light .o1-place .o1-star { filter: drop-shadow(0 0 1.5px #fffdf8) drop-shadow(0 1px 2px rgba(30,40,45,.35)); }
+.o1-light .o1-place .o1-count { color:#1f2b2f; text-shadow: 0 0 3px #fffdf8, 0 0 5px #fffdf8; }
+.o1-light .o1-popup .maplibregl-popup-content { background:#fffdf8; color:#1f2b2f; box-shadow: 0 10px 30px rgba(20,30,35,.25); }
+.o1-light .o1-popup .maplibregl-popup-tip { border-top-color:#fffdf8 !important; border-bottom-color:#fffdf8 !important; }
+.o1-light .o1-popup small { color:#59686b; }
+.o1-light .o1-popup .o1-choice { background:#f1eee7; color:#1f2b2f; }
 `;
 
 let S = null;
@@ -71,10 +86,13 @@ export async function mount(container, trip, ctx) {
   container.classList.add('o1');
   const stars = document.createElement('div');
   stars.className = 'o1-stars';
+  stars.hidden = ctx.mode !== 'dark';
   container.append(stars);
-  S = { trip, ctx, container, reduced: false, selected: null, landed: false, hidden: new Set(), job: null, revealed: false, bloomed: new Set() };
+  S = { trip, ctx, container, reduced: false, selected: null, landed: false, hidden: new Set(), job: null, revealed: false, bloomed: new Set(), dark: ctx.mode === 'dark' };
+  PAL = S.dark ? GLOW : DAY;
+  container.classList.add(S.dark ? 'o1-dark' : 'o1-light');
   const mine = S;
-  const map = await createMap(container, { style: OFM('dark'), center: boundsCenter(trip.bounds), zoom: 1.6, minZoom: 0.5, maxZoom: 17.5 }, { onStyle: styleMap });
+  const map = await createMap(container, { style: OFM(S.dark ? 'dark' : 'positron'), center: boundsCenter(trip.bounds), zoom: 1.6, minZoom: 0.5, maxZoom: 17.5 }, { onStyle: S.dark ? styleMap : styleLight });
   if (S !== mine) { map.remove(); return; }
   S.map = map;
   addLayers();
@@ -87,6 +105,36 @@ export async function mount(container, trip, ctx) {
   map.on('click', 'o1-stop-hit', event => stopClick(event));
   map.on('mouseenter', 'o1-stop-hit', () => { map.getCanvas().style.cursor = 'pointer'; });
   map.on('mouseleave', 'o1-stop-hit', () => { map.getCanvas().style.cursor = ''; });
+}
+
+// Light default: warm paper land, soft blue water, quiet roads (O22/O23).
+function styleLight(map) {
+  try { map.setProjection({ type: 'globe' }); } catch (error) { console.warn(error); }
+  const paint = (id, prop, value) => { if (map.getLayer(id)) try { map.setPaintProperty(id, prop, value); } catch (e) { /* type mismatch */ } };
+  const hide = id => { if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'none'); };
+  for (const layer of map.getStyle().layers) {
+    const id = layer.id;
+    if (layer.type === 'background') paint(id, 'background-color', '#f4f1ea');
+    else if (id === 'water') paint(id, 'fill-color', '#c4dae4');
+    else if (layer.type === 'fill' && /park|wood|glacier|ice/.test(id)) { paint(id, 'fill-color', '#dfe7d2'); paint(id, 'fill-opacity', 0.6); }
+    else if (layer.type === 'fill' && /building/.test(id)) paint(id, 'fill-color', '#e6e0d4');
+    else if (layer.type === 'line' && /boundary/.test(id)) paint(id, 'line-color', '#c3b8a5');
+    else if (layer.type === 'line' && /waterway/.test(id)) paint(id, 'line-color', '#aecbd8');
+    else if (layer.type === 'symbol') {
+      if (/highway|shield|road|poi|airport|label_other|water_name_line|label_state/.test(id)) hide(id);
+      else {
+        paint(id, 'text-color', /country/.test(id) ? '#8a8f8c' : '#4f5d61'); paint(id, 'text-halo-color', '#f8f6f0'); paint(id, 'text-halo-width', 1.4);
+        if (/label_(city|town|village)/.test(id)) map.setLayerZoomRange(id, 8.5, 24);
+      }
+    }
+  }
+  try {
+    map.setSky({
+      'sky-color': '#bcd6ec', 'horizon-color': '#f6f2ea', 'fog-color': '#f1eee7',
+      'sky-horizon-blend': 0.6, 'horizon-fog-blend': 0.6, 'fog-ground-blend': 0.3,
+      'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 1, 5, 1, 8, 0]
+    });
+  } catch (error) { console.warn(error); }
 }
 
 function styleMap(map) {
@@ -142,7 +190,8 @@ function stopData() {
     features: [...byPlace.values()].map(entry => ({ type: 'Feature', properties: { placeId: entry.place.id, name: entry.place.name, tbd: entry.tbd, events: entry.events.map(e => e.id).join(' ') }, geometry: { type: 'Point', coordinates: [entry.place.lng, entry.place.lat] } }))
   };
 }
-const width = scale => ['interpolate', ['linear'], ['zoom'], 2, 1.4 * scale, 6, 2.4 * scale, 10, 3.4 * scale, 14, 4.4 * scale];
+// Lines run a little bolder on the light map, where there is no glow to carry them.
+const width = scale => { const k = scale * (S?.dark ? 1 : 1.3); return ['interpolate', ['linear'], ['zoom'], 2, 1.4 * k, 6, 2.4 * k, 10, 3.4 * k, 14, 4.4 * k]; };
 
 function addLayers() {
   const map = S.map;
@@ -160,15 +209,17 @@ function addLayers() {
     paint: { 'line-color': ['match', ['get', 'mode'], ...Object.entries(GLOW).flat(), '#b9c7d8'], 'line-width': width(0.95), 'line-opacity': 0.6, 'line-dasharray': [0.1, 2.6] } }, before);
   map.addLayer({ id: 'o1-stop', type: 'circle', source: 'o1-stops', paint: {
     'circle-radius': ['interpolate', ['linear'], ['zoom'], 2, 2.5, 6, 4, 10, 6],
-    'circle-color': ['case', ['get', 'tbd'], '#08111f', '#eaf5ff'], 'circle-stroke-color': ['case', ['get', 'tbd'], '#9db3cd', '#08111f'],
+    'circle-color': S.dark ? ['case', ['get', 'tbd'], '#08111f', '#eaf5ff'] : ['case', ['get', 'tbd'], '#fffdf8', '#1f2b2f'],
+    'circle-stroke-color': S.dark ? ['case', ['get', 'tbd'], '#9db3cd', '#08111f'] : ['case', ['get', 'tbd'], '#71878a', '#fffdf8'],
     'circle-stroke-width': ['case', ['get', 'tbd'], 1.4, 1.2], 'circle-opacity': 1 } });
   map.addLayer({ id: 'o1-stop-sel', type: 'circle', source: 'o1-stops', filter: ['==', ['get', 'placeId'], ''], paint: {
-    'circle-radius': 12, 'circle-color': 'rgba(0,0,0,0)', 'circle-stroke-color': '#ffd58a', 'circle-stroke-width': 2, 'circle-blur': 0.1 } });
+    'circle-radius': 12, 'circle-color': 'rgba(0,0,0,0)', 'circle-stroke-color': S.dark ? '#ffd58a' : '#d4512c', 'circle-stroke-width': 2, 'circle-blur': 0.1 } });
   map.addLayer({ id: 'o1-stop-hit', type: 'circle', source: 'o1-stops', paint: { 'circle-radius': 22, 'circle-color': '#000', 'circle-opacity': 0.01 } });
   map.addLayer({ id: 'o1-stop-label', type: 'symbol', source: 'o1-stops', layout: {
     'text-field': ['get', 'name'], 'text-font': ['Noto Sans Regular'], 'text-size': ['interpolate', ['linear'], ['zoom'], 3, 12, 9, 14],
     'text-variable-anchor': ['left', 'right', 'top', 'bottom'], 'text-radial-offset': 0.9, 'text-optional': true, 'text-max-width': 9 },
-    paint: { 'text-color': ['case', ['get', 'tbd'], '#9fb3cc', '#e3eef9'], 'text-halo-color': '#050b16', 'text-halo-width': 1.6 } });
+    paint: S.dark ? { 'text-color': ['case', ['get', 'tbd'], '#9fb3cc', '#e3eef9'], 'text-halo-color': '#050b16', 'text-halo-width': 1.6 }
+      : { 'text-color': ['case', ['get', 'tbd'], '#59686b', '#1f2b2f'], 'text-halo-color': '#fffdf8', 'text-halo-width': 1.8 } });
   applyRouteState();
 }
 
@@ -183,7 +234,7 @@ function applyRouteState() {
     const filter = ['all', ['==', ['get', 'mode'], mode], ['!', ['get', 'tbd']], visible];
     map.setFilter(`o1-glow-${mode}`, filter);
     map.setFilter(`o1-core-${mode}`, filter);
-    map.setPaintProperty(`o1-glow-${mode}`, 'line-opacity', selectionPaint(0.75, 0.12, 0.42));
+    map.setPaintProperty(`o1-glow-${mode}`, 'line-opacity', S.dark ? selectionPaint(0.75, 0.12, 0.42) : selectionPaint(0.32, 0.04, 0.18));
     map.setPaintProperty(`o1-core-${mode}`, 'line-opacity', selectionPaint(1, 0.32, 0.95));
     map.setPaintProperty(`o1-core-${mode}`, 'line-width', S.selected ? ['case', ['==', ['get', 'eventId'], S.selected], width(1.35), width(0.85)] : width(1));
   }
@@ -325,7 +376,7 @@ function drawComets(entries, progress, coarse) {
     strokeTrail(context, pts, entry.leg, 0.95, 2.4);
     if (local < 1) heads.push({ pts, leg: entry.leg });
   }
-  context.globalCompositeOperation = 'lighter';
+  context.globalCompositeOperation = S.dark ? 'lighter' : 'source-over';
   context.setLineDash([]);
   context.lineCap = 'round';
   for (const { pts, leg } of heads) {
@@ -347,7 +398,7 @@ function drawComets(entries, progress, coarse) {
     const gradient = context.createRadialGradient(head.x, head.y, 0, head.x, head.y, 24);
     gradient.addColorStop(0, 'rgba(255,255,255,1)');
     gradient.addColorStop(0.2, glow(leg.mode));
-    gradient.addColorStop(1, 'rgba(0,0,0,0)');
+    gradient.addColorStop(1, S.dark ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0)');
     context.globalAlpha = 1;
     context.fillStyle = gradient;
     context.beginPath(); context.arc(head.x, head.y, 24, 0, Math.PI * 2); context.fill();
@@ -506,16 +557,16 @@ export function setReducedMotion(value) {
 }
 
 export function legendSwatch(mode) {
-  if (mode === 'tbd') return swatchSvg({ color: '#b9c7d8', width: 2.6, dash: [0.1, 6.5] });
+  if (mode === 'tbd') return swatchSvg({ color: S?.dark ? '#b9c7d8' : '#71878a', width: 2.6, dash: [0.1, 6.5] });
   const dash = CORE_DASH[mode] ? CORE_DASH[mode].map(v => v * 2.8) : null;
   return swatchSvg({ color: glow(mode), width: 2.8, dash, cap: dash && dash[0] < 1 ? 'round' : 'butt',
     extra: `<path d="M5 8h54" stroke="${glow(mode)}" stroke-opacity=".28" stroke-width="10" stroke-linecap="round"/>` });
 }
 export function legendExtras() {
   return [
-    { swatch: '<svg width="40" height="20" viewBox="0 0 40 20"><circle cx="20" cy="10" r="4.5" fill="#ffd58a"/><circle cx="20" cy="10" r="8" fill="#ffb94a" opacity=".25"/></svg>', label: 'Photo (dot)', note: 'blooms into a blurred thumbnail when the comet passes' },
-    { swatch: '<svg width="40" height="20" viewBox="0 0 24 24"><path fill="#fff1c4" d="M12 1.5l2.4 7.6 8.1.1-6.5 4.8 2.4 7.7L12 17l-6.4 4.7L8 14 1.5 9.2l8.1-.1z"/></svg>', label: 'Curated place', note: 'star; a number means several' },
-    { swatch: '<svg width="40" height="20" viewBox="0 0 40 20"><circle cx="20" cy="10" r="5" fill="#eaf5ff" stroke="#08111f"/></svg>', label: 'Stop', note: 'hollow ring = TBD stop' }
+    { swatch: `<svg width="40" height="20" viewBox="0 0 40 20"><circle cx="20" cy="10" r="4.5" fill="${S?.dark ? '#ffd58a' : '#e8912d'}" stroke="#fff"/><circle cx="20" cy="10" r="8" fill="#ffb94a" opacity=".25"/></svg>`, label: 'Photo (dot)', note: 'blooms into a blurred thumbnail when the comet passes' },
+    { swatch: `<svg width="40" height="20" viewBox="0 0 24 24"><path fill="${S?.dark ? '#fff1c4' : '#b07d00'}" stroke="#fff" d="M12 1.5l2.4 7.6 8.1.1-6.5 4.8 2.4 7.7L12 17l-6.4 4.7L8 14 1.5 9.2l8.1-.1z"/></svg>`, label: 'Curated place', note: 'star; a number means several' },
+    { swatch: `<svg width="40" height="20" viewBox="0 0 40 20"><circle cx="20" cy="10" r="5" fill="${S?.dark ? '#eaf5ff' : '#1f2b2f'}" stroke="${S?.dark ? '#08111f' : '#fff'}"/></svg>`, label: 'Stop', note: 'hollow ring = TBD stop' }
   ];
 }
 
@@ -526,7 +577,7 @@ export function destroy() {
   S.offInput?.();
   S.photos?.destroy(); S.places?.destroy(); S.overlay?.destroy();
   S.map?.remove();
-  S.container.classList.remove('o1', 'o1-hidden-markers');
+  S.container.classList.remove('o1', 'o1-dark', 'o1-light', 'o1-hidden-markers');
   S = null;
 }
 

@@ -27,6 +27,32 @@ permission to erase it. An agent suggestion, passing test or prototype is not an
 owner decision. Resolve apparent conflicts from dated evidence and record which
 choice supersedes which; ask only if a consequential ambiguity remains.
 
+## Map concepts: real maps, light by default — 17 November 2026
+
+**O23 · Real maps, light first.** Reviewing the five-concept Map Lab demo
+(local proposal under O15; [WIP](../WIP.md#map-lab--17-november-2026)), the
+owner's first correction was: “all should be based on real maps. dark mode is
+ok but we def need light modes as default.” This applies to every map concept
+and redesign proposal, not only to Map Lab, and extends O06 (the map is the
+main experience) and O22 (warm paper palette; dark mode was left for a later
+pass).
+
+- Every map concept is drawn on a real geographic basemap. A schematic or
+  diagram view with no real map is not a concept on its own; Map Lab's
+  transit concept became a transit-styled map on true geography and its
+  metro-schematic view was removed. A 3D view over a real map (the
+  space-time cube) still counts as a real map.
+- Light is the default appearance for the map and its controls. A dark mode
+  may be offered as an explicit, non-default choice. Whether a shared dark
+  mode is built remains O22's later pass; this decision only makes light the
+  default wherever both exist.
+
+Acceptance: every concept opens on a real, light basemap with light controls
+and no URL parameter; any dark appearance appears only after the visitor
+chooses it, and returning to a link without that choice is light again. The
+transit concept shows its lines, stations and badges on the real map at every
+step. Reactions to the remaining concepts and the owner's pick are still open.
+
 ## Feel and finish — 11 November 2026
 
 **O22 · Feel and finish.** The owner asked “how can we level up the ui? … tryna
@@ -434,6 +460,7 @@ ready GPU surface. See the incident record.
 | O15 · Delivery and proposals | The agent operates tools, Studio, assets, tests, Git and deployment. Completed authorized work deploys by default after integrating current main and verifying Pages/public content. A request for ideas or a local demo remains that scope until implementation/publication is authorized. | Retain existing authorization; do not ask the owner to run commands or approve already approved work again. Preserve other work, local prototypes and unpublished media. A commit/build alone is not a deployment receipt. [Deployment](DEPLOYMENT.md), [WIP](../WIP.md). |
 | O16 · Living documentation | Every agent reads and maintains the current docs as part of the task. New corrections, preferences and follow-up clarifications become durable guidance in the same change, without another owner request. This is a standing owner priority, explicitly reaffirmed 11 October 2026. | Before delivery or handoff, reconcile all new owner direction with the correct shared decision or trip record, replace superseded current guidance, and record any implementation still pending. A fresh task must be able to continue from the repository without the previous chat. Follow the [update procedure](#record-the-next-correction-before-closing-the-task). |
 | O22 · Feel and finish | Controls answer a press; interface motion uses the shared tokens; phone screens push, pop and rise as sheets; a stop change settles in; photographs lead; warm paper palette; sentence-case meta text. A change must be visible beside the current site. Full text: [11 November 2026](#feel-and-finish--11-november-2026). | Compare old and new side by side at rest, then check press feedback, screen moves, browser Back without replay, reduced motion, first paint without animation, and unchanged swipe/pull/location timings. Reference, city atlas, demo and fresh draft; 320/375 px and desktop. |
+| O23 · Real maps, light first | Every map concept or redesign sits on a real geographic basemap (no schematic-only view); light is the default appearance, and a dark mode is allowed only as an explicit choice. Full text: [17 November 2026](#map-concepts-real-maps-light-by-default--17-november-2026). | Open each concept from a plain link: real light basemap and light controls; dark only after choosing it. |
 | O20 · Load and reach | Text at least 12 px, 44 px touch targets, unlock offered where locked photos appear and nowhere else, no history writes or route rebuilds for an unchanged view, compact public route and boundary data. Full text: [10 November 2026](#load-interaction-and-flow-fixes--10-november-2026). | Compare the restyled map with a fresh draw; check 320/390 px wrapping and targets; re-measure with the same fixture before claiming a gain. Trips with no private media show no unlock. |
 
 “Apple-like” means these observable qualities: stable layout, clear hierarchy,
