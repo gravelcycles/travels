@@ -28,14 +28,21 @@ and prioritize your next best 3 … include them in the existing demo”. Added
 measurements in the [comparison](prototypes/map-lab/COMPARISON.md#second-round--18-november-2026)).
 Still a proposal: no pick, no shared code changed.
 
+**Third round, 18 November 2026.** The owner: “i did like the postcard stack.
+the calendar strip. lets demo the mode icons everywhere as well.” Added
+9 · Postcards, 10 · Calendar and a demo-wide Mode icons switch (on by default,
+`&icons=off`); reaction logged under
+[O23](docs/OWNER_DECISIONS.md#map-concepts-real-maps-light-by-default--17-november-2026).
+Still no pick.
+
 Branch `claude/hopeful-einstein-1j5jjh` (from `origin/main` `7566aa4`).
 Everything lives in [`prototypes/map-lab/`](prototypes/map-lab/README.md):
 not in the build, not linked from the catalog, no shared runtime, template,
 CSS, test or journey source changed. Preview from the repository root with
 `python3 -m http.server 4180`, then open `/prototypes/map-lab/`
-(`?option=1–8&trip=…&event=…&motion=reduced&mode=dark`). The concepts are
-Globe, Transit map, Ink atlas, Space-time, Follow-cam, City lens, Photo roll
-and Now; the
+(`?option=1–10&trip=…&event=…&motion=reduced&mode=dark&icons=off`). The
+concepts are Globe, Transit map, Ink atlas, Space-time, Follow-cam, City lens,
+Photo roll, Now, Postcards and Calendar; the
 [comparison](prototypes/map-lab/COMPARISON.md) holds the table, measurements
 and the agent's recommendation (the choice is the owner's).
 
@@ -66,6 +73,9 @@ concepts hide it and fall back to light.
 Second round (18 November): options 6–8 pass the same behaviour, privacy and
 320/390 px checks; frame times were measured with Ink atlas re-run as a
 same-session control because the container had restarted (see comparison).
+Third round: 9 and 10 pass the same checks (320/390 px audited across all
+ten), and the Mode icons switch was checked (hidden while drawing, off via
+`&icons=off`, drives Transit map's own bullets).
 Screenshots and recordings went to the owner in the task chat and are not
 committed. Option 4's deck.gl points have a ~43 px picking area (the scrubber
 is the main control). **Not checked:** a physical phone or any real GPU (software WebGL

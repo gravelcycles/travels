@@ -199,13 +199,14 @@ function placeMarkers(visible) {
   if (anchor?.place && !st.complete && !st.notStarted) {
     S.nowEl.innerHTML = `<span>${escapeHtml(st.current ? `Now · ${anchor.place.name}` : `Last confirmed · ${anchor.place.name}`)}</span><i></i><b></b>`;
     S.nowMarker.setLngLat([anchor.place.lng, anchor.place.lat]).addTo(S.map);
-    S.nowEl.removeAttribute('tabindex');
+    S.nowEl.removeAttribute('tabindex'); S.nowEl.setAttribute('role', 'img'); S.nowEl.setAttribute('aria-label', S.nowEl.textContent.trim());
   } else S.nowMarker.remove();
   if (st.latest) {
     S.latestEl.innerHTML = `<i></i><span>Latest photo · ${escapeHtml(st.latest.takenLabel.split(' · ')[0] || '')}</span>`;
     if (st.latest.preview) S.latestEl.querySelector('i').style.backgroundImage = `url("${st.latest.preview}")`;
     S.latestMarker.setLngLat([st.latest.lng, st.latest.lat]).addTo(S.map);
-    S.latestEl.removeAttribute('tabindex'); // a label, not a control
+    // A label, not a control (MapLibre marks markers as buttons).
+    S.latestEl.removeAttribute('tabindex'); S.latestEl.setAttribute('role', 'img'); S.latestEl.setAttribute('aria-label', `Latest photo, ${st.latest.takenLabel || ''}`);
   } else S.latestMarker.remove();
   const show = () => { S.nowEl.classList.toggle('is-in', visible); S.latestEl.classList.toggle('is-in', visible); };
   if (S.reduced) show(); else requestAnimationFrame(show);

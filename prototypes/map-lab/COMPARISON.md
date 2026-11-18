@@ -146,3 +146,31 @@ City lens pays for its second map in the opening (45 fps, p95 50 ms).
 combines with any base: Ink atlas or Transit map with a City lens arrival is
 the agent's suggested direction. Photo roll and Now work best as later,
 separate features rather than as the base. The choice remains the owner's.
+
+## Third round — 18 November 2026
+
+Owner reaction: “i did like the postcard stack. the calendar strip. lets demo
+the mode icons everywhere as well.” Added:
+
+| | 9 · Postcards | 10 · Calendar | Mode icons everywhere |
+| --- | --- | --- | --- |
+| **Concept** | Each stop a postcard at its city; arrival turns it over | A strip of real days under the map; tap a day to go there | One upright mode icon on each leg in every concept |
+| **What it shows** | Front: first album photo, name, dates. Back: the traveler's own words if written, legs with mode icons and distances, photo/place counts, stamp | Stays as blocks of days, travel days with mode icons, photo dots from capture dates, today, TBD stops as dashed cells | Mode on every line, including dotted TBD legs (dashed ring) |
+| **Keeps** | Real light map, still camera, viewer's trace and timing; first album photo as preview (O10); only traveler-written words (O01) | Same; dates only from the itinerary | Current colours and patterns stay; icons are added, not substituted |
+| **Breaks** | Cards replace signposts (O07); stacks at trip scale | A calendar panel over the picker (O08) | Adds marks to the map (hidden while a line is drawing) |
+| **Phone** | Cards shrink at trip scale; the open card sits above the picker | One-thumb strip, 44 × 56 px days | Icons shrink at trip scale; collisions drop extras |
+| **Effort into the shared framework** | M: card markers and a flip card | S–M: a strip component from existing dates and photo times | S: one symbol layer and images; already on every map here |
+
+Measured on the same harness and session, Ink atlas as control:
+
+| Option | Opening: fps · p50 / p95 | Long leg from landed Düsseldorf: fps · p50 / p95 (wall) | Own script p50 / p95 | Main thread (opening · leg) |
+| --- | --- | --- | --- | --- |
+| 3 · Ink atlas (control) | 56 fps · 16.7 / 16.8 ms | 39 fps · 16.7 / 50 ms (5.2 s) | 1.2 / 3.1 ms | 37 % · 40 % |
+| 9 · Postcards | 54 fps · 16.7 / 33 ms | 41 fps · 16.7 / 50 ms (3.8 s) | 0.2 / 1.2 ms | 25 % · 49 % |
+| 10 · Calendar | 54 fps · 16.7 / 33 ms | 41 fps · 16.7 / 33 ms (3.8 s) | 0.2 / 1.2 ms | 27 % · 51 % |
+
+**Recommendation update.** Mode icons should travel with whichever base is
+chosen; they close the TBD gap at almost no cost. The suggested direction is
+now Ink atlas or Transit map + City lens arrivals + mode icons, with the
+Calendar strip as the stop picker's companion and Postcards as an
+alternative stop marker worth trying on the live map. The choice is the owner's.

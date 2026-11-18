@@ -51,7 +51,13 @@ Acceptance: every concept opens on a real, light basemap with light controls
 and no URL parameter; any dark appearance appears only after the visitor
 chooses it, and returning to a link without that choice is light again. The
 transit concept shows its lines, stations and badges on the real map at every
-step. Reactions to the remaining concepts and the owner's pick are still open.
+step.
+
+Later Map Lab reactions (proposal stage, not adoption): on 18 November, after
+the agent's second round, the owner said “i did like the postcard stack. the
+calendar strip. lets demo the mode icons everywhere as well.” Both ideas were
+added to the demo, and mode icons on lines became a demo-wide switch, on by
+default. The owner's pick of a direction is still open.
 
 ## Feel and finish — 11 November 2026
 

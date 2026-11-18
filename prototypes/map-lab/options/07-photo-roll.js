@@ -154,7 +154,7 @@ function setCurrent(photo, { camera = false } = {}) {
   if (photo.located) {
     S.pinEl.querySelector('i').style.backgroundImage = photo.preview ? `url("${photo.preview}")` : '';
     S.pin.setLngLat([photo.lng, photo.lat]).addTo(S.map);
-    S.pinEl.removeAttribute('tabindex');
+    S.pinEl.removeAttribute('tabindex'); S.pinEl.setAttribute('role', 'img'); S.pinEl.setAttribute('aria-label', 'Current photo');
   } else S.pin.remove();
   if (S.selected !== event.id) {
     S.selected = event.id;

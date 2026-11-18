@@ -10,7 +10,7 @@
     // so the page opens on that option's own background with no default flash.
     (function () {
       var params = new URLSearchParams(location.search), option = Number(params.get('option'));
-      if (!(option >= 1 && option <= 8)) option = 1;
+      if (!(option >= 1 && option <= 10)) option = 1;
       var root = document.documentElement;
       root.dataset.option = option;
       // Light is the default (O23); dark only when chosen and offered by the concept.
@@ -45,6 +45,8 @@
       <button type="button" data-option="6" aria-pressed="false"><b>6</b><span>City lens</span></button>
       <button type="button" data-option="7" aria-pressed="false"><b>7</b><span>Photo roll</span></button>
       <button type="button" data-option="8" aria-pressed="false"><b>8</b><span>Now</span></button>
+      <button type="button" data-option="9" aria-pressed="false"><b>9</b><span>Postcards</span></button>
+      <button type="button" data-option="10" aria-pressed="false"><b>10</b><span>Calendar</span></button>
     </nav>
     <div class="lab-top-actions">
       <label class="lab-trip">
@@ -59,6 +61,9 @@
       </button>
       <button type="button" class="lab-icon-button" id="mode-button" aria-pressed="false" aria-label="Dark map" hidden>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      </button>
+      <button type="button" class="lab-icon-button" id="icons-button" aria-pressed="true" aria-label="Mode icons on lines">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M2 12h5M17 12h5"/><circle cx="12" cy="12" r="5"/><path d="M10 10.5h4M10 13.5h4"/></svg>
       </button>
       <button type="button" class="lab-icon-button" id="motion-button" aria-pressed="false" aria-label="Reduce motion">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 12h3l2.5-6 4 12 2.5-6h6"/></svg>
@@ -116,6 +121,7 @@
     <div class="lab-more-section">
       <div class="lab-more-row"><select id="trip-select-more" aria-label="Trip"></select></div>
       <div class="lab-more-row" id="mode-row-more" hidden><span>Dark map</span><button type="button" class="lab-pill" id="mode-button-more" aria-pressed="false">Off</button></div>
+      <div class="lab-more-row"><span>Mode icons on lines</span><button type="button" class="lab-pill" id="icons-button-more" aria-pressed="true">On</button></div>
       <div class="lab-more-row"><span>Reduce motion</span><button type="button" class="lab-pill" id="motion-button-more" aria-pressed="false">Off</button></div>
       <div class="lab-more-row"><button type="button" class="lab-pill" id="key-button-more">Map key</button><button type="button" class="lab-pill" id="about-button-more">About this concept</button></div>
     </div>

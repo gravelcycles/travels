@@ -19,6 +19,12 @@ roll and Now — to the same demo. They share `options/base-map.js`, which uses
 the viewer's own arrival trace (`dist/assets/arrival-chapter.js`) and planning
 rules (`planningCategory`). Why these three: [comparison](COMPARISON.md#second-round--18-november-2026).
 
+**Third round, 18 November 2026.** The owner liked the postcard stack and
+the calendar strip and asked to demo mode icons everywhere: concepts 9
+(Postcards) and 10 (Calendar) were added, and a demo-wide **Mode icons**
+switch (on by default, `&icons=off` to compare) puts one mode icon on each
+leg in every concept, with a dashed ring for TBD legs.
+
 ## Run it
 
 From the repository root:
@@ -31,8 +37,9 @@ Then open <http://127.0.0.1:4180/prototypes/map-lab/>.
 
 The view is kept in the URL, so a specific state can be shared:
 `?option=3&trip=backpacking-europe-heading-east&event=backpacking-europe-heading-east-berlin-stay&motion=reduced`
-(add `&mode=dark` for the optional dark appearance of options 1 and 5).
-Keys: 1–8 switch concepts, ←/→ previous/next stop, Home shows the whole trip.
+(add `&mode=dark` for the optional dark appearance of options 1 and 5, and
+`&icons=off` to hide the mode icons).
+Keys: 1–9 and 0 (for 10) switch concepts, ←/→ previous/next stop, Home shows the whole trip.
 
 ## What it reads
 
@@ -66,8 +73,9 @@ Caveat, JetBrains Mono).
 | `index.html`, `shell.css`, `shell.js` | Option and trip switchers, stop picker (previous/next, whole trip, list), Replay/Skip, reduced-motion toggle, optional Dark map switch, map key, “about this concept”, URL state. |
 | `data.js` | Bundle loading, override resolution, leg/event/chain model, geometry helpers, clustering, icons. |
 | `options/common.js` | MapLibre helpers shared by options 1, 3, 4, 5 (map creation without first-paint flash, camera fitting, input interruption, clustered HTML markers). |
-| `options/base-map.js` | Shared base for options 6–8: warm light basemap, current route styles, stops, planning look, cancellable sequences and the viewer's arrival trace. |
-| `options/01-globe.js` … `08-now.js` | One module per concept with the same interface: `mount(container, data, ctx)`, `showOverview()`, `selectEvent(id)`, `playLeg(id)`, `setReducedMotion(bool)`, `destroy()`, plus `skip()` and key swatches. |
+| `mode-icons.js` | Demo-wide mode icons: one upright icon per leg on any MapLibre map (dashed ring for TBD), hidden while a line is drawing; Transit map uses its own bullets. |
+| `options/base-map.js` | Shared base for options 6–10: warm light basemap, current route styles, stops, planning look, cancellable sequences and the viewer's arrival trace. |
+| `options/01-globe.js` … `10-calendar.js` | One module per concept with the same interface: `mount(container, data, ctx)`, `showOverview()`, `selectEvent(id)`, `playLeg(id)`, `setReducedMotion(bool)`, `destroy()`, plus `skip()` and key swatches. |
 
 ## The five concepts
 
@@ -110,6 +118,16 @@ Caveat, JetBrains Mono).
    planned” status from itinerary dates, distance so far by mode, and the
    latest photo. The opening traces the trip so far, then shows the plan. A
    date field previews any day (`&today=YYYY-MM-DD` on first load).
+
+9. **Postcards** — every stop is a postcard pinned at its city (first album
+   photo, name, dates), stacked where stops crowd; arrival turns the card
+   over to the traveler's own words for the stop (blank stays blank), the
+   legs with mode icons and distances, and a stamp. Lettered cards for stops
+   without photos; dashed blank cards for TBD stops.
+10. **Calendar** — a strip of real days under the map grouped into stays;
+   arrival days carry the legs' mode icons, photo days have dots, today is
+   marked (or a Today marker before the TBD stops), TBD stops are dashed
+   cells after the dates. Tap a day to travel there; hover previews it.
 
 Each concept lists what it keeps and what it deliberately breaks under
 **About this concept** (ⓘ) in the demo.

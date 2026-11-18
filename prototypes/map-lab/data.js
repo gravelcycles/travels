@@ -322,6 +322,8 @@ export async function loadTrip(tripId) {
     const eventPhotos = photos.filter(photo => photo.eventId === day.id);
     return {
       id: day.id, number: day.number, title: day.title || '', date: displayDate(day), rawDate: day.date || '',
+      // The traveler's own words for the stop, if any; blank stays blank (O10).
+      text: typeof day.text === 'string' ? day.text.trim() : '',
       calendarDate: day.calendarDate || null, calendarEndDate: day.calendarEndDate || day.calendarDate || null,
       tbd: day.planningStatus === 'tbd',
       place: places.get(day.destinationId || day.placeId) || eventLegs.at(-1)?.toPlace || null,

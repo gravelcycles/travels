@@ -1,6 +1,7 @@
 // Map Lab shell: option + trip switchers, stop picker, Replay/Skip, reduced
 // motion and shareable URL state (?option=3&trip=…&event=…&motion=reduced).
 import { TRIPS, loadTrip, MODES, modeOf, icon, escapeHtml } from './data.js';
+import { addModeIcons, setModeIcons, modeIconSwatch } from './mode-icons.js';
 
 const OPTIONS = {
   1: () => import('./options/01-globe.js'),
@@ -10,12 +11,14 @@ const OPTIONS = {
   5: () => import('./options/05-follow-cam.js'),
   6: () => import('./options/06-city-lens.js'),
   7: () => import('./options/07-photo-roll.js'),
-  8: () => import('./options/08-now.js')
+  8: () => import('./options/08-now.js'),
+  9: () => import('./options/09-postcards.js'),
+  10: () => import('./options/10-calendar.js')
 };
 const $ = id => document.getElementById(id);
 const html = document.documentElement;
 const params = new URLSearchParams(location.search);
-const clampOption = value => (Number(value) >= 1 && Number(value) <= 8 ? Number(value) : 1);
+const clampOption = value => (Number(value) >= 1 && Number(value) <= 10 ? Number(value) : 1);
 
 const state = {
   option: clampOption(params.get('option')),
@@ -23,7 +26,9 @@ const state = {
   event: params.get('event') || null,
   reduced: html.dataset.reduced === '1',
   // Light by default (O23); dark only when chosen.
-  mode: params.get('mode') === 'dark' ? 'dark' : 'light'
+  mode: params.get('mode') === 'dark' ? 'dark' : 'light',
+  // Mode icons on lines: a demo-wide switch, on unless turned off.
+  icons: params.get('icons') !== 'off'
 };
 let trip = null, mod = null, playing = false, token = 0;
 const lab = window.__mapLab = { frames: [], playing: false, ready: false, option: state.option, log: [] };
@@ -35,6 +40,7 @@ function writeUrl() {
   if (state.event) next.set('event', state.event);
   if (state.reduced) next.set('motion', 'reduced');
   if (state.mode === 'dark' && supportsDark()) next.set('mode', 'dark');
+  if (!state.icons) next.set('icons', 'off');
   const url = `${location.pathname}?${next}`;
   // Replace, never push: an unchanged view writes nothing (O20).
   if (url !== location.pathname + location.search) history.replaceState(null, '', url);
@@ -64,9 +70,18 @@ const ctx = {
   perf: ms => { if (lab.frames.length < 20000) lab.frames.push(ms); }
 };
 
+function applyModeIcons() {
+  // Icons are a resting aid: hidden while a line is being drawn.
+  if (mod?.meta?.ownModeIcons) mod.setModeIcons?.(state.icons);
+  else setModeIcons(lab.map, state.icons && !playing);
+  $('icons-button').setAttribute('aria-pressed', String(state.icons));
+  $('icons-button-more').setAttribute('aria-pressed', String(state.icons));
+  $('icons-button-more').textContent = state.icons ? 'On' : 'Off';
+}
 function setPlaying(value) {
   playing = Boolean(value);
   lab.playing = playing;
+  applyModeIcons();
   const button = $('play-button');
   button.toggleAttribute('data-playing', playing);
   button.setAttribute('aria-label', playing ? 'Skip' : 'Replay');
@@ -148,6 +163,7 @@ function renderKey() {
   const meta = mod?.meta || {};
   const rows = trip.modes.map(mode => ({ swatch: mod?.legendSwatch?.(mode) || defaultSwatch(mode), label: MODES[mode].label, note: MODES[mode].cue }));
   if (trip.hasTbd) rows.push({ swatch: mod?.legendSwatch?.('tbd') || defaultSwatch('tbd'), label: 'Unconfirmed (TBD)', note: 'dotted, no casing' });
+  if (state.icons) rows.push({ swatch: `<span style="display:inline-flex;gap:4px">${modeIconSwatch(trip.modes[0] || 'train')}${trip.hasTbd ? modeIconSwatch(trip.modes[0] || 'train', true) : ''}</span>`, label: 'Mode icon', note: 'on every line; a dashed ring marks a TBD leg' });
   rows.push(...(mod?.legendExtras?.(trip) || []));
   if (!trip.located.length) rows.push({ swatch: '', label: 'No located photos', note: 'This trip shows no photo markers.' });
   $('key-list').style.setProperty('--key-bg', meta.keyBackground || 'transparent');
@@ -228,6 +244,10 @@ async function mountCurrent(entry) {
   if (mine !== token) { module.destroy(); return; }
   mod = module;
   syncModeButtons();
+  if (!module.meta.ownModeIcons && lab.map) {
+    const map = lab.map;
+    addModeIcons(map, trip).then(() => { if (mod === module) applyModeIcons(); }).catch(error => console.warn('mode icons', error));
+  }
   module.setReducedMotion(state.reduced);
   const event = state.event && trip.eventById(state.event);
   if (!event) state.event = null;
@@ -301,6 +321,9 @@ const toggleMode = () => {
   document.querySelectorAll('dialog[open]').forEach(d => d.close());
   mountCurrent('static');
 };
+const toggleIcons = () => { state.icons = !state.icons; writeUrl(); applyModeIcons(); };
+$('icons-button').addEventListener('click', toggleIcons);
+$('icons-button-more').addEventListener('click', toggleIcons);
 $('mode-button').addEventListener('click', toggleMode);
 $('mode-button-more').addEventListener('click', toggleMode);
 $('motion-button').addEventListener('click', toggleMotion);
@@ -320,7 +343,7 @@ document.addEventListener('keydown', event => {
   if (document.querySelector('dialog[open]') || event.target.closest?.('select, input, textarea') || event.metaKey || event.ctrlKey || event.altKey) return;
   if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
   else if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
-  else if (/^[1-8]$/.test(event.key)) document.querySelector(`.lab-options button[data-option="${event.key}"]`)?.click();
+  else if (/^[0-9]$/.test(event.key)) document.querySelector(`.lab-options button[data-option="${event.key === '0' ? 10 : event.key}"]`)?.click();
   else if (event.key === 'Home') overview(false);
 });
 

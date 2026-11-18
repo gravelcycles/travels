@@ -7,7 +7,7 @@ import { MODES, modeOf, tracePlan, clock, ease, icon, escapeHtml, boundsCenter, 
 import { createMap, reveal, cameraFor, onUserInput, markerLayer, zoomToGroup, injectStyle, OFM } from './common.js';
 
 export const meta = {
-  number: 2, name: 'Transit map', modes: ['light'], keyBackground: '#ffffff',
+  number: 2, name: 'Transit map', modes: ['light'], keyBackground: '#ffffff', ownModeIcons: true,
   tagline: 'The journey drawn with the clarity of a metro map, on the real map: bold cased lines, stations for every stop, a mode bullet on every line and a vehicle token that runs each leg.',
   whatsNew: [
     'Transit-map rendering in SVG over a quiet, light OpenFreeMap basemap: thick cased lines in true geography, return legs drawn side by side, roundel stations.',
@@ -246,7 +246,7 @@ function render() {
     const dim = sel && edge.leg.eventId !== sel;
     edge.line.classList.toggle('o2-dim', Boolean(dim));
     edge.casing?.classList.toggle('o2-dim', Boolean(dim));
-    const showBullet = f >= 1 && measured(pts).at(-1) > (edge.leg.tbd ? 60 : 110);
+    const showBullet = S.icons !== false && f >= 1 && measured(pts).at(-1) > (edge.leg.tbd ? 60 : 110);
     edge.bullet.style.display = showBullet ? '' : 'none';
     if (showBullet) {
       const mid = cut(pts, 0.5).at(-1);
@@ -515,6 +515,8 @@ export function playLeg(id) {
   (async () => { await runToken(job, [[leg]]); if (job.cancelled) return; S.job = null; land(event); S.ctx.onPlayState(false); })();
 }
 export function skip() { cancelJob('final'); }
+// The demo-wide Mode icons switch drives this concept's own line bullets.
+export function setModeIcons(on) { if (!S) return; S.icons = Boolean(on); schedule(); }
 export function setReducedMotion(value) { if (!S) return; S.reduced = Boolean(value); if (S.reduced && S.job) cancelJob('final'); }
 
 export function legendSwatch(mode) {
