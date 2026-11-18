@@ -338,8 +338,14 @@ export async function loadTrip(tripId) {
   const allCoords = legs.flatMap(leg => leg.coarse.coords).concat([...places.values()].map(p => [p.lng, p.lat]));
   const routeBounds = bboxOf(allCoords) || [[5, 44], [15, 50]];
 
+  // Planning state relative to today, with the viewer's own rules (past /
+  // future locked in / future TBD). `?today=YYYY-MM-DD` previews another day.
+  const requested = new URLSearchParams(location.search).get('today');
+  const today = /^\d{4}-\d{2}-\d{2}$/.test(requested || '') ? requested : U.journeyToday(source);
+  for (const event of events) event.category = U.planningCategory({ calendarDate: event.calendarDate, planningStatus: event.tbd ? 'tbd' : '' }, source, today);
   const trip = {
     id: source.id, title: source.title || entry.label, kicker: source.kicker || '', city,
+    status: source.status || '', timeZone: source.timeZone || 'UTC', today, startDate: source.startDate || null, endDate: source.endDate || null,
     eventWord: city ? 'Stop' : 'Day', eventsWord: city ? 'stops' : 'days', kind: source.kind,
     places, legs, legById, orderedLegs: ordered, events, eventIndex, photos,
     located: photos.filter(photo => photo.located), pois, locatedPois: pois.filter(point => point.located),

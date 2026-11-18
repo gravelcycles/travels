@@ -10,7 +10,7 @@
     // so the page opens on that option's own background with no default flash.
     (function () {
       var params = new URLSearchParams(location.search), option = Number(params.get('option'));
-      if (!(option >= 1 && option <= 5)) option = 1;
+      if (!(option >= 1 && option <= 8)) option = 1;
       var root = document.documentElement;
       root.dataset.option = option;
       // Light is the default (O23); dark only when chosen and offered by the concept.
@@ -42,6 +42,9 @@
       <button type="button" data-option="3" aria-pressed="false"><b>3</b><span>Ink atlas</span></button>
       <button type="button" data-option="4" aria-pressed="false"><b>4</b><span>Space-time</span></button>
       <button type="button" data-option="5" aria-pressed="false"><b>5</b><span>Follow-cam</span></button>
+      <button type="button" data-option="6" aria-pressed="false"><b>6</b><span>City lens</span></button>
+      <button type="button" data-option="7" aria-pressed="false"><b>7</b><span>Photo roll</span></button>
+      <button type="button" data-option="8" aria-pressed="false"><b>8</b><span>Now</span></button>
     </nav>
     <div class="lab-top-actions">
       <label class="lab-trip">

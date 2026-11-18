@@ -13,6 +13,12 @@ lost its schematic-only view and is now a transit map on true geography; the
 globe and Follow-cam open light and keep a night appearance behind the
 **Dark map** switch (`&mode=dark`), which only those two offer.
 
+**Second round, 18 November 2026.** Asked to “think a bit deeper and
+prioritize your next best 3”, the agent added concepts 6–8 — City lens, Photo
+roll and Now — to the same demo. They share `options/base-map.js`, which uses
+the viewer's own arrival trace (`dist/assets/arrival-chapter.js`) and planning
+rules (`planningCategory`). Why these three: [comparison](COMPARISON.md#second-round--18-november-2026).
+
 ## Run it
 
 From the repository root:
@@ -26,7 +32,7 @@ Then open <http://127.0.0.1:4180/prototypes/map-lab/>.
 The view is kept in the URL, so a specific state can be shared:
 `?option=3&trip=backpacking-europe-heading-east&event=backpacking-europe-heading-east-berlin-stay&motion=reduced`
 (add `&mode=dark` for the optional dark appearance of options 1 and 5).
-Keys: 1–5 switch concepts, ←/→ previous/next stop, Home shows the whole trip.
+Keys: 1–8 switch concepts, ←/→ previous/next stop, Home shows the whole trip.
 
 ## What it reads
 
@@ -60,7 +66,8 @@ Caveat, JetBrains Mono).
 | `index.html`, `shell.css`, `shell.js` | Option and trip switchers, stop picker (previous/next, whole trip, list), Replay/Skip, reduced-motion toggle, optional Dark map switch, map key, “about this concept”, URL state. |
 | `data.js` | Bundle loading, override resolution, leg/event/chain model, geometry helpers, clustering, icons. |
 | `options/common.js` | MapLibre helpers shared by options 1, 3, 4, 5 (map creation without first-paint flash, camera fitting, input interruption, clustered HTML markers). |
-| `options/01-globe.js` … `05-follow-cam.js` | One module per concept with the same interface: `mount(container, data, ctx)`, `showOverview()`, `selectEvent(id)`, `playLeg(id)`, `setReducedMotion(bool)`, `destroy()`, plus `skip()` and key swatches. |
+| `options/base-map.js` | Shared base for options 6–8: warm light basemap, current route styles, stops, planning look, cancellable sequences and the viewer's arrival trace. |
+| `options/01-globe.js` … `08-now.js` | One module per concept with the same interface: `mount(container, data, ctx)`, `showOverview()`, `selectEvent(id)`, `playLeg(id)`, `setReducedMotion(bool)`, `destroy()`, plus `skip()` and key swatches. |
 
 ## The five concepts
 
@@ -89,6 +96,20 @@ Caveat, JetBrains Mono).
    night drive behind Dark map); a chase camera behind a vehicle icon for each
    mode, a split-flap departure board per leg, a letterbox during travel, and
    photo cards popping up at their capture points.
+
+6. **City lens** — arrival keeps the main map on the incoming route and its
+   region while a round lens beside the city, linked by a leader line, shows
+   its streets, photos (blurred circles) and places. Drag the lens by its
+   caption; pan inside it.
+7. **Photo roll** — the whole trip's photos in album order as a filmstrip;
+   scrolling it moves the map to each photo's capture point (no camera move
+   while the pin is in view, per O05) and draws the route reached so far.
+   Photos without a location stay in the roll, marked, and get no pin.
+8. **Now** — a time-aware map: past legs solid, future locked in lighter, TBD
+   dotted, with Past / Locked in / TBD filters, a “last confirmed / next
+   planned” status from itinerary dates, distance so far by mode, and the
+   latest photo. The opening traces the trip so far, then shows the plan. A
+   date field previews any day (`&today=YYYY-MM-DD` on first load).
 
 Each concept lists what it keeps and what it deliberately breaks under
 **About this concept** (ⓘ) in the demo.

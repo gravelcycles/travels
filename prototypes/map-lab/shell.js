@@ -7,12 +7,15 @@ const OPTIONS = {
   2: () => import('./options/02-transit-map.js'),
   3: () => import('./options/03-ink-atlas.js'),
   4: () => import('./options/04-space-time.js'),
-  5: () => import('./options/05-follow-cam.js')
+  5: () => import('./options/05-follow-cam.js'),
+  6: () => import('./options/06-city-lens.js'),
+  7: () => import('./options/07-photo-roll.js'),
+  8: () => import('./options/08-now.js')
 };
 const $ = id => document.getElementById(id);
 const html = document.documentElement;
 const params = new URLSearchParams(location.search);
-const clampOption = value => (Number(value) >= 1 && Number(value) <= 5 ? Number(value) : 1);
+const clampOption = value => (Number(value) >= 1 && Number(value) <= 8 ? Number(value) : 1);
 
 const state = {
   option: clampOption(params.get('option')),
@@ -86,7 +89,10 @@ function populateTrips() {
 }
 function updateOptionButtons() {
   document.querySelectorAll('.lab-options button').forEach(button => {
-    button.setAttribute('aria-pressed', String(Number(button.dataset.option) === state.option));
+    const on = Number(button.dataset.option) === state.option;
+    button.setAttribute('aria-pressed', String(on));
+    // On phones the concept strip scrolls; keep the chosen concept in view.
+    if (on) button.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
   });
 }
 function syncModeButtons() {
@@ -314,7 +320,7 @@ document.addEventListener('keydown', event => {
   if (document.querySelector('dialog[open]') || event.target.closest?.('select, input, textarea') || event.metaKey || event.ctrlKey || event.altKey) return;
   if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
   else if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
-  else if (/^[1-5]$/.test(event.key)) document.querySelector(`.lab-options button[data-option="${event.key}"]`)?.click();
+  else if (/^[1-8]$/.test(event.key)) document.querySelector(`.lab-options button[data-option="${event.key}"]`)?.click();
   else if (event.key === 'Home') overview(false);
 });
 

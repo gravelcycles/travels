@@ -22,13 +22,20 @@ concept is a transit map on true geography (schematic view removed); Globe
 behind an explicit **Dark map** switch (`&mode=dark`). No pick yet: reactions
 to the remaining concepts are still open.
 
+**Second round, 18 November 2026.** The owner asked to “think a bit deeper
+and prioritize your next best 3 … include them in the existing demo”. Added
+6 · City lens, 7 · Photo roll and 8 · Now (light, real maps; reasons and
+measurements in the [comparison](prototypes/map-lab/COMPARISON.md#second-round--18-november-2026)).
+Still a proposal: no pick, no shared code changed.
+
 Branch `claude/hopeful-einstein-1j5jjh` (from `origin/main` `7566aa4`).
 Everything lives in [`prototypes/map-lab/`](prototypes/map-lab/README.md):
 not in the build, not linked from the catalog, no shared runtime, template,
 CSS, test or journey source changed. Preview from the repository root with
 `python3 -m http.server 4180`, then open `/prototypes/map-lab/`
-(`?option=1–5&trip=…&event=…&motion=reduced&mode=dark`). The concepts are
-Globe, Transit map, Ink atlas, Space-time and Follow-cam; the
+(`?option=1–8&trip=…&event=…&motion=reduced&mode=dark`). The concepts are
+Globe, Transit map, Ink atlas, Space-time, Follow-cam, City lens, Photo roll
+and Now; the
 [comparison](prototypes/map-lab/COMPARISON.md) holds the table, measurements
 and the agent's recommendation (the choice is the owner's).
 
@@ -56,6 +63,9 @@ fixture and settings, the behaviour, privacy and 320 px checks were repeated
 for the changed concepts (all pass, no target under 44 px), and the switch was
 checked: plain links open light, Dark map adds `&mode=dark`, light-only
 concepts hide it and fall back to light.
+Second round (18 November): options 6–8 pass the same behaviour, privacy and
+320/390 px checks; frame times were measured with Ink atlas re-run as a
+same-session control because the container had restarted (see comparison).
 Screenshots and recordings went to the owner in the task chat and are not
 committed. Option 4's deck.gl points have a ~43 px picking area (the scrubber
 is the main control). **Not checked:** a physical phone or any real GPU (software WebGL

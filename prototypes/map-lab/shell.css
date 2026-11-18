@@ -30,6 +30,7 @@
 :root[data-option="3"] { --stage-bg: #efe3c8; }
 :root[data-option="4"] { --stage-bg: #eceff0; }
 :root[data-option="5"] { --stage-bg: #f1eee7; }
+:root[data-option="6"], :root[data-option="7"], :root[data-option="8"] { --stage-bg: #f4f1ea; }
 :root[data-option="1"][data-theme="dark"] { --stage-bg: #050a13; }
 :root[data-option="5"][data-theme="dark"] { --stage-bg: #0c0f12; }
 #mode-button[hidden], #mode-row-more[hidden] { display: none !important; }
@@ -201,7 +202,7 @@ button, select { font: inherit; color: inherit; }
 .maplibregl-ctrl-attrib.maplibregl-compact { min-height: 24px; }
 
 /* ---------------------------------------------------------------- phone */
-@media (max-width: 1080px) {
+@media (max-width: 1500px) {
   .lab-options button span { display: none; }
   .lab-options button { padding: 0 8px; }
   .lab-options button[aria-pressed="true"] span { display: inline; }
@@ -209,7 +210,9 @@ button, select { font: inherit; color: inherit; }
 @media (max-width: 760px) {
   .lab-brand { display: none; }
   .lab-top { left: 8px; right: 8px; gap: 6px; }
-  .lab-options { margin-inline: 0; }
+  .lab-options { margin-inline: 0; overflow-x: auto; scrollbar-width: none; flex: 0 1 auto; min-width: 0; scroll-snap-type: x proximity; }
+  .lab-options::-webkit-scrollbar { display: none; }
+  .lab-options button { flex: 0 0 44px; scroll-snap-align: start; }
   .lab-options button[aria-pressed="true"] span { display: none; }
   .lab-options button { padding: 0; justify-content: center; }
   .lab-top-actions > :not(#more-button) { display: none; }

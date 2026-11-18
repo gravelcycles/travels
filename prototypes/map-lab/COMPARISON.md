@@ -93,3 +93,56 @@ the largest O09 departure) and *Globe* (its moving camera, and a globe adds
 little on a trip within one region). The globe's fly-in could survive as a
 one-off opening if the owner likes it. Dark mode, where wanted, belongs to
 O22's later pass and stays a choice, never the default (O23).
+
+## Second round — 18 November 2026
+
+Asked to “think a bit deeper and prioritize your next best 3”, the agent
+scored the remaining ideas against the standing decisions: real, light map
+(O23), still camera and no full-trip Replay (O09), map-first unselected
+opening (O06), photographs lead (O22), no invented copy or locations
+(O01/O02), and the owner's ranking of UX flow over polish (O20).
+
+| Rank | Concept | The problem it solves | Why it ranked here |
+| --- | --- | --- | --- |
+| 1 | **6 · City lens** | Every concept, and the live site, trades the route for the city on arrival: you see one or the other. | Fixes a core flow with no new camera motion; keeps the journey and the city on screen together (the “continuous geographic context” in the Apple-like definition). Additive to the current map. |
+| 2 | **7 · Photo roll** | Photos and map are separate places: the album lives apart from the route. | Makes photographs lead (O22) and gives the album a geography; follows O05's camera rule. Conflicts most with the established sidebar/phone card (O03/O08), so it ranks below the lens. |
+| 3 | **8 · Now** | The first question a follower asks of an ongoing trip — where are they now? — needs reading the whole list. | Cheap, honest (dates and photos only) and reuses the Past / Locked in / TBD split already approved for Heading East; adds a card to the overview, which O06 keeps sparse. |
+
+Considered and left out: an elevation ribbon (valuable on Alpine legs only),
+a heat trail weighted by photos/nights (fights the transport colours and
+patterns), postcards (overlaps O21's photo row and Ink's polaroids), a
+calendar strip (subsumed by the Space-time scrubber and Now), and a story
+mode (too close to the disabled full-trip Replay, O09).
+
+| | 6 · City lens | 7 · Photo roll | 8 · Now |
+| --- | --- | --- | --- |
+| **Concept** | Main map keeps the incoming route; a round street-scale lens beside the city | The photo roll drives the map; scroll to travel | Time-aware map: past solid, plan lighter, TBD dotted, honest status |
+| **Photos** | Blurred circles with counts inside the lens; counts elsewhere | Filmstrip in album order; current pin at its capture point; dots elsewhere | Latest photo marked with its own date; counts in the card |
+| **Places** | Labelled pins inside the lens | Unchanged (card in the stop list) | Count in the stop card |
+| **Keeps** | Still camera, 850 ms / 1.5 s / 0.25 s timing, viewer's arrival canvas, 3-second opening, current styles | Same, plus O05's photo-camera rule and album order | Same, plus the Heading East planning filters and no invented location |
+| **Breaks (deliberately)** | No zoom into the city on arrival; a second map on screen | Persistent strip over the picker; scrolling changes the stop without arrival | Overview card and “last confirmed” marker; future legs lighter; opening traces the past only |
+| **Phone fit** | Lens docks bottom-right (190 px) with a leader | Very good: one swipe through the trip | Good: card shrinks to the status line |
+| **Effort into the shared framework** | S–M: a second small map and a callout; trace and camera already exist | M: a strip component bound to existing photo order and camera rules | S: planning paint, a status card from existing helpers |
+| **Risk** | Low–medium: two maps on low-end phones; lens placement near edges | Medium: overlaps the existing photo surfaces | Low: copy must stay strictly factual |
+
+Measured the same way (390 × 844, CPU ×4, software WebGL, Heading East),
+on the restarted container, with Ink atlas re-run as a control in the same
+session:
+
+| Option | Opening: fps · p50 / p95 | Long leg from landed Düsseldorf: fps · p50 / p95 (wall) | Own script per frame p50 / p95 | Main thread (opening · leg) |
+| --- | --- | --- | --- | --- |
+| 3 · Ink atlas (control) | 57.7 fps · 16.7 / 16.8 ms | 37 fps · 16.7 / 66.6 ms (6.5 s) | — | 41 % · 33 % |
+| 6 · City lens | 45 fps · 16.7 / 50 ms | 40.5 fps · 16.7 / 66.6 ms (3.2 s) | 0.2 / 1.0 ms | 44 % · 55 % |
+| 7 · Photo roll | 57 fps · 16.7 / 16.8 ms | 41 fps · 16.7 / 50 ms (3.9 s) | 0.1 / 0.9 ms | 23 % · 62 % |
+| 8 · Now | 54 fps · 16.7 / 16.8 ms | 38 fps · 16.7 / 50 ms (4.1 s) | 0.1 / 0.6 ms | 26 % · 40 % |
+
+The control shows this container renders camera moves faster than the first
+one (Ink's leg went from 20 to 37 fps), so compare the new three with the
+control row, not with the earlier table. On that basis they match Ink atlas;
+their own script is near zero because the trace is the viewer's shared canvas.
+City lens pays for its second map in the opening (45 fps, p95 50 ms).
+
+**Recommendation update.** City lens is the strongest single addition and
+combines with any base: Ink atlas or Transit map with a City lens arrival is
+the agent's suggested direction. Photo roll and Now work best as later,
+separate features rather than as the base. The choice remains the owner's.
