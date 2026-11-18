@@ -286,6 +286,7 @@ to duplicate and they do not certify route or photo-location accuracy.
 
 ## Authoring and publishing references
 
+- [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md): headless runtime, existing backend and private working-file transfer.
 - [JOURNEY_WORKFLOW.md](../JOURNEY_WORKFLOW.md): intake through reviewed promotion.
 - [PHOTO_WORKFLOW.md](../PHOTO_WORKFLOW.md): originals, derivatives, review and publishing.
 - [PHOTO_AUTH_HANDOFF.md](../PHOTO_AUTH_HANDOFF.md): shared photo service operations.

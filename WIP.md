@@ -1,5 +1,38 @@
 # Current workstreams
 
+## Headless environment handoff — 18 November 2026
+
+Owner request: “get everything needed to a new env to get going besides the
+token”; target clarified as a headless/cloud container using the existing
+backend. [Current setup](docs/ENVIRONMENT_SETUP.md) owns runtime, authentication,
+private-file transfer and Linux limitations. Preparation lives in ignored
+`build/environment-handoff-20261118/`; preserve it outside public deployment.
+
+Prepared: clean source starter, non-secret account/resource settings,
+setup/read-only checks and a separate private working-files archive. The source
+checkout was fast-forwarded to published `7566aa4`. Current inspection
+found 27 Studio recovery files, three marked dirty; preserve them without
+automatically applying or publishing them. Four historical raw-route input paths
+in the family manifest are already absent on the Mac; reviewed stored geometry
+still builds. No authentication/application secrets are included.
+
+Verified on the source Mac: the starter installed locked dependencies from
+scratch, all **971 tests** passed, the build passed with unchanged checked-in
+output, and all **3,066 private files** matched their archived SHA-256 hashes.
+No referenced prepared private still/video assets are missing. A credential
+pattern scan found no matches in 1,194 selected source/config/private text files.
+The read-only check reached the existing Worker settings and R2 bucket; D1
+metadata returned 401. The current OAuth grant has no D1 scope, so the separately
+supplied target token needs D1 permission before database operations. Source-Mac
+GitHub write access is verified but is not transferred.
+
+Next, in the target: inject authentication, run the supplied bootstrap and
+backend preflight, and review preserved Studio recovery records before any
+save/publication. Target container/image execution remains unverified; Docker
+is not installed on the source Mac. This preparation creates no backend
+resources or media release. Archives, settings and their verification receipts
+remain ignored; the current setup guide is tracked.
+
 ## Kraków and Zakopane dates — 11 November 2026
 
 Authorized: Kraków **6–10 November**, Zakopane **10–13 November**, then Bratislava;

@@ -26,6 +26,11 @@ verifiers when passwords are added or removed and verifies access. Visitors reta
 
 ## Completed account setup (reference)
 
+For a fresh machine or cloud container using this existing account, follow
+[headless environment setup](docs/ENVIRONMENT_SETUP.md). The 18 November 2026
+handoff separates non-secret runtime/resource settings from injected tokens
+and preserves private working files outside Git.
+
 1. Create a [Cloudflare account](https://dash.cloudflare.com/sign-up), verify
    the email, and enable two-factor authentication. Save recovery codes privately.
    This account is for the owner; visitors just enter a shared atlas password.

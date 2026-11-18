@@ -1,5 +1,13 @@
 # Changelog
 
+## 18 November 2026 — Headless environment handoff
+
+- Added current setup guidance for a cloud container using the existing
+  Cloudflare backend, with runtime requirements, private-file recovery,
+  separate authentication and explicit Linux media limitations.
+- Prepared ignored starter and private working-file archives with inventories
+  and checksums; credentials remain outside the handoff.
+
 ## 11 November 2026 — Stop thumbnails and larger catalog covers
 
 - Every stop or day row now shows its album's first photo above the count, in

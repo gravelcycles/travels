@@ -31,6 +31,7 @@ not another copy of the application.
 - [New-trip and shared-feature prompts for agents](docs/AGENT_PROMPTS.md)
 - [Step-by-step trip creation and publishing](JOURNEY_WORKFLOW.md)
 - [Standing agent rules](AGENTS.md)
+- [Headless environment setup and private-file transfer](docs/ENVIRONMENT_SETUP.md)
 - [Why lessons failed to carry forward, and the repairs](docs/ATLAS_CONTINUITY_AUDIT_2026-10-11.md)
 
 These guides describe current contracts. Dated handoffs, audits, and changelog
