@@ -61,8 +61,18 @@ dot when an upright post cannot fit; protect viewport edges, controls and
 other pin targets. Offscreen places are not pulled into the viewport.
 
 Nearby screen positions share one quiet dot and retain all member places and
-days in its picker. The selected place anchors a cluster when present. Zoom
-separates clusters naturally. Pins remain attached during camera movement;
+days in its picker. The complete cluster must fit within one clustering spacing
+in both screen axes (40 px for desktop targets, 52 px for phone/coarse targets).
+Never merge a transitive chain whose extremes are far apart: the owner's
+20 November Qeparo report showed a Salzburg preview anchored in Albania because
+each intermediate neighbour extended the same group. This supersedes that
+unbounded chain behavior. Keep the selected place as anchor; otherwise prefer
+the closest compatible compact group, with stable input order breaking ties.
+Previewing an unrelated day must leave Qeparo and other distant dots quiet,
+and its compact card must remain beside its own local group. Verify row, route
+and keyboard previews at wide zoom, with all days conserved, then zoom in/out
+and clear previews without changing selected day or camera.
+Zoom separates clusters naturally. Pins remain attached during camera movement;
 clustering and stem height settle on move end or resize. Nearby journey stops
 remain available in day focus, with the selected stop distinguished. Group
 filtering uses the current projected journey. Unknown places and empty drafts

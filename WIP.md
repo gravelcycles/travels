@@ -1,5 +1,45 @@
 # Current workstreams
 
+## Unrelated Qeparo marker highlight — 20 November 2026
+
+Owner report: Qeparo's dot highlights while previewing unrelated parts of
+Heading East; screenshot shows Salzburg previewed with its card at Albania.
+Follow-up: “it's the last start point if that helps”. Fix the shared marker
+identity/preview behavior without moving any trip coordinates or changing
+route data, selection or camera behavior. O07 and the location-label workflow
+own the marker contract. Branch `codex/fix-cluster-preview-20261120`, clean
+base `7f202ce`.
+
+Reproduced: at zoom 3 the old cluster puts Salzburg, Qeparo and 27 other
+stays under Qeparo's dot, spanning 202 × 201 px despite 40 px clustering
+spacing. Every new neighbour could merge the previous groups, and the latest
+unselected member became the representative. Qeparo is the final member of
+that chain, explaining the owner's final-origin clue.
+
+Implemented compact groups bounded across their complete screen extent,
+with selected anchors first and the nearest compatible local group used for
+each added place. Every place/day remains in the model. New regressions cover
+long chains, bridge points, actual Heading East wide zooms and Salzburg's
+controller preview/card/clear behavior; fresh-draft inheritance is extended.
+Current O07, framework, feature and location-label/journey guidance are updated.
+Verified: all **974 tests**, the production build and diff checks pass; a
+repeat build matches all 84 public files. No content source changes. Browser
+review at 1440 × 1000 and 390 × 844 covers Heading East, Switzerland–Italy,
+Alpine demo and independent empty/populated city-draft fixtures. Salzburg's
+wide-map preview highlights its local Salzburg/Innsbruck/Bolzano group while
+the Ohrid/Qeparo dot stays quiet; its card is local and Escape clears every
+preview class/card without changing Warsaw's selection or the camera.
+Reference/demo previews stay local. The empty draft invents no pins; the
+nine-stop independent chain splits into compact groups, and a phone group
+shows only its two local choices and selects the requested stop. No captured
+console errors. Browser fixtures remain ignored under
+`build/qa/cluster-preview-20261120/`; this is responsive-browser coverage,
+not physical-device certification.
+
+Remote main is unchanged at `7f202ce`. Next: commit current code/guidance and
+generated HTML, integrate latest main immediately before publishing, then
+verify Pages and fresh public output/browser.
+
 ## Slovakia, Hungary and Romania update — 20 November 2026
 
 Authorized: confirm Bratislava 13–14 November, Budapest 14–19 and Oradea

@@ -17,6 +17,13 @@ capture new corrections during the task and reconcile current docs before
 delivery; use the [live update procedure](OWNER_DECISIONS.md#record-the-next-correction-before-closing-the-task).
 Accepted work still pending belongs in WIP, not among delivered capabilities.
 
+The **20 November marker correction** keeps each screen-space stop group
+within one local clustering spacing in both axes. A neighbour chain cannot
+make the final origin stand for a distant preview (the Salzburg/Qeparo case).
+Selected anchors, every group's visit choices and the camera remain unchanged;
+see [O07](OWNER_DECISIONS.md#standing-decisions-and-acceptance-checks) and
+[pin placement](LOCATION_LABELS.md#placement-and-density).
+
 Venue pictures use the [reviewed Cloudflare intake](PLACES_AND_COMMENTS.md#durable-venue-image-intake):
 metadata-stripped, proportionally resized WebP in an isolated public delivery
 namespace, with verified uploads, source credit and provenance retained. The

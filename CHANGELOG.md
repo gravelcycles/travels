@@ -1,5 +1,16 @@
 # Changelog
 
+## 20 November 2026 — Keep map stop groups local
+
+- Fixed a chain of nearby stops merging distant places under the final
+  member's marker, which highlighted Qeparo while previewing Salzburg.
+- Bound each entire screen-space group to one local clustering spacing,
+  retaining selected anchors, all visit choices and existing hover/keyboard/
+  touch navigation. No itinerary coordinates or route lines change.
+- Added actual Heading East and independent-chain regressions, with current
+  guidance in [O07](docs/OWNER_DECISIONS.md#standing-decisions-and-acceptance-checks)
+  and the [location-label workflow](docs/LOCATION_LABELS.md#placement-and-density).
+
 ## 20 November 2026 — Heading East dates and Romania route
 
 - Set Bratislava to 13–14 November, Budapest to 14–19, Oradea to 19–22

@@ -53,20 +53,28 @@
 
   function clusterGroups(groups, project, spacing) {
     const clusters = [];
-    // Selected locations lead a cluster; proximity merges preserve every member/day.
-    for (const group of groups) {
+    // Bound the whole cluster, not just each new neighbour. A chain of nearby
+    // stops must never turn a distant final stop into another city's marker.
+    // Selected locations lead so their reviewed coordinates remain the anchor.
+    for (const group of [...groups].sort((a, b) => Number(b.selected) - Number(a.selected))) {
       const point = project(group.coordinate);
-      const touching = clusters.filter(cluster => cluster.members.some(member => {
-        const other = project(member.coordinate);
-        return Math.abs(point.x - other.x) < spacing && Math.abs(point.y - other.y) < spacing;
-      }));
-      const members = [group, ...touching.flatMap(cluster => cluster.members)].sort((a, b) => Number(b.selected) - Number(a.selected));
-      touching.forEach(cluster => clusters.splice(clusters.indexOf(cluster), 1));
-      const days = [...new Map(members.flatMap(member => member.days).map(day => [day.id, day])).values()].sort((a, b) => a.number - b.number);
-      clusters.push({ ...members[0], key: members.map(member => member.key).sort().join('|'), members, days,
-        name: members.length === 1 ? members[0].name : 'Nearby places', selected: members.some(member => member.selected) });
+      const nearby = clusters.filter(cluster =>
+        Math.max(cluster.right, point.x) - Math.min(cluster.left, point.x) < spacing &&
+        Math.max(cluster.bottom, point.y) - Math.min(cluster.top, point.y) < spacing
+      ).sort((a, b) => Number(b.members[0].selected) - Number(a.members[0].selected) ||
+        Math.hypot(point.x - a.point.x, point.y - a.point.y) - Math.hypot(point.x - b.point.x, point.y - b.point.y));
+      const cluster = nearby[0];
+      if (cluster) {
+        cluster.members.push(group);
+        cluster.left = Math.min(cluster.left, point.x); cluster.right = Math.max(cluster.right, point.x);
+        cluster.top = Math.min(cluster.top, point.y); cluster.bottom = Math.max(cluster.bottom, point.y);
+      } else clusters.push({members:[group],point,left:point.x,right:point.x,top:point.y,bottom:point.y});
     }
-    return clusters.sort((a, b) => Number(b.selected) - Number(a.selected));
+    return clusters.map(({members}) => {
+      const days = [...new Map(members.flatMap(member => member.days).map(day => [day.id, day])).values()].sort((a, b) => a.number - b.number);
+      return { ...members[0], key: members.map(member => member.key).sort().join('|'), members, days,
+        name: members.length === 1 ? members[0].name : 'Nearby places', selected: members.some(member => member.selected) };
+    }).sort((a, b) => Number(b.selected) - Number(a.selected));
   }
 
   // Screen-space route strokes for pin placement. A flat map projects Web

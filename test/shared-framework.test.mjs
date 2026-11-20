@@ -1101,8 +1101,15 @@ test('location labels are inherited by real trips, samples, and a fresh data-onl
   assert.deepEqual(Array.from(pins[0].members,member=>member.name),['New place']);
   draft.places.push({id:'next-place',name:'Next place',lng:139.8,lat:35.7});
   draft.days[2].placeId='next-place';
+  const independent=structuredClone(draft);
+  independent.places=[0,1,2].map(i=>({id:`local-place-${i}`,name:`Independent place ${i}`,lng:139.7+i*.15,lat:35.6}));
+  independent.days.forEach((day,i)=>day.placeId=independent.places[i].id);
+  const localGroups=labels.groupsForJourney(independent,hooks(independent),null,'journey');
+  const compact=labels.clusterGroups(localGroups,([lng])=>({x:100+(lng-139.7)*200,y:100}),40);
+  assert.equal(compact.length,2,'A fresh independent draft inherits compact groups instead of merging a long neighbour chain');
+  assert.deepEqual(new Set(compact.flatMap(group=>Array.from(group.days,day=>day.id))),new Set(independent.days.map(day=>day.id)),'All fresh-draft stops remain available');
   const {data} = loadContent(root);
-  for (const journey of [data.journeys.find(j=>j.kind!=='demo'), data.journeys.find(j=>j.kind==='demo'),draft]) {
+  for (const journey of [data.journeys.find(j=>j.kind!=='demo'), data.journeys.find(j=>j.id==='backpacking-europe-heading-east'), data.journeys.find(j=>j.kind==='demo'),draft,independent]) {
     assert.ok(assets(renderJourneyPage(root,journey,{preview:true})).includes('location-labels.js'));
     for (const group of labels.groupsForJourney(journey,hooks(journey),journey.days[0].id,'journey')) {
       const placement=labels.placePin({x:100,y:100},{dot:group.days.length>1,targetSize:44,bounds:{left:0,right:320,top:0,bottom:300}});

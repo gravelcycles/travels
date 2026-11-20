@@ -415,6 +415,18 @@ ready GPU surface. See the incident record.
 
 ## Standing decisions and acceptance checks
 
+**O07 follow-up, 20 November 2026:** the owner reports “why is this qeparo dot
+highlighted in parts of the trip that are unrelated?”, adding that it is the
+last start point. The screenshot previews Salzburg while the bright dot/card
+anchor sits in Albania. Shared screen-space clusters must remain local across
+their entire extent; a chain of nearby stops must not merge distant places and
+make the last member represent an unrelated preview. Keep actual coordinates,
+the selected anchor, quiet context, full visit membership and camera/selection
+behavior. Check the Heading East case plus reference, demo and independent
+fresh-draft data at wide and close zoom, including row/route/keyboard preview
+and clearing it. [Location-label contract](LOCATION_LABELS.md#placement-and-density)
+owns the compact-group rule; this extends O07 without changing trip facts.
+
 | ID | Current decision | Check when touching this area |
 | --- | --- | --- |
 | O01 · Photo copy | Captions, notes and place labels start blank and contain only traveler-supplied words. Do not generate photo names, scene descriptions or city/GPS labels. Filenames and accessibility alt text are not visible-caption fallbacks. Actual capture dates/times may identify an unlabeled photo. | Check bulk import **and** Studio upload, then card/fullscreen/phone renderers with blank fields and a separate authored example. Preserve existing copy, order, pins and frames on incremental intake. [Photo workflow](../PHOTO_WORKFLOW.md). |

@@ -237,6 +237,8 @@ or the named place for a rest day. Unknown locations stay unmarked.
 
 One-day stops use a small upright numbered signpost; repeated stays and nearby
 places share a quiet dot with explicit day choices. Zoom separates nearby places.
+Group the whole local extent, never a chain whose distant ends span the map;
+see the [20 November compact-group correction](docs/LOCATION_LABELS.md#placement-and-density).
 A short vertical stem keeps the number above its location; posts never rotate
 or flip. The stem can extend slightly to clear a route, with a dot fallback
 when the upright shape cannot fit. Complete marker targets stay clear of

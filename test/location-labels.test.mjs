@@ -49,15 +49,46 @@ test('group filters exclude other destinations even when those places remain in 
 
 
 test('nearby locations cluster without dropping days and separate again on zoom', () => {
-  const groups = [0,1,2].map(i=>({key:`p${i}`,coordinate:[i*30,100],name:`Place ${i}`,days:[{id:`d${i}`,number:i+1}],selected:i===1}));
+  const groups = [0,1,2].map(i=>({key:`p${i}`,coordinate:[i*15,100],name:`Place ${i}`,days:[{id:`d${i}`,number:i+1}],selected:i===1}));
   const project = ([x,y])=>({x,y});
   const clustered = clusterGroups(groups,project,40);
   assert.equal(clustered.length,1);
   assert.equal(clustered[0].members.length,3);
   assert.deepEqual(clustered[0].days.map(d=>d.id),['d0','d1','d2']);
   assert.deepEqual(clustered[0].coordinate,groups[1].coordinate,'Selected location anchors the cluster');
-  assert.equal(clusterGroups(groups,([x,y])=>({x:x*2,y}),40).length,3);
+  assert.equal(clusterGroups(groups,([x,y])=>({x:x*3,y}),40).length,3);
   assert.equal(groups[0].members,undefined,'Source records remain untouched');
+});
+
+test('chains and bridging neighbours cannot group distant places under a final-stop anchor', () => {
+  for (const coordinates of [Array.from({length:9},(_,i)=>[100+i*30,100]), [[100,100],[170,100],[135,100]], [[100,100],[100,170],[100,135]]]) {
+    const groups=coordinates.map((coordinate,i)=>({key:`p${i}`,name:`Place ${i}`,coordinate,days:[{id:`d${i}`,number:i+1}],selected:false}));
+    const snapshot=JSON.stringify(groups),project=([x,y])=>({x,y}),clustered=clusterGroups(groups,project,40);
+    assert.ok(clustered.length>1,'Touching a neighbour must not merge a whole chain or bridge two distant clusters');
+    assert.deepEqual(new Set(clustered.flatMap(c=>c.days.map(d=>d.id))),new Set(groups.flatMap(g=>g.days.map(d=>d.id))),'Every visit stays reachable');
+    for(const cluster of clustered)for(const a of cluster.members)for(const b of cluster.members){
+      assert.ok(Math.abs(a.coordinate[0]-b.coordinate[0])<40&&Math.abs(a.coordinate[1]-b.coordinate[1])<40,'Every pair remains within one local screen spacing');
+    }
+    assert.equal(JSON.stringify(groups),snapshot,'Clustering must not move or mutate authored places');
+  }
+});
+
+function europeProjection(zoom=3) {
+  const scale=512*2**zoom,y=lat=>-Math.log(Math.tan(Math.PI/4+lat*Math.PI/360))/(2*Math.PI);
+  return ([lng,lat])=>({x:400+(lng-15)/360*scale,y:300+(y(lat)-y(47))*scale});
+}
+
+test('Heading East never clusters Salzburg with the distant final Qeparo origin at wide zoom', () => {
+  const journey=data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),groups=groupsForJourney(journey,helpers(journey),null,'journey');
+  for(const zoom of [2.5,3,3.25,3.5,4])for(const spacing of [40,52]){
+    const project=europeProjection(zoom),clustered=clusterGroups(groups,project,spacing),salzburg=clustered.find(c=>c.days.some(d=>d.title==='Salzburg'));
+    assert.ok(!salzburg.members.some(m=>m.name==='Qeparo'),'The final origin must not inherit an unrelated city preview');
+    for(const cluster of clustered)for(const member of cluster.members){
+      const anchor=project(cluster.coordinate),point=project(member.coordinate);
+      assert.ok(Math.abs(point.x-anchor.x)<spacing&&Math.abs(point.y-anchor.y)<spacing,'A marker can only represent nearby destinations');
+    }
+    assert.deepEqual(new Set(clustered.flatMap(c=>c.days.map(d=>d.id))),new Set(journey.days.map(d=>d.id)));
+  }
 });
 
 test('signposts stay upright above their location with the complete marker inside its hit target', () => {
@@ -111,7 +142,7 @@ test('real and demo maps use clustered pins with separate touch targets and prot
   }
 });
 
-function previewFixture() {
+function previewFixture({groups:initialGroups,project=([x,y])=>({x,y})}={}) {
   const frames = new Map(), timers = new Map(), mapEvents = new Map(), previews = [], selections = [];
   const work = {projects:0,geometry:0,markers:0};
   let nextId = 1, moving = false, controller;
@@ -135,10 +166,10 @@ function previewFixture() {
   }
   const container = node('map');
   const document = { createElement: node, documentElement: { dataset: { inputMode: 'keyboard' } }, addEventListener() {}, removeEventListener() {}, activeElement: null };
-  const map = { getContainer: () => container, isMoving: () => moving, project: ([x,y]) => {work.projects++;return {x,y};}, on: (name, listener) => mapEvents.set(name, listener), off: name => mapEvents.delete(name) };
+  const map = { getContainer: () => container, isMoving: () => moving, project: coordinate => {work.projects++;return project(coordinate);}, on: (name, listener) => mapEvents.set(name, listener), off: name => mapEvents.delete(name) };
   const maplibregl = { Marker: class {
     constructor({ element }) { this.element = element; }
-    setLngLat() { return this; }
+    setLngLat(coordinate) { this.element.coordinate=coordinate; return this; }
     addTo() { work.markers++;container.append(this.element); return this; }
     remove() { this.element.remove(); }
   } };
@@ -152,13 +183,30 @@ function previewFixture() {
     onPreviewDays: ids => previews.push([...ids]), onSelectDay(id) { selections.push(id); controller.closePreview(); controller.update([group], []); }
   });
   const flush = queue => { while (queue.size) { const [id, callback] = queue.entries().next().value; queue.delete(id); callback(); } };
-  controller.update([group], []); flush(frames);
+  controller.update(initialGroups||[group], []); flush(frames);
   return { controller, previews, selections, document, work, group, get pendingFrames(){return frames.size;},get button() { return container.children.find(child => child.className === 'location-label-anchor')?.children[0]; },
+    get pins() {return container.children.filter(child=>child.className==='location-label-anchor').map(element=>({element,button:element.children[0],coordinate:element.coordinate}));},
     get card() { return container.children.find(child => child.className === 'map-place-card'); },
     flushTimers() { flush(timers); }, flushFrames() { flush(frames); },
     startMoving() { moving = true; mapEvents.get('movestart')(); }, stopMoving() { moving = false; mapEvents.get('moveend')(); flush(frames); }
   };
 }
+
+test('a Salzburg preview highlights a local pin and clears without highlighting or opening a card at Qeparo', () => {
+  const journey=data.journeys.find(j=>j.id==='backpacking-europe-heading-east'),groups=groupsForJourney(journey,helpers(journey),null,'journey');
+  const salzburg=groups.find(g=>g.name==='Salzburg'),qeparo=groups.find(g=>g.name==='Qeparo'),project=europeProjection(3),f=previewFixture({groups,project});
+  f.controller.setPreview([salzburg.days[0].id],{show:true});
+  const active=f.pins.filter(pin=>pin.button.classList.contains('is-preview'));
+  assert.equal(active.length,1,'The hovered city has one local highlighted pin');
+  assert.notDeepEqual(active[0].coordinate,qeparo.coordinate,'The last origin is not the preview anchor');
+  const a=project(active[0].coordinate),b=project(salzburg.coordinate);
+  assert.ok(Math.abs(a.x-b.x)<40&&Math.abs(a.y-b.y)<40);
+  assert.equal(f.card.children[0].textContent,'Salzburg');
+  assert.equal(active[0].button.getAttribute('aria-expanded'),'true','The compact card belongs to that local pin');
+  f.controller.setPreview([]);
+  assert.ok(f.pins.every(pin=>!pin.button.classList.contains('is-preview')&&!pin.button.classList.contains('is-muted')));
+  assert.equal(f.card,undefined);assert.equal(f.selections.length,0,'Hover never selects another city');
+});
 
 test('covered labels cancel queued geometry and resume once with the latest groups', () => {
   const f=previewFixture(), initial={...f.work}, old=f.button;
