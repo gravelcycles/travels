@@ -1,5 +1,17 @@
 # Changelog
 
+## 20 November 2026 — Heading East dates and Romania route
+
+- Set Bratislava to 13–14 November, Budapest to 14–19, Oradea to 19–22
+  and Cluj-Napoca to 22–23 (including the owner's same-task correction).
+- Add Cluj-Napoca, Sighișoara and Brașov before Sibiu; replace the direct
+  Oradea–Sibiu proposal with FlixBus to Cluj and three railway corridors.
+  Preserve all 49 retained lines and every saved media/editorial record.
+- Extend the dated range through 23 November; later stays remain undated/TBD.
+  Operator evidence, terminal uncertainty and network provenance live in the
+  [current trip record](docs/HEADING_EAST.md#slovakia-hungary-and-romania-update--20-november-2026)
+  and route manifest. Shared viewer behavior is unchanged.
+
 ## 18 November 2026 — Headless environment handoff
 
 - Added current setup guidance for a cloud container using the existing

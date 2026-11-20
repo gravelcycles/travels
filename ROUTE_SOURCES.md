@@ -132,7 +132,12 @@ visible in the stories. All precise private accommodation data stays local.
 
 See [the researched itinerary and limitations](docs/HEADING_EAST.md) and
 [its preserved route manifest](content/route-sources/backpacking-europe-heading-east.json).
-The 50 legs (31 rail, 19 bus) use preserved OSM network reconstructions.
+The 53 legs (33 rail, 20 bus) use preserved OSM network reconstructions.
+The [20 November update](docs/HEADING_EAST.md#slovakia-hungary-and-romania-update--20-november-2026)
+replaces Oradea–Sibiu with FlixBus to Cluj-Napoca, then rail through Sighișoara
+and Brașov to Sibiu. The corrected Cluj dates are 22–23 November; later stays
+remain undated. All 49 retained lines are unchanged. Terminal choices and
+departures remain unconfirmed; bus road endpoints are separate from rail pins.
 The [1 November correction](docs/HEADING_EAST.md#vienna-and-poland-dates--1-november-2026)
 replaces Wrocław with the researched Vienna–Břeclav–Bohumín–Kraków trains,
 with its first Kraków night omitted as a stay. The

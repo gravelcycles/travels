@@ -1,6 +1,83 @@
 # Backpacking Europe: Heading East
 
+## Slovakia, Hungary and Romania update — 20 November 2026
+
+Owner direction: “some dates have solidified and some routes have changed
+slightly … figure out train/buses accordingly”. Confirm Bratislava **13–14
+November**, Budapest **14–19 November** and Oradea **19–22 November 2026**.
+Add **Cluj-Napoca, 22–23 November**, reached from Oradea by **FlixBus**, then
+**Sighișoara → Brașov → Sibiu → Timișoara**. The same-task owner correction
+“update: cluj is just 22-23” replaces the initial tentative 22–24 range.
+Use the corrected supplied range without a TBD flag; Sighișoara and all
+later stays remain undated/TBD. The owner explicitly specifies train
+to Sighișoara and Brașov; research the other connections under the standing
+rail preference. Continue the existing itinerary from Timișoara through
+Belgrade, Zagreb, Ljubljana, Lake Bled, Split, Dubrovnik, Sarajevo, Ohrid,
+Qeparo and Athens, with no invented stay dates or bookings.
+
+This supersedes the 11 November undated Bratislava/Budapest/Oradea tail and
+the direct Oradea → Sibiu proposal. Preserve stable existing event IDs,
+retained geometry, traveler copy, albums, media assignments, pins and edits.
+`endDate` follows the last supplied date, **23 November**. Stay certainty does not prove
+an exact service, departure or ticket.
+
+Acceptance: 34 stays in this order, four newly supplied date ranges,
+corrected Cluj dates and FlixBus incoming leg, then rail to Sighișoara,
+Brașov and Sibiu; remove the superseded Oradea–Sibiu line from journey,
+manifest and geometry. Check full network reconstruction, retained media and
+both desktop/phone navigation before publishing. Research, implementation
+and delivery are recorded in [WIP](../WIP.md#slovakia-hungary-and-romania-update--20-november-2026).
+
+Researched connections (checked 20 November; no personal departures selected):
+
+| Leg | Mode and candidate corridor | Evidence / remaining choice |
+| --- | --- | --- |
+| Bratislava → Budapest, 14 November | Direct rail via Nové Zámky, Štúrovo, Szob and Vác to Budapest-Nyugati | [MÁV international table](https://www.mavcsoport.hu/sites/default/files/upload/page/nk_mnr_praha.pdf); retain reviewed geometry, exact train unknown |
+| Budapest → Oradea, 19 November | Rail via Cegléd, Szolnok, Püspökladány and Biharkeresztes | [MÁV border table](https://www.mavcsoport.hu/sites/default/files/upload/page/nk_mnr_nagyvarad.pdf) lists connecting Budapest trains and Püspökladány–Oradea services; allow a change at Püspökladány rather than claiming a booked through train |
+| Oradea → Cluj-Napoca, 22 November | FlixBus; representative road reconstruction through Aleșd, Ciucea and Huedin, then DN1J/DN1F toward Baciu | [FlixBus route](https://www.flixbus.com/bus-routes/bus-oradea-cluj-napoca) lists several terminals and a minimum 2h45m; neither a dated departure nor the coach's exact streets is verified |
+| Cluj-Napoca → Sighișoara, after Cluj's 23 November departure | Train via Câmpia Turzii, Războieni, Teiuș, Blaj, Copșa Mică and Mediaș | [CFR Cluj board](https://bilete.cfrcalatori.ro/ro-RO/Statie/Cluj-Napoca); no invented Sighișoara stay dates or selected train |
+| Sighișoara → Brașov, TBD | Train via Rupea, Racoș, Augustin and Feldioara | [CFR Sighișoara](https://bilete.cfrcalatori.ro/ro-RO/Statie/Sighisoara) and [Feldioara](https://bilete.cfrcalatori.ro/ro-RO/Statie/Feldioara) boards; reconstructed existing loop, not an assumed new tunnel |
+| Brașov → Sibiu, TBD | Train via Codlea, Făgăraș, Avrig, Podu Olt and Tălmaciu | [CFR Sibiu board](https://bilete.cfrcalatori.ro/ro-RO/Statie/Sibiu); rail candidate under the standing preference, no required transfer asserted |
+| Sibiu → Timișoara, TBD | Retain the reviewed rail candidate via Vințu de Jos, Simeria and Arad | Existing [Romanian evidence](#evidence-and-limitations); check works and actual connections once dated |
+
+The CFR search index exposes recent station itineraries, while direct static
+page reads return only the planner shell. This establishes candidate corridors,
+not a successful date-specific booking search. The four new lines use full
+OpenRailRouting/OSRM network responses, simplified at 0.00003 with five-decimal
+coordinates. Measured distances: **156.0 km** bus to Cluj, **199.3 km** rail to
+Sighișoara, **127.2 km** to Brașov and **148.5 km** to Sibiu. There are now
+**34 stays and 53 legs (33 rail, 20 bus)**; all 49 retained lines are identical.
+The previous Oradea–Sibiu line is absent from journey, geometry and manifest.
+
+Rail endpoints are within 45 m of sourced stations; shaping anchors snap within
+28 m. Largest raw gaps (up to 3.10 km) remain the provider's straight railway
+sections; no artificial densification is applied. The representative FlixBus
+terminals are **Oradea Autogara Intrans** and **Cluj Autogara Fany**, taken from
+the operator's map links. Snapped road endpoints are 20 m/7 m from those
+terminals but 3,774 m/439 m from the journey's rail-station pins. Keep the gaps
+honest; no walking connector, extra visit or booked terminal pair is invented.
+The shortest road reconstruction is a candidate and may differ from the actual
+coach. Exact requests, OSM station sources, hashes, point/length diagnostics and
+these limitations are retained in the [manifest](../content/route-sources/backpacking-europe-heading-east.json).
+Raw responses and rejected shaping-point road variant remain ignored in
+`build/route-inputs/backpacking-europe-heading-east/romania-20261120/`.
+
+Verification: all **971 tests** and the production build pass; strict routing
+preserves all 53 lines without warnings. Source comparisons preserve every
+existing stay ID/story, media record, album assignment, Places entry and
+photo/day/route override. Internal-browser checks at 1440 × 1000 and 390 × 844
+show the corrected dates/order, four detailed new corridors, selected transport
+colors and TBD styling, deliberate empty-media states, travel rows and onward
+navigation with no captured console errors. Public delivery remains pending
+until the [WIP receipt](../WIP.md#slovakia-hungary-and-romania-update--20-november-2026)
+records Pages and fresh public verification. No physical-device or exact-service
+certification is claimed.
+
 ## Kraków and Zakopane dates — 11 November 2026
+
+Historical release receipt: its Bratislava/onward date uncertainty and total
+counts are superseded by the [20 November update](#slovakia-hungary-and-romania-update--20-november-2026).
+Kraków/Zakopane dates and the Poprad connection remain current.
 
 Owner correction: “krakow 6-10 (not 11), then zakopane (10-13) then bratislava”.
 Kraków is **6–10 November 2026**; add **Zakopane, 10–13 November**, then retain
@@ -442,13 +519,17 @@ Current itinerary after Venice:
 Forni di Sopra (23–29 October) → Vienna (29 October–1 November) →
 Warsaw (2–6 November, via Kraków) → Kraków (6–10 November) →
 Zakopane (10–13 November) → Bratislava
-→ Budapest → Oradea → Sibiu → Timișoara → Belgrade → Zagreb → Ljubljana → Lake Bled
+ (13–14 November) → Budapest (14–19 November) → Oradea (19–22 November) →
+Cluj-Napoca (22–23 November) → Sighișoara → Brașov → Sibiu → Timișoara →
+Belgrade → Zagreb → Ljubljana → Lake Bled
 → Split → Dubrovnik → Sarajevo → Ohrid → Qeparo → Athens.
 
-Forni, Vienna, Warsaw, Kraków and Zakopane are confirmed city stays with no TBD flag.
-`endDate` is 13 November; all fifteen stays from Bratislava remain undated/TBD.
-The [11 November correction](#kraków-and-zakopane-dates--11-november-2026) owns
-the current Poland/Slovakia dates and route selection.
+Forni through Cluj-Napoca are supplied city stays with no TBD flag.
+`endDate` is 23 November; all fourteen stays from Sighișoara remain undated/TBD.
+The [20 November update](#slovakia-hungary-and-romania-update--20-november-2026)
+owns the current Slovakia/Hungary/Romania dates and route selection; the
+[11 November correction](#kraków-and-zakopane-dates--11-november-2026) retains
+the Poland dates and Poprad connection.
 Retain the original eleven
 city IDs/dates, existing photo albums, saved stories/notes, pins and ordering.
 Udine and Tolmezzo are transfers, not overnight stays. The Venice rail corridor

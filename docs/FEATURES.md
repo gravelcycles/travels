@@ -119,8 +119,8 @@ range with its contrast and upright orientation preserved.
 Timestamp insertion also accepts older yearless still labels within their owning
 event's calendar range, without rewriting saved photo labels or order.
 
-Heading East exercises the shared city-stay contract with sixteen dated stays through
-Zakopane, 13 November 2026, fifteen undated stays and 50 reconstructed route legs. Extensions remain
+Heading East exercises the shared city-stay contract with twenty dated stays through
+Cluj-Napoca, 23 November 2026, fourteen undated stays and 53 reconstructed route legs. Extensions remain
 content-only; see [its intake and route evidence](HEADING_EAST.md).
 Its [chronological city photo order](HEADING_EAST.md#chronological-city-albums--12-october-2026)
 uses the existing album-order overrides, with no shared renderer change.
@@ -246,6 +246,10 @@ within Warsaw's incoming travel. The
 sets Kraków to 6–10 November, adds Zakopane 10–13 November, and replaces the
 direct Bratislava leg with FlixBus to Poprad followed by train. City validation permits travel gaps between
 non-overlapping stays without creating an event or assigning gap-day photos.
+The [20 November update](HEADING_EAST.md#slovakia-hungary-and-romania-update--20-november-2026)
+confirms Bratislava, Budapest, Oradea and Cluj-Napoca (22–23 November after the
+owner's correction), then adds undated Sighișoara and Brașov before Sibiu.
+FlixBus reaches Cluj; the next three legs use researched railway corridors.
 Route order, dates and network provenance remain trip content. The Vienna
 [28 October access correction](HEADING_EAST.md#vienna-access-correction--28-october-2026)
 uses bus 110 to Tolmezzo, bus 100 to Udine, then ÖBB Railjet to Vienna. The

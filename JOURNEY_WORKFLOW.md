@@ -203,6 +203,9 @@ When extending a city journey, preserve its existing event IDs, close the previo
 final stay on the new arrival date, and update the journey end date and display
 range. Add the new incoming legs and reviewed geometry to each arriving city.
 Heading East's Salzburg → Innsbruck → Bolzano → Venice extension uses this flow.
+Its [later Romania update](docs/HEADING_EAST.md#slovakia-hungary-and-romania-update--20-november-2026)
+shows confirming existing undated stays and inserting new cities before the
+remaining undated tail without moving any saved media or inventing dates.
 
 Studio's Stop copy edits city titles and stories; Trip plan edits arrival and
 departure dates and adds city stops. Adjust both sides of a changed transfer date. Changing the trip

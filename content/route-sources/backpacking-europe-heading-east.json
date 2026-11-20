@@ -638,60 +638,13 @@
         ],
         "largestRawGapKm": 4.868,
         "maxSectionJoinMeters": 0,
-        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
-      }
-    },
-    "backpacking-europe-heading-east-oradea-sibiu": {
-      "strategy": "preserve",
-      "provenance": {
-        "provider": "OpenRailRouting / OpenStreetMap; local OSM graph where noted",
-        "retrievedAt": "2026-10-08",
-        "profile": "all_tracks_1435",
-        "dataDate": "2026-10-08T04:00:00Z",
-        "requestUrls": [
-          "https://routing.openrailrouting.org/route?point=47.0727%2C21.9338&point=46.1909%2C21.3158&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=46.1909%2C21.3158&point=45.8461%2C23.0106&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=45.8461%2C23.0106&point=45.98924%2C23.49813&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
-          "https://routing.openrailrouting.org/route?point=45.98924%2C23.49813&point=45.8006%2C24.1618&profile=all_tracks_1435&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class"
-        ],
-        "rawSha256": [
-          {
-            "file": "backpacking-europe-heading-east-oradea-sibiu-part1.json",
-            "sha256": "11d4837bc0b0632d0ec50a02e107594c2136f40fc78b015a3b11e8d51301c269"
-          },
-          {
-            "file": "backpacking-europe-heading-east-oradea-sibiu-part2.json",
-            "sha256": "19c1a4707f2c48e13bac926d812fd472e873be087f69e53ddc275d7fbf41b8a4"
-          },
-          {
-            "file": "backpacking-europe-heading-east-oradea-sibiu-part3.json",
-            "sha256": "b4f90e13913264118818082ed58a0bcee0eff9bbc0fc5f87c5fae03dfecd2939"
-          },
-          {
-            "file": "backpacking-europe-heading-east-oradea-sibiu-part4.json",
-            "sha256": "d96ebc25337efe56e559eaae8d17f163e65aa62e626cbd486ab6ee6f4f0e6e5c"
-          }
-        ],
-        "coordinateOrder": "longitude,latitude",
-        "simplifyTolerance": 3e-05,
-        "rawPointCount": 2665,
-        "outputPointCount": 1166,
-        "rawDistanceKm": 451.852,
-        "distanceKm": 451.81,
-        "endpointOffsetsMeters": [
-          14,
-          11
-        ],
-        "waypointOffsetsMeters": [
-          14,
-          93,
-          136,
-          15,
-          11
-        ],
-        "largestRawGapKm": 3.95,
-        "maxSectionJoinMeters": 0,
-        "notes": "TBD proposed itinerary. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md."
+        "notes": "Owner-confirmed stay dates added 20 November 2026; departure and booking remain unconfirmed. Network reconstruction is not a booked service or an operator GPS trace.  See docs/HEADING_EAST.md.",
+        "serviceEvidence": {
+          "checkedAt": "2026-11-20",
+          "sourceUrl": "https://www.mavcsoport.hu/sites/default/files/upload/page/nk_mnr_nagyvarad.pdf",
+          "certainty": "Retained reviewed railway corridor; exact personal train unconfirmed",
+          "travelDate": "2026-11-19"
+        }
       }
     },
     "backpacking-europe-heading-east-sibiu-timisoara": {
@@ -1615,7 +1568,13 @@
           4
         ],
         "maxSectionJoinMeters": 0,
-        "notes": "Reuses the reviewed network geometry by splitting/reversing retained sections, without smoothing or an endpoint connector. Raw counts and distance here describe those source coordinates. Dates and services remain TBD. See docs/HEADING_EAST.md."
+        "notes": "Reuses the reviewed network geometry by splitting/reversing retained sections, without smoothing or an endpoint connector. Raw counts and distance here describe those source coordinates. Stay dates confirmed 20 November 2026; services and departures remain unconfirmed. See docs/HEADING_EAST.md.",
+        "serviceEvidence": {
+          "checkedAt": "2026-11-20",
+          "sourceUrl": "https://www.mavcsoport.hu/sites/default/files/upload/page/nk_mnr_praha.pdf",
+          "certainty": "Retained reviewed railway corridor; exact personal train unconfirmed",
+          "travelDate": "2026-11-14"
+        }
       }
     },
     "backpacking-europe-heading-east-lesce-zagreb": {
@@ -2341,7 +2300,7 @@
         "largestRawGapKm": 0.857,
         "largestOutputGapKm": 2.818,
         "maxSectionJoinMeters": 0,
-        "notes": "Owner direction recorded 11 November 2026 specifies FlixBus Zakopane–Poprad followed by train to Bratislava; no specific departure date/time or booking supplied. Representative FlixBus N1365 corridor from the operator timetable valid 30 March 2026: Zakopane bus station–Bukowina Tatrzańska Klin–Jurgów/Podspády–Ždiar Tatra–Tatranská Lomnica bus station–Starý Smokovec bus station–Poprad bus station. Car-profile road reconstruction constrained through that corridor, not operator GPS. Actual terminal road endpoints are retained, separated from the journey rail-station pins by the measured offsets; no invented walking connector. A rejected nominal Jurgów shaping anchor selected a side road and was removed; the adjacent Bukowina and Ždiar anchors retain the documented crossing. Starý Smokovec uses its actual FlixBus terminal, not the rejected town-centre spur.",
+        "notes": "Owner direction recorded 11 November 2026 specifies FlixBus Zakopane–Poprad followed by train to Bratislava; Bratislava arrival is now confirmed as 13 November; no departure time or booking supplied (20 November update). Representative FlixBus N1365 corridor from the operator timetable valid 30 March 2026: Zakopane bus station–Bukowina Tatrzańska Klin–Jurgów/Podspády–Ždiar Tatra–Tatranská Lomnica bus station–Starý Smokovec bus station–Poprad bus station. Car-profile road reconstruction constrained through that corridor, not operator GPS. Actual terminal road endpoints are retained, separated from the journey rail-station pins by the measured offsets; no invented walking connector. A rejected nominal Jurgów shaping anchor selected a side road and was removed; the adjacent Bukowina and Ždiar anchors retain the documented crossing. Starý Smokovec uses its actual FlixBus terminal, not the rejected town-centre spur.",
         "terminalSources": [
           {
             "name": "Zakopane Dworzec, FlixBus platform 12 stop position",
@@ -2409,6 +2368,216 @@
           }
         ],
         "gapReviewSourceUrl": "https://www.openstreetmap.org/way/483203739"
+      }
+    },
+    "backpacking-europe-heading-east-oradea-cluj-napoca": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OSRM / OpenStreetMap road network",
+        "retrievedAt": "2026-11-20",
+        "requestUrl": "https://routing.openstreetmap.de/routed-car/route/v1/driving/21.958487,47.043072;23.580822,46.785970?overview=full&geometries=geojson&steps=true",
+        "profile": "driving",
+        "sourceUrl": "https://www.flixbus.com/bus-routes/bus-oradea-cluj-napoca",
+        "rawSha256": "fec1b65e1350a84ad774de98668d28366203444f566bea67daf5098b86a4fccf",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 3822,
+        "outputPointCount": 1029,
+        "rawDistanceKm": 156.115,
+        "distanceKm": 155.996,
+        "endpointOffsetsMeters": [
+          3774,
+          439
+        ],
+        "largestRawGapKm": 0.88,
+        "largestOutputGapKm": 4.043,
+        "maxSectionJoinMeters": 0,
+        "notes": "Owner specifies FlixBus on 22 November; the corrected Cluj stay is 22–23 November. Representative OSRM driving route between two terminals listed on the FlixBus route page: Oradea Autogara Intrans and Cluj-Napoca Autogara Fany. Exact departure and terminal pair are not booked/verified. The reconstruction follows DN1 through Aleșd, Ciucea and Huedin, then DN1J/DN1F toward Baciu; this is a road-network candidate, not operator GPS or a verified coach street itinerary. Preserve snapped road endpoints: the Oradea railway pin and Intrans are separate locations, as are Fany and Cluj railway station. No invented station-to-bus walking/road connector. The operator advertises a minimum 2h45m, not a verified 22 November departure or a car-router travel time.",
+        "terminalSources": [
+          {
+            "name": "Oradea (Autogara Intrans)",
+            "lat": 47.043072,
+            "lng": 21.958487,
+            "sourceUrl": "https://www.google.com/maps/place/47.043072,21.958487"
+          },
+          {
+            "name": "Cluj-Napoca (Autogara Fany)",
+            "lat": 46.78597,
+            "lng": 23.580822,
+            "sourceUrl": "https://www.google.com/maps/place/46.785970,23.580822"
+          }
+        ],
+        "terminalOffsetsMeters": [
+          20,
+          7
+        ],
+        "serviceEvidence": {
+          "checkedAt": "2026-11-20",
+          "sourceUrl": "https://www.flixbus.com/bus-routes/bus-oradea-cluj-napoca",
+          "certainty": "Owner-selected operator/mode; representative terminal pair, departure unconfirmed"
+        }
+      }
+    },
+    "backpacking-europe-heading-east-cluj-napoca-sighisoara": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap railway network",
+        "retrievedAt": "2026-11-20",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=46.7846249%2C23.5861692&point=46.202754%2C23.6905441&point=46.226391125%2C24.79580795&profile=non_tgv&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "non_tgv",
+        "dataDate": "2026-11-19T05:00:00Z",
+        "sourceUrl": "https://bilete.cfrcalatori.ro/ro-RO/Statie/Cluj-Napoca",
+        "rawSha256": "babb007780975a9f38295740d0043bd205888ddc9af2be3b3dfe49311c707728",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 1819,
+        "outputPointCount": 717,
+        "rawDistanceKm": 199.319,
+        "distanceKm": 199.278,
+        "endpointOffsetsMeters": [
+          2,
+          1
+        ],
+        "largestRawGapKm": 1.988,
+        "largestOutputGapKm": 5.1,
+        "maxSectionJoinMeters": 0,
+        "notes": "Owner specifies train from Cluj-Napoca toward Sighișoara after the corrected 22–23 November stay; Sighișoara dates remain TBD. Current CFR station-board search evidence lists Cluj Napoca–Câmpia Turzii–Războieni–Aiud–Teiuș–Blaj–Copșa Mică–Mediaș–Dumbrăveni–Sighișoara. Teiuș constrains the reconstruction to this corridor rather than the alternative via Deda. Named intermediate anchors are shaping references, not asserted calls by a selected train. No departure time, service number, journey duration or booking is supplied.",
+        "stationSources": [
+          {
+            "name": "Cluj-Napoca",
+            "lng": 23.5861692,
+            "lat": 46.7846249,
+            "sourceUrl": "https://www.openstreetmap.org/node/258987961"
+          },
+          {
+            "name": "Teiuș",
+            "lng": 23.6905441,
+            "lat": 46.202754,
+            "sourceUrl": "https://www.openstreetmap.org/node/10784168178"
+          },
+          {
+            "name": "Sighișoara",
+            "lng": 24.79580795,
+            "lat": 46.226391125,
+            "sourceUrl": "https://www.openstreetmap.org/way/1152498013"
+          }
+        ],
+        "serviceEvidence": {
+          "checkedAt": "2026-11-20",
+          "sourceUrl": "https://bilete.cfrcalatori.ro/ro-RO/Statie/Cluj-Napoca",
+          "certainty": "Candidate corridor; departure and service unconfirmed"
+        },
+        "waypointOffsetsMeters": [
+          2,
+          28,
+          1
+        ]
+      }
+    },
+    "backpacking-europe-heading-east-sighisoara-brasov": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap railway network",
+        "retrievedAt": "2026-11-20",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=46.226391125%2C24.79580795&point=46.0217515%2C25.4216291&point=45.6612146%2C25.6135846&profile=non_tgv&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "non_tgv",
+        "dataDate": "2026-11-19T05:00:00Z",
+        "sourceUrl": "https://bilete.cfrcalatori.ro/ro-RO/Statie/Sighisoara",
+        "rawSha256": "ee98bed20db69e48f5eb37e103e29c15d828c3600dce286509a88b47dee88b34",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 1265,
+        "outputPointCount": 492,
+        "rawDistanceKm": 127.269,
+        "distanceKm": 127.239,
+        "endpointOffsetsMeters": [
+          1,
+          45
+        ],
+        "largestRawGapKm": 3.099,
+        "largestOutputGapKm": 4.958,
+        "maxSectionJoinMeters": 0,
+        "notes": "Owner specifies train to Brașov, dates TBD. Current CFR station-board evidence lists the Sighișoara–Rupea–Racoș–Brașov corridor; Feldioara board corroborates the southern connection. Reconstruction uses existing railway through Racoș and the Augustin/Ormeniș loop, not an assumed completed new tunnel. Railway works may affect departures or require date-specific alterations. No particular train, parallel track, transfer, replacement bus or exact running time is claimed.",
+        "stationSources": [
+          {
+            "name": "Sighișoara",
+            "lng": 24.79580795,
+            "lat": 46.226391125,
+            "sourceUrl": "https://www.openstreetmap.org/way/1152498013"
+          },
+          {
+            "name": "Racoș",
+            "lng": 25.4216291,
+            "lat": 46.0217515,
+            "sourceUrl": "https://www.openstreetmap.org/node/2820179632"
+          },
+          {
+            "name": "Brașov",
+            "lng": 25.6135846,
+            "lat": 45.6612146,
+            "sourceUrl": "https://www.openstreetmap.org/node/9289175505"
+          }
+        ],
+        "serviceEvidence": {
+          "checkedAt": "2026-11-20",
+          "sourceUrl": "https://bilete.cfrcalatori.ro/ro-RO/Statie/Sighisoara",
+          "certainty": "Candidate corridor; departure and service unconfirmed"
+        },
+        "waypointOffsetsMeters": [
+          1,
+          2,
+          45
+        ]
+      }
+    },
+    "backpacking-europe-heading-east-brasov-sibiu": {
+      "strategy": "preserve",
+      "provenance": {
+        "provider": "OpenRailRouting / OpenStreetMap railway network",
+        "retrievedAt": "2026-11-20",
+        "requestUrl": "https://routing.openrailrouting.org/route?point=45.6612146%2C25.6135846&point=45.8300991%2C24.976099&point=45.8006%2C24.1618&profile=non_tgv&points_encoded=false&instructions=false&way_point_max_distance=0&details=road_environment&details=railway_class",
+        "profile": "non_tgv",
+        "dataDate": "2026-11-19T05:00:00Z",
+        "sourceUrl": "https://bilete.cfrcalatori.ro/ro-RO/Statie/Sibiu",
+        "rawSha256": "c89910cdd86fb5e2522746e818daf9675ca8896a7607e5bc76e387c6945da6a0",
+        "coordinateOrder": "longitude,latitude",
+        "simplifyTolerance": 3e-05,
+        "rawPointCount": 1044,
+        "outputPointCount": 499,
+        "rawDistanceKm": 148.493,
+        "distanceKm": 148.473,
+        "endpointOffsetsMeters": [
+          45,
+          11
+        ],
+        "largestRawGapKm": 2.021,
+        "largestOutputGapKm": 4.159,
+        "maxSectionJoinMeters": 0,
+        "notes": "Researched rail candidate under the standing rail preference; dates and service remain TBD. CFR Sibiu station-board search evidence lists the Brașov–Codlea–Făgăraș–Avrig–Podu Olt–Tălmaciu–Sibiu corridor. Făgăraș constrains the railway reconstruction; it does not assert a required transfer. Preserve snapped station track endpoints without adding a city-centre connector. Sibiu onward retains all reviewed previous geometry and unconfirmed service assumptions.",
+        "stationSources": [
+          {
+            "name": "Brașov",
+            "lng": 25.6135846,
+            "lat": 45.6612146,
+            "sourceUrl": "https://www.openstreetmap.org/node/9289175505"
+          },
+          {
+            "name": "Făgăraș",
+            "lng": 24.976099,
+            "lat": 45.8300991,
+            "sourceUrl": "https://www.openstreetmap.org/node/10332117589"
+          }
+        ],
+        "serviceEvidence": {
+          "checkedAt": "2026-11-20",
+          "sourceUrl": "https://bilete.cfrcalatori.ro/ro-RO/Statie/Sibiu",
+          "certainty": "Candidate corridor; departure and service unconfirmed"
+        },
+        "waypointOffsetsMeters": [
+          45,
+          18,
+          11
+        ]
       }
     }
   }

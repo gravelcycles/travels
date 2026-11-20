@@ -1,5 +1,39 @@
 # Current workstreams
 
+## Slovakia, Hungary and Romania update — 20 November 2026
+
+Authorized: confirm Bratislava 13–14 November, Budapest 14–19 and Oradea
+19–22; add Cluj-Napoca 22–23 via FlixBus (owner follow-up supersedes the
+initial tentative 22–24 range), then undated Sighișoara
+and Brașov by train before Sibiu, Timișoara and the retained onward route.
+[Trip record](docs/HEADING_EAST.md#slovakia-hungary-and-romania-update--20-november-2026)
+owns certainty, supersession, preservation and acceptance. Working branch:
+`codex/heading-east-romania-20261120`; initial checkout is clean main.
+
+Implemented: 34 stays, 53 preserved routes, with all 49 retained lines
+unchanged and the superseded Oradea–Sibiu line removed. Corrected Cluj dates
+are 22–23 November without a TBD flag; Sighișoara and all later stays remain
+undated/TBD. Operator evidence, sourced stations, representative FlixBus
+terminals and their honest station/road gaps are recorded in the trip note
+and manifest. Existing stay IDs, stories, Places, media, albums and all
+photo/day/route overrides are unchanged. No shared UX contract changed.
+
+Verified: strict routing preserves all 53 with zero warnings; all **971 tests**
+and the production build pass. The first sandboxed test run's three Studio
+server failures were loopback permission errors; the full rerun with local
+server access passes. Internal-browser review covers the target city model at
+1440 × 1000 and 390 × 844: corrected stop dates/order, new bus and three rail
+corridors, TBD badges/colors, empty-media state, travel details, map return
+and next-stop navigation. No captured console errors. These are responsive
+browser checks, not physical-device certification or a booked service search.
+Raw-provider gap/anchor diagnostics and all preservation comparisons pass.
+Remote main was fetched and matches the branch base `00b61bb`.
+
+Next: finish the source/output review, commit the implementation and current
+guidance, integrate latest main again before publishing, then verify the Pages
+run and fresh public HTML/data/browser. No exact departure or ticket has been
+supplied; subsequent departure selection waits for dates and traveler input.
+
 ## Headless environment handoff — 18 November 2026
 
 Owner request: “get everything needed to a new env to get going besides the
@@ -38,7 +72,8 @@ remain ignored; the current setup guide is tracked.
 Authorized: Kraków **6–10 November**, Zakopane **10–13 November**, then Bratislava;
 owner follow-up specifies **FlixBus to Poprad, then train to Bratislava**.
 [Current trip record](docs/HEADING_EAST.md#kraków-and-zakopane-dates--11-november-2026)
-owns supersession and acceptance. Bratislava/onward dates remain TBD; Poprad is
+owns supersession and acceptance. Bratislava/onward dates were TBD at that
+checkpoint, superseded by the [20 November update](#slovakia-hungary-and-romania-update--20-november-2026); Poprad is
 a transfer. No media, saved copy or photo assignment changes are authorized.
 Work is isolated on `codex/heading-east-zakopane-20261111` at
 `/private/tmp/travels-zakopane-20261111`, based on remote main `ba1c782`.

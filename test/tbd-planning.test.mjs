@@ -11,13 +11,13 @@ const {data,routes}=loadContent(root);
 const j=data.journeys.find(j=>j.id==='backpacking-europe-heading-east');
 const utils=globalThis.JOURNEY_ATLAS_UTILS;
 
-test('confirmed Vienna, Poland and Zakopane dates retain the undated tail and reviewed transport geometry',()=>{
+test('confirmed stays through Cluj retain the revised Romanian order, undated tail and reviewed transport geometry',()=>{
  const pending=j.days.slice(12);
- assert.deepEqual(pending.map(d=>d.title),['Vienna','Warsaw','Kraków','Zakopane','Bratislava','Budapest','Oradea','Sibiu','Timișoara','Belgrade','Zagreb','Ljubljana','Lake Bled','Split','Dubrovnik','Sarajevo','Ohrid','Qeparo','Athens']);
- assert.deepEqual(pending.slice(0,4).map(d=>[d.calendarDate,d.calendarEndDate,d.planningStatus]),[['2026-10-29','2026-11-01',undefined],['2026-11-02','2026-11-06',undefined],['2026-11-06','2026-11-10',undefined],['2026-11-10','2026-11-13',undefined]]);
- assert.ok(pending.slice(4).every(d=>d.planningStatus==='tbd' && !d.calendarDate && !d.calendarEndDate));
- assert.equal(j.days.length,31);assert.equal(j.endDate,'2026-11-13');
- assert.equal(j.segments.length,50);
+ assert.deepEqual(pending.map(d=>d.title),['Vienna','Warsaw','Kraków','Zakopane','Bratislava','Budapest','Oradea','Cluj-Napoca','Sighișoara','Brașov','Sibiu','Timișoara','Belgrade','Zagreb','Ljubljana','Lake Bled','Split','Dubrovnik','Sarajevo','Ohrid','Qeparo','Athens']);
+ assert.deepEqual(pending.slice(0,8).map(d=>[d.calendarDate,d.calendarEndDate,d.planningStatus]),[['2026-10-29','2026-11-01',undefined],['2026-11-02','2026-11-06',undefined],['2026-11-06','2026-11-10',undefined],['2026-11-10','2026-11-13',undefined],['2026-11-13','2026-11-14',undefined],['2026-11-14','2026-11-19',undefined],['2026-11-19','2026-11-22',undefined],['2026-11-22','2026-11-23',undefined]]);
+ assert.ok(pending.slice(8).every(d=>d.planningStatus==='tbd' && !d.calendarDate && !d.calendarEndDate));
+ assert.equal(j.days.length,34);assert.equal(j.endDate,'2026-11-23');
+ assert.equal(j.segments.length,53);
  assert.equal(utils.eventForDate(j,'2026-10-23').title,'Forni di Sopra');
  assert.equal(utils.eventForDate(j,'2026-10-29').title,'Vienna');
  assert.equal(utils.eventForDate(j,'2026-11-01').title,'Vienna');
@@ -26,23 +26,32 @@ test('confirmed Vienna, Poland and Zakopane dates retain the undated tail and re
  assert.equal(utils.eventForDate(j,'2026-11-09').title,'Kraków');
  assert.equal(utils.eventForDate(j,'2026-11-10').title,'Zakopane','Transfer day belongs to the arriving city');
  assert.equal(utils.eventForDate(j,'2026-11-12').title,'Zakopane');
- assert.equal(utils.eventForDate(j,'2026-11-13').title,'Zakopane','An undated onward stay must not claim a capture date');
- assert.equal(utils.eventForDate(j,'2026-11-14'),undefined);
+ assert.equal(utils.eventForDate(j,'2026-11-13').title,'Bratislava');
+ assert.equal(utils.eventForDate(j,'2026-11-14').title,'Budapest');
+ assert.equal(utils.eventForDate(j,'2026-11-19').title,'Oradea');
+ assert.equal(utils.eventForDate(j,'2026-11-22').title,'Cluj-Napoca');
+ assert.equal(utils.eventForDate(j,'2026-11-23').title,'Cluj-Napoca','An undated onward stay must not claim a capture date');
+ assert.equal(utils.eventForDate(j,'2026-11-24'),undefined);
  const manifest=JSON.parse(fs.readFileSync(new URL('../content/route-sources/backpacking-europe-heading-east.json',import.meta.url)));
  const legs=pending.flatMap(d=>d.segmentIds.map(id=>j.segments.find(s=>s.id===id)));
- assert.equal(legs.filter(s=>s.mode==='train').length,17);assert.equal(legs.filter(s=>s.mode==='bus').length,16);
+ assert.equal(legs.filter(s=>s.mode==='train').length,19);assert.equal(legs.filter(s=>s.mode==='bus').length,17);
  for(const s of legs){
   const coords=routes[s.id],p=manifest.segments[s.id].provenance;
   assert.equal(manifest.segments[s.id].strategy,'preserve');assert.ok(coords.length>20);
-  // FlixBus uses the bus terminals beside the rail stations. Preserve its
-  // reviewed road endpoints instead of inventing off-network connectors.
-  const terminalTransfer=s.id==='backpacking-europe-heading-east-zakopane-poprad';
-  const endpointLimitMeters=terminalTransfer?250:100;
+  // Bus terminals and rail pins are separate locations. Preserve the sourced
+  // road endpoints instead of inventing off-network connectors between them.
+  const clujTransfer=s.id==='backpacking-europe-heading-east-oradea-cluj-napoca';
+  const terminalTransfer=clujTransfer||s.id==='backpacking-europe-heading-east-zakopane-poprad';
+  const endpointLimitMeters=clujTransfer?4000:terminalTransfer?250:100;
   assert.ok(p.endpointOffsetsMeters.every(m=>terminalTransfer?m<=endpointLimitMeters:m<endpointLimitMeters));
   if(terminalTransfer){
    assert.match(p.notes,/FlixBus/,'The retained bus corridor records the owner-selected operator');
-   assert.equal(new URL(p.sourceUrl).hostname,'cdn-cf.cms.flixbus.com');
+   assert.equal(new URL(p.sourceUrl).hostname,clujTransfer?'www.flixbus.com':'cdn-cf.cms.flixbus.com');
    assert.equal(p.terminalSources.length,2,'Both real bus terminals have source evidence');
+   if(clujTransfer){
+    assert.ok(p.endpointOffsetsMeters[0]>3000,'Do not invent a connection from the railway station to the bus terminal');
+    p.terminalSources.forEach((terminal,index)=>assert.ok(haversine([terminal.lng,terminal.lat],index?coords.at(-1):coords[0])<.03,'Road endpoints stay at the sourced representative bus terminals'));
+   }
   }
   assert.ok(Math.abs(p.rawDistanceKm-p.distanceKm)/p.rawDistanceKm<.005);
   assert.ok(p.maxSectionJoinMeters<=1);
@@ -116,7 +125,11 @@ test('confirmed Vienna, Poland and Zakopane dates retain the undated tail and re
    assert.ok(line.every(point=>offset(point,other)<.35),`Bus ${service} must not invent a different corridor on return`);
  }
  assert.ok(j.segments.find(s=>s.id.endsWith('-udine-tolmezzo')).distanceKm<51);
- for(const old of ['tolmezzo-carnia','carnia-tarvisio','tarvisio-boscoverde','boscoverde-vienna','vienna-wroclaw','wroclaw-warsaw','krakow-bratislava']) {
+ const romanian=j.days.slice(19,23).flatMap(day=>day.segmentIds.map(id=>j.segments.find(s=>s.id===id)));
+ assert.deepEqual(romanian.map(s=>s.mode),['bus','train','train','train']);
+ assert.deepEqual(romanian.map(s=>placeName(s.to)),['Cluj-Napoca','Sighișoara','Brașov','Sibiu']);
+ assert.deepEqual(romanian.slice(1).map(s=>s.via.map(p=>p.name)),[['Teiuș'],['Racoș'],['Făgăraș']]);
+ for(const old of ['tolmezzo-carnia','carnia-tarvisio','tarvisio-boscoverde','boscoverde-vienna','vienna-wroclaw','wroclaw-warsaw','krakow-bratislava','oradea-sibiu']) {
   const id='backpacking-europe-heading-east-'+old;
   assert.ok(!j.segments.some(s=>s.id===id));
   assert.equal(routes[id],undefined); assert.equal(manifest.segments[id],undefined);
@@ -131,13 +144,14 @@ test('confirmed Vienna, Poland and Zakopane dates retain the undated tail and re
 });
 
 test('date resizing preserves undated city and calendar-day tails',()=>{
- const shifted=resizeCalendar(j,'2026-09-02','2026-11-14','itinerary');
- assert.deepEqual(shifted.days.slice(16),j.days.slice(16));
+ const shifted=resizeCalendar(j,'2026-09-02','2026-11-24','itinerary');
+ assert.deepEqual(shifted.days.slice(20),j.days.slice(20));
  assert.equal(shifted.days[11].calendarEndDate,'2026-10-30');
  assert.equal(shifted.days[12].calendarEndDate,'2026-11-02');
  assert.equal(shifted.days[13].calendarDate,'2026-11-03');
  assert.equal(shifted.days[14].calendarEndDate,'2026-11-11');
  assert.deepEqual([shifted.days[15].calendarDate,shifted.days[15].calendarEndDate],['2026-11-11','2026-11-14']);
+ assert.deepEqual([shifted.days[19].calendarDate,shifted.days[19].calendarEndDate],['2026-11-23','2026-11-24']);
  const daily={id:'new-trip',days:[{id:'dated',number:1,calendarDate:'2026-10-01',date:'1 Oct',segmentIds:[]},{id:'future',number:2,planningStatus:'tbd',date:'TBD',segmentIds:[]}]};
  const extended=resizeCalendar(daily,'2026-10-01','2026-10-02');
  assert.equal(extended.days.at(-1).id,'future');assert.equal(extended.days.at(-1).number,3);

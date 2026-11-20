@@ -10,14 +10,14 @@
   "title": "Backpacking Europe: Heading East",
   "subtitle": "After a summer in Switzerland, we are heading north and east and then south through a lot of not-Western Europe. After leaving our bags at Kawan's (in Düsseldorf) and bikes at Qen & Jonas's (in Luzern), we are down to 2 backpacks and 2 rail passes.",
   "kicker": "BACKPACKING EUROPE · AUTUMN 2026",
-  "dates": "1 Sep – 13 Nov 2026 · onward dates TBD",
+  "dates": "1 Sep – 23 Nov 2026 · onward dates TBD",
   "startDate": "2026-09-01",
-  "endDate": "2026-11-13",
+  "endDate": "2026-11-23",
   "timeZone": "Europe/Berlin",
   "photoImport": {
     "sourceDirectory": "photos/euro-eastbound"
   },
-  "note": "City stops span arrival to departure, with confirmed dates through Zakopane on 13 November. Venice → Udine is by train via Mestre, followed by bus 100 to Tolmezzo and bus 110 to Forni. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed. Vienna is 29 October–1 November, Warsaw 2–6 November, Kraków 6–10 November and Zakopane 10–13 November. The onward itinerary from Bratislava to Athens is planned, not confirmed; dates, bookings and transfers remain TBD. Dotted routes mark these proposed legs. Rail is preferred where available; bus lines follow reconstructed road corridors, not operator GPS tracks. Travel from Vienna to Warsaw passes through Kraków, without a separate first Kraków stay. Warsaw is followed by Kraków, Zakopane, then Bratislava; Wrocław is omitted. Zakopane → Poprad is by FlixBus, followed by train to Bratislava; departure times remain unconfirmed. Kraków → Zakopane is a researched rail candidate. Slovenia follows Zagreb: Ljubljana → Lake Bled, then Split and Dubrovnik. Lake Bled uses Lesce-Bled and a local bus; the return rail corridor toward Split runs via Ljubljana and Zagreb. Recheck travel dates for replacement buses. Udine, Tolmezzo, Lesce-Bled, Poprad, Skopje, Tirana, Novi Pazar and Sarandë are transfer points, not extra stays. Forni–Vienna uses bus 110 to Tolmezzo and bus 100 to Udine, then an ÖBB Railjet to Vienna via Tarvisio, Villach, Klagenfurt, the Koralmbahn and Graz. This owner correction of 28 October supersedes the Carnia/Tarvisio bus transfers. Other departure times and bookings remain unconfirmed. Both directions use the same 100/110 bus corridors; small one-way city-road and motorway-carriageway differences remain representative. Vienna–Kraków departs 1 November at 11:10: RJ 252 to Břeclav, EC 130 to Bohumín, then IC 115 to Kraków (scheduled arrival 16:38). Kraków–Warsaw on 2 November departs at 12:06: Os 34132 via Trzebinia and Jaworzno Szczakowa to Zawiercie (13:12), changing to EIC 4504 at 13:34 for Warsaw (15:24 scheduled). Zawiercie is a transfer, not a separate stay.",
+  "note": "City stops span arrival to departure, with confirmed dates through Cluj-Napoca on 23 November. Venice → Udine is by train via Mestre, followed by bus 100 to Tolmezzo and bus 110 to Forni. Routes are researched reconstructions on railway and road networks, not verified personal train records. DB’s Monday timetable supports the 5 October replacement bus from Dresden to Ústí nad Labem, then rail to Prague. Exact departures, diversions and bus streets remain unconfirmed. Luzern marks the 1 September departure; no earlier stay dates are assumed. Vienna is 29 October–1 November, Warsaw 2–6 November, Kraków 6–10 November and Zakopane 10–13 November. Bratislava is 13–14 November, Budapest 14–19 November, Oradea 19–22 November and Cluj-Napoca 22–23 November. Cluj-Napoca follows Oradea by FlixBus; Sighișoara and Brașov follow by train, then Sibiu and Timișoara. Stay dates after Cluj-Napoca remain TBD; services and bookings remain unconfirmed. Dotted routes mark incoming travel for the undated onward stays. Rail is preferred where available; bus lines follow reconstructed road corridors, not operator GPS tracks. Travel from Vienna to Warsaw passes through Kraków, without a separate first Kraków stay. Warsaw is followed by Kraków, Zakopane, then Bratislava; Wrocław is omitted. Zakopane → Poprad is by FlixBus, followed by train to Bratislava; departure times remain unconfirmed. Kraków → Zakopane is a researched rail candidate. Slovenia follows Zagreb: Ljubljana → Lake Bled, then Split and Dubrovnik. Lake Bled uses Lesce-Bled and a local bus; the return rail corridor toward Split runs via Ljubljana and Zagreb. Recheck travel dates for replacement buses. Udine, Tolmezzo, Lesce-Bled, Poprad, Skopje, Tirana, Novi Pazar and Sarandë are transfer points, not extra stays. Forni–Vienna uses bus 110 to Tolmezzo and bus 100 to Udine, then an ÖBB Railjet to Vienna via Tarvisio, Villach, Klagenfurt, the Koralmbahn and Graz. This owner correction of 28 October supersedes the Carnia/Tarvisio bus transfers. Other departure times and bookings remain unconfirmed. Both directions use the same 100/110 bus corridors; small one-way city-road and motorway-carriageway differences remain representative. Vienna–Kraków departs 1 November at 11:10: RJ 252 to Břeclav, EC 130 to Bohumín, then IC 115 to Kraków (scheduled arrival 16:38). Kraków–Warsaw on 2 November departs at 12:06: Os 34132 via Trzebinia and Jaworzno Szczakowa to Zawiercie (13:12), changing to EIC 4504 at 13:34 for Warsaw (15:24 scheduled). Zawiercie is a transfer, not a separate stay.",
   "cover": "",
   "places": [
     {
@@ -368,6 +368,27 @@
       "lng": 19.42303,
       "lat": 50.48094,
       "country": "Poland"
+    },
+    {
+      "id": "backpacking-europe-heading-east-cluj-napoca",
+      "name": "Cluj-Napoca",
+      "lng": 23.5861692,
+      "lat": 46.7846249,
+      "country": "Romania"
+    },
+    {
+      "id": "backpacking-europe-heading-east-sighisoara",
+      "name": "Sighișoara",
+      "lng": 24.79580795,
+      "lat": 46.226391125,
+      "country": "Romania"
+    },
+    {
+      "id": "backpacking-europe-heading-east-brasov",
+      "name": "Brașov",
+      "lng": 25.6135846,
+      "lat": 45.6612146,
+      "country": "Romania"
     }
   ],
   "segments": [
@@ -1017,7 +1038,7 @@
       "from": "backpacking-europe-heading-east-poprad",
       "to": "backpacking-europe-heading-east-bratislava",
       "geometryStatus": "reconstructed",
-      "distanceKm": 341.0
+      "distanceKm": 341
     },
     {
       "id": "backpacking-europe-heading-east-bratislava-budapest",
@@ -1070,29 +1091,57 @@
       "distanceKm": 246.4
     },
     {
-      "id": "backpacking-europe-heading-east-oradea-sibiu",
-      "mode": "train",
+      "id": "backpacking-europe-heading-east-oradea-cluj-napoca",
+      "mode": "bus",
       "from": "backpacking-europe-heading-east-oradea",
-      "to": "backpacking-europe-heading-east-sibiu",
+      "to": "backpacking-europe-heading-east-cluj-napoca",
+      "geometryStatus": "reconstructed",
+      "distanceKm": 156
+    },
+    {
+      "id": "backpacking-europe-heading-east-cluj-napoca-sighisoara",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-cluj-napoca",
+      "to": "backpacking-europe-heading-east-sighisoara",
       "via": [
         {
-          "name": "Arad",
-          "lng": 21.31565,
-          "lat": 46.19007
-        },
-        {
-          "name": "Simeria",
-          "lng": 23.01134,
-          "lat": 45.84721
-        },
-        {
-          "name": "Vințu de Jos",
-          "lng": 23.49822,
-          "lat": 45.98911
+          "name": "Teiuș",
+          "lng": 23.6905441,
+          "lat": 46.202754
         }
       ],
       "geometryStatus": "reconstructed",
-      "distanceKm": 451.8
+      "distanceKm": 199.3
+    },
+    {
+      "id": "backpacking-europe-heading-east-sighisoara-brasov",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-sighisoara",
+      "to": "backpacking-europe-heading-east-brasov",
+      "via": [
+        {
+          "name": "Racoș",
+          "lng": 25.4216291,
+          "lat": 46.0217515
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 127.2
+    },
+    {
+      "id": "backpacking-europe-heading-east-brasov-sibiu",
+      "mode": "train",
+      "from": "backpacking-europe-heading-east-brasov",
+      "to": "backpacking-europe-heading-east-sibiu",
+      "via": [
+        {
+          "name": "Făgăraș",
+          "lng": 24.976099,
+          "lat": 45.8300991
+        }
+      ],
+      "geometryStatus": "reconstructed",
+      "distanceKm": 148.5
     },
     {
       "id": "backpacking-europe-heading-east-sibiu-timisoara",
@@ -1740,8 +1789,7 @@
     {
       "id": "backpacking-europe-heading-east-bratislava-stay",
       "number": 17,
-      "planningStatus": "tbd",
-      "date": "TBD",
+      "date": "13 Nov – 14 Nov",
       "title": "Bratislava",
       "text": "",
       "placeId": "backpacking-europe-heading-east-bratislava",
@@ -1749,37 +1797,81 @@
       "segmentIds": [
         "backpacking-europe-heading-east-zakopane-poprad",
         "backpacking-europe-heading-east-poprad-bratislava"
-      ]
+      ],
+      "calendarDate": "2026-11-13",
+      "calendarEndDate": "2026-11-14"
     },
     {
       "id": "backpacking-europe-heading-east-budapest-stay",
       "number": 18,
-      "planningStatus": "tbd",
-      "date": "TBD",
+      "date": "14 Nov – 19 Nov",
       "title": "Budapest",
       "text": "",
       "placeId": "backpacking-europe-heading-east-budapest",
       "destinationId": "backpacking-europe-heading-east-budapest",
       "segmentIds": [
         "backpacking-europe-heading-east-bratislava-budapest"
-      ]
+      ],
+      "calendarDate": "2026-11-14",
+      "calendarEndDate": "2026-11-19"
     },
     {
       "id": "backpacking-europe-heading-east-oradea-stay",
       "number": 19,
-      "planningStatus": "tbd",
-      "date": "TBD",
+      "date": "19 Nov – 22 Nov",
       "title": "Oradea",
       "text": "",
       "placeId": "backpacking-europe-heading-east-oradea",
       "destinationId": "backpacking-europe-heading-east-oradea",
       "segmentIds": [
         "backpacking-europe-heading-east-budapest-oradea"
+      ],
+      "calendarDate": "2026-11-19",
+      "calendarEndDate": "2026-11-22"
+    },
+    {
+      "id": "backpacking-europe-heading-east-cluj-napoca-stay",
+      "number": 20,
+      "calendarDate": "2026-11-22",
+      "calendarEndDate": "2026-11-23",
+      "date": "22 Nov – 23 Nov",
+      "title": "Cluj-Napoca",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-cluj-napoca",
+      "destinationId": "backpacking-europe-heading-east-cluj-napoca",
+      "segmentIds": [
+        "backpacking-europe-heading-east-oradea-cluj-napoca"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-sighisoara-stay",
+      "number": 21,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Sighișoara",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-sighisoara",
+      "destinationId": "backpacking-europe-heading-east-sighisoara",
+      "segmentIds": [
+        "backpacking-europe-heading-east-cluj-napoca-sighisoara"
+      ]
+    },
+    {
+      "id": "backpacking-europe-heading-east-brasov-stay",
+      "number": 22,
+      "planningStatus": "tbd",
+      "date": "TBD",
+      "title": "Brașov",
+      "text": "",
+      "placeId": "backpacking-europe-heading-east-brasov",
+      "destinationId": "backpacking-europe-heading-east-brasov",
+      "segmentIds": [
+        "backpacking-europe-heading-east-sighisoara-brasov"
       ]
     },
     {
       "id": "backpacking-europe-heading-east-sibiu-stay",
-      "number": 20,
+      "number": 23,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Sibiu",
@@ -1787,12 +1879,12 @@
       "placeId": "backpacking-europe-heading-east-sibiu",
       "destinationId": "backpacking-europe-heading-east-sibiu",
       "segmentIds": [
-        "backpacking-europe-heading-east-oradea-sibiu"
+        "backpacking-europe-heading-east-brasov-sibiu"
       ]
     },
     {
       "id": "backpacking-europe-heading-east-timisoara-stay",
-      "number": 21,
+      "number": 24,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Timișoara",
@@ -1805,7 +1897,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-belgrade-stay",
-      "number": 22,
+      "number": 25,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Belgrade",
@@ -1818,7 +1910,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-zagreb-stay",
-      "number": 23,
+      "number": 26,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Zagreb",
@@ -1831,7 +1923,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-ljubljana-stay",
-      "number": 24,
+      "number": 27,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Ljubljana",
@@ -1844,7 +1936,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-bled-stay",
-      "number": 25,
+      "number": 28,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Lake Bled",
@@ -1858,7 +1950,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-split-stay",
-      "number": 26,
+      "number": 29,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Split",
@@ -1873,7 +1965,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-dubrovnik-stay",
-      "number": 27,
+      "number": 30,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Dubrovnik",
@@ -1886,7 +1978,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-sarajevo-stay",
-      "number": 28,
+      "number": 31,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Sarajevo",
@@ -1899,7 +1991,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-ohrid-stay",
-      "number": 29,
+      "number": 32,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Ohrid",
@@ -1914,7 +2006,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-qeparo-stay",
-      "number": 30,
+      "number": 33,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Qeparo",
@@ -1928,7 +2020,7 @@
     },
     {
       "id": "backpacking-europe-heading-east-athens-stay",
-      "number": 31,
+      "number": 34,
       "planningStatus": "tbd",
       "date": "TBD",
       "title": "Athens",
