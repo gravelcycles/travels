@@ -36,9 +36,15 @@ console errors. Browser fixtures remain ignored under
 `build/qa/cluster-preview-20261120/`; this is responsive-browser coverage,
 not physical-device certification.
 
-Remote main is unchanged at `7f202ce`. Next: commit current code/guidance and
-generated HTML, integrate latest main immediately before publishing, then
-verify Pages and fresh public output/browser.
+Complete. Refreshed/integrated main and published `e3df6e8` through successful
+[Pages run 44806470182](https://github.com/gravelcycles/travels/actions/runs/44806470182).
+Five fresh public files (all four journey/demo HTML pages and the shared
+marker script) match the tested release bytes. The fresh public browser
+reproduces the wide Warsaw-map/Salzburg-preview flow: only the local
+Salzburg/Innsbruck/Bolzano pin highlights; the Ohrid/Qeparo pin remains quiet,
+the card stays in the Alps, and no console errors are captured. Temporary
+viewport overrides are reset and the local review server is stopped.
+No implementation or publication work remains for this correction.
 
 ## Slovakia, Hungary and Romania update — 20 November 2026
 
