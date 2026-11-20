@@ -68,10 +68,12 @@ existing stay ID/story, media record, album assignment, Places entry and
 photo/day/route override. Internal-browser checks at 1440 × 1000 and 390 × 844
 show the corrected dates/order, four detailed new corridors, selected transport
 colors and TBD styling, deliberate empty-media states, travel rows and onward
-navigation with no captured console errors. Public delivery remains pending
-until the [WIP receipt](../WIP.md#slovakia-hungary-and-romania-update--20-november-2026)
-records Pages and fresh public verification. No physical-device or exact-service
-certification is claimed.
+navigation with no captured console errors. Implementation `072ac59` is
+published through successful [Pages run 44802318477](https://github.com/gravelcycles/travels/actions/runs/44802318477).
+Six fresh public HTML/data files match the tested release; the fresh public
+guest browser shows the corrected Cluj range, all 34 stops and the revised
+Romanian order without console errors. The [WIP receipt](../WIP.md#slovakia-hungary-and-romania-update--20-november-2026)
+records delivery. No physical-device or exact-service certification is claimed.
 
 ## Kraków and Zakopane dates — 11 November 2026
 

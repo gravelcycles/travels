@@ -29,10 +29,16 @@ browser checks, not physical-device certification or a booked service search.
 Raw-provider gap/anchor diagnostics and all preservation comparisons pass.
 Remote main was fetched and matches the branch base `00b61bb`.
 
-Next: finish the source/output review, commit the implementation and current
-guidance, integrate latest main again before publishing, then verify the Pages
-run and fresh public HTML/data/browser. No exact departure or ticket has been
-supplied; subsequent departure selection waits for dates and traveler input.
+Complete. Published implementation `072ac59` after refreshing/integrating main,
+through successful [Pages run 44802318477](https://github.com/gravelcycles/travels/actions/runs/44802318477).
+Six fresh public HTML/data files (catalog and trip HTML, catalog data, scoped
+trip data, full journey data and geometry) match the tested release bytes.
+A fresh public guest browser confirms Cluj **22–23 November**, the three
+other corrected ranges, Sighișoara/Brașov before Sibiu, all 34 stops and the
+retained onward order, with no captured console errors. The temporary review
+server is stopped. No implementation or publication work remains for this
+correction. No exact departure or ticket has been supplied; later departure
+selection remains separate from this completed route/date update.
 
 ## Headless environment handoff — 18 November 2026
 
